@@ -1,0 +1,8 @@
+node_modules/
+dist/
+art/generated/
+web/public/world/
+public-build/
+.playwright/
+test-results/
+*.log
