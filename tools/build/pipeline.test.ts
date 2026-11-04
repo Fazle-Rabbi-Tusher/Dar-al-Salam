@@ -26,8 +26,8 @@ beforeAll(async () => {
   parts = await loadParts();
 });
 describe('real content validation', () => {
-  it('validates all 167 examples with every ambient scenario', () => {
-    expect(content.characters).toHaveLength(167);
+  it('validates all 168 examples with every ambient scenario', () => {
+    expect(content.characters).toHaveLength(168);
     for (const c of content.characters)
       expect(
         validateCharacter(
@@ -402,6 +402,7 @@ describe('larger, modern characters', () => {
       'mesut-ozil',
       'mohamed-salah',
       'sadio-mane',
+      'ngolo-kante',
     ];
     for (const id of ids) {
       const c = content.characters.find((c) => c.id === id)!;
@@ -469,7 +470,7 @@ describe('transliterated denylisted names', () => {
 describe('card info and links', () => {
   it('gives every named card quick facts and an https Wikipedia link', () => {
     const named = content.characters.filter((c) => c.name);
-    expect(named.length).toBe(10);
+    expect(named.length).toBe(11);
     for (const c of named) {
       expect(c.summary?.en?.length).toBeGreaterThan(40);
       expect(c.links?.[0].url).toMatch(/^https:\/\/en\.wikipedia\.org\/wiki\//);

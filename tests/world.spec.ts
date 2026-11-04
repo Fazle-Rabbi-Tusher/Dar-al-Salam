@@ -119,7 +119,7 @@ test('Arabic mirrors layout, Bangla works, list and about are accessible HTML', 
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'মহল্লার মানুষ',
   );
-  await expect(page.locator('.people-list>a')).toHaveCount(10);
+  await expect(page.locator('.people-list>a')).toHaveCount(11);
   await page.goto('/about');
   await expect(page.locator('.rules-list>li')).toHaveCount(7);
 });

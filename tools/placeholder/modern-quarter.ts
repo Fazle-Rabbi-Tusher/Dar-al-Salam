@@ -1445,6 +1445,10 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Egyptian footballer and forward. He joined Liverpool in 2017, where he has won the Premier League and the UEFA Champions League, and he captains Egypt’s national team.',
     links: wiki('Mohamed_Salah'),
   },
+  'ngolo-kante': {
+    en: 'French footballer and defensive midfielder famed for his tireless running and ball-winning. He won the Premier League with Leicester City and with Chelsea, the 2021 UEFA Champions League with Chelsea, and the 2018 FIFA World Cup with France.',
+    links: wiki('N%27Golo_Kant%C3%A9'),
+  },
   'sadio-mane': {
     en: 'Senegalese footballer and forward. He played for Liverpool from 2016 to 2022 and won the 2021 Africa Cup of Nations with Senegal; he is known for funding a hospital and a school in his home village of Bambali.',
     links: wiki('Sadio_Man%C3%A9'),
@@ -1697,6 +1701,44 @@ export function namedCards(): Character[] {
         { from: 180, to: 240, action: 'idle', at: [78.4, 22.6], facing: 'SW' },
       ],
       pairWith: 'sadio-mane',
+    }),
+    card({
+      id: 'ngolo-kante',
+      name: { en: 'N’Golo Kanté', ar: 'نغولو كانتي', bn: 'এনগোলো কান্তে' },
+      aliases: ['NGolo Kante', 'N’Golo Kante'],
+      years: 'b. 1991',
+      place: 'Paris · London',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-shaved',
+        garment: 'football-kit',
+        headwear: 'none',
+        prop: 'football',
+        colours: {
+          skin: 'skin-7',
+          hair: 'hair-black',
+          garmentPrimary: 'royal-blue',
+          garmentSecondary: 'lab-white',
+          headwear: 'white-linen',
+          prop: 'graphite',
+        },
+      },
+      // Dribbling non-stop around midfield, ball at his feet.
+      loop: 120,
+      script: [
+        {
+          from: 0,
+          to: 120,
+          action: 'walk',
+          path: [
+            [77, 29.6],
+            [82, 29.6],
+            [83.2, 27.6],
+            [78.4, 27.2],
+            [77, 29.6],
+          ],
+        },
+      ],
     }),
     card({
       id: 'sadio-mane',

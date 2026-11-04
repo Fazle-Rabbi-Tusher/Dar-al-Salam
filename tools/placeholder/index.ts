@@ -67,6 +67,7 @@ const ramps: Record<string, string[]> = {
   steel: ['#D7DCD2', '#B5C3BA', '#8B9D96'],
   cocoa: ['#B08A6E', '#8C6A52', '#664A39'],
   'kit-red': ['#E8605A', '#C93A3A', '#962A2E'],
+  'royal-blue': ['#6F8FE8', '#3F62CC', '#28449A'],
 };
 const fixed = [
   '#493C35',

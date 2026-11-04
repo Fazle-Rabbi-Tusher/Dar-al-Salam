@@ -23,6 +23,7 @@ export const bases = [
   'adult-man-clean',
   'adult-man-curly',
   'adult-man-goatee',
+  'adult-man-shaved',
   'ball',
 ];
 export const garments = [
@@ -748,6 +749,10 @@ function drawHead(p: Pixels, q: Pose, id: string) {
       hair.data.fill(0);
       hair.rect(x + 1, y - 2, 8, 3).rect(x + 2, y - 3, 6, 1);
     }
+    if (id === 'adult-man-shaved') {
+      hair.data.fill(0);
+      hair.rect(x + 1, y - 1, 8, 1).rect(x, y, 10, 1);
+    }
     if (id === 'adult-woman')
       hair.rect(x + 1, y + 8, 8, 3).disc(x + 5, y + 1, 3);
   } else {
@@ -764,6 +769,11 @@ function drawHead(p: Pixels, q: Pose, id: string) {
       hair.ellipse(x + 3.5, y + 1.5, 7.5, 6).rect(x + 2, y + 7, 8, 4);
       hair.rect(x + 3, y + 11, 6, 2).rect(x + 4, y + 13, 4, 1);
       hair.minus(new Mask(p.width, p.height).rect(x + 4, y + 3, 6, 4));
+    }
+    if (id === 'adult-man-shaved') {
+      // Close-shaved head: only a thin hairline.
+      hair.data.fill(0);
+      hair.rect(x + 1, y - 1, 8, 1).rect(x, y, 4, 2);
     }
     if (id === 'adult-man-goatee') {
       // Shaved sides: hair only on top, and a small chin beard.

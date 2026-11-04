@@ -1,0 +1,85 @@
+{
+  "id": "ngolo-kante",
+  "kind": "person",
+  "name": {
+    "en": "N’Golo Kanté",
+    "ar": "نغولو كانتي",
+    "bn": "এনগোলো কান্তে"
+  },
+  "aliases": [
+    "NGolo Kante",
+    "N’Golo Kante"
+  ],
+  "years": "b. 1991",
+  "place": "Paris · London",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-shaved",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "football",
+    "colours": {
+      "skin": "skin-7",
+      "hair": "hair-black",
+      "garmentPrimary": "royal-blue",
+      "garmentSecondary": "lab-white",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 120,
+      "action": "walk",
+      "path": [
+        [
+          77,
+          29.6
+        ],
+        [
+          82,
+          29.6
+        ],
+        [
+          83.2,
+          27.6
+        ],
+        [
+          78.4,
+          27.2
+        ],
+        [
+          77,
+          29.6
+        ]
+      ]
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "French footballer and defensive midfielder famed for his tireless running and ball-winning. He won the Premier League with Leicester City and with Chelsea, the 2021 UEFA Champions League with Chelsea, and the 2018 FIFA World Cup with France."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/N%27Golo_Kant%C3%A9"
+    }
+  ],
+  "panelApproved": false
+}
