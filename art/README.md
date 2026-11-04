@@ -36,3 +36,7 @@ For humans, heads are around 6×6, with no more than 2–4 shading pixels sugges
 Run `pnpm gen:placeholder` only to seed missing examples. It preserves existing character/content JSON and part sheets. Back up authored object/tile assets before intentionally regenerating those families. Generated atlases, chunks, LODs and contact sheets are ignored outputs: replace sources, never edit outputs.
 
 Use `/lab` to inspect source-part combinations, and `public-build/review/characters.html` to review every used baked frame offline. Advisory approval of names, stories, translations and sacred-content treatment remains a separate human step.
+
+## Dense cutaway study
+
+`detail-*.png` objects are authored procedurally by `tools/placeholder/details.ts`, with wall faces, bookshelf spines, lattice windows, striped awnings, work surfaces, jars, planters and railings. Their footprints and anchors are registered in the same object index as other room art. Use `refine-scene.ts` only for an intentional refresh: it overwrites generated source art. Standard first-run setup preserves existing parts and tiles. Rugs and prayer carpets are floor decorations baked into chunks, while furniture and wall strips remain depth-sorted.

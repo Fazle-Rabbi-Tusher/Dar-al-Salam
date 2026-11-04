@@ -163,6 +163,8 @@ async function build() {
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
+      if (o.walkable && (o.type === 'carpet' || o.type === 'detail-rug'))
+        continue;
       const art = objectArt[o.type];
       if (!art) throw Error(`Unknown room object ${o.type}`);
       const frames = await Promise.all(
@@ -256,7 +258,7 @@ async function build() {
     atlasUrls.push(`atlas-${i}.json`);
   }
   const floor = new Pixels(4096, 4096);
-  floor.rect(0, 0, 4096, 4096, '#D9D1BA');
+  floor.rect(0, 0, 4096, 4096, '#D7DCD2');
   const tiles = await Promise.all(
     Array.from({ length: 6 }, (_, i) => image(`art/tiles/tile-${i + 1}.png`)),
   );
@@ -267,6 +269,20 @@ async function build() {
         const [wx, wy] = worldFromTile(x, y);
         blit(floor, tiles[layer.data[y * room.width + x] - 1], wx - 16, wy);
       }
+  if (objectLayer?.type === 'objectgroup')
+    for (const o of objectLayer.objects) {
+      if (!o.walkable || (o.type !== 'carpet' && o.type !== 'detail-rug'))
+        continue;
+      const art = objectArt[o.type],
+        im = await image(`art/${art.file}`),
+        p = worldFromTile(o.x, o.y, o.z);
+      blit(
+        floor,
+        im,
+        Math.round(p[0] - art.anchor[0]),
+        Math.round(p[1] - art.anchor[1]),
+      );
+    }
   const chunks: Manifest['chunks'] = [];
   for (let y = 0; y < 4; y++)
     for (let x = 0; x < 4; x++) {

@@ -1,6 +1,10 @@
 # Dar al-Salam
 
-An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **Mosque and Garden**, contains 40 ambient characters and three draft historical cards. The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
+An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **Mosque and Garden**, contains 88 ambient characters and three draft historical cards. The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
+
+![Current cutaway world](docs/preview.png)
+
+The scene now includes 230 room objects: adjoining library and clinic rooms, a covered souk, shelves, workbenches, patterned rugs, garden planters, railings and smaller everyday details. The world opens at 2× zoom, with the introduction available through the information button so the scene fills the screen.
 
 ## Run
 
@@ -114,3 +118,7 @@ The supplied Playwright configuration uses an installed Chromium. Change `CHROMI
 The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictions of prophets, Ahl al-Bayt, the Prophet's wives, Maryam or Companions; no sacred text; no detailed faces. Prayer poses are intentionally simple placeholders, flagged `needsPanelReview`, and require advisory/art review.
 
 This is a functional foundation with procedural art, not the hand-drawn density or visual richness of the reference images. Named cards are drafts. Translations are prototype UI copy pending human proofreading. There is no persistence beyond URL/language settings and no backend. The developer performance display reports FPS, visible character count and instrumented WebGL draw calls; device-specific 60 fps and Android GPU performance require physical-device profiling. Production publishing is deliberately gated on content approval.
+
+## Refresh the procedural visual study
+
+`node --import tsx tools/placeholder/refine-scene.ts` explicitly refreshes the procedural source artwork and the dense room layout. It preserves named cards and existing activity scripts, reserves moving paths before placing new objects, and replaces only its own `detail-*` room objects and `amb-neighbour-*` additions. It **overwrites procedural part/object/tile PNGs**, so back up artist-authored replacements before running it. Ordinary `pnpm dev` and `pnpm gen:placeholder` preserve existing part/tile sheets.

@@ -74,7 +74,7 @@ export class Engine {
   private lastFrame = -1;
   private frame = 0;
   private motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-  private cam: Camera = { x: 2048, y: 1950, zoom: 1 };
+  private cam: Camera = { x: 2048, y: 1930, zoom: 2 };
   private velocity = { x: 0, y: 0 };
   private pointers = new Map<number, { x: number; y: number }>();
   private dragStart = { x: 0, y: 0 };
@@ -128,7 +128,7 @@ export class Engine {
       height: this.host.clientHeight,
       resolution: 1,
       autoDensity: false,
-      background: '#e6deca',
+      background: '#d7dcd2',
       antialias: false,
       preference: 'webgl',
     });

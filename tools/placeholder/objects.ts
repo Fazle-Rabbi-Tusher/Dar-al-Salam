@@ -1,11 +1,11 @@
 import { Pixels } from '../../packages/shared/pixels';
-import { png, writeJson } from '../build/io';
+import { png, writeJson, readJson } from '../build/io';
 const C = {
   edge: '#493C35',
-  sand: '#D7BB8D',
-  light: '#EDE6CE',
-  shade: '#B69872',
-  dark: '#8E7255',
+  sand: '#D7DCD2',
+  light: '#F5EEDB',
+  shade: '#B5C3BA',
+  dark: '#8B9D96',
   teal: '#377D79',
   blue: '#225C69',
   water: '#79B6B2',
@@ -59,7 +59,9 @@ function block(
   );
 }
 export async function generateObjects() {
-  const meta: Record<string, ObjectArt> = {};
+  const meta: Record<string, ObjectArt> = await readJson(
+    'art/objects/index.json',
+  ).catch(() => ({}));
   for (const name of [
     'arcade',
     'arcade-side',

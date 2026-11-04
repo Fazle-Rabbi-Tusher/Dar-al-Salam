@@ -1426,3 +1426,64 @@ html[dir='rtl'] .portrait-decoration {
     top: -15px;
   }
 }
+
+/* Open directly on the detailed world; controls stay quiet and out of its way. */
+.topbar {
+  height: 64px;
+  padding-inline: 25px;
+  background: #f8f8f1;
+}
+.brand strong {
+  font-size: 25px;
+}
+.brand-mark {
+  width: 33px;
+  height: 38px;
+}
+.brand-mark svg {
+  width: 23px;
+}
+.brand small {
+  font-size: 6px;
+  letter-spacing: 1.7px;
+}
+.world-page {
+  height: calc(100svh - 64px);
+  background: #d7dcd2;
+}
+.scene-vignette {
+  background: none;
+}
+.world-top {
+  top: 17px;
+  inset-inline: 22px;
+}
+.build-label {
+  top: 70px;
+}
+.intro-card {
+  top: auto;
+  bottom: 160px;
+}
+@media (max-width: 700px) {
+  .topbar {
+    height: 64px;
+    padding-inline: 15px;
+  }
+  .brand strong {
+    font-size: 22px;
+  }
+  .world-page {
+    height: calc(100svh - 64px);
+  }
+  .world-top {
+    inset-inline: 16px;
+  }
+  .intro-card {
+    top: 80px;
+    bottom: auto;
+  }
+  .build-label {
+    top: auto;
+  }
+}

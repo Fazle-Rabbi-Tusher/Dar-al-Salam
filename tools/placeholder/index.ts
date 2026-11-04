@@ -563,6 +563,12 @@ await seed('rooms/mosque-garden.tmj', {
   ],
 });
 for (let i = 0; i < 6; i++) {
+  try {
+    await fs.access(`art/tiles/tile-${i + 1}.png`);
+    continue;
+  } catch {
+    /* Preserve authored tile replacements. */
+  }
   const p = new Pixels(32, 16),
     colour =
       i === 3

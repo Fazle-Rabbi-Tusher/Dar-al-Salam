@@ -7,8 +7,8 @@ export function parseUrl(url: string) {
   };
   return {
     x: num('x', 2048),
-    y: num('y', 1940),
-    zoom: Math.min(4, Math.max(0.125, num('z', 1))),
+    y: num('y', 1930),
+    zoom: Math.min(4, Math.max(0.125, num('z', 2))),
     id: u.pathname.startsWith('/c/')
       ? decodeURIComponent(u.pathname.slice(3))
       : undefined,

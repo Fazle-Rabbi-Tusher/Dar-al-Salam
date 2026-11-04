@@ -19,7 +19,7 @@ export const useStore = create<State>((set) => ({
   lang: (localStorage.getItem('dar-language') as Language) || 'en',
   motion: !matchMedia('(prefers-reduced-motion: reduce)').matches,
   selected: null,
-  camera: { x: 2048, y: 1950, zoom: 1 },
+  camera: { x: 2048, y: 1930, zoom: 2 },
   setLang: (lang) => {
     localStorage.setItem('dar-language', lang);
     set({ lang });

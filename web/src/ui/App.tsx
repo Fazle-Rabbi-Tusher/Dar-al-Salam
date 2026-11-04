@@ -205,7 +205,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
     urlTimer = useRef<ReturnType<typeof setTimeout>>();
   const [progress, setProgress] = useState(0),
     [error, setError] = useState(''),
-    [intro, setIntro] = useState(!location.pathname.startsWith('/c/')),
+    [intro, setIntro] = useState(false),
     [query, setQuery] = useState(''),
     [focused, setFocused] = useState(false),
     [stats, setStats] = useState<{
@@ -523,7 +523,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
             aria-label={t('reset')}
             onClick={() => {
               close();
-              engine.current?.flyTo({ x: 2048, y: 1950, zoom: 1 }, 600);
+              engine.current?.flyTo({ x: 2048, y: 1930, zoom: 2 }, 600);
             }}
           >
             <Icon name="home" size={17} />
@@ -613,7 +613,7 @@ function Minimap({
     });
   };
   const width = window.innerWidth / camera.zoom,
-    height = (window.innerHeight - 88) / camera.zoom;
+    height = (window.innerHeight - 64) / camera.zoom;
   return (
     <div
       className="minimap"

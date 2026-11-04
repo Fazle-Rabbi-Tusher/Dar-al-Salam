@@ -26,8 +26,8 @@ beforeAll(async () => {
   parts = await loadParts();
 });
 describe('real content validation', () => {
-  it('validates all 43 examples with every ambient scenario', () => {
-    expect(content.characters).toHaveLength(43);
+  it('validates all 91 examples with every ambient scenario', () => {
+    expect(content.characters).toHaveLength(91);
     for (const c of content.characters)
       expect(
         validateCharacter(

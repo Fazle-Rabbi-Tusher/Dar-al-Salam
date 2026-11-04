@@ -274,9 +274,25 @@ function drawPart(
       p.rect(x + 2, y - 3, 2, 2, K.prop[0]);
     }
   }
+  if (category === 'garments') {
+    for (let y = 0; y < p.height; y++)
+      for (let x = 0; x < p.width; x++) {
+        const i = (y * p.width + x) * 4;
+        if (
+          p.data[i + 3] &&
+          p.data[i] === 204 &&
+          p.data[i + 1] === 204 &&
+          p.data[i + 2] === 0
+        ) {
+          if ((x === 14 || x === 19) && y % 7 !== 0)
+            p.pixel(x, y, K.cloth[x === 14 ? 0 : 2]);
+          if (y === feet - 4 && x > 11 && x < 22) p.pixel(x, y, K.sash[1]);
+        }
+      }
+  }
   return p;
 }
-export async function generateParts() {
+export async function generateParts(overwrite = false) {
   for (const [category, ids] of Object.entries({
     bases,
     garments,
@@ -286,7 +302,7 @@ export async function generateParts() {
     for (const id of ids) {
       try {
         await fs.access(`art/parts/${category}/${id}.json`);
-        continue;
+        if (!overwrite) continue;
       } catch {
         /* Only seed absent parts; preserve artist replacements. */
       }

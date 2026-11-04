@@ -82,7 +82,8 @@ test('pan, zoom, overview LOD, inspector and minimap operate without runtime err
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await ready(page);
-  await page.getByLabel('Hide introduction').click();
+  if (await page.getByLabel('Hide introduction').isVisible())
+    await page.getByLabel('Hide introduction').click();
   const before = page.url();
   await page.mouse.move(650, 600);
   await page.mouse.down();
@@ -91,7 +92,7 @@ test('pan, zoom, overview LOD, inspector and minimap operate without runtime err
   await expect.poll(() => page.url(), { timeout: 15000 }).not.toBe(before);
   await page.keyboard.press('i');
   await expect(page.locator('.inspector-panel')).toBeVisible();
-  for (let i = 0; i < 4; i++)
+  for (let i = 0; i < 5; i++)
     await page.getByLabel('Zoom out', { exact: true }).click();
   await expect(page.locator('.zoom-controls')).toContainText('13');
   await page.waitForTimeout(500);
@@ -174,7 +175,8 @@ test('touch pinch changes zoom toward the pinch centre', async ({
   });
   const page = await context.newPage();
   await ready(page);
-  await page.getByLabel('Hide introduction').click();
+  if (await page.getByLabel('Hide introduction').isVisible())
+    await page.getByLabel('Hide introduction').click();
   const session = await context.newCDPSession(page);
   await session.send('Input.dispatchTouchEvent', {
     type: 'touchStart',

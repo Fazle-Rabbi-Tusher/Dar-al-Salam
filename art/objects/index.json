@@ -130,5 +130,257 @@
     ],
     "width": 192,
     "height": 240
+  },
+  "detail-bookwall": {
+    "file": "objects/detail-bookwall.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-bookwall-side": {
+    "file": "objects/detail-bookwall-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-windowwall": {
+    "file": "objects/detail-windowwall.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-windowwall-side": {
+    "file": "objects/detail-windowwall-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-archwall": {
+    "file": "objects/detail-archwall.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-archwall-side": {
+    "file": "objects/detail-archwall-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-bookcase": {
+    "file": "objects/detail-bookcase.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-bookcase-side": {
+    "file": "objects/detail-bookcase-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-counter": {
+    "file": "objects/detail-counter.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-market-blue": {
+    "file": "objects/detail-market-blue.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-market-red": {
+    "file": "objects/detail-market-red.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-apothecary": {
+    "file": "objects/detail-apothecary.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-apothecary-side": {
+    "file": "objects/detail-apothecary-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-workbench": {
+    "file": "objects/detail-workbench.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-rug": {
+    "file": "objects/detail-rug.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-lowwall": {
+    "file": "objects/detail-lowwall.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-lowwall-side": {
+    "file": "objects/detail-lowwall-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-railing": {
+    "file": "objects/detail-railing.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-railing-side": {
+    "file": "objects/detail-railing-side.png",
+    "anchor": [
+      239,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-planter": {
+    "file": "objects/detail-planter.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-olive": {
+    "file": "objects/detail-olive.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-jars": {
+    "file": "objects/detail-jars.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-crates": {
+    "file": "objects/detail-crates.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-lantern": {
+    "file": "objects/detail-lantern.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-scrolls": {
+    "file": "objects/detail-scrolls.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-loom": {
+    "file": "objects/detail-loom.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-stairs": {
+    "file": "objects/detail-stairs.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
+  },
+  "detail-water-basin": {
+    "file": "objects/detail-water-basin.png",
+    "anchor": [
+      144,
+      124
+    ],
+    "width": 384,
+    "height": 288
   }
 }
