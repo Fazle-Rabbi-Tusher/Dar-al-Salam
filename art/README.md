@@ -15,17 +15,17 @@ aseprite -b <part>.aseprite \
 Use one visible/composed part per exported sheet (hide unrelated working layers before exporting). Categories are `bases`, `garments`, `headwear`, `props`. The JSON's `meta.image` references the PNG beside the JSON.
 
 - Tags: `<action>_<facing>` in lowercase, e.g. `walk_se`, `read_ne`, `pour_sw`. People: idle 4, walk 6, talk 4, sit 2, read 4, write 4, carry 6, pour 6, sweep 6, wave 4, teach 4, pray 8. Cats: cat_idle 4, cat_walk 6, cat_sleep 4. Birds: bird_fly 6, bird_peck 4.
-- Canvas: people 32×48, cat 24×20, bird 16×16. Keep full `sourceSize` in the JSON even when individual frames are trimmed.
-- Slice `foot`: a 1×1 slice at (16,44) for people, (12,18) for cats, (8,15) for birds. A slice pivot is also supported; its world anchor is bounds position plus pivot.
+- Canvas: people 48×72, cat 32×24, bird 20×20. Keep full `sourceSize` in the JSON even when individual frames are trimmed.
+- Slice `foot`: a 1×1 slice at (24,68) for people, (16,22) for cats, (10,19) for birds. Sizes and anchors live in `packages/shared/canvas.ts`. A slice pivot is also supported; its world anchor is bounds position plus pivot.
 - Draw SE and NE; SW and NW are mirrored at build time. Supply explicit SW/NW tags for asymmetric props; explicit frames take priority. Placeholder pour/write include SW to test this path.
 - Optional per-frame user data: `layerBias=<integer>` adjusts draw order. Default order: base, garment, headwear, prop when facing the viewer; prop, base, garment, headwear when facing away. Shadows are beneath the body; the compositor adds a 1 px brown silhouette outline.
 - Frame tags provide unique art frames. The global clock maps these to held frames over 60/120/240-frame loops; Aseprite duration metadata is preserved but does not alter the deterministic 12 fps clock.
 
 ## Key colours
 
-Use exact RGB shades from `content/palettes/key-colours.json`. Each slot maps to a named ramp in the character look. Skin has eight ramps; fabrics include cream, indigo, saffron, madder-red, olive, linen and charcoal; brass and silver are available. All non-key colours must exist in `world-palette.json`. The post-compositing check rejects non-palette pixels and reports coordinates. Use un-antialiased pixel tools; do not introduce intermediate colours or filtered resampling.
+Use exact RGB shades from `content/palettes/key-colours.json`. Each slot maps to a named ramp in the character look. Skin has eight ramps; hair has black, brown, grey and white; fabrics include cream, indigo, saffron, madder-red, olive, linen and charcoal plus modern denim, navy, lab-white, scrub teal/blue, hi-vis, safety orange, rose, plum, emerald, sky, graphite, khaki, mustard, coral and black; brass, silver and steel are available. All non-key colours must exist in `world-palette.json`. The post-compositing check rejects non-palette pixels and reports coordinates. Use un-antialiased pixel tools; do not introduce intermediate colours or filtered resampling.
 
-For humans, heads are around 6×6, with no more than 2–4 shading pixels suggesting direction. There are no detailed eyes, mouths or portraits. Children are shorter; elderly figures are slightly stooped. Prayer frames follow standing → bowing → prostration → sitting and are marked for advisory review.
+Adults are about 54 px tall; heads are about 10×11, with no more than 2–4 shading pixels on the face suggesting direction. There are no detailed eyes, mouths or portraits. Children reuse adult garment sheets and are scaled by the compositor (`CHILD_SCALE`, about 40 px tall). Elders differ by hair and a fuller beard. Prop sheets omit `pray` frames: hands are free during prayer. Prayer frames follow standing → bowing → prostration → sitting and are marked for advisory review.
 
 ## World assets
 
@@ -39,4 +39,4 @@ Use `/lab` to inspect source-part combinations, and `public-build/review/charact
 
 ## Dense cutaway study
 
-`detail-*.png` objects are authored procedurally by `tools/placeholder/details.ts`, with wall faces, bookshelf spines, lattice windows, striped awnings, work surfaces, jars, planters and railings. Their footprints and anchors are registered in the same object index as other room art. Use `refine-scene.ts` only for an intentional refresh: it overwrites generated source art. Standard first-run setup preserves existing parts and tiles. Rugs and prayer carpets are floor decorations baked into chunks, while furniture and wall strips remain depth-sorted.
+`detail-*.png` objects are authored procedurally by `tools/placeholder/details.ts`, with wall faces, bookshelf spines, lattice windows, striped awnings, work surfaces, jars, planters and railings. Their footprints and anchors are registered in the same object index as other room art. The modern district's `m-*` objects come from `tools/placeholder/modern.ts`. Use `pnpm gen:placeholder --refresh` only for an intentional refresh: it overwrites generated source art. Standard first-run setup preserves existing parts and tiles. Rugs and prayer carpets (`floor: true` in the object index) are floor decorations baked into chunks, while furniture and wall strips remain depth-sorted.

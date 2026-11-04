@@ -1,0 +1,60 @@
+{
+  "id": "zaha-hadid",
+  "kind": "person",
+  "name": {
+    "en": "Zaha Hadid",
+    "ar": "زها حديد",
+    "bn": "জাহা হাদিদ"
+  },
+  "aliases": [],
+  "years": "1950–2016",
+  "place": "Baghdad · London",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-woman",
+    "garment": "long-dress",
+    "headwear": "none",
+    "prop": "tablet",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "black-cloth",
+      "garmentSecondary": "mustard",
+      "headwear": "black-cloth",
+      "prop": "graphite"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [29.6, 14.9],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [29.6, 14.9],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

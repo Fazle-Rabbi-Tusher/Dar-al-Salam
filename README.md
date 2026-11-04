@@ -1,10 +1,10 @@
 # Dar al-Salam
 
-An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **Mosque and Garden**, contains 88 ambient characters and three draft historical cards. The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
+An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **The Peace Quarter**, is a modern Muslim neighbourhood with 132 ambient people and six draft cards: three modern figures (Fazlur Rahman Khan, Zaha Hadid, Aziz Sancar) and three historical ones (Al-Khwarizmi, Ibn Sina, Fatima al-Fihri). The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
 
 ![Current cutaway world](docs/preview.png)
 
-The scene now includes 230 room objects: adjoining library and clinic rooms, a covered souk, shelves, workbenches, patterned rugs, garden planters, railings and smaller everyday details. The world opens at 2× zoom, with the introduction available through the information button so the scene fills the screen.
+The scene has 149 room objects across nine zones: a modern mosque with a prayer hall and Qur'an study circle, an architecture studio, a university science lab, a hospital, a central park with a fountain, a community kitchen, a library with a children's coding class, a street with a café and bus stop, and a solar garden. Characters are drawn on a 48×72 canvas (adults about 54 px tall) with shading, hands, shoes, hair and modern clothes and props. The world opens at 2× zoom, with the introduction available through the information button so the scene fills the screen.
 
 ## Run
 
@@ -29,7 +29,7 @@ pnpm lint
 pnpm format
 ```
 
-`pnpm build` intentionally fails while the three example cards have `panelApproved: false`. Do not change those flags to make a build green. Use the development workflow or `build:preview` for prototype review. All biographies, stories and sources are explicitly unresearched placeholders.
+`pnpm build` intentionally fails while the six example cards have `panelApproved: false`. Do not change those flags to make a build green. Use the development workflow or `build:preview` for prototype review. All biographies, stories and sources are explicitly unresearched placeholders.
 
 ## Deploy to Vercel
 
@@ -123,6 +123,11 @@ The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictio
 
 This is a functional foundation with procedural art, not the hand-drawn density or visual richness of the reference images. Named cards are drafts. Translations are prototype UI copy pending human proofreading. There is no persistence beyond URL/language settings and no backend. The developer performance display reports FPS, visible character count and instrumented WebGL draw calls; device-specific 60 fps and Android GPU performance require physical-device profiling. Approved-content release builds are deliberately gated on panel approval; public prototype deployments retain their draft labels.
 
-## Refresh the procedural visual study
+## Refresh the procedural placeholder world
 
-`node --import tsx tools/placeholder/refine-scene.ts` explicitly refreshes the procedural source artwork and the dense room layout. It preserves named cards and existing activity scripts, reserves moving paths before placing new objects, and replaces only its own `detail-*` room objects and `amb-neighbour-*` additions. It **overwrites procedural part/object/tile PNGs**, so back up artist-authored replacements before running it. Ordinary `pnpm dev` and `pnpm gen:placeholder` preserve existing part/tile sheets.
+`pnpm gen:placeholder --refresh` regenerates the placeholder part sheets, modern objects, floor tiles, the room layout (`tools/placeholder/modern-quarter.ts`), the ambient people and the draft named cards. It **overwrites** those files, so back up artist-authored replacements first. It never approves a card. Plain `pnpm gen:placeholder` (and `pnpm dev`) only seeds missing files.
+
+- `tools/placeholder/parts.ts` — paper-doll parts drawn from one shared pose skeleton per action/facing/frame.
+- `tools/placeholder/modern.ts` and `iso-draw.ts` — the modern district's objects (`m-*`) and tiles 7–13.
+- `tools/placeholder/modern-quarter.ts` — zones, objects, people, routes and draft cards; it runs the script validator on every character before writing.
+- `node --import tsx tools/placeholder/character-preview.ts <out.png>` and `modern-preview.ts <out.png>` render contact sheets for quick visual checks.

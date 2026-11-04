@@ -1,5 +1,6 @@
 {
   "id": "fatima-al-fihri",
+  "kind": "person",
   "name": {
     "en": "Fatima al-Fihri",
     "ar": "فاطمة الفهرية",
@@ -9,6 +10,7 @@
   "years": "c. 800–880",
   "place": "Fez",
   "district": "maghreb",
+  "depiction": "full",
   "look": {
     "base": "adult-woman",
     "garment": "abaya",
@@ -17,31 +19,30 @@
     "colours": {
       "skin": "skin-3",
       "hair": "hair-black",
-      "garmentPrimary": "saffron",
-      "garmentSecondary": "white-linen",
-      "headwear": "white-linen",
+      "garmentPrimary": "madder-red",
+      "garmentSecondary": "saffron",
+      "headwear": "wool-cream",
       "prop": "brass"
     }
   },
-  "kind": "person",
-  "depiction": "full",
   "loop": 120,
   "script": [
     {
       "from": 0,
       "to": 60,
       "action": "wave",
-      "at": [32, 13],
+      "at": [38.2, 21.2],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "talk",
-      "at": [32, 13],
+      "at": [38.2, 21.2],
       "facing": "SW"
     }
   ],
+  "pairWith": "amb-students-walk",
   "bio": {
     "en": "PLACEHOLDER — to be researched",
     "ar": "PLACEHOLDER — to be researched",

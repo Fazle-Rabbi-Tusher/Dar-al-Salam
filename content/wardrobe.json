@@ -1,7 +1,7 @@
 {
   "mosque-garden": {
     "region": "mosque-garden",
-    "era": "prototype — advisory review pending",
+    "era": "contemporary, with traditional dress still worn today — advisory review pending",
     "garments": [
       "thobe",
       "jubba",
@@ -14,6 +14,13 @@
       "hui-robe",
       "scholar-robe",
       "apron",
+      "shirt-trousers",
+      "suit",
+      "lab-coat",
+      "scrubs",
+      "hoodie-jeans",
+      "long-dress",
+      "hi-vis",
       "none"
     ],
     "headwear": [
@@ -24,12 +31,55 @@
       "khimar",
       "songkok",
       "hui-cap",
+      "cap",
+      "hard-hat",
+      "scrub-cap",
+      "headwrap",
+      "none"
+    ]
+  },
+  "modern-quarter": {
+    "region": "modern-quarter",
+    "era": "20th–21st century — advisory review pending",
+    "garments": [
+      "thobe",
+      "jubba",
+      "qaba",
+      "kaftan",
+      "abaya",
+      "panjabi-lungi",
+      "boubou",
+      "baju-kurung",
+      "hui-robe",
+      "scholar-robe",
+      "apron",
+      "shirt-trousers",
+      "suit",
+      "lab-coat",
+      "scrubs",
+      "hoodie-jeans",
+      "long-dress",
+      "hi-vis",
+      "none"
+    ],
+    "headwear": [
+      "imamah",
+      "kufi",
+      "taqiyah",
+      "hijab",
+      "khimar",
+      "songkok",
+      "hui-cap",
+      "cap",
+      "hard-hat",
+      "scrub-cap",
+      "headwrap",
       "none"
     ]
   },
   "house-of-wisdom": {
     "region": "house-of-wisdom",
-    "era": "prototype — advisory review pending",
+    "era": "classical — advisory review pending",
     "garments": [
       "thobe",
       "jubba",
@@ -57,7 +107,7 @@
   },
   "maghreb": {
     "region": "maghreb",
-    "era": "prototype — advisory review pending",
+    "era": "classical — advisory review pending",
     "garments": [
       "thobe",
       "jubba",

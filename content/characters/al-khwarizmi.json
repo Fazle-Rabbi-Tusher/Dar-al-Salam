@@ -1,5 +1,6 @@
 {
   "id": "al-khwarizmi",
+  "kind": "person",
   "name": {
     "en": "Al-Khwarizmi",
     "ar": "الخوارزمي",
@@ -9,36 +10,35 @@
   "years": "c. 780–850",
   "place": "Baghdad",
   "district": "house-of-wisdom",
+  "depiction": "full",
   "look": {
     "base": "adult-man",
     "garment": "scholar-robe",
     "headwear": "imamah",
     "prop": "book",
     "colours": {
-      "skin": "skin-2",
+      "skin": "skin-4",
       "hair": "hair-black",
-      "garmentPrimary": "wool-cream",
+      "garmentPrimary": "indigo",
       "garmentSecondary": "white-linen",
       "headwear": "white-linen",
-      "prop": "brass"
+      "prop": "madder-red"
     }
   },
-  "kind": "person",
-  "depiction": "full",
   "loop": 120,
   "script": [
     {
       "from": 0,
       "to": 60,
       "action": "write",
-      "at": [15, 29],
+      "at": [18, 45],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "teach",
-      "at": [15, 29],
+      "at": [18, 45],
       "facing": "SW"
     }
   ],

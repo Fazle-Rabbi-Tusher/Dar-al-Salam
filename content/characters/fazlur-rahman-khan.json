@@ -1,0 +1,61 @@
+{
+  "id": "fazlur-rahman-khan",
+  "kind": "person",
+  "name": {
+    "en": "Fazlur Rahman Khan",
+    "ar": "فضل الرحمن خان",
+    "bn": "ফজলুর রহমান খান"
+  },
+  "aliases": ["Fazlur Khan", "F. R. Khan"],
+  "years": "1929–1982",
+  "place": "Dhaka · Chicago",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man",
+    "garment": "suit",
+    "headwear": "none",
+    "prop": "blueprint",
+    "colours": {
+      "skin": "skin-5",
+      "hair": "hair-black",
+      "garmentPrimary": "graphite",
+      "garmentSecondary": "madder-red",
+      "headwear": "white-linen",
+      "prop": "sky"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [31.4, 12],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [31.4, 12],
+      "facing": "SW"
+    }
+  ],
+  "pairWith": "amb-engineer-1",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

@@ -1,0 +1,1264 @@
+import {
+  characterSchema,
+  roomSchema,
+  type Character,
+  type Look,
+  type Room,
+  type RoomObject,
+  type Step,
+} from '../../packages/shared/schema';
+import { scriptErrors } from '../../packages/shared/script';
+import { MODERN_OBJECTS } from './modern';
+import { detailFootprints, type DetailType } from './details';
+
+/*
+ * The Peace Quarter: one 64×64-tile room showing contemporary Muslim life and
+ * contribution side by side — a modern mosque and study circle, a university
+ * science lab, an architecture studio, a hospital, a community kitchen, a
+ * library with a coding class, a street with a café, and a solar garden.
+ * Generated deterministically (seeded PRNG, build-time only).
+ */
+type Pt = [number, number];
+type Loop = 60 | 120 | 240;
+type Facing = NonNullable<Step['facing']>;
+
+function mulberry32(a: number) {
+  return () => {
+    let t = (a += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const legacyFootprints: Record<string, Pt> = {
+  palm: [1, 1],
+  cypress: [1, 1],
+  feeder: [1, 1],
+  bowl: [1, 1],
+  bench: [2, 1],
+  flowers: [3, 2],
+};
+function footprintOf(type: string): Pt {
+  const side = type.endsWith('-side'),
+    id = side ? type.slice(0, -5) : type;
+  const f: Pt | undefined =
+    MODERN_OBJECTS[id]?.footprint ??
+    (id.startsWith('detail-')
+      ? detailFootprints[id.slice(7) as DetailType]
+      : undefined) ??
+    legacyFootprints[id];
+  if (!f) throw Error(`Unknown object type ${type}`);
+  return side ? [f[1], f[0]] : [f[0], f[1]];
+}
+
+export function modernQuarter() {
+  const random = mulberry32(796);
+  const pick = <T>(a: T[]) => a[Math.floor(random() * a.length)];
+  const objects: RoomObject[] = [];
+  const obj = (type: string, x: number, y: number, walkable = false) => {
+    const fp = footprintOf(type);
+    objects.push({
+      id: objects.length + 1,
+      type,
+      x,
+      y,
+      footprint: fp,
+      walkable: walkable || Boolean(MODERN_OBJECTS[type]?.floor),
+      z: 0,
+    });
+  };
+
+  /* ── looks ── */
+  const fabrics = [
+    'sky',
+    'emerald',
+    'coral',
+    'mustard',
+    'plum',
+    'rose',
+    'denim',
+    'indigo',
+    'saffron',
+    'madder-red',
+    'olive',
+    'turquoise',
+    'navy',
+    'khaki',
+  ];
+  const scarves = [
+    'emerald',
+    'navy',
+    'rose',
+    'plum',
+    'sky',
+    'mustard',
+    'coral',
+    'black-cloth',
+    'turquoise',
+    'wool-cream',
+  ];
+  const L = (
+    base: string,
+    garment: string,
+    headwear: string,
+    prop = 'none',
+    c: Partial<Look['colours']> = {},
+  ): Look => ({
+    base,
+    garment,
+    headwear,
+    prop,
+    colours: {
+      skin: `skin-${1 + Math.floor(random() * 8)}`,
+      hair:
+        base === 'elder'
+          ? pick(['hair-grey', 'hair-white'])
+          : pick(['hair-black', 'hair-black', 'hair-brown']),
+      garmentPrimary: pick(fabrics),
+      garmentSecondary: pick([
+        'navy',
+        'denim',
+        'graphite',
+        'khaki',
+        'charcoal',
+      ]),
+      headwear: base.includes('woman') ? pick(scarves) : 'white-linen',
+      prop: pick(['madder-red', 'sky', 'emerald', 'graphite', 'mustard']),
+      ...c,
+    },
+  });
+  const man = () =>
+    pick([
+      L('adult-man', 'shirt-trousers', 'none'),
+      L('adult-man', 'thobe', 'kufi', 'none', {
+        garmentPrimary: 'white-linen',
+      }),
+      L('adult-man', 'hoodie-jeans', 'none'),
+      L('adult-man', 'panjabi-lungi', 'taqiyah', 'none', {
+        garmentPrimary: 'white-linen',
+      }),
+      L('adult-man', 'boubou', 'kufi'),
+      L('adult-man', 'suit', 'none', 'none', { garmentPrimary: 'graphite' }),
+      L('adult-man', 'shirt-trousers', 'songkok', 'none', {
+        headwear: 'black-cloth',
+      }),
+    ]);
+  const woman = () =>
+    pick([
+      L('adult-woman', 'long-dress', 'hijab'),
+      L('adult-woman', 'abaya', 'hijab', 'none', {
+        garmentPrimary: 'black-cloth',
+        garmentSecondary: 'saffron',
+      }),
+      L('adult-woman', 'baju-kurung', 'hijab'),
+      L('adult-woman', 'long-dress', 'headwrap'),
+      L('adult-woman', 'abaya', 'khimar', 'none', {
+        garmentPrimary: 'navy',
+        garmentSecondary: 'sky',
+      }),
+    ]);
+  const child = () =>
+    pick([
+      L('child', 'hoodie-jeans', 'none'),
+      L('child', 'hoodie-jeans', 'cap', 'none', { headwear: pick(fabrics) }),
+      L('child', 'thobe', 'kufi', 'none', { garmentPrimary: 'white-linen' }),
+      L('child', 'long-dress', 'hijab'),
+      L('child', 'baju-kurung', 'hijab'),
+    ]);
+  const elder = () =>
+    pick([
+      L('elder', 'jubba', 'imamah', 'none', { garmentPrimary: 'charcoal' }),
+      L('elder', 'thobe', 'kufi', 'none', { garmentPrimary: 'wool-cream' }),
+      L('elder', 'kaftan', 'taqiyah'),
+      L('elder', 'suit', 'cap', 'none', {
+        garmentPrimary: 'khaki',
+        headwear: 'graphite',
+      }),
+    ]);
+  const withProp = (look: Look, prop: string): Look => ({ ...look, prop });
+
+  /* ── characters ── */
+  const ambient: Character[] = [];
+  const person = (
+    id: string,
+    at: Pt,
+    action: Step['action'],
+    look: Look,
+    facing: Facing = 'SE',
+    loop: Loop = 120,
+    extra: Partial<Character> = {},
+  ) => {
+    const c: Character = {
+      id: `amb-${id}`,
+      kind: 'person',
+      aliases: [],
+      district: 'mosque-garden',
+      depiction: 'full',
+      look,
+      loop,
+      script: [{ from: 0, to: loop, action, at, facing }],
+      ...extra,
+    };
+    ambient.push(c);
+    return c;
+  };
+  /** Walk a closed route at constant speed over the loop. */
+  const walker = (
+    id: string,
+    route: Pt[],
+    look: Look,
+    loop: Loop,
+    action: Step['action'] = 'walk',
+  ) => {
+    const c = person(id, route[0], action, look, 'SE', loop);
+    c.script = [{ from: 0, to: loop, action, path: [...route, route[0]] }];
+    return c;
+  };
+  /** Two-step routine: go out (and back) around a stationary action. */
+  const errand = (
+    id: string,
+    from: Pt,
+    to: Pt,
+    look: Look,
+    action: Step['action'],
+    facing: Facing,
+    move: Step['action'] = 'walk',
+  ) => {
+    const c = person(id, from, move, look);
+    c.script = [
+      { from: 0, to: 36, action: move, path: [from, to] },
+      { from: 36, to: 84, action, at: to, facing },
+      { from: 84, to: 120, action: move, path: [to, from] },
+    ];
+    return c;
+  };
+
+  /* ════════ Mosque (x 7–21, y 7–20) ════════ */
+  obj('m-dome', 10, 2.2);
+  obj('m-minaret', 4.6, 4.6);
+  obj('m-minaret', 21.6, 4.2);
+  obj('m-archwall', 7, 6.65);
+  obj('m-archwall', 15, 6.65);
+  obj('m-archwall-side', 6.65, 7);
+  obj('m-archwall-side', 6.65, 15);
+  obj('m-hall-carpet', 8.4, 8.5, true);
+  obj('m-wudu', 8, 18.3);
+  obj('m-shoe-rack', 12, 19.6);
+  obj('m-desk-plant', 7.3, 7.3);
+  obj('m-bookshelf', 16.2, 7.05);
+  // Two rows of six praying together, facing the qibla wall (away from the viewer).
+  for (let row = 0; row < 2; row++)
+    for (let i = 0; i < 6; i++)
+      person(
+        `worshipper-${row}-${i}`,
+        [9.4 + i * 1.65, 10.4 + row * 3],
+        'pray',
+        withProp(man(), 'none'),
+        'NE',
+      );
+  // Qur'an study circle: a teacher shown from behind with five children.
+  person(
+    'teacher',
+    [19.4, 18.4],
+    'teach',
+    L('elder', 'jubba', 'imamah', 'none', { garmentPrimary: 'charcoal' }),
+    'NE',
+    120,
+    { depiction: 'back' },
+  );
+  (
+    [
+      [17.8, 16.4, 'SE'],
+      [19.1, 15.8, 'SE'],
+      [20.4, 16.1, 'SW'],
+      [17.4, 17.6, 'SE'],
+      [21.2, 17.2, 'SW'],
+    ] as [number, number, Facing][]
+  ).forEach(([x, y, f], i) =>
+    person(`student-${i}`, [x, y], 'read', withProp(child(), 'book'), f),
+  );
+  person('wudu-1', [9, 17.7], 'pour', withProp(man(), 'water-jug'), 'SW');
+
+  /* ════════ Architecture studio (x 24–35, y 7–20) ════════ */
+  obj('m-whitewall', 23, 6.65);
+  obj('m-whitewall', 31, 6.65);
+  obj('m-bookshelf', 24.3, 7.05);
+  obj('m-screen-wall', 28.2, 7.1);
+  obj('m-drafting-table', 25, 10);
+  obj('m-drafting-table', 25, 14.5);
+  obj('m-tower-model', 31.5, 9.5);
+  obj('m-tower-model', 33.4, 9.2);
+  obj('m-wave-model', 28.5, 15.5);
+  obj('m-computer-desk', 33, 13);
+  obj('m-computer-desk', 33, 17);
+  obj('m-desk-plant', 35.3, 7.4);
+  person('drafter-1', [26, 11.9], 'write', withProp(woman(), 'pen'), 'NE');
+  person('drafter-2', [26, 16.4], 'write', withProp(man(), 'pen'), 'NE');
+  person('designer-1', [34, 14.6], 'write', withProp(woman(), 'laptop'), 'NE');
+  person('designer-2', [34, 18.6], 'write', withProp(man(), 'laptop'), 'NE');
+  person(
+    'engineer-1',
+    [32.6, 11.6],
+    'talk',
+    withProp(L('adult-woman', 'shirt-trousers', 'hijab'), 'blueprint'),
+    'NW',
+  ).pairWith = 'fazlur-rahman-khan';
+
+  /* ════════ University science lab (x 39–55, y 7–20) ════════ */
+  obj('m-glasswall', 39, 6.65);
+  obj('m-glasswall', 47, 6.65);
+  obj('m-screen-wall', 40, 7.1);
+  obj('m-whiteboard', 44.5, 7.1);
+  obj('m-fume-hood', 49.5, 7.4);
+  obj('m-server-rack', 53, 7.3);
+  obj('m-server-rack', 54.1, 7.3);
+  obj('m-lab-bench', 41, 10.5);
+  obj('m-lab-bench', 46, 10.5);
+  obj('m-lab-bench', 41, 15.5);
+  obj('m-lab-bench', 46, 15.5);
+  obj('m-robot-arm', 52.5, 12.5);
+  obj('m-water-cooler', 54.6, 17.5);
+  const coat = (base: 'adult-man' | 'adult-woman', prop: string) =>
+    L(base, 'lab-coat', base === 'adult-woman' ? 'hijab' : 'none', prop, {
+      garmentPrimary: 'lab-white',
+    });
+  person('chemist-1', [47.5, 9.9], 'pour', coat('adult-woman', 'flask'), 'SE');
+  person('chemist-2', [42.4, 9.9], 'idle', coat('adult-man', 'tablet'), 'SW');
+  person(
+    'chemist-3',
+    [47.6, 14.9],
+    'talk',
+    coat('adult-woman', 'clipboard'),
+    'SE',
+  );
+  person('chemist-4', [50.4, 9.4], 'pour', coat('adult-man', 'flask'), 'NE');
+  person(
+    'roboticist',
+    [52.3, 14.6],
+    'talk',
+    withProp(L('adult-woman', 'hoodie-jeans', 'hijab'), 'laptop'),
+    'NE',
+  );
+  person(
+    'student-lab-1',
+    [44.6, 18.4],
+    'read',
+    withProp(child(), 'laptop'),
+    'NE',
+    60,
+  );
+
+  /* ════════ Hospital (x 7–21, y 24–37) ════════ */
+  obj('m-whitewall-side', 6.65, 23);
+  obj('m-whitewall-side', 6.65, 31);
+  for (const y of [24.5, 28.5, 32.5]) {
+    obj('m-hospital-bed', 7.4, y);
+    obj('m-iv-stand', 9.7, y - 0.4);
+    obj('m-monitor-cart', 7.3, y + 1.6);
+  }
+  obj('m-curtain', 7.3, 27.6);
+  obj('m-curtain', 7.3, 31.6);
+  obj('m-waiting-chairs', 16, 25.5);
+  obj('m-waiting-chairs', 16, 29);
+  obj('m-reception', 15.5, 34.2);
+  obj('m-desk-plant', 19.6, 34.5);
+  obj('m-water-cooler', 20.3, 25);
+  person(
+    'patient',
+    [8.4, 24.7],
+    'sit',
+    L('elder', 'thobe', 'kufi', 'none', { garmentPrimary: 'sky' }),
+    'SE',
+  ).pairWith = 'ibn-sina';
+  person(
+    'doctor-1',
+    [10.6, 29.6],
+    'talk',
+    L('adult-woman', 'lab-coat', 'hijab', 'stethoscope', {
+      garmentPrimary: 'lab-white',
+      garmentSecondary: 'plum',
+    }),
+    'SW',
+  ).pairWith = 'amb-patient-2';
+  person('patient-2', [8.5, 28.7], 'sit', man(), 'SE').pairWith =
+    'amb-doctor-1';
+  person(
+    'nurse-1',
+    [10.6, 33.4],
+    'idle',
+    L('adult-woman', 'scrubs', 'hijab', 'clipboard', {
+      garmentPrimary: 'scrub-teal',
+      garmentSecondary: 'white-linen',
+      headwear: 'navy',
+    }),
+    'SW',
+  );
+  person(
+    'nurse-2',
+    [13.5, 27],
+    'walk',
+    L('adult-man', 'scrubs', 'scrub-cap', 'tablet', {
+      garmentPrimary: 'scrub-blue',
+      garmentSecondary: 'white-linen',
+      headwear: 'scrub-blue',
+    }),
+  ).script = [
+    {
+      from: 0,
+      to: 120,
+      action: 'walk',
+      path: [
+        [13.5, 24.5],
+        [13.5, 36.5],
+        [13.5, 24.5],
+      ],
+    },
+  ];
+  person('waiting-1', [16.6, 25.1], 'sit', withProp(woman(), 'phone'), 'SE');
+  person(
+    'waiting-2',
+    [18.4, 25.1],
+    'sit',
+    withProp(child(), 'tablet'),
+    'SE',
+    60,
+  );
+  person('waiting-3', [17.6, 28.6], 'sit', elder(), 'SE', 240);
+  person(
+    'receptionist',
+    [17, 33.6],
+    'talk',
+    L('adult-woman', 'shirt-trousers', 'hijab', 'none', {
+      garmentPrimary: 'scrub-teal',
+    }),
+    'SE',
+  );
+
+  /* ════════ Central park (x 24–35, y 24–37) ════════ */
+  obj('m-fountain', 28.5, 29);
+  obj('m-tree', 24.6, 24.6);
+  obj('m-tree', 34.6, 24.6);
+  obj('m-tree', 24.6, 35.8);
+  obj('m-tree', 35, 35.6);
+  obj('m-bench', 25.5, 33);
+  obj('m-bench', 32, 26);
+  obj('m-street-lamp', 27.8, 27.8);
+  obj('m-street-lamp', 32.6, 32.6);
+  obj('m-planter-box', 31, 35.6);
+  obj('feeder', 33.5, 28.5);
+  obj('bowl', 26.4, 27.2);
+  person('elder-1', [26, 32.6], 'sit', elder(), 'SE').pairWith = 'amb-elder-2';
+  person('elder-2', [27.1, 32.6], 'sit', elder(), 'SW').pairWith =
+    'amb-elder-1';
+  person(
+    'reader-park',
+    [32.6, 25.6],
+    'sit',
+    withProp(woman(), 'book'),
+    'SE',
+    240,
+  );
+  person(
+    'sweeper',
+    [30, 27.4],
+    'sweep',
+    L('adult-man', 'hi-vis', 'hard-hat', 'broom', {
+      garmentPrimary: 'safety-orange',
+      headwear: 'hi-vis',
+    }),
+    'SE',
+  );
+  person('picnic-1', [33.6, 34.4], 'read', withProp(child(), 'book'), 'SW', 60);
+  person('picnic-2', [34.5, 33.6], 'talk', woman(), 'SW');
+
+  /* ════════ Community kitchen (x 39–55, y 24–37) ════════ */
+  obj('m-kitchen-counter', 40, 24.3);
+  obj('m-kitchen-counter', 43.5, 24.3);
+  obj('m-fridge', 47.3, 24.2);
+  obj('m-food-shelf', 49, 24.1);
+  obj('m-food-shelf', 52.3, 24.1);
+  obj('m-water-cooler', 55, 28);
+  for (const [x, y] of [
+    [41, 29],
+    [47.5, 29],
+    [41, 33],
+    [47.5, 33],
+  ]) {
+    obj('m-dining-table', x, y);
+    for (let i = 0; i < 3; i++) {
+      const n = ambient.length;
+      person(
+        `diner-${n}`,
+        [x + 0.6 + i * 1.3, y - 0.5],
+        'sit',
+        n % 3 ? man() : woman(),
+        'SE',
+        ([60, 120, 240] as Loop[])[n % 3],
+      );
+      if (i < 2)
+        person(
+          `diner-${n}-b`,
+          [x + 1.2 + i * 1.5, y + 1.55],
+          'talk',
+          n % 2 ? child() : elder(),
+          i ? 'NW' : 'NE',
+          ([120, 240] as Loop[])[i],
+        );
+    }
+  }
+  person(
+    'cook-1',
+    [41.6, 25.9],
+    'pour',
+    L('adult-man', 'apron', 'taqiyah', 'tray', {
+      garmentSecondary: 'white-linen',
+    }),
+    'NE',
+  );
+  person(
+    'cook-2',
+    [45, 25.9],
+    'idle',
+    L('adult-woman', 'apron', 'hijab', 'none', {
+      garmentSecondary: 'white-linen',
+    }),
+    'NE',
+    60,
+  );
+  person(
+    'baker',
+    [51.5, 26.6],
+    'pour',
+    L('adult-man', 'apron', 'kufi', 'bread', {
+      garmentSecondary: 'white-linen',
+    }),
+    'SW',
+  ).pairWith = 'amb-passerby';
+  person(
+    'passerby',
+    [50.6, 27.6],
+    'talk',
+    withProp(woman(), 'shopping-bag'),
+    'NE',
+  ).pairWith = 'amb-baker';
+  errand(
+    'water-carrier',
+    [54, 36.6],
+    [46.5, 36.6],
+    L('adult-man', 'shirt-trousers', 'kufi', 'water-jug', { prop: 'sky' }),
+    'pour',
+    'SW',
+    'carry',
+  );
+  errand(
+    'volunteer-1',
+    [53.6, 31.5],
+    [53.6, 27.3],
+    withProp(
+      L('adult-woman', 'hi-vis', 'hijab', 'none', {
+        garmentPrimary: 'emerald',
+      }),
+      'meal-box',
+    ),
+    'pour',
+    'NW',
+    'carry',
+  );
+
+  /* ════════ Library and coding class (x 7–21, y 41–55) ════════ */
+  obj('m-whitewall-side', 6.65, 39);
+  obj('m-whitewall-side', 6.65, 47);
+  obj('m-bookshelf-side', 7.05, 41.5);
+  obj('m-bookshelf-side', 7.05, 45);
+  obj('m-bookshelf-side', 7.05, 48.5);
+  obj('m-bookshelf', 10, 52.4);
+  obj('m-kids-table', 11.5, 43);
+  obj('m-kids-table', 11.5, 47.5);
+  obj('m-computer-desk', 17, 45.5);
+  obj('m-computer-desk', 17, 49.5);
+  obj('m-desk-plant', 20.3, 42);
+  for (const [i, [x, y, f]] of (
+    [
+      [11.2, 42.4, 'SE'],
+      [13.9, 43.2, 'SW'],
+      [11.1, 46.9, 'SE'],
+      [13.9, 47.5, 'SW'],
+      [12.6, 49.9, 'NE'],
+    ] as [number, number, Facing][]
+  ).entries())
+    person(
+      `coder-${i}`,
+      [x, y],
+      'read',
+      withProp(child(), 'laptop'),
+      f,
+      ([60, 120, 240] as Loop[])[i % 3],
+    );
+  person('mentor', [15.4, 45.6], 'talk', withProp(woman(), 'tablet'), 'SW');
+  person('librarian', [9.2, 51.6], 'idle', withProp(man(), 'book'), 'SE', 240);
+  person(
+    'student-desk',
+    [18, 51.1],
+    'write',
+    withProp(woman(), 'laptop'),
+    'NE',
+  );
+
+  /* ════════ Street and café (x 24–35, y 41–55) ════════ */
+  obj('m-coffee-cart', 31.5, 41.6);
+  obj('m-cafe-table', 25, 42);
+  obj('m-cafe-table', 27.6, 42);
+  obj('m-cafe-table', 25, 47.4);
+  obj('m-bus-shelter', 30.5, 51.5);
+  obj('m-bike-rack', 25, 52);
+  obj('m-street-lamp', 29.2, 47.2);
+  obj('m-street-lamp', 35, 51);
+  obj('m-planter-box', 33.8, 46.2);
+  person(
+    'barista',
+    [32.4, 43.1],
+    'pour',
+    withProp(
+      L('adult-man', 'apron', 'cap', 'none', { headwear: 'emerald' }),
+      'coffee',
+    ),
+    'SW',
+  );
+  person('cafe-1', [25.4, 41.6], 'sit', withProp(man(), 'coffee'), 'SE');
+  person('cafe-2', [26.6, 42.5], 'sit', withProp(woman(), 'phone'), 'SW', 240);
+  person('cafe-3', [28, 41.6], 'sit', withProp(elder(), 'coffee'), 'SE', 60);
+  person('cafe-4', [25.4, 47], 'sit', withProp(woman(), 'laptop'), 'SE');
+  person(
+    'commuter-1',
+    [31.2, 51.1],
+    'idle',
+    withProp(man(), 'phone'),
+    'SE',
+    240,
+  );
+  person(
+    'commuter-2',
+    [32.6, 51.1],
+    'sit',
+    withProp(woman(), 'shopping-bag'),
+    'SE',
+  );
+
+  /* ════════ Solar garden (x 39–55, y 41–55) ════════ */
+  obj('m-solar-panel', 48.5, 42);
+  obj('m-solar-panel', 51.5, 42);
+  obj('m-solar-panel', 48.5, 50.5);
+  obj('m-solar-panel', 51.5, 50.5);
+  obj('m-tree', 40, 42);
+  obj('m-tree', 44.5, 53.5);
+  obj('m-tree', 54.6, 46.6);
+  obj('m-planter-box', 40.5, 49);
+  obj('m-planter-box', 43.5, 49);
+  obj('m-planter-box', 40.5, 52.5);
+  obj('m-bench', 43, 43);
+  obj('palm', 39.6, 54.4);
+  person(
+    'gardener',
+    [42, 48.4],
+    'sweep',
+    L('adult-woman', 'apron', 'hijab', 'broom', {
+      garmentSecondary: 'emerald',
+    }),
+    'SE',
+  );
+  person(
+    'technician',
+    [50.4, 45.2],
+    'idle',
+    L('adult-man', 'hi-vis', 'hard-hat', 'tablet', {
+      garmentPrimary: 'hi-vis',
+      headwear: 'mustard',
+    }),
+    'NE',
+  );
+  person(
+    'bench-pair-1',
+    [43.6, 42.6],
+    'sit',
+    withProp(elder(), 'cane'),
+    'SE',
+  ).pairWith = 'amb-bench-pair-2';
+  person('bench-pair-2', [44.7, 42.6], 'sit', woman(), 'SW').pairWith =
+    'amb-bench-pair-1';
+
+  /* ════════ Density pass: more everyday life in the lower rooms ════════ */
+  // Library: reading corner and study desks.
+  obj('m-bookshelf', 13.5, 52.4);
+  obj('m-bookshelf', 17, 52.4);
+  obj('m-computer-desk', 17, 41.5);
+  obj('m-desk-plant', 15.6, 53);
+  obj('m-water-cooler', 20.6, 54.3);
+  person(
+    'reader-lib-1',
+    [10.6, 54.2],
+    'read',
+    withProp(woman(), 'book'),
+    'NE',
+    240,
+  );
+  person(
+    'reader-lib-2',
+    [12.2, 54.6],
+    'read',
+    withProp(elder(), 'book'),
+    'NE',
+    120,
+  );
+  person(
+    'student-desk-2',
+    [18, 43.1],
+    'write',
+    withProp(man(), 'pen'),
+    'NE',
+    60,
+  );
+  person(
+    'coder-6',
+    [10.4, 44.8],
+    'read',
+    withProp(child(), 'tablet'),
+    'SE',
+    120,
+  );
+  person(
+    'coder-7',
+    [14.6, 49.6],
+    'read',
+    withProp(child(), 'laptop'),
+    'SW',
+    240,
+  );
+  person(
+    'mentor-2',
+    [9.8, 49.4],
+    'talk',
+    withProp(L('adult-man', 'shirt-trousers', 'none'), 'laptop'),
+    'SE',
+  );
+  // Street market and café.
+  obj('detail-market-red', 25.5, 54.2);
+  obj('m-cafe-table', 27.6, 47.4);
+  obj('m-planter-box', 22.1, 52.6);
+  obj('m-street-lamp', 24.3, 50.8);
+  person('cafe-5', [27.9, 47], 'sit', withProp(man(), 'tablet'), 'SE', 240);
+  person('cafe-6', [26.4, 48], 'talk', withProp(woman(), 'coffee'), 'NE');
+  person('queue-1', [31.2, 44.4], 'idle', withProp(child(), 'phone'), 'NE', 60);
+  person(
+    'queue-2',
+    [30.2, 44.3],
+    'talk',
+    withProp(woman(), 'shopping-bag'),
+    'NE',
+  );
+  person(
+    'vendor',
+    [26.9, 53.8],
+    'talk',
+    withProp(
+      L('adult-man', 'apron', 'kufi', 'none', { garmentSecondary: 'saffron' }),
+      'basket',
+    ),
+    'SE',
+  );
+  person(
+    'shopper-1',
+    [28.2, 52.8],
+    'idle',
+    withProp(woman(), 'basket'),
+    'NW',
+    240,
+  );
+  person(
+    'cyclist',
+    [27.6, 51.4],
+    'talk',
+    withProp(
+      L('adult-man', 'hoodie-jeans', 'cap', 'none', { headwear: 'emerald' }),
+      'phone',
+    ),
+    'SW',
+  );
+  // Garden: allotments, picnic and play.
+  obj('m-planter-box', 43.5, 52.5);
+  obj('m-planter-box', 46.5, 47.8);
+  obj('m-bench', 52, 54.2);
+  obj('m-street-lamp', 47.8, 45.6);
+  obj('flowers', 53, 41.8);
+  person(
+    'waterer',
+    [45.4, 50.8],
+    'pour',
+    withProp(
+      L('elder', 'kaftan', 'taqiyah', 'none', { garmentPrimary: 'olive' }),
+      'water-jug',
+    ),
+    'SE',
+  );
+  person('kid-wave', [44.2, 45.4], 'wave', child(), 'SE', 60);
+  person('kid-wave-2', [45.4, 45.9], 'wave', child(), 'SW', 60).pairWith =
+    'amb-kid-wave';
+  person(
+    'picnic-3',
+    [50.8, 49.2],
+    'read',
+    withProp(woman(), 'book'),
+    'SW',
+    240,
+  );
+  person('picnic-4', [49.6, 49.6], 'read', withProp(child(), 'bread'), 'SE');
+  person(
+    'bench-pair-3',
+    [52.6, 53.8],
+    'sit',
+    withProp(man(), 'coffee'),
+    'SE',
+    240,
+  );
+  person(
+    'engineer-solar',
+    [53.6, 45.4],
+    'talk',
+    withProp(
+      L('adult-woman', 'hi-vis', 'hard-hat', 'none', {
+        garmentPrimary: 'safety-orange',
+        headwear: 'hi-vis',
+      }),
+      'clipboard',
+    ),
+    'NW',
+  );
+  // Outer pavements: trees, lamps and bikes along the ring road.
+  for (let i = 0; i < 6; i++) {
+    obj('m-tree', 60, 10 + i * 8);
+    obj('m-tree', 10 + i * 8, 60);
+    obj('m-street-lamp', 60.2, 14 + i * 8);
+    obj('m-street-lamp', 14 + i * 8, 60.2);
+  }
+  obj('m-bus-shelter', 40, 60.6);
+  obj('m-bike-rack', 60.6, 30);
+  person(
+    'commuter-3',
+    [41.5, 60.2],
+    'idle',
+    withProp(elder(), 'cane'),
+    'SE',
+    240,
+  );
+  person('commuter-4', [42.6, 60.2], 'talk', withProp(woman(), 'phone'), 'SW');
+  walker(
+    'jogger',
+    [
+      [59.4, 12],
+      [59.4, 34],
+    ],
+    L('adult-man', 'hoodie-jeans', 'none', 'none', {
+      garmentPrimary: 'emerald',
+    }),
+    240,
+  );
+  walker(
+    'stroller',
+    [
+      [14, 62.4],
+      [34, 62.4],
+    ],
+    withProp(woman(), 'shopping-bag'),
+    240,
+  );
+
+  /* ════════ Walkers on 60/120/240-frame loops ════════ */
+  walker(
+    'traveller-1',
+    [
+      [10, 22.4],
+      [17, 22.4],
+    ],
+    withProp(man(), 'coffee'),
+    60,
+  );
+  walker(
+    'traveller-2',
+    [
+      [37.4, 25],
+      [37.4, 36],
+    ],
+    withProp(woman(), 'shopping-bag'),
+    120,
+  );
+  walker(
+    'traveller-3',
+    [
+      [23, 22.6],
+      [36.6, 22.6],
+      [36.6, 30],
+      [36.6, 22.6],
+    ],
+    withProp(
+      L('adult-man', 'suit', 'none', 'none', { garmentPrimary: 'navy' }),
+      'phone',
+    ),
+    240,
+  );
+  walker(
+    'traveller-4',
+    [
+      [26, 39.6],
+      [35, 39.6],
+    ],
+    withProp(woman(), 'tablet'),
+    120,
+  );
+  walker(
+    'traveller-5',
+    [
+      [40, 39.4],
+      [54, 39.4],
+    ],
+    withProp(L('adult-man', 'hoodie-jeans', 'cap'), 'laptop'),
+    240,
+  );
+  walker(
+    'traveller-6',
+    [
+      [26, 49.6],
+      [35, 49.6],
+    ],
+    withProp(man(), 'blueprint'),
+    120,
+  );
+  walker(
+    'students-walk',
+    [
+      [39.2, 22],
+      [46, 22],
+    ],
+    withProp(L('adult-woman', 'long-dress', 'hijab'), 'book'),
+    120,
+  ).pairWith = 'fatima-al-fihri';
+  walker(
+    'helpful-child',
+    [
+      [25, 44.6],
+      [33, 44.6],
+    ],
+    child(),
+    120,
+  ).pairWith = 'amb-walking-elder';
+  walker(
+    'walking-elder',
+    [
+      [25, 45.6],
+      [33, 45.6],
+    ],
+    withProp(elder(), 'cane'),
+    120,
+  ).pairWith = 'amb-helpful-child';
+
+  /* ════════ Cats and birds ════════ */
+  const fur = ['saffron', 'charcoal', 'wool-cream'];
+  for (let i = 0; i < 3; i++) {
+    const c = person(
+      `cat-${i}`,
+      [
+        [34.4, 37],
+        [41, 46.5],
+        [26.9, 27.7],
+      ][i] as Pt,
+      i === 0 ? 'cat_sleep' : 'cat_idle',
+      L('cat', 'none', 'none', 'none', { garmentPrimary: fur[i] }),
+      i === 2 ? 'NW' : 'SE',
+    );
+    c.kind = 'cat';
+    if (i === 1)
+      c.script = [
+        {
+          from: 0,
+          to: 120,
+          action: 'cat_walk',
+          path: [
+            [41, 46.5],
+            [46, 46.5],
+            [41, 46.5],
+          ],
+        },
+      ];
+  }
+  for (let i = 0; i < 6; i++) {
+    const at: Pt = [33.7 + (i % 3) * 0.35, 28.2 + Math.floor(i / 3) * 0.5];
+    const c = person(
+      `bird-${i}`,
+      at,
+      'bird_peck',
+      L('bird', 'none', 'none', 'none', {
+        garmentPrimary: ['graphite', 'wool-cream', 'cocoa'][i % 3],
+        prop: 'saffron',
+      }),
+      'SW',
+      240,
+    );
+    c.kind = 'bird';
+    c.script = [
+      {
+        from: 0,
+        to: 180,
+        action: 'bird_fly',
+        path: [at, [31.5, 28], [28, 30.5], [30, 33.5], [33.5, 31], at],
+        z: [10, 38 + i * 3, 46, 40, 30, 10],
+      },
+      { from: 180, to: 240, action: 'bird_peck', at, facing: 'SW', z: 10 },
+    ];
+  }
+
+  /* ════════ Floor ════════ */
+  const floor: number[] = [];
+  const stone = (x: number, y: number) => 1 + ((x * 3 + y * 7) % 3);
+  for (let y = 0; y < 64; y++)
+    for (let x = 0; x < 64; x++) {
+      const inX = (a: number, b: number) => x >= a && x <= b,
+        inY = (a: number, b: number) => y >= a && y <= b;
+      let t: number;
+      if (x < 7 || y < 7 || x > 55 || y > 55)
+        t = inX(57, 58) || inY(57, 58) ? 12 : 7;
+      else if (inY(21, 23) || inY(38, 40) || inX(22, 23) || inX(36, 38)) t = 8;
+      else if (y <= 20) t = x <= 21 ? stone(x, y) : x <= 35 ? 9 : 10;
+      else if (y <= 37)
+        t = x <= 21 ? 11 : x <= 35 ? (inX(29, 31) || inY(30, 32) ? 8 : 4) : 13;
+      else
+        t =
+          x <= 21 ? 9 : x <= 35 ? (inY(48, 50) ? 12 : 7) : inY(46, 47) ? 8 : 4;
+      floor.push(t);
+    }
+  const collision: number[] = Array(64 * 64).fill(0);
+  for (const o of objects)
+    if (!o.walkable)
+      for (let y = Math.floor(o.y); y < o.y + o.footprint[1]; y++)
+        for (let x = Math.floor(o.x); x < o.x + o.footprint[0]; x++)
+          collision[y * 64 + x] = 1;
+  const room: Room = roomSchema.parse({
+    type: 'map',
+    version: '1.10',
+    orientation: 'isometric',
+    renderorder: 'right-down',
+    tilewidth: 32,
+    tileheight: 16,
+    width: 64,
+    height: 64,
+    infinite: false,
+    layers: [
+      {
+        id: 1,
+        name: 'floor',
+        type: 'tilelayer',
+        width: 64,
+        height: 64,
+        data: floor,
+      },
+      {
+        id: 2,
+        name: 'collision',
+        type: 'tilelayer',
+        width: 64,
+        height: 64,
+        data: collision,
+        visible: false,
+      },
+      { id: 3, name: 'objects', type: 'objectgroup', objects },
+    ],
+  });
+  const cards = namedCards();
+  for (const c of [...ambient, ...cards]) {
+    const errors = scriptErrors(characterSchema.parse(c), room);
+    if (errors.length) throw Error(`${c.id}: ${errors.join('; ')}`);
+  }
+  return { room, ambient, cards };
+}
+
+const PLACEHOLDER = {
+  en: 'PLACEHOLDER — to be researched',
+  ar: 'PLACEHOLDER — to be researched',
+  bn: 'PLACEHOLDER — to be researched',
+};
+/** Draft named cards. Never approved here; research and panel review pending. */
+export function namedCards(): Character[] {
+  const card = (
+    c: Partial<Character> & Pick<Character, 'id' | 'look' | 'script'>,
+  ) =>
+    characterSchema.parse({
+      kind: 'person',
+      depiction: 'full',
+      loop: 120,
+      aliases: [],
+      bio: PLACEHOLDER,
+      story: PLACEHOLDER,
+      sources: [
+        'PLACEHOLDER source 1 — research pending',
+        'PLACEHOLDER source 2 — research pending',
+      ],
+      panelApproved: false,
+      ...c,
+    });
+  const two = (
+    a: Step['action'],
+    b: Step['action'],
+    at: Pt,
+    fa: Facing,
+    fb: Facing,
+  ): Step[] => [
+    { from: 0, to: 60, action: a, at, facing: fa },
+    { from: 60, to: 120, action: b, at, facing: fb },
+  ];
+  return [
+    card({
+      id: 'fazlur-rahman-khan',
+      name: {
+        en: 'Fazlur Rahman Khan',
+        ar: 'فضل الرحمن خان',
+        bn: 'ফজলুর রহমান খান',
+      },
+      aliases: ['Fazlur Khan', 'F. R. Khan'],
+      years: '1929–1982',
+      place: 'Dhaka · Chicago',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man',
+        garment: 'suit',
+        headwear: 'none',
+        prop: 'blueprint',
+        colours: {
+          skin: 'skin-5',
+          hair: 'hair-black',
+          garmentPrimary: 'graphite',
+          garmentSecondary: 'madder-red',
+          headwear: 'white-linen',
+          prop: 'sky',
+        },
+      },
+      script: two('talk', 'idle', [31.4, 12], 'SE', 'SW'),
+      pairWith: 'amb-engineer-1',
+    }),
+    card({
+      id: 'zaha-hadid',
+      name: { en: 'Zaha Hadid', ar: 'زها حديد', bn: 'জাহা হাদিদ' },
+      years: '1950–2016',
+      place: 'Baghdad · London',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-woman',
+        garment: 'long-dress',
+        headwear: 'none',
+        prop: 'tablet',
+        colours: {
+          skin: 'skin-3',
+          hair: 'hair-black',
+          garmentPrimary: 'black-cloth',
+          garmentSecondary: 'mustard',
+          headwear: 'black-cloth',
+          prop: 'graphite',
+        },
+      },
+      script: two('talk', 'idle', [29.6, 14.9], 'SE', 'SW'),
+    }),
+    card({
+      id: 'aziz-sancar',
+      name: { en: 'Aziz Sancar', ar: 'عزيز سنجر', bn: 'আজিজ সানজার' },
+      years: 'b. 1946',
+      place: 'Savur · Chapel Hill',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man',
+        garment: 'lab-coat',
+        headwear: 'none',
+        prop: 'flask',
+        colours: {
+          skin: 'skin-3',
+          hair: 'hair-grey',
+          garmentPrimary: 'lab-white',
+          garmentSecondary: 'navy',
+          headwear: 'white-linen',
+          prop: 'emerald',
+        },
+      },
+      script: two('pour', 'talk', [42.5, 14.9], 'SE', 'SW'),
+    }),
+    card({
+      id: 'al-khwarizmi',
+      name: { en: 'Al-Khwarizmi', ar: 'الخوارزمي', bn: 'আল-খোয়ারিজমি' },
+      aliases: ['Muhammad ibn Musa al-Khwarizmi'],
+      years: 'c. 780–850',
+      place: 'Baghdad',
+      district: 'house-of-wisdom',
+      look: {
+        base: 'adult-man',
+        garment: 'scholar-robe',
+        headwear: 'imamah',
+        prop: 'book',
+        colours: {
+          skin: 'skin-4',
+          hair: 'hair-black',
+          garmentPrimary: 'indigo',
+          garmentSecondary: 'white-linen',
+          headwear: 'white-linen',
+          prop: 'madder-red',
+        },
+      },
+      script: two('write', 'teach', [18, 45], 'SE', 'SW'),
+    }),
+    card({
+      id: 'ibn-sina',
+      name: { en: 'Ibn Sina', ar: 'ابن سينا', bn: 'ইবনে সিনা' },
+      aliases: ['Avicenna'],
+      years: '980–1037',
+      place: 'Bukhara',
+      district: 'house-of-wisdom',
+      look: {
+        base: 'adult-man',
+        garment: 'jubba',
+        headwear: 'imamah',
+        prop: 'none',
+        colours: {
+          skin: 'skin-1',
+          hair: 'hair-black',
+          garmentPrimary: 'olive',
+          garmentSecondary: 'white-linen',
+          headwear: 'white-linen',
+          prop: 'brass',
+        },
+      },
+      script: two('talk', 'idle', [10.6, 25.6], 'SW', 'SW'),
+      pairWith: 'amb-patient',
+    }),
+    card({
+      id: 'fatima-al-fihri',
+      name: {
+        en: 'Fatima al-Fihri',
+        ar: 'فاطمة الفهرية',
+        bn: 'ফাতিমা আল-ফিহরি',
+      },
+      years: 'c. 800–880',
+      place: 'Fez',
+      district: 'maghreb',
+      look: {
+        base: 'adult-woman',
+        garment: 'abaya',
+        headwear: 'khimar',
+        prop: 'none',
+        colours: {
+          skin: 'skin-3',
+          hair: 'hair-black',
+          garmentPrimary: 'madder-red',
+          garmentSecondary: 'saffron',
+          headwear: 'wool-cream',
+          prop: 'brass',
+        },
+      },
+      script: two('wave', 'talk', [38.2, 21.2], 'SE', 'SW'),
+      pairWith: 'amb-students-walk',
+    }),
+  ];
+}

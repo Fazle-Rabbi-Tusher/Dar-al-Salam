@@ -97,7 +97,7 @@ test('pan, zoom, overview LOD, inspector and minimap operate without runtime err
   await expect(page.locator('.zoom-controls')).toContainText('13');
   await page.waitForTimeout(500);
   await page.screenshot({ path: '.playwright/overview.png' });
-  await page.getByLabel('Return to the garden').click();
+  await page.getByLabel('Return to the quarter').click();
   await page.waitForTimeout(1000);
   await page.locator('.minimap').click({ position: { x: 90, y: 65 } });
   await page.waitForTimeout(700);
@@ -117,9 +117,9 @@ test('Arabic mirrors layout, Bangla works, list and about are accessible HTML', 
   await expect(page.locator('html')).toHaveAttribute('lang', 'bn');
   await page.goto('/list');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'বাগানের মানুষ',
+    'মহল্লার মানুষ',
   );
-  await expect(page.locator('.people-list>a')).toHaveCount(3);
+  await expect(page.locator('.people-list>a')).toHaveCount(6);
   await page.goto('/about');
   await expect(page.locator('.rules-list>li')).toHaveCount(7);
 });
@@ -139,7 +139,7 @@ test('Character Lab renders all actions/facings and provides JSON', async ({
     .selectOption('NW');
   await page.getByLabel('Hit mask', { exact: true }).check();
   await page.getByRole('button', { name: 'Next frame', exact: true }).click();
-  await expect(page.locator('pre')).toContainText('scholar-robe');
+  await expect(page.locator('pre')).toContainText('lab-coat');
   await page.screenshot({ path: '.playwright/lab.png' });
   await page
     .getByRole('combobox', { name: 'Base', exact: true })

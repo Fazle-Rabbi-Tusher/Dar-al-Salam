@@ -1,5 +1,6 @@
 {
   "id": "ibn-sina",
+  "kind": "person",
   "name": {
     "en": "Ibn Sina",
     "ar": "ابن سينا",
@@ -8,6 +9,8 @@
   "aliases": ["Avicenna"],
   "years": "980–1037",
   "place": "Bukhara",
+  "district": "house-of-wisdom",
+  "depiction": "full",
   "look": {
     "base": "adult-man",
     "garment": "jubba",
@@ -22,25 +25,24 @@
       "prop": "brass"
     }
   },
-  "kind": "person",
-  "depiction": "full",
   "loop": 120,
   "script": [
     {
       "from": 0,
       "to": 60,
       "action": "talk",
-      "at": [24, 46],
-      "facing": "SE"
+      "at": [10.6, 25.6],
+      "facing": "SW"
     },
     {
       "from": 60,
       "to": 120,
       "action": "idle",
-      "at": [24, 46],
+      "at": [10.6, 25.6],
       "facing": "SW"
     }
   ],
+  "pairWith": "amb-patient",
   "bio": {
     "en": "PLACEHOLDER — to be researched",
     "ar": "PLACEHOLDER — to be researched",
@@ -55,6 +57,5 @@
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
   ],
-  "panelApproved": false,
-  "pairWith": "amb-patient"
+  "panelApproved": false
 }

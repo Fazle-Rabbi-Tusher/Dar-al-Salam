@@ -26,8 +26,8 @@ beforeAll(async () => {
   parts = await loadParts();
 });
 describe('real content validation', () => {
-  it('validates all 91 examples with every ambient scenario', () => {
-    expect(content.characters).toHaveLength(91);
+  it('validates all 138 examples with every ambient scenario', () => {
+    expect(content.characters).toHaveLength(138);
     for (const c of content.characters)
       expect(
         validateCharacter(
@@ -176,10 +176,10 @@ describe('compositor and importer', () => {
       outline: '#493C35',
       shadow: '#493C35',
     });
-    expect(img.data[(44 * 32 + 11) * 4 + 3]).toBe(89);
+    expect(img.data[(67 * 48 + 16) * 4 + 3]).toBe(89);
     const at = (x: number, y: number) =>
-      Array.from(img.data.slice((y * 32 + x) * 4, (y * 32 + x) * 4 + 4));
-    expect(at(16, 5)).toEqual([0, 0, 0, 0]);
+      Array.from(img.data.slice((y * 48 + x) * 4, (y * 48 + x) * 4 + 4));
+    expect(at(24, 2)).toEqual([0, 0, 0, 0]);
     expect(
       Array.from(img.data).filter((v, i) => i % 4 === 3 && v === 255).length,
     ).toBeGreaterThan(100);
@@ -227,8 +227,8 @@ describe('compositor and importer', () => {
       frames: Array.from({ length: 4 }, (_, i) => ({
         filename: `idle_${i}`,
         frame: { x: i * 2, y: 0, w: 2, h: 2 },
-        spriteSourceSize: { x: 14, y: 20, w: 2, h: 2 },
-        sourceSize: { w: 32, h: 48 },
+        spriteSourceSize: { x: 22, y: 30, w: 2, h: 2 },
+        sourceSize: { w: 48, h: 72 },
         duration: 83,
         userData: 'layerBias=5',
       })),
@@ -236,14 +236,14 @@ describe('compositor and importer', () => {
         image: 'fixture.png',
         frameTags: [{ name: 'idle_se', from: 0, to: 3 }],
         slices: [
-          { name: 'foot', keys: [{ bounds: { x: 16, y: 44, w: 1, h: 1 } }] },
+          { name: 'foot', keys: [{ bounds: { x: 24, y: 68, w: 1, h: 1 } }] },
         ],
       },
     };
     const part = importAseprite('fixture', json, sheet);
-    expect(part.anchor).toEqual([16, 44]);
+    expect(part.anchor).toEqual([24, 68]);
     expect(part.frames.idle_SE_0.layerBias).toBe(5);
-    expect(part.frames.idle_SE_0.data[(20 * 32 + 14) * 4 + 3]).toBe(255);
+    expect(part.frames.idle_SE_0.data[(30 * 48 + 22) * 4 + 3]).toBe(255);
     expect(() =>
       importAseprite(
         'fixture',
@@ -268,7 +268,7 @@ describe('compositor and importer', () => {
   });
   it('loads real Aseprite-format source sheets without conversion at runtime', async () => {
     const im = await image('art/parts/bases/adult-man.png');
-    expect(im.width).toBe(512);
+    expect(im.width).toBe(48 * 16);
     expect(Object.keys(parts['adult-man'].frames).length).toBeGreaterThan(100);
   });
 });
@@ -343,12 +343,72 @@ it('keeps child clothes proportional and elevated shadows on the floor', () => {
       outline: '#493C35',
       shadow: '#493C35',
     };
-  const adult = trimFrame(compose(c.look, 'idle', 'SE', 0, parts, p), [16, 44]);
+  const adult = trimFrame(compose(c.look, 'idle', 'SE', 0, parts, p), [24, 68]);
   const child = trimFrame(
     compose({ ...c.look, base: 'child' }, 'idle', 'SE', 0, parts, p),
-    [16, 44],
+    [24, 68],
   );
-  expect(child.image.height).toBeLessThan(adult.image.height - 6);
+  expect(child.image.height).toBeLessThan(adult.image.height - 10);
   const lifted = compose(c.look, 'idle', 'SE', 0, parts, p, false);
-  expect(lifted.data[(44 * 32 + 11) * 4 + 3]).toBe(0);
+  expect(lifted.data[(67 * 48 + 16) * 4 + 3]).toBe(0);
+});
+
+describe('larger, modern characters', () => {
+  const palette = () => ({
+    keys: content.keys,
+    ramps: content.ramps,
+    outline: '#493C35',
+    shadow: '#493C35',
+  });
+  it('draws adults about 54 px tall on a 48×72 canvas', () => {
+    const look = {
+      base: 'adult-woman',
+      garment: 'lab-coat',
+      headwear: 'hijab',
+      prop: 'flask',
+      colours: {
+        skin: 'skin-4',
+        hair: 'hair-black',
+        garmentPrimary: 'lab-white',
+        garmentSecondary: 'navy',
+        headwear: 'emerald',
+        prop: 'sky',
+      },
+    };
+    const img = compose(look, 'idle', 'SE', 0, parts, palette());
+    expect([img.width, img.height]).toEqual([48, 72]);
+    const t = trimFrame(img, parts['adult-woman'].anchor);
+    expect(t.bounds.height).toBeGreaterThanOrEqual(52);
+    expect(paletteErrors(img, new Set(content.palette))).toEqual([]);
+  });
+  it('bakes every modern garment, headwear and prop with only palette colours', () => {
+    for (const [slot, ids] of [
+      ['garment', ['suit', 'scrubs', 'hoodie-jeans', 'long-dress', 'hi-vis']],
+      ['headwear', ['cap', 'hard-hat', 'scrub-cap', 'headwrap']],
+      ['prop', ['laptop', 'stethoscope', 'meal-box', 'cane', 'clipboard']],
+    ] as const)
+      for (const id of ids) {
+        const look = { ...content.characters[0].look, [slot]: id };
+        const img = compose(look, 'walk', 'NE', 2, parts, palette());
+        expect(paletteErrors(img, new Set(content.palette))).toEqual([]);
+      }
+  });
+  it('keeps the modern named cards as unapproved placeholders', () => {
+    const ids = ['fazlur-rahman-khan', 'zaha-hadid', 'aziz-sancar'];
+    for (const id of ids) {
+      const c = content.characters.find((c) => c.id === id)!;
+      expect(c.panelApproved).toBe(false);
+      expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
+      expect(() =>
+        validateCharacter(
+          c,
+          content.rules,
+          content.room,
+          parts,
+          content.wardrobe,
+          true,
+        ),
+      ).toThrow(/panelApproved/);
+    }
+  });
 });

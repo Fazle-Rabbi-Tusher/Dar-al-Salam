@@ -1,0 +1,60 @@
+{
+  "id": "aziz-sancar",
+  "kind": "person",
+  "name": {
+    "en": "Aziz Sancar",
+    "ar": "عزيز سنجر",
+    "bn": "আজিজ সানজার"
+  },
+  "aliases": [],
+  "years": "b. 1946",
+  "place": "Savur · Chapel Hill",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man",
+    "garment": "lab-coat",
+    "headwear": "none",
+    "prop": "flask",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-grey",
+      "garmentPrimary": "lab-white",
+      "garmentSecondary": "navy",
+      "headwear": "white-linen",
+      "prop": "emerald"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "pour",
+      "at": [42.5, 14.9],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "talk",
+      "at": [42.5, 14.9],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

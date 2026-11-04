@@ -7,16 +7,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "khaki",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -25,10 +25,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          12,
-          12
-        ],
+        "at": [9.4, 10.4],
         "facing": "NE"
       }
     ]
@@ -41,16 +38,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "suit",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-5",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -59,10 +56,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          14.5,
-          12
-        ],
+        "at": [11.05, 10.4],
         "facing": "NE"
       }
     ]
@@ -75,16 +69,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-1",
+        "hair": "hair-brown",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "graphite",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "mustard"
       }
     },
     "loop": 120,
@@ -93,10 +87,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          17,
-          12
-        ],
+        "at": [12.7, 10.4],
         "facing": "NE"
       }
     ]
@@ -109,16 +100,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-3",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "mustard"
       }
     },
     "loop": 120,
@@ -127,10 +118,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          19.5,
-          12
-        ],
+        "at": [14.35, 10.4],
         "facing": "NE"
       }
     ]
@@ -147,12 +135,12 @@
       "headwear": "kufi",
       "prop": "none",
       "colours": {
-        "skin": "skin-8",
+        "skin": "skin-3",
         "hair": "hair-black",
         "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "garmentSecondary": "khaki",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "madder-red"
       }
     },
     "loop": 120,
@@ -161,10 +149,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          22,
-          12
-        ],
+        "at": [16, 10.4],
         "facing": "NE"
       }
     ]
@@ -177,16 +162,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
       "prop": "none",
       "colours": {
-        "skin": "skin-4",
+        "skin": "skin-3",
         "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "khaki",
+        "headwear": "black-cloth",
+        "prop": "emerald"
       }
     },
     "loop": 120,
@@ -195,10 +180,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          24.5,
-          12
-        ],
+        "at": [17.65, 10.4],
         "facing": "NE"
       }
     ]
@@ -211,16 +193,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-4",
+        "skin": "skin-2",
         "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "charcoal",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "mustard"
       }
     },
     "loop": 120,
@@ -229,10 +211,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          12,
-          15
-        ],
+        "at": [9.4, 13.4],
         "facing": "NE"
       }
     ]
@@ -245,16 +224,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "suit",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -263,10 +242,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          14.5,
-          15
-        ],
+        "at": [11.05, 13.4],
         "facing": "NE"
       }
     ]
@@ -279,16 +255,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "shirt-trousers",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-6",
+        "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "khaki",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -297,10 +273,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          17,
-          15
-        ],
+        "at": [12.7, 13.4],
         "facing": "NE"
       }
     ]
@@ -313,16 +286,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
+      "garment": "boubou",
       "headwear": "kufi",
       "prop": "none",
       "colours": {
-        "skin": "skin-7",
+        "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "charcoal",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "mustard"
       }
     },
     "loop": 120,
@@ -331,10 +304,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          19.5,
-          15
-        ],
+        "at": [14.35, 13.4],
         "facing": "NE"
       }
     ]
@@ -347,16 +317,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
       "prop": "none",
       "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "plum",
+        "garmentSecondary": "navy",
+        "headwear": "black-cloth",
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -365,10 +335,7 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          22,
-          15
-        ],
+        "at": [16, 13.4],
         "facing": "NE"
       }
     ]
@@ -381,16 +348,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "suit",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-7",
+        "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "denim",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -399,517 +366,8 @@
         "from": 0,
         "to": 120,
         "action": "pray",
-        "at": [
-          24.5,
-          15
-        ],
+        "at": [17.65, 13.4],
         "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "amb-water-carrier",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "qaba",
-      "headwear": "kufi",
-      "prop": "water-skin",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 36,
-        "action": "carry",
-        "path": [
-          [
-            28,
-            31
-          ],
-          [
-            33,
-            31
-          ]
-        ]
-      },
-      {
-        "from": 36,
-        "to": 84,
-        "action": "pour",
-        "at": [
-          33,
-          31
-        ],
-        "facing": "SW"
-      },
-      {
-        "from": 84,
-        "to": 120,
-        "action": "carry",
-        "path": [
-          [
-            33,
-            31
-          ],
-          [
-            28,
-            31
-          ]
-        ]
-      }
-    ]
-  },
-  {
-    "id": "amb-sweeper",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "apron",
-      "headwear": "taqiyah",
-      "prop": "broom",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "sweep",
-        "at": [
-          29,
-          24
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-baker",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "apron",
-      "headwear": "kufi",
-      "prop": "bread",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "pour",
-        "at": [
-          40,
-          24
-        ],
-        "facing": "SE"
-      }
-    ],
-    "pairWith": "amb-passerby"
-  },
-  {
-    "id": "amb-passerby",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          41,
-          25
-        ],
-        "facing": "NW"
-      }
-    ],
-    "pairWith": "amb-baker"
-  },
-  {
-    "id": "amb-elder-1",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "jubba",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          42,
-          45
-        ],
-        "facing": "SE"
-      }
-    ],
-    "pairWith": "amb-elder-2"
-  },
-  {
-    "id": "amb-elder-2",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "jubba",
-      "headwear": "kufi",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          44,
-          45
-        ],
-        "facing": "NW"
-      }
-    ],
-    "pairWith": "amb-elder-1"
-  },
-  {
-    "id": "amb-helpful-child",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "child",
-      "garment": "thobe",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "walk",
-        "path": [
-          [
-            27,
-            42
-          ],
-          [
-            30,
-            42
-          ],
-          [
-            27,
-            42
-          ]
-        ]
-      }
-    ],
-    "pairWith": "amb-walking-elder"
-  },
-  {
-    "id": "amb-walking-elder",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "jubba",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "walk",
-        "path": [
-          [
-            27,
-            43
-          ],
-          [
-            30,
-            43
-          ],
-          [
-            27,
-            43
-          ]
-        ]
-      }
-    ],
-    "pairWith": "amb-helpful-child"
-  },
-  {
-    "id": "amb-traveller-1",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "boubou",
-      "headwear": "kufi",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "walk",
-        "path": [
-          [
-            24,
-            27
-          ],
-          [
-            28,
-            27
-          ],
-          [
-            24,
-            27
-          ]
-        ]
-      }
-    ]
-  },
-  {
-    "id": "amb-traveller-2",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "baju-kurung",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "walk",
-        "path": [
-          [
-            37,
-            39
-          ],
-          [
-            43,
-            39
-          ],
-          [
-            37,
-            39
-          ]
-        ]
-      }
-    ]
-  },
-  {
-    "id": "amb-traveller-3",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "hui-robe",
-      "headwear": "hui-cap",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "walk",
-        "path": [
-          [
-            49,
-            23
-          ],
-          [
-            49,
-            32
-          ],
-          [
-            51,
-            32
-          ],
-          [
-            51,
-            23
-          ],
-          [
-            49,
-            23
-          ]
-        ]
-      }
-    ]
-  },
-  {
-    "id": "amb-traveller-4",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "panjabi-lungi",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "walk",
-        "path": [
-          [
-            22,
-            38
-          ],
-          [
-            25,
-            38
-          ],
-          [
-            22,
-            38
-          ]
-        ]
       }
     ]
   },
@@ -921,16 +379,16 @@
     "depiction": "back",
     "look": {
       "base": "elder",
-      "garment": "scholar-robe",
+      "garment": "jubba",
       "headwear": "imamah",
-      "prop": "book",
+      "prop": "none",
       "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-3",
+        "hair": "hair-grey",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "denim",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "sky"
       }
     },
     "loop": 120,
@@ -939,10 +397,7 @@
         "from": 0,
         "to": 120,
         "action": "teach",
-        "at": [
-          43,
-          15
-        ],
+        "at": [19.4, 18.4],
         "facing": "NE"
       }
     ]
@@ -955,16 +410,16 @@
     "depiction": "full",
     "look": {
       "base": "child",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
       "prop": "book",
       "colours": {
-        "skin": "skin-8",
+        "skin": "skin-2",
         "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "charcoal",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "mustard"
       }
     },
     "loop": 120,
@@ -973,10 +428,7 @@
         "from": 0,
         "to": 120,
         "action": "read",
-        "at": [
-          40,
-          12
-        ],
+        "at": [17.8, 16.4],
         "facing": "SE"
       }
     ]
@@ -989,16 +441,16 @@
     "depiction": "full",
     "look": {
       "base": "child",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
       "prop": "book",
       "colours": {
-        "skin": "skin-7",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "graphite",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "madder-red"
       }
     },
     "loop": 120,
@@ -1007,11 +459,8 @@
         "from": 0,
         "to": 120,
         "action": "read",
-        "at": [
-          41.5,
-          13.5
-        ],
-        "facing": "SW"
+        "at": [19.1, 15.8],
+        "facing": "SE"
       }
     ]
   },
@@ -1023,16 +472,16 @@
     "depiction": "full",
     "look": {
       "base": "child",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
       "prop": "book",
       "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "brass"
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "denim",
+        "headwear": "madder-red",
+        "prop": "emerald"
       }
     },
     "loop": 120,
@@ -1041,11 +490,8 @@
         "from": 0,
         "to": 120,
         "action": "read",
-        "at": [
-          43,
-          12
-        ],
-        "facing": "SE"
+        "at": [20.4, 16.1],
+        "facing": "SW"
       }
     ]
   },
@@ -1057,16 +503,16 @@
     "depiction": "full",
     "look": {
       "base": "child",
-      "garment": "thobe",
-      "headwear": "kufi",
+      "garment": "long-dress",
+      "headwear": "hijab",
       "prop": "book",
       "colours": {
         "skin": "skin-6",
         "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "denim",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "madder-red"
       }
     },
     "loop": 120,
@@ -1075,11 +521,8 @@
         "from": 0,
         "to": 120,
         "action": "read",
-        "at": [
-          44.5,
-          13.5
-        ],
-        "facing": "SW"
+        "at": [17.4, 17.6],
+        "facing": "SE"
       }
     ]
   },
@@ -1095,12 +538,12 @@
       "headwear": "kufi",
       "prop": "book",
       "colours": {
-        "skin": "skin-4",
+        "skin": "skin-6",
         "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "charcoal",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -1109,11 +552,381 @@
         "from": 0,
         "to": 120,
         "action": "read",
-        "at": [
-          46,
-          12
-        ],
+        "at": [21.2, 17.2],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-wudu-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "boubou",
+      "headwear": "kufi",
+      "prop": "water-jug",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [9, 17.7],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-drafter-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "pen",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "turquoise",
+        "garmentSecondary": "graphite",
+        "headwear": "sky",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "write",
+        "at": [26, 11.9],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-drafter-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
+      "prop": "pen",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "charcoal",
+        "headwear": "black-cloth",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "write",
+        "at": [26, 16.4],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-designer-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "plum",
+        "garmentSecondary": "charcoal",
+        "headwear": "black-cloth",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "write",
+        "at": [34, 14.6],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-designer-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "write",
+        "at": [34, 18.6],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-engineer-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "shirt-trousers",
+      "headwear": "hijab",
+      "prop": "blueprint",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "navy",
+        "headwear": "plum",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [32.6, 11.6],
+        "facing": "NW"
+      }
+    ],
+    "pairWith": "fazlur-rahman-khan"
+  },
+  {
+    "id": "amb-chemist-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "lab-coat",
+      "headwear": "hijab",
+      "prop": "flask",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "charcoal",
+        "headwear": "turquoise",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [47.5, 9.9],
         "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-chemist-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "lab-coat",
+      "headwear": "none",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [42.4, 9.9],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-chemist-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "lab-coat",
+      "headwear": "hijab",
+      "prop": "clipboard",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "khaki",
+        "headwear": "wool-cream",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [47.6, 14.9],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-chemist-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "lab-coat",
+      "headwear": "none",
+      "prop": "flask",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [50.4, 9.4],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-roboticist",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "hoodie-jeans",
+      "headwear": "hijab",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "denim",
+        "headwear": "rose",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [52.3, 14.6],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-student-lab-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "navy",
+        "headwear": "plum",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "read",
+        "at": [44.6, 18.4],
+        "facing": "NE"
       }
     ]
   },
@@ -1125,16 +938,16 @@
     "depiction": "full",
     "look": {
       "base": "elder",
-      "garment": "jubba",
+      "garment": "thobe",
       "headwear": "kufi",
       "prop": "none",
       "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-5",
+        "hair": "hair-white",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "graphite",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -1143,14 +956,2949 @@
         "from": 0,
         "to": 120,
         "action": "sit",
-        "at": [
-          25,
-          47
-        ],
-        "facing": "NW"
+        "at": [8.4, 24.7],
+        "facing": "SE"
       }
     ],
     "pairWith": "ibn-sina"
+  },
+  {
+    "id": "amb-doctor-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "lab-coat",
+      "headwear": "hijab",
+      "prop": "stethoscope",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "plum",
+        "headwear": "rose",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [10.6, 29.6],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-patient-2"
+  },
+  {
+    "id": "amb-patient-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [8.5, 28.7],
+        "facing": "SE"
+      }
+    ],
+    "pairWith": "amb-doctor-1"
+  },
+  {
+    "id": "amb-nurse-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "scrubs",
+      "headwear": "hijab",
+      "prop": "clipboard",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "scrub-teal",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [10.6, 33.4],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-nurse-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "scrubs",
+      "headwear": "scrub-cap",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "scrub-blue",
+        "garmentSecondary": "white-linen",
+        "headwear": "scrub-blue",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [13.5, 24.5],
+          [13.5, 36.5],
+          [13.5, 24.5]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-waiting-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "denim",
+        "headwear": "sky",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [16.6, 25.1],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-waiting-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [18.4, 25.1],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-waiting-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "suit",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-grey",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "navy",
+        "headwear": "graphite",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [17.6, 28.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-receptionist",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "shirt-trousers",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "scrub-teal",
+        "garmentSecondary": "khaki",
+        "headwear": "mustard",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [17, 33.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-elder-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "jubba",
+      "headwear": "imamah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-white",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [26, 32.6],
+        "facing": "SE"
+      }
+    ],
+    "pairWith": "amb-elder-2"
+  },
+  {
+    "id": "amb-elder-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "jubba",
+      "headwear": "imamah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-white",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [27.1, 32.6],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-elder-1"
+  },
+  {
+    "id": "amb-reader-park",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "khimar",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "sky",
+        "headwear": "navy",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [32.6, 25.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-sweeper",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hi-vis",
+      "headwear": "hard-hat",
+      "prop": "broom",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "safety-orange",
+        "garmentSecondary": "khaki",
+        "headwear": "hi-vis",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sweep",
+        "at": [30, 27.4],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-picnic-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "turquoise",
+        "garmentSecondary": "navy",
+        "headwear": "plum",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "read",
+        "at": [33.6, 34.4],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-picnic-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "navy",
+        "headwear": "plum",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [34.5, 33.6],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-45",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "navy",
+        "headwear": "sky",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [41.6, 28.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-45-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "graphite",
+        "headwear": "turquoise",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [42.2, 30.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-47",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "denim",
+        "headwear": "black-cloth",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [42.9, 28.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-47-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "denim",
+        "headwear": "coral",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [43.7, 30.55],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-49",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "boubou",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "denim",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [44.2, 28.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-50",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [48.1, 28.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-50-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "jubba",
+      "headwear": "imamah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-grey",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [48.7, 30.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-52",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "boubou",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [49.4, 28.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-52-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-grey",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [50.2, 30.55],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-54",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "khimar",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "sky",
+        "headwear": "navy",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [50.7, 28.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-55",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [41.6, 32.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-55-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [42.2, 34.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-57",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "plum",
+        "prop": "sky"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [42.9, 32.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-57-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [43.7, 34.55],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-59",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "turquoise",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [44.2, 32.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-60",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "khaki",
+        "headwear": "mustard",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [48.1, 32.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-60-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "jubba",
+      "headwear": "imamah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-white",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [48.7, 34.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-62",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [49.4, 32.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-62-b",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "jubba",
+      "headwear": "imamah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-white",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [50.2, 34.55],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-diner-64",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-brown",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [50.7, 32.5],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-cook-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "apron",
+      "headwear": "taqiyah",
+      "prop": "tray",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [41.6, 25.9],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-cook-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "apron",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "white-linen",
+        "headwear": "sky",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "idle",
+        "at": [45, 25.9],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-baker",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "apron",
+      "headwear": "kufi",
+      "prop": "bread",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [51.5, 26.6],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-passerby"
+  },
+  {
+    "id": "amb-passerby",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "mustard",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [50.6, 27.6],
+        "facing": "NE"
+      }
+    ],
+    "pairWith": "amb-baker"
+  },
+  {
+    "id": "amb-water-carrier",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "kufi",
+      "prop": "water-jug",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 36,
+        "action": "carry",
+        "path": [
+          [54, 36.6],
+          [46.5, 36.6]
+        ]
+      },
+      {
+        "from": 36,
+        "to": 84,
+        "action": "pour",
+        "at": [46.5, 36.6],
+        "facing": "SW"
+      },
+      {
+        "from": 84,
+        "to": 120,
+        "action": "carry",
+        "path": [
+          [46.5, 36.6],
+          [54, 36.6]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-volunteer-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "hi-vis",
+      "headwear": "hijab",
+      "prop": "meal-box",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "navy",
+        "headwear": "wool-cream",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 36,
+        "action": "carry",
+        "path": [
+          [53.6, 31.5],
+          [53.6, 27.3]
+        ]
+      },
+      {
+        "from": 36,
+        "to": 84,
+        "action": "pour",
+        "at": [53.6, 27.3],
+        "facing": "NW"
+      },
+      {
+        "from": 84,
+        "to": 120,
+        "action": "carry",
+        "path": [
+          [53.6, 27.3],
+          [53.6, 31.5]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "khaki",
+        "headwear": "emerald",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "read",
+        "at": [11.2, 42.4],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [13.9, 43.2],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [11.1, 46.9],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "read",
+        "at": [13.9, 47.5],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [12.6, 49.9],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-mentor",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "charcoal",
+        "headwear": "black-cloth",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [15.4, 45.6],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-librarian",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [9.2, 51.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-student-desk",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "turquoise",
+        "garmentSecondary": "khaki",
+        "headwear": "coral",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "write",
+        "at": [18, 51.1],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-barista",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "apron",
+      "headwear": "cap",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "navy",
+        "headwear": "emerald",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [32.4, 43.1],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-cafe-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [25.4, 41.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-cafe-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "khaki",
+        "headwear": "black-cloth",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [26.6, 42.5],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-cafe-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-grey",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [28, 41.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-cafe-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "emerald",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [25.4, 47],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-commuter-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [31.2, 51.1],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-commuter-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "khimar",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-brown",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "sky",
+        "headwear": "wool-cream",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [32.6, 51.1],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-gardener",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "apron",
+      "headwear": "hijab",
+      "prop": "broom",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "emerald",
+        "headwear": "mustard",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sweep",
+        "at": [42, 48.4],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-technician",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hi-vis",
+      "headwear": "hard-hat",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "hi-vis",
+        "garmentSecondary": "navy",
+        "headwear": "mustard",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [50.4, 45.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-bench-pair-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "cane",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-white",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [43.6, 42.6],
+        "facing": "SE"
+      }
+    ],
+    "pairWith": "amb-bench-pair-2"
+  },
+  {
+    "id": "amb-bench-pair-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "navy",
+        "headwear": "mustard",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [44.7, 42.6],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-bench-pair-1"
+  },
+  {
+    "id": "amb-reader-lib-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "graphite",
+        "headwear": "mustard",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [10.6, 54.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-reader-lib-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "kaftan",
+      "headwear": "taqiyah",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-grey",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [12.2, 54.6],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-student-desk-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "pen",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "write",
+        "at": [18, 43.1],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [10.4, 44.8],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-coder-7",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [14.6, 49.6],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-mentor-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [9.8, 49.4],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-cafe-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [27.9, 47],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-cafe-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "khaki",
+        "headwear": "sky",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [26.4, 48],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-queue-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "idle",
+        "at": [31.2, 44.4],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-queue-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "charcoal",
+        "headwear": "black-cloth",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [30.2, 44.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-vendor",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "apron",
+      "headwear": "kufi",
+      "prop": "basket",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "saffron",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [26.9, 53.8],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-shopper-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "basket",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "navy",
+        "headwear": "coral",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [28.2, 52.8],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-cyclist",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "denim",
+        "headwear": "emerald",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [27.6, 51.4],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-waterer",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "kaftan",
+      "headwear": "taqiyah",
+      "prop": "water-jug",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-grey",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [45.4, 50.8],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-kid-wave",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "graphite",
+        "headwear": "denim",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "wave",
+        "at": [44.2, 45.4],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-kid-wave-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "navy",
+        "headwear": "navy",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "wave",
+        "at": [45.4, 45.9],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-kid-wave"
+  },
+  {
+    "id": "amb-picnic-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "plum",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [50.8, 49.2],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-picnic-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "bread",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "navy",
+        "headwear": "plum",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [49.6, 49.6],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-bench-pair-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [52.6, 53.8],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-engineer-solar",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "hi-vis",
+      "headwear": "hard-hat",
+      "prop": "clipboard",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "safety-orange",
+        "garmentSecondary": "denim",
+        "headwear": "hi-vis",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [53.6, 45.4],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-commuter-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "cane",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-white",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [41.5, 60.2],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-commuter-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "mustard",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [42.6, 60.2],
+        "facing": "SW"
+      }
+    ]
+  },
+  {
+    "id": "amb-jogger",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [59.4, 12],
+          [59.4, 34],
+          [59.4, 12]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-stroller",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "khaki",
+        "headwear": "wool-cream",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [14, 62.4],
+          [34, 62.4],
+          [14, 62.4]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-traveller-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "walk",
+        "path": [
+          [10, 22.4],
+          [17, 22.4],
+          [10, 22.4]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-traveller-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "charcoal",
+        "headwear": "rose",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [37.4, 25],
+          [37.4, 36],
+          [37.4, 25]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-traveller-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [23, 22.6],
+          [36.6, 22.6],
+          [36.6, 30],
+          [36.6, 22.6],
+          [23, 22.6]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-traveller-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "navy",
+        "headwear": "sky",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [26, 39.6],
+          [35, 39.6],
+          [26, 39.6]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-traveller-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "laptop",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "denim",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [40, 39.4],
+          [54, 39.4],
+          [40, 39.4]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-traveller-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
+      "prop": "blueprint",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "navy",
+        "headwear": "black-cloth",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [26, 49.6],
+          [35, 49.6],
+          [26, 49.6]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-students-walk",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "charcoal",
+        "headwear": "wool-cream",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [39.2, 22],
+          [46, 22],
+          [39.2, 22]
+        ]
+      }
+    ],
+    "pairWith": "fatima-al-fihri"
+  },
+  {
+    "id": "amb-helpful-child",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-brown",
+        "garmentPrimary": "denim",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [25, 44.6],
+          [33, 44.6],
+          [25, 44.6]
+        ]
+      }
+    ],
+    "pairWith": "amb-walking-elder"
+  },
+  {
+    "id": "amb-walking-elder",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "suit",
+      "headwear": "cap",
+      "prop": "cane",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-white",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "denim",
+        "headwear": "graphite",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [25, 45.6],
+          [33, 45.6],
+          [25, 45.6]
+        ]
+      }
+    ],
+    "pairWith": "amb-helpful-child"
   },
   {
     "id": "amb-cat-0",
@@ -1164,12 +3912,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-2",
+        "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "sky"
       }
     },
     "loop": 120,
@@ -1178,10 +3926,7 @@
         "from": 0,
         "to": 120,
         "action": "cat_sleep",
-        "at": [
-          36,
-          36
-        ],
+        "at": [34.4, 37],
         "facing": "SE"
       }
     ]
@@ -1198,12 +3943,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "charcoal",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "madder-red"
       }
     },
     "loop": 120,
@@ -1213,18 +3958,9 @@
         "to": 120,
         "action": "cat_walk",
         "path": [
-          [
-            38,
-            40
-          ],
-          [
-            41,
-            40
-          ],
-          [
-            38,
-            40
-          ]
+          [41, 46.5],
+          [46, 46.5],
+          [41, 46.5]
         ]
       }
     ]
@@ -1241,12 +3977,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-3",
+        "skin": "skin-7",
         "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "denim",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "graphite"
       }
     },
     "loop": 120,
@@ -1255,11 +3991,8 @@
         "from": 0,
         "to": 120,
         "action": "cat_idle",
-        "at": [
-          44,
-          36
-        ],
-        "facing": "SE"
+        "at": [26.9, 27.7],
+        "facing": "NW"
       }
     ]
   },
@@ -1275,12 +4008,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-2",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "khaki",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "saffron"
       }
     },
     "loop": 240,
@@ -1290,45 +4023,22 @@
         "to": 180,
         "action": "bird_fly",
         "path": [
-          [
-            35,
-            29
-          ],
-          [
-            30,
-            33
-          ],
-          [
-            34,
-            37
-          ],
-          [
-            39,
-            33
-          ],
-          [
-            35,
-            29
-          ]
+          [33.7, 28.2],
+          [31.5, 28],
+          [28, 30.5],
+          [30, 33.5],
+          [33.5, 31],
+          [33.7, 28.2]
         ],
-        "z": [
-          8,
-          28,
-          35,
-          24,
-          8
-        ]
+        "z": [10, 38, 46, 40, 30, 10]
       },
       {
         "from": 180,
         "to": 240,
         "action": "bird_peck",
-        "at": [
-          35,
-          29
-        ],
+        "at": [33.7, 28.2],
         "facing": "SW",
-        "z": 8
+        "z": 10
       }
     ]
   },
@@ -1344,12 +4054,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "khaki",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "saffron"
       }
     },
     "loop": 240,
@@ -1359,45 +4069,22 @@
         "to": 180,
         "action": "bird_fly",
         "path": [
-          [
-            35.6,
-            29
-          ],
-          [
-            30,
-            33
-          ],
-          [
-            34,
-            37
-          ],
-          [
-            39,
-            33
-          ],
-          [
-            35.6,
-            29
-          ]
+          [34.050000000000004, 28.2],
+          [31.5, 28],
+          [28, 30.5],
+          [30, 33.5],
+          [33.5, 31],
+          [34.050000000000004, 28.2]
         ],
-        "z": [
-          8,
-          30,
-          35,
-          24,
-          8
-        ]
+        "z": [10, 41, 46, 40, 30, 10]
       },
       {
         "from": 180,
         "to": 240,
         "action": "bird_peck",
-        "at": [
-          35.6,
-          29
-        ],
+        "at": [34.050000000000004, 28.2],
         "facing": "SW",
-        "z": 8
+        "z": 10
       }
     ]
   },
@@ -1413,12 +4100,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-5",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "cocoa",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "saffron"
       }
     },
     "loop": 240,
@@ -1428,45 +4115,22 @@
         "to": 180,
         "action": "bird_fly",
         "path": [
-          [
-            36.2,
-            29
-          ],
-          [
-            30,
-            33
-          ],
-          [
-            34,
-            37
-          ],
-          [
-            39,
-            33
-          ],
-          [
-            36.2,
-            29
-          ]
+          [34.400000000000006, 28.2],
+          [31.5, 28],
+          [28, 30.5],
+          [30, 33.5],
+          [33.5, 31],
+          [34.400000000000006, 28.2]
         ],
-        "z": [
-          8,
-          32,
-          35,
-          24,
-          8
-        ]
+        "z": [10, 44, 46, 40, 30, 10]
       },
       {
         "from": 180,
         "to": 240,
         "action": "bird_peck",
-        "at": [
-          36.2,
-          29
-        ],
+        "at": [34.400000000000006, 28.2],
         "facing": "SW",
-        "z": 8
+        "z": 10
       }
     ]
   },
@@ -1482,12 +4146,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-4",
+        "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "graphite",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "saffron"
       }
     },
     "loop": 240,
@@ -1497,45 +4161,22 @@
         "to": 180,
         "action": "bird_fly",
         "path": [
-          [
-            36.8,
-            29
-          ],
-          [
-            30,
-            33
-          ],
-          [
-            34,
-            37
-          ],
-          [
-            39,
-            33
-          ],
-          [
-            36.8,
-            29
-          ]
+          [33.7, 28.7],
+          [31.5, 28],
+          [28, 30.5],
+          [30, 33.5],
+          [33.5, 31],
+          [33.7, 28.7]
         ],
-        "z": [
-          8,
-          34,
-          35,
-          24,
-          8
-        ]
+        "z": [10, 47, 46, 40, 30, 10]
       },
       {
         "from": 180,
         "to": 240,
         "action": "bird_peck",
-        "at": [
-          36.8,
-          29
-        ],
+        "at": [33.7, 28.7],
         "facing": "SW",
-        "z": 8
+        "z": 10
       }
     ]
   },
@@ -1551,12 +4192,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-7",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "white-linen",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "denim",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "saffron"
       }
     },
     "loop": 240,
@@ -1566,45 +4207,22 @@
         "to": 180,
         "action": "bird_fly",
         "path": [
-          [
-            37.4,
-            29
-          ],
-          [
-            30,
-            33
-          ],
-          [
-            34,
-            37
-          ],
-          [
-            39,
-            33
-          ],
-          [
-            37.4,
-            29
-          ]
+          [34.050000000000004, 28.7],
+          [31.5, 28],
+          [28, 30.5],
+          [30, 33.5],
+          [33.5, 31],
+          [34.050000000000004, 28.7]
         ],
-        "z": [
-          8,
-          36,
-          35,
-          24,
-          8
-        ]
+        "z": [10, 50, 46, 40, 30, 10]
       },
       {
         "from": 180,
         "to": 240,
         "action": "bird_peck",
-        "at": [
-          37.4,
-          29
-        ],
+        "at": [34.050000000000004, 28.7],
         "facing": "SW",
-        "z": 8
+        "z": 10
       }
     ]
   },
@@ -1620,12 +4238,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "cocoa",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "brass"
+        "prop": "saffron"
       }
     },
     "loop": 240,
@@ -1635,1677 +4253,22 @@
         "to": 180,
         "action": "bird_fly",
         "path": [
-          [
-            38,
-            29
-          ],
-          [
-            30,
-            33
-          ],
-          [
-            34,
-            37
-          ],
-          [
-            39,
-            33
-          ],
-          [
-            38,
-            29
-          ]
+          [34.400000000000006, 28.7],
+          [31.5, 28],
+          [28, 30.5],
+          [30, 33.5],
+          [33.5, 31],
+          [34.400000000000006, 28.7]
         ],
-        "z": [
-          8,
-          38,
-          35,
-          24,
-          8
-        ]
+        "z": [10, 53, 46, 40, 30, 10]
       },
       {
         "from": 180,
         "to": 240,
         "action": "bird_peck",
-        "at": [
-          38,
-          29
-        ],
+        "at": [34.400000000000006, 28.7],
         "facing": "SW",
-        "z": 8
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-1",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          52.5,
-          12.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-2",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          48.5,
-          14.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-3",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          46.5,
-          15.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-4",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          42.5,
-          17.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-5",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          30.5,
-          23.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-6",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "taqiyah",
-      "prop": "basket",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          47.5,
-          24.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-7",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "turquoise",
-        "garmentSecondary": "madder-red",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          26.5,
-          25.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-8",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "thobe",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          45.5,
-          25.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-9",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          24.5,
-          26.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-10",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          43.5,
-          26.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-11",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "imamah",
-      "prop": "basket",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          22.5,
-          27.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-12",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          41.5,
-          27.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-13",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          20.5,
-          28.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-14",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "turquoise",
-        "garmentSecondary": "madder-red",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          18.5,
-          29.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-15",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "jubba",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          12.5,
-          32.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-16",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          23.5,
-          36.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-17",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          38.5,
-          38.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-18",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          49.5,
-          42.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-19",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          22.5,
-          46.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-20",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          41.5,
-          46.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-21",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "basket",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "turquoise",
-        "garmentSecondary": "madder-red",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          39.5,
-          47.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-22",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "kaftan",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          18.5,
-          48.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-23",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          12.5,
-          51.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-24",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          10.5,
-          52.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-25",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          38.5,
-          14.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-26",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "imamah",
-      "prop": "basket",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          51.5,
-          17.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-27",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          49.5,
-          18.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-28",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "turquoise",
-        "garmentSecondary": "madder-red",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          26.5,
-          20.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-29",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          41.5,
-          22.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-30",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          18.5,
-          24.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-31",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          37.5,
-          24.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-32",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          12.5,
-          27.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-33",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          48.5,
-          28.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-34",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          44.5,
-          30.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-35",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "turquoise",
-        "garmentSecondary": "madder-red",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          17.5,
-          34.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-36",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "thobe",
-      "headwear": "taqiyah",
-      "prop": "basket",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          15.5,
-          35.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-37",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          13.5,
-          36.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-38",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          51.5,
-          36.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-39",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          47.5,
-          38.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-40",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          45.5,
-          39.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-41",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "basket",
-      "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          43.5,
-          40.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-42",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-2",
-        "hair": "hair-black",
-        "garmentPrimary": "turquoise",
-        "garmentSecondary": "madder-red",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          41.5,
-          41.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-43",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "elder",
-      "garment": "jubba",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "olive",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          20.5,
-          42.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-44",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          39.5,
-          42.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-45",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "madder-red",
-        "garmentSecondary": "saffron",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          14.5,
-          45.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-46",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "kaftan",
-      "headwear": "kufi",
-      "prop": "book",
-      "colours": {
-        "skin": "skin-6",
-        "hair": "hair-black",
-        "garmentPrimary": "olive",
-        "garmentSecondary": "turquoise",
-        "headwear": "wool-cream",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 60,
-    "script": [
-      {
-        "from": 0,
-        "to": 60,
-        "action": "read",
-        "at": [
-          52.5,
-          45.5
-        ],
-        "facing": "SE"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-47",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "jubba",
-      "headwear": "imamah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-7",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "wool-cream",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 120,
-    "script": [
-      {
-        "from": 0,
-        "to": 120,
-        "action": "talk",
-        "at": [
-          12.5,
-          46.5
-        ],
-        "facing": "SW"
-      }
-    ]
-  },
-  {
-    "id": "amb-neighbour-48",
-    "kind": "person",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "adult-man",
-      "garment": "thobe",
-      "headwear": "taqiyah",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "saffron",
-        "garmentSecondary": "indigo",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "idle",
-        "at": [
-          50.5,
-          46.5
-        ],
-        "facing": "SE"
+        "z": 10
       }
     ]
   }
