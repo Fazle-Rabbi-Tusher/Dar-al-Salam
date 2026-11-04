@@ -209,3 +209,31 @@ test('touch pinch changes zoom toward the pinch centre', async ({
     .toBeGreaterThan(100);
   await context.close();
 });
+
+test('initial asset loading preserves a character deep link before an immediate reload', async ({
+  page,
+}) => {
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let requested = 0;
+  await page.route('**/world/chunk-*.webp', async (route) => {
+    requested++;
+    await gate;
+    await route.continue();
+  });
+  try {
+    await page.goto('/c/ibn-sina');
+    await expect.poll(() => requested, { timeout: 20000 }).toBeGreaterThan(0);
+    await page.waitForTimeout(450);
+    expect(new URL(page.url()).pathname).toBe('/c/ibn-sina');
+  } finally {
+    release();
+  }
+  await expect(page.locator('.loading-screen')).toHaveCount(0);
+  await expect(page.locator('.story-card')).toContainText('Ibn Sina');
+  expect(new URL(page.url()).pathname).toBe('/c/ibn-sina');
+  await page.reload();
+  await expect(page.locator('.story-card')).toContainText('Ibn Sina');
+});

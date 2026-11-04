@@ -237,6 +237,9 @@ function World({ manifest }: { manifest: Manifest | null }) {
   useEffect(() => {
     if (!host.current) return;
     let cancelled = false;
+    let initialising = true;
+    const initial = parseUrl(location.href);
+    select(initial.id ?? null);
     const world = new Engine(host.current);
     engine.current = world;
     world.on('progress', (p) => setProgress(p));
@@ -247,6 +250,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
     });
     world.on('cameraChange', (c) => {
       setCamera(c);
+      if (initialising) return;
       clearTimeout(urlTimer.current);
       urlTimer.current = setTimeout(() => {
         if (!cancelled)
@@ -260,11 +264,11 @@ function World({ manifest }: { manifest: Manifest | null }) {
     world.on('stats', setStats);
     world.on('inspect', setInspect);
     world.on('error', setError);
-    const initial = parseUrl(location.href);
     world
       .load('/world/world.json')
       .then(() => {
         if (cancelled) return;
+        initialising = false;
         world.setMotion(useStore.getState().motion);
         if (initial.id) {
           select(initial.id);
