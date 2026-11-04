@@ -109,7 +109,14 @@ await seed('content/rules/never-depict.json', {
     'This list will be extended by the advisory panel. Exact full-name exceptions require human review; no blanket approval of common given names.',
   denylist: [
     'Muhammad',
+    // Common transliterations block by default, like the canonical spelling.
+    'Mohamed',
+    'Mohammed',
+    'Mohammad',
+    'Muhammed',
+    'Mohamad',
     'Ahmad',
+    'Ahmed',
     'Ibrahim',
     'Musa',
     'Isa',
@@ -145,7 +152,11 @@ await seed('content/rules/never-depict.json', {
     'Umar ibn al-Khattab',
     'Uthman ibn Affan',
   ],
-  allowlist: ['Muhammad ibn Musa al-Khwarizmi'],
+  allowlist: [
+    'Muhammad ibn Musa al-Khwarizmi',
+    // Approved by the project owner (2026-11): the footballer, born 1992.
+    'Mohamed Salah',
+  ],
 });
 const traditional = [
   'thobe',

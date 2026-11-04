@@ -4368,9 +4368,9 @@
         "to": 60,
         "action": "walk",
         "path": [
-          [77, 24.5],
-          [77, 28.5],
-          [77, 24.5]
+          [75.4, 25.2],
+          [75.4, 28.8],
+          [75.4, 25.2]
         ]
       }
     ]
@@ -4464,10 +4464,76 @@
         "to": 240,
         "action": "walk",
         "path": [
-          [79, 16.5],
-          [79, 29.5],
-          [79, 16.5]
+          [76, 16.9],
+          [82, 16.9],
+          [76, 16.9]
         ]
+      }
+    ]
+  },
+  {
+    "id": "amb-lfc-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "kit-red",
+        "garmentSecondary": "lab-white",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "walk",
+        "path": [
+          [81.6, 28.2],
+          [80.2, 25.6],
+          [81.6, 28.2]
+        ]
+      }
+    ],
+    "pairWith": "sadio-mane"
+  },
+  {
+    "id": "amb-lfc-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "kit-red",
+        "garmentSecondary": "lab-white",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "cheer",
+        "at": [77.2, 20.6],
+        "facing": "SW"
       }
     ]
   },
@@ -4484,11 +4550,11 @@
       "prop": "none",
       "colours": {
         "skin": "skin-8",
-        "hair": "hair-brown",
+        "hair": "hair-black",
         "garmentPrimary": "mustard",
         "garmentSecondary": "graphite",
         "headwear": "white-linen",
-        "prop": "mustard"
+        "prop": "emerald"
       }
     },
     "loop": 240,
@@ -4556,12 +4622,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-1",
-        "hair": "hair-black",
+        "skin": "skin-2",
+        "hair": "hair-brown",
         "garmentPrimary": "emerald",
         "garmentSecondary": "white-linen",
         "headwear": "white-linen",
-        "prop": "mustard"
+        "prop": "madder-red"
       }
     },
     "loop": 240,
@@ -4615,12 +4681,12 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-8",
+        "skin": "skin-7",
         "hair": "hair-black",
         "garmentPrimary": "emerald",
         "garmentSecondary": "white-linen",
         "headwear": "white-linen",
-        "prop": "emerald"
+        "prop": "mustard"
       }
     },
     "loop": 240,
@@ -4674,10 +4740,10 @@
       "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-2",
+        "skin": "skin-5",
         "hair": "hair-brown",
-        "garmentPrimary": "emerald",
-        "garmentSecondary": "graphite",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "khaki",
         "headwear": "white-linen",
         "prop": "graphite"
       }
@@ -4760,15 +4826,15 @@
     "depiction": "full",
     "look": {
       "base": "adult-woman",
-      "garment": "long-dress",
-      "headwear": "headwrap",
+      "garment": "shirt-trousers",
+      "headwear": "hijab",
       "prop": "none",
       "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
-        "garmentPrimary": "plum",
-        "garmentSecondary": "charcoal",
-        "headwear": "navy",
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "kit-red",
+        "garmentSecondary": "denim",
+        "headwear": "coral",
         "prop": "sky"
       }
     },
@@ -4791,16 +4857,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "panjabi-lungi",
-      "headwear": "taqiyah",
+      "garment": "shirt-trousers",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-2",
+        "skin": "skin-6",
         "hair": "hair-brown",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "khaki",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "navy",
         "headwear": "white-linen",
-        "prop": "emerald"
+        "prop": "sky"
       }
     },
     "loop": 120,
@@ -4821,17 +4887,17 @@
     "district": "mosque-garden",
     "depiction": "full",
     "look": {
-      "base": "child",
-      "garment": "baju-kurung",
-      "headwear": "hijab",
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-2",
+        "skin": "skin-7",
         "hair": "hair-black",
-        "garmentPrimary": "indigo",
+        "garmentPrimary": "kit-red",
         "garmentSecondary": "khaki",
         "headwear": "white-linen",
-        "prop": "sky"
+        "prop": "madder-red"
       }
     },
     "loop": 240,
@@ -4853,16 +4919,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-woman",
-      "garment": "baju-kurung",
+      "garment": "long-dress",
       "headwear": "hijab",
       "prop": "none",
       "colours": {
-        "skin": "skin-2",
+        "skin": "skin-5",
         "hair": "hair-black",
         "garmentPrimary": "olive",
-        "garmentSecondary": "khaki",
-        "headwear": "plum",
-        "prop": "mustard"
+        "garmentSecondary": "graphite",
+        "headwear": "coral",
+        "prop": "emerald"
       }
     },
     "loop": 60,
@@ -4884,13 +4950,13 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "panjabi-lungi",
-      "headwear": "taqiyah",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
       "prop": "none",
       "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
         "garmentSecondary": "khaki",
         "headwear": "white-linen",
         "prop": "sky"
@@ -4915,16 +4981,16 @@
     "depiction": "full",
     "look": {
       "base": "child",
-      "garment": "hoodie-jeans",
-      "headwear": "cap",
+      "garment": "thobe",
+      "headwear": "kufi",
       "prop": "none",
       "colours": {
-        "skin": "skin-4",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "sky",
-        "garmentSecondary": "charcoal",
-        "headwear": "emerald",
-        "prop": "sky"
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "graphite"
       }
     },
     "loop": 240,
@@ -4946,16 +5012,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-woman",
-      "garment": "long-dress",
+      "garment": "abaya",
       "headwear": "hijab",
       "prop": "none",
       "colours": {
-        "skin": "skin-5",
+        "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "mustard",
-        "garmentSecondary": "denim",
-        "headwear": "emerald",
-        "prop": "graphite"
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "rose",
+        "prop": "mustard"
       }
     },
     "loop": 60,
@@ -4977,15 +5043,15 @@
     "depiction": "full",
     "look": {
       "base": "adult-man",
-      "garment": "shirt-trousers",
-      "headwear": "songkok",
+      "garment": "thobe",
+      "headwear": "kufi",
       "prop": "none",
       "colours": {
-        "skin": "skin-3",
+        "skin": "skin-1",
         "hair": "hair-black",
-        "garmentPrimary": "denim",
-        "garmentSecondary": "charcoal",
-        "headwear": "black-cloth",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
         "prop": "emerald"
       }
     },
@@ -5012,12 +5078,12 @@
       "headwear": "none",
       "prop": "clipboard",
       "colours": {
-        "skin": "skin-7",
+        "skin": "skin-2",
         "hair": "hair-black",
         "garmentPrimary": "navy",
-        "garmentSecondary": "charcoal",
+        "garmentSecondary": "denim",
         "headwear": "white-linen",
-        "prop": "mustard"
+        "prop": "sky"
       }
     },
     "loop": 120,
@@ -5043,12 +5109,12 @@
       "headwear": "hijab",
       "prop": "tablet",
       "colours": {
-        "skin": "skin-8",
-        "hair": "hair-black",
+        "skin": "skin-1",
+        "hair": "hair-brown",
         "garmentPrimary": "sky",
-        "garmentSecondary": "graphite",
-        "headwear": "wool-cream",
-        "prop": "mustard"
+        "garmentSecondary": "denim",
+        "headwear": "mustard",
+        "prop": "emerald"
       }
     },
     "loop": 240,
@@ -5074,7 +5140,7 @@
       "headwear": "cap",
       "prop": "football",
       "colours": {
-        "skin": "skin-1",
+        "skin": "skin-5",
         "hair": "hair-black",
         "garmentPrimary": "lab-white",
         "garmentSecondary": "plum",
@@ -5104,16 +5170,16 @@
     "depiction": "full",
     "look": {
       "base": "adult-woman",
-      "garment": "baju-kurung",
+      "garment": "long-dress",
       "headwear": "hijab",
       "prop": "phone",
       "colours": {
         "skin": "skin-8",
         "hair": "hair-black",
-        "garmentPrimary": "rose",
-        "garmentSecondary": "navy",
-        "headwear": "navy",
-        "prop": "graphite"
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "denim",
+        "headwear": "black-cloth",
+        "prop": "madder-red"
       }
     },
     "loop": 240,
@@ -5142,9 +5208,9 @@
       "headwear": "cap",
       "prop": "coffee",
       "colours": {
-        "skin": "skin-5",
+        "skin": "skin-6",
         "hair": "hair-brown",
-        "garmentPrimary": "sky",
+        "garmentPrimary": "navy",
         "garmentSecondary": "denim",
         "headwear": "plum",
         "prop": "mustard"

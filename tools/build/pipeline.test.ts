@@ -26,8 +26,8 @@ beforeAll(async () => {
   parts = await loadParts();
 });
 describe('real content validation', () => {
-  it('validates all 163 examples with every ambient scenario', () => {
-    expect(content.characters).toHaveLength(163);
+  it('validates all 167 examples with every ambient scenario', () => {
+    expect(content.characters).toHaveLength(167);
     for (const c of content.characters)
       expect(
         validateCharacter(
@@ -400,6 +400,8 @@ describe('larger, modern characters', () => {
       'aziz-sancar',
       'karim-benzema',
       'mesut-ozil',
+      'mohamed-salah',
+      'sadio-mane',
     ];
     for (const id of ids) {
       const c = content.characters.find((c) => c.id === id)!;
@@ -443,5 +445,23 @@ describe('football stadium', () => {
       'cross-arms',
     ]);
     expect(c.panelApproved).toBe(false);
+  });
+});
+
+describe('transliterated denylisted names', () => {
+  it('blocks spelling variants of Muhammad unless the exact full name is allowlisted', async () => {
+    const { forbiddenName } = await import('../../packages/shared/rules');
+    const rules = content.rules;
+    for (const n of ['Mohamed', 'Mohammed Ali', 'Mohamad', 'Ahmed'])
+      expect(forbiddenName(n, rules)).toBe(true);
+    expect(forbiddenName('Mohamed Salah', rules)).toBe(false);
+    expect(forbiddenName('mohamed-salah', rules)).toBe(false);
+    expect(
+      forbiddenName('Mohamed Salah', {
+        ...rules,
+        allowlist: rules.allowlist.filter((a) => a !== 'Mohamed Salah'),
+      }),
+    ).toBe(true);
+    expect(forbiddenName('Sadio Mané', rules)).toBe(false);
   });
 });

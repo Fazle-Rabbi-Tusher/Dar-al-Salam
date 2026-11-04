@@ -1,10 +1,10 @@
 # Dar al-Salam
 
-An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **The Peace Quarter**, is a modern Muslim neighbourhood with 155 ambient people and eight draft cards: five modern figures (Fazlur Rahman Khan, Zaha Hadid, Aziz Sancar, Karim Benzema, Mesut Özil) and three historical ones (Al-Khwarizmi, Ibn Sina, Fatima al-Fihri). The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
+An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **The Peace Quarter**, is a modern Muslim neighbourhood with 157 ambient people and ten draft cards: seven modern figures (Fazlur Rahman Khan, Zaha Hadid, Aziz Sancar, Karim Benzema, Mesut Özil, Mohamed Salah, Sadio Mané) and three historical ones (Al-Khwarizmi, Ibn Sina, Fatima al-Fihri). The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
 
 ![Current cutaway world](docs/preview.png)
 
-The scene has 183 room objects across ten zones: a modern mosque with a prayer hall and Qur'an study circle, an architecture studio, a university science lab, a hospital, a central park with a fountain, a community kitchen, a library with a children's coding class, a street with a café and bus stop, and a solar garden, plus a football stadium east of the ring road (pitch, crowded stands, floodlights, dugouts). In the stadium Karim Benzema loops through a finger-to-the-sky celebration, arms-wide cheer and folded arms, and Mesut Özil's chip-and-stop goal plays out every 20 seconds: the keeper rushes out, the chip, control on the bounce, two defenders sliding past, and the roll into the empty net. The ball is its own animated object (`kind: "ball"`) with height for the chip, so its shadow stays on the grass. Characters are drawn on a 48×72 canvas (adults about 54 px tall) with shading, hands, shoes, hair and modern clothes and props. The world opens at 2× zoom, with the introduction available through the information button so the scene fills the screen.
+The scene has 183 room objects across ten zones: a modern mosque with a prayer hall and Qur'an study circle, an architecture studio, a university science lab, a hospital, a central park with a fountain, a community kitchen, a library with a children's coding class, a street with a café and bus stop, and a solar garden, plus a football stadium east of the ring road (pitch, crowded stands, floodlights, dugouts). In the stadium Karim Benzema loops through a finger-to-the-sky celebration, arms-wide cheer and folded arms, Mohamed Salah holds his arms-out pose beside Sadio Mané (hand on heart) at the centre circle, each in his club's kit colours, and Mesut Özil's chip-and-stop goal plays out every 20 seconds: the keeper rushes out, the chip, control on the bounce, two defenders sliding past, and the roll into the empty net. The ball is its own animated object (`kind: "ball"`) with height for the chip, so its shadow stays on the grass. Characters are drawn on a 48×72 canvas (adults about 54 px tall) with shading, hands, shoes, hair and modern clothes and props. The world opens at 2× zoom, with the introduction available through the information button so the scene fills the screen.
 
 ## Run
 
@@ -29,7 +29,7 @@ pnpm lint
 pnpm format
 ```
 
-`pnpm build` intentionally fails while the eight example cards have `panelApproved: false`. Do not change those flags to make a build green. Use the development workflow or `build:preview` for prototype review. All biographies, stories and sources are explicitly unresearched placeholders.
+`pnpm build` intentionally fails while the ten example cards have `panelApproved: false`. Do not change those flags to make a build green. Use the development workflow or `build:preview` for prototype review. All biographies, stories and sources are explicitly unresearched placeholders.
 
 ## Deploy to Vercel
 

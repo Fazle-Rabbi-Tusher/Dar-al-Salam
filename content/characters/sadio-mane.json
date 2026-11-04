@@ -1,0 +1,68 @@
+{
+  "id": "sadio-mane",
+  "kind": "person",
+  "name": {
+    "en": "Sadio Mané",
+    "ar": "ساديو ماني",
+    "bn": "সাদিও মানে"
+  },
+  "aliases": ["Sadio Mane"],
+  "years": "b. 1992",
+  "place": "Bambali · Liverpool",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-goatee",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-7",
+      "hair": "hair-black",
+      "garmentPrimary": "kit-red",
+      "garmentSecondary": "lab-white",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 120,
+      "action": "hand-on-heart",
+      "at": [80.4, 24.4],
+      "facing": "SW"
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "celebrate",
+      "at": [80.4, 24.4],
+      "facing": "SW"
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "hand-on-heart",
+      "at": [80.4, 24.4],
+      "facing": "SE"
+    }
+  ],
+  "pairWith": "mohamed-salah",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

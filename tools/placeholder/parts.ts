@@ -21,6 +21,8 @@ export const bases = [
   'bird',
   'adult-man-beard',
   'adult-man-clean',
+  'adult-man-curly',
+  'adult-man-goatee',
   'ball',
 ];
 export const garments = [
@@ -45,6 +47,7 @@ export const garments = [
   'football-kit',
   'football-kit-captain',
   'football-kit-long',
+  'football-kit-sleeved',
 ];
 export const headwear = [
   'imamah',
@@ -427,6 +430,26 @@ function pose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       q.arms[1][2] = [20, 35 + b];
       break;
     }
+    case 'arms-out': {
+      // Standing still, arms held straight out, chest proud.
+      const b = f >= 2 ? 1 : 0;
+      q = standing(b);
+      q.legs[0][2] = [20.5, 65];
+      q.legs[1][2] = [27.5, 65];
+      q.arms[0][1] = [12, 29 + b];
+      q.arms[0][2] = [5.5, 28.5 + b];
+      q.arms[1][1] = [36, 29 + b];
+      q.arms[1][2] = [42.5, 28.5 + b];
+      break;
+    }
+    case 'hand-on-heart': {
+      const b = f >= 2 ? 1 : 0;
+      q = standing(b);
+      q.arms[1][1] = [31, 37 + b];
+      q.arms[1][2] = [26, 32 + b + (f === 3 ? 1 : 0)];
+      q.arms[0][2] = add(q.arms[0][2], -1, 0);
+      break;
+    }
     case 'kick': {
       q = standing(f === 1 ? 1 : 0);
       const leg: Limb[] = [
@@ -720,6 +743,11 @@ function drawHead(p: Pixels, q: Pose, id: string) {
   const hair = mk(p);
   if (q.away) {
     hair.rect(x, y, 10, 9).rect(x + 1, y - 1, 8, 1);
+    if (id === 'adult-man-curly') hair.ellipse(x + 5, y + 2, 7.5, 6.5);
+    if (id === 'adult-man-goatee') {
+      hair.data.fill(0);
+      hair.rect(x + 1, y - 2, 8, 3).rect(x + 2, y - 3, 6, 1);
+    }
     if (id === 'adult-woman')
       hair.rect(x + 1, y + 8, 8, 3).disc(x + 5, y + 1, 3);
   } else {
@@ -731,6 +759,21 @@ function drawHead(p: Pixels, q: Pose, id: string) {
       hair.rect(x - 1, y + 2, 3, 9).disc(x + 1, y + 1, 3);
     if (id === 'adult-man-clean')
       hair.rect(x + 1, y - 2, 8, 1).rect(x + 4, y - 3, 5, 1);
+    if (id === 'adult-man-curly') {
+      // Big curls framing the face, plus a full beard.
+      hair.ellipse(x + 3.5, y + 1.5, 7.5, 6).rect(x + 2, y + 7, 8, 4);
+      hair.rect(x + 3, y + 11, 6, 2).rect(x + 4, y + 13, 4, 1);
+      hair.minus(new Mask(p.width, p.height).rect(x + 4, y + 3, 6, 4));
+    }
+    if (id === 'adult-man-goatee') {
+      // Shaved sides: hair only on top, and a small chin beard.
+      hair.data.fill(0);
+      hair
+        .rect(x + 1, y - 2, 8, 3)
+        .rect(x + 2, y - 3, 6, 1)
+        .rect(x, y + 1, 3, 2);
+      hair.rect(x + 6, y + 10, 4, 2).rect(x + 7, y + 12, 2, 1);
+    }
     if (id === 'adult-man-beard')
       hair
         .rect(x + 2, y + 7, 8, 4)
@@ -746,6 +789,12 @@ function drawHead(p: Pixels, q: Pose, id: string) {
     p.pixel(x + 9, y + 6, K.skin[2]);
   }
   paint(p, hair, K.hair, { light: 1, dark: 1 });
+  if (id === 'adult-man-curly')
+    for (let j = 0; j < p.height; j++)
+      for (let i = 0; i < p.width; i++)
+        if (hair.has(i, j) && (i * 3 + j * 5) % 7 === 0)
+          p.pixel(i, j, K.hair[0]);
+  if (id === 'adult-man-goatee') p.rect(x + 3, y - 2, 5, 1, F.gold);
 }
 function chairUnder(p: Pixels, q: Pose) {
   // A simple stool under chair-seated poses, so desk workers never float.
@@ -1226,8 +1275,10 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
     }
     case 'football-kit':
     case 'football-kit-captain':
-    case 'football-kit-long': {
+    case 'football-kit-long':
+    case 'football-kit-sleeved': {
       const long = id === 'football-kit-long',
+        sleeved = id === 'football-kit-sleeved',
         shortsR = long ? S : C,
         socksR = long ? S : C;
       // Shorts to the knee and long socks: knees stay covered.
@@ -1261,7 +1312,13 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
           p.pixel(q.chest[0] - 3 + ((y / 4) % 2), y, C[0]);
       }
       if (long) sleeves(p, q, S);
-      else {
+      else if (sleeved) {
+        sleeves(p, q, C);
+        for (const arm of q.arms) {
+          const c = lerp(arm[1], arm[2], 0.7);
+          p.rect(c[0] - 2, c[1], 4, 1, S[1]);
+        }
+      } else {
         sleeves(p, q, C, { short: K.skin });
         for (const arm of q.arms) {
           const c = lerp(arm[0], arm[1], 0.85);

@@ -1080,8 +1080,8 @@ export function modernQuarter() {
   walker(
     'teammate-3',
     [
-      [77, 24.5],
-      [77, 28.5],
+      [75.4, 25.2],
+      [75.4, 28.8],
     ],
     kit('lab-white', 'plum', 'adult-man-beard'),
     60,
@@ -1091,12 +1091,28 @@ export function modernQuarter() {
   walker(
     'referee',
     [
-      [79, 16.5],
-      [79, 29.5],
+      [76, 16.9],
+      [82, 16.9],
     ],
     kit('black-cloth', 'mustard'),
     240,
   );
+  // Centre circle: Liverpool's front pair, each in their club's red kit.
+  const lfc = (base = 'adult-man') =>
+    L(base, 'football-kit', 'none', 'none', {
+      garmentPrimary: 'kit-red',
+      garmentSecondary: 'lab-white',
+    });
+  walker(
+    'lfc-1',
+    [
+      [81.6, 28.2],
+      [80.2, 25.6],
+    ],
+    lfc(),
+    60,
+  ).pairWith = 'sadio-mane';
+  person('lfc-2', [77.2, 20.6], 'cheer', lfc('adult-man-beard'), 'SW', 120);
   /*
    * East half: a 15-second chip-and-stop goal, then a 5-second reset, on the
    * 240-frame master loop. 0–2 s the keeper rushes out; 2–4 s the chip over
@@ -1247,7 +1263,21 @@ export function modernQuarter() {
       `fan-${i}`,
       [x, y],
       a,
-      i % 3 === 0 ? woman() : i % 3 === 1 ? man() : child(),
+      i < 3
+        ? L(
+            i === 0 ? 'adult-woman' : 'adult-man',
+            'shirt-trousers',
+            i === 0 ? 'hijab' : 'none',
+            'none',
+            {
+              garmentPrimary: ['kit-red', 'lab-white', 'kit-red'][i],
+            },
+          )
+        : i % 3 === 0
+          ? woman()
+          : i % 3 === 1
+            ? man()
+            : child(),
       f,
       ([60, 120, 240] as Loop[])[i % 3],
     ),
@@ -1579,6 +1609,88 @@ export function namedCards(): Character[] {
           ],
         },
       ],
+    }),
+    card({
+      id: 'mohamed-salah',
+      name: { en: 'Mohamed Salah', ar: 'محمد صلاح', bn: 'মোহাম্মদ সালাহ' },
+      aliases: ['Mo Salah'],
+      years: 'b. 1992',
+      place: 'Nagrig · Liverpool',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-curly',
+        garment: 'football-kit-sleeved',
+        headwear: 'none',
+        prop: 'none',
+        colours: {
+          skin: 'skin-5',
+          hair: 'hair-black',
+          garmentPrimary: 'kit-red',
+          garmentSecondary: 'lab-white',
+          headwear: 'white-linen',
+          prop: 'graphite',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 120,
+          action: 'arms-out',
+          at: [78.4, 22.6],
+          facing: 'SE',
+        },
+        { from: 120, to: 180, action: 'cheer', at: [78.4, 22.6], facing: 'SE' },
+        { from: 180, to: 240, action: 'idle', at: [78.4, 22.6], facing: 'SW' },
+      ],
+      pairWith: 'sadio-mane',
+    }),
+    card({
+      id: 'sadio-mane',
+      name: { en: 'Sadio Mané', ar: 'ساديو ماني', bn: 'সাদিও মানে' },
+      aliases: ['Sadio Mane'],
+      years: 'b. 1992',
+      place: 'Bambali · Liverpool',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-goatee',
+        garment: 'football-kit',
+        headwear: 'none',
+        prop: 'none',
+        colours: {
+          skin: 'skin-7',
+          hair: 'hair-black',
+          garmentPrimary: 'kit-red',
+          garmentSecondary: 'lab-white',
+          headwear: 'white-linen',
+          prop: 'graphite',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 120,
+          action: 'hand-on-heart',
+          at: [80.4, 24.4],
+          facing: 'SW',
+        },
+        {
+          from: 120,
+          to: 180,
+          action: 'celebrate',
+          at: [80.4, 24.4],
+          facing: 'SW',
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'hand-on-heart',
+          at: [80.4, 24.4],
+          facing: 'SE',
+        },
+      ],
+      pairWith: 'mohamed-salah',
     }),
     card({
       id: 'al-khwarizmi',

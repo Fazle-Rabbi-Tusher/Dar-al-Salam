@@ -18,6 +18,8 @@ export const ACTIONS = {
   kick: 4,
   dive: 4,
   slide: 4,
+  'arms-out': 4,
+  'hand-on-heart': 4,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,

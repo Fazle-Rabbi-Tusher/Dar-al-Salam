@@ -2,7 +2,13 @@
   "comment": "This list will be extended by the advisory panel. Exact full-name exceptions require human review; no blanket approval of common given names.",
   "denylist": [
     "Muhammad",
+    "Mohamed",
+    "Mohammed",
+    "Mohammad",
+    "Muhammed",
+    "Mohamad",
     "Ahmad",
+    "Ahmed",
     "Ibrahim",
     "Musa",
     "Isa",
@@ -38,5 +44,5 @@
     "Umar ibn al-Khattab",
     "Uthman ibn Affan"
   ],
-  "allowlist": ["Muhammad ibn Musa al-Khwarizmi"]
+  "allowlist": ["Muhammad ibn Musa al-Khwarizmi", "Mohamed Salah"]
 }

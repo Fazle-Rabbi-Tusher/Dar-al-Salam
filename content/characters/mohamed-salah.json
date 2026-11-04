@@ -1,0 +1,68 @@
+{
+  "id": "mohamed-salah",
+  "kind": "person",
+  "name": {
+    "en": "Mohamed Salah",
+    "ar": "محمد صلاح",
+    "bn": "মোহাম্মদ সালাহ"
+  },
+  "aliases": ["Mo Salah"],
+  "years": "b. 1992",
+  "place": "Nagrig · Liverpool",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-curly",
+    "garment": "football-kit-sleeved",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-5",
+      "hair": "hair-black",
+      "garmentPrimary": "kit-red",
+      "garmentSecondary": "lab-white",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 120,
+      "action": "arms-out",
+      "at": [78.4, 22.6],
+      "facing": "SE"
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "cheer",
+      "at": [78.4, 22.6],
+      "facing": "SE"
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "idle",
+      "at": [78.4, 22.6],
+      "facing": "SW"
+    }
+  ],
+  "pairWith": "sadio-mane",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}
