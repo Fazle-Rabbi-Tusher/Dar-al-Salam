@@ -88,7 +88,12 @@ export function scriptErrors(c: Character, room?: Room) {
         len / (s.to - s.from) > 0.25
       )
         errors.push(`step ${i}: speed exceeds 1 tile / 4 frames`);
-      if (room && collision?.type === 'tilelayer' && c.kind !== 'bird') {
+      if (
+        room &&
+        collision?.type === 'tilelayer' &&
+        c.kind !== 'bird' &&
+        c.kind !== 'ball'
+      ) {
         for (let j = 0; j <= Math.ceil(len * 16); j++) {
           const p = sampleStep(s, j / Math.max(1, Math.ceil(len * 16))).tile,
             x = Math.floor(p[0]),

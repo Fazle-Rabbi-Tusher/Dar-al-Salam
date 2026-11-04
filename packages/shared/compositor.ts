@@ -152,7 +152,7 @@ export function compose(
   blit(outlined, dst);
   const result = new Pixels(dst.width, dst.height);
   const [ax, ay] = base.anchor;
-  if (includeShadow && look.base !== 'bird')
+  if (includeShadow && look.base !== 'bird' && look.base !== 'ball')
     result.ellipse(ax, ay - 1, look.base === 'cat' ? 7 : 8, 2.5, [
       ...rgb(palette.shadow).slice(0, 3),
       89,

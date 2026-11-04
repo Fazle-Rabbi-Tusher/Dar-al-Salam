@@ -4271,5 +4271,894 @@
         "z": 10
       }
     ]
+  },
+  {
+    "id": "amb-teammate-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "plum",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [79, 18],
+          [74.6, 19.4],
+          [79, 18]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-teammate-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "plum",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [79, 26],
+          [74.8, 22.2],
+          [79, 26]
+        ]
+      }
+    ],
+    "pairWith": "karim-benzema"
+  },
+  {
+    "id": "amb-teammate-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "plum",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "walk",
+        "path": [
+          [77, 24.5],
+          [77, 28.5],
+          [77, 24.5]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-teammate-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "plum",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [72.2, 19.2],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-keeper-west",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [68.4, 23],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-referee",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "mustard",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [79, 16.5],
+          [79, 29.5],
+          [79, 16.5]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-ozil-keeper",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 24,
+        "action": "walk",
+        "path": [
+          [89.6, 23],
+          [87.2, 23]
+        ]
+      },
+      {
+        "from": 24,
+        "to": 60,
+        "action": "dive",
+        "at": [87.2, 23],
+        "facing": "NW"
+      },
+      {
+        "from": 60,
+        "to": 180,
+        "action": "read",
+        "at": [87.2, 23],
+        "facing": "SE"
+      },
+      {
+        "from": 180,
+        "to": 200,
+        "action": "walk",
+        "path": [
+          [87.2, 23],
+          [89.8, 23.3]
+        ]
+      },
+      {
+        "from": 200,
+        "to": 212,
+        "action": "kick",
+        "at": [89.8, 23.3],
+        "facing": "NW"
+      },
+      {
+        "from": 212,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [89.8, 23.3],
+          [89.6, 23]
+        ]
+      }
+    ],
+    "pairWith": "mesut-ozil"
+  },
+  {
+    "id": "amb-ozil-defender-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "walk",
+        "path": [
+          [83.5, 19.6],
+          [86.6, 21.2]
+        ]
+      },
+      {
+        "from": 96,
+        "to": 120,
+        "action": "slide",
+        "path": [
+          [86.6, 21.2],
+          [89.2, 25.4]
+        ]
+      },
+      {
+        "from": 120,
+        "to": 150,
+        "action": "idle",
+        "at": [89.2, 25.4],
+        "facing": "NE"
+      },
+      {
+        "from": 150,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [89.2, 25.4],
+          [83.5, 19.6]
+        ]
+      }
+    ],
+    "pairWith": "mesut-ozil"
+  },
+  {
+    "id": "amb-ozil-defender-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "football-kit",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 108,
+        "action": "walk",
+        "path": [
+          [89, 19.4],
+          [89.6, 21.4]
+        ]
+      },
+      {
+        "from": 108,
+        "to": 132,
+        "action": "slide",
+        "path": [
+          [89.6, 21.4],
+          [87, 25.8]
+        ]
+      },
+      {
+        "from": 132,
+        "to": 162,
+        "action": "idle",
+        "at": [87, 25.8],
+        "facing": "NW"
+      },
+      {
+        "from": 162,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [87, 25.8],
+          [89, 19.4]
+        ]
+      }
+    ],
+    "pairWith": "mesut-ozil"
+  },
+  {
+    "id": "amb-ozil-ball",
+    "kind": "ball",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "ball",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 24,
+        "action": "ball_roll",
+        "path": [
+          [82.6, 23.1],
+          [85.5, 23.1]
+        ]
+      },
+      {
+        "from": 24,
+        "to": 48,
+        "action": "ball_roll",
+        "path": [
+          [85.5, 23.1],
+          [87.3, 23.2],
+          [89, 23.5]
+        ],
+        "z": [0, 34, 0]
+      },
+      {
+        "from": 48,
+        "to": 60,
+        "action": "ball_roll",
+        "path": [
+          [89, 23.5],
+          [88.8, 23.65],
+          [88.7, 23.8]
+        ],
+        "z": [0, 9, 0]
+      },
+      {
+        "from": 60,
+        "to": 150,
+        "action": "ball_still",
+        "at": [88.7, 23.8],
+        "facing": "SE"
+      },
+      {
+        "from": 150,
+        "to": 176,
+        "action": "ball_roll",
+        "path": [
+          [88.7, 23.8],
+          [91, 23.4]
+        ]
+      },
+      {
+        "from": 176,
+        "to": 202,
+        "action": "ball_still",
+        "at": [91, 23.4],
+        "facing": "SE"
+      },
+      {
+        "from": 202,
+        "to": 240,
+        "action": "ball_roll",
+        "path": [
+          [91, 23.4],
+          [86.8, 23.2],
+          [82.6, 23.1]
+        ],
+        "z": [0, 46, 0]
+      }
+    ],
+    "pairWith": "mesut-ozil"
+  },
+  {
+    "id": "amb-fan-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "plum",
+        "garmentSecondary": "charcoal",
+        "headwear": "navy",
+        "prop": "sky"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [68.5, 34.4],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "celebrate",
+        "at": [70, 34.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "wave",
+        "at": [76, 34.6],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "khaki",
+        "headwear": "plum",
+        "prop": "mustard"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [86.4, 34.4],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "celebrate",
+        "at": [88, 34.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "charcoal",
+        "headwear": "emerald",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [89.6, 34.6],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "denim",
+        "headwear": "emerald",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [93.6, 18],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-7",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "denim",
+        "garmentSecondary": "charcoal",
+        "headwear": "black-cloth",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "wave",
+        "at": [93.8, 26],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "amb-coach",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "clipboard",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [74, 33.1],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "amb-kit-manager",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "hi-vis",
+      "headwear": "hijab",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "graphite",
+        "headwear": "wool-cream",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [79.2, 34.8],
+        "facing": "SE"
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-walk-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "football-kit",
+      "headwear": "cap",
+      "prop": "football",
+      "colours": {
+        "skin": "skin-1",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "plum",
+        "headwear": "plum",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [63, 39.4],
+          [90, 39.4],
+          [63, 39.4]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-fan-walk-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "navy",
+        "headwear": "navy",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [90, 38.4],
+          [66, 38.4],
+          [90, 38.4]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amb-barista-stadium",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "apron",
+      "headwear": "cap",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "denim",
+        "headwear": "plum",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [64.6, 36.9],
+        "facing": "SE"
+      }
+    ]
   }
 ]

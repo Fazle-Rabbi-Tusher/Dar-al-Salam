@@ -26,8 +26,8 @@ beforeAll(async () => {
   parts = await loadParts();
 });
 describe('real content validation', () => {
-  it('validates all 138 examples with every ambient scenario', () => {
-    expect(content.characters).toHaveLength(138);
+  it('validates all 163 examples with every ambient scenario', () => {
+    expect(content.characters).toHaveLength(163);
     for (const c of content.characters)
       expect(
         validateCharacter(
@@ -394,7 +394,13 @@ describe('larger, modern characters', () => {
       }
   });
   it('keeps the modern named cards as unapproved placeholders', () => {
-    const ids = ['fazlur-rahman-khan', 'zaha-hadid', 'aziz-sancar'];
+    const ids = [
+      'fazlur-rahman-khan',
+      'zaha-hadid',
+      'aziz-sancar',
+      'karim-benzema',
+      'mesut-ozil',
+    ];
     for (const id of ids) {
       const c = content.characters.find((c) => c.id === id)!;
       expect(c.panelApproved).toBe(false);
@@ -410,5 +416,32 @@ describe('larger, modern characters', () => {
         ),
       ).toThrow(/panelApproved/);
     }
+  });
+});
+
+describe('football stadium', () => {
+  it('stages the chip-and-stop goal on the 240-frame master loop', async () => {
+    const { characterState } = await import('../../packages/shared/script');
+    const ball = content.characters.find((c) => c.id === 'amb-ozil-ball')!;
+    const ozil = content.characters.find((c) => c.id === 'mesut-ozil')!;
+    expect(ball.kind).toBe('ball');
+    expect(ball.loop).toBe(240);
+    // 2–4 s: the ball is chipped high over the goalkeeper.
+    expect(characterState(ball, 36).z).toBeGreaterThan(25);
+    // 12–15 s: Özil rolls it in; the ball rests inside the goal mouth.
+    expect(characterState(ozil, 150).action).toBe('kick');
+    expect(characterState(ball, 190).tile[0]).toBeGreaterThan(90.5);
+    // The whole scene repeats exactly.
+    for (const c of [ball, ozil])
+      expect(characterState(c, 0)).toEqual(characterState(c, 240));
+  });
+  it('gives Benzema his three gestures and keeps the card a draft', () => {
+    const c = content.characters.find((c) => c.id === 'karim-benzema')!;
+    expect(c.script.map((s) => s.action)).toEqual([
+      'celebrate',
+      'cheer',
+      'cross-arms',
+    ]);
+    expect(c.panelApproved).toBe(false);
   });
 });

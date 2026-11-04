@@ -1,0 +1,249 @@
+{
+  "frames": [
+    {
+      "filename": "ball_roll_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_SE_1",
+      "frame": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_SE_2",
+      "frame": {
+        "x": 24,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_SE_3",
+      "frame": {
+        "x": 36,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_NE_0",
+      "frame": {
+        "x": 48,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_NE_1",
+      "frame": {
+        "x": 60,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_NE_2",
+      "frame": {
+        "x": 72,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_roll_NE_3",
+      "frame": {
+        "x": 84,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_still_SE_0",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    },
+    {
+      "filename": "ball_still_NE_0",
+      "frame": {
+        "x": 108,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 12,
+        "h": 12
+      },
+      "duration": 83
+    }
+  ],
+  "meta": {
+    "image": "ball.png",
+    "size": {
+      "w": 192,
+      "h": 12
+    },
+    "frameTags": [
+      {
+        "name": "ball_roll_se",
+        "from": 0,
+        "to": 3
+      },
+      {
+        "name": "ball_roll_ne",
+        "from": 4,
+        "to": 7
+      },
+      {
+        "name": "ball_still_se",
+        "from": 8,
+        "to": 8
+      },
+      {
+        "name": "ball_still_ne",
+        "from": 9,
+        "to": 9
+      }
+    ],
+    "slices": [
+      {
+        "name": "foot",
+        "keys": [
+          {
+            "frame": 0,
+            "bounds": {
+              "x": 6,
+              "y": 11,
+              "w": 1,
+              "h": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "mesut-ozil",
+  "kind": "person",
+  "name": {
+    "en": "Mesut Özil",
+    "ar": "مسعود أوزيل",
+    "bn": "মেসুত ওজিল"
+  },
+  "aliases": ["Mesut Ozil"],
+  "years": "b. 1988",
+  "place": "Gelsenkirchen · London",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-clean",
+    "garment": "football-kit-long",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-brown",
+      "garmentPrimary": "kit-red",
+      "garmentSecondary": "lab-white",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 24,
+      "action": "walk",
+      "path": [
+        [82, 23],
+        [85, 23]
+      ]
+    },
+    {
+      "from": 24,
+      "to": 36,
+      "action": "kick",
+      "at": [85, 23],
+      "facing": "SE"
+    },
+    {
+      "from": 36,
+      "to": 60,
+      "action": "walk",
+      "path": [
+        [85, 23],
+        [86.8, 24.8],
+        [88.3, 23.9]
+      ]
+    },
+    {
+      "from": 60,
+      "to": 144,
+      "action": "idle",
+      "at": [88.3, 23.9],
+      "facing": "SE"
+    },
+    {
+      "from": 144,
+      "to": 156,
+      "action": "kick",
+      "at": [88.3, 23.9],
+      "facing": "SE"
+    },
+    {
+      "from": 156,
+      "to": 200,
+      "action": "cheer",
+      "at": [88.3, 23.9],
+      "facing": "SE"
+    },
+    {
+      "from": 200,
+      "to": 240,
+      "action": "walk",
+      "path": [
+        [88.3, 23.9],
+        [82, 23]
+      ]
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

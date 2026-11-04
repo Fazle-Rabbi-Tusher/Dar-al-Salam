@@ -836,5 +836,126 @@
     ],
     "width": 32,
     "height": 57
+  },
+  "m-pitch": {
+    "file": "objects/m-pitch.png",
+    "anchor": [
+      256,
+      1
+    ],
+    "width": 640,
+    "height": 321,
+    "floor": true
+  },
+  "m-goal-west": {
+    "file": "objects/m-goal-west.png",
+    "anchor": [
+      64,
+      15
+    ],
+    "width": 96,
+    "height": 56
+  },
+  "m-goal-east": {
+    "file": "objects/m-goal-east.png",
+    "anchor": [
+      80,
+      23
+    ],
+    "width": 96,
+    "height": 63
+  },
+  "m-stand": {
+    "file": "objects/m-stand.png",
+    "anchor": [
+      48,
+      92
+    ],
+    "width": 192,
+    "height": 181,
+    "frames": [
+      "objects/m-stand-0.png",
+      "objects/m-stand-1.png",
+      "objects/m-stand-2.png",
+      "objects/m-stand-3.png"
+    ]
+  },
+  "m-stand-side": {
+    "file": "objects/m-stand-side.png",
+    "anchor": [
+      144,
+      92
+    ],
+    "width": 192,
+    "height": 181,
+    "frames": [
+      "objects/m-stand-side-0.png",
+      "objects/m-stand-side-1.png",
+      "objects/m-stand-side-2.png",
+      "objects/m-stand-side-3.png"
+    ]
+  },
+  "m-ad-boards": {
+    "file": "objects/m-ad-boards.png",
+    "anchor": [
+      16,
+      10
+    ],
+    "width": 160,
+    "height": 77
+  },
+  "m-ad-boards-side": {
+    "file": "objects/m-ad-boards-side.png",
+    "anchor": [
+      144,
+      10
+    ],
+    "width": 160,
+    "height": 77
+  },
+  "m-floodlight": {
+    "file": "objects/m-floodlight.png",
+    "anchor": [
+      16,
+      228
+    ],
+    "width": 48,
+    "height": 245
+  },
+  "m-scoreboard": {
+    "file": "objects/m-scoreboard.png",
+    "anchor": [
+      16,
+      86
+    ],
+    "width": 80,
+    "height": 111
+  },
+  "m-dugout": {
+    "file": "objects/m-dugout.png",
+    "anchor": [
+      16,
+      30
+    ],
+    "width": 80,
+    "height": 62
+  },
+  "m-corner-flag": {
+    "file": "objects/m-corner-flag.png",
+    "anchor": [
+      0,
+      22
+    ],
+    "width": 16,
+    "height": 25
+  },
+  "m-ball-rack": {
+    "file": "objects/m-ball-rack.png",
+    "anchor": [
+      16,
+      12
+    ],
+    "width": 48,
+    "height": 25
   }
 }

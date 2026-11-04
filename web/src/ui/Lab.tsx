@@ -153,12 +153,12 @@ export function Lab() {
       {t(key)}
       <select
         disabled={
-          look.base === 'cat' || look.base === 'bird' ? key !== 'base' : false
+          ['cat', 'bird', 'ball'].includes(look.base) ? key !== 'base' : false
         }
         value={look[key]}
         onChange={(e) => {
           const val = e.target.value;
-          if (key === 'base' && (val === 'cat' || val === 'bird')) {
+          if (key === 'base' && ['cat', 'bird', 'ball'].includes(val)) {
             setLook({
               ...look,
               base: val,
@@ -166,14 +166,20 @@ export function Lab() {
               headwear: 'none',
               prop: 'none',
             });
-            setAction(val === 'cat' ? 'cat_idle' : 'bird_fly');
+            setAction(
+              val === 'cat'
+                ? 'cat_idle'
+                : val === 'ball'
+                  ? 'ball_roll'
+                  : 'bird_fly',
+            );
           } else {
             setLook(
-              key === 'base' && (look.base === 'cat' || look.base === 'bird')
+              key === 'base' && ['cat', 'bird', 'ball'].includes(look.base)
                 ? { ...initial, base: val, colours: look.colours }
                 : { ...look, [key]: val },
             );
-            if (key === 'base' && (look.base === 'cat' || look.base === 'bird'))
+            if (key === 'base' && ['cat', 'bird', 'ball'].includes(look.base))
               setAction('idle');
           }
         }}
@@ -184,7 +190,7 @@ export function Lab() {
       </select>
     </label>
   );
-  const animal = look.base === 'cat' || look.base === 'bird';
+  const animal = ['cat', 'bird', 'ball'].includes(look.base);
   return (
     <main className="document lab-page">
       <a className="back-link" href="/">
@@ -199,9 +205,12 @@ export function Lab() {
             'adult-man',
             'adult-woman',
             'child',
+            'adult-man-beard',
+            'adult-man-clean',
             'elder',
             'cat',
             'bird',
+            'ball',
           ])}
           {field('garment', [
             'none',
@@ -222,6 +231,20 @@ export function Lab() {
                 'broom',
                 'pen',
                 'tray',
+                'laptop',
+                'tablet',
+                'phone',
+                'coffee',
+                'flask',
+                'stethoscope',
+                'clipboard',
+                'blueprint',
+                'meal-box',
+                'water-jug',
+                'cane',
+                'shopping-bag',
+                'football',
+                'wrist-tape',
               ].includes(id),
             ),
           ])}
@@ -268,7 +291,7 @@ export function Lab() {
                   .filter((a) =>
                     animal
                       ? a.startsWith(look.base + '_')
-                      : !a.startsWith('cat_') && !a.startsWith('bird_'),
+                      : !/^(cat|bird|ball)_/.test(a),
                   )
                   .map((a) => (
                     <option key={a}>{a}</option>

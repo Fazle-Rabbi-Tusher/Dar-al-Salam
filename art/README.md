@@ -14,9 +14,9 @@ aseprite -b <part>.aseprite \
 
 Use one visible/composed part per exported sheet (hide unrelated working layers before exporting). Categories are `bases`, `garments`, `headwear`, `props`. The JSON's `meta.image` references the PNG beside the JSON.
 
-- Tags: `<action>_<facing>` in lowercase, e.g. `walk_se`, `read_ne`, `pour_sw`. People: idle 4, walk 6, talk 4, sit 2, read 4, write 4, carry 6, pour 6, sweep 6, wave 4, teach 4, pray 8. Cats: cat_idle 4, cat_walk 6, cat_sleep 4. Birds: bird_fly 6, bird_peck 4.
-- Canvas: people 48×72, cat 32×24, bird 20×20. Keep full `sourceSize` in the JSON even when individual frames are trimmed.
-- Slice `foot`: a 1×1 slice at (24,68) for people, (16,22) for cats, (10,19) for birds. Sizes and anchors live in `packages/shared/canvas.ts`. A slice pivot is also supported; its world anchor is bounds position plus pivot.
+- Tags: `<action>_<facing>` in lowercase, e.g. `walk_se`, `read_ne`, `pour_sw`. People: idle 4, walk 6, talk 4, sit 2, read 4, write 4, carry 6, pour 6, sweep 6, wave 4, teach 4, pray 8, celebrate 4, cheer 4, cross-arms 4, kick 4, dive 4, slide 4. Cats: cat_idle 4, cat_walk 6, cat_sleep 4. Birds: bird_fly 6, bird_peck 4. Ball: ball_roll 4, ball_still 1.
+- Canvas: people 48×72, cat 32×24, bird 20×20, ball 12×12. Keep full `sourceSize` in the JSON even when individual frames are trimmed.
+- Slice `foot`: a 1×1 slice at (24,68) for people, (16,22) for cats, (10,19) for birds, (6,11) for the ball. Sizes and anchors live in `packages/shared/canvas.ts`. A slice pivot is also supported; its world anchor is bounds position plus pivot.
 - Draw SE and NE; SW and NW are mirrored at build time. Supply explicit SW/NW tags for asymmetric props; explicit frames take priority. Placeholder pour/write include SW to test this path.
 - Optional per-frame user data: `layerBias=<integer>` adjusts draw order. Default order: base, garment, headwear, prop when facing the viewer; prop, base, garment, headwear when facing away. Shadows are beneath the body; the compositor adds a 1 px brown silhouette outline.
 - Frame tags provide unique art frames. The global clock maps these to held frames over 60/120/240-frame loops; Aseprite duration metadata is preserved but does not alter the deterministic 12 fps clock.

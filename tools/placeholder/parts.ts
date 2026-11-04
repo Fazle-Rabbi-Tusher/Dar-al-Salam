@@ -19,6 +19,9 @@ export const bases = [
   'elder',
   'cat',
   'bird',
+  'adult-man-beard',
+  'adult-man-clean',
+  'ball',
 ];
 export const garments = [
   'thobe',
@@ -39,6 +42,9 @@ export const garments = [
   'hoodie-jeans',
   'long-dress',
   'hi-vis',
+  'football-kit',
+  'football-kit-captain',
+  'football-kit-long',
 ];
 export const headwear = [
   'imamah',
@@ -76,6 +82,8 @@ export const props = [
   'water-jug',
   'cane',
   'shopping-bag',
+  'football',
+  'wrist-tape',
 ];
 const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
@@ -379,6 +387,161 @@ function pose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       ][f] as P;
       break;
     }
+    case 'celebrate': {
+      // Running celebration, index finger pointed to the sky.
+      q = standing(f % 2);
+      q.head = add(q.head, 1, 0);
+      q.chest = add(q.chest, 0.5, 0);
+      q.arms[1][1] = [33.5, 22 + (f % 2)];
+      q.arms[1][2] = [
+        [35, 14],
+        [35.5, 12.5],
+        [35, 14.5],
+        [36, 12],
+      ][f] as P;
+      q.arms[0][1] = [17, 36];
+      q.arms[0][2] = [20, 43 + (f % 2)];
+      const s = [1, 0, -1, 0][f];
+      q.legs[0][2] = [21.5 + s * 2, 65];
+      q.legs[1][2] = [26.5 - s * 2, 65 - Math.abs(s)];
+      q.legs[1][1] = [27 - s, 55 - Math.abs(s)];
+      break;
+    }
+    case 'cheer': {
+      // Arms flung wide, chest out.
+      q = standing(f >= 2 ? 1 : 0);
+      const lift = [0, -1, -2, -1][f];
+      q.arms[0][1] = [13, 30 + lift * 0.5];
+      q.arms[0][2] = [7, 26 + lift];
+      q.arms[1][1] = [35, 30 + lift * 0.5];
+      q.arms[1][2] = [41, 26 + lift];
+      break;
+    }
+    case 'cross-arms': {
+      // Standing tall with folded arms.
+      const b = f >= 2 ? 1 : 0;
+      q = standing(b);
+      q.arms[0][1] = [17.5, 36 + b];
+      q.arms[0][2] = [28.5, 34 + b];
+      q.arms[1][1] = [30.5, 36 + b];
+      q.arms[1][2] = [20, 35 + b];
+      break;
+    }
+    case 'kick': {
+      q = standing(f === 1 ? 1 : 0);
+      const leg: Limb[] = [
+        [
+          [26.5, 45],
+          [24, 55],
+          [20, 61],
+        ],
+        [
+          [26.5, 45],
+          [29, 56],
+          [32.5, 63],
+        ],
+        [
+          [26.5, 45],
+          [31, 52],
+          [36, 55],
+        ],
+        [
+          [26.5, 45],
+          [27.5, 55],
+          [28.5, 64],
+        ],
+      ];
+      q.legs[1] = leg[f];
+      q.legs[0] = [
+        [21.5, 45],
+        [22, 55],
+        [23, 65],
+      ];
+      q.arms[0][1] = [14, 33];
+      q.arms[0][2] = [11, 37 - (f === 2 ? 2 : 0)];
+      q.arms[1][1] = [32, 35];
+      q.arms[1][2] = [34.5, 40];
+      if (f === 1 || f === 2) q.head = add(q.head, -1, 0);
+      break;
+    }
+    case 'dive': {
+      // Goalkeeper launching low across the goal mouth.
+      if (f === 0) {
+        q = standing(4);
+        q.legs.forEach((l) => (l[1] = add(l[1], 2, -2)));
+        q.arms[0][1] = [24, 31];
+        q.arms[0][2] = [31, 32];
+        q.arms[1][1] = [33, 31];
+        q.arms[1][2] = [37, 31];
+        break;
+      }
+      const ground = f === 1 ? 0 : 1,
+        y = away ? 44 + ground * 10 : 50 + ground * 10;
+      q = standing(0);
+      q.mode = 'bow';
+      q.hip = [18, y + 2];
+      q.chest = [28, y];
+      q.head = [31, y - 7 + (f === 3 ? 1 : 0)];
+      q.arms = [
+        [
+          [27, y - 3],
+          [34, y - 4],
+          [41, y - 5 + (f === 3 ? 1 : 0)],
+        ],
+        [
+          [29, y - 1],
+          [35, y + 1],
+          [41.5, y + 2],
+        ],
+      ];
+      q.legs = [
+        [
+          [17, y + 3],
+          [11.5, y + 4],
+          [6, y + 5],
+        ],
+        [
+          [19, y + 4],
+          [13, y + 6],
+          [7.5, y + 7],
+        ],
+      ];
+      break;
+    }
+    case 'slide': {
+      // Sliding tackle: leaning back, lead leg skimming the grass.
+      const d = f % 2;
+      q = standing(0);
+      q.mode = 'kneel';
+      q.chest = [19 + d, 52];
+      q.hip = [22 + d, 59];
+      q.head = [13 + d, 34];
+      q.legs = [
+        [
+          [21 + d, 61],
+          [16.5 + d, 63],
+          [23 + d, 66],
+        ],
+        [
+          [23 + d, 61],
+          [29.5 + d, 63],
+          [36 + d, 64.5],
+        ],
+      ];
+      q.arms = [
+        [
+          [15 + d, 49],
+          [13 + d, 56],
+          [12.5 + d, 62],
+        ],
+        [
+          [23 + d, 48],
+          [28 + d, 45],
+          [31 + d, 41 + d],
+        ],
+      ];
+      break;
+    }
     case 'pour': {
       q = standing(f >= 3 ? 1 : 0);
       const tilt = [0, 1, 2, 3, 2, 1][f];
@@ -566,6 +729,13 @@ function drawHead(p: Pixels, q: Pose, id: string) {
       .rect(x, y, 3, 7);
     if (id === 'adult-woman')
       hair.rect(x - 1, y + 2, 3, 9).disc(x + 1, y + 1, 3);
+    if (id === 'adult-man-clean')
+      hair.rect(x + 1, y - 2, 8, 1).rect(x + 4, y - 3, 5, 1);
+    if (id === 'adult-man-beard')
+      hair
+        .rect(x + 2, y + 7, 8, 4)
+        .rect(x + 3, y + 11, 6, 2)
+        .rect(x + 4, y + 13, 4, 1);
     if (id === 'adult-man' || id === 'elder')
       hair
         .rect(x + 3, y + 8, 7, id === 'elder' ? 3 : 2)
@@ -614,7 +784,9 @@ function shoes(p: Pixels, q: Pose) {
 function hands(p: Pixels, q: Pose) {
   for (const arm of q.arms) {
     const m = mk(p).disc(arm[2][0], arm[2][1] + 0.5, 1.9);
-    paint(p, m, K.skin, { dark: 1, light: 0 });
+    if (q.action === 'celebrate' && arm === q.arms[1])
+      m.rect(arm[2][0] - 0.5, arm[2][1] - 4, 1, 3); // raised index finger
+    paint(p, m, K.skin, { dark: 1, light: 0, top: false });
   }
 }
 
@@ -1052,6 +1224,58 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
       sleeves(p, q, C);
       break;
     }
+    case 'football-kit':
+    case 'football-kit-captain':
+    case 'football-kit-long': {
+      const long = id === 'football-kit-long',
+        shortsR = long ? S : C,
+        socksR = long ? S : C;
+      // Shorts to the knee and long socks: knees stay covered.
+      const shorts = mk(p);
+      for (const leg of q.legs)
+        shorts.capsule(leg[0], lerp(leg[0], leg[1], 1.05), 3);
+      if (q.mode === 'floor') shorts.ellipse(24, 63, 10, 3);
+      paint(p, shorts, shortsR);
+      if (q.mode !== 'floor')
+        for (const leg of q.legs) {
+          const socks = mk(p).capsule(
+            lerp(leg[1], leg[2], 0.1),
+            lerp(leg[1], leg[2], 0.92),
+            2.3,
+          );
+          paint(p, socks, socksR, { dark: 1 });
+          const band = lerp(leg[1], leg[2], 0.2);
+          p.rect(band[0] - 2, band[1], 4, 1, long ? C[1] : S[1]);
+        }
+      torso(p, q, C, 5.9);
+      if (upright) {
+        if (!q.away) {
+          // Polo collar with trim and a short placket.
+          p.rect(q.chest[0] - 3, top - 1, 7, 2, C[0]);
+          p.rect(q.chest[0] - 3, top + 1, 2, 1, S[1]);
+          p.rect(q.chest[0] + 2, top + 1, 2, 1, S[1]);
+          p.rect(q.chest[0], top, 1, 5, S[2]);
+          p.pixel(q.chest[0] + 1, top + 3, C[2]);
+        } else p.rect(q.chest[0] - 3, top - 1, 7, 2, S[1]);
+        for (let y = Math.round(q.chest[1]); y < q.hip[1]; y += 4)
+          p.pixel(q.chest[0] - 3 + ((y / 4) % 2), y, C[0]);
+      }
+      if (long) sleeves(p, q, S);
+      else {
+        sleeves(p, q, C, { short: K.skin });
+        for (const arm of q.arms) {
+          const c = lerp(arm[0], arm[1], 0.85);
+          p.rect(c[0] - 2, c[1], 4, 1, S[1]);
+        }
+      }
+      if (id === 'football-kit-captain') {
+        const arm = q.arms[0],
+          c = lerp(arm[0], arm[1], 0.45);
+        p.rect(c[0] - 2.5, c[1] - 1, 5, 3, F.screen);
+        p.rect(c[0] - 2.5, c[1], 5, 1, F.white);
+      }
+      break;
+    }
     case 'hi-vis': {
       trousers(p, q, S);
       torso(p, q, C, 6);
@@ -1413,6 +1637,30 @@ function drawProp(p: Pixels, id: string, q: Pose) {
       p.rect(hx - 1, hy - 1, 3, 1, R[0]);
       break;
     }
+    case 'football': {
+      const foot = q.legs[1][2],
+        held = a === 'carry' || a === 'read' || a === 'teach';
+      const [cx, cy] = held ? both : [foot[0] + 4, foot[1] - 0.5];
+      const m = mk(p).disc(cx, cy, 2.8);
+      paint(p, m, [F.white, F.cream, F.steel[1]], { dark: 1 });
+      p.rect(cx - 0.5, cy - 0.5, 2, 2, R[2]);
+      p.pixel(cx - 2, cy + 1, R[2]);
+      p.pixel(cx + 1, cy - 2, R[2]);
+      break;
+    }
+    case 'wrist-tape': {
+      for (const arm of q.arms) {
+        const w = lerp(arm[1], arm[2], 0.75);
+        if (arm === q.arms[1] || a === 'cheer')
+          paint(
+            p,
+            mk(p).rect(w[0] - 2, w[1] - 1, 4, 3),
+            [F.white, F.white, F.cream],
+            { dark: 1, light: 0 },
+          );
+      }
+      break;
+    }
     case 'shopping-bag': {
       const [cx, cy] = a === 'carry' ? both : [hx, hy + 5];
       box(cx - 3, cy - 2, 7, 8);
@@ -1547,6 +1795,20 @@ function drawBird(p: Pixels, action: Action, face: string, f: number) {
   }
 }
 
+function drawBall(p: Pixels, action: Action, f: number) {
+  const m = mk(p).disc(6, 8, 3.3);
+  paint(p, m, [F.white, F.cream, F.steel[1]], { dark: 1 });
+  const spin = action === 'ball_roll' ? f : 0;
+  const patches: P[] = [
+    [5, 6],
+    [7, 8],
+    [5, 9],
+    [7, 6],
+  ];
+  p.rect(5 + (spin % 2), 7, 2, 2, K.prop[2]);
+  const [a, b] = patches[spin];
+  p.pixel(a + 1, b - 1, K.prop[1]);
+}
 function drawPart(
   id: string,
   category: string,
@@ -1562,6 +1824,10 @@ function drawPart(
   }
   if (id === 'bird') {
     drawBird(p, action, face, f);
+    return p;
+  }
+  if (id === 'ball') {
+    drawBall(p, action, f);
     return p;
   }
   if (face === 'SW') {
@@ -1599,9 +1865,14 @@ export async function generateParts(overwrite = false) {
           ? ['cat_idle', 'cat_walk', 'cat_sleep']
           : id === 'bird'
             ? ['bird_fly', 'bird_peck']
-            : Object.keys(ACTIONS).filter(
-                (a) => !a.startsWith('cat_') && !a.startsWith('bird_'),
-              )
+            : id === 'ball'
+              ? ['ball_roll', 'ball_still']
+              : Object.keys(ACTIONS).filter(
+                  (a) =>
+                    !a.startsWith('cat_') &&
+                    !a.startsWith('bird_') &&
+                    !a.startsWith('ball_'),
+                )
       ) as Action[];
       const frames: Aseprite['frames'] = [],
         tags: Aseprite['meta']['frameTags'] = [];

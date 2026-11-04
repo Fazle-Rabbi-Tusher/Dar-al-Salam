@@ -12,11 +12,19 @@ export const ACTIONS = {
   wave: 4,
   teach: 4,
   pray: 8,
+  celebrate: 4,
+  cheer: 4,
+  'cross-arms': 4,
+  kick: 4,
+  dive: 4,
+  slide: 4,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,
   bird_fly: 6,
   bird_peck: 4,
+  ball_roll: 4,
+  ball_still: 1,
 } as const;
 export type Action = keyof typeof ACTIONS;
 export const facingSchema = z.enum(['SE', 'SW', 'NE', 'NW']);
@@ -49,7 +57,7 @@ export const stepSchema = z
 export type Step = z.infer<typeof stepSchema>;
 export const characterSchema = z.object({
   id: z.string().min(1),
-  kind: z.enum(['person', 'cat', 'bird']).default('person'),
+  kind: z.enum(['person', 'cat', 'bird', 'ball']).default('person'),
   name: z.record(z.string()).optional(),
   aliases: z.array(z.string()).default([]),
   years: z.string().optional(),

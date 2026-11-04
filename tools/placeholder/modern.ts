@@ -89,6 +89,21 @@ const C = {
   waterLight: '#D4EEF0',
   rice: '#F3E3A6',
   cream: '#F7EBD0',
+  // Football stadium.
+  pitchLight: '#74B95B',
+  pitch: '#5FA64C',
+  pitchDark: '#4A8B3E',
+  line: '#F4F7EE',
+  net: '#D9DEDA',
+  netShade: '#AEB6B2',
+  fanSkin1: '#E5BF92',
+  fanSkin2: '#BA8D63',
+  fanSkin3: '#875E42',
+  fanSkin4: '#593E30',
+  fanHair: '#3B322E',
+  lamp: '#FFF6C8',
+  lampGlow: '#FFE88A',
+  seatGrey: '#9AA3A6',
 } as const;
 export const MODERN_COLOURS: string[] = [...new Set(Object.values(C))];
 
@@ -1625,6 +1640,373 @@ const objects: Record<string, Spec> = {
     },
   },
 };
+
+/* ───────────── Football stadium ───────────── */
+const fanSkins = [C.fanSkin1, C.fanSkin2, C.fanSkin3, C.fanSkin4];
+const kit = [
+  C.white,
+  C.red,
+  C.blue,
+  C.yellow,
+  C.green,
+  C.navy,
+  C.orange,
+  C.purple,
+  C.teal,
+  C.pink,
+  C.charcoal,
+];
+/** A point on a tile-space circle, plotted as an iso pixel. */
+function arc(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  r: number,
+  from: number,
+  to: number,
+  col: string,
+) {
+  const n = Math.ceil(r * 64);
+  for (let k = 0; k <= n; k++) {
+    const a = from + ((to - from) * k) / n,
+      [x, y] = c.at(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+    c.p.pixel(x, y, col);
+    c.p.pixel(x + 1, y, col);
+  }
+}
+function goal(c: IsoCanvas, postX: number, backX: number) {
+  const H = 22,
+    backH = 15;
+  const grid = (a: [number, number, number], b: [number, number, number]) =>
+    c.edge(a, b, C.net);
+  // Net: back, sides and roof as a see-through grid.
+  for (let y = 0; y <= 4.001; y += 0.5) grid([backX, y, 0], [backX, y, backH]);
+  for (let z = 0; z <= backH; z += 5) grid([backX, 0, z], [backX, 4, z]);
+  for (const y of [0, 4]) {
+    for (let t = 0; t <= 1.001; t += 0.5) {
+      const x = postX + (backX - postX) * t;
+      grid([x, y, 0], [x, y, H + (backH - H) * t]);
+    }
+    for (let z = 0; z <= H; z += 5)
+      grid([postX, y, Math.min(z, H)], [backX, y, Math.min(z, backH)]);
+  }
+  for (let y = 0; y <= 4.001; y += 0.5) grid([postX, y, H], [backX, y, backH]);
+  c.edge([backX, 0, backH], [backX, 4, backH], C.netShade);
+  c.edge([backX, 0, 0], [backX, 4, 0], C.netShade);
+  // Posts and crossbar.
+  for (const y of [0, 4]) {
+    const [x0, y0] = c.at(postX, y, 0);
+    c.p.rect(x0 - 1, y0 - H, 3, H + 1, C.white);
+    c.p.rect(x0 + 1, y0 - H, 1, H + 1, C.pale);
+  }
+  const a = c.at(postX, 0, H),
+    b = c.at(postX, 4, H);
+  c.thick(a, b, 1, C.white);
+  c.line([a[0], a[1] + 1], [b[0], b[1] + 1], C.pale);
+}
+const stadium: Record<string, Spec> = {
+  'm-pitch': {
+    footprint: [24, 16],
+    h: 2,
+    floor: true,
+    draw(c) {
+      c.top(0, 0, 24, 16, 0, C.pitchDark);
+      for (let i = 0; i < 16; i++)
+        c.top(i * 1.5, 0.05, 1.5, 15.9, 0, i % 2 ? C.pitch : C.pitchLight);
+      const L = C.line,
+        ln = (x1: number, y1: number, x2: number, y2: number) => {
+          c.edge([x1, y1, 0], [x2, y2, 0], L);
+          const a = c.at(x1, y1),
+            b = c.at(x2, y2);
+          c.line([a[0] + 1, a[1]], [b[0] + 1, b[1]], L);
+        },
+        rectL = (x: number, y: number, w: number, d: number) => {
+          ln(x, y, x + w, y);
+          ln(x + w, y, x + w, y + d);
+          ln(x + w, y + d, x, y + d);
+          ln(x, y + d, x, y);
+        };
+      rectL(0.5, 0.5, 23, 15);
+      ln(12, 0.5, 12, 15.5);
+      arc(c, 12, 8, 2.2, 0, Math.PI * 2, L);
+      for (const x of [0.5, 20.3]) rectL(x, 4, 3.2, 8);
+      for (const x of [0.5, 22.4]) rectL(x, 6, 1.1, 4);
+      arc(c, 2.6, 8, 2.2, -0.93, 0.93, L);
+      arc(c, 21.4, 8, 2.2, Math.PI - 0.93, Math.PI + 0.93, L);
+      for (const [x, y] of [
+        [12, 8],
+        [2.6, 8],
+        [21.4, 8],
+      ]) {
+        const [px, py] = c.at(x, y);
+        c.p.rect(px - 1, py - 1, 3, 2, L);
+      }
+      for (const [x, y, a] of [
+        [0.5, 0.5, 0],
+        [23.5, 0.5, Math.PI / 2],
+        [23.5, 15.5, Math.PI],
+        [0.5, 15.5, -Math.PI / 2],
+      ])
+        arc(c, x, y, 0.45, a, a + Math.PI / 2, L);
+    },
+  },
+  'm-goal-west': {
+    footprint: [1, 4],
+    h: 26,
+    draw(c) {
+      goal(c, 1, 0.15);
+    },
+  },
+  'm-goal-east': {
+    footprint: [1, 4],
+    h: 26,
+    draw(c) {
+      goal(c, 0, 0.85);
+    },
+  },
+  'm-stand': {
+    footprint: [8, 3],
+    h: 100,
+    side: true,
+    frames: 4,
+    draw(c, f) {
+      const tiers = 6,
+        step = 12,
+        depth = 3 / tiers;
+      // Back wall and roof canopy.
+      c.faceX(0, 0, 8, 0, tiers * step + 14, C.concreteShade);
+      c.faceY(8, 0, 0.15, 0, tiers * step + 14, C.concreteLine);
+      // Roof supports behind the tiers.
+      for (const x of [0, 4, 7.88])
+        c.box(x, -0.12, 0.12, 0.12, tiers * step + 14, M.steel);
+      for (let i = tiers - 1; i >= 0; i--) {
+        const y = 3 - (i + 1) * depth,
+          z = (i + 1) * step;
+        c.box(0, y, 8, depth, z, M.concrete);
+        // Seats along the tread, with a fan in most of them.
+        for (let k = 0; k < 24; k++) {
+          const x = 0.17 + k * 0.33,
+            n = k * 7 + i * 13,
+            [px, py] = c.at(x, y + depth * 0.55, z),
+            seat = [C.red, C.blue, C.teal, C.yellow][
+              (i + Math.floor(k / 6)) % 4
+            ];
+          c.p.rect(px - 2, py - 4, 4, 4, seat);
+          c.p.rect(px - 2, py - 1, 4, 1, C.charcoal);
+          if (n % 9 === 4) continue;
+          const shirt = kit[n % kit.length],
+            skin = fanSkins[(n * 3) % 4],
+            cheer = (n + f * 3 + Math.floor(k / 4)) % 6 < 2,
+            bob = cheer ? 1 : 0;
+          c.p.rect(px - 1, py - 8 - bob, 3, 5, shirt);
+          c.p.pixel(px + 1, py - 4 - bob, C.edge);
+          c.p.rect(px - 1, py - 11 - bob, 3, 3, skin);
+          c.p.rect(
+            px - 1,
+            py - 12 - bob,
+            3,
+            1,
+            n % 4 ? C.fanHair : kit[(n + 3) % kit.length],
+          );
+          if (cheer) {
+            c.p.rect(px - 2, py - 13 - bob, 1, 4, skin);
+            c.p.rect(px + 2, py - 13 - bob, 1, 4, skin);
+            if (n % 5 === 0)
+              c.p.rect(px - 2, py - 14 - bob, 5, 1, kit[(n + 5) % kit.length]);
+          }
+          if (n % 23 === 0) {
+            // A plain flag on a short pole.
+            c.p.rect(px + 2, py - 20, 1, 12, C.woodDark);
+            c.p.rect(
+              px + 3,
+              py - 20 + (f % 2),
+              5,
+              4,
+              kit[(n + 1) % kit.length],
+            );
+            c.p.rect(
+              px + 3,
+              py - 18 + (f % 2),
+              5,
+              1,
+              kit[(n + 2) % kit.length],
+            );
+          }
+        }
+        c.edge([0, y + depth, z], [8, y + depth, z], C.stoneLine);
+      }
+      // Stairway aisles.
+      for (const x of [2.6, 5.3])
+        for (let i = 0; i < tiers; i++)
+          c.top(
+            x,
+            3 - (i + 1) * depth,
+            0.18,
+            depth,
+            (i + 1) * step + 0.5,
+            C.warmGreyLight,
+          );
+      c.box(-0.05, -0.25, 8.1, 0.6, 4, M.teal, tiers * step + 14);
+      c.box(-0.05, 0.3, 8.1, 0.12, 2, M.white, tiers * step + 12);
+    },
+  },
+  'm-ad-boards': {
+    footprint: [8, 0.3],
+    h: 14,
+    side: true,
+    draw(c) {
+      c.box(0, 0, 8, 0.3, 10, M.dark);
+      const panels = [
+        C.red,
+        C.blue,
+        C.yellow,
+        C.green,
+        C.orange,
+        C.purple,
+        C.teal,
+        C.navy,
+      ];
+      for (let i = 0; i < 8; i++) {
+        const col = panels[i % panels.length];
+        c.faceX(i + 0.04, 0.301, 0.92, 1.5, 7.5, col);
+        c.faceX(i + 0.15, 0.302, 0.4, 3.5, 3, C.white);
+        c.faceX(i + 0.6, 0.302, 0.28, 3, 4, panels[(i + 3) % panels.length]);
+      }
+    },
+  },
+  'm-floodlight': {
+    footprint: [1, 1],
+    h: 232,
+    draw(c) {
+      const H = 200,
+        legs: [number, number][] = [
+          [0.1, 0.1],
+          [0.9, 0.1],
+          [0.9, 0.9],
+          [0.1, 0.9],
+        ];
+      const pt = (i: number, z: number): [number, number, number] => {
+        const t = z / H,
+          [x, y] = legs[i];
+        return [x + (0.5 - x) * t * 0.7, y + (0.5 - y) * t * 0.7, z];
+      };
+      c.box(0, 0, 1, 1, 6, M.concrete);
+      for (const i of [0, 1, 3, 2])
+        c.edge(pt(i, 6), pt(i, H), i === 2 ? C.steelDark : C.steel);
+      for (let z = 6; z < H; z += 18)
+        for (const [a, b] of [
+          [3, 2],
+          [1, 2],
+          [0, 3],
+          [0, 1],
+        ]) {
+          c.edge(pt(a, z), pt(b, z + 18), C.steelDark);
+          c.edge(pt(b, z), pt(a, z + 18), C.steel);
+          c.edge(pt(a, z), pt(b, z), C.steelDark);
+        }
+      c.box(0.2, 0.2, 0.6, 0.6, 4, M.steel, H);
+      // Lamp bank facing the pitch.
+      c.faceX(-0.3, 0.6, 1.6, H + 4, 26, C.charcoal);
+      for (let r = 0; r < 3; r++)
+        for (let k = 0; k < 5; k++) {
+          const [px, py] = c.at(-0.2 + k * 0.3 + 0.1, 0.601, H + 8 + r * 8);
+          c.p.rect(px - 2, py - 5, 5, 5, C.lampGlow);
+          c.p.rect(px - 1, py - 4, 3, 3, C.lamp);
+        }
+      c.edge([-0.3, 0.6, H + 30], [1.3, 0.6, H + 30], C.slate);
+    },
+  },
+  'm-scoreboard': {
+    footprint: [3, 0.4],
+    h: 92,
+    draw(c) {
+      for (const x of [0.3, 2.5]) c.box(x, 0.1, 0.2, 0.2, 50, M.steel);
+      c.box(0, 0, 3, 0.4, 40, M.dark, 46);
+      c.faceX(0.1, 0.401, 2.8, 50, 32, C.screen);
+      // Abstract blocks only: two colour panels, bars and a progress strip.
+      c.faceX(0.25, 0.402, 0.9, 64, 14, C.red);
+      c.faceX(1.85, 0.402, 0.9, 64, 14, C.blue);
+      c.faceX(1.3, 0.402, 0.4, 66, 10, C.white);
+      for (let k = 0; k < 6; k++)
+        c.faceX(
+          0.3 + k * 0.42,
+          0.402,
+          0.28,
+          54,
+          3 + ((k * 5) % 7),
+          [C.glow, C.yellow, C.beat][k % 3],
+        );
+      c.faceX(0.25, 0.402, 2.5, 52, 1, C.slate);
+      c.faceX(0.25, 0.402, 1.6, 52, 1, C.yellow);
+    },
+  },
+  'm-dugout': {
+    footprint: [3, 1],
+    h: 40,
+    draw(c) {
+      c.box(0, 0, 3, 0.25, 30, M.white);
+      c.box(0.1, 0.3, 2.8, 0.35, 7, M.dark);
+      for (let k = 0; k < 7; k++)
+        c.box(0.15 + k * 0.4, 0.3, 0.32, 0.3, 3, M.teal, 7);
+      for (const x of [0.02, 2.93])
+        c.faceY(x + 0.05, 0.25, 0.75, 0, 28, C.glassLight);
+      // Curved clear roof from the back wall to the front edge.
+      for (let k = 0; k <= 10; k++) {
+        const t = k / 10,
+          z = 30 - t * t * 12;
+        c.top(0, t * 0.95, 3, 0.11, z, k % 3 ? C.glass : C.glassLight);
+      }
+      c.edge([0, 0.95, 18], [3, 0.95, 18], C.tealDark);
+      c.edge([3, 0, 30], [3, 0.95, 18], C.tealDark);
+    },
+  },
+  'm-corner-flag': {
+    footprint: [0.3, 0.3],
+    h: 30,
+    draw(c, f) {
+      const [x, y] = c.at(0.15, 0.15);
+      c.p.rect(x, y - 24, 1, 24, C.white);
+      c.p.pixel(x, y, C.slate);
+      c.p.poly(
+        [
+          [x + 1, y - 24],
+          [x + 8, y - 22 + f],
+          [x + 1, y - 18],
+        ],
+        C.yellow,
+      );
+      c.p.rect(x + 1, y - 23, 3, 1, C.red);
+    },
+  },
+  'm-ball-rack': {
+    footprint: [1, 0.6],
+    h: 22,
+    draw(c) {
+      for (const [x, y] of [
+        [0.05, 0.05],
+        [0.95, 0.05],
+        [0.95, 0.55],
+        [0.05, 0.55],
+      ])
+        c.box(x - 0.03, y - 0.03, 0.06, 0.06, 12, M.steel);
+      c.top(0, 0, 1, 0.6, 2, C.slate);
+      for (let k = 0; k < 6; k++) {
+        const [px, py] = c.at(
+          0.2 + (k % 3) * 0.3,
+          0.15 + Math.floor(k / 3) * 0.3,
+          6 + (k % 2) * 4,
+        );
+        c.p.ellipse(px, py, 3, 3, C.white);
+        c.p.rect(px - 1, py - 1, 2, 2, C.charcoal);
+        c.p.pixel(px + 2, py + 1, C.silver);
+        c.p.pixel(px - 2, py + 2, C.charcoal);
+      }
+      c.edge([0, 0.6, 12], [1, 0.6, 12], C.steelDark);
+      c.edge([1, 0, 12], [1, 0.6, 12], C.steelDark);
+    },
+  },
+};
+Object.assign(objects, stadium);
 
 export const MODERN_OBJECTS: Record<
   string,

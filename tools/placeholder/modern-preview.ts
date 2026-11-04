@@ -10,10 +10,14 @@ import {
 } from './modern';
 const out = process.argv[2] ?? 'modern-preview.png';
 const allowed = new Set(MODERN_COLOURS);
-const rendered = Object.keys(MODERN_OBJECTS).map((id) => ({
-  id,
-  ...renderModernObject(id),
-}));
+// Optional second argument: comma-separated object ids to preview.
+const only = process.argv[3]?.split(',');
+const rendered = Object.keys(MODERN_OBJECTS)
+  .filter((id) => !only || only.includes(id))
+  .map((id) => ({
+    id,
+    ...renderModernObject(id),
+  }));
 const errors: string[] = [];
 for (const r of rendered)
   for (const f of r.frames)

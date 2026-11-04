@@ -642,16 +642,11 @@ export class Engine {
     for (const c of this.debug.removeChildren()) c.destroy();
     const g = new Graphics();
     this.debug.addChild(g);
-    for (let i = 0; i <= 64; i++) {
-      const a = worldFromTile(i, 0),
-        b = worldFromTile(i, 64),
-        c = worldFromTile(0, i),
-        d = worldFromTile(64, i);
-      g.moveTo(...a)
-        .lineTo(...b)
-        .moveTo(...c)
-        .lineTo(...d);
-    }
+    const { width: rw, height: rh } = this.manifest!.room;
+    for (let i = 0; i <= rw; i++)
+      g.moveTo(...worldFromTile(i, 0)).lineTo(...worldFromTile(i, rh));
+    for (let i = 0; i <= rh; i++)
+      g.moveTo(...worldFromTile(0, i)).lineTo(...worldFromTile(rw, i));
     g.stroke({ color: 0x377d79, width: 0.5, alpha: 0.4 });
     for (let i = 0; i <= 4; i++)
       g.moveTo(i * 1024, 0)
@@ -665,8 +660,8 @@ export class Engine {
     if (collision?.type === 'tilelayer')
       for (let i = 0; i < collision.data.length; i++)
         if (collision.data[i]) {
-          const x = i % 64,
-            y = Math.floor(i / 64);
+          const x = i % rw,
+            y = Math.floor(i / rw);
           g.poly(
             [
               worldFromTile(x, y),

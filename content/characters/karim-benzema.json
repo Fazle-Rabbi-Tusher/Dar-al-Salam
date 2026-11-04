@@ -1,0 +1,67 @@
+{
+  "id": "karim-benzema",
+  "kind": "person",
+  "name": {
+    "en": "Karim Benzema",
+    "ar": "كريم بنزيما",
+    "bn": "করিম বেনজেমা"
+  },
+  "aliases": ["Benzema"],
+  "years": "b. 1987",
+  "place": "Lyon · Madrid",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "football-kit-captain",
+    "headwear": "none",
+    "prop": "wrist-tape",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "lab-white",
+      "garmentSecondary": "plum",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 80,
+      "action": "celebrate",
+      "at": [73.6, 20.8],
+      "facing": "SE"
+    },
+    {
+      "from": 80,
+      "to": 160,
+      "action": "cheer",
+      "at": [73.6, 20.8],
+      "facing": "SE"
+    },
+    {
+      "from": 160,
+      "to": 240,
+      "action": "cross-arms",
+      "at": [73.6, 20.8],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

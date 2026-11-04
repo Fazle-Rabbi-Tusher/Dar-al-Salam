@@ -12,7 +12,7 @@ import { MODERN_OBJECTS } from './modern';
 import { detailFootprints, type DetailType } from './details';
 
 /*
- * The Peace Quarter: one 64×64-tile room showing contemporary Muslim life and
+ * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
  * contribution side by side — a modern mosque and study circle, a university
  * science lab, an architecture studio, a hospital, a community kitchen, a
  * library with a coding class, a street with a café, and a solar garden.
@@ -1015,15 +1015,312 @@ export function modernQuarter() {
     ];
   }
 
+  /* ════════ Football stadium (x 61–95, y 3–44), east of the ring road ════════ */
+  obj('m-pitch', 67, 15, true);
+  for (const x of [67, 75, 83]) obj('m-stand', x, 11.5);
+  for (const y of [15, 23]) obj('m-stand-side', 62.5, y);
+  for (const x of [67, 75, 83]) obj('m-ad-boards', x, 32.2);
+  for (const y of [15, 23]) obj('m-ad-boards-side', 92.4, y);
+  obj('m-goal-west', 66.5, 21);
+  obj('m-goal-east', 90.5, 21);
+  for (const [x, y] of [
+    [67, 15],
+    [90.7, 15],
+    [67, 30.7],
+    [90.7, 30.7],
+  ])
+    obj('m-corner-flag', x, y);
+  for (const [x, y] of [
+    [63.5, 11.5],
+    [92, 11],
+    [63.5, 33.5],
+  ])
+    obj('m-floodlight', x, y);
+  obj('m-scoreboard', 92.5, 8.6);
+  obj('m-dugout', 72, 33.4);
+  obj('m-dugout', 82, 33.4);
+  obj('m-ball-rack', 77.6, 33.6);
+  for (let i = 0; i < 4; i++) {
+    obj('m-tree', 66 + i * 8, 41.5);
+    obj('m-street-lamp', 70 + i * 8, 41.6);
+  }
+  obj('m-bike-rack', 88, 41.2);
+  obj('m-coffee-cart', 63, 37.5);
+  const kit = (
+    colour: string,
+    trim: string,
+    base = 'adult-man',
+    prop = 'none',
+  ) =>
+    L(base, 'football-kit', 'none', prop, {
+      garmentPrimary: colour,
+      garmentSecondary: trim,
+    });
+  const home = () => kit('lab-white', 'plum'),
+    away = () => kit('emerald', 'white-linen');
+  // West half: teammates run in to celebrate with the captain.
+  walker(
+    'teammate-1',
+    [
+      [79, 18],
+      [74.6, 19.4],
+    ],
+    home(),
+    120,
+  );
+  walker(
+    'teammate-2',
+    [
+      [79, 26],
+      [74.8, 22.2],
+    ],
+    home(),
+    120,
+  ).pairWith = 'karim-benzema';
+  walker(
+    'teammate-3',
+    [
+      [77, 24.5],
+      [77, 28.5],
+    ],
+    kit('lab-white', 'plum', 'adult-man-beard'),
+    60,
+  );
+  person('teammate-4', [72.2, 19.2], 'cheer', home(), 'SE', 60);
+  person('keeper-west', [68.4, 23], 'idle', kit('sky', 'navy'), 'SE', 240);
+  walker(
+    'referee',
+    [
+      [79, 16.5],
+      [79, 29.5],
+    ],
+    kit('black-cloth', 'mustard'),
+    240,
+  );
+  /*
+   * East half: a 15-second chip-and-stop goal, then a 5-second reset, on the
+   * 240-frame master loop. 0–2 s the keeper rushes out; 2–4 s the chip over
+   * him; 4–7 s control on the bounce; 7–12 s stop dead as two defenders
+   * slide past; 12–15 s roll into the empty net.
+   */
+  const striker = 'mesut-ozil';
+  const gk = person(
+    'ozil-keeper',
+    [89.6, 23],
+    'walk',
+    kit('mustard', 'graphite'),
+  );
+  gk.loop = 240;
+  gk.pairWith = striker;
+  gk.script = [
+    {
+      from: 0,
+      to: 24,
+      action: 'walk',
+      path: [
+        [89.6, 23],
+        [87.2, 23],
+      ],
+    },
+    { from: 24, to: 60, action: 'dive', at: [87.2, 23], facing: 'NW' },
+    // Beaten, the keeper sits on the grass until the ball is in the net.
+    { from: 60, to: 180, action: 'read', at: [87.2, 23], facing: 'SE' },
+    {
+      from: 180,
+      to: 200,
+      action: 'walk',
+      path: [
+        [87.2, 23],
+        [89.8, 23.3],
+      ],
+    },
+    { from: 200, to: 212, action: 'kick', at: [89.8, 23.3], facing: 'NW' },
+    {
+      from: 212,
+      to: 240,
+      action: 'walk',
+      path: [
+        [89.8, 23.3],
+        [89.6, 23],
+      ],
+    },
+  ];
+  const slider = (
+    id: string,
+    start: Pt,
+    from: Pt,
+    to: Pt,
+    at: number,
+    face: Facing,
+  ) => {
+    const d = person(id, start, 'walk', away());
+    d.loop = 240;
+    d.pairWith = striker;
+    d.script = [
+      { from: 0, to: at, action: 'walk', path: [start, from] },
+      { from: at, to: at + 24, action: 'slide', path: [from, to] },
+      { from: at + 24, to: at + 54, action: 'idle', at: to, facing: face },
+      { from: at + 54, to: 240, action: 'walk', path: [to, start] },
+    ];
+  };
+  slider('ozil-defender-1', [83.5, 19.6], [86.6, 21.2], [89.2, 25.4], 96, 'NE');
+  slider('ozil-defender-2', [89, 19.4], [89.6, 21.4], [87, 25.8], 108, 'NW');
+  const ball = person(
+    'ozil-ball',
+    [82.6, 23.1],
+    'ball_roll',
+    L('ball', 'none', 'none', 'none', { prop: 'graphite' }),
+  );
+  ball.kind = 'ball';
+  ball.loop = 240;
+  ball.pairWith = striker;
+  ball.script = [
+    {
+      from: 0,
+      to: 24,
+      action: 'ball_roll',
+      path: [
+        [82.6, 23.1],
+        [85.5, 23.1],
+      ],
+    },
+    {
+      from: 24,
+      to: 48,
+      action: 'ball_roll',
+      path: [
+        [85.5, 23.1],
+        [87.3, 23.2],
+        [89, 23.5],
+      ],
+      z: [0, 34, 0],
+    },
+    {
+      from: 48,
+      to: 60,
+      action: 'ball_roll',
+      path: [
+        [89, 23.5],
+        [88.8, 23.65],
+        [88.7, 23.8],
+      ],
+      z: [0, 9, 0],
+    },
+    { from: 60, to: 150, action: 'ball_still', at: [88.7, 23.8], facing: 'SE' },
+    {
+      from: 150,
+      to: 176,
+      action: 'ball_roll',
+      path: [
+        [88.7, 23.8],
+        [91, 23.4],
+      ],
+    },
+    { from: 176, to: 202, action: 'ball_still', at: [91, 23.4], facing: 'SE' },
+    {
+      from: 202,
+      to: 240,
+      action: 'ball_roll',
+      path: [
+        [91, 23.4],
+        [86.8, 23.2],
+        [82.6, 23.1],
+      ],
+      z: [0, 46, 0],
+    },
+  ];
+
+  // Supporters along the touchline and on the concourse.
+  (
+    [
+      [68.5, 34.4, 'cheer', 'NE'],
+      [70, 34.2, 'celebrate', 'NE'],
+      [76, 34.6, 'wave', 'NE'],
+      [86.4, 34.4, 'cheer', 'NW'],
+      [88, 34.2, 'celebrate', 'NE'],
+      [89.6, 34.6, 'idle', 'NW'],
+      [93.6, 18, 'cheer', 'NW'],
+      [93.8, 26, 'wave', 'NW'],
+    ] as [number, number, Step['action'], Facing][]
+  ).forEach(([x, y, a, f], i) =>
+    person(
+      `fan-${i}`,
+      [x, y],
+      a,
+      i % 3 === 0 ? woman() : i % 3 === 1 ? man() : child(),
+      f,
+      ([60, 120, 240] as Loop[])[i % 3],
+    ),
+  );
+  person(
+    'coach',
+    [74, 33.1],
+    'talk',
+    withProp(
+      L('adult-man', 'suit', 'none', 'none', { garmentPrimary: 'navy' }),
+      'clipboard',
+    ),
+    'NE',
+  );
+  person(
+    'kit-manager',
+    [79.2, 34.8],
+    'idle',
+    withProp(
+      L('adult-woman', 'hi-vis', 'hijab', 'none', { garmentPrimary: 'sky' }),
+      'tablet',
+    ),
+    'SE',
+    240,
+  );
+  walker(
+    'fan-walk-1',
+    [
+      [63, 39.4],
+      [90, 39.4],
+    ],
+    withProp(
+      L('child', 'football-kit', 'cap', 'football', {
+        garmentPrimary: 'lab-white',
+        garmentSecondary: 'plum',
+        headwear: 'plum',
+      }),
+      'football',
+    ),
+    240,
+  );
+  walker(
+    'fan-walk-2',
+    [
+      [90, 38.4],
+      [66, 38.4],
+    ],
+    withProp(woman(), 'phone'),
+    240,
+  );
+  person(
+    'barista-stadium',
+    [64.6, 36.9],
+    'pour',
+    withProp(
+      L('adult-man', 'apron', 'cap', 'none', { headwear: 'plum' }),
+      'coffee',
+    ),
+    'SE',
+  );
+
   /* ════════ Floor ════════ */
   const floor: number[] = [];
   const stone = (x: number, y: number) => 1 + ((x * 3 + y * 7) % 3);
-  for (let y = 0; y < 64; y++)
-    for (let x = 0; x < 64; x++) {
+  const W = 96,
+    H = 64;
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
       const inX = (a: number, b: number) => x >= a && x <= b,
         inY = (a: number, b: number) => y >= a && y <= b;
       let t: number;
-      if (x < 7 || y < 7 || x > 55 || y > 55)
+      if (x >= 61 && y >= 3 && y <= 44) t = 8;
+      else if (x < 7 || y < 7 || x > 55 || y > 55)
         t = inX(57, 58) || inY(57, 58) ? 12 : 7;
       else if (inY(21, 23) || inY(38, 40) || inX(22, 23) || inX(36, 38)) t = 8;
       else if (y <= 20) t = x <= 21 ? stone(x, y) : x <= 35 ? 9 : 10;
@@ -1034,12 +1331,12 @@ export function modernQuarter() {
           x <= 21 ? 9 : x <= 35 ? (inY(48, 50) ? 12 : 7) : inY(46, 47) ? 8 : 4;
       floor.push(t);
     }
-  const collision: number[] = Array(64 * 64).fill(0);
+  const collision: number[] = Array(W * H).fill(0);
   for (const o of objects)
     if (!o.walkable)
       for (let y = Math.floor(o.y); y < o.y + o.footprint[1]; y++)
         for (let x = Math.floor(o.x); x < o.x + o.footprint[0]; x++)
-          collision[y * 64 + x] = 1;
+          collision[y * W + x] = 1;
   const room: Room = roomSchema.parse({
     type: 'map',
     version: '1.10',
@@ -1047,24 +1344,24 @@ export function modernQuarter() {
     renderorder: 'right-down',
     tilewidth: 32,
     tileheight: 16,
-    width: 64,
-    height: 64,
+    width: W,
+    height: H,
     infinite: false,
     layers: [
       {
         id: 1,
         name: 'floor',
         type: 'tilelayer',
-        width: 64,
-        height: 64,
+        width: W,
+        height: H,
         data: floor,
       },
       {
         id: 2,
         name: 'collision',
         type: 'tilelayer',
-        width: 64,
-        height: 64,
+        width: W,
+        height: H,
         data: collision,
         visible: false,
       },
@@ -1185,6 +1482,103 @@ export function namedCards(): Character[] {
         },
       },
       script: two('pour', 'talk', [42.5, 14.9], 'SE', 'SW'),
+    }),
+    card({
+      id: 'karim-benzema',
+      name: { en: 'Karim Benzema', ar: 'كريم بنزيما', bn: 'করিম বেনজেমা' },
+      aliases: ['Benzema'],
+      years: 'b. 1987',
+      place: 'Lyon · Madrid',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-beard',
+        garment: 'football-kit-captain',
+        headwear: 'none',
+        prop: 'wrist-tape',
+        colours: {
+          skin: 'skin-3',
+          hair: 'hair-black',
+          garmentPrimary: 'lab-white',
+          garmentSecondary: 'plum',
+          headwear: 'white-linen',
+          prop: 'graphite',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 80,
+          action: 'celebrate',
+          at: [73.6, 20.8],
+          facing: 'SE',
+        },
+        { from: 80, to: 160, action: 'cheer', at: [73.6, 20.8], facing: 'SE' },
+        {
+          from: 160,
+          to: 240,
+          action: 'cross-arms',
+          at: [73.6, 20.8],
+          facing: 'SW',
+        },
+      ],
+    }),
+    card({
+      id: 'mesut-ozil',
+      name: { en: 'Mesut Özil', ar: 'مسعود أوزيل', bn: 'মেসুত ওজিল' },
+      aliases: ['Mesut Ozil'],
+      years: 'b. 1988',
+      place: 'Gelsenkirchen · London',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-clean',
+        garment: 'football-kit-long',
+        headwear: 'none',
+        prop: 'none',
+        colours: {
+          skin: 'skin-2',
+          hair: 'hair-brown',
+          garmentPrimary: 'kit-red',
+          garmentSecondary: 'lab-white',
+          headwear: 'white-linen',
+          prop: 'graphite',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 24,
+          action: 'walk',
+          path: [
+            [82, 23],
+            [85, 23],
+          ],
+        },
+        { from: 24, to: 36, action: 'kick', at: [85, 23], facing: 'SE' },
+        {
+          from: 36,
+          to: 60,
+          action: 'walk',
+          path: [
+            [85, 23],
+            [86.8, 24.8],
+            [88.3, 23.9],
+          ],
+        },
+        { from: 60, to: 144, action: 'idle', at: [88.3, 23.9], facing: 'SE' },
+        { from: 144, to: 156, action: 'kick', at: [88.3, 23.9], facing: 'SE' },
+        { from: 156, to: 200, action: 'cheer', at: [88.3, 23.9], facing: 'SE' },
+        {
+          from: 200,
+          to: 240,
+          action: 'walk',
+          path: [
+            [88.3, 23.9],
+            [82, 23],
+          ],
+        },
+      ],
     }),
     card({
       id: 'al-khwarizmi',
