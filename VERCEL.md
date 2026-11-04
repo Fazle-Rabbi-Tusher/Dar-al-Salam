@@ -6,7 +6,7 @@ The app is a static Vite site. Use the **repository root** as the Vercel Root Di
 
 Import this GitHub repository into Vercel, keep the Root Directory at its default repository root, and deploy `main`. The commands and output directory are already configured in `vercel.json`. No custom environment variables, backend, database or API keys are needed.
 
-Both Vercel **Production** and **Preview** deployments build the publicly labelled prototype by default. All eleven draft cards remain visibly marked **DRAFT**, with unresearched text and citations clearly labelled. A production hosting URL does not mark those cards as panel-approved.
+Both Vercel **Production** and **Preview** deployments build the publicly labelled prototype by default. All draft cards remain visibly marked **DRAFT**, with unresearched text and citations clearly labelled. A production hosting URL does not mark those cards as panel-approved.
 
 If a deployment from an older commit failed with `panelApproved must be true`, deploy the latest `main`. Keep the Build Command from `vercel.json`; no `VERCEL_ENV` override is needed. Leave `DAR_CONTENT_MODE` unset for the prototype.
 

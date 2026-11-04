@@ -1,0 +1,72 @@
+{
+  "id": "muhammad-ali",
+  "kind": "person",
+  "name": {
+    "en": "Muhammad Ali",
+    "ar": "محمد علي",
+    "bn": "মুহাম্মদ আলী"
+  },
+  "aliases": ["Cassius Clay"],
+  "years": "1942–2016",
+  "place": "Louisville",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-clean",
+    "garment": "boxing-kit",
+    "headwear": "none",
+    "prop": "boxing-gloves",
+    "colours": {
+      "skin": "skin-6",
+      "hair": "hair-black",
+      "garmentPrimary": "lab-white",
+      "garmentSecondary": "lab-white",
+      "headwear": "wool-cream",
+      "prop": "kit-red"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 160,
+      "action": "taunt",
+      "at": [81.4, 49.8],
+      "facing": "SW",
+      "z": 8
+    },
+    {
+      "from": 160,
+      "to": 240,
+      "action": "guard",
+      "at": [81.4, 49.8],
+      "facing": "SW",
+      "z": 8
+    }
+  ],
+  "pairWith": "amb-ali-opponent",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "American boxer, the 1960 Olympic light-heavyweight gold medallist and three-time world heavyweight champion. Famous for his speed and wit, and for his stand on conscience outside the ring. He stood over Sonny Liston in their 1965 rematch in one of sport’s best-known photographs."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Muhammad_Ali"
+    }
+  ],
+  "panelApproved": false
+}

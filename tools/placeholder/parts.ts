@@ -49,6 +49,8 @@ export const garments = [
   'football-kit-captain',
   'football-kit-long',
   'football-kit-sleeved',
+  'fight-kit',
+  'boxing-kit',
 ];
 export const headwear = [
   'imamah',
@@ -62,6 +64,7 @@ export const headwear = [
   'hard-hat',
   'scrub-cap',
   'headwrap',
+  'papakha',
 ];
 export const props = [
   'book',
@@ -88,6 +91,9 @@ export const props = [
   'shopping-bag',
   'football',
   'wrist-tape',
+  'mma-gloves',
+  'boxing-gloves',
+  'title-belt',
 ];
 const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
@@ -429,6 +435,93 @@ function pose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       q.arms[0][2] = [28.5, 34 + b];
       q.arms[1][1] = [30.5, 36 + b];
       q.arms[1][2] = [20, 35 + b];
+      break;
+    }
+    case 'guard': {
+      // Fighting stance: fists up by the chin, knees soft, bouncing.
+      const b = f % 2;
+      q = standing(1 + b);
+      q.legs[0][2] = [19.5, 65];
+      q.legs[1][2] = [28.5, 64];
+      q.legs[0][1] = [20.5, 55];
+      q.legs[1][1] = [28, 55];
+      q.arms[0][1] = [19, 36 + b];
+      q.arms[0][2] = [24.5, 29 + b];
+      q.arms[1][1] = [32, 35 + b];
+      q.arms[1][2] = [30.5, 28.5 + b + (f === 2 ? 1 : 0)];
+      break;
+    }
+    case 'punch': {
+      // Jab from the guard: the lead hand snaps out and back.
+      q = standing(1);
+      q.legs[0][2] = [19.5, 65];
+      q.legs[1][2] = [28.5, 64];
+      q.arms[0][1] = [19, 36];
+      q.arms[0][2] = [24.5, 29];
+      const reach = [0, 5, 9, 4][f];
+      q.arms[1][1] = [32 + reach * 0.5, 31];
+      q.arms[1][2] = [31 + reach, 28.5];
+      q.head = add(q.head, f === 2 ? 1 : 0, 0);
+      break;
+    }
+    case 'belt-pose': {
+      // Champion's pose: hands on the title belt at the hips.
+      const b = f >= 2 ? 1 : 0;
+      q = standing(b);
+      q.legs[0][2] = [20.5, 65];
+      q.legs[1][2] = [27.5, 65];
+      q.arms[0][1] = [15, 37 + b];
+      q.arms[0][2] = [18.5, 44 + b];
+      q.arms[1][1] = [33, 37 + b];
+      q.arms[1][2] = [29.5, 44 + b];
+      break;
+    }
+    case 'taunt': {
+      // Standing over a fallen opponent: leaning in, fist cocked.
+      const b = f % 2;
+      q = standing(1);
+      q.head = add(q.head, 2, 2 + b);
+      q.chest = add(q.chest, 1.5, 1.5);
+      q.legs[0][2] = [19, 65];
+      q.legs[1][2] = [29.5, 65];
+      q.arms[0][1] = [16, 38];
+      q.arms[0][2] = [21, 33 - b];
+      q.arms[1][1] = [33, 37];
+      q.arms[1][2] = [33.5, 45 + b];
+      break;
+    }
+    case 'lie': {
+      // Lying on the back on the canvas.
+      q = standing(0);
+      q.mode = 'bow';
+      const y = 61;
+      q.hip = [21, y + 1];
+      q.chest = [30, y];
+      q.head = [33, y - 9 + f];
+      q.arms = [
+        [
+          [29, y - 3],
+          [34, y - 6],
+          [39, y - 8],
+        ],
+        [
+          [31, y + 1],
+          [36, y + 2],
+          [40, y + 1],
+        ],
+      ];
+      q.legs = [
+        [
+          [20, y + 2],
+          [14, y + 2],
+          [8, y + 3],
+        ],
+        [
+          [21, y + 3],
+          [15, y + 5],
+          [9.5, y + 5],
+        ],
+      ];
       break;
     }
     case 'arms-out': {
@@ -1348,6 +1441,47 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
       }
       break;
     }
+    case 'fight-kit': {
+      // Rash guard and knee-length fight shorts over grappling spats.
+      const shorts = mk(p);
+      for (const leg of q.legs)
+        shorts.capsule(leg[0], lerp(leg[0], leg[1], 1.08), 3.1);
+      if (q.mode === 'floor') shorts.ellipse(24, 63, 10, 3);
+      paint(p, shorts, S);
+      for (const leg of q.legs) {
+        const c = lerp(leg[0], leg[1], 0.55);
+        p.rect(c[0] - 2.5, c[1], 1, 4, C[1]);
+      }
+      torso(p, q, C, 5.9);
+      if (upright && !q.away) {
+        p.rect(q.chest[0] - 2, top, 5, 1, S[1]);
+        for (let y = top + 3; y < q.hip[1] - 1; y += 3)
+          p.pixel(q.chest[0] + 3, y, S[1]);
+      }
+      sleeves(p, q, C);
+      break;
+    }
+    case 'boxing-kit': {
+      // Sleeveless vest and knee-length trunks with a dark waistband.
+      const trunks = mk(p);
+      for (const leg of q.legs)
+        trunks.capsule(leg[0], lerp(leg[0], leg[1], 1.05), 3.3);
+      if (q.mode === 'floor') trunks.ellipse(24, 63, 10, 3);
+      paint(p, trunks, S, { light: 2 });
+      if (q.mode === 'stand')
+        for (const [i, leg] of q.legs.entries()) {
+          const c = lerp(leg[0], leg[1], 0.45);
+          p.rect(c[0] + (i ? 2.5 : -3), c[1] - 2, 1, 5, F.ink);
+        }
+      torso(p, q, C, 5.7);
+      belt(p, q, [F.ink, F.ink, F.outline], 3);
+      for (const arm of q.arms) {
+        const m = mk(p).capsule(arm[0], arm[1], 2.3).capsule(arm[1], arm[2], 2);
+        paint(p, m, K.skin, { dark: 1 });
+      }
+      hands(p, q);
+      break;
+    }
     case 'hi-vis': {
       trousers(p, q, S);
       torso(p, q, C, 6);
@@ -1499,6 +1633,18 @@ function drawHeadwear(p: Pixels, id: string, q: Pose) {
       paint(p, m, H, { dark: 2 });
       p.rect(x + 4, y - 4, 2, 4, H[0]);
       p.rect(x - 3, y + 2, 16, 1, H[2]);
+      break;
+    }
+    case 'papakha': {
+      // Tall, fluffy sheepskin hat.
+      const m = mk(p)
+        .ellipse(x + 5, y - 2, 7.5, 6)
+        .rect(x - 1, y - 1, 12, 4);
+      paint(p, m, H, { light: 2, dark: 2 });
+      for (let j = y - 8; j < y + 3; j++)
+        for (let i = x - 3; i < x + 13; i++)
+          if (m.has(i, j) && (i * 5 + j * 3) % 4 === 0)
+            p.pixel(i, j, (i + j) % 3 ? H[0] : H[2]);
       break;
     }
     case 'scrub-cap': {
@@ -1749,6 +1895,39 @@ function drawProp(p: Pixels, id: string, q: Pose) {
             [F.white, F.white, F.cream],
             { dark: 1, light: 0 },
           );
+      }
+      break;
+    }
+    case 'mma-gloves':
+    case 'boxing-gloves': {
+      const big = id === 'boxing-gloves';
+      for (const arm of q.arms) {
+        const [gx, gy] = arm[2];
+        const m = mk(p).disc(gx, gy + 0.5, big ? 3.2 : 2.3);
+        paint(p, m, R, { dark: 1 });
+        const cuff = lerp(arm[1], arm[2], 0.72);
+        p.rect(cuff[0] - 2, cuff[1], 4, big ? 2 : 1, big ? F.white : R[0]);
+        if (!big) p.pixel(gx + 1, gy + 1, K.skin[1]);
+      }
+      break;
+    }
+    case 'title-belt': {
+      if (q.mode === 'bow' || q.mode === 'prostrate') break;
+      const [bx, by] = q.hip;
+      p.rect(bx - 6.5, by - 2, 13, 4, F.ink);
+      const plate = mk(p).poly([
+        [bx - 4, by - 4],
+        [bx + 4, by - 4],
+        [bx + 5.5, by - 1],
+        [bx + 4, by + 3],
+        [bx - 4, by + 3],
+        [bx - 5.5, by - 1],
+      ]);
+      if (!q.away) {
+        paint(p, plate, ['#EAC577', '#D8AD57', '#AF853E'], { light: 2 });
+        p.rect(bx - 2, by - 2, 4, 3, '#AF853E');
+        p.pixel(bx - 3, by - 3, F.white);
+        p.pixel(bx + 3, by + 1, R[0]);
       }
       break;
     }

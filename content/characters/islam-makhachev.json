@@ -1,0 +1,88 @@
+{
+  "id": "islam-makhachev",
+  "kind": "person",
+  "name": {
+    "en": "Islam Makhachev",
+    "ar": "إسلام مخاتشيف",
+    "bn": "ইসলাম মাখাচেভ"
+  },
+  "aliases": [],
+  "years": "b. 1991",
+  "place": "Makhachkala",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "fight-kit",
+    "headwear": "none",
+    "prop": "mma-gloves",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-black",
+      "garmentPrimary": "black-cloth",
+      "garmentSecondary": "kit-red",
+      "headwear": "wool-cream",
+      "prop": "black-cloth"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "guard",
+      "at": [65.6, 51],
+      "facing": "SE",
+      "z": 4
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "punch",
+      "at": [65.6, 51],
+      "facing": "SE",
+      "z": 4
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "guard",
+      "at": [65.6, 51],
+      "facing": "SE",
+      "z": 4
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "punch",
+      "at": [65.6, 51],
+      "facing": "SE",
+      "z": 4
+    }
+  ],
+  "pairWith": "kamaru-usman",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Mixed martial artist from Makhachkala, Dagestan, and a longtime training partner of Khabib Nurmagomedov. He became UFC lightweight champion in 2022."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Islam_Makhachev"
+    }
+  ],
+  "panelApproved": false
+}

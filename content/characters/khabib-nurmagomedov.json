@@ -1,0 +1,79 @@
+{
+  "id": "khabib-nurmagomedov",
+  "kind": "person",
+  "name": {
+    "en": "Khabib Nurmagomedov",
+    "ar": "حبيب نورمحمدوف",
+    "bn": "খাবিব নুরমাগোমেদভ"
+  },
+  "aliases": ["Khabib"],
+  "years": "b. 1988",
+  "place": "Sildi · Makhachkala",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "fight-kit",
+    "headwear": "papakha",
+    "prop": "title-belt",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-black",
+      "garmentPrimary": "black-cloth",
+      "garmentSecondary": "black-cloth",
+      "headwear": "wool-cream",
+      "prop": "black-cloth"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 120,
+      "action": "belt-pose",
+      "at": [66.6, 48.8],
+      "facing": "SE",
+      "z": 4
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "wave",
+      "at": [66.6, 48.8],
+      "facing": "SE",
+      "z": 4
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "belt-pose",
+      "at": [66.6, 48.8],
+      "facing": "SW",
+      "z": 4
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Mixed martial artist from Dagestan, Russia. A former UFC lightweight champion, he retired undefeated in 2020 with a professional record of 29 wins and no losses."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Khabib_Nurmagomedov"
+    }
+  ],
+  "panelApproved": false
+}

@@ -6,10 +6,7 @@
     "ar": "نغولو كانتي",
     "bn": "এনগোলো কান্তে"
   },
-  "aliases": [
-    "NGolo Kante",
-    "N’Golo Kante"
-  ],
+  "aliases": ["NGolo Kante", "N’Golo Kante"],
   "years": "b. 1991",
   "place": "Paris · London",
   "district": "modern-quarter",
@@ -35,26 +32,11 @@
       "to": 120,
       "action": "walk",
       "path": [
-        [
-          77,
-          29.6
-        ],
-        [
-          82,
-          29.6
-        ],
-        [
-          83.2,
-          27.6
-        ],
-        [
-          78.4,
-          27.2
-        ],
-        [
-          77,
-          29.6
-        ]
+        [77, 29.6],
+        [82, 29.6],
+        [83.2, 27.6],
+        [78.4, 27.2],
+        [77, 29.6]
       ]
     }
   ],

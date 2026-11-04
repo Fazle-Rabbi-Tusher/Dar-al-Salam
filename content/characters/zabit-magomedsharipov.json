@@ -1,0 +1,87 @@
+{
+  "id": "zabit-magomedsharipov",
+  "kind": "person",
+  "name": {
+    "en": "Zabit Magomedsharipov",
+    "ar": "زابيت ماغوميدشاريبوف",
+    "bn": "জাবিত মাগোমেদশারিপভ"
+  },
+  "aliases": [],
+  "years": "b. 1991",
+  "place": "Dagestan",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "fight-kit",
+    "headwear": "none",
+    "prop": "mma-gloves",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-black",
+      "garmentPrimary": "black-cloth",
+      "garmentSecondary": "emerald",
+      "headwear": "wool-cream",
+      "prop": "black-cloth"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "kick",
+      "at": [74.4, 53.4],
+      "facing": "SE",
+      "z": 0
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "guard",
+      "at": [74.4, 53.4],
+      "facing": "SE",
+      "z": 0
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "kick",
+      "at": [74.4, 53.4],
+      "facing": "SE",
+      "z": 0
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "guard",
+      "at": [74.4, 53.4],
+      "facing": "SW",
+      "z": 0
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Mixed martial artist from Dagestan who fought in the UFC featherweight division, known for his acrobatic, creative striking."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Zabit_Magomedsharipov"
+    }
+  ],
+  "panelApproved": false
+}

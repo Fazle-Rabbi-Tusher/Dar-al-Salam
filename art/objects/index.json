@@ -957,5 +957,133 @@
     ],
     "width": 48,
     "height": 25
+  },
+  "m-octagon-mat": {
+    "file": "objects/m-octagon-mat.png",
+    "anchor": [
+      80,
+      1
+    ],
+    "width": 160,
+    "height": 85,
+    "floor": true
+  },
+  "m-cage-straight": {
+    "file": "objects/m-cage-straight.png",
+    "anchor": [
+      16,
+      38
+    ],
+    "width": 80,
+    "height": 65
+  },
+  "m-cage-straight-side": {
+    "file": "objects/m-cage-straight-side.png",
+    "anchor": [
+      64,
+      38
+    ],
+    "width": 80,
+    "height": 65
+  },
+  "m-cage-diag-a": {
+    "file": "objects/m-cage-diag-a.png",
+    "anchor": [
+      32,
+      27
+    ],
+    "width": 64,
+    "height": 40
+  },
+  "m-cage-diag-b": {
+    "file": "objects/m-cage-diag-b.png",
+    "anchor": [
+      16,
+      39
+    ],
+    "width": 32,
+    "height": 64
+  },
+  "m-ring-base": {
+    "file": "objects/m-ring-base.png",
+    "anchor": [
+      96,
+      7
+    ],
+    "width": 208,
+    "height": 104,
+    "floor": true
+  },
+  "m-ring-ropes": {
+    "file": "objects/m-ring-ropes.png",
+    "anchor": [
+      16,
+      30
+    ],
+    "width": 128,
+    "height": 81
+  },
+  "m-ring-ropes-side": {
+    "file": "objects/m-ring-ropes-side.png",
+    "anchor": [
+      112,
+      30
+    ],
+    "width": 128,
+    "height": 81
+  },
+  "m-ring-steps": {
+    "file": "objects/m-ring-steps.png",
+    "anchor": [
+      16,
+      20
+    ],
+    "width": 32,
+    "height": 36
+  },
+  "m-corner-stool": {
+    "file": "objects/m-corner-stool.png",
+    "anchor": [
+      16,
+      12
+    ],
+    "width": 32,
+    "height": 22
+  },
+  "m-ringside-seats": {
+    "file": "objects/m-ringside-seats.png",
+    "anchor": [
+      16,
+      24
+    ],
+    "width": 80,
+    "height": 61
+  },
+  "m-ringside-seats-side": {
+    "file": "objects/m-ringside-seats-side.png",
+    "anchor": [
+      64,
+      24
+    ],
+    "width": 80,
+    "height": 61
+  },
+  "m-commentary-desk": {
+    "file": "objects/m-commentary-desk.png",
+    "anchor": [
+      16,
+      29
+    ],
+    "width": 64,
+    "height": 62
+  },
+  "m-arena-banner": {
+    "file": "objects/m-arena-banner.png",
+    "anchor": [
+      16,
+      83
+    ],
+    "width": 80,
+    "height": 110
   }
 }

@@ -56,7 +56,7 @@ export function modernQuarter() {
   const random = mulberry32(796);
   const pick = <T>(a: T[]) => a[Math.floor(random() * a.length)];
   const objects: RoomObject[] = [];
-  const obj = (type: string, x: number, y: number, walkable = false) => {
+  const obj = (type: string, x: number, y: number, walkable = false, z = 0) => {
     const fp = footprintOf(type);
     objects.push({
       id: objects.length + 1,
@@ -65,7 +65,7 @@ export function modernQuarter() {
       y,
       footprint: fp,
       walkable: walkable || Boolean(MODERN_OBJECTS[type]?.floor),
-      z: 0,
+      z,
     });
   };
 
@@ -1339,6 +1339,172 @@ export function modernQuarter() {
     'SE',
   );
 
+  /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */
+  // Octagon at (64, 47): flat mat baked into the floor, cage pieces on each
+  // edge so fighters inside sort between the back and front walls.
+  const OX = 64,
+    OY = 47,
+    MAT = 4;
+  obj('m-octagon-mat', OX, OY, true);
+  obj('m-cage-straight', OX + 1.5, OY - 0.15, false, MAT);
+  obj('m-cage-straight', OX + 1.5, OY + 5.85, false, MAT);
+  obj('m-cage-straight-side', OX - 0.15, OY + 1.5, false, MAT);
+  obj('m-cage-straight-side', OX + 5.85, OY + 1.5, false, MAT);
+  obj('m-cage-diag-a', OX, OY, false, MAT);
+  obj('m-cage-diag-a', OX + 4.5, OY + 4.5, false, MAT);
+  obj('m-cage-diag-b', OX + 4.5, OY, false, MAT);
+  obj('m-cage-diag-b', OX, OY + 4.5, false, MAT);
+  // Boxing ring at (78, 47): raised platform baked in, ropes on each edge.
+  const RX = 78,
+    RY = 47,
+    RING = 8;
+  obj('m-ring-base', RX, RY, true);
+  obj('m-ring-ropes', RX, RY - 0.15, false, RING);
+  obj('m-ring-ropes', RX, RY + 5.85, false, RING);
+  obj('m-ring-ropes-side', RX - 0.15, RY, false, RING);
+  obj('m-ring-ropes-side', RX + 5.85, RY, false, RING);
+  obj('m-ring-steps', RX + 2.5, RY + 6.05);
+  obj('m-corner-stool', RX - 0.9, RY + 5.4);
+  obj('m-corner-stool', RX + 6.3, RY + 0.4);
+  for (const x of [63.5, 67.5, 77.5, 81.5]) {
+    obj('m-ringside-seats', x, 54.8);
+    // Spectators on most of the chairs, facing the action.
+    for (let i = 0; i < 4; i++)
+      if ((x + i) % 3 !== 1)
+        person(
+          `ringside-${x}-${i}`,
+          [x + 0.5 + i, 55.2],
+          'sit',
+          i % 2 ? man() : woman(),
+          i % 2 ? 'NE' : 'NW',
+          ([60, 120, 240] as Loop[])[i % 3],
+        );
+  }
+  obj('m-ringside-seats-side', 86.6, 47.5);
+  obj('m-ringside-seats-side', 86.6, 51.5);
+  for (let i = 0; i < 8; i += 2)
+    person(
+      `ringside-east-${i}`,
+      [87, 48 + i],
+      'sit',
+      i % 4 ? man() : woman(),
+      'NW',
+      ([120, 240] as Loop[])[(i / 2) % 2],
+    );
+  obj('m-commentary-desk', 72, 51);
+  obj('m-arena-banner', 72.4, 45.4);
+  obj('m-arena-banner', 89, 45.4);
+  const fighter = (
+    base: string,
+    skin: string,
+    top: string,
+    shorts: string,
+    gloves = 'mma-gloves',
+    garment = 'fight-kit',
+  ) =>
+    L(base, garment, 'none', gloves, {
+      skin,
+      hair: 'hair-black',
+      garmentPrimary: top,
+      garmentSecondary: shorts,
+      prop: gloves === 'boxing-gloves' ? 'kit-red' : 'black-cloth',
+    });
+  // Ringside: seconds, officials and supporters.
+  person(
+    'referee-octagon',
+    [69.4, 49.2],
+    'idle',
+    L('adult-man', 'shirt-trousers', 'none', 'none', {
+      garmentPrimary: 'black-cloth',
+      garmentSecondary: 'black-cloth',
+    }),
+    'SW',
+    240,
+    {
+      script: [
+        {
+          from: 0,
+          to: 240,
+          action: 'idle',
+          at: [69.4, 49.2],
+          facing: 'SW',
+          z: MAT,
+        },
+      ],
+    },
+  );
+  person(
+    'commentator-1',
+    [72.8, 50.6],
+    'talk',
+    withProp(man(), 'none'),
+    'SE',
+    120,
+  );
+  person(
+    'commentator-2',
+    [74.4, 50.6],
+    'talk',
+    withProp(woman(), 'tablet'),
+    'SE',
+    240,
+  );
+  person(
+    'cornerman',
+    [77, 52.6],
+    'cheer',
+    L('adult-man', 'hoodie-jeans', 'cap', 'none', {
+      garmentPrimary: 'kit-red',
+    }),
+    'NE',
+    60,
+  );
+  const opp = person(
+    'ali-opponent',
+    [80.4, 51.4],
+    'lie',
+    fighter(
+      'adult-man-shaved',
+      'skin-8',
+      'black-cloth',
+      'black-cloth',
+      'boxing-gloves',
+      'boxing-kit',
+    ),
+    'SE',
+    240,
+  );
+  opp.script = [
+    {
+      from: 0,
+      to: 240,
+      action: 'lie',
+      at: [80.4, 51.4],
+      facing: 'SE',
+      z: RING,
+    },
+  ];
+  opp.pairWith = 'muhammad-ali';
+  (
+    [
+      [64, 56.4, 'cheer', 'NE'],
+      [66.6, 56.5, 'wave', 'NE'],
+      [70, 56.4, 'celebrate', 'NE'],
+      [79, 56.5, 'cheer', 'NE'],
+      [83.6, 56.4, 'cheer', 'NW'],
+      [88.6, 56.4, 'idle', 'NW'],
+    ] as [number, number, Step['action'], Facing][]
+  ).forEach(([x, y, a, f], i) =>
+    person(
+      `fight-fan-${i}`,
+      [x, y],
+      a,
+      i % 2 ? man() : woman(),
+      f,
+      ([60, 120, 240] as Loop[])[i % 3],
+    ),
+  );
+
   /* ════════ Floor ════════ */
   const floor: number[] = [];
   const stone = (x: number, y: number) => 1 + ((x * 3 + y * 7) % 3);
@@ -1350,6 +1516,8 @@ export function modernQuarter() {
         inY = (a: number, b: number) => y >= a && y <= b;
       let t: number;
       if (x >= 61 && y >= 3 && y <= 44) t = 8;
+      else if (x >= 61 && y >= 45 && y <= 56)
+        t = x === 61 || y === 45 || y === 56 ? 8 : 12;
       else if (x < 7 || y < 7 || x > 55 || y > 55)
         t = inX(57, 58) || inY(57, 58) ? 12 : 7;
       else if (inY(21, 23) || inY(38, 40) || inX(22, 23) || inX(36, 38)) t = 8;
@@ -1445,6 +1613,30 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Egyptian footballer and forward. He joined Liverpool in 2017, where he has won the Premier League and the UEFA Champions League, and he captains Egypt’s national team.',
     links: wiki('Mohamed_Salah'),
   },
+  'khabib-nurmagomedov': {
+    en: 'Mixed martial artist from Dagestan, Russia. A former UFC lightweight champion, he retired undefeated in 2020 with a professional record of 29 wins and no losses.',
+    links: wiki('Khabib_Nurmagomedov'),
+  },
+  'islam-makhachev': {
+    en: 'Mixed martial artist from Makhachkala, Dagestan, and a longtime training partner of Khabib Nurmagomedov. He became UFC lightweight champion in 2022.',
+    links: wiki('Islam_Makhachev'),
+  },
+  'kamaru-usman': {
+    en: 'Nigerian-American mixed martial artist. He became UFC welterweight champion in 2019, the first African-born UFC champion.',
+    links: wiki('Kamaru_Usman'),
+  },
+  'zabit-magomedsharipov': {
+    en: 'Mixed martial artist from Dagestan who fought in the UFC featherweight division, known for his acrobatic, creative striking.',
+    links: wiki('Zabit_Magomedsharipov'),
+  },
+  'khamzat-chimaev': {
+    en: 'Chechen-born mixed martial artist who moved to Sweden as a young man and rose quickly in the UFC with relentless wrestling. His nickname is “Borz”, meaning wolf.',
+    links: wiki('Khamzat_Chimaev'),
+  },
+  'muhammad-ali': {
+    en: 'American boxer, the 1960 Olympic light-heavyweight gold medallist and three-time world heavyweight champion. Famous for his speed and wit, and for his stand on conscience outside the ring. He stood over Sonny Liston in their 1965 rematch in one of sport’s best-known photographs.',
+    links: wiki('Muhammad_Ali'),
+  },
   'ngolo-kante': {
     en: 'French footballer and defensive midfielder famed for his tireless running and ball-winning. He won the Premier League with Leicester City and with Chelsea, the 2021 UEFA Champions League with Chelsea, and the 2018 FIFA World Cup with France.',
     links: wiki('N%27Golo_Kant%C3%A9'),
@@ -1468,6 +1660,9 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
 };
 /** Draft named cards. Never approved here; research and panel review pending. */
 export function namedCards(): Character[] {
+  // Heights of the octagon mat and boxing ring platform, in px.
+  const MAT = 4,
+    RING = 8;
   const card = (
     c: Partial<Character> & Pick<Character, 'id' | 'look' | 'script'>,
   ) =>
@@ -1701,6 +1896,339 @@ export function namedCards(): Character[] {
         { from: 180, to: 240, action: 'idle', at: [78.4, 22.6], facing: 'SW' },
       ],
       pairWith: 'sadio-mane',
+    }),
+    card({
+      id: 'khabib-nurmagomedov',
+      name: {
+        en: 'Khabib Nurmagomedov',
+        ar: 'حبيب نورمحمدوف',
+        bn: 'খাবিব নুরমাগোমেদভ',
+      },
+      aliases: ['Khabib'],
+      years: 'b. 1988',
+      place: 'Sildi · Makhachkala',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-beard',
+        garment: 'fight-kit',
+        headwear: 'papakha',
+        prop: 'title-belt',
+        colours: {
+          skin: 'skin-2',
+          hair: 'hair-black',
+          garmentPrimary: 'black-cloth',
+          garmentSecondary: 'black-cloth',
+          headwear: 'wool-cream',
+          prop: 'black-cloth',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 120,
+          action: 'belt-pose',
+          at: [66.6, 48.8],
+          facing: 'SE',
+          z: MAT,
+        },
+        {
+          from: 120,
+          to: 180,
+          action: 'wave',
+          at: [66.6, 48.8],
+          facing: 'SE',
+          z: MAT,
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'belt-pose',
+          at: [66.6, 48.8],
+          facing: 'SW',
+          z: MAT,
+        },
+      ],
+    }),
+    card({
+      id: 'islam-makhachev',
+      name: { en: 'Islam Makhachev', ar: 'إسلام مخاتشيف', bn: 'ইসলাম মাখাচেভ' },
+      aliases: [],
+      years: 'b. 1991',
+      place: 'Makhachkala',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-beard',
+        garment: 'fight-kit',
+        headwear: 'none',
+        prop: 'mma-gloves',
+        colours: {
+          skin: 'skin-2',
+          hair: 'hair-black',
+          garmentPrimary: 'black-cloth',
+          garmentSecondary: 'kit-red',
+          headwear: 'wool-cream',
+          prop: 'black-cloth',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 60,
+          action: 'guard',
+          at: [65.6, 51],
+          facing: 'SE',
+          z: MAT,
+        },
+        {
+          from: 60,
+          to: 120,
+          action: 'punch',
+          at: [65.6, 51],
+          facing: 'SE',
+          z: MAT,
+        },
+        {
+          from: 120,
+          to: 180,
+          action: 'guard',
+          at: [65.6, 51],
+          facing: 'SE',
+          z: MAT,
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'punch',
+          at: [65.6, 51],
+          facing: 'SE',
+          z: MAT,
+        },
+      ],
+      pairWith: 'kamaru-usman',
+    }),
+    card({
+      id: 'kamaru-usman',
+      name: { en: 'Kamaru Usman', ar: 'كمارو عثمان', bn: 'কামারু উসমান' },
+      aliases: [],
+      years: 'b. 1987',
+      place: 'Auchi · Denver',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-shaved',
+        garment: 'fight-kit',
+        headwear: 'none',
+        prop: 'mma-gloves',
+        colours: {
+          skin: 'skin-7',
+          hair: 'hair-black',
+          garmentPrimary: 'emerald',
+          garmentSecondary: 'lab-white',
+          headwear: 'wool-cream',
+          prop: 'black-cloth',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 60,
+          action: 'guard',
+          at: [68.4, 51],
+          facing: 'NW',
+          z: MAT,
+        },
+        {
+          from: 60,
+          to: 120,
+          action: 'guard',
+          at: [68.4, 51],
+          facing: 'NW',
+          z: MAT,
+        },
+        {
+          from: 120,
+          to: 180,
+          action: 'punch',
+          at: [68.4, 51],
+          facing: 'NW',
+          z: MAT,
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'guard',
+          at: [68.4, 51],
+          facing: 'NW',
+          z: MAT,
+        },
+      ],
+      pairWith: 'islam-makhachev',
+    }),
+    card({
+      id: 'zabit-magomedsharipov',
+      name: {
+        en: 'Zabit Magomedsharipov',
+        ar: 'زابيت ماغوميدشاريبوف',
+        bn: 'জাবিত মাগোমেদশারিপভ',
+      },
+      aliases: [],
+      years: 'b. 1991',
+      place: 'Dagestan',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-beard',
+        garment: 'fight-kit',
+        headwear: 'none',
+        prop: 'mma-gloves',
+        colours: {
+          skin: 'skin-2',
+          hair: 'hair-black',
+          garmentPrimary: 'black-cloth',
+          garmentSecondary: 'emerald',
+          headwear: 'wool-cream',
+          prop: 'black-cloth',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 60,
+          action: 'kick',
+          at: [74.4, 53.4],
+          facing: 'SE',
+          z: 0,
+        },
+        {
+          from: 60,
+          to: 120,
+          action: 'guard',
+          at: [74.4, 53.4],
+          facing: 'SE',
+          z: 0,
+        },
+        {
+          from: 120,
+          to: 180,
+          action: 'kick',
+          at: [74.4, 53.4],
+          facing: 'SE',
+          z: 0,
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'guard',
+          at: [74.4, 53.4],
+          facing: 'SW',
+          z: 0,
+        },
+      ],
+    }),
+    card({
+      id: 'khamzat-chimaev',
+      name: {
+        en: 'Khamzat Chimaev',
+        ar: 'خمزات تشيماييف',
+        bn: 'খামজাত চিমায়েভ',
+      },
+      aliases: ['Borz'],
+      years: 'b. 1994',
+      place: 'Chechnya · Sweden',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-beard',
+        garment: 'fight-kit',
+        headwear: 'none',
+        prop: 'mma-gloves',
+        colours: {
+          skin: 'skin-1',
+          hair: 'hair-black',
+          garmentPrimary: 'black-cloth',
+          garmentSecondary: 'navy',
+          headwear: 'wool-cream',
+          prop: 'black-cloth',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 60,
+          action: 'guard',
+          at: [75.6, 48.4],
+          facing: 'SE',
+          z: 0,
+        },
+        {
+          from: 60,
+          to: 120,
+          action: 'punch',
+          at: [75.6, 48.4],
+          facing: 'SE',
+          z: 0,
+        },
+        {
+          from: 120,
+          to: 180,
+          action: 'guard',
+          at: [75.6, 48.4],
+          facing: 'SW',
+          z: 0,
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'punch',
+          at: [75.6, 48.4],
+          facing: 'SW',
+          z: 0,
+        },
+      ],
+    }),
+    card({
+      id: 'muhammad-ali',
+      name: { en: 'Muhammad Ali', ar: 'محمد علي', bn: 'মুহাম্মদ আলী' },
+      aliases: ['Cassius Clay'],
+      years: '1942–2016',
+      place: 'Louisville',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-clean',
+        garment: 'boxing-kit',
+        headwear: 'none',
+        prop: 'boxing-gloves',
+        colours: {
+          skin: 'skin-6',
+          hair: 'hair-black',
+          garmentPrimary: 'lab-white',
+          garmentSecondary: 'lab-white',
+          headwear: 'wool-cream',
+          prop: 'kit-red',
+        },
+      },
+      loop: 240,
+      script: [
+        {
+          from: 0,
+          to: 160,
+          action: 'taunt',
+          at: [81.4, 49.8],
+          facing: 'SW',
+          z: RING,
+        },
+        {
+          from: 160,
+          to: 240,
+          action: 'guard',
+          at: [81.4, 49.8],
+          facing: 'SW',
+          z: RING,
+        },
+      ],
+      pairWith: 'amb-ali-opponent',
     }),
     card({
       id: 'ngolo-kante',

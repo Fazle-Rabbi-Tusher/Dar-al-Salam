@@ -157,6 +157,8 @@ await seed('content/rules/never-depict.json', {
     'Muhammad ibn Musa al-Khwarizmi',
     // Approved by the project owner (2026-11): the footballer, born 1992.
     'Mohamed Salah',
+    // Approved by the project owner (2026-11): the boxer, 1942–2016.
+    'Muhammad Ali',
   ],
 });
 const traditional = [

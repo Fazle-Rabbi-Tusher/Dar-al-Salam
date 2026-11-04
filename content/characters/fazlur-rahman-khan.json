@@ -6,10 +6,7 @@
     "ar": "فضل الرحمن خان",
     "bn": "ফজলুর রহমান খান"
   },
-  "aliases": [
-    "Fazlur Khan",
-    "F. R. Khan"
-  ],
+  "aliases": ["Fazlur Khan", "F. R. Khan"],
   "years": "1929–1982",
   "place": "Dhaka · Chicago",
   "district": "modern-quarter",
@@ -34,20 +31,14 @@
       "from": 0,
       "to": 60,
       "action": "talk",
-      "at": [
-        31.4,
-        12
-      ],
+      "at": [31.4, 12],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "idle",
-      "at": [
-        31.4,
-        12
-      ],
+      "at": [31.4, 12],
       "facing": "SW"
     }
   ],

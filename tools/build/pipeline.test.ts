@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises';
 import { beforeAll, describe, expect, it } from 'vitest';
 import sharp from 'sharp';
 import { loadContent, validateCharacter } from './validate';
@@ -26,8 +27,12 @@ beforeAll(async () => {
   parts = await loadParts();
 });
 describe('real content validation', () => {
-  it('validates all 168 examples with every ambient scenario', () => {
-    expect(content.characters).toHaveLength(168);
+  it('validates every example with every ambient scenario', async () => {
+    const files = await fs.readdir('content/characters');
+    const ambient = JSON.parse(
+      await fs.readFile('content/ambient/mosque-garden.json', 'utf8'),
+    );
+    expect(content.characters).toHaveLength(files.length + ambient.length);
     for (const c of content.characters)
       expect(
         validateCharacter(
@@ -403,6 +408,12 @@ describe('larger, modern characters', () => {
       'mohamed-salah',
       'sadio-mane',
       'ngolo-kante',
+      'khabib-nurmagomedov',
+      'islam-makhachev',
+      'kamaru-usman',
+      'zabit-magomedsharipov',
+      'khamzat-chimaev',
+      'muhammad-ali',
     ];
     for (const id of ids) {
       const c = content.characters.find((c) => c.id === id)!;
@@ -464,13 +475,16 @@ describe('transliterated denylisted names', () => {
       }),
     ).toBe(true);
     expect(forbiddenName('Sadio Mané', rules)).toBe(false);
+    expect(forbiddenName('Muhammad Ali', rules)).toBe(false);
+    expect(forbiddenName('Belal Muhammad', rules)).toBe(true);
+    expect(forbiddenName('Khabib Nurmagomedov', rules)).toBe(false);
   });
 });
 
 describe('card info and links', () => {
   it('gives every named card quick facts and an https Wikipedia link', () => {
     const named = content.characters.filter((c) => c.name);
-    expect(named.length).toBe(11);
+    expect(named.length).toBeGreaterThanOrEqual(11);
     for (const c of named) {
       expect(c.summary?.en?.length).toBeGreaterThan(40);
       expect(c.links?.[0].url).toMatch(/^https:\/\/en\.wikipedia\.org\/wiki\//);

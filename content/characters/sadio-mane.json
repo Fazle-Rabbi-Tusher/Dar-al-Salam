@@ -6,9 +6,7 @@
     "ar": "ساديو ماني",
     "bn": "সাদিও মানে"
   },
-  "aliases": [
-    "Sadio Mane"
-  ],
+  "aliases": ["Sadio Mane"],
   "years": "b. 1992",
   "place": "Bambali · Liverpool",
   "district": "modern-quarter",
@@ -33,30 +31,21 @@
       "from": 0,
       "to": 120,
       "action": "hand-on-heart",
-      "at": [
-        80.4,
-        24.4
-      ],
+      "at": [80.4, 24.4],
       "facing": "SW"
     },
     {
       "from": 120,
       "to": 180,
       "action": "celebrate",
-      "at": [
-        80.4,
-        24.4
-      ],
+      "at": [80.4, 24.4],
       "facing": "SW"
     },
     {
       "from": 180,
       "to": 240,
       "action": "hand-on-heart",
-      "at": [
-        80.4,
-        24.4
-      ],
+      "at": [80.4, 24.4],
       "facing": "SE"
     }
   ],

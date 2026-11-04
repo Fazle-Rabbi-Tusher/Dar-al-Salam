@@ -6,9 +6,7 @@
     "ar": "محمد صلاح",
     "bn": "মোহাম্মদ সালাহ"
   },
-  "aliases": [
-    "Mo Salah"
-  ],
+  "aliases": ["Mo Salah"],
   "years": "b. 1992",
   "place": "Nagrig · Liverpool",
   "district": "modern-quarter",
@@ -33,30 +31,21 @@
       "from": 0,
       "to": 120,
       "action": "arms-out",
-      "at": [
-        78.4,
-        22.6
-      ],
+      "at": [78.4, 22.6],
       "facing": "SE"
     },
     {
       "from": 120,
       "to": 180,
       "action": "cheer",
-      "at": [
-        78.4,
-        22.6
-      ],
+      "at": [78.4, 22.6],
       "facing": "SE"
     },
     {
       "from": 180,
       "to": 240,
       "action": "idle",
-      "at": [
-        78.4,
-        22.6
-      ],
+      "at": [78.4, 22.6],
       "facing": "SW"
     }
   ],

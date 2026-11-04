@@ -1,0 +1,87 @@
+{
+  "id": "khamzat-chimaev",
+  "kind": "person",
+  "name": {
+    "en": "Khamzat Chimaev",
+    "ar": "خمزات تشيماييف",
+    "bn": "খামজাত চিমায়েভ"
+  },
+  "aliases": ["Borz"],
+  "years": "b. 1994",
+  "place": "Chechnya · Sweden",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "fight-kit",
+    "headwear": "none",
+    "prop": "mma-gloves",
+    "colours": {
+      "skin": "skin-1",
+      "hair": "hair-black",
+      "garmentPrimary": "black-cloth",
+      "garmentSecondary": "navy",
+      "headwear": "wool-cream",
+      "prop": "black-cloth"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "guard",
+      "at": [75.6, 48.4],
+      "facing": "SE",
+      "z": 0
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "punch",
+      "at": [75.6, 48.4],
+      "facing": "SE",
+      "z": 0
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "guard",
+      "at": [75.6, 48.4],
+      "facing": "SW",
+      "z": 0
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "punch",
+      "at": [75.6, 48.4],
+      "facing": "SW",
+      "z": 0
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Chechen-born mixed martial artist who moved to Sweden as a young man and rose quickly in the UFC with relentless wrestling. His nickname is “Borz”, meaning wolf."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Khamzat_Chimaev"
+    }
+  ],
+  "panelApproved": false
+}

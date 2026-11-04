@@ -2008,6 +2008,353 @@ const stadium: Record<string, Spec> = {
 };
 Object.assign(objects, stadium);
 
+/* ───────────── Fight arena: octagon and boxing ring ───────────── */
+// Structures are split into a flat floor-baked base plus thin wall pieces, so
+// fighters standing inside sort between the back and front walls. Wall pieces
+// are drawn with their foot on the anchor; the room lifts them with object z.
+type T2 = [number, number];
+const lerp2 = (a: T2, b: T2, t: number): T2 => [
+  a[0] + (b[0] - a[0]) * t,
+  a[1] + (b[1] - a[1]) * t,
+];
+/** Plot a tile-space circle at height z (2 px wide, like pitch lines). */
+function ring(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  r: number,
+  z: number,
+  col: string,
+) {
+  const n = Math.ceil(r * 64);
+  for (let k = 0; k <= n; k++) {
+    const a = (Math.PI * 2 * k) / n,
+      [x, y] = c.at(cx + Math.cos(a) * r, cy + Math.sin(a) * r, z);
+    c.p.pixel(x, y, col);
+    c.p.pixel(x + 1, y, col);
+  }
+}
+/** Padded cage post at a tile point. */
+function cagePost(c: IsoCanvas, at: T2, h: number) {
+  const [x, y] = c.at(at[0], at[1], 0);
+  c.p.rect(x - 1, y - h - 2, 4, h + 3, C.ink);
+  c.p.rect(x - 1, y - h - 2, 1, h + 3, C.slate);
+  c.p.rect(x - 1, y - h - 3, 4, 2, C.charcoal);
+  c.p.rect(x, y - h + 4, 2, 1, C.red);
+}
+/** See-through chain-link panel between two tile points (a sparse lattice). */
+function cagePanel(c: IsoCanvas, a: T2, b: T2, h = 36) {
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]) * 18;
+  const sa = c.at(a[0], a[1]),
+    sb = c.at(b[0], b[1]);
+  const n = Math.max(
+    2,
+    Math.ceil(Math.hypot(sb[0] - sa[0], sb[1] - sa[1]) * 2),
+  );
+  for (let k = 0; k <= n; k++) {
+    const t = k / n,
+      along = t * len,
+      [x, y] = c.at(...lerp2(a, b, t));
+    for (let up = 3; up < h - 3; up++) {
+      const d1 = (((along + up) % 9) + 9) % 9,
+        d2 = (((along - up) % 9) + 9) % 9;
+      if (d1 < 0.55 || d2 < 0.55)
+        c.p.pixel(Math.round(x), Math.round(y - up), C.charcoal);
+    }
+  }
+  // Bottom band and padded top rail with a thin colour stripe.
+  const rail = (up: number, r: number, col: string) =>
+    c.thick([sa[0], sa[1] - up], [sb[0], sb[1] - up], r, col);
+  rail(1, 1, C.ink);
+  rail(h - 1, 1.6, C.ink);
+  c.line([sa[0], sa[1] - h + 1], [sb[0], sb[1] - h + 1], C.red);
+  c.line([sa[0], sa[1] - h - 1], [sb[0], sb[1] - h - 1], C.slate);
+  cagePost(c, a, h);
+  cagePost(c, b, h);
+}
+const OCT: T2[] = [
+  [1.5, 0],
+  [4.5, 0],
+  [6, 1.5],
+  [6, 4.5],
+  [4.5, 6],
+  [1.5, 6],
+  [0, 4.5],
+  [0, 1.5],
+];
+/** Octagon outline scaled about its centre (3, 3). */
+const octScaled = (k: number): T2[] =>
+  OCT.map(([x, y]) => [3 + (x - 3) * k, 3 + (y - 3) * k]);
+const arena: Record<string, Spec> = {
+  'm-octagon-mat': {
+    footprint: [6, 6],
+    h: 6,
+    floor: true,
+    draw(c) {
+      const Z = 4;
+      // Apron side faces, then the canvas on top.
+      for (let i = 0; i < OCT.length; i++) {
+        const a = OCT[i],
+          b = OCT[(i + 1) % OCT.length];
+        c.poly(
+          [
+            [a[0], a[1], 0],
+            [b[0], b[1], 0],
+            [b[0], b[1], Z],
+            [a[0], a[1], Z],
+          ],
+          b[0] + b[1] > a[0] + a[1] || a[0] > 5 ? C.ink : C.charcoal,
+        );
+      }
+      const top = (pts: T2[], col: string) =>
+        c.poly(
+          pts.map(([x, y]) => [x, y, Z] as [number, number, number]),
+          col,
+        );
+      top(OCT, C.charcoal);
+      top(octScaled(0.94), C.slate);
+      top(octScaled(0.88), C.silver);
+      top(octScaled(0.82), C.pale);
+      // Subtle canvas texture and a faint centre circle.
+      for (let k = 0; k < 40; k++) {
+        const [x, y] = c.at(
+          1 + ((k * 7) % 40) / 10,
+          1 + ((k * 13) % 40) / 10,
+          Z,
+        );
+        c.p.pixel(x, y, C.offwhite);
+      }
+      ring(c, 3, 3, 1.1, Z, C.silver);
+      ring(c, 3, 3, 0.25, Z, C.silver);
+      // Fighters' corner marks (plain colour).
+      for (const [x, y, col] of [
+        [1.4, 1.4, C.red],
+        [4.6, 4.6, C.blue],
+      ] as [number, number, string][]) {
+        const [px, py] = c.at(x, y, Z);
+        c.p.rect(px - 3, py - 1, 6, 2, col);
+      }
+    },
+  },
+  'm-cage-straight': {
+    footprint: [3, 0.3],
+    h: 42,
+    side: true,
+    draw(c) {
+      cagePanel(c, [0, 0.15], [3, 0.15]);
+    },
+  },
+  'm-cage-diag-a': {
+    footprint: [1.5, 1.5],
+    h: 42,
+    draw(c) {
+      cagePanel(c, [0, 1.5], [1.5, 0]);
+    },
+  },
+  'm-cage-diag-b': {
+    footprint: [1.5, 1.5],
+    h: 42,
+    draw(c) {
+      cagePanel(c, [0, 0], [1.5, 1.5]);
+    },
+  },
+  'm-ring-base': {
+    footprint: [6, 6],
+    h: 10,
+    floor: true,
+    draw(c) {
+      const Z = 8;
+      // Skirt on the visible faces, with vertical folds and a trim band.
+      c.faceX(0, 6, 6, 0, Z, C.navy);
+      c.faceY(6, 0, 6, 0, Z, C.blueDark);
+      for (let u = 0.25; u < 6; u += 0.5) {
+        c.edge([u, 6, 0], [u, 6, Z - 2], C.blueDark);
+        c.edge([6, u, 0], [6, u, Z - 2], C.navy);
+      }
+      c.edge([0, 6, Z - 1], [6, 6, Z - 1], C.blue);
+      c.edge([6, 0, Z - 1], [6, 6, Z - 1], C.blue);
+      c.edge([0, 6, 0], [6, 6, 0], C.ink);
+      c.edge([6, 0, 0], [6, 6, 0], C.ink);
+      // Canvas: apron border outside the ropes, then the fighting area.
+      c.top(0, 0, 6, 6, Z, C.silver);
+      c.top(0.2, 0.2, 5.6, 5.6, Z, C.offwhite);
+      c.top(0.6, 0.6, 4.8, 4.8, Z, C.white);
+      for (let k = 0; k < 36; k++) {
+        const [x, y] = c.at(
+          0.8 + ((k * 7) % 44) / 10,
+          0.8 + ((k * 11) % 44) / 10,
+          Z,
+        );
+        c.p.pixel(x, y, C.pale);
+      }
+      c.edge([0, 6, Z], [6, 6, Z], C.pale);
+      c.edge([6, 0, Z], [6, 6, Z], C.pale);
+      // Corner pads on the canvas: red and blue corners, two neutral.
+      for (const [x, y, col] of [
+        [0.35, 0.35, C.red],
+        [5.65, 5.65, C.blue],
+        [5.65, 0.35, C.white],
+        [0.35, 5.65, C.white],
+      ] as [number, number, string][]) {
+        const [px, py] = c.at(x, y, Z);
+        c.p.rect(px - 2, py - 1, 5, 2, col);
+      }
+    },
+  },
+  'm-ring-ropes': {
+    footprint: [6, 0.3],
+    h: 36,
+    side: true,
+    draw(c) {
+      const v = 0.15,
+        ropes: [number, string, string][] = [
+          [26, C.red, C.redDark],
+          [18, C.white, C.silver],
+          [10, C.blue, C.blueDark],
+        ];
+      for (const [z, col, shade] of ropes) {
+        const pts: T2[] = [];
+        for (let k = 0; k <= 24; k++) {
+          const u = (6 * k) / 24,
+            sag = Math.sin((Math.PI * k) / 24) * 1.5;
+          pts.push(c.at(u, v, z - sag));
+        }
+        for (let k = 0; k < pts.length - 1; k++) {
+          c.line(pts[k], pts[k + 1], col);
+          c.line(
+            [pts[k][0], pts[k][1] + 1],
+            [pts[k + 1][0], pts[k + 1][1] + 1],
+            shade,
+          );
+        }
+      }
+      // Padded corner posts at both ends with turnbuckle covers.
+      for (const u of [0, 6]) {
+        const [x, y] = c.at(u, v, 0);
+        c.p.rect(x - 2, y - 30, 5, 31, C.steelDark);
+        c.p.rect(x - 2, y - 30, 2, 31, C.steel);
+        c.p.rect(x - 3, y - 31, 7, 2, C.slate);
+        for (const [z] of ropes) {
+          c.p.rect(x - 3, y - z - 2, 7, 4, C.offwhite);
+          c.p.rect(x + 2, y - z - 2, 2, 4, C.pale);
+        }
+      }
+    },
+  },
+  'm-ring-steps': {
+    footprint: [1, 1],
+    h: 26,
+    draw(c) {
+      for (let k = 0; k < 3; k++)
+        c.box(0.1, k / 3, 0.8, 1 / 3, 9 - k * 3, M.steel);
+      for (const x of [0.08, 0.92]) {
+        const [px, py] = c.at(x, 0.95);
+        c.p.rect(px, py - 18, 1, 18, C.steelDark);
+        const [qx, qy] = c.at(x, 0.05, 9);
+        c.line([px, py - 18], [qx, qy - 12], C.steelDark);
+      }
+    },
+  },
+  'm-corner-stool': {
+    footprint: [0.5, 0.5],
+    h: 20,
+    draw(c) {
+      for (const [x, y] of [
+        [0.08, 0.08],
+        [0.42, 0.08],
+        [0.08, 0.42],
+        [0.42, 0.42],
+      ]) {
+        const [px, py] = c.at(x, y);
+        c.p.rect(px, py - 11, 1, 11, C.slate);
+      }
+      c.cylinder(0.25, 0.25, 11, 6, 2, [C.redDark, C.red, C.redDark], C.red);
+      // Bucket beside the stool.
+      c.cylinder(
+        0.45,
+        0.5,
+        0,
+        4,
+        6,
+        [C.steelLight, C.steel, C.steelDark],
+        C.glass,
+      );
+    },
+  },
+  'm-ringside-seats': {
+    // Person-scale ringside chairs (seat ~14 px); seat real characters on them.
+    footprint: [4, 1],
+    h: 30,
+    side: true,
+    draw(c) {
+      for (const x of [0.5, 1.5, 2.5, 3.5]) {
+        c.box(x - 0.35, 0.12, 0.7, 0.12, 26, M.dark);
+        c.top(x - 0.33, 0.13, 0.66, 0.1, 26, C.red);
+        c.box(x - 0.35, 0.24, 0.7, 0.55, 3, M.dark, 12);
+        c.top(x - 0.3, 0.28, 0.6, 0.46, 15, C.charcoal);
+        for (const [dx, dy] of [
+          [-0.3, 0.75],
+          [0.3, 0.75],
+          [-0.3, 0.3],
+          [0.3, 0.3],
+        ]) {
+          const [px, py] = c.at(x + dx, dy);
+          c.p.rect(px, py - 12, 1, 12, C.slate);
+        }
+      }
+    },
+  },
+  'm-commentary-desk': {
+    footprint: [3, 1],
+    h: 40,
+    draw(c) {
+      c.box(0, 0.2, 3, 0.8, 20, M.dark);
+      c.faceX(0.1, 1.001, 2.8, 4, 12, C.navy);
+      for (let k = 0; k < 6; k++)
+        c.faceX(0.25 + k * 0.45, 1.002, 0.3, 7, 2 + ((k * 5) % 6), accents[k]);
+      for (const x of [0.4, 1.8]) {
+        screen(c, x, 0.4, 0.8, 22, 14, x > 1 ? 1 : 0);
+        // Headset microphone on the desk.
+        const [hx, hy] = c.at(x + 0.6, 0.85, 21);
+        c.p.rect(hx - 3, hy - 4, 7, 1, C.ink);
+        c.p.rect(hx - 3, hy - 4, 2, 4, C.ink);
+        c.p.rect(hx + 2, hy - 4, 2, 4, C.ink);
+        c.line([hx - 2, hy], [hx - 5, hy + 2], C.slate);
+        c.p.pixel(hx - 5, hy + 2, C.red);
+      }
+    },
+  },
+  'm-arena-banner': {
+    footprint: [3, 0.3],
+    h: 92,
+    draw(c) {
+      c.box(0, 0, 3, 0.3, 4, M.dark);
+      const panels: [string, string][] = [
+        [C.red, C.yellow],
+        [C.navy, C.teal],
+        [C.purple, C.pink],
+      ];
+      panels.forEach(([bg, fg], i) => {
+        const x = 0.1 + i,
+          w = 0.8;
+        c.faceX(x, 0.15, w, 6, 80, C.ink);
+        c.faceX(x + 0.04, 0.16, w - 0.08, 8, 76, bg);
+        // Abstract graphics: chevrons, bars and a circle.
+        for (let k = 0; k < 4; k++) {
+          const [px, py] = c.at(x + w / 2, 0.17, 20 + k * 9);
+          c.line([px - 5, py], [px, py - 4], fg);
+          c.line([px, py - 4], [px + 5, py], fg);
+        }
+        const [cx, cy] = c.at(x + w / 2, 0.17, 66);
+        c.p.ellipse(cx, cy, 5, 5, fg);
+        c.p.ellipse(cx, cy, 3, 3, bg);
+        c.faceX(x + 0.1, 0.17, w - 0.2, 12, 3, C.white);
+      });
+    },
+  },
+};
+Object.assign(objects, arena);
+
 export const MODERN_OBJECTS: Record<
   string,
   { footprint: [number, number]; floor?: boolean; side?: boolean }

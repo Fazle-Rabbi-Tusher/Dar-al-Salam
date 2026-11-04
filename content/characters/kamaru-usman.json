@@ -1,0 +1,88 @@
+{
+  "id": "kamaru-usman",
+  "kind": "person",
+  "name": {
+    "en": "Kamaru Usman",
+    "ar": "كمارو عثمان",
+    "bn": "কামারু উসমান"
+  },
+  "aliases": [],
+  "years": "b. 1987",
+  "place": "Auchi · Denver",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-shaved",
+    "garment": "fight-kit",
+    "headwear": "none",
+    "prop": "mma-gloves",
+    "colours": {
+      "skin": "skin-7",
+      "hair": "hair-black",
+      "garmentPrimary": "emerald",
+      "garmentSecondary": "lab-white",
+      "headwear": "wool-cream",
+      "prop": "black-cloth"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "guard",
+      "at": [68.4, 51],
+      "facing": "NW",
+      "z": 4
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "guard",
+      "at": [68.4, 51],
+      "facing": "NW",
+      "z": 4
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "punch",
+      "at": [68.4, 51],
+      "facing": "NW",
+      "z": 4
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "guard",
+      "at": [68.4, 51],
+      "facing": "NW",
+      "z": 4
+    }
+  ],
+  "pairWith": "islam-makhachev",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Nigerian-American mixed martial artist. He became UFC welterweight champion in 2019, the first African-born UFC champion."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Kamaru_Usman"
+    }
+  ],
+  "panelApproved": false
+}

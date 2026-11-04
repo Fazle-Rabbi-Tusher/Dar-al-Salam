@@ -25,6 +25,8 @@
       "football-kit-captain",
       "football-kit-long",
       "football-kit-sleeved",
+      "fight-kit",
+      "boxing-kit",
       "none"
     ],
     "headwear": [
@@ -39,6 +41,7 @@
       "hard-hat",
       "scrub-cap",
       "headwrap",
+      "papakha",
       "none"
     ]
   },
@@ -68,6 +71,8 @@
       "football-kit-captain",
       "football-kit-long",
       "football-kit-sleeved",
+      "fight-kit",
+      "boxing-kit",
       "none"
     ],
     "headwear": [
@@ -82,6 +87,7 @@
       "hard-hat",
       "scrub-cap",
       "headwrap",
+      "papakha",
       "none"
     ]
   },
