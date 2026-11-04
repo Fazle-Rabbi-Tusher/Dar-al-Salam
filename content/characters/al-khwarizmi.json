@@ -1,0 +1,60 @@
+{
+  "id": "al-khwarizmi",
+  "name": {
+    "en": "Al-Khwarizmi",
+    "ar": "الخوارزمي",
+    "bn": "আল-খোয়ারিজমি"
+  },
+  "aliases": ["Muhammad ibn Musa al-Khwarizmi"],
+  "years": "c. 780–850",
+  "place": "Baghdad",
+  "district": "house-of-wisdom",
+  "look": {
+    "base": "adult-man",
+    "garment": "scholar-robe",
+    "headwear": "imamah",
+    "prop": "book",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-black",
+      "garmentPrimary": "wool-cream",
+      "garmentSecondary": "white-linen",
+      "headwear": "white-linen",
+      "prop": "brass"
+    }
+  },
+  "kind": "person",
+  "depiction": "full",
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "write",
+      "at": [15, 29],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "teach",
+      "at": [15, 29],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}

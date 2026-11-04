@@ -1,0 +1,619 @@
+{
+  "frames": [
+    {
+      "filename": "cat_idle_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_SE_1",
+      "frame": {
+        "x": 24,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_SE_2",
+      "frame": {
+        "x": 48,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_SE_3",
+      "frame": {
+        "x": 72,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_NE_0",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_NE_1",
+      "frame": {
+        "x": 120,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_NE_2",
+      "frame": {
+        "x": 144,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_idle_NE_3",
+      "frame": {
+        "x": 168,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_SE_0",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_SE_1",
+      "frame": {
+        "x": 216,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_SE_2",
+      "frame": {
+        "x": 240,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_SE_3",
+      "frame": {
+        "x": 264,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_SE_4",
+      "frame": {
+        "x": 288,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_SE_5",
+      "frame": {
+        "x": 312,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_NE_0",
+      "frame": {
+        "x": 336,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_NE_1",
+      "frame": {
+        "x": 360,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_NE_2",
+      "frame": {
+        "x": 0,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_NE_3",
+      "frame": {
+        "x": 24,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_NE_4",
+      "frame": {
+        "x": 48,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_walk_NE_5",
+      "frame": {
+        "x": 72,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_SE_0",
+      "frame": {
+        "x": 96,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_SE_1",
+      "frame": {
+        "x": 120,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_SE_2",
+      "frame": {
+        "x": 144,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_SE_3",
+      "frame": {
+        "x": 168,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_NE_0",
+      "frame": {
+        "x": 192,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_NE_1",
+      "frame": {
+        "x": 216,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_NE_2",
+      "frame": {
+        "x": 240,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cat_sleep_NE_3",
+      "frame": {
+        "x": 264,
+        "y": 20,
+        "w": 24,
+        "h": 20
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 20
+      },
+      "duration": 83
+    }
+  ],
+  "meta": {
+    "image": "cat.png",
+    "size": {
+      "w": 384,
+      "h": 40
+    },
+    "frameTags": [
+      {
+        "name": "cat_idle_se",
+        "from": 0,
+        "to": 3
+      },
+      {
+        "name": "cat_idle_ne",
+        "from": 4,
+        "to": 7
+      },
+      {
+        "name": "cat_walk_se",
+        "from": 8,
+        "to": 13
+      },
+      {
+        "name": "cat_walk_ne",
+        "from": 14,
+        "to": 19
+      },
+      {
+        "name": "cat_sleep_se",
+        "from": 20,
+        "to": 23
+      },
+      {
+        "name": "cat_sleep_ne",
+        "from": 24,
+        "to": 27
+      }
+    ],
+    "slices": [
+      {
+        "name": "foot",
+        "keys": [
+          {
+            "frame": 0,
+            "bounds": {
+              "x": 12,
+              "y": 18,
+              "w": 1,
+              "h": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

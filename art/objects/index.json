@@ -1,0 +1,134 @@
+{
+  "arcade": {
+    "file": "objects/arcade.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "arcade-side": {
+    "file": "objects/arcade-side.png",
+    "anchor": [
+      111,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "fountain": {
+    "file": "objects/fountain.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240,
+    "frames": [
+      "objects/fountain-0.png",
+      "objects/fountain-1.png",
+      "objects/fountain-2.png",
+      "objects/fountain-3.png"
+    ]
+  },
+  "minaret": {
+    "file": "objects/minaret.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "palm": {
+    "file": "objects/palm.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "cypress": {
+    "file": "objects/cypress.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "bench": {
+    "file": "objects/bench.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "carpet": {
+    "file": "objects/carpet.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "feeder": {
+    "file": "objects/feeder.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "flowers": {
+    "file": "objects/flowers.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "desk": {
+    "file": "objects/desk.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "dome": {
+    "file": "objects/dome.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "gate": {
+    "file": "objects/gate.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  },
+  "bowl": {
+    "file": "objects/bowl.png",
+    "anchor": [
+      80,
+      174
+    ],
+    "width": 192,
+    "height": 240
+  }
+}

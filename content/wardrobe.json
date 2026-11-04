@@ -1,0 +1,86 @@
+{
+  "mosque-garden": {
+    "region": "mosque-garden",
+    "era": "prototype — advisory review pending",
+    "garments": [
+      "thobe",
+      "jubba",
+      "qaba",
+      "kaftan",
+      "abaya",
+      "panjabi-lungi",
+      "boubou",
+      "baju-kurung",
+      "hui-robe",
+      "scholar-robe",
+      "apron",
+      "none"
+    ],
+    "headwear": [
+      "imamah",
+      "kufi",
+      "taqiyah",
+      "hijab",
+      "khimar",
+      "songkok",
+      "hui-cap",
+      "none"
+    ]
+  },
+  "house-of-wisdom": {
+    "region": "house-of-wisdom",
+    "era": "prototype — advisory review pending",
+    "garments": [
+      "thobe",
+      "jubba",
+      "qaba",
+      "kaftan",
+      "abaya",
+      "panjabi-lungi",
+      "boubou",
+      "baju-kurung",
+      "hui-robe",
+      "scholar-robe",
+      "apron",
+      "none"
+    ],
+    "headwear": [
+      "imamah",
+      "kufi",
+      "taqiyah",
+      "hijab",
+      "khimar",
+      "songkok",
+      "hui-cap",
+      "none"
+    ]
+  },
+  "maghreb": {
+    "region": "maghreb",
+    "era": "prototype — advisory review pending",
+    "garments": [
+      "thobe",
+      "jubba",
+      "qaba",
+      "kaftan",
+      "abaya",
+      "panjabi-lungi",
+      "boubou",
+      "baju-kurung",
+      "hui-robe",
+      "scholar-robe",
+      "apron",
+      "none"
+    ],
+    "headwear": [
+      "imamah",
+      "kufi",
+      "taqiyah",
+      "hijab",
+      "khimar",
+      "songkok",
+      "hui-cap",
+      "none"
+    ]
+  }
+}

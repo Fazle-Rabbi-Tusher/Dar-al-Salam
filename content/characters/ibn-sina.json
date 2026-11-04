@@ -1,0 +1,60 @@
+{
+  "id": "ibn-sina",
+  "name": {
+    "en": "Ibn Sina",
+    "ar": "ابن سينا",
+    "bn": "ইবনে সিনা"
+  },
+  "aliases": ["Avicenna"],
+  "years": "980–1037",
+  "place": "Bukhara",
+  "look": {
+    "base": "adult-man",
+    "garment": "jubba",
+    "headwear": "imamah",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-1",
+      "hair": "hair-black",
+      "garmentPrimary": "olive",
+      "garmentSecondary": "white-linen",
+      "headwear": "white-linen",
+      "prop": "brass"
+    }
+  },
+  "kind": "person",
+  "depiction": "full",
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [24, 46],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [24, 46],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false,
+  "pairWith": "amb-patient"
+}

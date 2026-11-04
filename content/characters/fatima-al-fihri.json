@@ -1,0 +1,60 @@
+{
+  "id": "fatima-al-fihri",
+  "name": {
+    "en": "Fatima al-Fihri",
+    "ar": "فاطمة الفهرية",
+    "bn": "ফাতিমা আল-ফিহরি"
+  },
+  "aliases": [],
+  "years": "c. 800–880",
+  "place": "Fez",
+  "district": "maghreb",
+  "look": {
+    "base": "adult-woman",
+    "garment": "abaya",
+    "headwear": "khimar",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "saffron",
+      "garmentSecondary": "white-linen",
+      "headwear": "white-linen",
+      "prop": "brass"
+    }
+  },
+  "kind": "person",
+  "depiction": "full",
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "wave",
+      "at": [32, 13],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "talk",
+      "at": [32, 13],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "panelApproved": false
+}
