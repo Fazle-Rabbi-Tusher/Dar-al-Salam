@@ -33,7 +33,7 @@ pnpm format
 
 ## Deploy to Vercel
 
-See [VERCEL.md](VERCEL.md). The repository-root configuration installs pinned pnpm, builds `dist/`, and rewrites character/about/list deep links. Vercel **Preview** deployments work with the draft content. **Production** deployments deliberately retain the advisory-approval gate and currently stop on the three unapproved sample cards.
+See [VERCEL.md](VERCEL.md). The repository-root configuration installs pinned pnpm, builds `dist/`, and rewrites character/about/list deep links. Both Vercel **Preview** and **Production** hosting deploy the labelled prototype by default, with the historical cards still marked **DRAFT**. Hosting on a production URL does not approve the content. Use `pnpm build` (or explicitly set `DAR_CONTENT_MODE=approved`) for a reviewed release; that strict build still rejects unapproved cards.
 
 ## Explore
 
@@ -121,7 +121,7 @@ The supplied Playwright configuration uses an installed Chromium. Change `CHROMI
 
 The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictions of prophets, Ahl al-Bayt, the Prophet's wives, Maryam or Companions; no sacred text; no detailed faces. Prayer poses are intentionally simple placeholders, flagged `needsPanelReview`, and require advisory/art review.
 
-This is a functional foundation with procedural art, not the hand-drawn density or visual richness of the reference images. Named cards are drafts. Translations are prototype UI copy pending human proofreading. There is no persistence beyond URL/language settings and no backend. The developer performance display reports FPS, visible character count and instrumented WebGL draw calls; device-specific 60 fps and Android GPU performance require physical-device profiling. Production publishing is deliberately gated on content approval.
+This is a functional foundation with procedural art, not the hand-drawn density or visual richness of the reference images. Named cards are drafts. Translations are prototype UI copy pending human proofreading. There is no persistence beyond URL/language settings and no backend. The developer performance display reports FPS, visible character count and instrumented WebGL draw calls; device-specific 60 fps and Android GPU performance require physical-device profiling. Approved-content release builds are deliberately gated on panel approval; public prototype deployments retain their draft labels.
 
 ## Refresh the procedural visual study
 

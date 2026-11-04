@@ -1,11 +1,11 @@
+/** Content approval is independent of Vercel's hosting environment. */
 export function deploymentMode(
-  environment: string | undefined,
-): 'preview' | 'production' {
-  if (environment === 'preview' || environment === 'development')
-    return 'preview';
-  if (environment === undefined || environment === 'production')
-    return 'production';
+  contentMode: string | undefined,
+): 'prototype' | 'approved' {
+  if (contentMode === undefined || contentMode === 'prototype')
+    return 'prototype';
+  if (contentMode === 'approved') return 'approved';
   throw Error(
-    `Unsupported VERCEL_ENV ${JSON.stringify(environment)}. Use preview or production.`,
+    `Unsupported DAR_CONTENT_MODE ${JSON.stringify(contentMode)}. Use prototype or approved.`,
   );
 }
