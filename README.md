@@ -8,7 +8,7 @@ The scene now includes 230 room objects: adjoining library and clinic rooms, a c
 
 ## Run
 
-Requires Node 20.19+ (Node 24 recommended) and pnpm 11.25.0.
+Requires Node 24 and pnpm 11.25.0 (pinned for Vercel and local builds).
 
 ```sh
 pnpm install --frozen-lockfile
@@ -30,6 +30,10 @@ pnpm format
 ```
 
 `pnpm build` intentionally fails while the three example cards have `panelApproved: false`. Do not change those flags to make a build green. Use the development workflow or `build:preview` for prototype review. All biographies, stories and sources are explicitly unresearched placeholders.
+
+## Deploy to Vercel
+
+See [VERCEL.md](VERCEL.md). The repository-root configuration installs pinned pnpm, builds `dist/`, and rewrites character/about/list deep links. Vercel **Preview** deployments work with the draft content. **Production** deployments deliberately retain the advisory-approval gate and currently stop on the three unapproved sample cards.
 
 ## Explore
 

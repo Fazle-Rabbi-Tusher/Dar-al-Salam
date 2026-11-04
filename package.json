@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=20"
+    "node": "24.x"
   },
   "scripts": {
     "gen:placeholder": "node --import tsx tools/placeholder/index.ts",
@@ -18,7 +18,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "build:vercel": "node --import tsx tools/vercel-build.ts"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.4.1",

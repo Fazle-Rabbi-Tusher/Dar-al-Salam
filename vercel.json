@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npx --yes pnpm@11.25.0 install --frozen-lockfile --prod=false",
+  "buildCommand": "npx --yes pnpm@11.25.0 run build:vercel",
+  "devCommand": "pnpm dev",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/c/:id", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/list", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/world/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

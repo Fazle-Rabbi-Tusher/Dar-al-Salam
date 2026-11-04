@@ -6,3 +6,5 @@ public-build/
 .playwright/
 test-results/
 *.log
+
+.vercel/
