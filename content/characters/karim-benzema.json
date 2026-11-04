@@ -6,7 +6,9 @@
     "ar": "كريم بنزيما",
     "bn": "করিম বেনজেমা"
   },
-  "aliases": ["Benzema"],
+  "aliases": [
+    "Benzema"
+  ],
   "years": "b. 1987",
   "place": "Lyon · Madrid",
   "district": "modern-quarter",
@@ -31,21 +33,30 @@
       "from": 0,
       "to": 80,
       "action": "celebrate",
-      "at": [73.6, 20.8],
+      "at": [
+        73.6,
+        20.8
+      ],
       "facing": "SE"
     },
     {
       "from": 80,
       "to": 160,
       "action": "cheer",
-      "at": [73.6, 20.8],
+      "at": [
+        73.6,
+        20.8
+      ],
       "facing": "SE"
     },
     {
       "from": 160,
       "to": 240,
       "action": "cross-arms",
-      "at": [73.6, 20.8],
+      "at": [
+        73.6,
+        20.8
+      ],
       "facing": "SW"
     }
   ],
@@ -62,6 +73,15 @@
   "sources": [
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "French footballer and striker. He played for Real Madrid from 2009 to 2023, captaining the club, and won the Ballon d’Or in 2022."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Karim_Benzema"
+    }
   ],
   "panelApproved": false
 }

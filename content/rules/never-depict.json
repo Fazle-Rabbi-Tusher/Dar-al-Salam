@@ -44,5 +44,8 @@
     "Umar ibn al-Khattab",
     "Uthman ibn Affan"
   ],
-  "allowlist": ["Muhammad ibn Musa al-Khwarizmi", "Mohamed Salah"]
+  "allowlist": [
+    "Muhammad ibn Musa al-Khwarizmi",
+    "Mohamed Salah"
+  ]
 }

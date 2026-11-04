@@ -1,8 +1,32 @@
 {
-  "skin": ["#FF00FF", "#CC00CC", "#990099"],
-  "hair": ["#00FFFF", "#00CCCC", "#009999"],
-  "garmentPrimary": ["#FFFF00", "#CCCC00", "#999900"],
-  "garmentSecondary": ["#00FF00", "#00CC00", "#009900"],
-  "headwear": ["#FF8000", "#CC6600", "#994C00"],
-  "prop": ["#0080FF", "#0066CC", "#004C99"]
+  "skin": [
+    "#FF00FF",
+    "#CC00CC",
+    "#990099"
+  ],
+  "hair": [
+    "#00FFFF",
+    "#00CCCC",
+    "#009999"
+  ],
+  "garmentPrimary": [
+    "#FFFF00",
+    "#CCCC00",
+    "#999900"
+  ],
+  "garmentSecondary": [
+    "#00FF00",
+    "#00CC00",
+    "#009900"
+  ],
+  "headwear": [
+    "#FF8000",
+    "#CC6600",
+    "#994C00"
+  ],
+  "prop": [
+    "#0080FF",
+    "#0066CC",
+    "#004C99"
+  ]
 }

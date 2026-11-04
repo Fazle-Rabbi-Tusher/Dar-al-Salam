@@ -31,14 +31,20 @@
       "from": 0,
       "to": 60,
       "action": "pour",
-      "at": [42.5, 14.9],
+      "at": [
+        42.5,
+        14.9
+      ],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "talk",
-      "at": [42.5, 14.9],
+      "at": [
+        42.5,
+        14.9
+      ],
       "facing": "SW"
     }
   ],
@@ -55,6 +61,15 @@
   "sources": [
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Turkish-American biochemist at the University of North Carolina at Chapel Hill. He shared the 2015 Nobel Prize in Chemistry for mechanistic studies of how cells repair damaged DNA."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Aziz_Sancar"
+    }
   ],
   "panelApproved": false
 }

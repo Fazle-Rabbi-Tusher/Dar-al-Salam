@@ -119,7 +119,7 @@ The supplied Playwright configuration uses an installed Chromium. Change `CHROMI
 
 ## Content boundaries and prototype limitations
 
-The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictions of prophets, Ahl al-Bayt, the Prophet's wives, Maryam or Companions; no sacred text; no detailed faces. Prayer poses are intentionally simple placeholders, flagged `needsPanelReview`, and require advisory/art review.
+The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictions of prophets, Ahl al-Bayt, the Prophet's wives, Maryam or Companions; no sacred text; faces are simple pixel faces without detailed features. Prayer poses are intentionally simple placeholders, flagged `needsPanelReview`, and require advisory/art review.
 
 This is a functional foundation with procedural art, not the hand-drawn density or visual richness of the reference images. Named cards are drafts. Translations are prototype UI copy pending human proofreading. There is no persistence beyond URL/language settings and no backend. The developer performance display reports FPS, visible character count and instrumented WebGL draw calls; device-specific 60 fps and Android GPU performance require physical-device profiling. Approved-content release builds are deliberately gated on panel approval; public prototype deployments retain their draft labels.
 

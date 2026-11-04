@@ -164,14 +164,16 @@ function List({ characters }: { characters: BakedCharacter[] }) {
       <div className="people-list">
         {characters.map((c, i) => (
           <a key={c.id} href={'/c/' + c.id}>
-            <span className="person-number">0{i + 1}</span>
+            <span className="person-number">
+              {String(i + 1).padStart(2, '0')}
+            </span>
             <div>
               <span className="draft-badge">{t('draft')}</span>
               <h2>{c.name?.[lang] ?? c.name?.en}</h2>
               <p>
                 {c.years} · {c.place}
               </p>
-              <p>{c.bio?.[lang] ?? c.bio?.en}</p>
+              <p>{c.summary?.[lang] ?? c.summary?.en ?? c.bio?.en}</p>
             </div>
             <Icon name="arrow" />
           </a>
@@ -443,7 +445,8 @@ function World({ manifest }: { manifest: Manifest | null }) {
           </button>
           <div className="story-header">
             <span className="eyebrow">
-              {t('chapter')} · 0{named.indexOf(card) + 1}
+              {t('chapter')} ·{' '}
+              {String(named.indexOf(card) + 1).padStart(2, '0')}
             </span>
             <div className="portrait-decoration">
               <Icon name="book" size={32} />
@@ -463,10 +466,35 @@ function World({ manifest }: { manifest: Manifest | null }) {
             </p>
           </div>
           <div className="story-body">
+            {card.summary && (
+              <>
+                <h3>{t('quickFacts')}</h3>
+                <p>{card.summary[lang] ?? card.summary.en}</p>
+                <p className="summary-note">{t('summaryNote')}</p>
+              </>
+            )}
+            {!!card.links?.length && (
+              <div className="learn-links">
+                {card.links.map((l) => (
+                  <a
+                    key={l.url}
+                    href={l.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t('learnMore')} · {l.label} ↗
+                  </a>
+                ))}
+              </div>
+            )}
             <p className="research-note">{t('research')}</p>
             <h3>{t('story')}</h3>
-            <p>{card.bio?.[lang] ?? card.bio?.en}</p>
-            <p>{card.story?.[lang] ?? card.story?.en}</p>
+            {[card.bio, card.story]
+              .map((v) => v?.[lang] ?? v?.en)
+              .filter((v, i, all) => v && all.indexOf(v) === i)
+              .map((v) => (
+                <p key={v}>{v}</p>
+              ))}
             <h3>{t('sources')}</h3>
             <ol>
               {card.sources?.map((source) => (

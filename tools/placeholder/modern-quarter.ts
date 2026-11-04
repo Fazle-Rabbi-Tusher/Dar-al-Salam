@@ -1411,12 +1411,65 @@ const PLACEHOLDER = {
   ar: 'PLACEHOLDER — to be researched',
   bn: 'PLACEHOLDER — to be researched',
 };
+/*
+ * Quick facts: short, well-established statements only (no current-club or
+ * other fast-changing claims), shown as an unreviewed summary next to a link
+ * to the person's Wikipedia article. Biographies and stories remain
+ * placeholders until researched and reviewed by the panel.
+ */
+const wiki = (title: string) => [
+  { label: 'Wikipedia', url: `https://en.wikipedia.org/wiki/${title}` },
+];
+const facts: Record<string, { en: string; links: Character['links'] }> = {
+  'fazlur-rahman-khan': {
+    en: 'Bangladeshi-American structural engineer and architect. At Skidmore, Owings & Merrill in Chicago he pioneered "tube" structural systems for tall buildings, used for the John Hancock Center and the Sears (now Willis) Tower.',
+    links: wiki('Fazlur_Rahman_Khan'),
+  },
+  'zaha-hadid': {
+    en: 'Iraqi-British architect known for sweeping, curved buildings. In 2004 she became the first woman to win the Pritzker Architecture Prize; her works include the London Aquatics Centre and the Heydar Aliyev Center in Baku.',
+    links: wiki('Zaha_Hadid'),
+  },
+  'aziz-sancar': {
+    en: 'Turkish-American biochemist at the University of North Carolina at Chapel Hill. He shared the 2015 Nobel Prize in Chemistry for mechanistic studies of how cells repair damaged DNA.',
+    links: wiki('Aziz_Sancar'),
+  },
+  'karim-benzema': {
+    en: 'French footballer and striker. He played for Real Madrid from 2009 to 2023, captaining the club, and won the Ballon d’Or in 2022.',
+    links: wiki('Karim_Benzema'),
+  },
+  'mesut-ozil': {
+    en: 'German footballer and attacking midfielder known for his vision and passing. He played for Real Madrid and Arsenal and won the 2014 FIFA World Cup with Germany.',
+    links: wiki('Mesut_%C3%96zil'),
+  },
+  'mohamed-salah': {
+    en: 'Egyptian footballer and forward. He joined Liverpool in 2017, where he has won the Premier League and the UEFA Champions League, and he captains Egypt’s national team.',
+    links: wiki('Mohamed_Salah'),
+  },
+  'sadio-mane': {
+    en: 'Senegalese footballer and forward. He played for Liverpool from 2016 to 2022 and won the 2021 Africa Cup of Nations with Senegal; he is known for funding a hospital and a school in his home village of Bambali.',
+    links: wiki('Sadio_Man%C3%A9'),
+  },
+  'al-khwarizmi': {
+    en: 'Scholar of the House of Wisdom in Baghdad. His book on calculation by completion and balancing gave us the word “algebra”, and the Latin form of his name gave us “algorithm”.',
+    links: wiki('Al-Khwarizmi'),
+  },
+  'ibn-sina': {
+    en: 'Physician and philosopher, known in Europe as Avicenna. His Canon of Medicine was a standard medical textbook for centuries.',
+    links: wiki('Avicenna'),
+  },
+  'fatima-al-fihri': {
+    en: 'Founder of the al-Qarawiyyin mosque in Fez in 859, which grew into a renowned centre of learning, today’s University of al-Qarawiyyin.',
+    links: wiki('Fatima_al-Fihri'),
+  },
+};
 /** Draft named cards. Never approved here; research and panel review pending. */
 export function namedCards(): Character[] {
   const card = (
     c: Partial<Character> & Pick<Character, 'id' | 'look' | 'script'>,
   ) =>
     characterSchema.parse({
+      summary: facts[c.id] ? { en: facts[c.id].en } : undefined,
+      links: facts[c.id]?.links,
       kind: 'person',
       depiction: 'full',
       loop: 120,

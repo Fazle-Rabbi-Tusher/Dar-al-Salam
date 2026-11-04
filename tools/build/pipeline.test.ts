@@ -465,3 +465,15 @@ describe('transliterated denylisted names', () => {
     expect(forbiddenName('Sadio Mané', rules)).toBe(false);
   });
 });
+
+describe('card info and links', () => {
+  it('gives every named card quick facts and an https Wikipedia link', () => {
+    const named = content.characters.filter((c) => c.name);
+    expect(named.length).toBe(10);
+    for (const c of named) {
+      expect(c.summary?.en?.length).toBeGreaterThan(40);
+      expect(c.links?.[0].url).toMatch(/^https:\/\/en\.wikipedia\.org\/wiki\//);
+      expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
+    }
+  });
+});

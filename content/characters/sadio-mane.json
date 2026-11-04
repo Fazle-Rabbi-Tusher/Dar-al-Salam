@@ -6,7 +6,9 @@
     "ar": "ساديو ماني",
     "bn": "সাদিও মানে"
   },
-  "aliases": ["Sadio Mane"],
+  "aliases": [
+    "Sadio Mane"
+  ],
   "years": "b. 1992",
   "place": "Bambali · Liverpool",
   "district": "modern-quarter",
@@ -31,21 +33,30 @@
       "from": 0,
       "to": 120,
       "action": "hand-on-heart",
-      "at": [80.4, 24.4],
+      "at": [
+        80.4,
+        24.4
+      ],
       "facing": "SW"
     },
     {
       "from": 120,
       "to": 180,
       "action": "celebrate",
-      "at": [80.4, 24.4],
+      "at": [
+        80.4,
+        24.4
+      ],
       "facing": "SW"
     },
     {
       "from": 180,
       "to": 240,
       "action": "hand-on-heart",
-      "at": [80.4, 24.4],
+      "at": [
+        80.4,
+        24.4
+      ],
       "facing": "SE"
     }
   ],
@@ -63,6 +74,15 @@
   "sources": [
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Senegalese footballer and forward. He played for Liverpool from 2016 to 2022 and won the 2021 Africa Cup of Nations with Senegal; he is known for funding a hospital and a school in his home village of Bambali."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sadio_Man%C3%A9"
+    }
   ],
   "panelApproved": false
 }

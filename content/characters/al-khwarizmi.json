@@ -6,7 +6,9 @@
     "ar": "الخوارزمي",
     "bn": "আল-খোয়ারিজমি"
   },
-  "aliases": ["Muhammad ibn Musa al-Khwarizmi"],
+  "aliases": [
+    "Muhammad ibn Musa al-Khwarizmi"
+  ],
   "years": "c. 780–850",
   "place": "Baghdad",
   "district": "house-of-wisdom",
@@ -31,14 +33,20 @@
       "from": 0,
       "to": 60,
       "action": "write",
-      "at": [18, 45],
+      "at": [
+        18,
+        45
+      ],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "teach",
-      "at": [18, 45],
+      "at": [
+        18,
+        45
+      ],
       "facing": "SW"
     }
   ],
@@ -55,6 +63,15 @@
   "sources": [
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Scholar of the House of Wisdom in Baghdad. His book on calculation by completion and balancing gave us the word “algebra”, and the Latin form of his name gave us “algorithm”."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Al-Khwarizmi"
+    }
   ],
   "panelApproved": false
 }

@@ -751,6 +751,40 @@ html[lang='bn'] .brand strong {
 .story-body li {
   margin: 7px 0;
 }
+.story-body > h3:first-child {
+  margin-top: 0;
+}
+.story-body p {
+  color: #4f5a4a;
+}
+.summary-note {
+  font-size: 9px;
+  color: #9a9a86 !important;
+  margin-top: 6px;
+}
+.learn-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 18px;
+}
+.learn-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border: 1px solid #c9bb9d;
+  border-radius: 999px;
+  background: #fbf8ef;
+  color: #2f4a3a;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.learn-links a:hover,
+.learn-links a:focus-visible {
+  background: #2f4a3a;
+  color: #fbf8ef;
+}
 .report-link {
   font-size: 10px;
   text-decoration: underline;

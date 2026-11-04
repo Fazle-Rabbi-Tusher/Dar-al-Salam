@@ -31,14 +31,20 @@
       "from": 0,
       "to": 60,
       "action": "talk",
-      "at": [29.6, 14.9],
+      "at": [
+        29.6,
+        14.9
+      ],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "idle",
-      "at": [29.6, 14.9],
+      "at": [
+        29.6,
+        14.9
+      ],
       "facing": "SW"
     }
   ],
@@ -55,6 +61,15 @@
   "sources": [
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Iraqi-British architect known for sweeping, curved buildings. In 2004 she became the first woman to win the Pritzker Architecture Prize; her works include the London Aquatics Centre and the Heydar Aliyev Center in Baku."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Zaha_Hadid"
+    }
   ],
   "panelApproved": false
 }

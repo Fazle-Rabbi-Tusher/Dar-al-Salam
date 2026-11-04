@@ -73,6 +73,17 @@ export const characterSchema = z.object({
   bio: z.record(z.string()).optional(),
   story: z.record(z.string()).optional(),
   sources: z.array(z.string()).optional(),
+  /** Short, unreviewed quick facts shown on the card until research is done. */
+  summary: z.record(z.string()).optional(),
+  /** Further reading opened in a new tab (never fetched by the app). */
+  links: z
+    .array(
+      z.object({
+        label: z.string(),
+        url: z.string().url().startsWith('https://'),
+      }),
+    )
+    .optional(),
   panelApproved: z.boolean().optional(),
   variant: z.object({ fromTemplate: z.string(), seed: z.number() }).optional(),
 });

@@ -44,7 +44,7 @@
   "rule3": "Named and ambient characters are checked against a reviewed denylist and exact full-name allowlist.",
   "rule4": "Historical cards remain drafts until panel approval. Production builds reject unapproved cards.",
   "rule5": "Characters marked “back” face away from the viewer only.",
-  "rule6": "Everyone wears modest dress. Faces have only minimal pixel shading.",
+  "rule6": "Everyone wears modest dress. Faces are simple pixel faces with no detailed features.",
   "rule7": "Placeholder art contains no sacred text, calligraphy, Qur’an pages or religious symbols.",
   "research": "These are demonstration cards. Biographies, stories and citations have not yet been researched.",
   "listTitle": "People of the quarter",
@@ -80,5 +80,8 @@
   "showIntro": "Show introduction",
   "viewMap": "Move camera on minimap",
   "buildLabel": "PROTOTYPE · PLACEHOLDER ART",
-  "copyError": "Copy unavailable — select the JSON below."
+  "copyError": "Copy unavailable — select the JSON below.",
+  "quickFacts": "Quick facts",
+  "summaryNote": "Unreviewed summary — check the linked article. Full story awaiting research.",
+  "learnMore": "Learn more"
 }

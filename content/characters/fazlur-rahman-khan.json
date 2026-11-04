@@ -6,7 +6,10 @@
     "ar": "فضل الرحمن خان",
     "bn": "ফজলুর রহমান খান"
   },
-  "aliases": ["Fazlur Khan", "F. R. Khan"],
+  "aliases": [
+    "Fazlur Khan",
+    "F. R. Khan"
+  ],
   "years": "1929–1982",
   "place": "Dhaka · Chicago",
   "district": "modern-quarter",
@@ -31,14 +34,20 @@
       "from": 0,
       "to": 60,
       "action": "talk",
-      "at": [31.4, 12],
+      "at": [
+        31.4,
+        12
+      ],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "idle",
-      "at": [31.4, 12],
+      "at": [
+        31.4,
+        12
+      ],
       "facing": "SW"
     }
   ],
@@ -56,6 +65,15 @@
   "sources": [
     "PLACEHOLDER source 1 — research pending",
     "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Bangladeshi-American structural engineer and architect. At Skidmore, Owings & Merrill in Chicago he pioneered \"tube\" structural systems for tall buildings, used for the John Hancock Center and the Sears (now Willis) Tower."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fazlur_Rahman_Khan"
+    }
   ],
   "panelApproved": false
 }

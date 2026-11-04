@@ -10,7 +10,7 @@ import type { Aseprite } from '../../packages/shared/compositor';
  * People are ~54 px tall. Every part is drawn from one shared pose skeleton so
  * any garment, headwear and prop fits any adult base; children are scaled by
  * the compositor. Only reserved key colours and fixed palette colours are used.
- * Faces stay featureless: flat skin with at most three shade pixels.
+ * Faces are simple pixel faces (brows, eyes, a mouth line), never detailed.
  */
 export const bases = [
   'adult-man',
@@ -784,11 +784,16 @@ function drawHead(p: Pixels, q: Pose, id: string) {
         .rect(x + 3, y + 8, 7, id === 'elder' ? 3 : 2)
         .rect(x + 8, y + 6, 2, 3);
     if (id === 'elder') hair.rect(x + 4, y + 11, 5, 2);
-    // Face: at most three shade pixels for direction.
-    p.pixel(x + 9, y + 5, K.skin[2]);
     p.pixel(x + 9, y + 6, K.skin[2]);
   }
   paint(p, hair, K.hair, { light: 1, dark: 1 });
+  const bearded = [
+    'adult-man',
+    'elder',
+    'adult-man-beard',
+    'adult-man-curly',
+  ].includes(id);
+  if (!q.away) features(p, x + 5, x + 8, y, !bearded);
   if (id === 'adult-man-curly')
     for (let j = 0; j < p.height; j++)
       for (let i = 0; i < p.width; i++)
@@ -1356,13 +1361,32 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
 }
 
 /* ───────────── headwear ───────────── */
+/** Simple pixel face: brows, eyes, and a small mouth line. */
+function features(
+  p: Pixels,
+  ex1: number,
+  ex2: number,
+  y: number,
+  mouth = true,
+) {
+  for (const ex of [ex1, ex2]) {
+    p.pixel(ex - 1, y + 4, K.hair[2]);
+    p.pixel(ex, y + 4, K.hair[2]);
+    p.pixel(ex, y + 5, F.ink);
+    p.pixel(ex, y + 6, F.outline);
+  }
+  if (mouth) {
+    p.pixel(Math.round((ex1 + ex2) / 2), y + 8, K.skin[2]);
+    p.pixel(Math.round((ex1 + ex2) / 2) + 1, y + 8, K.skin[2]);
+  }
+}
 function face(p: Pixels, x: number, y: number) {
   const m = mk(p)
     .rect(x + 3, y + 3, 6, 7)
     .rect(x + 4, y + 10, 4, 1);
   paint(p, m, K.skin, { light: 0, dark: 0, top: false });
   p.pixel(x + 8, y + 6, K.skin[2]);
-  p.pixel(x + 8, y + 7, K.skin[2]);
+  features(p, x + 4, x + 7, y);
 }
 function drawHeadwear(p: Pixels, id: string, q: Pose) {
   const [x, y] = q.head.map(Math.round) as P,
