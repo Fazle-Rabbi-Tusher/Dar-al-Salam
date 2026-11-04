@@ -1,0 +1,20 @@
+/** Sprite canvas sizes and foot anchors shared by art, importer, compositor and Lab. */
+export type CanvasSpec = {
+  width: number;
+  height: number;
+  anchor: [number, number];
+};
+export const CANVAS = {
+  person: { width: 48, height: 72, anchor: [24, 68] },
+  cat: { width: 32, height: 24, anchor: [16, 22] },
+  bird: { width: 20, height: 20, anchor: [10, 19] },
+} satisfies Record<string, CanvasSpec>;
+export function canvasFor(base: string): CanvasSpec {
+  return base === 'cat'
+    ? CANVAS.cat
+    : base === 'bird'
+      ? CANVAS.bird
+      : CANVAS.person;
+}
+/** Children reuse adult garments, scaled around the foot anchor. */
+export const CHILD_SCALE = 0.74;

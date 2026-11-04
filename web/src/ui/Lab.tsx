@@ -13,21 +13,22 @@ import {
   type Palette,
 } from '../../../packages/shared/compositor';
 import type { PixelImage } from '../../../packages/shared/pixels';
+import { canvasFor } from '../../../packages/shared/canvas';
 import { useT } from './store';
 import { Icon } from './Icon';
 import wardrobe from '../../../content/wardrobe.json';
 const initial: Look = {
-  base: 'adult-man',
-  garment: 'scholar-robe',
-  headwear: 'imamah',
-  prop: 'book',
+  base: 'adult-woman',
+  garment: 'lab-coat',
+  headwear: 'hijab',
+  prop: 'flask',
   colours: {
     skin: 'skin-4',
     hair: 'hair-black',
-    garmentPrimary: 'indigo',
-    garmentSecondary: 'white-linen',
-    headwear: 'white-linen',
-    prop: 'madder-red',
+    garmentPrimary: 'lab-white',
+    garmentSecondary: 'navy',
+    headwear: 'emerald',
+    prop: 'sky',
   },
 };
 async function browserImage(url: string): Promise<PixelImage> {
@@ -52,7 +53,7 @@ export function Lab() {
     [palette, setPalette] = useState<Palette | null>(null),
     [action, setAction] = useState<Action>('idle'),
     [facing, setFacing] = useState<Facing>('SE'),
-    [zoom, setZoom] = useState(8),
+    [zoom, setZoom] = useState(4),
     [playing, setPlaying] = useState(true),
     [frame, setFrame] = useState(0),
     [anchor, setAnchor] = useState(true),
@@ -102,7 +103,8 @@ export function Lab() {
     const ctx = canvas.current.getContext('2d')!;
     try {
       const image = browserComposite(
-        look,
+        // Prop sheets omit prayer frames: hands are free during prayer.
+        action === 'pray' ? { ...look, prop: 'none' } : look,
         action,
         facing,
         Math.floor(((frame % 60) / 60) * ACTIONS[action]),
@@ -247,11 +249,11 @@ export function Lab() {
           <div className={`checkerboard ${floor ? 'floor-preview' : ''}`}>
             <canvas
               ref={canvas}
-              width={animal ? (look.base === 'cat' ? 24 : 16) : 32}
-              height={animal ? (look.base === 'cat' ? 20 : 16) : 48}
+              width={canvasFor(look.base).width}
+              height={canvasFor(look.base).height}
               style={{
-                width: (animal ? (look.base === 'cat' ? 24 : 16) : 32) * zoom,
-                height: (animal ? (look.base === 'cat' ? 20 : 16) : 48) * zoom,
+                width: canvasFor(look.base).width * zoom,
+                height: canvasFor(look.base).height * zoom,
               }}
             />
           </div>

@@ -5,318 +5,318 @@
       "frame": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_SE_1",
       "frame": {
-        "x": 16,
+        "x": 20,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_SE_2",
       "frame": {
-        "x": 32,
+        "x": 40,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_SE_3",
       "frame": {
-        "x": 48,
+        "x": 60,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_SE_4",
       "frame": {
-        "x": 64,
+        "x": 80,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_SE_5",
       "frame": {
-        "x": 80,
+        "x": 100,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_NE_0",
       "frame": {
-        "x": 96,
+        "x": 120,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_NE_1",
       "frame": {
-        "x": 112,
+        "x": 140,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_NE_2",
       "frame": {
-        "x": 128,
+        "x": 160,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_NE_3",
       "frame": {
-        "x": 144,
+        "x": 180,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_NE_4",
       "frame": {
-        "x": 160,
+        "x": 200,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_fly_NE_5",
       "frame": {
-        "x": 176,
+        "x": 220,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_SE_0",
       "frame": {
-        "x": 192,
+        "x": 240,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_SE_1",
       "frame": {
-        "x": 208,
+        "x": 260,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_SE_2",
       "frame": {
-        "x": 224,
+        "x": 280,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_SE_3",
       "frame": {
-        "x": 240,
+        "x": 300,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
@@ -324,79 +324,79 @@
       "filename": "bird_peck_NE_0",
       "frame": {
         "x": 0,
-        "y": 16,
-        "w": 16,
-        "h": 16
+        "y": 20,
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_NE_1",
       "frame": {
-        "x": 16,
-        "y": 16,
-        "w": 16,
-        "h": 16
+        "x": 20,
+        "y": 20,
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_NE_2",
       "frame": {
-        "x": 32,
-        "y": 16,
-        "w": 16,
-        "h": 16
+        "x": 40,
+        "y": 20,
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     },
     {
       "filename": "bird_peck_NE_3",
       "frame": {
-        "x": 48,
-        "y": 16,
-        "w": 16,
-        "h": 16
+        "x": 60,
+        "y": 20,
+        "w": 20,
+        "h": 20
       },
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "sourceSize": {
-        "w": 16,
-        "h": 16
+        "w": 20,
+        "h": 20
       },
       "duration": 83
     }
@@ -404,8 +404,8 @@
   "meta": {
     "image": "bird.png",
     "size": {
-      "w": 256,
-      "h": 32
+      "w": 320,
+      "h": 40
     },
     "frameTags": [
       {
@@ -436,8 +436,8 @@
           {
             "frame": 0,
             "bounds": {
-              "x": 8,
-              "y": 15,
+              "x": 10,
+              "y": 19,
               "w": 1,
               "h": 1
             }

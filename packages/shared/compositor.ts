@@ -1,5 +1,6 @@
 import { ACTIONS, type Action, type Facing, type Look } from './schema';
 import { Pixels, blit, crop, hexAt, rgb, type PixelImage } from './pixels';
+import { CHILD_SCALE, canvasFor } from './canvas';
 export type PartFrame = PixelImage & { layerBias: number };
 export type Part = {
   id: string;
@@ -57,8 +58,7 @@ export function importAseprite(
         s = f.spriteSourceSize;
       const canvas = new Pixels(f.sourceSize.w, f.sourceSize.h);
       blit(canvas, crop(sheet, r.x, r.y, r.w, r.h), s.x, s.y);
-      const expected =
-        id === 'cat' ? [12, 18] : id === 'bird' ? [8, 15] : [16, 44];
+      const expected = canvasFor(id).anchor;
       if (anchor[0] !== expected[0] || anchor[1] !== expected[1])
         throw Error(`${id}: incorrect foot anchor`);
       frames[`${action}_${facing.toUpperCase()}_${i - tag.from}`] = {
@@ -110,25 +110,21 @@ export function compose(
     })
     .filter((v) => v !== null)
     .sort((a, b) => a.order - b.order);
-  for (const layer of layers) {
-    if (look.base === 'child' && layer.slot !== 'base') {
-      const original = new Pixels(dst.width, dst.height);
-      blit(original, layer.frame, 0, 0, layer.mirror);
-      const scaled = new Pixels(dst.width, dst.height);
-      for (let y = 0; y < dst.height; y++)
-        for (let x = 0; x < dst.width; x++) {
-          const sx = Math.round((x - 16) / 0.7 + 16),
-            sy = Math.round((y - 44) / 0.7 + 44);
-          if (sx >= 0 && sy >= 0 && sx < dst.width && sy < dst.height) {
-            const i = (sy * dst.width + sx) * 4;
-            scaled.data.set(
-              original.data.slice(i, i + 4),
-              (y * dst.width + x) * 4,
-            );
-          }
+  for (const layer of layers) blit(dst, layer.frame, 0, 0, layer.mirror);
+  if (look.base === 'child') {
+    // Children wear the same garment sheets, scaled around the foot anchor.
+    const [ax, ay] = base.anchor,
+      scaled = new Pixels(dst.width, dst.height);
+    for (let y = 0; y < dst.height; y++)
+      for (let x = 0; x < dst.width; x++) {
+        const sx = Math.round((x - ax) / CHILD_SCALE + ax),
+          sy = Math.round((y - ay) / CHILD_SCALE + ay);
+        if (sx >= 0 && sy >= 0 && sx < dst.width && sy < dst.height) {
+          const i = (sy * dst.width + sx) * 4;
+          scaled.data.set(dst.data.slice(i, i + 4), (y * dst.width + x) * 4);
         }
-      blit(dst, scaled);
-    } else blit(dst, layer.frame, 0, 0, layer.mirror);
+      }
+    dst.data.set(scaled.data);
   }
   const remap = new Map<string, string>();
   for (const [slot, keys] of Object.entries(palette.keys)) {
@@ -157,7 +153,10 @@ export function compose(
   const result = new Pixels(dst.width, dst.height);
   const [ax, ay] = base.anchor;
   if (includeShadow && look.base !== 'bird')
-    result.ellipse(ax, ay, 6, 2, [...rgb(palette.shadow).slice(0, 3), 89]);
+    result.ellipse(ax, ay - 1, look.base === 'cat' ? 7 : 8, 2.5, [
+      ...rgb(palette.shadow).slice(0, 3),
+      89,
+    ]);
   blit(result, outlined);
   return result;
 }
