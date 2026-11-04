@@ -382,5 +382,459 @@
     ],
     "width": 384,
     "height": 288
+  },
+  "m-glasswall": {
+    "file": "objects/m-glasswall.png",
+    "anchor": [
+      16,
+      99
+    ],
+    "width": 160,
+    "height": 167
+  },
+  "m-glasswall-side": {
+    "file": "objects/m-glasswall-side.png",
+    "anchor": [
+      144,
+      99
+    ],
+    "width": 160,
+    "height": 167
+  },
+  "m-whitewall": {
+    "file": "objects/m-whitewall.png",
+    "anchor": [
+      16,
+      97
+    ],
+    "width": 160,
+    "height": 165
+  },
+  "m-whitewall-side": {
+    "file": "objects/m-whitewall-side.png",
+    "anchor": [
+      144,
+      97
+    ],
+    "width": 160,
+    "height": 165
+  },
+  "m-archwall": {
+    "file": "objects/m-archwall.png",
+    "anchor": [
+      16,
+      112
+    ],
+    "width": 160,
+    "height": 180
+  },
+  "m-archwall-side": {
+    "file": "objects/m-archwall-side.png",
+    "anchor": [
+      144,
+      112
+    ],
+    "width": 160,
+    "height": 180
+  },
+  "m-dome": {
+    "file": "objects/m-dome.png",
+    "anchor": [
+      64,
+      108
+    ],
+    "width": 144,
+    "height": 173
+  },
+  "m-minaret": {
+    "file": "objects/m-minaret.png",
+    "anchor": [
+      32,
+      232
+    ],
+    "width": 64,
+    "height": 249
+  },
+  "m-wudu": {
+    "file": "objects/m-wudu.png",
+    "anchor": [
+      16,
+      44
+    ],
+    "width": 80,
+    "height": 75
+  },
+  "m-shoe-rack": {
+    "file": "objects/m-shoe-rack.png",
+    "anchor": [
+      16,
+      22
+    ],
+    "width": 64,
+    "height": 44
+  },
+  "m-hall-carpet": {
+    "file": "objects/m-hall-carpet.png",
+    "anchor": [
+      96,
+      1
+    ],
+    "width": 256,
+    "height": 129,
+    "floor": true
+  },
+  "m-lab-bench": {
+    "file": "objects/m-lab-bench.png",
+    "anchor": [
+      32,
+      39
+    ],
+    "width": 96,
+    "height": 76
+  },
+  "m-fume-hood": {
+    "file": "objects/m-fume-hood.png",
+    "anchor": [
+      16,
+      86
+    ],
+    "width": 64,
+    "height": 111
+  },
+  "m-robot-arm": {
+    "file": "objects/m-robot-arm.png",
+    "anchor": [
+      16,
+      45
+    ],
+    "width": 48,
+    "height": 60,
+    "frames": [
+      "objects/m-robot-arm-0.png",
+      "objects/m-robot-arm-1.png",
+      "objects/m-robot-arm-2.png",
+      "objects/m-robot-arm-3.png"
+    ]
+  },
+  "m-server-rack": {
+    "file": "objects/m-server-rack.png",
+    "anchor": [
+      16,
+      88
+    ],
+    "width": 32,
+    "height": 103,
+    "frames": [
+      "objects/m-server-rack-0.png",
+      "objects/m-server-rack-1.png",
+      "objects/m-server-rack-2.png",
+      "objects/m-server-rack-3.png"
+    ]
+  },
+  "m-computer-desk": {
+    "file": "objects/m-computer-desk.png",
+    "anchor": [
+      16,
+      42
+    ],
+    "width": 64,
+    "height": 66
+  },
+  "m-whiteboard": {
+    "file": "objects/m-whiteboard.png",
+    "anchor": [
+      16,
+      71
+    ],
+    "width": 64,
+    "height": 91
+  },
+  "m-screen-wall": {
+    "file": "objects/m-screen-wall.png",
+    "anchor": [
+      16,
+      76
+    ],
+    "width": 64,
+    "height": 100
+  },
+  "m-hospital-bed": {
+    "file": "objects/m-hospital-bed.png",
+    "anchor": [
+      32,
+      27
+    ],
+    "width": 80,
+    "height": 50
+  },
+  "m-iv-stand": {
+    "file": "objects/m-iv-stand.png",
+    "anchor": [
+      16,
+      67
+    ],
+    "width": 32,
+    "height": 74
+  },
+  "m-monitor-cart": {
+    "file": "objects/m-monitor-cart.png",
+    "anchor": [
+      16,
+      55
+    ],
+    "width": 32,
+    "height": 67,
+    "frames": [
+      "objects/m-monitor-cart-0.png",
+      "objects/m-monitor-cart-1.png",
+      "objects/m-monitor-cart-2.png",
+      "objects/m-monitor-cart-3.png"
+    ]
+  },
+  "m-curtain": {
+    "file": "objects/m-curtain.png",
+    "anchor": [
+      16,
+      78
+    ],
+    "width": 64,
+    "height": 105
+  },
+  "m-waiting-chairs": {
+    "file": "objects/m-waiting-chairs.png",
+    "anchor": [
+      16,
+      30
+    ],
+    "width": 64,
+    "height": 57
+  },
+  "m-reception": {
+    "file": "objects/m-reception.png",
+    "anchor": [
+      32,
+      41
+    ],
+    "width": 96,
+    "height": 74
+  },
+  "m-drafting-table": {
+    "file": "objects/m-drafting-table.png",
+    "anchor": [
+      32,
+      42
+    ],
+    "width": 64,
+    "height": 68
+  },
+  "m-tower-model": {
+    "file": "objects/m-tower-model.png",
+    "anchor": [
+      16,
+      97
+    ],
+    "width": 32,
+    "height": 113
+  },
+  "m-wave-model": {
+    "file": "objects/m-wave-model.png",
+    "anchor": [
+      16,
+      28
+    ],
+    "width": 64,
+    "height": 52
+  },
+  "m-kitchen-counter": {
+    "file": "objects/m-kitchen-counter.png",
+    "anchor": [
+      32,
+      49
+    ],
+    "width": 96,
+    "height": 82,
+    "frames": [
+      "objects/m-kitchen-counter-0.png",
+      "objects/m-kitchen-counter-1.png",
+      "objects/m-kitchen-counter-2.png",
+      "objects/m-kitchen-counter-3.png"
+    ]
+  },
+  "m-dining-table": {
+    "file": "objects/m-dining-table.png",
+    "anchor": [
+      16,
+      22
+    ],
+    "width": 96,
+    "height": 61
+  },
+  "m-food-shelf": {
+    "file": "objects/m-food-shelf.png",
+    "anchor": [
+      16,
+      62
+    ],
+    "width": 80,
+    "height": 93
+  },
+  "m-food-shelf-side": {
+    "file": "objects/m-food-shelf-side.png",
+    "anchor": [
+      64,
+      62
+    ],
+    "width": 80,
+    "height": 93
+  },
+  "m-fridge": {
+    "file": "objects/m-fridge.png",
+    "anchor": [
+      16,
+      72
+    ],
+    "width": 32,
+    "height": 87
+  },
+  "m-bookshelf": {
+    "file": "objects/m-bookshelf.png",
+    "anchor": [
+      16,
+      66
+    ],
+    "width": 80,
+    "height": 96
+  },
+  "m-bookshelf-side": {
+    "file": "objects/m-bookshelf-side.png",
+    "anchor": [
+      64,
+      66
+    ],
+    "width": 80,
+    "height": 96
+  },
+  "m-kids-table": {
+    "file": "objects/m-kids-table.png",
+    "anchor": [
+      32,
+      12
+    ],
+    "width": 64,
+    "height": 34
+  },
+  "m-solar-panel": {
+    "file": "objects/m-solar-panel.png",
+    "anchor": [
+      32,
+      34
+    ],
+    "width": 64,
+    "height": 64
+  },
+  "m-bike-rack": {
+    "file": "objects/m-bike-rack.png",
+    "anchor": [
+      32,
+      15
+    ],
+    "width": 80,
+    "height": 44
+  },
+  "m-street-lamp": {
+    "file": "objects/m-street-lamp.png",
+    "anchor": [
+      16,
+      95
+    ],
+    "width": 32,
+    "height": 102
+  },
+  "m-bench": {
+    "file": "objects/m-bench.png",
+    "anchor": [
+      16,
+      27
+    ],
+    "width": 48,
+    "height": 49
+  },
+  "m-cafe-table": {
+    "file": "objects/m-cafe-table.png",
+    "anchor": [
+      16,
+      18
+    ],
+    "width": 32,
+    "height": 31
+  },
+  "m-coffee-cart": {
+    "file": "objects/m-coffee-cart.png",
+    "anchor": [
+      32,
+      65
+    ],
+    "width": 80,
+    "height": 86
+  },
+  "m-tree": {
+    "file": "objects/m-tree.png",
+    "anchor": [
+      32,
+      89
+    ],
+    "width": 80,
+    "height": 101
+  },
+  "m-planter-box": {
+    "file": "objects/m-planter-box.png",
+    "anchor": [
+      16,
+      17
+    ],
+    "width": 64,
+    "height": 42
+  },
+  "m-fountain": {
+    "file": "objects/m-fountain.png",
+    "anchor": [
+      48,
+      26
+    ],
+    "width": 112,
+    "height": 75,
+    "frames": [
+      "objects/m-fountain-0.png",
+      "objects/m-fountain-1.png",
+      "objects/m-fountain-2.png",
+      "objects/m-fountain-3.png"
+    ]
+  },
+  "m-bus-shelter": {
+    "file": "objects/m-bus-shelter.png",
+    "anchor": [
+      32,
+      75
+    ],
+    "width": 96,
+    "height": 107
+  },
+  "m-water-cooler": {
+    "file": "objects/m-water-cooler.png",
+    "anchor": [
+      16,
+      46
+    ],
+    "width": 32,
+    "height": 54
+  },
+  "m-desk-plant": {
+    "file": "objects/m-desk-plant.png",
+    "anchor": [
+      16,
+      49
+    ],
+    "width": 32,
+    "height": 57
   }
 }

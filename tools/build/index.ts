@@ -30,6 +30,9 @@ import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripDepth } from '../../packages/shared/slicing';
 import type { ObjectArt } from '../placeholder/objects';
 const out = 'public-build';
+/** Flat walkable art (carpets, rugs) is baked into chunk backgrounds. */
+const bakedIntoFloor = (type: string, art: ObjectArt) =>
+  Boolean(art.floor) || type === 'carpet' || type === 'detail-rug';
 const hash = (d: Uint8Array | string) =>
   createHash('sha256').update(d).digest('hex');
 async function build() {
@@ -163,10 +166,9 @@ async function build() {
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
-      if (o.walkable && (o.type === 'carpet' || o.type === 'detail-rug'))
-        continue;
       const art = objectArt[o.type];
       if (!art) throw Error(`Unknown room object ${o.type}`);
+      if (o.walkable && bakedIntoFloor(o.type, art)) continue;
       const frames = await Promise.all(
         (art.frames ?? [art.file]).map((f) => image(`art/${f}`)),
       );
@@ -259,22 +261,27 @@ async function build() {
   }
   const floor = new Pixels(4096, 4096);
   floor.rect(0, 0, 4096, 4096, '#D7DCD2');
+  const tileCount = (await files('art/tiles', '.png')).length;
   const tiles = await Promise.all(
-    Array.from({ length: 6 }, (_, i) => image(`art/tiles/tile-${i + 1}.png`)),
+    Array.from({ length: tileCount }, (_, i) =>
+      image(`art/tiles/tile-${i + 1}.png`),
+    ),
   );
   const layer = room.layers.find((l) => l.name === 'floor');
   if (layer?.type === 'tilelayer')
     for (let y = 0; y < room.height; y++)
       for (let x = 0; x < room.width; x++) {
-        const [wx, wy] = worldFromTile(x, y);
-        blit(floor, tiles[layer.data[y * room.width + x] - 1], wx - 16, wy);
+        const [wx, wy] = worldFromTile(x, y),
+          tile = tiles[layer.data[y * room.width + x] - 1];
+        if (!tile)
+          throw Error(`floor tile ${layer.data[y * room.width + x]} missing`);
+        blit(floor, tile, wx - 16, wy);
       }
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
-      if (!o.walkable || (o.type !== 'carpet' && o.type !== 'detail-rug'))
-        continue;
-      const art = objectArt[o.type],
-        im = await image(`art/${art.file}`),
+      const art = objectArt[o.type];
+      if (!o.walkable || !bakedIntoFloor(o.type, art)) continue;
+      const im = await image(`art/${art.file}`),
         p = worldFromTile(o.x, o.y, o.z);
       blit(
         floor,

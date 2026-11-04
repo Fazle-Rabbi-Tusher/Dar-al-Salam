@@ -21,6 +21,8 @@ export type ObjectArt = {
   width: number;
   height: number;
   frames?: string[];
+  /** Flat walkable art baked into the floor chunks instead of sorted. */
+  floor?: boolean;
 };
 function block(
   p: Pixels,
