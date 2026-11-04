@@ -15,6 +15,7 @@ import {
 } from '../../packages/shared/pixels';
 import {
   ACTIONS,
+  manifestSchema,
   type Manifest,
   type BakedCharacter,
   type FrameMeta,
@@ -133,6 +134,14 @@ async function build() {
       const state = characterState(c, f),
         m = metas[frames[`${state.action}_${state.facing}`][state.index]],
         b = m.bounds;
+      if (shadowFrame) {
+        const p = worldFromTile(...state.tile),
+          sb = metas[shadowFrame].bounds;
+        minX = Math.min(minX, p[0] + sb.x);
+        minY = Math.min(minY, p[1] + sb.y);
+        maxX = Math.max(maxX, p[0] + sb.x + sb.width);
+        maxY = Math.max(maxY, p[1] + sb.y + sb.height);
+      }
       minX = Math.min(minX, state.position[0] + b.x);
       minY = Math.min(minY, state.position[1] + b.y);
       maxX = Math.max(maxX, state.position[0] + b.x + b.width);
@@ -353,12 +362,18 @@ async function build() {
     characters: baked,
     i18n,
     room,
-    buildHash: hash(JSON.stringify({ baked, sortables, metas, palette })).slice(
-      0,
-      16,
-    ),
+    buildHash: hash(
+      JSON.stringify({
+        baked,
+        sortables,
+        metas,
+        palette,
+        room,
+        tiles: tiles.map((t) => hash(t.data)),
+      }),
+    ).slice(0, 16),
   };
-  await writeJson(`${out}/world.json`, manifest);
+  await writeJson(`${out}/world.json`, manifestSchema.parse(manifest));
   await fs.cp('art/parts', `${out}/parts`, { recursive: true });
   await writeJson(
     `${out}/parts/index.json`,

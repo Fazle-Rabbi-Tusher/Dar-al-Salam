@@ -100,39 +100,61 @@ export const roomSchema = z.object({
 });
 export type Room = z.infer<typeof roomSchema>;
 export type RoomObject = z.infer<typeof objectSchema>;
-export type FrameMeta = {
-  frame: { x: number; y: number; w: number; h: number };
-  anchor: [number, number];
-  bounds: { x: number; y: number; width: number; height: number };
-  hitMask: string;
-};
-export type BakedCharacter = Character & {
-  frames: Record<string, string[]>;
-  loopBounds: { x: number; y: number; width: number; height: number };
-  interactive: boolean;
-  needsPanelReview: boolean;
-  shadowFrame?: string;
-};
-export type Sortable = {
-  frame: string;
-  x: number;
-  y: number;
-  depth: number;
-  objectId: number;
-  tile: [number, number];
-  footprint: [number, number];
-  animation?: string[];
-};
-export type Manifest = {
-  width: number;
-  height: number;
-  chunkSize: number;
-  chunks: { x: number; y: number; url: string }[];
-  lod: { scale: number; tiles: { x: number; y: number; url: string }[] }[];
-  atlases: string[];
-  sortables: Sortable[];
-  characters: BakedCharacter[];
-  i18n: Record<string, string>;
-  buildHash: string;
-  room: Room;
-};
+const rectSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  width: z.number().nonnegative(),
+  height: z.number().nonnegative(),
+});
+export const frameMetaSchema = z.object({
+  frame: z.object({
+    x: z.number().int(),
+    y: z.number().int(),
+    w: z.number().int().positive(),
+    h: z.number().int().positive(),
+  }),
+  anchor: pointSchema,
+  bounds: rectSchema,
+  hitMask: z.string(),
+});
+export type FrameMeta = z.infer<typeof frameMetaSchema>;
+export const bakedCharacterSchema = characterSchema.extend({
+  frames: z.record(z.array(z.string()).min(1)),
+  loopBounds: rectSchema,
+  interactive: z.boolean(),
+  needsPanelReview: z.boolean(),
+  shadowFrame: z.string().optional(),
+});
+export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
+export const sortableSchema = z.object({
+  frame: z.string(),
+  x: z.number(),
+  y: z.number(),
+  depth: z.number(),
+  objectId: z.number(),
+  tile: pointSchema,
+  footprint: pointSchema,
+  animation: z.array(z.string()).optional(),
+});
+export type Sortable = z.infer<typeof sortableSchema>;
+const imageTileSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  url: z.string(),
+});
+export const manifestSchema = z.object({
+  width: z.literal(4096),
+  height: z.literal(4096),
+  chunkSize: z.literal(1024),
+  chunks: z.array(imageTileSchema),
+  lod: z.array(
+    z.object({ scale: z.number().positive(), tiles: z.array(imageTileSchema) }),
+  ),
+  atlases: z.array(z.string()),
+  sortables: z.array(sortableSchema),
+  characters: z.array(bakedCharacterSchema),
+  i18n: z.record(z.string()),
+  buildHash: z.string(),
+  room: roomSchema,
+});
+export type Manifest = z.infer<typeof manifestSchema>;

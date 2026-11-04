@@ -106,11 +106,30 @@ export function compose(
       const part = parts[id];
       if (!part) throw Error(`Unknown part ${id}`);
       const f = resolveFrame(part, action, facing, index);
-      return { ...f, order: i + f.frame.layerBias };
+      return { ...f, slot, order: i + f.frame.layerBias };
     })
     .filter((v) => v !== null)
     .sort((a, b) => a.order - b.order);
-  for (const layer of layers) blit(dst, layer.frame, 0, 0, layer.mirror);
+  for (const layer of layers) {
+    if (look.base === 'child' && layer.slot !== 'base') {
+      const original = new Pixels(dst.width, dst.height);
+      blit(original, layer.frame, 0, 0, layer.mirror);
+      const scaled = new Pixels(dst.width, dst.height);
+      for (let y = 0; y < dst.height; y++)
+        for (let x = 0; x < dst.width; x++) {
+          const sx = Math.round((x - 16) / 0.7 + 16),
+            sy = Math.round((y - 44) / 0.7 + 44);
+          if (sx >= 0 && sy >= 0 && sx < dst.width && sy < dst.height) {
+            const i = (sy * dst.width + sx) * 4;
+            scaled.data.set(
+              original.data.slice(i, i + 4),
+              (y * dst.width + x) * 4,
+            );
+          }
+        }
+      blit(dst, scaled);
+    } else blit(dst, layer.frame, 0, 0, layer.mirror);
+  }
   const remap = new Map<string, string>();
   for (const [slot, keys] of Object.entries(palette.keys)) {
     const ramp = palette.ramps[look.colours[slot]];

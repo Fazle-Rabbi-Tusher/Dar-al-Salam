@@ -334,3 +334,21 @@ describe('paper doll layering and seeded looks', () => {
     expect(() => variantLook('unknown', 7)).toThrow();
   });
 });
+
+it('keeps child clothes proportional and elevated shadows on the floor', () => {
+  const c = content.characters[0],
+    p = {
+      keys: content.keys,
+      ramps: content.ramps,
+      outline: '#493C35',
+      shadow: '#493C35',
+    };
+  const adult = trimFrame(compose(c.look, 'idle', 'SE', 0, parts, p), [16, 44]);
+  const child = trimFrame(
+    compose({ ...c.look, base: 'child' }, 'idle', 'SE', 0, parts, p),
+    [16, 44],
+  );
+  expect(child.image.height).toBeLessThan(adult.image.height - 6);
+  const lifted = compose(c.look, 'idle', 'SE', 0, parts, p, false);
+  expect(lifted.data[(44 * 32 + 11) * 4 + 3]).toBe(0);
+});
