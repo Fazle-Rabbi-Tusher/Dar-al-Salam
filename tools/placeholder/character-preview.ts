@@ -1,10 +1,13 @@
 // Dev helper: regenerate part sheets and render zoomed contact sheets of sample
-// looks × actions. Usage: node --import tsx tools/placeholder/character-preview.ts <prefix>
-// Writes <prefix>-looks.png, <prefix>-actions.png and <prefix>-animals.png.
+// looks × actions. Usage:
+//   node --import tsx tools/placeholder/character-preview.ts <prefix> [zoom]
+// Writes <prefix>-looks.png, -actions.png, -named.png, -ride-speech.png,
+// -faces.png and -animals.png.
 import { generateParts } from './parts';
 import { loadParts, png, readJson } from '../build/io';
 import { compose } from '../../packages/shared/compositor';
-import { Pixels, blit } from '../../packages/shared/pixels';
+import { canvasFor } from '../../packages/shared/canvas';
+import { Pixels } from '../../packages/shared/pixels';
 import type { Action, Facing, Look } from '../../packages/shared/schema';
 const prefix = (process.argv[2] ?? 'character-preview').replace(/\.png$/, '');
 const zoom = Number(process.argv[3] ?? 3);
@@ -34,11 +37,16 @@ const L = (
   },
 });
 type Cell = [Look, Action, Facing, number];
-async function sheet(name: string, rows: Cell[][]) {
+/** Render rows of cells; `crop` (x, y, w, h) zooms into part of each frame. */
+async function sheet(
+  name: string,
+  rows: Cell[][],
+  S = zoom,
+  crop?: [number, number, number, number],
+) {
+  const person = canvasFor('adult-man');
+  const [cx, cy, cw, ch] = crop ?? [0, 0, person.width, person.height];
   const cols = Math.max(...rows.map((r) => r.length));
-  const cw = 48,
-    ch = 72,
-    S = zoom;
   const out = new Pixels(cols * cw * S, rows.length * ch * S);
   out.rect(0, 0, out.width, out.height, '#D7DCD2');
   for (const [ri, row] of rows.entries())
@@ -52,15 +60,22 @@ async function sheet(name: string, rows: Cell[][]) {
         console.log(String(e));
         continue;
       }
-      const big = new Pixels(img.width * S, img.height * S);
-      for (let y = 0; y < big.height; y++)
-        for (let x = 0; x < big.width; x++) {
-          const k = (Math.floor(y / S) * img.width + Math.floor(x / S)) * 4;
-          big.data.set(img.data.slice(k, k + 4), (y * big.width + x) * 4);
+      // Smaller canvases (animals) sit on the cell's floor line.
+      const ox = Math.round((person.width - img.width) / 2),
+        oy = person.height - img.height;
+      for (let y = 0; y < ch * S; y++)
+        for (let x = 0; x < cw * S; x++) {
+          const sx = cx + Math.floor(x / S) - ox,
+            sy = cy + Math.floor(y / S) - oy;
+          if (sx < 0 || sy < 0 || sx >= img.width || sy >= img.height) continue;
+          const k = (sy * img.width + sx) * 4;
+          if (img.data[k + 3])
+            out.pixel(
+              ci * cw * S + x,
+              ri * ch * S + y,
+              Array.from(img.data.slice(k, k + 4)),
+            );
         }
-      const ox = Math.round((cw - img.width) / 2) * S,
-        oy = (ch - img.height) * S;
-      blit(out, big, ci * cw * S + ox, ri * ch * S + oy);
     }
   await png(`${prefix}-${name}.png`, out);
   console.log('wrote', `${prefix}-${name}.png`);
@@ -68,7 +83,7 @@ async function sheet(name: string, rows: Cell[][]) {
 const looks: Look[] = [
   L('adult-man', 'lab-coat', 'none', 'flask', [
     'skin-4',
-    'hair-black',
+    'hair-grey',
     'lab-white',
     'navy',
     'white-linen',
@@ -98,7 +113,7 @@ const looks: Look[] = [
     'coral',
     'graphite',
   ]),
-  L('adult-woman', 'long-dress', 'none', 'tablet', [
+  L('adult-woman-loose', 'long-dress', 'none', 'tablet', [
     'skin-3',
     'hair-black',
     'black-cloth',
@@ -154,6 +169,97 @@ const looks: Look[] = [
     'white-linen',
     'madder-red',
   ]),
+  L('adult-man', 'panjabi-lungi', 'taqiyah', 'meal-box', [
+    'skin-6',
+    'hair-black',
+    'white-linen',
+    'emerald',
+    'white-linen',
+    'saffron',
+  ]),
+  L('adult-woman', 'baju-kurung', 'hijab', 'shopping-bag', [
+    'skin-3',
+    'hair-black',
+    'rose',
+    'turquoise',
+    'sky',
+    'mustard',
+  ]),
+  L('adult-man', 'boubou', 'songkok', 'phone', [
+    'skin-8',
+    'hair-black',
+    'indigo',
+    'saffron',
+    'black-cloth',
+    'graphite',
+  ]),
+  L('adult-man', 'scholar-robe', 'imamah', 'book', [
+    'skin-4',
+    'hair-black',
+    'indigo',
+    'white-linen',
+    'white-linen',
+    'madder-red',
+  ]),
+  L('adult-man', 'kaftan', 'hui-cap', 'basket', [
+    'skin-2',
+    'hair-black',
+    'sky',
+    'saffron',
+    'white-linen',
+    'cocoa',
+  ]),
+  L('adult-man', 'qaba', 'none', 'scroll', [
+    'skin-4',
+    'hair-black',
+    'olive',
+    'madder-red',
+    'white-linen',
+    'cocoa',
+  ]),
+  L('adult-man', 'hui-robe', 'hui-cap', 'coffee', [
+    'skin-1',
+    'hair-black',
+    'graphite',
+    'madder-red',
+    'white-linen',
+    'cocoa',
+  ]),
+  L('adult-woman', 'apron', 'scrub-cap', 'tray', [
+    'skin-4',
+    'hair-black',
+    'white-linen',
+    'olive',
+    'sky',
+    'brass',
+  ]),
+  L('adult-man-short', 'shirt-trousers', 'none', 'clipboard', [
+    'skin-5',
+    'hair-black',
+    'sky',
+    'khaki',
+    'white-linen',
+    'brass',
+  ]),
+];
+// Named-people looks (as used by the character cards).
+const named: Look[] = [
+  L('adult-man-swept-beard', 'suit', 'none', 'scooter', [
+    'skin-4',
+    'hair-black',
+    'navy',
+    'sky',
+    'white-linen',
+    'graphite',
+  ]),
+  L('adult-man', 'blazer-open', 'none', 'none', [
+    'skin-3',
+    'hair-black',
+    'black-cloth',
+    'graphite',
+    'white-linen',
+    'graphite',
+  ]),
   L('adult-man-beard', 'football-kit-captain', 'none', 'wrist-tape', [
     'skin-3',
     'hair-black',
@@ -164,7 +270,7 @@ const looks: Look[] = [
   ]),
   L('adult-man-clean', 'football-kit-long', 'none', 'none', [
     'skin-2',
-    'hair-brown',
+    'hair-black',
     'kit-red',
     'lab-white',
     'white-linen',
@@ -202,45 +308,21 @@ const looks: Look[] = [
     'wool-cream',
     'graphite',
   ]),
-  L('adult-man-clean', 'boxing-kit', 'none', 'boxing-gloves', [
+  L('adult-man-shaved-beard', 'fight-kit', 'none', 'mma-gloves', [
+    'skin-8',
+    'hair-black',
+    'navy',
+    'black-cloth',
+    'white-linen',
+    'kit-red',
+  ]),
+  L('adult-man-short', 'boxing-kit', 'none', 'boxing-gloves', [
     'skin-6',
     'hair-black',
     'lab-white',
     'lab-white',
     'white-linen',
     'kit-red',
-  ]),
-  L('adult-man', 'panjabi-lungi', 'taqiyah', 'meal-box', [
-    'skin-6',
-    'hair-black',
-    'white-linen',
-    'emerald',
-    'white-linen',
-    'saffron',
-  ]),
-  L('adult-woman', 'baju-kurung', 'hijab', 'shopping-bag', [
-    'skin-3',
-    'hair-black',
-    'rose',
-    'turquoise',
-    'sky',
-    'mustard',
-  ]),
-  L('adult-man', 'boubou', 'songkok', 'phone', [
-    'skin-8',
-    'hair-black',
-    'indigo',
-    'saffron',
-    'black-cloth',
-    'graphite',
-  ]),
-  L('adult-man', 'scholar-robe', 'imamah', 'book', [
-    'skin-4',
-    'hair-black',
-    'indigo',
-    'white-linen',
-    'white-linen',
-    'madder-red',
   ]),
 ];
 const core: [Action, Facing, number][] = [
@@ -262,18 +344,10 @@ await sheet(
   'looks',
   looks.map((l) => core.map(([a, f, i]) => [l, a, f, i] as Cell)),
 );
-const special: [Action, Facing, number][] = [
-  ['pray', 'NE', 0],
-  ['pray', 'NE', 2],
-  ['pray', 'NE', 4],
-  ['pray', 'NE', 6],
-  ['pray', 'SE', 0],
-  ['pray', 'SE', 2],
-  ['pray', 'SE', 4],
-  ['pray', 'SE', 6],
-  ['teach', 'NE', 1],
-  ['read', 'SE', 0],
-  ['sweep', 'SE', 0],
+const sport: [Action, Facing, number][] = [
+  ['idle', 'SE', 0],
+  ['walk', 'SE', 1],
+  ['walk', 'NE', 2],
   ['celebrate', 'SE', 1],
   ['arms-out', 'SE', 2],
   ['hand-on-heart', 'SE', 0],
@@ -285,13 +359,94 @@ const special: [Action, Facing, number][] = [
   ['taunt', 'SW', 0],
   ['lie', 'SE', 0],
   ['dive', 'NE', 1],
+  ['dive', 'SE', 2],
   ['slide', 'SE', 0],
 ];
 await sheet(
+  'named',
+  named.map((l) => sport.map(([a, f, i]) => [l, a, f, i] as Cell)),
+);
+const special: [Action, Facing, number][] = [
+  ['pray', 'NE', 0],
+  ['pray', 'NE', 2],
+  ['pray', 'NE', 4],
+  ['pray', 'NE', 6],
+  ['pray', 'SE', 0],
+  ['pray', 'SE', 2],
+  ['pray', 'SE', 4],
+  ['pray', 'SE', 6],
+  ['teach', 'NE', 1],
+  ['teach', 'SE', 1],
+  ['read', 'SE', 0],
+  ['write', 'SW', 2],
+  ['pour', 'SW', 2],
+  ['sweep', 'SE', 0],
+  ['speech', 'SE', 1],
+  ['ride', 'SE', 1],
+];
+await sheet(
   'actions',
-  [0, 1, 7, 10, 11, 16, 17].map((i) =>
+  [0, 1, 2, 7, 8, 9, 14].map((i) =>
     special.map(([a, f, k]) => [looks[i], a, f, k] as Cell),
   ),
+);
+// Faces up close: every base with its expressions, and the back of the head.
+const faceBases = [
+  'adult-man',
+  'adult-woman',
+  'elder',
+  'adult-man-beard',
+  'adult-man-clean',
+  'adult-man-curly',
+  'adult-man-goatee',
+  'adult-man-shaved',
+  'adult-man-short',
+  'adult-man-shaved-beard',
+  'adult-man-swept-beard',
+  'adult-woman-loose',
+];
+const faceSkins = [
+  'skin-3',
+  'skin-2',
+  'skin-5',
+  'skin-4',
+  'skin-3',
+  'skin-2',
+  'skin-5',
+];
+const faces: [Action, Facing, number][] = [
+  ['idle', 'SE', 0],
+  ['talk', 'SE', 1],
+  ['wave', 'SE', 1],
+  ['idle', 'SE', 3],
+  ['pray', 'SE', 0],
+  ['guard', 'SE', 0],
+  ['punch', 'SE', 2],
+  ['speech', 'SE', 1],
+  ['idle', 'NE', 0],
+];
+await sheet(
+  'faces',
+  faceBases.map((b, i) =>
+    faces.map(
+      ([a, f, k]) =>
+        [
+          L(b, 'shirt-trousers', 'none', 'none', [
+            faceSkins[i % faceSkins.length],
+            b === 'elder' ? 'hair-white' : 'hair-black',
+            'sky',
+            'navy',
+            'white-linen',
+            'graphite',
+          ]),
+          a,
+          f,
+          k,
+        ] as Cell,
+    ),
+  ),
+  8,
+  [16, 6, 24, 30],
 );
 const cat = (c: string) =>
   L('cat', 'none', 'none', 'none', [
@@ -311,35 +466,26 @@ const bird = (c: string) =>
     'white-linen',
     'saffron',
   ]);
-await sheet('animals', [
+await sheet(
+  'animals',
   [
-    [cat('saffron'), 'cat_idle', 'SE', 0],
-    [cat('saffron'), 'cat_walk', 'SE', 1],
-    [cat('charcoal'), 'cat_walk', 'NE', 3],
-    [cat('wool-cream'), 'cat_sleep', 'SE', 2],
-    [bird('graphite'), 'bird_fly', 'SE', 1],
-    [bird('cocoa'), 'bird_fly', 'SW', 3],
-    [bird('wool-cream'), 'bird_peck', 'SE', 0],
-    [bird('graphite'), 'bird_peck', 'SE', 3],
+    [
+      [cat('saffron'), 'cat_idle', 'SE', 0],
+      [cat('saffron'), 'cat_walk', 'SE', 1],
+      [cat('charcoal'), 'cat_walk', 'NE', 3],
+      [cat('wool-cream'), 'cat_sleep', 'SE', 2],
+      [bird('graphite'), 'bird_fly', 'SE', 1],
+      [bird('cocoa'), 'bird_fly', 'SW', 3],
+      [bird('wool-cream'), 'bird_peck', 'SE', 0],
+      [bird('graphite'), 'bird_peck', 'SE', 3],
+    ],
   ],
-]);
+  zoom * 2,
+  [0, 50, 56, 34],
+);
 // Scooter rider and speech-giver.
-const rider = L('adult-man-beard', 'suit', 'none', 'scooter', [
-  'skin-3',
-  'hair-black',
-  'navy',
-  'sky',
-  'white-linen',
-  'graphite',
-]);
-const speaker = L('adult-man', 'blazer-open', 'none', 'none', [
-  'skin-3',
-  'hair-black',
-  'black-cloth',
-  'graphite',
-  'white-linen',
-  'graphite',
-]);
+const rider = named[0],
+  speaker = named[1];
 const parked = (look: Look): Look => ({ ...look, prop: 'scooter' });
 await sheet('ride-speech', [
   [0, 1, 2, 3].flatMap((i) =>
@@ -363,51 +509,9 @@ await sheet('ride-speech', [
     [rider, 'walk', 'SE', 1],
     [rider, 'wave', 'SE', 1],
     [parked(speaker), 'idle', 'SW', 0],
-    [
-      parked(
-        L('adult-woman', 'long-dress', 'hijab', 'none', [
-          'skin-5',
-          'hair-black',
-          'plum',
-          'mustard',
-          'emerald',
-          'graphite',
-        ]),
-      ),
-      'talk',
-      'SE',
-      1,
-    ],
-    [
-      parked(
-        L('child', 'hoodie-jeans', 'cap', 'none', [
-          'skin-6',
-          'hair-black',
-          'coral',
-          'denim',
-          'sky',
-          'mustard',
-        ]),
-      ),
-      'ride',
-      'SE',
-      1,
-    ],
-    [
-      parked(
-        L('adult-woman', 'scrubs', 'hijab', 'none', [
-          'skin-2',
-          'hair-black',
-          'scrub-teal',
-          'white-linen',
-          'navy',
-          'sky',
-        ]),
-      ),
-      'ride',
-      'NE',
-      2,
-    ],
+    [parked(looks[12]), 'talk', 'SE', 1],
+    [parked(looks[9]), 'ride', 'SE', 1],
+    [parked(looks[1]), 'ride', 'NE', 2],
     [rider, 'sit', 'SE', 0],
   ],
 ]);
