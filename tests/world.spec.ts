@@ -216,7 +216,47 @@ test('touch pinch changes zoom toward the pinch centre', async ({
         ),
       ),
     )
-    .toBeGreaterThan(100);
+    .toBeGreaterThan(40);
+  // The ground under the pinch centre stays under the fingers. Touches are in
+  // page coordinates; the engine works in canvas coordinates.
+  const box = (await page.locator('.world-host canvas').boundingBox())!;
+  const ground = () =>
+    page.evaluate(
+      ([x, y]) =>
+        (
+          window as unknown as {
+            __darEngine: { groundAt(x: number, y: number): number[] | null };
+          }
+        ).__darEngine.groundAt(x, y),
+      [190 - box.x, 530 - box.y],
+    );
+  await page.waitForTimeout(500);
+  const before = await ground();
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [
+      { x: 160, y: 530 },
+      { x: 220, y: 530 },
+    ],
+  });
+  for (let i = 1; i <= 5; i++)
+    await session.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [
+        { x: 160 - i * 8, y: 530 },
+        { x: 220 + i * 8, y: 530 },
+      ],
+    });
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchEnd',
+    touchPoints: [],
+  });
+  await page.waitForTimeout(500);
+  const after = await ground();
+  expect(before && after).toBeTruthy();
+  expect(
+    Math.hypot(after![0] - before![0], after![1] - before![1]),
+  ).toBeLessThan(1.5);
   await context.close();
 });
 

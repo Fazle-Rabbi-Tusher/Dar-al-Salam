@@ -1,8 +1,8 @@
 export type Camera = { x: number; y: number; zoom: number };
 /** Smallest zoom a link can ask for (phones can zoom out this far). */
 export const MIN_URL_ZOOM = 0.05;
-/** Viewports narrower than this are treated as phones. */
-export const PHONE_WIDTH = 768;
+/** Viewports whose shorter side is under this are phones (either orientation). */
+export const PHONE_WIDTH = 600;
 /** Opening zoom on phones: the planet fills the screen. */
 export const PHONE_ZOOM = 0.4;
 export function parseUrl(url: string) {

@@ -1563,3 +1563,14 @@ html[dir='rtl'] .portrait-decoration {
   font-size: 10px;
   color: #8b7a55;
 }
+
+/* The world screen owns pinch gestures: no page zoom or double-tap zoom
+   over its controls, while cards and result lists can still scroll. */
+.world-page {
+  touch-action: pan-x pan-y;
+}
+.world-page button,
+.world-page a,
+.world-page input {
+  touch-action: manipulation;
+}

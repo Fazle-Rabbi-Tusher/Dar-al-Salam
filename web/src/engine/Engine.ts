@@ -28,9 +28,11 @@ import {
   focusFromWorld,
   frame as planetFrame,
   fromLatLon,
+  planetToTile,
   project,
   screenFacing,
   tileToPlanet,
+  unproject,
   worldFromFocus,
   type Frame,
   type Vec3,
@@ -42,11 +44,7 @@ import {
   type Manifest,
   type Sortable,
 } from '../../../packages/shared/schema';
-import {
-  MIN_URL_ZOOM,
-  PHONE_WIDTH,
-  type Camera,
-} from '../../../packages/shared/url';
+import { MIN_URL_ZOOM, type Camera } from '../../../packages/shared/url';
 import { worldFromTile, type Point } from '../../../packages/shared/iso';
 TextureStyle.defaultOptions.scaleMode = 'nearest';
 
@@ -371,9 +369,13 @@ export class Engine {
     for (const m of [this.planet, this.halo])
       m.geometry.positions = new Float32Array([0, 0, w, 0, w, h, 0, h]);
   }
-  /** Phones can zoom right out until the planet is a small ball; desktops stop at 30%. */
+  /**
+   * Zoom out until the whole planet is a small ball: about a third of the
+   * size that fits the screen (5% on phones, in either orientation).
+   */
   minZoom() {
-    return this.host.clientWidth < PHONE_WIDTH ? MIN_URL_ZOOM : 0.3;
+    const fit = fitZoom(this.host.clientWidth, this.host.clientHeight);
+    return Math.min(0.3, Math.max(MIN_URL_ZOOM, fit * 0.3));
   }
   getCamera(): Camera {
     const [x, y] = worldFromFocus(this.view.lat, this.view.lon);
@@ -383,11 +385,52 @@ export class Engine {
     this.motion = on;
   }
   setZoom(zoom: number) {
+    // Buttons and keys zoom around the focus; zoomAt re-sets its own point.
+    this.zoomPoint = null;
     this.flight = null;
     this.view.zoom = Math.max(this.minZoom(), Math.min(MAX_ZOOM, zoom));
     this.zoomIdle = 240;
     this.applyCamera();
   }
+  /** Zoom while keeping the ground under a screen point (cursor, pinch centre) still. */
+  zoomAt(zoom: number, x: number, y: number) {
+    const anchor = unproject(this.proj, x, y);
+    this.setZoom(zoom);
+    this.zoomPoint = { x, y };
+    if (!anchor) return;
+    // Newton steps on (lat, lon) so the anchor lands back under (x, y).
+    const at = (lat: number, lon: number) =>
+      project(
+        planetFrame({
+          lat,
+          lon,
+          zoom: this.view.zoom,
+          width: this.host.clientWidth,
+          height: this.host.clientHeight,
+        }),
+        anchor,
+      );
+    for (let i = 0; i < 6; i++) {
+      const { lat, lon } = this.view,
+        q = at(lat, lon),
+        fx = q.x - x,
+        fy = q.y - y;
+      if (Math.hypot(fx, fy) < 0.25) break;
+      const e = 1e-4,
+        a = at(lat + e, lon),
+        b = at(lat, lon + e);
+      const j11 = (a.x - q.x) / e,
+        j21 = (a.y - q.y) / e,
+        j12 = (b.x - q.x) / e,
+        j22 = (b.y - q.y) / e,
+        det = j11 * j22 - j12 * j21;
+      if (Math.abs(det) < 1e-9) break;
+      this.view.lat -= (j22 * fx - j12 * fy) / det;
+      this.view.lon -= (-j21 * fx + j11 * fy) / det;
+      this.applyCamera();
+    }
+  }
+  private zoomPoint: { x: number; y: number } | null = null;
   private target(to: Camera) {
     const f = focusFromWorld(to.x, to.y);
     return {
@@ -605,8 +648,20 @@ export class Engine {
     }
     if (this.zoomIdle > 0) {
       this.zoomIdle -= dt;
-      if (this.zoomIdle <= 0 && this.view.zoom >= 1 && !this.pointers.size) {
-        this.view.zoom = Math.round(this.view.zoom);
+      // Settle on a crisp whole zoom only when already close to one, so a
+      // pinch never jumps noticeably after the fingers lift.
+      const whole = Math.round(this.view.zoom);
+      if (
+        this.zoomIdle <= 0 &&
+        this.view.zoom >= 1 &&
+        !this.pointers.size &&
+        Math.abs(this.view.zoom - whole) < 0.15
+      ) {
+        // Settle around the last pinch/cursor point so the view does not shift.
+        const z = this.zoomPoint;
+        if (z) this.zoomAt(whole, z.x, z.y);
+        else this.view.zoom = whole;
+        this.zoomIdle = 0;
         moved = true;
       }
     }
@@ -667,6 +722,11 @@ export class Engine {
     }
     return null;
   }
+  /** Development/test helper: tile coordinates of the ground under a screen point. */
+  groundAt(x: number, y: number): Point | null {
+    const p = unproject(this.proj, x, y);
+    return p ? planetToTile(p) : null;
+  }
   /** Development/test helper: screen points over and beside a character. */
   debugPoints(id: string) {
     const item = this.live.get(id);
@@ -717,7 +777,12 @@ export class Engine {
             )![1];
             const a = Math.hypot(old.x - other.x, old.y - other.y),
               b = Math.hypot(p.x - other.x, p.y - other.y);
-            this.setZoom((this.view.zoom * b) / Math.max(1, a));
+            this.velocity = { lat: 0, lon: 0 };
+            this.zoomAt(
+              (this.view.zoom * b) / Math.max(1, a),
+              (p.x + other.x) / 2,
+              (p.y + other.y) / 2,
+            );
           } else {
             const v = this.drag(p.x - old.x, p.y - old.y),
               dt = Math.max(
@@ -748,6 +813,8 @@ export class Engine {
     );
     const up = (e: PointerEvent) => {
       if (!this.pointers.has(e.pointerId)) return;
+      // Lifting one finger of a pinch must not fling the planet.
+      if (this.pointers.size === 2) this.velocity = { lat: 0, lon: 0 };
       if (this.pointers.size === 1 && this.moved < 5) {
         const hit = this.hit(this.point(e));
         if (hit) {
@@ -783,7 +850,8 @@ export class Engine {
       'wheel',
       (e) => {
         e.preventDefault();
-        this.setZoom(this.view.zoom * Math.exp(-e.deltaY * 0.0015));
+        const p = this.point(e);
+        this.zoomAt(this.view.zoom * Math.exp(-e.deltaY * 0.0015), p.x, p.y);
       },
       { ...options, passive: false },
     );

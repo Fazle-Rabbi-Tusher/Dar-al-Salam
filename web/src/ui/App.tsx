@@ -222,7 +222,10 @@ function World({ manifest }: { manifest: Manifest | null }) {
       null,
     ),
     [hovered, setHovered] = useState<string | null>(null),
-    [pointer, setPointer] = useState({ x: 0, y: 0 });
+    // Kept out of React state: updating it on every pointer move would
+    // re-render the whole page while dragging (slow on phones).
+    pointer = useRef({ x: 0, y: 0 }),
+    label = useRef<HTMLDivElement>(null);
   const named = manifest?.characters.filter((c) => c.interactive) ?? [],
     card = named.find((c) => c.id === selected);
   // Hovering anyone shows what they are doing; named people invite a click.
@@ -300,7 +303,8 @@ function World({ manifest }: { manifest: Manifest | null }) {
               ...initial,
               // Phones open on the whole planet unless the link sets a zoom.
               zoom:
-                !initial.hasZoom && window.innerWidth < PHONE_WIDTH
+                !initial.hasZoom &&
+                Math.min(window.innerWidth, window.innerHeight) < PHONE_WIDTH
                   ? PHONE_ZOOM
                   : initial.zoom,
             },
@@ -332,12 +336,17 @@ function World({ manifest }: { manifest: Manifest | null }) {
       }
     };
     window.addEventListener('keydown', keyboard);
+    // iOS Safari: stop pinches over the interface from zooming the whole page;
+    // pinching the planet zooms the planet instead.
+    const noPageZoom = (e: Event) => e.preventDefault();
+    document.addEventListener('gesturestart', noPageZoom);
     return () => {
       cancelled = true;
       clearTimeout(urlTimer.current);
       world.destroy();
       window.removeEventListener('popstate', pop);
       window.removeEventListener('keydown', keyboard);
+      document.removeEventListener('gesturestart', noPageZoom);
     };
   }, [select, setCamera]);
   useEffect(() => {
@@ -363,14 +372,19 @@ function World({ manifest }: { manifest: Manifest | null }) {
         ref={host}
         onPointerMove={(e) => {
           const r = e.currentTarget.getBoundingClientRect();
-          setPointer({ x: e.clientX - r.left, y: e.clientY - r.top });
+          pointer.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+          if (label.current) {
+            label.current.style.left = pointer.current.x + 14 + 'px';
+            label.current.style.top = pointer.current.y + 14 + 'px';
+          }
         }}
       />
       {hoverLabel && (
         <div
           className="hover-label"
           role="tooltip"
-          style={{ left: pointer.x + 14, top: pointer.y + 14 }}
+          ref={label}
+          style={{ left: pointer.current.x + 14, top: pointer.current.y + 14 }}
         >
           <strong>{hoverLabel.title}</strong>
           {hoverLabel.note && <span>{hoverLabel.note}</span>}
