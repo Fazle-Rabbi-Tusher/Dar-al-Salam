@@ -19,9 +19,9 @@
     "colours": {
       "skin": "skin-4",
       "hair": "hair-black",
-      "garmentPrimary": "mustard",
-      "garmentSecondary": "madder-red",
-      "headwear": "madder-red",
+      "garmentPrimary": "madder-red",
+      "garmentSecondary": "saffron",
+      "headwear": "wool-cream",
       "prop": "sky"
     }
   },

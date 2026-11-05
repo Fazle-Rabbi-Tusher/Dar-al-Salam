@@ -31,15 +31,15 @@
       "from": 0,
       "to": 60,
       "action": "teach",
-      "at": [12.6, 54.8],
-      "facing": "SW"
+      "at": [9.2, 51.6],
+      "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "read",
-      "at": [12.6, 54.8],
-      "facing": "SE"
+      "at": [9.2, 51.6],
+      "facing": "SW"
     }
   ],
   "bio": {

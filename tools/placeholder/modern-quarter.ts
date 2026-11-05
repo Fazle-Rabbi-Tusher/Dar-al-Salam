@@ -2188,7 +2188,7 @@ export function namedCards(): Character[] {
       place: 'Dhaka · Chicago',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man',
+        base: 'adult-man-clean',
         garment: 'suit',
         headwear: 'none',
         prop: 'blueprint',
@@ -2313,7 +2313,7 @@ export function namedCards(): Character[] {
       place: 'Savur · Chapel Hill',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man',
+        base: 'adult-man-clean',
         garment: 'lab-coat',
         headwear: 'none',
         prop: 'flask',
@@ -2945,7 +2945,7 @@ export function namedCards(): Character[] {
           hair: 'hair-black',
           garmentPrimary: 'madder-red',
           garmentSecondary: 'saffron',
-          headwear: 'wool-cream',
+          headwear: 'navy',
           prop: 'brass',
         },
       },
@@ -3111,7 +3111,7 @@ function scholars(): (Partial<Character> &
       years: 'b. 1958',
       place: 'Berkeley, California',
       district: 'modern-quarter',
-      look: look('elder', 'jubba', 'imamah', 'book', {
+      look: look('adult-man-beard', 'jubba', 'imamah', 'book', {
         skin: 'skin-1',
         hair: 'hair-grey',
         garmentPrimary: 'khaki',
