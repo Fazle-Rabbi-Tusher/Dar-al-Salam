@@ -1085,5 +1085,238 @@
     ],
     "width": 80,
     "height": 110
+  },
+  "m-skyscraper-deco": {
+    "file": "objects/m-skyscraper-deco.png",
+    "anchor": [
+      48,
+      268
+    ],
+    "width": 112,
+    "height": 317
+  },
+  "m-skyscraper-glass": {
+    "file": "objects/m-skyscraper-glass.png",
+    "anchor": [
+      48,
+      227
+    ],
+    "width": 112,
+    "height": 276
+  },
+  "m-brownstone": {
+    "file": "objects/m-brownstone.png",
+    "anchor": [
+      32,
+      94
+    ],
+    "width": 112,
+    "height": 139
+  },
+  "m-brownstone-side": {
+    "file": "objects/m-brownstone-side.png",
+    "anchor": [
+      80,
+      94
+    ],
+    "width": 112,
+    "height": 139
+  },
+  "m-bodega": {
+    "file": "objects/m-bodega.png",
+    "anchor": [
+      16,
+      62
+    ],
+    "width": 80,
+    "height": 93
+  },
+  "m-halal-cart": {
+    "file": "objects/m-halal-cart.png",
+    "anchor": [
+      32,
+      40
+    ],
+    "width": 80,
+    "height": 63,
+    "frames": [
+      "objects/m-halal-cart-0.png",
+      "objects/m-halal-cart-1.png",
+      "objects/m-halal-cart-2.png",
+      "objects/m-halal-cart-3.png"
+    ]
+  },
+  "m-city-hall": {
+    "file": "objects/m-city-hall.png",
+    "anchor": [
+      48,
+      78
+    ],
+    "width": 144,
+    "height": 147
+  },
+  "m-subway-entrance": {
+    "file": "objects/m-subway-entrance.png",
+    "anchor": [
+      16,
+      28
+    ],
+    "width": 48,
+    "height": 50
+  },
+  "m-taxi": {
+    "file": "objects/m-taxi.png",
+    "anchor": [
+      16,
+      12
+    ],
+    "width": 48,
+    "height": 31
+  },
+  "m-taxi-side": {
+    "file": "objects/m-taxi-side.png",
+    "anchor": [
+      32,
+      12
+    ],
+    "width": 48,
+    "height": 31
+  },
+  "m-water-tower": {
+    "file": "objects/m-water-tower.png",
+    "anchor": [
+      16,
+      85
+    ],
+    "width": 32,
+    "height": 98
+  },
+  "m-hydrant": {
+    "file": "objects/m-hydrant.png",
+    "anchor": [
+      16,
+      12
+    ],
+    "width": 32,
+    "height": 19
+  },
+  "m-newsstand": {
+    "file": "objects/m-newsstand.png",
+    "anchor": [
+      16,
+      43
+    ],
+    "width": 48,
+    "height": 66
+  },
+  "m-crosswalk": {
+    "file": "objects/m-crosswalk.png",
+    "anchor": [
+      16,
+      1
+    ],
+    "width": 64,
+    "height": 32,
+    "floor": true
+  },
+  "m-crosswalk-side": {
+    "file": "objects/m-crosswalk-side.png",
+    "anchor": [
+      48,
+      1
+    ],
+    "width": 64,
+    "height": 32,
+    "floor": true
+  },
+  "m-stage-base": {
+    "file": "objects/m-stage-base.png",
+    "anchor": [
+      48,
+      7
+    ],
+    "width": 176,
+    "height": 87,
+    "floor": true
+  },
+  "m-stage-backdrop": {
+    "file": "objects/m-stage-backdrop.png",
+    "anchor": [
+      16,
+      120
+    ],
+    "width": 144,
+    "height": 180
+  },
+  "m-podium": {
+    "file": "objects/m-podium.png",
+    "anchor": [
+      16,
+      37
+    ],
+    "width": 32,
+    "height": 48
+  },
+  "m-us-flag": {
+    "file": "objects/m-us-flag.png",
+    "anchor": [
+      16,
+      84
+    ],
+    "width": 64,
+    "height": 88,
+    "frames": [
+      "objects/m-us-flag-0.png",
+      "objects/m-us-flag-1.png"
+    ]
+  },
+  "m-state-flag": {
+    "file": "objects/m-state-flag.png",
+    "anchor": [
+      16,
+      84
+    ],
+    "width": 64,
+    "height": 88,
+    "frames": [
+      "objects/m-state-flag-0.png",
+      "objects/m-state-flag-1.png"
+    ]
+  },
+  "m-speaker-stack": {
+    "file": "objects/m-speaker-stack.png",
+    "anchor": [
+      16,
+      46
+    ],
+    "width": 32,
+    "height": 60
+  },
+  "m-camera-riser": {
+    "file": "objects/m-camera-riser.png",
+    "anchor": [
+      16,
+      34
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-brick-building": {
+    "file": "objects/m-brick-building.png",
+    "anchor": [
+      32,
+      118
+    ],
+    "width": 112,
+    "height": 165
+  },
+  "m-brick-building-side": {
+    "file": "objects/m-brick-building-side.png",
+    "anchor": [
+      80,
+      118
+    ],
+    "width": 112,
+    "height": 165
   }
 }

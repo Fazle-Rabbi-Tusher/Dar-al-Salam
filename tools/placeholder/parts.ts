@@ -46,6 +46,7 @@ export const garments = [
   'hoodie-jeans',
   'long-dress',
   'hi-vis',
+  'blazer-open',
   'football-kit',
   'football-kit-captain',
   'football-kit-long',
@@ -95,6 +96,7 @@ export const props = [
   'mma-gloves',
   'boxing-gloves',
   'title-belt',
+  'scooter',
 ];
 const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
@@ -495,6 +497,50 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       q.legs[0][2] = [21.5 + s * 2, 65];
       q.legs[1][2] = [26.5 - s * 2, 65 - Math.abs(s)];
       q.legs[1][1] = [27 - s, 55 - Math.abs(s)];
+      break;
+    }
+    case 'ride': {
+      // Standing on a kick scooter: one foot behind the other on a long low
+      // deck, leaning in, both hands reaching forward to the handlebar.
+      const b = [0, 1, 1, 0][f];
+      q = standing(b);
+      q.head = add(q.head, 2, 1);
+      q.chest = add(q.chest, 1.5, 0.5);
+      q.legs = [
+        [
+          [21.5, 45 + b],
+          [20.5, 54],
+          [18.5, 61.5],
+        ],
+        [
+          [26.5, 45 + b],
+          [27.5, 54],
+          [28, 61.5],
+        ],
+      ];
+      q.arms[0][1] = [25, 36 + b];
+      q.arms[0][2] = [34.5, 40 + b];
+      q.arms[1][1] = [33, 35 + b];
+      q.arms[1][2] = [36.5, 40 + b];
+      break;
+    }
+    case 'speech': {
+      // Rally speech: pointing out and up at the crowd, other hand open at
+      // the chest.
+      const b = f % 2;
+      q = standing(b);
+      q.head = add(q.head, f === 1 || f === 2 ? 1 : 0, 0);
+      q.arms[1][1] = [34, 27 + b];
+      q.arms[1][2] = (
+        [
+          [38, 19],
+          [39.5, 21],
+          [38.5, 18],
+          [40, 20.5],
+        ] as P[]
+      )[f];
+      q.arms[0][1] = [19, 37 + b];
+      q.arms[0][2] = [24.5, 34 + b];
       break;
     }
     case 'cheer': {
@@ -908,7 +954,10 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
 type Eyes = 'open' | 'happy' | 'down' | 'closed' | 'blink' | 'determined';
 type Mouth = 'smile' | 'open' | 'flat' | 'shout' | 'o' | 'calm';
 /** Expression by action and frame, so viewers can read what people do. */
-function expression(a: Action, f: number): { eyes: Eyes; mouth: Mouth } {
+function expression(
+  a: Action,
+  f: number,
+): { eyes: Eyes; mouth: Mouth; brows?: 'raised' } {
   switch (a) {
     case 'idle':
       return { eyes: f === 3 ? 'blink' : 'open', mouth: 'smile' };
@@ -959,6 +1008,10 @@ function expression(a: Action, f: number): { eyes: Eyes; mouth: Mouth } {
       return { eyes: f === 1 ? 'blink' : 'open', mouth: 'smile' };
     case 'cross-arms':
       return { eyes: 'open', mouth: 'flat' };
+    case 'ride':
+      return { eyes: f === 2 ? 'happy' : 'open', mouth: 'smile' };
+    case 'speech':
+      return { eyes: 'open', mouth: f % 2 ? 'open' : 'smile', brows: 'raised' };
     default:
       return { eyes: 'open', mouth: 'smile' };
   }
@@ -976,7 +1029,7 @@ const FACE = {
  * eyes with a white highlight, brows, a mouth and a touch of blush.
  */
 function features(p: Pixels, q: Pose, x0: number, y0: number, beard = false) {
-  const { eyes, mouth } = expression(q.action, q.frame),
+  const { eyes, mouth, brows } = expression(q.action, q.frame),
     fc = x0 + 13,
     ey = y0 + 10,
     brow = K.hair[2];
@@ -1015,6 +1068,10 @@ function features(p: Pixels, q: Pose, x0: number, y0: number, beard = false) {
       p.pixel(ex + (inner > 0 ? 0 : 2), ey - 2, brow);
       p.pixel(ex + 1, ey - 1, brow);
       p.pixel(ex + (inner > 0 ? 2 : 0), ey, brow);
+    } else if (brows === 'raised') {
+      // Lively, arched brows lifted off the eyes.
+      p.rect(ex, ey - 3, 3, 1, brow);
+      p.pixel(ex + 1, ey - 4, brow);
     } else p.rect(ex, ey - 2, 3, 1, brow);
   }
   if (eyes !== 'determined') {
@@ -1235,6 +1292,8 @@ function hands(p: Pixels, q: Pose) {
     const m = mk(p).disc(arm[2][0], arm[2][1] + 0.5, 2.5);
     if (q.action === 'celebrate' && arm === q.arms[1])
       m.rect(arm[2][0] - 0.5, arm[2][1] - 5, 2, 4); // raised index finger
+    if (q.action === 'speech' && arm === q.arms[1])
+      m.capsule(arm[2], add(arm[2], 2.5, -3.5), 0.9); // pointing finger
     paint(p, m, K.skin, { dark: 1, light: 0, top: false });
   }
 }
@@ -1587,6 +1646,37 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
         p.pixel(q.chest[0] + 1, top + 11, C[2]);
         p.pixel(q.chest[0] + 1, top + 14, C[2]);
         p.rect(q.chest[0] - 4, top + 3, 2, 1, F.white);
+      }
+      sleeves(p, q, C);
+      break;
+    }
+    case 'blazer-open': {
+      // Smart-casual: dark blazer over a white open-collar shirt, no tie.
+      trousers(p, q, S);
+      const jacket = mk(p).capsule(q.chest, add(q.hip, 0, 2), 5.8);
+      paint(p, jacket, C);
+      if (!q.away && upright) {
+        p.poly(
+          [
+            [q.chest[0] - 2, top - 0.5],
+            [q.chest[0] + 4, top - 0.5],
+            [q.chest[0] + 1, top + 8],
+          ],
+          F.white,
+        );
+        // Open collar points and a hint of the neck.
+        p.pixel(q.chest[0] - 2, top + 1, F.white);
+        p.pixel(q.chest[0] + 4, top + 1, F.white);
+        p.rect(q.chest[0], top, 2, 2, K.skin[1]);
+        p.pixel(q.chest[0], top + 2, K.skin[2]);
+        for (let k = 0; k < 9; k++) {
+          p.pixel(q.chest[0] - 3 + k * 0.35, top + k, C[2]);
+          p.pixel(q.chest[0] + 5 - k * 0.35, top + k, C[2]);
+        }
+        p.pixel(q.chest[0] + 1, top + 10, C[2]);
+        p.pixel(q.chest[0] + 1, top + 13, C[2]);
+        // Pocket square.
+        p.rect(q.chest[0] - 5, top + 4, 2, 1, F.white);
       }
       sleeves(p, q, C);
       break;
@@ -2257,6 +2347,64 @@ function drawProp(p: Pixels, id: string, q: Pose) {
         p.rect(bx - 2, by - 2, 4, 3, '#AF853E');
         p.pixel(bx - 3, by - 3, F.white);
         p.pixel(bx + 3, by + 1, R[0]);
+      }
+      break;
+    }
+    case 'scooter': {
+      // Kick scooter: steel deck and stem, dark wheels, T-handlebar.
+      const wheel = (x: number, y: number) => {
+        paint(p, mk(p).disc(x, y, 2.3), [F.charcoal[1], F.ink, F.ink], {
+          light: 0,
+          dark: 1,
+        });
+        p.pixel(x - 0.5 + (f % 2), y - 0.5, F.steel[1]);
+      };
+      if (a === 'ride') {
+        // One stem only, at the front; a long low deck between two wheels.
+        const feet = q.legs.map((l) => l[2]),
+          deckY = Math.round(Math.max(...feet.map((v) => v[1])) + 1.6),
+          back = Math.round(Math.min(...feet.map((v) => v[0])) - 8),
+          barX = Math.round(Math.max(hx, other[0]) + 0.5),
+          barY = Math.round(Math.min(hy, other[1]) - 0.5),
+          front = barX + 5;
+        paint(
+          p,
+          mk(p).rect(back, deckY, front - back + 1, 2),
+          [R[0], R[1], R[2]],
+          { light: 1, dark: 1 },
+        );
+        // Tiny rear fender over the back wheel.
+        p.rect(back - 1, deckY - 1, 3, 1, R[2]);
+        const stem = mk(p).capsule([front, deckY + 1], [barX + 1, barY], 0.9);
+        paint(p, stem, F.steel, { light: 0, dark: 1, top: false });
+        p.rect(barX - 2, barY - 1, 6, 2, R[1]);
+        p.rect(barX - 3, barY - 1, 2, 2, F.ink);
+        p.rect(barX + 4, barY - 1, 2, 2, F.ink);
+        wheel(back + 1, deckY + 2.5);
+        wheel(front, deckY + 2.5);
+      } else {
+        // Parked: one stem leaning back from the front wheel, well clear of
+        // the person (screen-left).
+        const back = 1,
+          front = 11,
+          deckY = 64;
+        paint(
+          p,
+          mk(p).rect(back, deckY, front - back + 1, 2),
+          [R[0], R[1], R[2]],
+          {
+            light: 1,
+            dark: 1,
+          },
+        );
+        p.rect(back - 1, deckY - 1, 3, 1, R[2]);
+        const stem = mk(p).capsule([front, deckY + 1], [front - 3, 47], 0.9);
+        paint(p, stem, F.steel, { light: 0, dark: 1, top: false });
+        p.rect(front - 6, 46, 6, 2, R[1]);
+        p.rect(front - 7, 46, 2, 2, F.ink);
+        p.rect(front, 46, 2, 2, F.ink);
+        wheel(back + 1, deckY + 2.5);
+        wheel(front, deckY + 2.5);
       }
       break;
     }

@@ -1,0 +1,74 @@
+{
+  "id": "zohran-mamdani",
+  "kind": "person",
+  "name": {
+    "en": "Zohran Mamdani",
+    "ar": "زهران ممداني",
+    "bn": "জোহরান মামদানি"
+  },
+  "aliases": ["Mayor Mamdani"],
+  "years": "b. 1991",
+  "place": "Kampala · New York City",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "suit",
+    "headwear": "none",
+    "prop": "scooter",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "navy",
+      "garmentSecondary": "sky",
+      "headwear": "white-linen",
+      "prop": "steel"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 200,
+      "action": "ride",
+      "path": [
+        [22.5, 63.5],
+        [40.5, 63.5],
+        [40.5, 76.5],
+        [22.5, 76.5],
+        [22.5, 63.5]
+      ]
+    },
+    {
+      "from": 200,
+      "to": 240,
+      "action": "wave",
+      "at": [22.5, 63.5],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Mayor of New York City since 1 January 2026: the city’s first Muslim mayor, its first of South Asian descent and the first born in Africa. Born in Kampala, Uganda, he grew up in New York and served in the New York State Assembly before winning the 2025 election."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Zohran_Mamdani"
+    }
+  ],
+  "panelApproved": false
+}

@@ -25,7 +25,7 @@ const view = (tile: [number, number], zoom = 2): View => ({
 describe('planet projection', () => {
   it('round-trips tiles through the sphere, including far from the map', () => {
     for (const t of [
-      [50, 30],
+      [48, 47],
       [0, 0],
       [96, 64],
       [12.5, 47.25],
@@ -49,10 +49,11 @@ describe('planet projection', () => {
   });
   it('matches the isometric diamond at the focus and keeps north up', () => {
     // Exact at the projection centre; elsewhere the map stretches a little.
-    const f = frame(view([50, 30], 1));
-    const o = projectTile(f, [50, 30]),
-      east = projectTile(f, [50.01, 30]),
-      south = projectTile(f, [50, 30.01]);
+    const [cx, cy] = PLANET.centre;
+    const f = frame(view([cx, cy], 1));
+    const o = projectTile(f, [cx, cy]),
+      east = projectTile(f, [cx + 0.01, cy]),
+      south = projectTile(f, [cx, cy + 0.01]);
     const iso = (a: [number, number], b: [number, number]) => [
       (worldFromTile(...b)[0] - worldFromTile(...a)[0]) / 0.01,
       (worldFromTile(...b)[1] - worldFromTile(...a)[1]) / 0.01,

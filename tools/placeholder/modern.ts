@@ -104,6 +104,19 @@ const C = {
   lamp: '#FFF6C8',
   lampGlow: '#FFE88A',
   seatGrey: '#9AA3A6',
+  // New York City and the Michigan rally.
+  limestoneLight: '#EFE3C6',
+  limestone: '#D6C49C',
+  limestoneDark: '#B39E74',
+  windowLit: '#FFE29A',
+  brownstoneLight: '#A8644C',
+  brownstone: '#85493A',
+  brownstoneDark: '#62352B',
+  brickLight: '#C9674B',
+  brick: '#AE4F3A',
+  brickDark: '#86392C',
+  taxiShade: '#B98A1F',
+  stageNavy: '#1D2E55',
 } as const;
 export const MODERN_COLOURS: string[] = [...new Set(Object.values(C))];
 
@@ -2354,6 +2367,811 @@ const arena: Record<string, Spec> = {
   },
 };
 Object.assign(objects, arena);
+
+/* ───────────── New York City and the Michigan rally ───────────── */
+const NM = {
+  limestone: {
+    top: C.limestoneLight,
+    front: C.limestone,
+    side: C.limestoneDark,
+    edge: C.warmGreyDark,
+  },
+  brownstone: {
+    top: C.brownstoneLight,
+    front: C.brownstone,
+    side: C.brownstoneDark,
+    edge: C.brownstoneDark,
+  },
+  brick: {
+    top: C.brickLight,
+    front: C.brick,
+    side: C.brickDark,
+    edge: C.brickDark,
+  },
+  glass: {
+    top: C.glassLight,
+    front: C.glass,
+    side: C.glassDark,
+    edge: C.glassDeep,
+  },
+  green: {
+    top: C.greenDark,
+    front: C.green,
+    side: C.greenDark,
+    edge: C.leafDark,
+  },
+  taxi: {
+    top: C.yellow,
+    front: C.yellowDark,
+    side: C.taxiShade,
+    edge: C.edge,
+  },
+  navy: { top: C.navy, front: C.navy, side: C.stageNavy, edge: C.ink },
+} satisfies Record<string, Material>;
+/** Deterministic "is this window lit" pattern. */
+const lit = (i: number, j: number) => (i * 7 + j * 13 + i * j) % 5 < 2;
+/** Grid of windows on a front (+y) face. */
+function windowsFront(
+  c: IsoCanvas,
+  x0: number,
+  x1: number,
+  y: number,
+  z0: number,
+  z1: number,
+  step: number,
+  row: number,
+  w = step * 0.5,
+  h = row * 0.55,
+  dark: string = C.slate,
+) {
+  let i = 0;
+  for (let u = x0; u + w <= x1 + 1e-6; u += step, i++) {
+    let j = 0;
+    for (let z = z0; z + h <= z1; z += row, j++)
+      c.faceX(u, y, w, z, h, lit(i, j) ? C.windowLit : dark);
+  }
+}
+/** Grid of windows on a side (+x) face. */
+function windowsSide(
+  c: IsoCanvas,
+  x: number,
+  y0: number,
+  y1: number,
+  z0: number,
+  z1: number,
+  step: number,
+  row: number,
+  w = step * 0.5,
+  h = row * 0.55,
+  dark: string = C.charcoal,
+) {
+  let i = 0;
+  for (let v = y0; v + w <= y1 + 1e-6; v += step, i++) {
+    let j = 0;
+    for (let z = z0; z + h <= z1; z += row, j++)
+      c.faceY(x, v, w, z, h, lit(i + 3, j) ? C.yellowDark : dark);
+  }
+}
+/** A setback tier of the art-deco tower: limestone box with piers and windows. */
+function decoTier(c: IsoCanvas, o: number, size: number, z: number, h: number) {
+  c.box(o, o, size, size, h, NM.limestone, z);
+  windowsFront(
+    c,
+    o + 0.08,
+    o + size - 0.05,
+    o + size + 0.002,
+    z + 4,
+    z + h - 3,
+    0.22,
+    6,
+    0.1,
+    4,
+  );
+  windowsSide(
+    c,
+    o + size + 0.002,
+    o + 0.08,
+    o + size - 0.05,
+    z + 4,
+    z + h - 3,
+    0.22,
+    6,
+    0.1,
+    4,
+  );
+  c.edge([o, o + size, z + h], [o + size, o + size, z + h], C.limestoneLight);
+}
+/** A waving flag on a pole. `paint(x, y)` returns the colour of flag pixel (x, y). */
+function flag(
+  c: IsoCanvas,
+  f: number,
+  paint: (x: number, y: number, w: number, h: number) => string,
+  w = 34,
+  h = 21,
+) {
+  const [px, py] = c.at(0.25, 0.25, 0);
+  c.p.rect(px, py - 84, 2, 84, C.silver);
+  c.p.rect(px + 1, py - 84, 1, 84, C.steelDark);
+  c.p.rect(px - 2, py - 2, 6, 2, C.steelDark);
+  c.p.ellipse(px + 1, py - 86, 2.5, 2.5, C.gold);
+  const top = py - 82;
+  for (let x = 0; x < w; x++) {
+    const phase = Math.sin(x * 0.28 + f * Math.PI),
+      wave = Math.round(phase * 2 * (x / w));
+    for (let y = 0; y < h; y++)
+      c.p.pixel(px + 2 + x, top + y + wave, paint(x, y, w, h));
+    // A darker hem in the folds.
+    if (phase < -0.6) c.p.pixel(px + 2 + x, top + h - 1 + wave, C.edge);
+  }
+}
+const nyc: Record<string, Spec> = {
+  'm-skyscraper-deco': {
+    footprint: [3, 3],
+    h: 292,
+    draw(c) {
+      c.box(0, 0, 3, 3, 34, NM.limestone);
+      // Ground-floor lobby glass and doors.
+      c.faceX(0.3, 3.002, 2.4, 2, 20, C.glassDark);
+      c.faceY(3.002, 0.3, 2.4, 2, 20, C.glassDeep);
+      for (let u = 0.45; u < 2.7; u += 0.45)
+        c.faceX(u, 3.003, 0.06, 2, 20, C.limestoneLight);
+      c.faceX(0, 3.003, 3, 26, 3, C.gold);
+      decoTier(c, 0.25, 2.5, 34, 104);
+      decoTier(c, 0.55, 1.9, 138, 58);
+      decoTier(c, 0.85, 1.3, 196, 36);
+      // Crown with glowing bands, then the needle spire.
+      c.box(1.1, 1.1, 0.8, 0.8, 22, NM.limestone, 232);
+      for (let z = 236; z < 252; z += 5) {
+        c.faceX(1.12, 1.902, 0.76, z, 2, C.windowLit);
+        c.faceY(1.902, 1.12, 0.76, z, 2, C.yellow);
+      }
+      c.cylinder(1.5, 1.5, 254, 4, 14, [
+        C.limestoneLight,
+        C.limestone,
+        C.limestoneDark,
+      ]);
+      const [mx, my] = c.at(1.5, 1.5, 268);
+      c.p.rect(mx - 1, my - 22, 2, 22, C.silver);
+      c.p.rect(mx, my - 22, 1, 22, C.steelDark);
+      c.p.pixel(mx, my - 24, C.white);
+      c.p.pixel(mx, my - 23, C.silver);
+    },
+  },
+  'm-skyscraper-glass': {
+    footprint: [3, 3],
+    h: 246,
+    draw(c) {
+      c.box(0, 0, 3, 3, 14, M.dark);
+      c.faceX(0.25, 3.002, 2.5, 2, 10, C.glassLight);
+      c.box(0.2, 0.2, 2.6, 2.6, 216, NM.glass, 14);
+      // Mullion grid and diagonal sky reflections.
+      for (let u = 0.2; u <= 2.81; u += 0.325) {
+        c.edge([u, 2.802, 14], [u, 2.802, 230], C.glassDeep);
+        c.edge([2.802, u, 14], [2.802, u, 230], C.glassDeep);
+      }
+      for (let z = 22; z < 230; z += 9) {
+        c.edge([0.2, 2.803, z], [2.8, 2.803, z], C.glassLight);
+        c.edge([2.803, 0.2, z], [2.803, 2.8, z], C.glass);
+      }
+      for (let k = 0; k < 5; k++) {
+        const z = 40 + k * 38;
+        c.edge([0.3, 2.804, z], [1.2, 2.804, z + 26], C.white);
+        c.edge([0.5, 2.804, z], [1.4, 2.804, z + 26], C.glassLight);
+        c.edge([2.804, 1.3, z + 10], [2.804, 2.2, z + 34], C.glassLight);
+      }
+      c.box(0.9, 0.9, 1.2, 1.2, 10, M.steel, 230);
+      const [ax, ay] = c.at(1.5, 1.5, 240);
+      c.p.rect(ax, ay - 6, 1, 6, C.charcoal);
+      c.p.pixel(ax, ay - 7, C.red);
+    },
+  },
+  'm-brownstone': {
+    footprint: [4, 2],
+    h: 104,
+    side: true,
+    draw(c) {
+      c.box(0, 0, 4, 1.5, 90, NM.brownstone);
+      c.box(0, 0, 4, 1.62, 6, NM.brownstone, 88);
+      c.faceX(0, 1.621, 4, 88, 2, C.limestoneLight);
+      for (let k = 0; k < 3; k++) {
+        const x = 0.15 + k * 1.3;
+        // Two windows per floor with pale lintels.
+        for (const z of [34, 56, 74])
+          for (const dx of [0.15, 0.75]) {
+            c.faceX(x + dx, 1.502, 0.32, z, 12, C.limestoneLight);
+            c.faceX(
+              x + dx + 0.03,
+              1.503,
+              0.26,
+              z + 1,
+              9,
+              k === 1 && z === 56 ? C.windowLit : C.glassDark,
+            );
+            c.faceX(x + dx - 0.02, 1.503, 0.36, z + 12, 2, C.limestone);
+          }
+        // Stoop up to the front door, with black railings.
+        for (let s2 = 0; s2 < 4; s2++)
+          c.box(
+            x + 0.12,
+            1.5,
+            0.42,
+            0.12 * (4 - s2),
+            4 + s2 * 3.5,
+            NM.brownstone,
+          );
+        c.faceX(x + 0.18, 1.502, 0.3, 16, 20, C.woodDark);
+        c.faceX(x + 0.21, 1.503, 0.1, 18, 15, C.wood);
+        const [kx, ky] = c.at(x + 0.42, 1.504, 26);
+        c.p.pixel(kx, ky, C.gold);
+        for (const rx of [x + 0.12, x + 0.54]) {
+          c.edge([rx, 1.98, 12], [rx, 1.5, 26], C.ink);
+          post(c, rx, 1.98, 4, 8, C.ink);
+        }
+        // Garden-level window beside the stoop.
+        c.faceX(x + 0.72, 1.502, 0.36, 4, 9, C.glassDeep);
+      }
+      windowsSide(c, 4.002, 0.2, 1.4, 34, 84, 0.45, 20, 0.22, 11);
+    },
+  },
+  'm-bodega': {
+    footprint: [3, 1],
+    h: 72,
+    draw(c) {
+      c.box(0, 0, 3, 0.8, 62, NM.brick);
+      // Plain colour sign band above the awning (no text).
+      c.faceX(0.1, 0.802, 2.8, 40, 7, C.yellow);
+      c.faceX(0.1, 0.803, 2.8, 40, 1, C.yellowDark);
+      windowsFront(c, 0.3, 2.8, 0.802, 50, 60, 0.6, 12, 0.3, 8);
+      // Shopfront glass with shelves of goods behind.
+      c.faceX(0.15, 0.802, 2.0, 4, 26, C.glassDark);
+      for (let k = 0; k < 14; k++)
+        c.faceX(
+          0.2 + k * 0.14,
+          0.803,
+          0.08,
+          8 + (k % 3) * 7,
+          4,
+          accents[k % accents.length],
+        );
+      c.faceX(2.3, 0.802, 0.5, 4, 26, C.greenDark);
+      c.faceX(2.35, 0.803, 0.4, 6, 18, C.glassLight);
+      c.faceX(2.45, 0.804, 0.2, 4, 4, C.ink);
+      // Striped awning projecting over the pavement.
+      for (let i = 0; i < 10; i++) {
+        const col = i % 2 ? C.white : C.red;
+        c.poly(
+          [
+            [i * 0.3, 0.8, 38],
+            [i * 0.3 + 0.3, 0.8, 38],
+            [i * 0.3 + 0.3, 1.0, 33],
+            [i * 0.3, 1.0, 33],
+          ],
+          col,
+        );
+        c.faceX(i * 0.3, 1.0, 0.3, 30, 3, i % 2 ? C.offwhite : C.redDark);
+      }
+      c.faceY(3.002, 0, 0.8, 4, 56, C.brickDark);
+      // Crates of fruit and flowers on the pavement.
+      const crate = (x: number, fruit: string) => {
+        c.box(x, 0.84, 0.34, 0.14, 6, M.wood);
+        for (let k = 0; k < 4; k++) {
+          const [fx, fy] = c.at(x + 0.06 + k * 0.08, 0.9, 7);
+          c.p.ellipse(fx, fy, 1.5, 1.5, fruit);
+        }
+      };
+      crate(0.15, C.red);
+      crate(0.55, C.orange);
+      crate(0.95, C.yellow);
+      crate(1.35, C.green);
+      for (const [x, col] of [
+        [1.8, C.pink],
+        [2.05, C.purple],
+      ] as [number, string][]) {
+        c.cylinder(x, 0.92, 0, 2.5, 6, R.steel);
+        c.greenery(x, 0.92, 10, 4, [C.pink, col, C.pinkDark]);
+      }
+    },
+  },
+  'm-halal-cart': {
+    footprint: [2, 1],
+    h: 56,
+    frames: 4,
+    draw(c, f) {
+      for (const [x, y] of [
+        [0.45, 0.78],
+        [1.55, 0.78],
+      ] as [number, number][]) {
+        const [wx, wy] = c.at(x, y, 3);
+        c.p.ellipse(wx, wy, 3, 3, C.ink);
+        c.p.pixel(wx, wy, C.silver);
+      }
+      c.box(0.3, 0.2, 1.4, 0.55, 15, M.steel, 4);
+      c.faceX(0.35, 0.752, 1.3, 8, 6, C.yellow);
+      c.faceX(0.35, 0.753, 1.3, 8, 1, C.red);
+      c.top(0.35, 0.25, 1.3, 0.45, 19.5, C.charcoal);
+      for (let k = 0; k < 5; k++) {
+        const [gx, gy] = c.at(0.5 + k * 0.25, 0.45, 20);
+        c.p.rect(gx - 2, gy - 1, 4, 2, k % 2 ? C.terracotta : C.rice);
+      }
+      // Steam rising from the grill (animated).
+      for (let k = 0; k < 4; k++) {
+        const t = (f + k) % 4,
+          [sx, sy] = c.at(0.6 + k * 0.25, 0.4, 24 + t * 5);
+        c.p.ellipse(
+          sx + (t % 2),
+          sy,
+          2 + t * 0.5,
+          1.5 + t * 0.3,
+          t > 2 ? C.pale : C.offwhite,
+        );
+      }
+      post(c, 1.0, 0.45, 20, 20, C.steelDark, 2);
+      // Big striped umbrella.
+      const [ux, uy] = c.at(1.0, 0.45, 42);
+      for (let k = 0; k < 8; k++) {
+        const a0 = (k / 8) * Math.PI * 2,
+          a1 = ((k + 1) / 8) * Math.PI * 2;
+        c.p.poly(
+          [
+            [ux, uy - 4],
+            [ux + Math.cos(a0) * 27, uy + Math.sin(a0) * 10],
+            [ux + Math.cos(a1) * 27, uy + Math.sin(a1) * 10],
+          ],
+          [C.red, C.yellow, C.blue, C.white][k % 4],
+        );
+      }
+      c.p.ellipse(ux, uy - 4, 2, 1, C.white);
+      // Little stools for customers.
+      for (const x of [0.15, 1.85]) {
+        c.cylinder(x, 0.9, 0, 2, 7, R.steel);
+        const [tx, ty] = c.at(x, 0.9, 8);
+        c.p.ellipse(tx, ty, 3, 1.5, C.red);
+      }
+    },
+  },
+  'm-city-hall': {
+    footprint: [6, 3],
+    h: 150,
+    draw(c) {
+      // Wings and central block in pale stone.
+      c.box(0, 0.8, 1.3, 1.7, 52, M.white);
+      c.box(4.7, 0.8, 1.3, 1.7, 52, M.white);
+      c.box(1.3, 0.5, 3.4, 2.0, 64, M.white);
+      for (const x of [0.15, 4.85])
+        for (const z of [12, 32]) {
+          for (const dx of [0, 0.5]) {
+            c.faceX(x + dx, 2.502, 0.3, z, 14, C.glassDark);
+            const [ax, ay] = c.at(x + dx + 0.15, 2.503, z + 14);
+            c.p.ellipse(ax + 2, ay, 2.5, 2, C.glassDark);
+          }
+        }
+      windowsSide(c, 6.002, 1.0, 2.4, 10, 48, 0.45, 20, 0.22, 12, C.glassDark);
+      // Balustrade along the roofline.
+      for (let u = 1.35; u < 4.7; u += 0.18) post(c, u, 2.5, 64, 4, C.pale);
+      c.faceX(1.3, 2.5, 3.4, 68, 2, C.offwhite);
+      // Portico: entablature on six columns above wide steps.
+      c.box(1.6, 2.4, 2.8, 0.3, 7, M.white, 44);
+      c.faceX(2.3, 2.502, 1.4, 6, 26, C.glassDeep);
+      for (let k = 0; k < 6; k++) {
+        const [px, py] = c.at(1.75 + k * 0.5, 2.62, 6);
+        c.p.rect(px - 2, py - 38, 4, 38, C.white);
+        c.p.rect(px + 1, py - 38, 1, 38, C.pale);
+        c.p.rect(px - 3, py - 40, 6, 2, C.offwhite);
+      }
+      for (let k = 0; k < 3; k++)
+        c.box(
+          1.4 - k * 0.1,
+          2.5 + k * 0.17,
+          3.2 + k * 0.2,
+          0.17,
+          6 - k * 2,
+          M.stone,
+        );
+      // Cupola with a plain knob.
+      c.cylinder(3.0, 1.5, 64, 12, 22, R.white);
+      for (let k = 0; k < 5; k++) {
+        const [wx, wy] = c.at(2.7 + k * 0.14, 1.5 + 0.5, 70);
+        c.p.rect(wx - 1, wy - 12, 2, 10, C.glassDark);
+      }
+      c.cylinder(3.0, 1.5, 86, 9, 10, R.white);
+      const [dx, dy] = c.at(3.0, 1.5, 96);
+      c.p.ellipse(dx, dy, 9, 7, C.offwhite);
+      c.p.ellipse(dx - 3, dy - 2, 4, 3, C.white);
+      c.p.rect(dx - 1, dy - 14, 3, 8, C.pale);
+      c.p.ellipse(dx, dy - 16, 2.5, 2.5, C.gold);
+    },
+  },
+  'm-subway-entrance': {
+    footprint: [2, 1],
+    h: 40,
+    draw(c) {
+      c.top(0.2, 0.15, 1.6, 0.7, 0, C.ink);
+      for (let k = 0; k < 6; k++)
+        c.edge(
+          [0.25, 0.2 + k * 0.11, 0],
+          [1.75, 0.2 + k * 0.11, 0],
+          C.charcoal,
+        );
+      // Green railings round three sides.
+      for (const [a, b] of [
+        [
+          [0.15, 0.1],
+          [1.85, 0.1],
+        ],
+        [
+          [0.15, 0.1],
+          [0.15, 0.9],
+        ],
+        [
+          [1.85, 0.1],
+          [1.85, 0.9],
+        ],
+      ] as [[number, number], [number, number]][]) {
+        c.edge(
+          [...a, 12] as [number, number, number],
+          [...b, 12] as [number, number, number],
+          C.greenDark,
+        );
+        c.edge(
+          [...a, 6] as [number, number, number],
+          [...b, 6] as [number, number, number],
+          C.greenDark,
+        );
+        for (let t = 0; t <= 1.001; t += 0.25)
+          post(
+            c,
+            a[0] + (b[0] - a[0]) * t,
+            a[1] + (b[1] - a[1]) * t,
+            0,
+            12,
+            C.greenDark,
+          );
+      }
+      // Two round globe lamps on posts.
+      for (const x of [0.15, 1.85]) {
+        post(c, x, 0.9, 0, 30, C.greenDark, 2);
+        const [gx, gy] = c.at(x, 0.9, 33);
+        c.p.ellipse(gx + 1, gy, 3.5, 3.5, C.green);
+        c.p.ellipse(gx, gy - 1, 1.5, 1.5, C.lime);
+      }
+    },
+  },
+  'm-taxi': {
+    footprint: [2, 1],
+    h: 26,
+    side: true,
+    draw(c) {
+      for (const [x, y] of [
+        [0.45, 0.8],
+        [1.5, 0.8],
+        [1.55, 0.22],
+      ] as [number, number][]) {
+        const [wx, wy] = c.at(x, y, 3);
+        c.p.ellipse(wx, wy, 3.5, 2.5, C.ink);
+        c.p.pixel(wx, wy, C.slate);
+      }
+      c.box(0.15, 0.2, 1.7, 0.6, 8, NM.taxi, 3);
+      c.box(0.5, 0.26, 0.95, 0.48, 7, NM.taxi, 11);
+      c.faceX(0.55, 0.742, 0.4, 12, 5, C.glassDark);
+      c.faceX(1.0, 0.742, 0.4, 12, 5, C.glassDark);
+      c.faceY(1.452, 0.3, 0.4, 12, 5, C.glassDeep);
+      // Checker stripe along the doors.
+      for (let k = 0; k < 16; k++)
+        c.faceX(
+          0.2 + k * 0.1,
+          0.801,
+          0.05,
+          6 + (k % 2),
+          1,
+          k % 2 ? C.ink : C.white,
+        );
+      c.box(0.85, 0.42, 0.25, 0.16, 3, M.white, 18);
+      c.faceY(1.852, 0.3, 0.12, 6, 2, C.lamp);
+      c.faceY(1.852, 0.62, 0.12, 6, 2, C.lamp);
+      c.faceY(1.852, 0.42, 0.18, 4, 2, C.charcoal);
+    },
+  },
+  'm-water-tower': {
+    footprint: [1, 1],
+    h: 96,
+    draw(c) {
+      const legs: [number, number][] = [
+        [0.2, 0.2],
+        [0.8, 0.2],
+        [0.2, 0.8],
+        [0.8, 0.8],
+      ];
+      for (const [x, y] of legs) post(c, x, y, 0, 50, C.steelDark, 2);
+      c.edge([0.2, 0.8, 8], [0.8, 0.8, 44], C.steel);
+      c.edge([0.8, 0.8, 8], [0.2, 0.8, 44], C.steel);
+      c.edge([0.8, 0.2, 8], [0.8, 0.8, 44], C.steelDark);
+      c.edge([0.8, 0.8, 8], [0.8, 0.2, 44], C.steelDark);
+      c.cylinder(
+        0.5,
+        0.5,
+        50,
+        14,
+        28,
+        [C.woodLight, C.wood, C.woodDark],
+        C.wood,
+      );
+      for (let z = 54; z < 78; z += 7) {
+        const [hx, hy] = c.at(0.5, 0.5, z);
+        for (let i = -14; i <= 14; i++)
+          c.p.pixel(
+            hx + i,
+            hy + Math.sqrt(Math.max(0, 1 - (i / 14) ** 2)) * 7,
+            C.ink,
+          );
+      }
+      const [tx, ty] = c.at(0.5, 0.5, 78);
+      c.p.poly(
+        [
+          [tx - 15, ty],
+          [tx + 15, ty],
+          [tx, ty - 16],
+        ],
+        C.woodDark,
+      );
+      c.p.poly(
+        [
+          [tx - 15, ty],
+          [tx, ty],
+          [tx, ty - 16],
+        ],
+        C.wood,
+      );
+      c.p.ellipse(tx, ty, 15, 3, C.woodDark);
+    },
+  },
+  'm-hydrant': {
+    footprint: [0.5, 0.5],
+    h: 20,
+    draw(c) {
+      c.cylinder(0.25, 0.25, 0, 4, 12, [C.red, C.red, C.redDark]);
+      const [hx, hy] = c.at(0.25, 0.25, 12);
+      c.p.ellipse(hx, hy - 1, 4, 3, C.redDark);
+      c.p.ellipse(hx, hy - 2, 2, 1.5, C.red);
+      c.p.rect(hx - 6, hy + 4, 3, 3, C.red);
+      c.p.rect(hx + 4, hy + 4, 3, 3, C.redDark);
+      c.p.rect(hx - 1, hy + 6, 3, 3, C.silver);
+      c.p.pixel(hx - 2, hy + 2, C.pink);
+    },
+  },
+  'm-newsstand': {
+    footprint: [2, 1],
+    h: 50,
+    draw(c) {
+      c.box(0.15, 0.15, 1.7, 0.7, 40, NM.green);
+      c.box(0.05, 0.08, 1.9, 0.86, 4, M.dark, 40);
+      c.faceX(0.4, 0.852, 1.2, 18, 14, C.ink);
+      c.faceX(0.45, 0.853, 1.1, 18, 12, C.screen);
+      // Rows of colourful magazines (plain colour blocks).
+      for (let row = 0; row < 3; row++)
+        for (let k = 0; k < 9; k++)
+          c.faceX(
+            0.25 + k * 0.17,
+            0.854,
+            0.12,
+            4 + row * 5,
+            4,
+            accents[(k + row * 3) % accents.length],
+          );
+      for (let k = 0; k < 7; k++)
+        c.faceX(
+          0.45 + k * 0.15,
+          0.854,
+          0.1,
+          34,
+          4,
+          accents[(k + 5) % accents.length],
+        );
+      windowsSide(c, 1.852, 0.25, 0.8, 8, 36, 0.18, 7, 0.1, 5, C.ink);
+    },
+  },
+  'm-crosswalk': {
+    footprint: [3, 1],
+    h: 2,
+    floor: true,
+    side: true,
+    draw(c) {
+      for (let i = 0; i < 6; i++)
+        c.top(0.08 + i * 0.5, 0.08, 0.3, 0.84, 0, C.line);
+    },
+  },
+  /* Michigan victory rally. */
+  'm-stage-base': {
+    footprint: [7, 3],
+    h: 10,
+    floor: true,
+    draw(c) {
+      c.top(0, 0, 7, 3, 8, C.oak);
+      for (let v = 0.25; v < 3; v += 0.25) c.edge([0, v, 8], [7, v, 8], C.wood);
+      for (let u = 0.9; u < 7; u += 1.4)
+        c.edge([u, 0, 8], [u, 3, 8], C.woodLight);
+      c.faceX(0, 3, 7, 0, 8, C.navy);
+      c.faceY(7, 0, 3, 0, 8, C.stageNavy);
+      c.edge([0, 3, 8], [7, 3, 8], C.woodLight);
+      c.edge([7, 0, 8], [7, 3, 8], C.wood);
+    },
+  },
+  'm-stage-backdrop': {
+    footprint: [7, 0.4],
+    h: 122,
+    draw(c) {
+      c.box(0, 0, 7, 0.4, 108, M.wood);
+      for (let u = 0.1; u < 7; u += 0.2)
+        c.faceX(
+          u,
+          0.402,
+          0.06,
+          8,
+          98,
+          Math.round(u * 5) % 2 ? C.woodDark : C.woodLight,
+        );
+      c.faceX(0, 0.403, 7, 0, 8, C.navy);
+      // Lighting truss with stage lamps.
+      c.box(-0.05, 0.1, 7.1, 0.2, 2, M.steel, 112);
+      c.box(-0.05, 0.1, 7.1, 0.2, 2, M.steel, 118);
+      for (let u = 0; u <= 7.01; u += 0.25) {
+        c.edge([u, 0.3, 112], [u + 0.25, 0.3, 120], C.steelDark);
+        c.edge([u, 0.3, 120], [u + 0.25, 0.3, 112], C.steelDark);
+      }
+      for (let k = 0; k < 7; k++) {
+        const [lx, ly] = c.at(0.5 + k, 0.45, 108);
+        c.p.rect(lx - 2, ly - 4, 5, 5, C.charcoal);
+        c.p.rect(lx - 1, ly, 3, 1, C.lamp);
+        c.p.pixel(lx, ly + 1, C.lampGlow);
+      }
+    },
+  },
+  'm-podium': {
+    footprint: [1, 0.6],
+    h: 44,
+    draw(c) {
+      c.box(0.2, 0.1, 0.6, 0.4, 24, M.wood);
+      c.poly(
+        [
+          [0.15, 0.05, 24],
+          [0.85, 0.05, 24],
+          [0.85, 0.55, 28],
+          [0.15, 0.55, 28],
+        ],
+        C.woodLight,
+      );
+      c.faceX(0.25, 0.502, 0.5, 6, 16, C.blueDark);
+      c.faceX(0.28, 0.503, 0.44, 8, 12, C.blue);
+      c.faceX(0.28, 0.504, 0.44, 19, 1, C.white);
+      // Microphone on a gooseneck stand.
+      const [mx, my] = c.at(0.5, 0.2, 28);
+      c.p.rect(mx, my - 8, 1, 8, C.ink);
+      c.line([mx, my - 8], [mx + 3, my - 12], C.ink);
+      c.p.ellipse(mx + 4, my - 13, 2, 1.5, C.charcoal);
+      c.p.pixel(mx + 3, my - 14, C.slate);
+    },
+  },
+  'm-us-flag': {
+    footprint: [0.5, 0.5],
+    h: 92,
+    frames: 2,
+    draw(c, f) {
+      flag(c, f, (x, y, w, h) => {
+        // Blue canton with a grid of tiny white dots; red and white stripes.
+        if (x < w * 0.42 && y < Math.round((h * 7) / 13))
+          return x % 3 === 1 && y % 2 === 1 ? C.white : C.navy;
+        return Math.floor((y * 13) / h) % 2 ? C.white : C.red;
+      });
+    },
+  },
+  'm-state-flag': {
+    footprint: [0.5, 0.5],
+    h: 92,
+    frames: 2,
+    draw(c, f) {
+      flag(c, f, (x, y, w, h) =>
+        y === 0 || y === h - 1 || x === w - 1 ? C.stageNavy : C.navy,
+      );
+    },
+  },
+  'm-speaker-stack': {
+    footprint: [1, 1],
+    h: 54,
+    draw(c) {
+      c.edge([0.5, 0.5, 12], [0.2, 0.8, 0], C.ink);
+      c.edge([0.5, 0.5, 12], [0.8, 0.8, 0], C.ink);
+      c.edge([0.5, 0.5, 12], [0.5, 0.2, 0], C.ink);
+      for (const z of [12, 32]) {
+        c.box(0.25, 0.3, 0.5, 0.4, 18, M.dark, z);
+        for (const dz of [5, 13]) {
+          const [sx, sy] = c.at(0.5, 0.701, z + dz);
+          c.p.ellipse(sx, sy, dz === 5 ? 4 : 2.5, dz === 5 ? 3 : 2, C.slate);
+          c.p.ellipse(sx, sy, 1.2, 1, C.ink);
+        }
+      }
+    },
+  },
+  'm-camera-riser': {
+    footprint: [2, 1],
+    h: 48,
+    draw(c) {
+      c.box(0, 0, 2, 1, 12, M.dark);
+      c.faceX(0.05, 1.002, 1.9, 2, 8, C.stageNavy);
+      for (const x of [0.5, 1.4]) {
+        for (const [dx, dy] of [
+          [-0.15, 0.15],
+          [0.15, 0.15],
+          [0, -0.15],
+        ])
+          c.edge([x, 0.5, 30], [x + dx, 0.5 + dy, 12], C.charcoal);
+        c.box(x - 0.18, 0.38, 0.36, 0.24, 9, M.dark, 30);
+        c.faceY(x + 0.182, 0.42, 0.14, 32, 5, C.glassDeep);
+        c.faceX(x - 0.12, 0.622, 0.12, 33, 4, C.glow);
+        const [rx, ry] = c.at(x - 0.1, 0.4, 40);
+        c.p.pixel(rx, ry, C.red);
+      }
+    },
+  },
+  'm-brick-building': {
+    footprint: [4, 2],
+    h: 128,
+    side: true,
+    draw(c) {
+      c.box(0, 0, 4, 1.8, 114, NM.brick);
+      // Mortar courses.
+      for (let z = 4; z < 112; z += 3) {
+        c.edge([0, 1.801, z], [4, 1.801, z], C.brickDark);
+        c.edge([4.001, 0, z], [4.001, 1.8, z], C.brickDark);
+      }
+      // Arched upper windows.
+      for (let row = 0; row < 3; row++)
+        for (let k = 0; k < 6; k++) {
+          const x = 0.2 + k * 0.63,
+            z = 44 + row * 22;
+          c.faceX(x, 1.802, 0.34, z, 13, C.cream);
+          c.faceX(
+            x + 0.04,
+            1.803,
+            0.26,
+            z + 1,
+            11,
+            lit(k, row) ? C.windowLit : C.glassDark,
+          );
+          const [ax, ay] = c.at(x + 0.17, 1.803, z + 13);
+          c.p.ellipse(ax + 2, ay - 1, 3, 2.5, C.cream);
+          c.p.ellipse(ax + 2, ay - 1, 2, 1.5, C.glassDark);
+        }
+      windowsSide(c, 4.002, 0.2, 1.6, 44, 108, 0.4, 22, 0.2, 12, C.glassDark);
+      // Shopfronts with green awnings.
+      for (let k = 0; k < 3; k++) {
+        const x = 0.15 + k * 1.3;
+        c.faceX(x, 1.802, 1.1, 4, 24, C.glassDark);
+        c.faceX(x + 0.05, 1.803, 1.0, 6, 3, C.glassLight);
+        c.poly(
+          [
+            [x - 0.05, 1.8, 32],
+            [x + 1.15, 1.8, 32],
+            [x + 1.15, 2.0, 28],
+            [x - 0.05, 2.0, 28],
+          ],
+          C.greenDark,
+        );
+      }
+      // Cornice, parapet and a small rooftop water tank.
+      c.box(0, 0, 4, 1.86, 4, M.stone, 114);
+      c.cylinder(3.1, 0.6, 118, 6, 10, [C.woodLight, C.wood, C.woodDark]);
+      const [tx, ty] = c.at(3.1, 0.6, 128);
+      c.p.poly(
+        [
+          [tx - 6, ty],
+          [tx + 6, ty],
+          [tx, ty - 6],
+        ],
+        C.woodDark,
+      );
+    },
+  },
+};
+Object.assign(objects, nyc);
 
 export const MODERN_OBJECTS: Record<
   string,

@@ -14,9 +14,9 @@ export type Vec3 = [number, number, number];
 export const TILE_SIDE = 32 / Math.SQRT2;
 export const PLANET = {
   /** Planet radius in tiles: small enough to curve, large enough not to squash the map. */
-  radiusTiles: 44,
-  /** Tile point that sits at latitude 0, longitude 0. */
-  centre: [50, 30] as Point,
+  radiusTiles: 54,
+  /** Tile point that sits at latitude 0, longitude 0 (the middle of the 96×94 map). */
+  centre: [48, 47] as Point,
   /** Angle between the focus point's normal and the view direction (60° = iso). */
   pitch: (60 * Math.PI) / 180,
   /** Billboards lean toward screen-up by this much of their camera-facing part. */

@@ -323,3 +323,91 @@ await sheet('animals', [
     [bird('graphite'), 'bird_peck', 'SE', 3],
   ],
 ]);
+// Scooter rider and speech-giver.
+const rider = L('adult-man-beard', 'suit', 'none', 'scooter', [
+  'skin-3',
+  'hair-black',
+  'navy',
+  'sky',
+  'white-linen',
+  'graphite',
+]);
+const speaker = L('adult-man', 'blazer-open', 'none', 'none', [
+  'skin-3',
+  'hair-black',
+  'black-cloth',
+  'graphite',
+  'white-linen',
+  'graphite',
+]);
+const parked = (look: Look): Look => ({ ...look, prop: 'scooter' });
+await sheet('ride-speech', [
+  [0, 1, 2, 3].flatMap((i) =>
+    (['SE', 'SW', 'NE', 'NW'] as Facing[]).map((f): Cell => [
+      rider,
+      'ride',
+      f,
+      i,
+    ]),
+  ),
+  [
+    ...[0, 1, 2, 3].map((i): Cell => [speaker, 'speech', 'SE', i]),
+    ...[0, 1, 2, 3].map((i): Cell => [speaker, 'speech', 'SW', i]),
+    [speaker, 'speech', 'NE', 1],
+    [speaker, 'idle', 'SE', 0],
+    [speaker, 'walk', 'SE', 1],
+    [speaker, 'talk', 'SW', 1],
+  ],
+  [
+    [rider, 'idle', 'SE', 0],
+    [rider, 'walk', 'SE', 1],
+    [rider, 'wave', 'SE', 1],
+    [parked(speaker), 'idle', 'SW', 0],
+    [
+      parked(
+        L('adult-woman', 'long-dress', 'hijab', 'none', [
+          'skin-5',
+          'hair-black',
+          'plum',
+          'mustard',
+          'emerald',
+          'graphite',
+        ]),
+      ),
+      'talk',
+      'SE',
+      1,
+    ],
+    [
+      parked(
+        L('child', 'hoodie-jeans', 'cap', 'none', [
+          'skin-6',
+          'hair-black',
+          'coral',
+          'denim',
+          'sky',
+          'mustard',
+        ]),
+      ),
+      'ride',
+      'SE',
+      1,
+    ],
+    [
+      parked(
+        L('adult-woman', 'scrubs', 'hijab', 'none', [
+          'skin-2',
+          'hair-black',
+          'scrub-teal',
+          'white-linen',
+          'navy',
+          'sky',
+        ]),
+      ),
+      'ride',
+      'NE',
+      2,
+    ],
+    [rider, 'sit', 'SE', 0],
+  ],
+]);

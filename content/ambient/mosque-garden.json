@@ -6378,5 +6378,1785 @@
       }
     ],
     "role": "Fan cheering from the crowd"
+  },
+  {
+    "id": "amb-halal-vendor",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "apron",
+      "headwear": "kufi",
+      "prop": "meal-box",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [37.6, 78.3],
+        "facing": "SE"
+      }
+    ],
+    "role": "Halal cart vendor serving lunch"
+  },
+  {
+    "id": "amb-halal-queue-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "navy",
+        "headwear": "emerald",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [37, 80.4],
+        "facing": "NE"
+      }
+    ],
+    "role": "Queueing for halal food"
+  },
+  {
+    "id": "amb-halal-queue-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "wool-cream",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [38.2, 80.8],
+        "facing": "NW"
+      }
+    ],
+    "role": "Queueing for halal food"
+  },
+  {
+    "id": "amb-bodega-owner",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "apron",
+      "headwear": "taqiyah",
+      "prop": "basket",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-white",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "mustard",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [8.2, 80.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Bodega owner minding the shop"
+  },
+  {
+    "id": "amb-bodega-cat",
+    "kind": "cat",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "cat",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "cat_sleep",
+        "at": [9.4, 80.6],
+        "facing": "SE"
+      }
+    ],
+    "role": "The bodega cat, asleep on duty"
+  },
+  {
+    "id": "amb-subway-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [44.8, 80.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Heading down to the subway"
+  },
+  {
+    "id": "amb-subway-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "navy",
+        "headwear": "turquoise",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [46.2, 81.2],
+        "facing": "SW"
+      }
+    ],
+    "role": "Heading down to the subway"
+  },
+  {
+    "id": "amb-bus-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "jubba",
+      "headwear": "imamah",
+      "prop": "cane",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-white",
+        "garmentPrimary": "charcoal",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [44, 86.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Waiting for the bus"
+  },
+  {
+    "id": "amb-bus-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "sit",
+        "at": [45.2, 86.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Waiting for the bus"
+  },
+  {
+    "id": "amb-park-bench-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "kaftan",
+      "headwear": "taqiyah",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-grey",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [28.6, 82.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Resting in the park"
+  },
+  {
+    "id": "amb-park-bench-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "graphite",
+        "headwear": "mustard",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [29.7, 82.2],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-park-bench-1",
+    "role": "Resting in the park"
+  },
+  {
+    "id": "amb-park-bench-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [33.6, 84.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Resting in the park"
+  },
+  {
+    "id": "amb-park-kids-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "wave",
+        "at": [30.4, 85.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Children playing in the park"
+  },
+  {
+    "id": "amb-park-kids-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [31.4, 85.6],
+        "facing": "SW"
+      }
+    ],
+    "pairWith": "amb-park-kids-1",
+    "role": "Children playing in the park"
+  },
+  {
+    "id": "amb-cityhall-press-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "blazer-open",
+      "headwear": "hijab",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "plum",
+        "garmentSecondary": "navy",
+        "headwear": "wool-cream",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [30, 70.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Reporter outside City Hall"
+  },
+  {
+    "id": "amb-cityhall-press-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "clipboard",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [31.2, 70.4],
+        "facing": "SW"
+      }
+    ],
+    "role": "Reporter outside City Hall"
+  },
+  {
+    "id": "amb-cityhall-fan",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "black-cloth",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "wave",
+        "at": [36, 70.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Waving to the mayor"
+  },
+  {
+    "id": "amb-newsstand",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "suit",
+      "headwear": "cap",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-grey",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "denim",
+        "headwear": "graphite",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [46, 74.6],
+        "facing": "SE"
+      }
+    ],
+    "role": "Reading at the newsstand"
+  },
+  {
+    "id": "amb-nyc-walk-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "suit",
+      "headwear": "none",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [6.5, 65.4],
+          [20.5, 65.4],
+          [6.5, 65.4]
+        ]
+      }
+    ],
+    "role": "New Yorker on the move"
+  },
+  {
+    "id": "amb-nyc-walk-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "shopping-bag",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "wool-cream",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [42.5, 75.3],
+          [53.5, 75.3],
+          [42.5, 75.3]
+        ]
+      }
+    ],
+    "role": "New Yorker on the move"
+  },
+  {
+    "id": "amb-nyc-walk-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "graphite",
+        "headwear": "kit-red",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [6.5, 88.4],
+          [20.5, 88.4],
+          [6.5, 88.4]
+        ]
+      }
+    ],
+    "role": "New Yorker on the move"
+  },
+  {
+    "id": "amb-nyc-walk-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "blueprint",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [42.5, 78.2],
+          [42.5, 88.2],
+          [42.5, 78.2]
+        ]
+      }
+    ],
+    "role": "New Yorker on the move"
+  },
+  {
+    "id": "amb-nyc-walk-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "coral",
+        "garmentSecondary": "graphite",
+        "headwear": "navy",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [24.6, 75.2],
+          [38.6, 75.2],
+          [24.6, 75.2]
+        ]
+      }
+    ],
+    "role": "New Yorker on the move"
+  },
+  {
+    "id": "amb-nyc-walk-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "football",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "denim",
+        "headwear": "khaki",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "walk",
+        "path": [
+          [21, 66],
+          [21, 74.6],
+          [21, 66]
+        ]
+      }
+    ],
+    "role": "New Yorker on the move"
+  },
+  {
+    "id": "amb-rally-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "khimar",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "sky",
+        "headwear": "emerald",
+        "prop": "sky"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [69, 69.8],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "celebrate",
+        "at": [70.5, 69.8],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "navy",
+        "headwear": "plum",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "wave",
+        "at": [72, 69.8],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "boubou",
+      "headwear": "kufi",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "celebrate",
+        "at": [75, 69.8],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "turquoise",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "cheer",
+        "at": [76.5, 69.8],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "plum",
+        "garmentSecondary": "graphite",
+        "headwear": "plum",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "celebrate",
+        "at": [78, 69.8],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "wave",
+        "at": [79.5, 69.8],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-7",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "boubou",
+      "headwear": "kufi",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "celebrate",
+        "at": [69.7, 71.39999999999999],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-8",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "wave",
+        "at": [71.2, 71.39999999999999],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-9",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "baju-kurung",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-brown",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "khaki",
+        "headwear": "wool-cream",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [72.7, 71.39999999999999],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-10",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "celebrate",
+        "at": [74.2, 71.39999999999999],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-11",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "headwrap",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "navy",
+        "headwear": "black-cloth",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "celebrate",
+        "at": [77.2, 71.39999999999999],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-12",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "wave",
+        "at": [78.7, 71.39999999999999],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-13",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "idle",
+        "at": [80.2, 71.39999999999999],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-14",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "charcoal",
+        "headwear": "coral",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "celebrate",
+        "at": [81.7, 71.39999999999999],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-15",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "wool-cream",
+        "prop": "graphite"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [70.5, 73],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-16",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "celebrate",
+        "at": [72, 73],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-17",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "cheer",
+        "at": [73.5, 73],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-18",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "black-cloth",
+        "garmentSecondary": "saffron",
+        "headwear": "sky",
+        "prop": "emerald"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "celebrate",
+        "at": [75, 73],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-19",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "charcoal",
+        "headwear": "madder-red",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [78, 73],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-20",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "navy",
+        "headwear": "sky",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "celebrate",
+        "at": [79.5, 73],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-21",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-brown",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "charcoal",
+        "headwear": "black-cloth",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "cheer",
+        "at": [81, 73],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-22",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "khaki",
+        "headwear": "rose",
+        "prop": "sky"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "idle",
+        "at": [69.7, 74.6],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-23",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "saffron",
+        "garmentSecondary": "khaki",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "cheer",
+        "at": [72.7, 74.6],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-24",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "khaki",
+        "headwear": "sky",
+        "prop": "emerald"
+      }
+    },
+    "loop": 60,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "celebrate",
+        "at": [74.2, 74.6],
+        "facing": "NE"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-25",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "mustard",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "wave",
+        "at": [75.7, 74.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-26",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "madder-red",
+        "garmentSecondary": "khaki",
+        "headwear": "olive",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [77.2, 74.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-27",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "songkok",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "graphite",
+        "headwear": "black-cloth",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "cheer",
+        "at": [80.2, 74.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-rally-28",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "hoodie-jeans",
+      "headwear": "none",
+      "prop": "phone",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "rose",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "celebrate",
+        "at": [81.7, 74.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-tv-crew-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "hoodie-jeans",
+      "headwear": "cap",
+      "prop": "clipboard",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [75, 78.6],
+        "facing": "NE"
+      }
+    ],
+    "role": "TV crew covering the rally"
+  },
+  {
+    "id": "amb-tv-crew-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "blazer-open",
+      "headwear": "hijab",
+      "prop": "tablet",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "graphite",
+        "headwear": "coral",
+        "prop": "emerald"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "talk",
+        "at": [76.2, 78.8],
+        "facing": "NW"
+      }
+    ],
+    "role": "TV crew covering the rally"
   }
 ]

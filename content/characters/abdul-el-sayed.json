@@ -1,0 +1,71 @@
+{
+  "id": "abdul-el-sayed",
+  "kind": "person",
+  "name": {
+    "en": "Abdul El-Sayed",
+    "ar": "عبد السيد",
+    "bn": "আবদুল এল-সায়েদ"
+  },
+  "aliases": [],
+  "years": "b. 1984",
+  "place": "Michigan",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man",
+    "garment": "blazer-open",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "navy",
+      "garmentSecondary": "navy",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 180,
+      "action": "speech",
+      "at": [75.7, 65.9],
+      "facing": "SE",
+      "z": 8
+    },
+    {
+      "from": 180,
+      "to": 240,
+      "action": "wave",
+      "at": [75.7, 65.9],
+      "facing": "SW",
+      "z": 8
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Physician and public-health leader who ran Detroit’s health department. On 3 November 2026 he won Michigan’s U.S. Senate seat, becoming the first Muslim American elected to the Senate."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Abdul_El-Sayed"
+    }
+  ],
+  "panelApproved": false
+}

@@ -414,6 +414,8 @@ describe('larger, modern characters', () => {
       'zabit-magomedsharipov',
       'khamzat-chimaev',
       'muhammad-ali',
+      'zohran-mamdani',
+      'abdul-el-sayed',
     ];
     for (const id of ids) {
       const c = content.characters.find((c) => c.id === id)!;

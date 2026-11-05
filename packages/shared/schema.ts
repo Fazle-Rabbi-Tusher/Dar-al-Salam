@@ -25,6 +25,8 @@ export const ACTIONS = {
   'belt-pose': 4,
   taunt: 4,
   lie: 2,
+  ride: 4,
+  speech: 4,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,

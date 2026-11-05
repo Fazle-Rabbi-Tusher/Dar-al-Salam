@@ -1505,17 +1505,339 @@ export function modernQuarter() {
     ),
   );
 
+  /* ════════ New York City (x 4–56, y 63–90) ════════ */
+  // Street grid: avenues on rows 63–64, 76–77 and 89–90 and columns 4–5,
+  // 22–23, 40–41 and 55–56; sidewalks around each block.
+  // Block A: an art-deco skyscraper, brownstones and a rooftop water tower.
+  obj('m-skyscraper-deco', 13, 66.2);
+  obj('m-brownstone', 6.4, 71.6);
+  obj('m-brownstone', 16.6, 71.6);
+  obj('m-water-tower', 19.6, 66.6);
+  obj('m-hydrant', 7, 66.4);
+  obj('m-street-lamp', 10.6, 66.4);
+  // Block B: City Hall and its plaza.
+  obj('m-city-hall', 27, 66.2);
+  obj('m-tree', 25, 72.4);
+  obj('m-tree', 37.6, 72.4);
+  obj('m-bench', 29, 73.6);
+  obj('m-bench', 34, 73.6);
+  obj('m-street-lamp', 25.2, 67);
+  obj('m-street-lamp', 38, 67);
+  // Block C: glass towers and a newsstand.
+  obj('m-skyscraper-glass', 43, 66.2);
+  obj('m-skyscraper-glass', 49.6, 66.6);
+  obj('m-newsstand', 45, 73.2);
+  obj('m-bike-rack', 50.4, 73.4);
+  // Block D: a corner bodega and more brownstones.
+  obj('m-bodega', 6.4, 78.6);
+  obj('m-brownstone', 11, 78.4);
+  obj('m-brownstone', 16.4, 78.4);
+  obj('m-tree', 8, 86.6);
+  obj('m-street-lamp', 14, 86.8);
+  obj('m-hydrant', 19.8, 87);
+  // Block E: a small park with a halal cart on the corner.
+  for (const [x, y] of [
+    [25, 79],
+    [31, 80],
+    [37.2, 81.8],
+    [26.2, 86.4],
+    [34.8, 86.8],
+  ])
+    obj('m-tree', x, y);
+  obj('m-bench', 28, 82.6);
+  obj('m-bench', 33, 84.6);
+  obj('m-planter-box', 29.6, 87.4);
+  obj('m-halal-cart', 36.6, 78.6);
+  // Block F: subway entrance, a glass tower and a bus stop.
+  obj('m-subway-entrance', 43.4, 79);
+  obj('m-skyscraper-glass', 49.4, 79.2);
+  obj('m-bus-shelter', 43, 86.6);
+  obj('m-street-lamp', 47, 87.2);
+  // Parked yellow taxis on the inner lanes (the scooter loop uses the outer ones).
+  for (const [x, y] of [
+    [8, 64],
+    [45, 64],
+    [10, 90],
+    [30, 90],
+    [47, 77],
+  ])
+    obj('m-taxi', x, y);
+  for (const [x, y] of [
+    [4, 80],
+    [56, 68],
+    [23, 82],
+  ])
+    obj('m-taxi-side', x, y);
+  for (const [x, y] of [
+    [6, 63],
+    [24.5, 76],
+    [42, 89],
+  ])
+    obj('m-crosswalk', x, y, true);
+  // New Yorkers.
+  const nyc = () => (ambient.length % 3 ? man() : woman());
+  person(
+    'halal-vendor',
+    [37.6, 78.3],
+    'pour',
+    withProp(
+      L('adult-man', 'apron', 'kufi', 'none', {
+        garmentSecondary: 'white-linen',
+      }),
+      'meal-box',
+    ),
+    'SE',
+  );
+  person(
+    'halal-queue-1',
+    [37, 80.4],
+    'idle',
+    withProp(nyc(), 'phone'),
+    'NE',
+    240,
+  );
+  person(
+    'halal-queue-2',
+    [38.2, 80.8],
+    'talk',
+    withProp(woman(), 'shopping-bag'),
+    'NW',
+  );
+  person(
+    'bodega-owner',
+    [8.2, 80.2],
+    'idle',
+    withProp(
+      L('elder', 'apron', 'taqiyah', 'none', { garmentSecondary: 'mustard' }),
+      'basket',
+    ),
+    'SE',
+    240,
+  );
+  person(
+    'bodega-cat',
+    [9.4, 80.6],
+    'cat_sleep',
+    L('cat', 'none', 'none', 'none', { garmentPrimary: 'charcoal' }),
+    'SE',
+  ).kind = 'cat';
+  person('subway-1', [44.8, 80.6], 'idle', withProp(nyc(), 'phone'), 'NW', 240);
+  person('subway-2', [46.2, 81.2], 'talk', withProp(woman(), 'coffee'), 'SW');
+  person('bus-1', [44, 86.2], 'idle', withProp(elder(), 'cane'), 'SE', 120);
+  person('bus-2', [45.2, 86.2], 'sit', withProp(child(), 'tablet'), 'SE', 60);
+  person(
+    'park-bench-1',
+    [28.6, 82.2],
+    'sit',
+    withProp(elder(), 'book'),
+    'SE',
+    240,
+  );
+  person('park-bench-2', [29.7, 82.2], 'sit', woman(), 'SW').pairWith =
+    'amb-park-bench-1';
+  person('park-bench-3', [33.6, 84.2], 'sit', withProp(man(), 'coffee'), 'SE');
+  person('park-kids-1', [30.4, 85.2], 'wave', child(), 'SE', 60);
+  person('park-kids-2', [31.4, 85.6], 'cheer', child(), 'SW', 60).pairWith =
+    'amb-park-kids-1';
+  person(
+    'cityhall-press-1',
+    [30, 70.2],
+    'talk',
+    withProp(
+      L('adult-woman', 'blazer-open', 'hijab', 'none', {
+        garmentPrimary: 'plum',
+      }),
+      'tablet',
+    ),
+    'SE',
+  );
+  person(
+    'cityhall-press-2',
+    [31.2, 70.4],
+    'idle',
+    withProp(man(), 'clipboard'),
+    'SW',
+    240,
+  );
+  person(
+    'cityhall-fan',
+    [36, 70.6],
+    'wave',
+    withProp(nyc(), 'phone'),
+    'NW',
+    120,
+  );
+  person('newsstand', [46, 74.6], 'read', withProp(elder(), 'book'), 'SE', 240);
+  walker(
+    'nyc-walk-1',
+    [
+      [6.5, 65.4],
+      [20.5, 65.4],
+    ],
+    withProp(
+      L('adult-man', 'suit', 'none', 'none', { garmentPrimary: 'navy' }),
+      'coffee',
+    ),
+    120,
+  );
+  walker(
+    'nyc-walk-2',
+    [
+      [42.5, 75.3],
+      [53.5, 75.3],
+    ],
+    withProp(woman(), 'shopping-bag'),
+    120,
+  );
+  walker(
+    'nyc-walk-3',
+    [
+      [6.5, 88.4],
+      [20.5, 88.4],
+    ],
+    withProp(
+      L('adult-man', 'hoodie-jeans', 'cap', 'none', { headwear: 'kit-red' }),
+      'phone',
+    ),
+    120,
+  );
+  walker(
+    'nyc-walk-4',
+    [
+      [42.5, 78.2],
+      [42.5, 88.2],
+    ],
+    withProp(nyc(), 'blueprint'),
+    120,
+  );
+  walker(
+    'nyc-walk-5',
+    [
+      [24.6, 75.2],
+      [38.6, 75.2],
+    ],
+    withProp(
+      L('adult-woman', 'long-dress', 'hijab', 'none', {
+        garmentPrimary: 'coral',
+      }),
+      'coffee',
+    ),
+    120,
+  );
+  walker(
+    'nyc-walk-6',
+    [
+      [21, 66],
+      [21, 74.6],
+    ],
+    withProp(child(), 'football'),
+    120,
+  );
+
+  /* ════════ Michigan victory rally (x 60–94, y 62–92) ════════ */
+  const SX = 72,
+    SY = 64.6,
+    STAGE = 8;
+  obj('m-stage-backdrop', SX, SY - 0.4);
+  obj('m-stage-base', SX, SY, true);
+  obj('m-podium', SX + 3.2, SY + 1.7, false, STAGE);
+  for (const [i, x] of [SX + 0.4, SX + 1.4, SX + 5.2, SX + 6.2].entries())
+    obj(
+      i === 1 || i === 2 ? 'm-state-flag' : 'm-us-flag',
+      x,
+      SY + 0.3,
+      false,
+      STAGE,
+    );
+  obj('m-speaker-stack', SX - 1.4, SY + 1.6);
+  obj('m-speaker-stack', SX + 7.4, SY + 1.6);
+  obj('m-camera-riser', SX + 2.6, 78);
+  obj('m-brick-building', 61, 63.4);
+  obj('m-brick-building', 86, 63.4);
+  obj('m-brick-building-side', 61.2, 72);
+  obj('m-brick-building-side', 92, 72);
+  for (const x of [64, 70, 82, 88]) obj('m-street-lamp', x, 85.4);
+  for (const x of [62, 74, 91]) obj('m-tree', x, 88.6);
+  // Supporters fill the square facing the stage; many film on their phones.
+  let n = 0;
+  for (let row = 0; row < 4; row++)
+    for (let i = 0; i < 9; i++) {
+      if ((row * 9 + i) % 5 === 3) continue;
+      const x = SX - 3 + i * 1.5 + (row % 2) * 0.7,
+        y = SY + 5.2 + row * 1.6;
+      const action = (
+        ['cheer', 'celebrate', 'wave', 'idle', 'celebrate'] as const
+      )[(row + i) % 5];
+      person(
+        `rally-${n++}`,
+        [x, y],
+        action,
+        withProp(
+          (row + i) % 3 === 0 ? woman() : (row + i) % 3 === 1 ? man() : child(),
+          action === 'celebrate' ? 'phone' : 'none',
+        ),
+        x < SX + 3.5 ? 'NE' : 'NW',
+        ([60, 120, 240] as Loop[])[(row * 2 + i) % 3],
+      );
+    }
+  person(
+    'tv-crew-1',
+    [SX + 3, 78.6],
+    'idle',
+    withProp(
+      L('adult-man', 'hoodie-jeans', 'cap', 'none', {
+        garmentPrimary: 'graphite',
+      }),
+      'clipboard',
+    ),
+    'NE',
+    240,
+  );
+  person(
+    'tv-crew-2',
+    [SX + 4.2, 78.8],
+    'talk',
+    withProp(
+      L('adult-woman', 'blazer-open', 'hijab', 'none', {
+        garmentPrimary: 'navy',
+      }),
+      'tablet',
+    ),
+    'NW',
+  );
+
   /* ════════ Floor ════════ */
   const floor: number[] = [];
   const stone = (x: number, y: number) => 1 + ((x * 3 + y * 7) % 3);
   const W = 96,
-    H = 64;
+    H = 94;
+  const streetRow = [63, 64, 76, 77, 89, 90],
+    streetCol = [4, 5, 22, 23, 40, 41, 55, 56];
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
       const inX = (a: number, b: number) => x >= a && x <= b,
         inY = (a: number, b: number) => y >= a && y <= b;
       let t: number;
-      if (x >= 61 && y >= 3 && y <= 44) t = 8;
+      if (y >= 61 && x >= 2 && x <= 57) {
+        // New York: asphalt avenues, concrete sidewalks, paved blocks, a park.
+        const street = streetRow.includes(y) || streetCol.includes(x),
+          kerb =
+            streetRow.some((r) => Math.abs(r - y) === 1) ||
+            streetCol.some((c) => Math.abs(c - x) === 1);
+        const park = inX(24, 39) && inY(78, 88);
+        t = street
+          ? 12
+          : kerb || y < 63 || x < 4 || x > 56
+            ? 7
+            : park
+              ? inX(30, 31) || inY(83, 84)
+                ? 8
+                : 4
+              : y < 76 && inX(24, 39)
+                ? 13
+                : 8;
+      } else if (y >= 61 && x >= 59) t = inX(66, 85) && inY(69, 77) ? 13 : 8;
+      else if (x >= 61 && y >= 3 && y <= 44) t = 8;
       else if (x >= 61 && y >= 45 && y <= 56)
         t = x === 61 || y === 45 || y === 56 ? 8 : 12;
       else if (x < 7 || y < 7 || x > 55 || y > 55)
@@ -1594,6 +1916,14 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Bangladeshi-American structural engineer and architect. At Skidmore, Owings & Merrill in Chicago he pioneered "tube" structural systems for tall buildings, used for the John Hancock Center and the Sears (now Willis) Tower.',
     links: wiki('Fazlur_Rahman_Khan'),
   },
+  'zohran-mamdani': {
+    en: 'Mayor of New York City since 1 January 2026: the city’s first Muslim mayor, its first of South Asian descent and the first born in Africa. Born in Kampala, Uganda, he grew up in New York and served in the New York State Assembly before winning the 2025 election.',
+    links: wiki('Zohran_Mamdani'),
+  },
+  'abdul-el-sayed': {
+    en: 'Physician and public-health leader who ran Detroit’s health department. On 3 November 2026 he won Michigan’s U.S. Senate seat, becoming the first Muslim American elected to the Senate.',
+    links: wiki('Abdul_El-Sayed'),
+  },
   'zaha-hadid': {
     en: 'Iraqi-British architect known for sweeping, curved buildings. In 2004 she became the first woman to win the Pritzker Architecture Prize; her works include the London Aquatics Centre and the Heydar Aliyev Center in Baku.',
     links: wiki('Zaha_Hadid'),
@@ -1662,6 +1992,20 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
 
 /** Hover labels: what each ambient person is doing (English for now). */
 const ROLES: [RegExp, string][] = [
+  [/^halal-vendor/, 'Halal cart vendor serving lunch'],
+  [/^halal-queue/, 'Queueing for halal food'],
+  [/^bodega-owner/, 'Bodega owner minding the shop'],
+  [/^bodega-cat/, 'The bodega cat, asleep on duty'],
+  [/^subway/, 'Heading down to the subway'],
+  [/^bus-/, 'Waiting for the bus'],
+  [/^park-bench/, 'Resting in the park'],
+  [/^park-kids/, 'Children playing in the park'],
+  [/^cityhall-press/, 'Reporter outside City Hall'],
+  [/^cityhall-fan/, 'Waving to the mayor'],
+  [/^newsstand/, 'Reading at the newsstand'],
+  [/^nyc-walk/, 'New Yorker on the move'],
+  [/^rally-/, 'Supporter celebrating at the victory rally'],
+  [/^tv-crew/, 'TV crew covering the rally'],
   [/^worshipper/, 'Praying together in the prayer hall'],
   [/^teacher$/, 'Teaching the Qur’an study circle'],
   [/^student-\d/, 'Learning in the Qur’an study circle'],
@@ -1790,6 +2134,86 @@ export function namedCards(): Character[] {
       },
       script: two('talk', 'idle', [31.4, 12], 'SE', 'SW'),
       pairWith: 'amb-engineer-1',
+    }),
+    card({
+      id: 'zohran-mamdani',
+      name: { en: 'Zohran Mamdani', ar: 'زهران ممداني', bn: 'জোহরান মামদানি' },
+      aliases: ['Mayor Mamdani'],
+      years: 'b. 1991',
+      place: 'Kampala · New York City',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man-beard',
+        garment: 'suit',
+        headwear: 'none',
+        prop: 'scooter',
+        colours: {
+          skin: 'skin-3',
+          hair: 'hair-black',
+          garmentPrimary: 'navy',
+          garmentSecondary: 'sky',
+          headwear: 'white-linen',
+          prop: 'steel',
+        },
+      },
+      loop: 240,
+      // Scooting round the City Hall block, then a wave to New Yorkers.
+      script: [
+        {
+          from: 0,
+          to: 200,
+          action: 'ride',
+          path: [
+            [22.5, 63.5],
+            [40.5, 63.5],
+            [40.5, 76.5],
+            [22.5, 76.5],
+            [22.5, 63.5],
+          ],
+        },
+        { from: 200, to: 240, action: 'wave', at: [22.5, 63.5], facing: 'SE' },
+      ],
+    }),
+    card({
+      id: 'abdul-el-sayed',
+      name: { en: 'Abdul El-Sayed', ar: 'عبد السيد', bn: 'আবদুল এল-সায়েদ' },
+      years: 'b. 1984',
+      place: 'Michigan',
+      district: 'modern-quarter',
+      look: {
+        base: 'adult-man',
+        garment: 'blazer-open',
+        headwear: 'none',
+        prop: 'none',
+        colours: {
+          skin: 'skin-3',
+          hair: 'hair-black',
+          garmentPrimary: 'navy',
+          garmentSecondary: 'navy',
+          headwear: 'white-linen',
+          prop: 'graphite',
+        },
+      },
+      loop: 240,
+      // Victory speech at the podium, then a wave to the crowd.
+      script: [
+        {
+          from: 0,
+          to: 180,
+          action: 'speech',
+          at: [75.7, 65.9],
+          facing: 'SE',
+          z: 8,
+        },
+        {
+          from: 180,
+          to: 240,
+          action: 'wave',
+          at: [75.7, 65.9],
+          facing: 'SW',
+          z: 8,
+        },
+      ],
     }),
     card({
       id: 'zaha-hadid',
