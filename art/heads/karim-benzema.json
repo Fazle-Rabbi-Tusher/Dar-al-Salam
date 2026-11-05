@@ -483,7 +483,7 @@
     {
       "filename": "cross-arms_SE_0",
       "frame": {
-        "x": 110,
+        "x": 0,
         "y": 0,
         "w": 22,
         "h": 28
@@ -503,7 +503,7 @@
     {
       "filename": "cross-arms_SE_1",
       "frame": {
-        "x": 110,
+        "x": 0,
         "y": 0,
         "w": 22,
         "h": 28
@@ -523,7 +523,7 @@
     {
       "filename": "cross-arms_SE_2",
       "frame": {
-        "x": 110,
+        "x": 0,
         "y": 0,
         "w": 22,
         "h": 28
@@ -543,7 +543,7 @@
     {
       "filename": "cross-arms_SE_3",
       "frame": {
-        "x": 110,
+        "x": 0,
         "y": 0,
         "w": 22,
         "h": 28
@@ -644,7 +644,7 @@
   "meta": {
     "image": "karim-benzema.png",
     "size": {
-      "w": 132,
+      "w": 110,
       "h": 28
     },
     "density": 2,
