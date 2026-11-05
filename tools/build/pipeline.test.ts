@@ -588,3 +588,40 @@ describe('sharp heads', () => {
     }
   });
 });
+
+describe('Bangladesh block', () => {
+  it('places Baitul Mukarram, the school and the new people', async () => {
+    const { forbiddenName } = await import('../../packages/shared/rules');
+    const objects = content.room.layers.find((l) => l.type === 'objectgroup');
+    const types = new Set(
+      objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
+    );
+    for (const t of [
+      'm-baitul-mukarram',
+      'm-bm-gate',
+      'm-bd-school',
+      'm-bd-flag',
+      'm-shapla-pond',
+      'm-rickshaw',
+      'm-cricket-pitch',
+    ])
+      expect(types.has(t), t).toBe(true);
+    for (const id of [
+      'kazi-nazrul-islam',
+      'begum-rokeya',
+      'mashrafe-mortaza',
+      'tamim-iqbal',
+      'malala-yousafzai',
+      'ibn-battuta',
+      'hakeem-olajuwon',
+    ]) {
+      const c = content.characters.find((c) => c.id === id)!;
+      expect(c.panelApproved).toBe(false);
+      expect(forbiddenName(c.name!.en, content.rules)).toBe(false);
+    }
+    const pupils = content.characters.filter((c) =>
+      c.id.startsWith('amb-bd-pupil'),
+    );
+    expect(pupils.length).toBeGreaterThanOrEqual(6);
+  });
+});
