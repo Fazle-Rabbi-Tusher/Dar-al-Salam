@@ -177,8 +177,8 @@ function browRow(f: Face, s: Scholar) {
 function eyePair(f: Face, s: Scholar) {
   const T = s.skin,
     iris = '#563B2C';
-  // Lid crease under the brow (deeper with age or an intent look).
-  if (s.age >= 2 || s.eyes === 'intense')
+  // Lid crease under the brow in old age.
+  if (s.age >= 3)
     f.pts(
       [
         [9, 11],
@@ -191,20 +191,26 @@ function eyePair(f: Face, s: Scholar) {
   switch (f.eyes) {
     case 'open':
     case 'determined': {
+      // Lash line over a 2-row eye: white toward the ear, the iris looking
+      // ahead (toward the viewer's right), a lower lid under it.
       f.pts(
         [
-          [8, 12],
           [9, 12],
           [10, 12],
           [11, 12],
         ],
         INK,
       );
+      f.px(8, 12, T[3]);
       f.px(8, 13, hooded ? T[2] : EYE_DIM);
       f.px(9, 13, EYE_WHITE);
-      f.px(10, 13, s.eyes === 'kind' ? iris : INK);
+      f.px(10, 13, INK);
       f.px(11, 13, s.eyes === 'intense' ? INK : iris);
-      if (hooded) f.px(9, 12, T[3]);
+      f.px(10, 14, iris);
+      f.px(9, 14, T[2]);
+      f.px(11, 14, T[2]);
+      if (hooded || f.eyes === 'determined') f.px(9, 13, EYE_DIM);
+      if (hooded) f.px(11, 13, INK);
       f.pts(
         [
           [16, 12],
@@ -214,14 +220,7 @@ function eyePair(f: Face, s: Scholar) {
       );
       f.px(16, 13, INK);
       f.px(17, 13, EYE_DIM);
-      // Lower lid.
-      f.pts(
-        [
-          [9, 14],
-          [10, 14],
-        ],
-        T[2],
-      );
+      f.px(16, 14, iris);
       break;
     }
     case 'happy':
@@ -402,7 +401,8 @@ function beardMask(f: Face, s: Scholar) {
       // Sideburn and cheek line, then everything below the mouth.
       let on = false;
       if (x <= 7 && y >= s.cheekTop - 2) on = true;
-      if (y >= s.cheekTop && x <= 12 - Math.max(0, s.cheekTop + 4 - y)) on = true;
+      if (y >= s.cheekTop && x <= 12 - Math.max(0, s.cheekTop + 4 - y))
+        on = true;
       if (y >= 16 && y <= 17 && x >= 14) on = true; // moustache
       if (y >= 18 && (x <= 12 || x >= 18)) on = true;
       if (y >= 20) on = true;
@@ -431,14 +431,23 @@ function paintBeard(f: Face, s: Scholar) {
     if (!has(x - 1, y) && f.has(x - 1, y)) v += 0.1; // soft edge on the cheek
     v += (hash(x, y) - 0.5) * 0.18;
     let c = pick(B, v, [0.78, 0.5, 0.25, -0.05]);
-    if (s.grey && hash(x * 7, Math.floor(y / 3)) < (s.greyAmount ?? 0.3))
+    if (
+      s.grey &&
+      strand !== 2 &&
+      hash(x * 7 + y, Math.floor(y / 2)) < (s.greyAmount ?? 0.3)
+    )
       c = s.grey[Math.min(s.grey.length - 1, B.indexOf(c) <= 1 ? 0 : 1)];
     f.px(x, y, c);
   }
   // Cheek edge: a few hairs over the skin so the line is not hard.
   for (const key of mask) {
     const [x, y] = key.split(',').map(Number);
-    if (!has(x + 1, y) && f.region(x + 1, y) !== 'hat' && y < 18 && hash(x, y) > 0.5)
+    if (
+      !has(x + 1, y) &&
+      f.region(x + 1, y) !== 'hat' &&
+      y < 18 &&
+      hash(x, y) > 0.5
+    )
       f.px(x + 1, y, B[3]);
   }
 }
@@ -508,9 +517,12 @@ function paintBack(f: Face, s: Scholar) {
       } else {
         // Hair (r 'hair') and the beard's edge (r 'beard').
         let v = 0.3 - (y - 6) * 0.03 - x * 0.01;
-        v += ((x + Math.floor(y / 3)) % 3 === 0 ? 0.15 : 0) + (hash(x, y) - 0.5) * 0.2;
+        v +=
+          ((x + Math.floor(y / 3)) % 3 === 0 ? 0.15 : 0) +
+          (hash(x, y) - 0.5) * 0.2;
         if (y === 6 || y === 7) v -= 0.25; // shadow under the turban
-        let c = pick(H, v, [0.7, 0.4, 0.15, -0.1]);
+        // Hair under the turban sits in its shadow: the darker tones.
+        let c = pick(H.slice(1), v, [0.55, 0.2, -0.1]);
         if (r === 'beard') c = pick(s.beard, v, [0.7, 0.4, 0.15, -0.1]);
         f.px(x, y, c);
       }
@@ -550,13 +562,26 @@ const SILVER = ['#FBFAF4', '#E6E8E1', '#D7DCD2', '#B9C0BE', '#9AA3A6'];
 const WHITE_LINEN = ['#FBFAF4', '#F5EEDB', '#EDE6CE', '#CCC4AA', '#B39E74'];
 const COOL_WHITE = ['#FBFBF7', '#EEF0EC', '#DADFDC', '#B9C0BE', '#9AA3A6'];
 const IVORY = ['#F7EBD0', '#EFE3C6', '#E4D5B9', '#C8B99C', '#A9A296'];
+/** A deeper fold tone below a ramp's darkest colour. */
+const DEEPER: Record<string, string> = {
+  '#2A3552': '#1E2A3A',
+  '#CCC4AA': '#B39E74',
+  '#B69872': '#8E7255',
+  '#2E2B34': '#2A2E33',
+};
+const COCOA = ['#C08A5A', '#B08A6E', '#8C6A52', '#664A39', '#49352A'];
 const WOOL = ['#F5EEDB', '#EDE6CE', '#D7BB8D', '#B69872', '#8E7255'];
 
 /* ───────────── Fatima al-Fihri (khimar: face only) ───────────── */
 const fatima: PortraitDef = {
   paint: (f) => {
+    // Khimar tones follow the look's headwear colour, so the sharp head
+    // matches the 1× drape over her shoulders.
     const T = SKIN[3],
-      C = ['#FBFAF4', '#F5EEDB', '#EDE6CE', '#D7BB8D', '#B69872'];
+      r = f.ramp('headwear'),
+      C = r.length
+        ? [r[0], r[0], r[1], r[2], DEEPER[r[2]] ?? r[2]]
+        : ['#FBFAF4', '#F5EEDB', '#EDE6CE', '#D7BB8D', '#B69872'];
     // The face opening: rows of the normal face, widened by a row each way
     // so brow and eye pixels count as face.
     const spans = new Map<number, [number, number]>();
@@ -572,7 +597,11 @@ const fatima: PortraitDef = {
     }
     const rows = [...spans.keys()],
       top = Math.min(...rows),
-      bottom = Math.max(...rows);
+      bottom = Math.max(...rows),
+      box = {
+        lo: Math.min(...[...spans.values()].map((r) => r[0])),
+        hi: Math.max(...[...spans.values()].map((r) => r[1])),
+      };
     const face = (x: number, y: number) => {
       if (f.away || y < top || y > bottom || !f.has(x, y)) return false;
       let lo = 99,
@@ -585,7 +614,11 @@ const fatima: PortraitDef = {
         }
       }
       if (y === top || y === bottom) [lo, hi] = spans.get(y) ?? [lo, hi];
-      return x >= lo && x <= hi;
+      // Round the corners of the opening: the scarf frames an oval face.
+      const ex =
+          (x + 0.5 - (box.lo + box.hi + 1) / 2) / ((box.hi - box.lo + 1) / 2),
+        ey = (y + 0.5 - (top + bottom + 1) / 2) / ((bottom - top + 1) / 2);
+      return x >= lo && x <= hi && ex * ex + ey * ey <= 1.18;
     };
     for (let y = -12; y < 34; y++)
       for (let x = -8; x < 32; x++) {
@@ -609,7 +642,10 @@ const fatima: PortraitDef = {
         let v = 0.62 - dx * 0.45 - dy * 0.4;
         const hem =
           !f.away &&
-          (face(x + 1, y) || face(x - 1, y) || face(x, y + 1) || face(x, y - 1));
+          (face(x + 1, y) ||
+            face(x - 1, y) ||
+            face(x, y + 1) ||
+            face(x, y - 1));
         if (hem) v += y < 12 ? 0.25 : -0.35;
         if (y > bottom && y <= bottom + 4) v += Math.sin(x * 0.9 + y) * 0.16;
         if (!f.has(x, y + 1) || !f.has(x + 1, y)) v -= 0.22;
@@ -713,8 +749,8 @@ export const HERITAGE: Record<string, PortraitDef> = {
   'al-zahrawi': scholar({
     skin: SKIN[2],
     beard: DARK_BROWN,
-    grey: ['#D7DCD2', '#A9A296'],
-    greyAmount: 0.38,
+    grey: ['#A9A296', '#80766B'],
+    greyAmount: 0.18,
     beardShape: 'full',
     cheekTop: 14,
     brows: 'medium',
@@ -760,12 +796,13 @@ export const HERITAGE: Record<string, PortraitDef> = {
     hair: SILVER,
     turban: { tones: WHITE_LINEN, band: 2, tilt: 0.18 },
   }),
-  // Tunis statue: a lean face, black beard of middle length, stern brows.
+  // Tunis statue: a lean older face, greying beard of middle length, stern
+  // brows, and the hood of his burnous falling behind the turban.
   'ibn-khaldun': scholar({
     skin: SKIN[3],
     beard: BLACK,
-    grey: ['#80766B', '#8B9D96'],
-    greyAmount: 0.12,
+    grey: ['#A9A296', '#80766B'],
+    greyAmount: 0.24,
     beardShape: 'trim',
     cheekTop: 15,
     brows: 'low',
@@ -776,7 +813,7 @@ export const HERITAGE: Record<string, PortraitDef> = {
     cheeks: 'hollow',
     lip: '#A8644C',
     hair: BLACK,
-    turban: { tones: WHITE_LINEN, band: 4.5, tilt: 0.05, tail: WOOL },
+    turban: { tones: WHITE_LINEN, band: 4.5, tilt: 0.05, tail: COCOA },
   }),
   // Córdoba statue: a broad grey beard, thoughtful brows, a cream turban.
   'ibn-rushd': scholar({

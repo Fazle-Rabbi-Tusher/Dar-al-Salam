@@ -61,8 +61,8 @@ const isSkinLike = (f: Face, x: number, y: number, shaven: boolean) => {
 /** Tone index (0 highlight … 5 deep) on the 3/4 face, lit from the top left. */
 function toneAt(x: number, y: number) {
   let t = 1;
-  if (x <= 6) t = 3;
-  else if (x <= 8) t = 2;
+  if (x <= 8) t = 2;
+  if (x <= 4) t = 3;
   // Forehead highlight.
   if (((x - 12) / 4.2) ** 2 + ((y - 4.5) / 2.4) ** 2 <= 1) t = 0;
   // The far temple turns away from the light.
@@ -129,7 +129,7 @@ type Spec = {
   lash?: string;
   /** 0 young … 2 older (lines under the eyes, forehead, smile folds). */
   age?: 0 | 1 | 2;
-  glasses?: { frame: string; lens?: string };
+  glasses?: { frame: string; lens?: string; lower?: string };
   /** Lips colour override (e.g. Zaha Hadid's lipstick). */
   lip?: string;
   /** Full lips: a fuller lower lip. */
@@ -158,9 +158,14 @@ function brows(f: Face, s: Spec) {
     [17, 8],
     [18, 9],
   ];
-  if (s.brow !== 'thin')
-    near.push([8, 9], [9, 9], [10, 9]), far.push([17, 9], [19, 9]);
-  if (s.brow === 'thick') near.push([7, 8], [11, 8]), far.push([18, 8]);
+  if (s.brow !== 'thin') {
+    near.push([8, 9], [9, 9], [10, 9]);
+    far.push([17, 9], [19, 9]);
+  }
+  if (s.brow === 'thick') {
+    near.push([7, 8], [11, 8]);
+    far.push([18, 8]);
+  }
   for (const [x, y] of [...near, ...far])
     if (f.region(x, y + up) !== 'hat') f.px(x, y + up, c);
 }
@@ -301,9 +306,10 @@ function glasses(f: Face, g: NonNullable<Spec['glasses']>) {
   const px = (x: number, y: number, c: string) => {
     if (f.has(x, y) && f.region(x, y) !== 'hat') f.px(x, y, c);
   };
+  const low = g.lower ?? g.frame;
   // Near lens rim around the eye, bridge, far lens and the arm to the ear.
   for (const x of [8, 9, 10, 11, 12]) px(x, 11, g.frame);
-  for (const x of [8, 9, 10, 11, 12]) px(x, 14, g.frame);
+  for (const x of [8, 9, 10, 11, 12]) px(x, 14, low);
   px(7, 12, g.frame);
   px(7, 13, g.frame);
   px(12, 12, g.frame);
@@ -311,7 +317,7 @@ function glasses(f: Face, g: NonNullable<Spec['glasses']>) {
   px(13, 12, g.frame);
   px(14, 12, g.frame);
   for (const x of [15, 16, 17, 18]) px(x, 11, g.frame);
-  for (const x of [15, 16, 17]) px(x, 14, g.frame);
+  for (const x of [15, 16, 17]) px(x, 14, low);
   px(18, 12, g.frame);
   px(18, 13, g.frame);
   px(6, 12, g.frame);
@@ -329,7 +335,10 @@ function hairLight(f: Face, x: number, y: number) {
     dy = (y - 4) / 12;
   let v = 0.55 - dx * 0.55 - dy * 0.6;
   const edge =
-    !f.has(x + 1, y) || !f.has(x, y + 1) || !f.has(x - 1, y) || !f.has(x, y - 1);
+    !f.has(x + 1, y) ||
+    !f.has(x, y + 1) ||
+    !f.has(x - 1, y) ||
+    !f.has(x, y - 1);
   if (edge) v -= 0.25;
   return v;
 }
@@ -382,8 +391,9 @@ function paintBeard(
 function paintHat(
   f: Face,
   C: string[],
-  kind: 'knit' | 'wrap' | 'cloth',
+  kind: 'knit' | 'wrap' | 'cloth' | 'keep',
 ) {
+  if (kind === 'keep') return;
   each(f, (x, y) => {
     if (f.region(x, y) !== 'hat') return;
     let v = hairLight(f, x, y) + 0.25;
@@ -440,7 +450,7 @@ type Person = Spec & {
   beard?: { tones: string[]; style: BeardStyle };
   /** Paint the beard region as shaved skin. */
   shaven?: boolean;
-  hat?: { tones: string[]; kind: 'knit' | 'wrap' | 'cloth' };
+  hat?: { tones: string[]; kind: 'knit' | 'wrap' | 'cloth' | 'keep' };
   /** Extra pass for distinctive details. */
   after?: (f: Face, T: string[]) => void;
 };
@@ -451,8 +461,7 @@ function person(p: Person): PortraitDef {
       if (f.away) {
         paintBack(f, T, p.hair, p.hairStyle, p.bias);
         if (p.beard) paintBeard(f, p.beard.tones, p.beard.style, T, p.bias);
-        else if (p.shaven)
-          each(f, (x, y) => on(f, ['beard'], x, y, T[3]));
+        else if (p.shaven) each(f, (x, y) => on(f, ['beard'], x, y, T[3]));
         if (p.hat) paintHat(f, p.hat.tones, p.hat.kind);
         return;
       }
@@ -491,18 +500,16 @@ export const TODAY: Record<string, PortraitDef> = {
     brow: 'thick',
     browColour: '#2E2B34',
     bigSmile: true,
-    hat: { tones: CLOTH.white, kind: 'knit' },
+    hat: { tones: CLOTH.white, kind: 'keep' },
     after: (f) => {
-      // Grey strands running down the chin.
-      for (const [x, y0, n] of [
-        [12, 21, 3],
-        [14, 22, 4],
-        [16, 21, 3],
-        [18, 20, 2],
-      ] as [number, number, number][])
-        for (let y = y0; y < y0 + n; y++)
-          if (f.region(x, y) === 'beard')
-            f.px(x, y, y === y0 ? HAIR.salt[1] : HAIR.salt[0]);
+      // A few grey hairs at the point of the chin.
+      for (const [x, y] of [
+        [13, 23],
+        [15, 24],
+        [14, 25],
+        [16, 23],
+      ] as P[])
+        if (f.region(x, y) === 'beard') f.px(x, y, '#80766B');
     },
   }),
   // Grey-white beard, white turban, light skin and thin glasses.
@@ -517,7 +524,7 @@ export const TODAY: Record<string, PortraitDef> = {
     lash: '#65564B',
     age: 2,
     glasses: { frame: '#9AA3A6' },
-    hat: { tones: CLOTH.white, kind: 'wrap' },
+    hat: { tones: CLOTH.white, kind: 'keep' },
   }),
   // Short neat black hair and a full, trimmed black beard.
   'omar-suleiman': person({
@@ -539,7 +546,7 @@ export const TODAY: Record<string, PortraitDef> = {
     browColour: '#A9A296',
     liner: true,
     age: 2,
-    hat: { tones: CLOTH.white, kind: 'wrap' },
+    hat: { tones: CLOTH.white, kind: 'keep' },
   }),
   // Grey hair swept back, clean-shaven, a broad smile.
   'ahmed-zewail': person({
@@ -572,7 +579,7 @@ export const TODAY: Record<string, PortraitDef> = {
     brow: 'thick',
     browColour: '#2E2B34',
     age: 1,
-    glasses: { frame: INK },
+    glasses: { frame: INK, lower: '#65564B' },
   }),
   // Long dark hair, strong brows, bold eyes and lips.
   'zaha-hadid': person({

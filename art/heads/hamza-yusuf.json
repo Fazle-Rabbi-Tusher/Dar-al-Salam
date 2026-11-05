@@ -6,13 +6,13 @@
         "x": 0,
         "y": 0,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "spriteSourceSize": {
         "x": 44,
         "y": 24,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "sourceSize": {
         "w": 112,
@@ -26,13 +26,13 @@
         "x": 0,
         "y": 0,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "spriteSourceSize": {
         "x": 44,
         "y": 24,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "sourceSize": {
         "w": 112,
@@ -43,7 +43,7 @@
     {
       "filename": "idle_SE_2",
       "frame": {
-        "x": 26,
+        "x": 0,
         "y": 0,
         "w": 26,
         "h": 34
@@ -63,7 +63,7 @@
     {
       "filename": "idle_SE_3",
       "frame": {
-        "x": 52,
+        "x": 26,
         "y": 0,
         "w": 26,
         "h": 34
@@ -83,16 +83,16 @@
     {
       "filename": "idle_NE_0",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 42,
         "y": 24,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -103,16 +103,16 @@
     {
       "filename": "idle_NE_1",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 42,
         "y": 24,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -123,16 +123,16 @@
     {
       "filename": "idle_NE_2",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 42,
         "y": 28,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -143,16 +143,16 @@
     {
       "filename": "idle_NE_3",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 42,
         "y": 28,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -166,13 +166,13 @@
         "x": 0,
         "y": 0,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "spriteSourceSize": {
         "x": 44,
         "y": 24,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "sourceSize": {
         "w": 112,
@@ -183,7 +183,7 @@
     {
       "filename": "talk_SE_1",
       "frame": {
-        "x": 104,
+        "x": 78,
         "y": 0,
         "w": 26,
         "h": 34
@@ -203,16 +203,16 @@
     {
       "filename": "talk_SE_2",
       "frame": {
-        "x": 130,
+        "x": 0,
         "y": 0,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "spriteSourceSize": {
         "x": 46,
         "y": 24,
         "w": 26,
-        "h": 36
+        "h": 34
       },
       "sourceSize": {
         "w": 112,
@@ -223,7 +223,7 @@
     {
       "filename": "talk_SE_3",
       "frame": {
-        "x": 104,
+        "x": 78,
         "y": 0,
         "w": 26,
         "h": 34
@@ -243,16 +243,16 @@
     {
       "filename": "talk_NE_0",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 42,
         "y": 24,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -263,16 +263,16 @@
     {
       "filename": "talk_NE_1",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 44,
         "y": 28,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -283,16 +283,16 @@
     {
       "filename": "talk_NE_2",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 44,
         "y": 24,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -303,16 +303,16 @@
     {
       "filename": "talk_NE_3",
       "frame": {
-        "x": 78,
+        "x": 52,
         "y": 0,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "spriteSourceSize": {
         "x": 42,
         "y": 28,
         "w": 26,
-        "h": 34
+        "h": 30
       },
       "sourceSize": {
         "w": 112,
@@ -324,8 +324,8 @@
   "meta": {
     "image": "hamza-yusuf.png",
     "size": {
-      "w": 156,
-      "h": 36
+      "w": 104,
+      "h": 34
     },
     "density": 2,
     "frameTags": [
