@@ -3,7 +3,17 @@
 import { Pixels, type PixelImage } from '../../packages/shared/pixels';
 import { png, readJson, writeJson } from '../build/io';
 import type { ObjectArt } from './objects';
-import { isoCanvas, mirror, type IsoCanvas, type Material } from './iso-draw';
+import {
+  darker,
+  detailPass,
+  groundShadow,
+  lighter,
+  isoCanvas,
+  mirror,
+  type DetailOptions,
+  type IsoCanvas,
+  type Material,
+} from './iso-draw';
 
 /** Every colour this module paints. Keys are descriptive; values are the palette. */
 const C = {
@@ -117,6 +127,11 @@ const C = {
   brickDark: '#86392C',
   taxiShade: '#B98A1F',
   stageNavy: '#1D2E55',
+  // Garden grass and water (already in the world palette).
+  grassLight: '#C1C7A2',
+  grass: '#A3B086',
+  grassMid: '#75966B',
+  grassDark: '#487359',
 } as const;
 export const MODERN_COLOURS: string[] = [...new Set(Object.values(C))];
 
@@ -183,6 +198,10 @@ type Spec = {
   frames?: number;
   floor?: boolean;
   side?: boolean;
+  /** Finishing pass options; `false` leaves the art exactly as drawn. */
+  detail?: DetailOptions | false;
+  /** Soft ground shadow under the footprint (off for raised pieces). */
+  shadow?: boolean;
   draw: (c: IsoCanvas, f: number) => void;
 };
 
@@ -244,6 +263,175 @@ function book(
 }
 function wallBase(c: IsoCanvas, h: number, m: Material, depth = 0.35) {
   c.box(0, 0, 8, depth, h, m);
+}
+/**
+ * Block courses (ashlar, brick, panels) on a front (+y) face between x0 and
+ * x1: joint lines every `row` px, staggered head joints every `block` tiles,
+ * and an optional lit line along the top of each block.
+ */
+function coursesFront(
+  c: IsoCanvas,
+  x0: number,
+  x1: number,
+  y: number,
+  z0: number,
+  z1: number,
+  row: number,
+  block: number,
+  joint: string,
+  light?: string,
+) {
+  for (let z = z0, r = 0; z < z1; z += row, r++) {
+    const top = Math.min(z + row, z1);
+    if (light && top - z > 3) c.edge([x0, y, top - 1], [x1, y, top - 1], light);
+    if (z > z0) c.edge([x0, y, z], [x1, y, z], joint);
+    for (let u = x0 + block * (r % 2 ? 0.5 : 1); u < x1 - 0.04; u += block)
+      c.edge([u, y, z], [u, y, top - 1], joint);
+  }
+}
+/** The same courses on a side (+x) face between y0 and y1. */
+function coursesSide(
+  c: IsoCanvas,
+  x: number,
+  y0: number,
+  y1: number,
+  z0: number,
+  z1: number,
+  row: number,
+  block: number,
+  joint: string,
+  light?: string,
+) {
+  for (let z = z0, r = 0; z < z1; z += row, r++) {
+    const top = Math.min(z + row, z1);
+    if (light && top - z > 3) c.edge([x, y0, top - 1], [x, y1, top - 1], light);
+    if (z > z0) c.edge([x, y0, z], [x, y1, z], joint);
+    for (let v = y0 + block * (r % 2 ? 0.5 : 1); v < y1 - 0.04; v += block)
+      c.edge([x, v, z], [x, v, top - 1], joint);
+  }
+}
+type Sash = {
+  frame: string;
+  glass: string;
+  /** Shadow cast into the reveal by the head and the left jamb. */
+  shade: string;
+  glint?: string;
+  sill?: string;
+  /** Glazing bars: a cross for sash windows. */
+  bars?: boolean;
+  /** Something seen inside (curtain, plant, lamp), drawn low in the pane. */
+  inside?: string;
+};
+/** A framed window with reveal shadow, glint, glazing bars and sill on a front face. */
+function sashFront(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  z: number,
+  h: number,
+  o: Sash,
+) {
+  c.faceX(x - 0.03, y, w + 0.06, z - 1, h + 2, o.frame);
+  c.faceX(x, y + 0.001, w, z, h, o.glass);
+  c.faceX(x, y + 0.002, w, z + h - 2, 2, o.shade);
+  c.faceX(x, y + 0.002, Math.min(0.05, w * 0.2), z, h, o.shade);
+  if (o.inside)
+    c.faceX(x + w * 0.55, y + 0.002, w * 0.4, z, h * 0.45, o.inside);
+  if (o.glint)
+    c.edge(
+      [x + w * 0.25, y + 0.003, z + 2],
+      [x + w * 0.6, y + 0.003, z + h - 3],
+      o.glint,
+    );
+  if (o.bars) {
+    c.edge(
+      [x + w / 2, y + 0.003, z],
+      [x + w / 2, y + 0.003, z + h - 1],
+      o.frame,
+    );
+    c.edge([x, y + 0.003, z + h / 2], [x + w, y + 0.003, z + h / 2], o.frame);
+  }
+  if (o.sill) c.faceX(x - 0.05, y + 0.004, w + 0.1, z - 2, 2, o.sill);
+}
+/** The same window on a side (+x) face. */
+function sashSide(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  z: number,
+  h: number,
+  o: Sash,
+) {
+  c.faceY(x, y - 0.03, w + 0.06, z - 1, h + 2, o.frame);
+  c.faceY(x + 0.001, y, w, z, h, o.glass);
+  c.faceY(x + 0.002, y, w, z + h - 2, 2, o.shade);
+  c.faceY(x + 0.002, y, Math.min(0.05, w * 0.2), z, h, o.shade);
+  if (o.inside) c.faceY(x + 0.002, y + w * 0.5, w * 0.4, z, h * 0.45, o.inside);
+  if (o.glint)
+    c.edge(
+      [x + 0.003, y + w * 0.25, z + 2],
+      [x + 0.003, y + w * 0.6, z + h - 3],
+      o.glint,
+    );
+  if (o.bars) {
+    c.edge(
+      [x + 0.003, y + w / 2, z],
+      [x + 0.003, y + w / 2, z + h - 1],
+      o.frame,
+    );
+    c.edge([x + 0.003, y, z + h / 2], [x + 0.003, y + w, z + h / 2], o.frame);
+  }
+  if (o.sill) c.faceY(x + 0.004, y - 0.05, w + 0.1, z - 2, 2, o.sill);
+}
+/**
+ * Pointed arch window on a front (+y) or side (+x) face at `at`: frame,
+ * glass, reveal shade down the left jamb, and a glint.
+ */
+function arch(
+  c: IsoCanvas,
+  side: boolean,
+  u: number,
+  at: number,
+  w: number,
+  z: number,
+  h: number,
+  frame: string,
+  glass: string,
+  shade: string,
+  glint: string,
+) {
+  const pt = (a: number, d: number, zz: number): [number, number, number] =>
+      side ? [at + d, a, zz] : [a, at + d, zz],
+    rise = Math.min(12, h * 0.3);
+  c.poly(
+    [
+      pt(u - 0.08, 0, z - 2),
+      pt(u + w + 0.08, 0, z - 2),
+      pt(u + w + 0.08, 0, z + h - rise),
+      pt(u + w / 2, 0, z + h + 3),
+      pt(u - 0.08, 0, z + h - rise),
+    ],
+    frame,
+  );
+  c.poly(
+    [
+      pt(u, 0.001, z),
+      pt(u + w, 0.001, z),
+      pt(u + w, 0.001, z + h - rise),
+      pt(u + w / 2, 0.001, z + h),
+      pt(u, 0.001, z + h - rise),
+    ],
+    glass,
+  );
+  c.edge(pt(u + 0.01, 0.002, z), pt(u + 0.01, 0.002, z + h - rise), shade);
+  c.edge(pt(u + 0.01, 0.002, z + h - rise), pt(u + w / 2, 0.002, z + h), shade);
+  c.edge(
+    pt(u + w * 0.3, 0.003, z + 3),
+    pt(u + w * 0.6, 0.003, z + h * 0.6),
+    glint,
+  );
 }
 
 const objects: Record<string, Spec> = {
@@ -330,9 +518,24 @@ const objects: Record<string, Spec> = {
     side: true,
     draw(c) {
       wallBase(c, 110, M.stone);
+      // Dressed-stone courses, then a darker plinth with a lit top edge.
+      coursesFront(c, 0, 8, 0.351, 8, 96, 8, 0.55, C.stoneShade, C.ivory);
       c.faceX(0, 0.351, 8, 0, 8, C.stoneShade);
+      c.edge([0, 0.352, 8], [8, 0.352, 8], C.ivory);
+      c.edge([0, 0.352, 1], [8, 0.352, 1], C.stoneLine);
       for (let i = 0; i < 4; i++) {
         const u = 0.55 + i * 2;
+        // Recess shadow, frame, then the glazing.
+        c.poly(
+          [
+            [u - 0.06, 0.352, 14],
+            [u + 1.1, 0.352, 14],
+            [u + 1.1, 0.352, 77],
+            [u + 0.5, 0.352, 99],
+            [u - 0.06, 0.352, 79],
+          ],
+          C.stoneShade,
+        );
         c.poly(
           [
             [u - 0.12, 0.352, 16],
@@ -354,17 +557,33 @@ const objects: Record<string, Spec> = {
           C.glass,
         );
         c.faceX(u, 0.354, 0.9, 20, 28, C.glassDark);
+        // Reveal shadow down the left jamb and under the arch.
+        c.faceX(u, 0.354, 0.08, 20, 56, C.glassDeep);
+        c.edge([u + 0.1, 0.354, 76], [u + 0.45, 0.354, 88], C.glassDeep);
         c.edge([u + 0.45, 0.355, 20], [u + 0.45, 0.355, 88], C.white);
         c.edge([u, 0.355, 50], [u + 0.9, 0.355, 50], C.white);
-        c.edge([u + 0.1, 0.355, 56], [u + 0.3, 0.355, 74], C.glassLight);
+        c.edge([u, 0.355, 34], [u + 0.9, 0.355, 34], C.glass);
+        c.edge([u + 0.14, 0.355, 56], [u + 0.32, 0.355, 74], C.glassLight);
+        c.edge([u + 0.6, 0.355, 24], [u + 0.74, 0.355, 40], C.glassLight);
+        // Keystone at the apex and a projecting sill with its shadow.
+        c.box(u + 0.37, 0.33, 0.16, 0.06, 7, M.stone, 92);
         c.box(u - 0.15, 0.3, 1.2, 0.25, 3, M.stone, 14);
-        // Simple square lattice band between windows.
+        c.faceX(u - 0.12, 0.552, 1.16, 11, 2, C.stoneShade);
+        // Lattice panel between windows, framed and shadowed.
+        if (i === 3) continue;
+        c.faceX(u + 1.12, 0.352, 0.76, 28, 48, C.stoneShade);
         c.faceX(u + 1.15, 0.352, 0.7, 30, 44, C.ivory);
         for (let z = 34; z < 72; z += 6)
           for (let k = 0; k < 3; k++)
             c.top(u + 1.22 + k * 0.2, 0.352, 0.1, 0.01, z, C.turquoise);
+        c.edge([u + 1.15, 0.353, 30], [u + 1.15, 0.353, 73], C.stoneLine);
       }
+      // Cornice: dentil course under a teal frieze.
+      c.faceX(0, 0.352, 8, 95, 5, C.stoneShade);
+      for (let u = 0.04; u < 8; u += 0.22)
+        c.faceX(u, 0.353, 0.13, 96, 3, C.ivory);
       c.faceX(0, 0.352, 8, 100, 4, C.teal);
+      c.edge([0, 0.353, 103], [8, 0.353, 103], C.turquoise);
       c.box(-0.05, -0.05, 8.1, 0.45, 5, M.stone, 106);
     },
   },
@@ -373,48 +592,97 @@ const objects: Record<string, Spec> = {
     h: 140,
     draw(c) {
       c.box(0, 0, 4, 4, 40, M.stone);
+      coursesFront(c, 0, 4, 4.001, 2, 32, 6, 0.6, C.stoneShade, C.ivory);
+      coursesSide(c, 4.001, 0, 4, 2, 32, 6, 0.6, C.stoneLine);
+      c.faceX(0, 4.001, 4, 0, 2, C.stoneShade);
+      c.faceY(4.001, 0, 4, 0, 2, C.stoneLine);
+      // Arched windows around the prayer-hall base.
+      for (let k = 0; k < 4; k++) {
+        arch(
+          c,
+          false,
+          0.3 + k * 0.95,
+          4.002,
+          0.36,
+          8,
+          18,
+          C.tealDark,
+          C.glassDark,
+          C.glassDeep,
+          C.glassLight,
+        );
+        arch(
+          c,
+          true,
+          0.3 + k * 0.95,
+          4.002,
+          0.36,
+          8,
+          18,
+          C.deepTeal,
+          C.glassDeep,
+          C.ink,
+          C.glass,
+        );
+      }
       c.faceX(0, 4.001, 4, 32, 4, C.teal);
       c.faceY(4.001, 0, 4, 32, 4, C.deepTeal);
+      c.edge([0, 4.002, 35], [4, 4.002, 35], C.turquoise);
+      c.edge([0, 4.002, 36], [4, 4.002, 36], C.ivory);
       const [cx, cy] = c.at(2, 2, 40);
+      // Drum: stone ring with tall arched lights.
       c.cylinder(2, 2, 40, 40, 26, R.stone, C.ivory);
       for (let k = 0; k < 9; k++) {
         const u = -0.85 + k * 0.21,
           x = cx + u * 40,
           y = cy + 20 * Math.sqrt(1 - u * u);
+        c.p.rect(x - 3, y - 21, 6, 14, u < 0.3 ? C.stoneShade : C.stoneLine);
         c.p.rect(x - 2, y - 20, 4, 12, C.glassDark);
+        c.p.rect(x - 1, y - 22, 2, 2, C.glassDark);
         c.p.rect(x - 1, y - 19, 1, 6, C.glassLight);
+        c.p.rect(x + 1, y - 9, 1, 1, C.glassDeep);
       }
       c.p.ellipse(cx, cy - 26, 41, 20, C.teal);
-      // Shallow dome.
+      c.p.ellipse(cx, cy - 27, 39, 19, C.tealDark);
+      // Shallow dome, softly dithered from the lit upper left.
       const top = cy - 26;
       for (let j = top - 64; j <= top; j++)
         for (let i = cx - 38; i <= cx + 38; i++) {
           const u = (i - cx) / 38,
             v = (top - j) / 64;
           if (u * u + v * v > 1) continue;
-          const shade = u - v * 0.4;
+          const shade = u - v * 0.4 + ((i + j) % 2 ? 0.05 : -0.05);
           c.p.pixel(
             i,
             j,
-            shade < -0.45
+            shade < -0.5
               ? C.white
-              : shade < 0.15
+              : shade < 0.12
                 ? C.offwhite
-                : shade < 0.55
+                : shade < 0.5
                   ? C.pale
-                  : C.silver,
+                  : shade < 0.8
+                    ? C.silver
+                    : C.stoneLine,
           );
         }
-      for (let k = 1; k < 6; k++) {
-        const u = -0.85 + k * 0.28;
+      // Ribs, lighter on the lit side.
+      for (let k = 1; k < 8; k++) {
+        const u = -0.9 + k * 0.225;
         for (let j = top - 62; j <= top; j++) {
           const v = (top - j) / 64,
             w = Math.sqrt(Math.max(0, 1 - v * v));
-          c.p.pixel(cx + u * 38 * w, j, C.stoneShade);
+          c.p.pixel(cx + u * 38 * w, j, u < -0.2 ? C.pale : C.stoneShade);
         }
       }
+      // Specular highlight high on the lit side.
+      c.p.ellipse(cx - 16, top - 44, 5, 8, C.white);
       c.p.ellipse(cx, top, 38, 4, C.tealDark);
+      c.p.ellipse(cx, top + 1, 36, 3, C.deepTeal);
+      // Plain finial: drum, rod and knob.
+      c.p.rect(cx - 4, top - 65, 8, 3, C.pale);
       c.p.rect(cx - 2, top - 70, 4, 7, C.gold);
+      c.p.rect(cx + 1, top - 70, 1, 7, darker(C.gold));
       c.p.ellipse(cx, top - 71, 3, 3, C.gold);
       c.p.pixel(cx - 1, top - 72, C.yellow);
     },
@@ -424,22 +692,88 @@ const objects: Record<string, Spec> = {
     h: 240,
     draw(c) {
       c.box(0, 0, 1, 1, 10, M.stone);
+      coursesFront(c, 0, 1, 1.001, 0, 10, 5, 0.34, C.stoneShade, C.ivory);
+      coursesSide(c, 1.001, 0, 1, 0, 10, 5, 0.34, C.stoneLine);
       c.box(0.15, 0.15, 0.7, 0.7, 168, M.white, 10);
+      coursesFront(c, 0.15, 0.85, 0.851, 10, 176, 8, 0.35, C.pale);
+      coursesSide(c, 0.851, 0.15, 0.85, 10, 176, 8, 0.35, C.silver);
       for (const z of [60, 120]) {
-        c.faceX(0.15, 0.851, 0.7, z, 4, C.teal);
-        c.faceY(0.851, 0.15, 0.7, z, 4, C.tealDark);
+        c.box(0.12, 0.12, 0.76, 0.76, 4, M.teal, z);
+        c.edge([0.12, 0.882, z + 3], [0.88, 0.882, z + 3], C.turquoise);
       }
       for (const z of [24, 84, 140]) {
-        c.faceX(0.42, 0.852, 0.16, z, 24, C.glassDark);
-        c.faceY(0.852, 0.42, 0.16, z, 24, C.glassDeep);
+        arch(
+          c,
+          false,
+          0.38,
+          0.852,
+          0.24,
+          z,
+          22,
+          C.tealDark,
+          C.glassDark,
+          C.glassDeep,
+          C.glassLight,
+        );
+        arch(
+          c,
+          true,
+          0.38,
+          0.852,
+          0.24,
+          z,
+          22,
+          C.deepTeal,
+          C.glassDeep,
+          C.ink,
+          C.glass,
+        );
       }
+      // Stepped corbels carry the balcony.
+      for (let k = 0; k < 3; k++)
+        c.box(
+          0.15 - k * 0.07,
+          0.15 - k * 0.07,
+          0.7 + k * 0.14,
+          0.7 + k * 0.14,
+          2,
+          M.stone,
+          170 + k * 2,
+        );
       c.box(-0.05, -0.05, 1.1, 1.1, 5, M.stone, 176);
+      c.edge([-0.05, 1.05, 180], [1.05, 1.05, 180], C.ivory);
       for (let u = 0; u <= 1.1; u += 0.18) {
         post(c, u - 0.05, 1.05, 181, 9, C.stoneLine);
-        post(c, 1.05, u - 0.05, 181, 9, C.stoneLine);
+        post(c, 1.05, u - 0.05, 181, 9, C.stoneShade);
       }
       c.box(-0.05, -0.05, 1.1, 1.1, 2, M.stone, 190);
       c.box(0.22, 0.22, 0.56, 0.56, 22, M.white, 181);
+      arch(
+        c,
+        false,
+        0.4,
+        0.782,
+        0.2,
+        185,
+        12,
+        C.tealDark,
+        C.glassDark,
+        C.glassDeep,
+        C.glassLight,
+      );
+      arch(
+        c,
+        true,
+        0.4,
+        0.782,
+        0.2,
+        185,
+        12,
+        C.deepTeal,
+        C.glassDeep,
+        C.ink,
+        C.glass,
+      );
       c.poly(
         [
           [0.2, 1.0, 203],
@@ -456,9 +790,27 @@ const objects: Record<string, Spec> = {
         ],
         C.deepTeal,
       );
+      // Tile courses on the roof cone and a lit ridge.
+      for (let z = 208; z < 234; z += 5) {
+        const t = (z - 203) / 33;
+        c.edge(
+          [0.2 + 0.3 * t, 1.0 - 0.5 * t, z],
+          [1.0 - 0.5 * t, 1.0 - 0.5 * t, z],
+          C.tealDark,
+        );
+        c.edge(
+          [1.0 - 0.5 * t, 1.0 - 0.5 * t, z],
+          [1.0 - 0.5 * t, 0.2 + 0.3 * t, z],
+          C.ink,
+        );
+      }
+      c.edge([1.0, 1.0, 203], [0.5, 0.5, 236], C.turquoise);
       c.box(0.2, 0.2, 0.8, 0.8, 3, M.stone, 200);
       const [x, y] = c.at(0.5, 0.5, 236);
-      c.p.ellipse(x, y - 2, 2, 2, C.gold);
+      // Plain round knob (solid, so it never reads as a sign).
+      c.p.rect(x, y - 4, 1, 3, darker(C.gold));
+      c.p.rect(x - 1, y - 8, 3, 4, C.gold);
+      c.p.pixel(x - 1, y - 8, C.yellow);
     },
   },
   'm-wudu': {
@@ -1859,7 +2211,17 @@ const stadium: Record<string, Spec> = {
             (i + 1) * step + 0.5,
             C.warmGreyLight,
           );
+      // Front wall with drainage stains and a lit coping.
+      c.faceX(0, 3.001, 8, 0, step - 1, C.concreteShade);
+      for (let u = 0.3; u < 8; u += 1.1)
+        c.faceX(u, 3.002, 0.05, 1, step - 3, C.concreteLine);
+      c.edge([0, 3.002, step - 1], [8, 3.002, step - 1], C.concrete);
       c.box(-0.05, -0.25, 8.1, 0.6, 4, M.teal, tiers * step + 14);
+      c.edge(
+        [-0.05, 0.35, tiers * step + 17],
+        [8.05, 0.35, tiers * step + 17],
+        C.turquoise,
+      );
       c.box(-0.05, 0.3, 8.1, 0.12, 2, M.white, tiers * step + 12);
     },
   },
@@ -2150,6 +2512,7 @@ const arena: Record<string, Spec> = {
     },
   },
   'm-cage-straight': {
+    shadow: false,
     footprint: [3, 0.3],
     h: 42,
     side: true,
@@ -2158,6 +2521,7 @@ const arena: Record<string, Spec> = {
     },
   },
   'm-cage-diag-a': {
+    shadow: false,
     footprint: [1.5, 1.5],
     h: 42,
     draw(c) {
@@ -2165,6 +2529,7 @@ const arena: Record<string, Spec> = {
     },
   },
   'm-cage-diag-b': {
+    shadow: false,
     footprint: [1.5, 1.5],
     h: 42,
     draw(c) {
@@ -2215,6 +2580,7 @@ const arena: Record<string, Spec> = {
     },
   },
   'm-ring-ropes': {
+    shadow: false,
     footprint: [6, 0.3],
     h: 36,
     side: true,
@@ -2479,7 +2845,66 @@ function decoTier(c: IsoCanvas, o: number, size: number, z: number, h: number) {
     0.1,
     4,
   );
+  // Piers between window columns catch the light; spandrels sit in shade.
+  for (let u = o + 0.2; u < o + size - 0.1; u += 0.22) {
+    c.edge(
+      [u, o + size + 0.003, z + 3],
+      [u, o + size + 0.003, z + h - 3],
+      C.limestoneLight,
+    );
+    c.edge(
+      [o + size + 0.003, u, z + 3],
+      [o + size + 0.003, u, z + h - 3],
+      C.limestone,
+    );
+  }
+  for (let zz = z + 3; zz < z + h - 3; zz += 6) {
+    c.edge(
+      [o + 0.05, o + size + 0.003, zz],
+      [o + size, o + size + 0.003, zz],
+      C.limestoneDark,
+    );
+    c.edge(
+      [o + size + 0.003, o + 0.05, zz],
+      [o + size + 0.003, o + size, zz],
+      C.warmGreyDark,
+    );
+  }
+  // Lit parapet and a soft shadow where the next tier sits on this roof.
   c.edge([o, o + size, z + h], [o + size, o + size, z + h], C.limestoneLight);
+  c.edge(
+    [o, o + size, z + h - 1],
+    [o + size, o + size, z + h - 1],
+    C.limestoneLight,
+  );
+  c.faceX(o, o + size + 0.004, size, z + h - 3, 1, C.limestoneDark);
+}
+/** Checkerboard a colour over part of a front (+y) face: soft gradients. */
+function ditherFront(
+  c: IsoCanvas,
+  x0: number,
+  x1: number,
+  y: number,
+  z0: number,
+  z1: number,
+  col: string,
+  density = 0.5,
+) {
+  const [sx0] = c.at(x0, y, 0),
+    [sx1] = c.at(x1, y, 0);
+  for (let px = Math.ceil(sx0); px < sx1; px++) {
+    const u = x0 + (px - sx0) / 16,
+      [, top] = c.at(u, y, z1),
+      [, bottom] = c.at(u, y, z0);
+    for (let py = Math.ceil(top); py < bottom; py++) {
+      const k = (py - top) / Math.max(1, bottom - top);
+      const on =
+        density >= 0.5
+          ? (px + py) % 2 === 0 || ((px + py) % 4 === 1 && k < density - 0.5)
+          : px % 2 === 0 && py % 2 === 0 && k < density * 2;
+      if (on && c.p.data[(py * c.p.width + px) * 4 + 3]) c.p.pixel(px, py, col);
+    }
+  }
 }
 /** A waving flag on a pole. `paint(x, y)` returns the colour of flag pixel (x, y). */
 function flag(
@@ -2513,8 +2938,13 @@ const nyc: Record<string, Spec> = {
       // Ground-floor lobby glass and doors.
       c.faceX(0.3, 3.002, 2.4, 2, 20, C.glassDark);
       c.faceY(3.002, 0.3, 2.4, 2, 20, C.glassDeep);
-      for (let u = 0.45; u < 2.7; u += 0.45)
+      for (let u = 0.45; u < 2.7; u += 0.45) {
         c.faceX(u, 3.003, 0.06, 2, 20, C.limestoneLight);
+        c.faceY(3.003, u, 0.06, 2, 20, C.limestone);
+      }
+      c.faceX(0.3, 3.003, 2.4, 14, 1, C.limestoneLight);
+      c.faceY(3.003, 0.3, 2.4, 14, 1, C.limestone);
+      c.edge([0.35, 3.004, 4], [0.7, 3.004, 18], C.glassLight);
       c.faceX(0, 3.003, 3, 26, 3, C.gold);
       decoTier(c, 0.25, 2.5, 34, 104);
       decoTier(c, 0.55, 1.9, 138, 58);
@@ -2542,24 +2972,51 @@ const nyc: Record<string, Spec> = {
     h: 246,
     draw(c) {
       c.box(0, 0, 3, 3, 14, M.dark);
+      // Lobby: glass doors under a steel canopy.
       c.faceX(0.25, 3.002, 2.5, 2, 10, C.glassLight);
+      for (let u = 0.25; u < 2.8; u += 0.5)
+        c.faceX(u, 3.003, 0.05, 2, 10, C.steelDark);
+      c.faceX(1.2, 3.003, 0.6, 2, 9, C.glassDark);
+      c.box(0.9, 3.0, 1.2, 0.25, 2, M.steel, 12);
       c.box(0.2, 0.2, 2.6, 2.6, 216, NM.glass, 14);
-      // Mullion grid and diagonal sky reflections.
+      // Sky reflection: light dither toward the top of the lit face.
+      ditherFront(c, 0.2, 2.8, 2.801, 150, 230, C.glassLight, 0.5);
+      // Mullion grid with floor slabs.
       for (let u = 0.2; u <= 2.81; u += 0.325) {
         c.edge([u, 2.802, 14], [u, 2.802, 230], C.glassDeep);
         c.edge([2.802, u, 14], [2.802, u, 230], C.glassDeep);
       }
       for (let z = 22; z < 230; z += 9) {
         c.edge([0.2, 2.803, z], [2.8, 2.803, z], C.glassLight);
+        c.edge([0.2, 2.803, z - 1], [2.8, 2.803, z - 1], C.glassDark);
         c.edge([2.803, 0.2, z], [2.803, 2.8, z], C.glass);
+      }
+      // A few bays with blinds drawn.
+      for (let k = 0; k < 12; k++) {
+        const u = 0.2 + ((k * 5) % 8) * 0.325,
+          z = 23 + ((k * 7) % 22) * 9;
+        c.faceX(u + 0.02, 2.804, 0.29, z + 4, 4, C.glassDark);
+        c.faceY(2.804, u + 0.02, 0.29, z + 4, 4, C.glassDeep);
       }
       for (let k = 0; k < 5; k++) {
         const z = 40 + k * 38;
-        c.edge([0.3, 2.804, z], [1.2, 2.804, z + 26], C.white);
-        c.edge([0.5, 2.804, z], [1.4, 2.804, z + 26], C.glassLight);
-        c.edge([2.804, 1.3, z + 10], [2.804, 2.2, z + 34], C.glassLight);
+        c.edge([0.3, 2.805, z], [1.2, 2.805, z + 26], C.white);
+        c.edge([0.5, 2.805, z], [1.4, 2.805, z + 26], C.glassLight);
+        c.edge([2.805, 1.3, z + 10], [2.805, 2.2, z + 34], C.glassLight);
       }
+      // Window-cleaning cradle hanging on two cables.
+      const [g0x, g0y] = c.at(1.7, 2.9, 168),
+        [t0x, t0y] = c.at(1.7, 2.9, 230);
+      c.line([g0x, g0y], [t0x, t0y], C.steelDark);
+      c.line([g0x + 14, g0y + 7], [t0x + 14, t0y + 7], C.steelDark);
+      c.box(1.65, 2.82, 0.95, 0.12, 4, M.steel, 162);
+      c.edge([1.65, 2.94, 168], [2.6, 2.94, 168], C.steelLight);
+      // Rooftop plant room, vents and a mast.
       c.box(0.9, 0.9, 1.2, 1.2, 10, M.steel, 230);
+      for (let u = 1.0; u < 2.05; u += 0.15)
+        c.edge([u, 2.102, 232], [u, 2.102, 238], C.slate);
+      c.box(0.35, 0.35, 0.3, 0.3, 4, M.steel, 230);
+      c.box(2.3, 0.4, 0.3, 0.4, 3, M.steel, 230);
       const [ax, ay] = c.at(1.5, 1.5, 240);
       c.p.rect(ax, ay - 6, 1, 6, C.charcoal);
       c.p.pixel(ax, ay - 7, C.red);
@@ -2571,26 +3028,58 @@ const nyc: Record<string, Spec> = {
     side: true,
     draw(c) {
       c.box(0, 0, 4, 1.5, 90, NM.brownstone);
+      // Dressed brownstone courses on both faces.
+      coursesFront(
+        c,
+        0,
+        4,
+        1.501,
+        0,
+        88,
+        6,
+        0.5,
+        C.brownstoneDark,
+        C.brownstoneLight,
+      );
+      coursesSide(c, 4.001, 0, 1.5, 0, 88, 6, 0.5, C.brownstoneDark);
+      // Bracketed cornice.
       c.box(0, 0, 4, 1.62, 6, NM.brownstone, 88);
       c.faceX(0, 1.621, 4, 88, 2, C.limestoneLight);
+      for (let u = 0.05; u < 4; u += 0.25)
+        c.faceX(u, 1.622, 0.1, 84, 4, C.brownstoneDark);
+      c.edge([0, 1.622, 93], [4, 1.622, 93], C.brownstoneLight);
       for (let k = 0; k < 3; k++) {
         const x = 0.15 + k * 1.3;
-        // Two windows per floor with pale lintels.
+        // Two sash windows per floor with lintels, sills and curtains.
         for (const z of [34, 56, 74])
           for (const dx of [0.15, 0.75]) {
-            c.faceX(x + dx, 1.502, 0.32, z, 12, C.limestoneLight);
-            c.faceX(
-              x + dx + 0.03,
-              1.503,
-              0.26,
-              z + 1,
-              9,
-              k === 1 && z === 56 ? C.windowLit : C.glassDark,
-            );
+            const warm = k === 1 && z === 56;
+            sashFront(c, x + dx + 0.03, 1.502, 0.26, z + 1, 9, {
+              frame: C.limestoneLight,
+              glass: warm ? C.windowLit : C.glassDark,
+              shade: warm ? C.yellowDark : C.glassDeep,
+              glint: warm ? undefined : C.glassLight,
+              sill: C.limestone,
+              bars: true,
+              inside: (k + z + dx * 4) % 3 === 0 ? C.cream : undefined,
+            });
             c.faceX(x + dx - 0.02, 1.503, 0.36, z + 12, 2, C.limestone);
+            c.edge(
+              [x + dx - 0.02, 1.504, z + 13],
+              [x + dx + 0.34, 1.504, z + 13],
+              C.limestoneLight,
+            );
           }
+        // A window box of flowers on the parlour floor.
+        c.box(x + 0.7, 1.5, 0.42, 0.1, 3, NM.brownstone, 31);
+        for (let i = 0; i < 6; i++) {
+          const [fx, fy] = c.at(x + 0.73 + i * 0.065, 1.56, 35);
+          c.p.rect(fx, fy - 2, 2, 2, i % 2 ? C.leaf : C.leafDark);
+          if (i % 2 === 0)
+            c.p.pixel(fx, fy - 3, [C.pink, C.red, C.yellow][(i + k) % 3]);
+        }
         // Stoop up to the front door, with black railings.
-        for (let s2 = 0; s2 < 4; s2++)
+        for (let s2 = 0; s2 < 4; s2++) {
           c.box(
             x + 0.12,
             1.5,
@@ -2599,18 +3088,39 @@ const nyc: Record<string, Spec> = {
             4 + s2 * 3.5,
             NM.brownstone,
           );
-        c.faceX(x + 0.18, 1.502, 0.3, 16, 20, C.woodDark);
-        c.faceX(x + 0.21, 1.503, 0.1, 18, 15, C.wood);
-        const [kx, ky] = c.at(x + 0.42, 1.504, 26);
+          c.edge(
+            [x + 0.12, 1.5 + 0.12 * (4 - s2), 4 + s2 * 3.5],
+            [x + 0.54, 1.5 + 0.12 * (4 - s2), 4 + s2 * 3.5],
+            C.brownstoneLight,
+          );
+        }
+        // Panelled door under a fanlight.
+        c.faceX(x + 0.16, 1.502, 0.34, 16, 22, C.limestone);
+        c.faceX(x + 0.18, 1.503, 0.3, 16, 18, C.woodDark);
+        c.faceX(x + 0.21, 1.504, 0.1, 18, 6, C.wood);
+        c.faceX(x + 0.21, 1.504, 0.1, 26, 6, C.wood);
+        c.faceX(x + 0.18, 1.503, 0.3, 34, 3, C.windowLit);
+        const [kx, ky] = c.at(x + 0.42, 1.505, 26);
         c.p.pixel(kx, ky, C.gold);
         for (const rx of [x + 0.12, x + 0.54]) {
           c.edge([rx, 1.98, 12], [rx, 1.5, 26], C.ink);
+          c.edge([rx, 1.98, 9], [rx, 1.5, 23], C.charcoal);
           post(c, rx, 1.98, 4, 8, C.ink);
         }
-        // Garden-level window beside the stoop.
+        // Garden-level window with bars, and a bin by the railings.
         c.faceX(x + 0.72, 1.502, 0.36, 4, 9, C.glassDeep);
+        for (let i = 1; i < 4; i++)
+          c.edge(
+            [x + 0.72 + i * 0.09, 1.503, 4],
+            [x + 0.72 + i * 0.09, 1.503, 13],
+            C.ink,
+          );
+        c.cylinder(x + 1.18, 1.82, 0, 3, 7, R.dark);
       }
       windowsSide(c, 4.002, 0.2, 1.4, 34, 84, 0.45, 20, 0.22, 11);
+      for (let v = 0.2; v < 1.4; v += 0.45)
+        for (let z = 34; z < 84; z += 20)
+          c.faceY(4.003, v - 0.02, 0.26, z - 2, 2, C.limestoneDark);
     },
   },
   'm-bodega': {
@@ -2733,30 +3243,92 @@ const nyc: Record<string, Spec> = {
     footprint: [6, 3],
     h: 150,
     draw(c) {
-      // Wings and central block in pale stone.
+      const pane: Sash = {
+        frame: C.pale,
+        glass: C.glassDark,
+        shade: C.glassDeep,
+        glint: C.glassLight,
+        sill: C.silver,
+        bars: true,
+      };
+      // Wings and central block in pale stone, rusticated below the cornice.
       c.box(0, 0.8, 1.3, 1.7, 52, M.white);
       c.box(4.7, 0.8, 1.3, 1.7, 52, M.white);
       c.box(1.3, 0.5, 3.4, 2.0, 64, M.white);
+      for (const x of [0, 4.7])
+        coursesFront(c, x, x + 1.3, 2.501, 0, 46, 6, 0.42, C.pale, C.white);
+      coursesSide(c, 6.001, 0.8, 2.5, 0, 46, 6, 0.42, C.silver);
+      coursesFront(c, 1.3, 4.7, 2.501, 0, 58, 6, 0.42, C.pale, C.white);
+      for (const x of [0, 4.7]) {
+        c.faceX(x, 2.501, 1.3, 0, 3, C.pale);
+        c.faceX(x, 2.502, 1.3, 46, 2, C.silver);
+        c.faceX(x, 2.502, 1.3, 48, 4, C.white);
+      }
       for (const x of [0.15, 4.85])
-        for (const z of [12, 32]) {
+        for (const z of [12, 32])
           for (const dx of [0, 0.5]) {
-            c.faceX(x + dx, 2.502, 0.3, z, 14, C.glassDark);
-            const [ax, ay] = c.at(x + dx + 0.15, 2.503, z + 14);
-            c.p.ellipse(ax + 2, ay, 2.5, 2, C.glassDark);
+            sashFront(c, x + dx, 2.503, 0.3, z, 12, pane);
+            const [ax, ay] = c.at(x + dx + 0.15, 2.504, z + 13);
+            c.p.ellipse(ax + 2, ay, 3, 2.5, C.pale);
+            c.p.ellipse(ax + 2, ay, 2, 1.5, C.glassDark);
+            c.p.pixel(ax + 2, ay - 3, C.silver);
           }
-        }
-      windowsSide(c, 6.002, 1.0, 2.4, 10, 48, 0.45, 20, 0.22, 12, C.glassDark);
-      // Balustrade along the roofline.
-      for (let u = 1.35; u < 4.7; u += 0.18) post(c, u, 2.5, 64, 4, C.pale);
+      for (const v of [1.0, 1.5, 2.0])
+        for (const z of [12, 32])
+          sashSide(c, 6.003, v, 0.24, z, 12, {
+            ...pane,
+            frame: C.silver,
+            glass: C.glassDeep,
+            glint: C.glass,
+          });
+      // Balustrade along the roofline, with rooftop vents on the wings.
+      c.faceX(1.3, 2.502, 3.4, 58, 6, C.white);
+      c.edge([1.3, 2.503, 58], [4.7, 2.503, 58], C.silver);
+      for (let u = 1.35; u < 4.7; u += 0.18) {
+        post(c, u, 2.5, 64, 4, C.pale);
+        post(c, u + 0.04, 2.5, 64, 4, C.silver);
+      }
       c.faceX(1.3, 2.5, 3.4, 68, 2, C.offwhite);
-      // Portico: entablature on six columns above wide steps.
+      c.box(0.3, 1.0, 0.4, 0.3, 5, M.steel, 52);
+      c.box(5.2, 1.1, 0.5, 0.4, 4, M.steel, 52);
+      // Portico: a plain pediment and entablature on six fluted columns.
+      c.faceX(2.3, 2.502, 1.4, 6, 30, C.glassDeep);
+      for (let k = 0; k < 3; k++) {
+        c.faceX(2.38 + k * 0.45, 2.503, 0.36, 6, 22, C.woodDark);
+        c.faceX(2.42 + k * 0.45, 2.504, 0.12, 8, 18, C.wood);
+        c.faceX(2.38 + k * 0.45, 2.504, 0.36, 28, 6, C.glassDark);
+      }
       c.box(1.6, 2.4, 2.8, 0.3, 7, M.white, 44);
-      c.faceX(2.3, 2.502, 1.4, 6, 26, C.glassDeep);
+      c.faceX(1.6, 2.701, 2.8, 47, 2, C.pale);
+      for (let u = 1.65; u < 4.4; u += 0.16)
+        c.faceX(u, 2.702, 0.08, 44, 2, C.silver);
+      c.poly(
+        [
+          [1.55, 2.7, 51],
+          [4.45, 2.7, 51],
+          [3.0, 2.7, 64],
+        ],
+        C.white,
+      );
+      c.poly(
+        [
+          [1.85, 2.701, 52],
+          [4.15, 2.701, 52],
+          [3.0, 2.701, 61],
+        ],
+        C.pale,
+      );
+      c.edge([1.55, 2.702, 51], [3.0, 2.702, 64], C.white);
+      c.edge([3.0, 2.702, 64], [4.45, 2.702, 51], C.silver);
       for (let k = 0; k < 6; k++) {
         const [px, py] = c.at(1.75 + k * 0.5, 2.62, 6);
-        c.p.rect(px - 2, py - 38, 4, 38, C.white);
-        c.p.rect(px + 1, py - 38, 1, 38, C.pale);
-        c.p.rect(px - 3, py - 40, 6, 2, C.offwhite);
+        c.p.rect(px - 2, py - 38, 5, 38, C.offwhite);
+        c.p.rect(px - 2, py - 38, 1, 38, C.white);
+        c.p.rect(px, py - 38, 1, 38, C.pale);
+        c.p.rect(px + 2, py - 38, 1, 38, C.silver);
+        c.p.rect(px - 3, py - 40, 7, 2, C.white);
+        c.p.rect(px - 3, py - 38, 7, 1, C.pale);
+        c.p.rect(px - 3, py - 2, 7, 2, C.pale);
       }
       for (let k = 0; k < 3; k++)
         c.box(
@@ -2767,18 +3339,35 @@ const nyc: Record<string, Spec> = {
           6 - k * 2,
           M.stone,
         );
-      // Cupola with a plain knob.
+      // Lamp posts and clipped shrubs flanking the steps.
+      for (const x of [1.15, 4.85]) {
+        c.box(x - 0.12, 2.7, 0.24, 0.24, 6, M.stone);
+        c.greenery(x, 2.82, 10, 5, R.leaf);
+      }
+      for (const x of [1.45, 4.55]) {
+        const [lx, ly] = c.at(x, 2.98, 0);
+        c.p.rect(lx, ly - 26, 2, 26, C.charcoal);
+        c.p.rect(lx - 2, ly - 31, 6, 5, C.charcoal);
+        c.p.rect(lx - 1, ly - 30, 4, 3, C.lamp);
+        c.p.rect(lx - 1, ly - 2, 4, 2, C.ink);
+      }
+      // Cupola: drum with arched lights, ribbed cap and a plain knob.
       c.cylinder(3.0, 1.5, 64, 12, 22, R.white);
       for (let k = 0; k < 5; k++) {
         const [wx, wy] = c.at(2.7 + k * 0.14, 1.5 + 0.5, 70);
+        c.p.rect(wx - 1, wy - 13, 3, 12, C.pale);
         c.p.rect(wx - 1, wy - 12, 2, 10, C.glassDark);
+        c.p.pixel(wx - 1, wy - 11, C.glassLight);
       }
       c.cylinder(3.0, 1.5, 86, 9, 10, R.white);
       const [dx, dy] = c.at(3.0, 1.5, 96);
       c.p.ellipse(dx, dy, 9, 7, C.offwhite);
       c.p.ellipse(dx - 3, dy - 2, 4, 3, C.white);
+      for (const o of [-5, 0, 5])
+        c.line([dx + o, dy + 3], [dx + o / 2, dy - 6], C.pale);
       c.p.rect(dx - 1, dy - 14, 3, 8, C.pale);
-      c.p.ellipse(dx, dy - 16, 2.5, 2.5, C.gold);
+      c.p.rect(dx - 2, dy - 19, 5, 5, C.gold);
+      c.p.pixel(dx - 1, dy - 18, C.yellow);
     },
   },
   'm-subway-entrance': {
@@ -2991,8 +3580,16 @@ const nyc: Record<string, Spec> = {
         c.edge([u, 0, 8], [u, 3, 8], C.woodLight);
       c.faceX(0, 3, 7, 0, 8, C.navy);
       c.faceY(7, 0, 3, 0, 8, C.stageNavy);
+      // Pleated skirt and lit board ends.
+      for (let u = 0.12; u < 7; u += 0.24)
+        c.edge([u, 3.001, 0], [u, 3.001, 7], C.stageNavy);
+      for (let v = 0.12; v < 3; v += 0.24)
+        c.edge([7.001, v, 0], [7.001, v, 7], C.ink);
       c.edge([0, 3, 8], [7, 3, 8], C.woodLight);
       c.edge([7, 0, 8], [7, 3, 8], C.wood);
+      // Gaffer-taped cable runs across the boards.
+      c.edge([0.6, 0.5, 8], [2.4, 1.6, 8], C.ink);
+      c.edge([4.8, 0.45, 8], [6.4, 1.1, 8], C.ink);
     },
   },
   'm-stage-backdrop': {
@@ -3010,6 +3607,19 @@ const nyc: Record<string, Spec> = {
           Math.round(u * 5) % 2 ? C.woodDark : C.woodLight,
         );
       c.faceX(0, 0.403, 7, 0, 8, C.navy);
+      for (let u = 0.1; u < 7; u += 0.2)
+        c.edge([u, 0.404, 0], [u, 0.404, 7], C.stageNavy);
+      // Navy drapes at both ends, folded.
+      for (const x0 of [0, 6.4])
+        for (let k = 0; k < 6; k++)
+          c.faceX(
+            x0 + k * 0.1,
+            0.404,
+            0.1,
+            8,
+            98,
+            k % 2 ? C.stageNavy : C.navy,
+          );
       // Lighting truss with stage lamps.
       c.box(-0.05, 0.1, 7.1, 0.2, 2, M.steel, 112);
       c.box(-0.05, 0.1, 7.1, 0.2, 2, M.steel, 118);
@@ -3140,7 +3750,30 @@ const nyc: Record<string, Spec> = {
           c.p.ellipse(ax + 2, ay - 1, 3, 2.5, C.cream);
           c.p.ellipse(ax + 2, ay - 1, 2, 1.5, C.glassDark);
         }
+      // Stone sills under every upper window.
+      for (let row = 0; row < 3; row++)
+        for (let k = 0; k < 6; k++)
+          c.faceX(0.17 + k * 0.63, 1.804, 0.4, 42 + row * 22, 2, C.limestone);
       windowsSide(c, 4.002, 0.2, 1.6, 44, 108, 0.4, 22, 0.2, 12, C.glassDark);
+      // Fire escape down the middle bays: landings, railings and ladders.
+      for (let row = 0; row < 3; row++) {
+        const z = 41 + row * 22;
+        c.box(1.4, 1.8, 1.3, 0.32, 1, M.dark, z);
+        for (let u = 1.4; u <= 2.71; u += 0.13)
+          c.edge([u, 2.12, z + 1], [u, 2.12, z + 8], C.charcoal);
+        c.edge([1.4, 2.12, z + 8], [2.7, 2.12, z + 8], C.ink);
+        c.edge([1.4, 2.12, z + 4], [2.7, 2.12, z + 4], C.charcoal);
+        if (row > 0) {
+          c.edge([2.3, 2.0, z], [2.6, 2.0, z - 21], C.ink);
+          c.edge([2.4, 2.0, z], [2.7, 2.0, z - 21], C.ink);
+          for (let r = 3; r < 21; r += 3)
+            c.edge(
+              [2.3 + r * 0.0143, 2.0, z - r],
+              [2.4 + r * 0.0143, 2.0, z - r],
+              C.charcoal,
+            );
+        }
+      }
       // Shopfronts with green awnings.
       for (let k = 0; k < 3; k++) {
         const x = 0.15 + k * 1.3;
@@ -3156,8 +3789,18 @@ const nyc: Record<string, Spec> = {
           C.greenDark,
         );
       }
-      // Cornice, parapet and a small rooftop water tank.
+      // Cornice, parapet, rooftop air-conditioners and a small water tank.
       c.box(0, 0, 4, 1.86, 4, M.stone, 114);
+      for (let u = 0.1; u < 4; u += 0.3)
+        c.faceX(u, 1.861, 0.15, 112, 2, C.stoneShade);
+      for (const [x, y] of [
+        [0.5, 0.6],
+        [1.3, 1.0],
+      ]) {
+        c.box(x, y, 0.45, 0.35, 6, M.steel, 118);
+        for (let u = x + 0.06; u < x + 0.42; u += 0.07)
+          c.edge([u, y + 0.351, 119], [u, y + 0.351, 123], C.steelDark);
+      }
       c.cylinder(3.1, 0.6, 118, 6, 10, [C.woodLight, C.wood, C.woodDark]);
       const [tx, ty] = c.at(3.1, 0.6, 128);
       c.p.poly(
@@ -3237,6 +3880,21 @@ export function renderModernObject(id: string) {
     s.draw(c, f);
     for (let i = 3; i < c.p.data.length; i += 4)
       if (c.p.data[i]) c.p.data[i] = 255;
+    // Floor796-style finishing: outlines, rim light, grain, contact shading.
+    if (s.detail !== false)
+      detailPass(
+        c.p,
+        s.floor
+          ? {
+              outline: false,
+              rim: false,
+              contact: false,
+              grain: 0.006,
+              ...s.detail,
+            }
+          : { ...s.detail },
+      );
+    if (!s.floor && s.shadow !== false) groundShadow(c, w, d);
     frames.push(c.p);
   }
   return trim(frames, ax, ay);
@@ -3276,110 +3934,185 @@ export async function generateModernObjects() {
   await writeJson('art/objects/index.json', meta);
 }
 
-const diamond: [number, number][] = [
-  [16, 0],
-  [32, 8],
-  [16, 16],
-  [0, 8],
-];
-const lowerEdge: [number, number][] = [
-  [0, 8],
-  [16, 16],
-  [32, 8],
-  [30, 8],
-  [16, 15],
-  [2, 8],
-];
-const upperEdge: [number, number][] = [
-  [16, 0],
-  [32, 8],
-  [30, 8],
-  [16, 1],
-  [2, 8],
-  [0, 8],
-];
-/** Pixel inside the tile diamond (with a 1 px inset)? */
-const inside = (x: number, y: number) =>
-  Math.abs(x - 15.5) / 16 + Math.abs(y - 7.5) / 8 < 0.9;
-export function renderModernTile(n: number) {
+/*
+ * Floor tiles (32×16 diamonds). Each pixel is mapped back to tile-local
+ * coordinates (u, v) in [0, 1), so planks, grout, bricks and ripples follow the
+ * tile axes. Upper edges catch the light, lower edges and grout sit in shade.
+ */
+const tileHash = (x: number, y: number, n: number) => {
+  let h = Math.imul(x * 73856093 + y * 19349663 + n * 83492791, 2654435761);
+  h ^= h >>> 15;
+  return ((h >>> 0) % 1000) / 1000;
+};
+type TileTexture = (u: number, v: number, x: number, y: number) => string;
+function texturedTile(n: number, tex: TileTexture) {
   const p = new Pixels(32, 16);
-  const dot = (x: number, y: number, c: string) => {
-    if (inside(x, y)) p.pixel(x, y, c);
-  };
-  if (n === 7) {
-    p.poly(diamond, C.concrete);
-    for (let k = 0; k < 7; k++)
-      dot(5 + ((k * 13) % 22), 4 + ((k * 7) % 8), C.concreteShade);
-    p.poly(upperEdge, C.white);
-    p.poly(lowerEdge, C.concreteLine);
-  } else if (n === 8) {
-    p.poly(diamond, C.warmGrey);
+  for (let y = 0; y < 16; y++)
     for (let x = 0; x < 32; x++) {
-      dot(x, Math.round(8 - x / 2 + 8) - 8, C.warmGreyDark);
+      const px = x + 0.5,
+        py = y + 0.5;
+      const a = (px - 16) / 16,
+        b = py / 8,
+        u = (a + b) / 2,
+        v = (b - a) / 2;
+      if (u < 0 || v < 0 || u >= 1 || v >= 1) continue;
+      p.pixel(x, y, tex(u, v, x, y));
     }
-    for (let k = 0; k < 6; k++)
-      dot(6 + ((k * 11) % 20), 5 + ((k * 5) % 6), C.warmGreyLight);
-    p.poly(upperEdge, C.warmGreyLight);
-    p.poly(lowerEdge, C.warmGreyDark);
-  } else if (n === 9) {
-    p.poly(diamond, C.oak);
-    // Planks run along the tile x axis: lines parallel to the upper-left edge.
-    for (let k = 1; k < 4; k++)
-      for (let x = 0; x < 32; x++) {
-        const y = Math.round(x / 2 - 8 + k * 4);
-        dot(x, y, C.wood);
-      }
-    for (let k = 0; k < 5; k++)
-      dot(4 + ((k * 13) % 24), 4 + ((k * 7) % 8), C.woodLight);
-    p.poly(upperEdge, C.woodLight);
-    p.poly(lowerEdge, C.woodDark);
-  } else if (n === 10) {
-    p.poly(diamond, C.labTile);
-    for (let x = 0; x < 32; x++) {
-      dot(x, Math.round(x / 2), C.labLine);
-      dot(x, Math.round(16 - x / 2), C.labLine);
-    }
-    p.poly(upperEdge, C.white);
-    p.poly(lowerEdge, C.labLine);
-  } else if (n === 11) {
-    p.poly(diamond, C.vinyl);
-    for (let k = 0; k < 8; k++)
-      dot(
-        4 + ((k * 13) % 24),
-        4 + ((k * 7) % 8),
-        k % 2 ? C.vinylLight : C.vinylDark,
-      );
-    p.poly(upperEdge, C.vinylLight);
-    p.poly(lowerEdge, C.vinylDark);
-  } else if (n === 12) {
-    p.poly(diamond, C.asphalt);
-    for (let k = 0; k < 12; k++)
-      dot(
-        3 + ((k * 13) % 26),
-        3 + ((k * 7) % 10),
-        k % 3 ? C.asphaltLight : C.asphaltDark,
-      );
-    for (let x = 13; x < 18; x++) dot(x, 8, C.asphaltLight);
-    p.poly(upperEdge, C.asphaltLight);
-    p.poly(lowerEdge, C.asphaltDark);
-  } else if (n === 13) {
-    p.poly(diamond, C.terracotta);
-    for (let k = 0; k < 4; k++)
-      for (let x = 0; x < 32; x++)
-        dot(x, Math.round(x / 2 - 8 + k * 4 + 2), C.terracottaDark);
-    for (let k = 0; k < 4; k++)
-      for (let x = 0; x < 32; x++)
-        if ((x + k * 4) % 8 === 0)
-          for (let dy = 0; dy < 3; dy++)
-            dot(x, Math.round(x / 2 - 8 + k * 4 + 3 + dy), C.terracottaDark);
-    for (let k = 0; k < 5; k++)
-      dot(5 + ((k * 11) % 22), 4 + ((k * 5) % 8), C.terracottaLight);
-    p.poly(upperEdge, C.terracottaLight);
-    p.poly(lowerEdge, C.terracottaDark);
-  } else throw Error(`No modern tile ${n}`);
+  void n;
   return p;
 }
+/**
+ * Smooth value noise over the tile, periodic in u and v with period `k`
+ * cells, so neighbouring tiles join without seams. Gives soft patches
+ * (veining, wear, damp) instead of salt-and-pepper speckle.
+ */
+function tileNoise(u: number, v: number, k: number, seed: number, kv = k) {
+  const fu = u * k,
+    fv = v * kv,
+    iu = Math.floor(fu),
+    iv = Math.floor(fv),
+    s = (t: number) => t * t * (3 - 2 * t),
+    tu = s(fu - iu),
+    tv = s(fv - iv),
+    g = (a: number, b: number) =>
+      tileHash(((a % k) + k) % k, ((b % kv) + kv) % kv, seed);
+  const top = g(iu, iv) * (1 - tu) + g(iu + 1, iv) * tu,
+    bottom = g(iu, iv + 1) * (1 - tu) + g(iu + 1, iv + 1) * tu;
+  return top * (1 - tv) + bottom * tv;
+}
+/**
+ * Stone/ceramic slab: dark grout on the lower edges, a lit bevel on the upper
+ * ones, soft tonal patches inside and only a rare chip.
+ */
+function slab(
+  base: string,
+  n: number,
+  divisions = 1,
+  chips = 0.012,
+  mottle?: string,
+  patch = 0.66,
+): TileTexture {
+  const grout = darker(base),
+    bevel = lighter(base),
+    shade = darker(base);
+  return (u, v, x, y) => {
+    const su = (u * divisions) % 1,
+      sv = (v * divisions) % 1,
+      cell = Math.floor(u * divisions) * 7 + Math.floor(v * divisions);
+    if (su > 0.94 || sv > 0.94) return grout;
+    if (su < 0.06 || sv < 0.06) return bevel;
+    // Each slab gets its own patch pattern.
+    if (mottle && tileNoise(u, v, 4, n * 13 + cell) > patch) return mottle;
+    if (tileHash(x, y, n) < chips) return shade;
+    return base;
+  };
+}
+export function renderModernTile(n: number) {
+  switch (n) {
+    // 1–3: courtyard stone in three warm variants, 6: pale stone paving.
+    case 1:
+      return texturedTile(n, slab(C.ivory, n, 1, 0.01, C.paper));
+    case 2:
+      return texturedTile(n, slab(C.paper, n, 1, 0.012, C.ivory, 0.7));
+    case 3:
+      return texturedTile(n, slab(C.stone, n, 2, 0.01, C.offwhite, 0.88));
+    case 6:
+      return texturedTile(n, slab(C.stone, n, 1, 0.012));
+    case 4: {
+      // Garden grass: short upright blades (dark base, mid stem, light tip)
+      // over a soft two-tone lawn.
+      return texturedTile(n, (u, v, x, y) => {
+        const blade = (yy: number) => tileHash(x, yy, n) < 0.07;
+        if (blade(y)) return C.grassDark;
+        if (blade(y + 1)) return C.grassMid;
+        if (blade(y + 2) && tileHash(x, y, n + 5) < 0.5) return C.grassLight;
+        return tileNoise(u, v, 2, 41) > 0.68 ? C.grassMid : C.grass;
+      });
+    }
+    case 5: {
+      // Water: wavy ripple bands bent by noise, sparse bright glints.
+      return texturedTile(n, (u, v, x, y) => {
+        const bend = tileNoise(u, v, 2, 57) * 0.5,
+          w = (u * 2 + v + bend) % 1,
+          deep = tileNoise(u, v, 2, 61);
+        if (w < 0.04) return C.waterLight;
+        if (w < 0.1) return C.water;
+        if (tileHash(x, y, n) < 0.01) return C.white;
+        return deep > 0.74 && w > 0.5 ? C.deepTeal : C.turquoise;
+      });
+    }
+    case 7:
+      return texturedTile(
+        n,
+        slab(C.concrete, n, 1, 0.02, C.concreteShade, 0.86),
+      );
+    case 8:
+      // Square pavers, four to a tile.
+      return texturedTile(
+        n,
+        slab(C.warmGrey, n, 2, 0.012, C.warmGreyLight, 0.74),
+      );
+    case 9: {
+      // Oak boards running along u, three per tile: long grain streaks,
+      // staggered board ends, a lit upper edge and a dark seam.
+      const grain = darker(C.oak),
+        seam = darker(C.wood);
+      return texturedTile(n, (u, v) => {
+        const band = Math.floor(v * 3),
+          bv = (v * 3) % 1,
+          end = (u + band * 0.37) % 1;
+        if (bv > 0.86 || end > 0.96) return seam;
+        if (bv < 0.14) return C.woodLight;
+        // Stretched noise: streaks run along the board.
+        const streak = tileNoise(u, v, 2, 90 + band, 12);
+        if (streak > 0.7) return grain;
+        if (streak < 0.18) return C.woodLight;
+        return C.oak;
+      });
+    }
+    case 10:
+      // White lab ceramic, four tiles with crisp grout.
+      return texturedTile(n, slab(C.labTile, n, 2, 0));
+    case 11: {
+      // Clinic vinyl: welded seams and a soft cloudy pattern.
+      return texturedTile(n, (u, v, x, y) => {
+        if (u > 0.95 || v > 0.95) return C.vinylDark;
+        const cloud = tileNoise(u, v, 4, 71);
+        if (cloud > 0.7) return C.vinylLight;
+        if (tileHash(x, y, n) < 0.015) return C.vinylDark;
+        return C.vinyl;
+      });
+    }
+    case 12: {
+      // Asphalt: worn patches, sparse grit, a hairline crack.
+      return texturedTile(n, (u, v, x, y) => {
+        const h = tileHash(x, y, n),
+          wear = tileNoise(u, v, 4, 83);
+        if (Math.abs(u - 0.55 - v * 0.2) < 0.02 && v > 0.3 && v < 0.7)
+          return C.asphaltDark;
+        if (h < 0.035) return C.asphaltDark;
+        if (h > 0.97 || (wear > 0.76 && h > 0.4)) return C.asphaltLight;
+        return C.asphalt;
+      });
+    }
+    case 13: {
+      // Terracotta brick paving in running bond, each brick a touch different.
+      return texturedTile(n, (u, v) => {
+        const row = Math.floor(v * 4),
+          rv = (v * 4) % 1,
+          bu = u * 2 + (row % 2) * 0.5,
+          ru = bu % 1,
+          brick = tileHash(Math.floor(bu) % 2, row, n);
+        if (rv > 0.8 || ru > 0.9) return C.terracottaDark;
+        if (rv < 0.18 || ru < 0.06) return C.terracottaLight;
+        return brick > 0.82 ? darker(C.terracotta) : C.terracotta;
+      });
+    }
+    default:
+      throw Error(`No tile ${n}`);
+  }
+}
 export async function generateModernTiles() {
-  for (let n = 7; n <= 13; n++)
+  for (let n = 1; n <= 13; n++)
     await png(`art/tiles/tile-${n}.png`, renderModernTile(n));
 }

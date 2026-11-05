@@ -390,7 +390,7 @@
       99
     ],
     "width": 160,
-    "height": 167
+    "height": 172
   },
   "m-glasswall-side": {
     "file": "objects/m-glasswall-side.png",
@@ -399,7 +399,7 @@
       99
     ],
     "width": 160,
-    "height": 167
+    "height": 172
   },
   "m-whitewall": {
     "file": "objects/m-whitewall.png",
@@ -408,7 +408,7 @@
       97
     ],
     "width": 160,
-    "height": 165
+    "height": 170
   },
   "m-whitewall-side": {
     "file": "objects/m-whitewall-side.png",
@@ -417,7 +417,7 @@
       97
     ],
     "width": 160,
-    "height": 165
+    "height": 170
   },
   "m-archwall": {
     "file": "objects/m-archwall.png",
@@ -426,7 +426,7 @@
       112
     ],
     "width": 160,
-    "height": 180
+    "height": 185
   },
   "m-archwall-side": {
     "file": "objects/m-archwall-side.png",
@@ -435,34 +435,34 @@
       112
     ],
     "width": 160,
-    "height": 180
+    "height": 185
   },
   "m-dome": {
     "file": "objects/m-dome.png",
     "anchor": [
-      64,
+      80,
       108
     ],
-    "width": 144,
-    "height": 173
+    "width": 160,
+    "height": 178
   },
   "m-minaret": {
     "file": "objects/m-minaret.png",
     "anchor": [
       32,
-      232
+      237
     ],
     "width": 64,
-    "height": 249
+    "height": 259
   },
   "m-wudu": {
     "file": "objects/m-wudu.png",
     "anchor": [
-      16,
+      32,
       44
     ],
-    "width": 80,
-    "height": 75
+    "width": 96,
+    "height": 82
   },
   "m-shoe-rack": {
     "file": "objects/m-shoe-rack.png",
@@ -471,7 +471,7 @@
       22
     ],
     "width": 64,
-    "height": 44
+    "height": 49
   },
   "m-hall-carpet": {
     "file": "objects/m-hall-carpet.png",
@@ -487,28 +487,28 @@
     "file": "objects/m-lab-bench.png",
     "anchor": [
       32,
-      39
+      40
     ],
     "width": 96,
-    "height": 76
+    "height": 82
   },
   "m-fume-hood": {
     "file": "objects/m-fume-hood.png",
     "anchor": [
-      16,
+      32,
       86
     ],
-    "width": 64,
-    "height": 111
+    "width": 80,
+    "height": 116
   },
   "m-robot-arm": {
     "file": "objects/m-robot-arm.png",
     "anchor": [
-      16,
+      32,
       45
     ],
-    "width": 48,
-    "height": 60,
+    "width": 64,
+    "height": 67,
     "frames": [
       "objects/m-robot-arm-0.png",
       "objects/m-robot-arm-1.png",
@@ -519,11 +519,11 @@
   "m-server-rack": {
     "file": "objects/m-server-rack.png",
     "anchor": [
-      16,
-      88
+      32,
+      89
     ],
-    "width": 32,
-    "height": 103,
+    "width": 64,
+    "height": 111,
     "frames": [
       "objects/m-server-rack-0.png",
       "objects/m-server-rack-1.png",
@@ -534,11 +534,11 @@
   "m-computer-desk": {
     "file": "objects/m-computer-desk.png",
     "anchor": [
-      16,
+      32,
       42
     ],
-    "width": 64,
-    "height": 66
+    "width": 80,
+    "height": 72
   },
   "m-whiteboard": {
     "file": "objects/m-whiteboard.png",
@@ -547,7 +547,7 @@
       71
     ],
     "width": 64,
-    "height": 91
+    "height": 95
   },
   "m-screen-wall": {
     "file": "objects/m-screen-wall.png",
@@ -555,8 +555,8 @@
       16,
       76
     ],
-    "width": 64,
-    "height": 100
+    "width": 80,
+    "height": 108
   },
   "m-hospital-bed": {
     "file": "objects/m-hospital-bed.png",
@@ -565,7 +565,7 @@
       27
     ],
     "width": 80,
-    "height": 50
+    "height": 57
   },
   "m-iv-stand": {
     "file": "objects/m-iv-stand.png",
@@ -574,16 +574,16 @@
       67
     ],
     "width": 32,
-    "height": 74
+    "height": 81
   },
   "m-monitor-cart": {
     "file": "objects/m-monitor-cart.png",
     "anchor": [
-      16,
+      32,
       55
     ],
-    "width": 32,
-    "height": 67,
+    "width": 64,
+    "height": 77,
     "frames": [
       "objects/m-monitor-cart-0.png",
       "objects/m-monitor-cart-1.png",
@@ -597,17 +597,17 @@
       16,
       78
     ],
-    "width": 64,
-    "height": 105
+    "width": 80,
+    "height": 110
   },
   "m-waiting-chairs": {
     "file": "objects/m-waiting-chairs.png",
     "anchor": [
-      16,
+      32,
       30
     ],
-    "width": 64,
-    "height": 57
+    "width": 96,
+    "height": 68
   },
   "m-reception": {
     "file": "objects/m-reception.png",
@@ -616,7 +616,7 @@
       41
     ],
     "width": 96,
-    "height": 74
+    "height": 79
   },
   "m-drafting-table": {
     "file": "objects/m-drafting-table.png",
@@ -624,26 +624,26 @@
       32,
       42
     ],
-    "width": 64,
-    "height": 68
+    "width": 80,
+    "height": 76
   },
   "m-tower-model": {
     "file": "objects/m-tower-model.png",
     "anchor": [
-      16,
+      32,
       97
     ],
-    "width": 32,
-    "height": 113
+    "width": 64,
+    "height": 119
   },
   "m-wave-model": {
     "file": "objects/m-wave-model.png",
     "anchor": [
-      16,
-      28
+      32,
+      29
     ],
-    "width": 64,
-    "height": 52
+    "width": 80,
+    "height": 59
   },
   "m-kitchen-counter": {
     "file": "objects/m-kitchen-counter.png",
@@ -652,7 +652,7 @@
       49
     ],
     "width": 96,
-    "height": 82,
+    "height": 87,
     "frames": [
       "objects/m-kitchen-counter-0.png",
       "objects/m-kitchen-counter-1.png",
@@ -663,20 +663,20 @@
   "m-dining-table": {
     "file": "objects/m-dining-table.png",
     "anchor": [
-      16,
-      22
+      32,
+      23
     ],
-    "width": 96,
-    "height": 61
+    "width": 112,
+    "height": 69
   },
   "m-food-shelf": {
     "file": "objects/m-food-shelf.png",
     "anchor": [
-      16,
+      32,
       62
     ],
-    "width": 80,
-    "height": 93
+    "width": 96,
+    "height": 98
   },
   "m-food-shelf-side": {
     "file": "objects/m-food-shelf-side.png",
@@ -684,17 +684,17 @@
       64,
       62
     ],
-    "width": 80,
-    "height": 93
+    "width": 96,
+    "height": 98
   },
   "m-fridge": {
     "file": "objects/m-fridge.png",
     "anchor": [
-      16,
-      72
+      32,
+      73
     ],
-    "width": 32,
-    "height": 87
+    "width": 64,
+    "height": 95
   },
   "m-bookshelf": {
     "file": "objects/m-bookshelf.png",
@@ -703,7 +703,7 @@
       66
     ],
     "width": 80,
-    "height": 96
+    "height": 101
   },
   "m-bookshelf-side": {
     "file": "objects/m-bookshelf-side.png",
@@ -712,61 +712,61 @@
       66
     ],
     "width": 80,
-    "height": 96
+    "height": 101
   },
   "m-kids-table": {
     "file": "objects/m-kids-table.png",
     "anchor": [
-      32,
+      48,
       12
     ],
-    "width": 64,
-    "height": 34
+    "width": 96,
+    "height": 50
   },
   "m-solar-panel": {
     "file": "objects/m-solar-panel.png",
     "anchor": [
-      32,
+      48,
       34
     ],
-    "width": 64,
-    "height": 64
+    "width": 96,
+    "height": 72
   },
   "m-bike-rack": {
     "file": "objects/m-bike-rack.png",
     "anchor": [
       32,
-      15
+      16
     ],
-    "width": 80,
-    "height": 44
+    "width": 96,
+    "height": 54
   },
   "m-street-lamp": {
     "file": "objects/m-street-lamp.png",
     "anchor": [
       16,
-      95
+      96
     ],
     "width": 32,
-    "height": 102
+    "height": 110
   },
   "m-bench": {
     "file": "objects/m-bench.png",
     "anchor": [
-      16,
+      32,
       27
     ],
-    "width": 48,
-    "height": 49
+    "width": 80,
+    "height": 57
   },
   "m-cafe-table": {
     "file": "objects/m-cafe-table.png",
     "anchor": [
-      16,
+      32,
       18
     ],
-    "width": 32,
-    "height": 31
+    "width": 64,
+    "height": 40
   },
   "m-coffee-cart": {
     "file": "objects/m-coffee-cart.png",
@@ -775,34 +775,34 @@
       65
     ],
     "width": 80,
-    "height": 86
+    "height": 95
   },
   "m-tree": {
     "file": "objects/m-tree.png",
     "anchor": [
       32,
-      89
+      90
     ],
     "width": 80,
-    "height": 101
+    "height": 112
   },
   "m-planter-box": {
     "file": "objects/m-planter-box.png",
     "anchor": [
-      16,
-      17
+      32,
+      18
     ],
-    "width": 64,
-    "height": 42
+    "width": 80,
+    "height": 48
   },
   "m-fountain": {
     "file": "objects/m-fountain.png",
     "anchor": [
-      48,
+      64,
       26
     ],
-    "width": 112,
-    "height": 75,
+    "width": 128,
+    "height": 80,
     "frames": [
       "objects/m-fountain-0.png",
       "objects/m-fountain-1.png",
@@ -817,7 +817,7 @@
       75
     ],
     "width": 96,
-    "height": 107
+    "height": 113
   },
   "m-water-cooler": {
     "file": "objects/m-water-cooler.png",
@@ -826,7 +826,7 @@
       46
     ],
     "width": 32,
-    "height": 54
+    "height": 60
   },
   "m-desk-plant": {
     "file": "objects/m-desk-plant.png",
@@ -835,7 +835,7 @@
       49
     ],
     "width": 32,
-    "height": 57
+    "height": 63
   },
   "m-pitch": {
     "file": "objects/m-pitch.png",
@@ -850,11 +850,11 @@
   "m-goal-west": {
     "file": "objects/m-goal-west.png",
     "anchor": [
-      64,
+      80,
       15
     ],
-    "width": 96,
-    "height": 56
+    "width": 112,
+    "height": 61
   },
   "m-goal-east": {
     "file": "objects/m-goal-east.png",
@@ -862,17 +862,17 @@
       80,
       23
     ],
-    "width": 96,
-    "height": 63
+    "width": 112,
+    "height": 69
   },
   "m-stand": {
     "file": "objects/m-stand.png",
     "anchor": [
-      48,
-      92
+      64,
+      93
     ],
-    "width": 192,
-    "height": 181,
+    "width": 208,
+    "height": 187,
     "frames": [
       "objects/m-stand-0.png",
       "objects/m-stand-1.png",
@@ -884,10 +884,10 @@
     "file": "objects/m-stand-side.png",
     "anchor": [
       144,
-      92
+      93
     ],
-    "width": 192,
-    "height": 181,
+    "width": 208,
+    "height": 187,
     "frames": [
       "objects/m-stand-side-0.png",
       "objects/m-stand-side-1.png",
@@ -902,7 +902,7 @@
       10
     ],
     "width": 160,
-    "height": 77
+    "height": 82
   },
   "m-ad-boards-side": {
     "file": "objects/m-ad-boards-side.png",
@@ -911,16 +911,16 @@
       10
     ],
     "width": 160,
-    "height": 77
+    "height": 82
   },
   "m-floodlight": {
     "file": "objects/m-floodlight.png",
     "anchor": [
-      16,
+      32,
       228
     ],
-    "width": 48,
-    "height": 245
+    "width": 64,
+    "height": 250
   },
   "m-scoreboard": {
     "file": "objects/m-scoreboard.png",
@@ -929,25 +929,25 @@
       86
     ],
     "width": 80,
-    "height": 111
+    "height": 119
   },
   "m-dugout": {
     "file": "objects/m-dugout.png",
     "anchor": [
-      16,
+      32,
       30
     ],
-    "width": 80,
-    "height": 62
+    "width": 96,
+    "height": 68
   },
   "m-corner-flag": {
     "file": "objects/m-corner-flag.png",
     "anchor": [
-      0,
+      16,
       22
     ],
-    "width": 16,
-    "height": 25
+    "width": 32,
+    "height": 33
   },
   "m-ball-rack": {
     "file": "objects/m-ball-rack.png",
@@ -956,7 +956,7 @@
       12
     ],
     "width": 48,
-    "height": 25
+    "height": 31
   },
   "m-octagon-mat": {
     "file": "objects/m-octagon-mat.png",
@@ -972,37 +972,37 @@
     "file": "objects/m-cage-straight.png",
     "anchor": [
       16,
-      38
+      39
     ],
     "width": 80,
-    "height": 65
+    "height": 67
   },
   "m-cage-straight-side": {
     "file": "objects/m-cage-straight-side.png",
     "anchor": [
       64,
-      38
+      39
     ],
     "width": 80,
-    "height": 65
+    "height": 67
   },
   "m-cage-diag-a": {
     "file": "objects/m-cage-diag-a.png",
     "anchor": [
       32,
-      27
+      28
     ],
     "width": 64,
-    "height": 40
+    "height": 42
   },
   "m-cage-diag-b": {
     "file": "objects/m-cage-diag-b.png",
     "anchor": [
       16,
-      39
+      40
     ],
     "width": 32,
-    "height": 64
+    "height": 66
   },
   "m-ring-base": {
     "file": "objects/m-ring-base.png",
@@ -1018,28 +1018,28 @@
     "file": "objects/m-ring-ropes.png",
     "anchor": [
       16,
-      30
+      31
     ],
     "width": 128,
-    "height": 81
+    "height": 83
   },
   "m-ring-ropes-side": {
     "file": "objects/m-ring-ropes-side.png",
     "anchor": [
       112,
-      30
+      31
     ],
     "width": 128,
-    "height": 81
+    "height": 83
   },
   "m-ring-steps": {
     "file": "objects/m-ring-steps.png",
     "anchor": [
-      16,
+      32,
       20
     ],
-    "width": 32,
-    "height": 36
+    "width": 64,
+    "height": 42
   },
   "m-corner-stool": {
     "file": "objects/m-corner-stool.png",
@@ -1048,34 +1048,34 @@
       12
     ],
     "width": 32,
-    "height": 22
+    "height": 26
   },
   "m-ringside-seats": {
     "file": "objects/m-ringside-seats.png",
     "anchor": [
-      16,
+      32,
       24
     ],
-    "width": 80,
-    "height": 61
+    "width": 112,
+    "height": 70
   },
   "m-ringside-seats-side": {
     "file": "objects/m-ringside-seats-side.png",
     "anchor": [
-      64,
+      80,
       24
     ],
-    "width": 80,
-    "height": 61
+    "width": 112,
+    "height": 70
   },
   "m-commentary-desk": {
     "file": "objects/m-commentary-desk.png",
     "anchor": [
-      16,
+      32,
       29
     ],
-    "width": 64,
-    "height": 62
+    "width": 96,
+    "height": 67
   },
   "m-arena-banner": {
     "file": "objects/m-arena-banner.png",
@@ -1084,34 +1084,34 @@
       83
     ],
     "width": 80,
-    "height": 110
+    "height": 115
   },
   "m-skyscraper-deco": {
     "file": "objects/m-skyscraper-deco.png",
     "anchor": [
-      48,
+      64,
       268
     ],
-    "width": 112,
-    "height": 317
+    "width": 128,
+    "height": 322
   },
   "m-skyscraper-glass": {
     "file": "objects/m-skyscraper-glass.png",
     "anchor": [
-      48,
-      227
+      64,
+      229
     ],
-    "width": 112,
-    "height": 276
+    "width": 128,
+    "height": 283
   },
   "m-brownstone": {
     "file": "objects/m-brownstone.png",
     "anchor": [
-      32,
+      48,
       94
     ],
-    "width": 112,
-    "height": 139
+    "width": 128,
+    "height": 148
   },
   "m-brownstone-side": {
     "file": "objects/m-brownstone-side.png",
@@ -1119,26 +1119,26 @@
       80,
       94
     ],
-    "width": 112,
-    "height": 139
+    "width": 128,
+    "height": 148
   },
   "m-bodega": {
     "file": "objects/m-bodega.png",
     "anchor": [
-      16,
+      32,
       62
     ],
-    "width": 80,
-    "height": 93
+    "width": 96,
+    "height": 100
   },
   "m-halal-cart": {
     "file": "objects/m-halal-cart.png",
     "anchor": [
       32,
-      40
+      41
     ],
     "width": 80,
-    "height": 63,
+    "height": 71,
     "frames": [
       "objects/m-halal-cart-0.png",
       "objects/m-halal-cart-1.png",
@@ -1149,47 +1149,47 @@
   "m-city-hall": {
     "file": "objects/m-city-hall.png",
     "anchor": [
-      48,
-      78
+      64,
+      80
     ],
-    "width": 144,
-    "height": 147
+    "width": 176,
+    "height": 158
   },
   "m-subway-entrance": {
     "file": "objects/m-subway-entrance.png",
     "anchor": [
-      16,
+      32,
       28
     ],
-    "width": 48,
-    "height": 50
+    "width": 80,
+    "height": 58
   },
   "m-taxi": {
     "file": "objects/m-taxi.png",
     "anchor": [
-      16,
+      32,
       12
     ],
-    "width": 48,
-    "height": 31
+    "width": 80,
+    "height": 42
   },
   "m-taxi-side": {
     "file": "objects/m-taxi-side.png",
     "anchor": [
-      32,
+      48,
       12
     ],
-    "width": 48,
-    "height": 31
+    "width": 80,
+    "height": 42
   },
   "m-water-tower": {
     "file": "objects/m-water-tower.png",
     "anchor": [
-      16,
+      32,
       85
     ],
-    "width": 32,
-    "height": 98
+    "width": 64,
+    "height": 107
   },
   "m-hydrant": {
     "file": "objects/m-hydrant.png",
@@ -1198,16 +1198,16 @@
       12
     ],
     "width": 32,
-    "height": 19
+    "height": 26
   },
   "m-newsstand": {
     "file": "objects/m-newsstand.png",
     "anchor": [
-      16,
+      32,
       43
     ],
-    "width": 48,
-    "height": 66
+    "width": 80,
+    "height": 73
   },
   "m-crosswalk": {
     "file": "objects/m-crosswalk.png",
@@ -1246,7 +1246,7 @@
       120
     ],
     "width": 144,
-    "height": 180
+    "height": 185
   },
   "m-podium": {
     "file": "objects/m-podium.png",
@@ -1254,17 +1254,17 @@
       16,
       37
     ],
-    "width": 32,
-    "height": 48
+    "width": 48,
+    "height": 56
   },
   "m-us-flag": {
     "file": "objects/m-us-flag.png",
     "anchor": [
       16,
-      84
+      85
     ],
     "width": 64,
-    "height": 88,
+    "height": 99,
     "frames": [
       "objects/m-us-flag-0.png",
       "objects/m-us-flag-1.png"
@@ -1274,10 +1274,10 @@
     "file": "objects/m-state-flag.png",
     "anchor": [
       16,
-      84
+      85
     ],
     "width": 64,
-    "height": 88,
+    "height": 99,
     "frames": [
       "objects/m-state-flag-0.png",
       "objects/m-state-flag-1.png"
@@ -1286,29 +1286,29 @@
   "m-speaker-stack": {
     "file": "objects/m-speaker-stack.png",
     "anchor": [
-      16,
+      32,
       46
     ],
-    "width": 32,
-    "height": 60
+    "width": 64,
+    "height": 68
   },
   "m-camera-riser": {
     "file": "objects/m-camera-riser.png",
     "anchor": [
-      16,
+      32,
       34
     ],
-    "width": 64,
-    "height": 59
+    "width": 80,
+    "height": 64
   },
   "m-brick-building": {
     "file": "objects/m-brick-building.png",
     "anchor": [
-      32,
+      48,
       118
     ],
-    "width": 112,
-    "height": 165
+    "width": 128,
+    "height": 172
   },
   "m-brick-building-side": {
     "file": "objects/m-brick-building-side.png",
@@ -1316,7 +1316,7 @@
       80,
       118
     ],
-    "width": 112,
-    "height": 165
+    "width": 128,
+    "height": 172
   }
 }

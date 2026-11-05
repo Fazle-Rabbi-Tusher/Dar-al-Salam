@@ -1,6 +1,7 @@
 import { Pixels, type PixelImage } from '../../packages/shared/pixels';
 import { png, readJson, writeJson } from '../build/io';
 import type { ObjectArt } from './objects';
+import { detailPass, groundShadow } from './iso-draw';
 type P = [number, number];
 const C = {
   ivory: '#F5EEDB',
@@ -205,6 +206,16 @@ function draw(type: DetailType): PixelImage {
         r * 0.28,
         c,
       );
+    }
+    // Leaf clusters: lit on the upper left, in shade on the lower right.
+    for (let i = 0; i < 26; i++) {
+      const a = i * 2.39996,
+        k = Math.sqrt((i + 0.5) / 26),
+        lx = px + Math.cos(a) * r * 0.95 * k,
+        ly = py + Math.sin(a) * r * 0.5 * k,
+        lit = Math.cos(a) + Math.sin(a) < 0;
+      p.rect(lx, ly, 2, 1, lit ? C.leafLight : C.leafDark);
+      p.pixel(lx + (lit ? -1 : 2), ly + 1, lit ? C.leaf : C.leafDark);
     }
     for (let i = 0; i < 8; i++)
       p.pixel(px + ((i * 13) % 21) - 10, py + ((i * 7) % 13) - 6, C.paper);
@@ -451,7 +462,28 @@ export async function generateDetails() {
     'art/objects/index.json',
   );
   for (const type of DETAIL_TYPES) {
-    const image = draw(type);
+    const image = draw(type) as Pixels;
+    // Floor796-style finishing; the rug lies flat, so it only gets grain.
+    if (type === 'rug')
+      detailPass(image, {
+        outline: false,
+        rim: false,
+        contact: false,
+        grain: 0.02,
+      });
+    else {
+      detailPass(image);
+      groundShadow(
+        {
+          p: image,
+          at: (x: number, y: number, z = 0): P => [
+            144 + (x - y) * 16,
+            124 + (x + y) * 8 - z,
+          ],
+        },
+        ...detailFootprints[type],
+      );
+    }
     for (const side of [false, true]) {
       if (
         side &&

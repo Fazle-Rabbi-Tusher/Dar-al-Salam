@@ -1,5 +1,6 @@
 // Development preview: renders every modern object and tile onto one contact sheet.
 // Writes only to the path given as the first argument; repository art is untouched.
+import { readFileSync } from 'node:fs';
 import sharp from 'sharp';
 import { Pixels, blit, hexAt } from '../../packages/shared/pixels';
 import {
@@ -9,7 +10,13 @@ import {
   renderModernTile,
 } from './modern';
 const out = process.argv[2] ?? 'modern-preview.png';
-const allowed = new Set(MODERN_COLOURS);
+// Same rule as the build: every pixel must be in the locked world palette.
+const allowed = new Set([
+  ...MODERN_COLOURS,
+  ...(JSON.parse(
+    readFileSync('content/palettes/world-palette.json', 'utf8'),
+  ) as string[]),
+]);
 // Optional second argument: comma-separated object ids to preview.
 const only = process.argv[3]?.split(',');
 const rendered = Object.keys(MODERN_OBJECTS)
@@ -24,7 +31,7 @@ for (const r of rendered)
     for (let i = 0; i < f.data.length; i += 4)
       if (f.data[i + 3] && !allowed.has(hexAt(f, i)))
         errors.push(`${r.id} ${hexAt(f, i)}`);
-const tiles = Array.from({ length: 7 }, (_, i) => renderModernTile(i + 7));
+const tiles = Array.from({ length: 13 }, (_, i) => renderModernTile(i + 1));
 for (const t of tiles)
   for (let i = 0; i < t.data.length; i += 4)
     if (t.data[i + 3] && !allowed.has(hexAt(t, i)))
@@ -55,7 +62,7 @@ for (const r of rendered) {
   row = Math.max(row, frames[0].height);
 }
 y += row + 12;
-const sheet = new Pixels(width, y + 80);
+const sheet = new Pixels(width, y + 180);
 sheet.rect(0, 0, width, sheet.height, '#C9C3B8');
 for (const p of placed) {
   blit(sheet, p.img, p.x, p.y);
@@ -65,7 +72,12 @@ for (const p of placed) {
 tiles.forEach((t, n) => {
   for (let ty = 0; ty < 5; ty++)
     for (let tx = 0; tx < 5; tx++)
-      blit(sheet, t, 20 + n * 180 + (tx - ty) * 16 + 64, y + (tx + ty) * 8);
+      blit(
+        sheet,
+        t,
+        20 + (n % 7) * 190 + (tx - ty) * 16 + 64,
+        y + Math.floor(n / 7) * 96 + (tx + ty) * 8,
+      );
 });
 await sharp(Buffer.from(sheet.data), {
   raw: { width: sheet.width, height: sheet.height, channels: 4 },

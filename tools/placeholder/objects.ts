@@ -1,5 +1,6 @@
 import { Pixels } from '../../packages/shared/pixels';
 import { png, writeJson, readJson } from '../build/io';
+import { detailPass, footShadow } from './iso-draw';
 const C = {
   edge: '#493C35',
   sand: '#D7DCD2',
@@ -373,6 +374,18 @@ export async function generateObjects() {
       p.ellipse(cx, cy, 6, 3, C.soil);
       p.ellipse(cx, cy - 1, 4, 2, C.water);
     }
+    // Floor796-style finishing; the carpet lies flat, so it only gets grain.
+    const raw = p.data.slice();
+    const finish = (q: Pixels) =>
+      name === 'carpet'
+        ? detailPass(q, {
+            outline: false,
+            rim: false,
+            contact: false,
+            grain: 0.02,
+          })
+        : footShadow(detailPass(q));
+    finish(p);
     const file = `objects/${name}.png`;
     await png(`art/${file}`, p);
     meta[name] = { file, anchor, width: p.width, height: p.height };
@@ -380,10 +393,11 @@ export async function generateObjects() {
       meta[name].frames = [];
       for (let f = 0; f < 4; f++) {
         const q = new Pixels(p.width, p.height);
-        q.data.set(p.data);
+        q.data.set(raw);
         q.ellipse(cx, cy + 7, 9 + f * 3, 2 + f, C.water);
         q.ellipse(cx, cy + 7, 7 + f * 3, 1 + f, C.teal);
         q.rect(cx - 1, cy - 34 + f, 2, 10, C.water);
+        finish(q);
         const frame = `objects/fountain-${f}.png`;
         await png(`art/${frame}`, q);
         meta[name].frames!.push(frame);
