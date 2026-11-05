@@ -2217,7 +2217,7 @@ export function namedCards(): Character[] {
         headwear: 'none',
         prop: 'scooter',
         colours: {
-          skin: 'skin-4',
+          skin: 'skin-3',
           hair: 'hair-black',
           garmentPrimary: 'navy',
           garmentSecondary: 'sky',

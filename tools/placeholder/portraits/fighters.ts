@@ -176,9 +176,9 @@ const ALI_SE = [
   'ddd3433233332233333...', // 10
   'ddd4434333332223333...', // 11
   'ddd4542222222222333...', // 12
-  'ddd4543222222222333...', // 13
-  'ddd4443221122222333221', // 14
-  'ddd34432222222244443..', // 15
+  'dd44543222222222333...', // 13
+  '4444443221122222333221', // 14
+  '44434432222222244443..', // 15
   '..443332222223445333..', // 16
   '..443322222233333333..', // 17
   '....4332222222222233..', // 18
@@ -370,9 +370,9 @@ const ZABIT_SE = [
   'ddd3433233332233333...', // 10
   'ddd4434333332223333...', // 11
   'ddd4542222222222333...', // 12
-  'dddB543222222222333...', // 13
-  'dddBB43221122222333221', // 14
-  'dddBB43222222224444331', // 15
+  'dd4B543222222222333...', // 13
+  '444BB43221122222333221', // 14
+  '444BB43222222224444331', // 15
   '..dBBb322222244bbbB3..', // 16
   '..dBBbb3222233bbbbbB..', // 17
   '..dBBbbb322bbbbbbbbB..', // 18
@@ -421,9 +421,9 @@ const KHABIB_SE = [
   'ddd3433233332233333...', // 10
   'ddd4434333332223333...', // 11
   'ddd4542222222222333...', // 12
-  'dddd543222222222333...', // 13
-  'dddB443221122222333221', // 14
-  'dddBB43222222224444331', // 15
+  'dd4d543222222222333...', // 13
+  '444B443221122222333221', // 14
+  '444BB43222222224444331', // 15
   '..dBB4322222224bbbB3..', // 16
   '..dBBb322222bbbbbbbB..', // 17
   '..dBBbb3322bbbbbbbbB..', // 18
@@ -439,52 +439,68 @@ const KHABIB_SE = [
 /* ───────────── papakha ───────────── */
 const WOOL = ['#F5EEDB', '#EDE6CE', '#D7BB8D', '#B69872', '#968255'];
 /*
- * One tight curl, 3×3: a lit crescent on the upper left, a shadowed hollow
- * at the lower right. Curls are packed in offset rows with a little jitter.
+ * Tight sheepskin curls: each curl is a small ring, lit on its upper left
+ * with a shadowed hollow and lower right, placed on a jittered grid so the
+ * texture reads as fleece rather than a pattern.
  */
-const CURL = ['.12', '123', '233'];
+const CURL_SHAPES = [
+  // Tone offsets around the curl centre, rows y-1..y+1, columns x-1..x+1.
+  [-1, -1, 0, -1, 2, 1, 0, 1, 1],
+  [0, -1, -1, -1, 2, 1, 1, 1, 0],
+  [-1, -1, 1, -1, 1, 1, 0, 2, 1],
+];
 function papakha(f: Face) {
   const hat: [number, number][] = [];
-  for (let y = -14; y < 12; y++)
+  for (let y = -16; y < 12; y++)
     for (let x = -8; x < 30; x++)
       if (f.region(x, y) === 'hat') hat.push([x, y]);
   if (!hat.length) return;
-  const xs = hat.map((p) => p[0]),
-    ys = hat.map((p) => p[1]),
+  const body = hat.filter(([x, y]) => f.region(x, y + 2) === 'hat' || y > -11);
+  const xs = body.map((p) => p[0]),
+    ys = body.map((p) => p[1]),
     x0 = Math.min(...xs),
     x1 = Math.max(...xs),
     y0 = Math.min(...ys),
-    y1 = Math.max(...ys),
-    cx = (x0 + x1) / 2,
-    cy = (y0 + y1) / 2 + 2,
-    rx = (x1 - x0) / 2 + 0.5,
-    ry = (y1 - y0) / 2 + 2.5;
+    y1 = Math.max(...ys);
+  // Base tone: light from the top left, the fringe and right side in shade.
+  const tone = new Map<string, number>();
   for (const [x, y] of hat) {
-    // A rounded crown: the box corners become a shaggy dome outline.
-    const ex = (x + 0.5 - cx) / rx,
-      ey = (y + 0.5 - cy) / ry,
-      d = ex * ex + ey * ey;
-    if (d > 0.98 + (hash(x * 3, y) - 0.5) * 0.3) {
+    const lx = (x - x0) / Math.max(1, x1 - x0),
+      ly = (y - y0) / Math.max(1, y1 - y0),
+      v = 1.15 - lx * 0.62 - ly * 0.7 + (hash(x, y) - 0.5) * 0.18;
+    tone.set(`${x},${y}`, v > 0.82 ? 0 : v > 0.52 ? 1 : v > 0.2 ? 2 : 3);
+  }
+  // Curls.
+  const off = new Map<string, number>();
+  for (let gy = y0 - 2; gy <= y1 + 1; gy += 3)
+    for (let gx = x0 - 2; gx <= x1 + 1; gx += 3) {
+      const r = hash(gx * 1.7, gy * 2.3);
+      if (r < 0.08) continue;
+      const cx = gx + Math.floor(hash(gx, gy + 5) * 3),
+        cy = gy + Math.floor(hash(gx + 9, gy) * 3),
+        shape = CURL_SHAPES[Math.floor(r * 3) % 3];
+      for (let j = -1; j <= 1; j++)
+        for (let i = -1; i <= 1; i++) {
+          const k = `${cx + i},${cy + j}`;
+          off.set(k, (off.get(k) ?? 0) + shape[(j + 1) * 3 + i + 1]);
+        }
+    }
+  for (const [x, y] of hat) {
+    const k = `${x},${y}`;
+    // Round the box corners into a fleecy crown; tufts above stay wool.
+    const inBody = y >= y0;
+    const corner =
+      inBody &&
+      (((x <= x0 + 1 || x >= x1 - 1) && (y <= y0 + 1 || y >= y1)) ||
+        ((x === x0 || x === x1) && hash(x, y * 3) < 0.35));
+    if (corner && hash(x * 5, y) < 0.7) {
       f.px(x, y, OUTLINE);
       continue;
     }
-    // Light from the top left across the whole hat.
-    const lx = (x - x0) / (x1 - x0),
-      ly = (y - y0) / (y1 - y0),
-      light = 1.1 - lx * 0.55 - ly * 0.75;
-    // Curl cell.
-    const row = Math.floor((y - y0 + 1) / 3),
-      shift = row % 2 ? 1 : 0,
-      jx = Math.floor(hash(row, 7) * 2),
-      u = (((x - x0 + shift + jx) % 3) + 3) % 3,
-      w = (((y - y0 + 1) % 3) + 3) % 3,
-      t = Number(CURL[w][u] === '.' ? 2 : CURL[w][u]);
-    let tone = t - 1 + (light > 0.75 ? -1 : light < 0.25 ? 1 : 0);
-    if (light < -0.05) tone += 1;
-    if (hash(x, y) < 0.08) tone += 1;
-    // The fringe spills over the brow in loose curls.
-    if (y >= y1 - 1) tone += (x + y) % 2;
-    f.px(x, y, WOOL[Math.max(0, Math.min(4, tone))]);
+    let t = tone.get(k)! + Math.max(-1, Math.min(2, off.get(k) ?? 0));
+    // Fringe curls hang over the brow with dark gaps between them.
+    if (inBody && y >= y1 - 1 && (x + Math.floor(y / 2)) % 3 === 0) t += 1;
+    f.px(x, y, WOOL[Math.max(0, Math.min(4, t))]);
   }
 }
 
@@ -566,7 +582,7 @@ export const FIGHTERS: Record<string, PortraitDef> = {
     k: {
       skin: SKIN.fair,
       hair: BLACK_HAIR,
-      buzz: ['#C8B99C', '#A9A296', '#80766B'],
+      buzz: ['#D6B28C', '#B08A6E', '#8C6A52'],
       lip: '#A8644C',
       lipLight: '#C87865',
       iris: '#563B2C',
