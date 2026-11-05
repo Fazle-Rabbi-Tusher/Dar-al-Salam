@@ -378,11 +378,11 @@ const ZABIT_SE = [
   '..dBBbbb322bbbbbbbbB..', // 18
   '..dBBbbbbbbbbbbbbbbB..', // 19
   '....dBbbbbbbbbbbbbbBB.', // 20
-  '....dBbbbbbbbbbbbbbB..', // 21
-  '......dBbbbbbbbbbbBd..', // 22
-  '......ddBBbbbbbbBBd...', // 23
-  '........dBBBBBBBBd....', // 24
-  '........ddBBBBBBdd....', // 25
+  '....dBBbbbbbbbbbbbBB..', // 21
+  '......445BBBBBBBB54...', // 22
+  '......4455555555544...', // 23
+  '........4444444444....', // 24
+  '........5555555555....', // 25
 ];
 const BEARD_NE = [
   '....dhHHhhhhd.........', // -2
@@ -403,10 +403,10 @@ const BEARD_NE = [
   'ddddddhhhhhdddddd3443.', // 13
   'ddddddddddddddddBB3...', // 14
   'ddddddddddddddddBB....', // 15
-  'ddddddddddddddddBBBB..', // 16
-  'ddddddddddddddddBBBB..', // 17
-  '..ddddddddddddBBBBBB..', // 18
-  '..dddddddddddBBBBBBB..', // 19
+  '4ddddddddddddddBBBB...', // 16
+  '444dddddddddd44BBBB...', // 17
+  '..44333333333344BBBB..', // 18
+  '..44433333333444BBBB..', // 19
   '....4443333333BBBB....', // 20
   '....4444444444BBBB....', // 21
   '..........BBBBBB......', // 22
@@ -455,7 +455,10 @@ function papakha(f: Face) {
     for (let x = -8; x < 30; x++)
       if (f.region(x, y) === 'hat') hat.push([x, y]);
   if (!hat.length) return;
-  const body = hat.filter(([x, y]) => f.region(x, y + 2) === 'hat' || y > -11);
+  // The body of the hat: rows at least six pixels wide (tufts excluded).
+  const width = new Map<number, number>();
+  for (const [, y] of hat) width.set(y, (width.get(y) ?? 0) + 1);
+  const body = hat.filter(([, y]) => (width.get(y) ?? 0) >= 6);
   const xs = body.map((p) => p[0]),
     ys = body.map((p) => p[1]),
     x0 = Math.min(...xs),
