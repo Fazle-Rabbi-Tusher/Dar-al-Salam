@@ -3007,7 +3007,7 @@ function scholars(): (Partial<Character> &
         garmentSecondary: 'saffron',
       }),
       // Explaining his optics experiments in the university lab.
-      script: two('talk', 'idle', [47.6, 14.9], 'SE', 'SW'),
+      script: two('talk', 'idle', [44.6, 18.4], 'SE', 'SW'),
     },
     {
       id: 'al-zahrawi',
@@ -3018,7 +3018,7 @@ function scholars(): (Partial<Character> &
       district: 'maghreb',
       look: look('adult-man-beard', 'jubba', 'imamah', 'scroll', {
         skin: 'skin-2',
-        garmentPrimary: 'emerald',
+        garmentPrimary: 'sky',
         headwear: 'wool-cream',
         prop: 'wool-cream',
       }),
@@ -3034,9 +3034,9 @@ function scholars(): (Partial<Character> &
       district: 'house-of-wisdom',
       look: look('adult-man-beard', 'qaba', 'imamah', 'blueprint', {
         skin: 'skin-4',
-        garmentPrimary: 'mustard',
-        garmentSecondary: 'madder-red',
-        headwear: 'madder-red',
+        garmentPrimary: 'madder-red',
+        garmentSecondary: 'saffron',
+        headwear: 'wool-cream',
         prop: 'sky',
       }),
       // Beside the robot arm with the plans of his machines.
@@ -3086,7 +3086,7 @@ function scholars(): (Partial<Character> &
         garmentSecondary: 'wool-cream',
         headwear: 'wool-cream',
       }),
-      script: two('teach', 'read', [12.6, 54.8], 'SW', 'SE'),
+      script: two('teach', 'read', [9.2, 51.6], 'SE', 'SW'),
     },
     {
       id: 'mufti-ismail-menk',
@@ -3118,7 +3118,7 @@ function scholars(): (Partial<Character> &
         garmentSecondary: 'white-linen',
       }),
       // Teaching from a book in the park.
-      script: two('talk', 'idle', [34.5, 33.6], 'SW', 'SE'),
+      script: two('talk', 'idle', [31.5, 33.2], 'SW', 'SE'),
     },
     {
       id: 'omar-suleiman',
