@@ -132,6 +132,14 @@ const C = {
   grass: '#A3B086',
   grassMid: '#75966B',
   grassDark: '#487359',
+  // Bangladesh block (all already in the world palette).
+  creamShade: '#E4D5B9',
+  rose: '#EBAAB6',
+  sand: '#DCCBAA',
+  sandShade: '#C8B99C',
+  sandDark: '#B69872',
+  clay: '#B08A6E',
+  flagRed: '#C93A3A',
 } as const;
 export const MODERN_COLOURS: string[] = [...new Set(Object.values(C))];
 
@@ -3817,50 +3825,610 @@ const nyc: Record<string, Spec> = {
 Object.assign(objects, nyc);
 
 /* ════════ Bangladesh block: Baitul Mukarram, a school, cricket and more ════════ */
-// Placeholder massing; the detailed art replaces these draw functions.
-const block = (h: number, m: Material) => (c: IsoCanvas) => {
-  c.box(0.05, 0.05, 0.9, 0.9, h, m);
-};
+const MB = {
+  cream: {
+    top: C.paper,
+    front: C.cream,
+    side: C.creamShade,
+    edge: C.limestone,
+  },
+  yellow: {
+    top: C.paper,
+    front: C.rice,
+    side: C.carpetGold,
+    edge: C.limestoneDark,
+  },
+  green: {
+    top: C.greenDark,
+    front: C.carpetGreen,
+    side: C.carpetGreenDark,
+    edge: C.carpetGreenDark,
+  },
+} satisfies Record<string, Material>;
+/** Pointed arch on the front (y) plane or the side (x) plane. */
+function pointed(
+  c: IsoCanvas,
+  side: boolean,
+  u: number,
+  at: number,
+  w: number,
+  z: number,
+  h: number,
+  frame: string,
+  fill: string,
+  shade: string = C.ink,
+  rim = 0.07,
+) {
+  const pt = (a: number, zz: number, d = 0): [number, number, number] =>
+      side ? [at + d, a, zz] : [a, at + d, zz],
+    spring = z + h * 0.62;
+  c.poly(
+    [
+      pt(u - rim, z),
+      pt(u + w + rim, z),
+      pt(u + w + rim, spring),
+      pt(u + w / 2, z + h + 3),
+      pt(u - rim, spring),
+    ],
+    frame,
+  );
+  c.poly(
+    [
+      pt(u, z, 0.001),
+      pt(u + w, z, 0.001),
+      pt(u + w, spring, 0.001),
+      pt(u + w / 2, z + h, 0.001),
+      pt(u, spring, 0.001),
+    ],
+    fill,
+  );
+  // Reveal shadow down the left jamb and under the left curve.
+  c.edge(pt(u + 0.02, z, 0.002), pt(u + 0.02, spring, 0.002), shade);
+  c.edge(pt(u + 0.02, spring, 0.002), pt(u + w / 2, z + h - 1, 0.002), shade);
+}
+/** Jali: a small pierced-stone lattice panel on the front plane. */
+function jali(
+  c: IsoCanvas,
+  u: number,
+  at: number,
+  w: number,
+  z: number,
+  h: number,
+  stone: string,
+  hole: string,
+) {
+  c.faceX(u, at, w, z, h, stone);
+  const [x0, y0] = c.at(u, at + 0.001, z + h),
+    [x1] = c.at(u + w, at, z);
+  for (let x = Math.ceil(x0) + 1; x < x1 - 1; x++)
+    for (let y = 1; y < h - 1; y++) {
+      const dy = Math.round((x - x0) / 2);
+      if ((x + y) % 3 === 0 || (x - y) % 3 === 0)
+        c.p.pixel(x, y0 + y + dy, hole);
+    }
+}
 const bangladesh: Record<string, Spec> = {
   'm-baitul-mukarram': {
     footprint: [8, 8],
-    h: 150,
-    draw: (c) => c.box(0.2, 0.2, 7.6, 7.6, 140, M.white),
+    h: 178,
+    draw(c) {
+      const H = 166,
+        x0 = 0.3,
+        w = 7.4,
+        front = x0 + w,
+        side = x0 + w;
+      // Plinth, then the plain cube.
+      c.box(x0 - 0.1, x0 - 0.1, w + 0.2, w + 0.2, 6, MB.cream);
+      c.box(x0, x0, w, w, H, MB.cream);
+      c.faceX(x0, front + 0.001, w, 0, 6, C.creamShade);
+      c.faceY(side + 0.001, x0, w, 0, 6, C.limestone);
+      // Weathering: faint vertical streaks below the roof line.
+      for (let k = 0; k < 9; k++) {
+        const u = x0 + 0.4 + k * 0.82;
+        c.faceX(u, front + 0.001, 0.05, 60 + (k % 3) * 12, 70, C.paper);
+        c.faceY(side + 0.001, u, 0.05, 70 + (k % 2) * 10, 60, C.limestoneLight);
+      }
+      // The three black bands across the upper part of both faces.
+      for (const z of [H - 22, H - 32, H - 42]) {
+        c.faceX(x0, front + 0.002, w, z, 2, C.ink);
+        c.faceY(side + 0.002, x0, w, z, 2, C.ink);
+        c.faceX(x0, front + 0.002, w, z + 2, 1, C.creamShade);
+      }
+      // Rows of slim slit windows low on each face, and a grille band.
+      for (let k = 0; k < 14; k++) {
+        const u = x0 + 0.3 + k * 0.5;
+        for (const z of [14, 34]) {
+          c.faceX(u, front + 0.003, 0.12, z, 12, C.charcoal);
+          c.faceX(u, front + 0.004, 0.04, z + 9, 3, C.slate);
+          c.faceY(side + 0.003, u, 0.12, z, 12, C.ink);
+        }
+      }
+      jali(
+        c,
+        x0 + 0.4,
+        front + 0.003,
+        w - 0.8,
+        54,
+        8,
+        C.creamShade,
+        C.limestone,
+      );
+      // Roof: a low parapet round an open light well.
+      c.top(x0 + 0.5, x0 + 0.5, w - 1, w - 1, H, C.creamShade);
+      c.top(x0 + 1.4, x0 + 1.4, w - 2.8, w - 2.8, H, C.limestone);
+      c.faceX(x0 + 1.4, x0 + 1.4, w - 2.8, H - 10, 10, C.limestoneDark);
+      for (let k = 0; k < 7; k++) {
+        const u = x0 + 1.6 + k * 0.62;
+        c.faceX(u, x0 + 1.401, 0.3, H - 9, 7, C.charcoal);
+      }
+      for (const [u, v] of [
+        [x0, x0],
+        [x0, front - 0.25],
+        [front - 0.25, x0],
+        [front - 0.25, front - 0.25],
+      ])
+        c.box(u, v, 0.25, 0.25, 6, MB.cream, H);
+      c.edge([x0, front, H], [front, front, H], C.white);
+      c.edge([front, x0, H], [front, front, H], C.paper);
+      c.box(x0 + 5.6, x0 + 0.8, 0.6, 0.5, 6, M.steel, H);
+      c.box(x0 + 0.8, x0 + 5.8, 0.4, 0.4, 4, M.steel, H);
+    },
   },
   'm-bm-gate': {
     footprint: [5, 2],
-    h: 74,
-    draw: (c) => c.box(0.2, 0.2, 4.6, 1.6, 64, M.white),
+    h: 92,
+    draw(c) {
+      const f = 1.8;
+      c.box(0.2, 0.3, 4.6, 1.5, 70, MB.cream);
+      c.faceX(0.2, f + 0.001, 4.6, 0, 4, C.creamShade);
+      // Plain panel above the main arch (left blank on purpose).
+      c.faceX(1.5, f + 0.001, 2.0, 52, 12, C.creamShade);
+      c.faceX(1.55, f + 0.002, 1.9, 53, 10, C.cream);
+      // The great arch with its deep teal-blue hall and inner arches.
+      pointed(c, false, 1.75, f + 0.001, 1.5, 0, 48, C.creamShade, C.deepTeal);
+      c.faceX(1.8, f + 0.003, 1.4, 0, 26, C.tealDark);
+      for (let k = 0; k < 3; k++)
+        pointed(
+          c,
+          false,
+          1.85 + k * 0.45,
+          f + 0.004,
+          0.32,
+          2,
+          20,
+          C.cream,
+          C.charcoal,
+          C.ink,
+          0.05,
+        );
+      c.faceX(1.8, f + 0.005, 1.4, 0, 2, C.slate);
+      // Two smaller arches either side, and one on the side wall.
+      for (const u of [0.55, 3.55])
+        pointed(c, false, u, f + 0.001, 0.9, 0, 32, C.creamShade, C.deepTeal);
+      for (const u of [0.62, 3.62])
+        pointed(
+          c,
+          false,
+          u,
+          f + 0.003,
+          0.76,
+          0,
+          14,
+          C.cream,
+          C.charcoal,
+          C.ink,
+          0.04,
+        );
+      pointed(c, true, 0.7, 4.801, 0.7, 0, 30, C.limestone, C.tealDark);
+      // Flat roof edge with small lamps.
+      c.faceX(0.2, f + 0.002, 4.6, 66, 4, C.paper);
+      c.edge([0.2, f + 0.003, 70], [4.8, f + 0.003, 70], C.white);
+      for (const u of [0.5, 4.4]) {
+        const [lx, ly] = c.at(u, 1.6, 70);
+        c.p.rect(lx, ly - 9, 2, 9, C.charcoal);
+        c.p.rect(lx - 1, ly - 12, 4, 3, C.lamp);
+      }
+    },
   },
   'm-bm-arcade': {
     footprint: [7, 1.5],
-    h: 54,
-    draw: (c) => c.box(0.1, 0.1, 6.8, 1.3, 46, M.white),
+    h: 62,
+    draw(c) {
+      const f = 1.4;
+      c.box(0.05, 0.2, 6.9, 1.2, 46, M.white);
+      c.faceX(0.05, f + 0.001, 6.9, 0, 4, C.pale);
+      for (let k = 0; k < 9; k++) {
+        const u = 0.2 + k * 0.75;
+        if (k % 4 === 0) {
+          // Lattice windows between groups of open arches.
+          pointed(
+            c,
+            false,
+            u,
+            f + 0.001,
+            0.5,
+            6,
+            28,
+            C.pale,
+            C.stone,
+            C.stoneLine,
+          );
+          jali(c, u + 0.05, f + 0.002, 0.4, 8, 18, C.stone, C.stoneLine);
+        } else {
+          pointed(c, false, u, f + 0.001, 0.5, 0, 34, C.pale, C.charcoal);
+          c.faceX(u + 0.05, f + 0.002, 0.4, 0, 3, C.slate);
+        }
+      }
+      pointed(c, true, 0.45, 6.951, 0.5, 0, 30, C.stoneShade, C.ink);
+      // Cornice and a row of small parapet blocks.
+      c.faceX(0.05, f + 0.002, 6.9, 40, 3, C.offwhite);
+      c.edge([0.05, f + 0.003, 43], [6.95, f + 0.003, 43], C.silver);
+      for (let u = 0.1; u < 6.9; u += 0.35)
+        c.box(u, 1.2, 0.18, 0.18, 4, M.white, 46);
+    },
   },
-  'm-bm-pavilion': { footprint: [2, 2], h: 48, draw: block(30, M.white) },
+  'm-bm-pavilion': {
+    footprint: [2, 2],
+    h: 58,
+    draw(c) {
+      c.box(0.25, 0.25, 1.5, 1.5, 24, MB.cream);
+      pointed(c, false, 0.6, 1.751, 0.8, 0, 18, C.creamShade, C.charcoal);
+      pointed(c, true, 0.6, 1.751, 0.8, 0, 18, C.limestone, C.ink);
+      c.box(0.15, 0.15, 1.7, 1.7, 3, MB.cream, 24);
+      // The rose-pink dome on a short drum.
+      c.cylinder(1, 1, 27, 11, 3, [C.cream, C.creamShade, C.limestone]);
+      const [dx, dy] = c.at(1, 1, 30);
+      for (let r = 11; r > 0; r--) {
+        const t = r / 11;
+        c.p.ellipse(
+          dx,
+          dy - (1 - t) * 13,
+          r,
+          Math.max(1, r * 0.55),
+          t > 0.75 ? C.pinkDark : C.pink,
+        );
+      }
+      c.p.ellipse(dx - 4, dy - 9, 3, 3, C.rose);
+      c.p.ellipse(dx - 4, dy - 10, 1.5, 1.5, C.white);
+      c.p.rect(dx, dy - 18, 1, 5, C.limestone);
+      c.p.ellipse(dx, dy - 19, 1.5, 1.5, C.paper);
+    },
+  },
   'm-bd-school': {
     footprint: [10, 3],
-    h: 90,
-    draw: (c) => c.box(0.2, 0.2, 9.6, 2.6, 80, M.stone),
+    h: 98,
+    draw(c) {
+      const f = 2.7,
+        e = 9.8;
+      // Red-brick plinth, then two storeys of pale yellow plaster.
+      c.box(0.2, 0.3, 9.6, 2.4, 8, {
+        top: C.brickLight,
+        front: C.brick,
+        side: C.brickDark,
+        edge: C.brickDark,
+      });
+      for (let z = 2; z < 8; z += 3)
+        c.faceX(0.2, f + 0.001, 9.6, z, 1, C.brickDark);
+      c.box(0.2, 0.3, 9.6, 2.4, 74, MB.yellow, 8);
+      // Ground floor: green doors and shuttered windows.
+      for (let k = 0; k < 8; k++) {
+        const u = 0.55 + k * 1.15;
+        if (k === 3 || k === 4) {
+          c.faceX(u, f + 0.001, 0.6, 8, 26, C.carpetGreenDark);
+          c.faceX(u + 0.05, f + 0.002, 0.24, 10, 22, C.carpetGreen);
+          c.faceX(u + 0.31, f + 0.002, 0.24, 10, 22, C.carpetGreen);
+        } else {
+          c.faceX(u, f + 0.001, 0.6, 16, 16, C.limestone);
+          c.faceX(u + 0.06, f + 0.002, 0.48, 17, 14, C.screen);
+          for (let b = 0; b < 4; b++)
+            c.faceX(u + 0.1 + b * 0.12, f + 0.003, 0.03, 17, 14, C.steelDark);
+          c.faceX(u - 0.14, f + 0.002, 0.14, 16, 16, C.carpetGreen);
+          c.faceX(u + 0.6, f + 0.002, 0.14, 16, 16, C.carpetGreen);
+        }
+      }
+      // First-floor veranda: shadowed recess, columns and a green railing.
+      c.faceX(0.3, f + 0.001, 9.4, 44, 30, C.carpetGold);
+      for (let k = 0; k < 8; k++) {
+        const u = 0.6 + k * 1.15;
+        c.faceX(u, f + 0.002, 0.5, 48, 20, C.carpetGreenDark);
+        c.faceX(u + 0.04, f + 0.003, 0.42, 50, 6, C.screen);
+      }
+      for (let k = 0; k <= 8; k++) {
+        const u = 0.25 + k * 1.17;
+        c.box(u, f - 0.15, 0.16, 0.16, 30, MB.yellow, 44);
+      }
+      c.faceX(0.3, f + 0.004, 9.4, 50, 1, C.greenDark);
+      c.faceX(0.3, f + 0.004, 9.4, 44, 1, C.greenDark);
+      for (let u = 0.35; u < 9.7; u += 0.14)
+        c.faceX(u, f + 0.004, 0.03, 44, 7, C.greenDark);
+      c.faceX(0.2, f + 0.002, 9.6, 42, 2, C.paper);
+      // Side wall windows.
+      for (const v of [0.7, 1.6])
+        for (const z of [16, 50]) {
+          c.faceY(e + 0.001, v, 0.5, z, 14, C.carpetGreenDark);
+          c.faceY(e + 0.002, v + 0.05, 0.4, z + 2, 10, C.screen);
+        }
+      // Parapet, a plain green board, and a water tank on the roof.
+      c.faceX(0.2, f + 0.002, 9.6, 74, 8, C.cream);
+      c.edge([0.2, f + 0.003, 82], [9.8, f + 0.003, 82], C.white);
+      c.box(0.2, 0.3, 9.6, 0.2, 6, MB.yellow, 82);
+      c.faceX(3.9, f + 0.004, 2.2, 74, 8, C.pale);
+      c.faceX(3.95, f + 0.005, 2.1, 75, 6, C.carpetGreen);
+      c.cylinder(8.6, 1.2, 82, 6, 10, [C.slate, C.charcoal, C.ink]);
+      c.faceX(0.2, f + 0.001, 9.6, 8, 1, C.carpetGold);
+    },
   },
-  'm-bd-flag': { footprint: [0.5, 0.5], h: 76, draw: block(70, M.white) },
-  'm-shapla-pond': { footprint: [4, 3], h: 10, draw: block(4, M.stone) },
-  'm-tea-stall': { footprint: [2, 1], h: 44, draw: block(30, M.wood) },
-  'm-rickshaw': { footprint: [2, 1], h: 40, draw: block(26, M.white) },
+  'm-bd-flag': {
+    footprint: [0.5, 0.5],
+    h: 92,
+    frames: 2,
+    draw(c, f) {
+      flag(c, f, (x, y, w, h) =>
+        (x - w * 0.45) ** 2 + (y - h / 2) ** 2 <= (h * 0.31) ** 2
+          ? C.flagRed
+          : C.carpetGreen,
+      );
+    },
+  },
+  'm-shapla-pond': {
+    footprint: [4, 3],
+    h: 12,
+    draw(c) {
+      c.box(0.1, 0.1, 3.8, 2.8, 4, M.stone);
+      c.top(0.35, 0.35, 3.3, 2.3, 4, C.deepTeal);
+      c.top(0.45, 0.45, 3.1, 2.1, 4, C.turquoise);
+      for (let k = 0; k < 7; k++) {
+        const [rx, ry] = c.at(
+          0.8 + ((k * 0.47) % 2.8),
+          0.6 + ((k * 0.71) % 1.8),
+          4,
+        );
+        c.p.rect(rx - 3, ry, 6, 1, C.waterLight);
+      }
+      // Lily pads with pink and white shapla flowers.
+      const pads: [number, number, string | null][] = [
+        [0.9, 0.9, C.pink],
+        [1.6, 1.5, null],
+        [2.4, 0.8, C.white],
+        [3.1, 1.6, C.pink],
+        [1.1, 2.1, C.pink],
+        [2.2, 2.2, null],
+        [2.9, 2.5, C.white],
+        [1.9, 0.7, null],
+      ];
+      for (const [u, v, flower] of pads) {
+        const [px, py] = c.at(u, v, 4);
+        c.p.ellipse(px, py, 4, 2, C.leafDark);
+        c.p.ellipse(px - 1, py - 0.5, 3, 1.5, C.leaf);
+        c.p.pixel(px + 2, py, C.turquoise);
+        if (flower) {
+          const dark = flower === C.pink ? C.pinkDark : C.pale;
+          c.p.rect(px - 2, py - 3, 5, 2, flower);
+          c.p.rect(px - 1, py - 5, 3, 2, flower);
+          c.p.pixel(px - 2, py - 4, dark);
+          c.p.pixel(px + 2, py - 4, dark);
+          c.p.pixel(px, py - 3, C.yellow);
+        }
+      }
+      c.edge([0.1, 2.9, 4], [3.9, 2.9, 4], C.ivory);
+    },
+  },
+  'm-tea-stall': {
+    footprint: [2, 1],
+    h: 50,
+    draw(c) {
+      // Corner posts and a sagging blue tarp roof.
+      for (const [u, v] of [
+        [0.15, 0.15],
+        [1.75, 0.15],
+        [0.15, 0.85],
+        [1.75, 0.85],
+      ])
+        post(c, u, v, 0, 36, C.woodDark);
+      c.box(0.2, 0.3, 1.2, 0.55, 16, M.wood);
+      for (let k = 1; k < 4; k++)
+        c.faceX(0.2, 0.851, 1.2, k * 4, 1, C.woodDark);
+      // Stove and kettle, glass jars of biscuits.
+      c.box(0.3, 0.4, 0.3, 0.3, 5, M.dark, 16);
+      const [kx, ky] = c.at(0.45, 0.55, 23);
+      c.p.ellipse(kx, ky, 3, 2.5, C.steelDark);
+      c.p.ellipse(kx - 1, ky - 1, 1.5, 1, C.steelLight);
+      c.p.rect(kx + 3, ky - 2, 2, 1, C.steelDark);
+      c.p.rect(kx - 1, ky - 4, 2, 1, C.charcoal);
+      for (const [u, col] of [
+        [0.8, C.yellow],
+        [1.0, C.orange],
+        [1.2, C.woodLight],
+      ] as [number, string][]) {
+        c.cylinder(u, 0.55, 16, 2.5, 6, R.glass);
+        const [jx, jy] = c.at(u, 0.55, 18);
+        c.p.rect(jx - 1, jy - 1, 3, 3, col);
+      }
+      // A bench for customers.
+      c.box(1.45, 0.35, 0.4, 0.5, 6, M.oak);
+      c.poly(
+        [
+          [0.05, 0.05, 40],
+          [1.95, 0.05, 40],
+          [1.95, 0.98, 33],
+          [0.05, 0.98, 33],
+        ],
+        C.blue,
+      );
+      c.faceX(0.05, 0.98, 1.9, 30, 3, C.blueDark);
+      for (let k = 1; k < 5; k++)
+        c.edge([k * 0.38, 0.1, 40], [k * 0.38 + 0.05, 0.95, 33], C.blueDark);
+    },
+  },
+  'm-rickshaw': {
+    footprint: [2, 1],
+    h: 46,
+    draw(c) {
+      const wheel = (u: number, v: number, r: number) => {
+        const [wx, wy] = c.at(u, v, r);
+        c.p.ellipse(wx, wy, r * 0.75, r, C.ink);
+        c.p.ellipse(wx, wy, r * 0.75 - 1, r - 1, C.silver);
+        c.p.ellipse(wx, wy, r * 0.75 - 2, r - 2, C.ink);
+        c.line([wx, wy - r + 2], [wx, wy + r - 2], C.steel);
+        c.line([wx - r * 0.55, wy], [wx + r * 0.55, wy], C.steel);
+        c.p.pixel(wx, wy, C.gold);
+      };
+      wheel(1.45, 0.2, 8);
+      // Frame from the front wheel to the passenger seat.
+      const [fx, fy] = c.at(0.3, 0.5, 8),
+        [sx, sy] = c.at(1.3, 0.5, 16);
+      c.thick([fx, fy], [sx, sy], 1, C.blueDark);
+      c.line([fx, fy - 10], [fx, fy], C.charcoal);
+      c.line([fx - 4, fy - 12], [fx + 4, fy - 12], C.charcoal);
+      const [dx, dy] = c.at(0.75, 0.5, 18);
+      c.p.rect(dx - 3, dy, 6, 2, C.ink);
+      c.line([dx, dy + 2], [dx + 2, dy + 8], C.charcoal);
+      wheel(0.3, 0.5, 6);
+      // Passenger seat with a bright cushion and a painted back panel.
+      c.box(
+        1.15,
+        0.2,
+        0.55,
+        0.6,
+        5,
+        { top: C.red, front: C.redDark, side: C.carpet },
+        13,
+      );
+      c.faceY(1.701, 0.2, 0.6, 18, 12, C.yellow);
+      for (let k = 0; k < 4; k++) {
+        const [px, py] = c.at(1.702, 0.28 + k * 0.14, 23);
+        c.p.pixel(px, py, [C.pink, C.red, C.green, C.blue][k]);
+        c.p.pixel(px, py - 2, C.leafDark);
+        c.p.pixel(px - 1, py + 1, [C.purple, C.orange, C.pink, C.red][k]);
+      }
+      c.faceY(1.702, 0.2, 0.6, 18, 1, C.carpet);
+      // Folding hood with stripes and a fringe of tassels.
+      c.poly(
+        [
+          [1.15, 0.15, 24],
+          [1.7, 0.15, 40],
+          [1.7, 0.85, 40],
+          [1.15, 0.85, 24],
+        ],
+        C.carpet,
+      );
+      c.poly(
+        [
+          [1.7, 0.15, 40],
+          [1.75, 0.15, 18],
+          [1.75, 0.85, 18],
+          [1.7, 0.85, 40],
+        ],
+        C.carpetDark,
+      );
+      for (const t of [0.3, 0.6]) {
+        const u = 1.15 + t * 0.55,
+          z = 24 + t * 16;
+        c.edge([u, 0.15, z], [u, 0.85, z], C.gold);
+      }
+      for (let k = 0; k < 6; k++) {
+        const [tx, ty] = c.at(1.15, 0.18 + k * 0.12, 23);
+        c.p.pixel(tx, ty, accents[k % accents.length]);
+        c.p.pixel(tx, ty + 1, accents[(k + 3) % accents.length]);
+      }
+      wheel(1.45, 0.85, 8);
+    },
+  },
   'm-cricket-pitch': {
     footprint: [2, 8],
     h: 2,
     floor: true,
-    draw: (c) => c.top(0.3, 0.1, 1.4, 7.8, 0, C.woodLight),
+    draw(c) {
+      for (let k = 0; k < 8; k++)
+        c.top(
+          0.4,
+          0.1 + k * 0.975,
+          1.2,
+          0.975,
+          0,
+          k % 2 ? C.sand : C.sandShade,
+        );
+      // Wear at the ends where bowlers land and batters stand.
+      for (const v of [0.6, 7.3]) c.top(0.7, v - 0.3, 0.6, 0.6, 0, C.sandDark);
+      for (const v of [0.9, 7.1]) {
+        c.edge([0.4, v, 0], [1.6, v, 0], C.line);
+        c.edge([0.55, v - 0.5, 0], [0.55, v + 0.3, 0], C.line);
+        c.edge([1.45, v - 0.5, 0], [1.45, v + 0.3, 0], C.line);
+      }
+      for (const v of [0.45, 7.55]) c.edge([0.6, v, 0], [1.4, v, 0], C.line);
+    },
   },
-  'm-stumps': { footprint: [1, 1], h: 16, draw: block(12, M.wood) },
+  'm-stumps': {
+    footprint: [1, 1],
+    h: 20,
+    draw(c) {
+      for (const u of [0.3, 0.5, 0.7]) {
+        const [px, py] = c.at(u, 0.5, 0);
+        c.p.rect(px, py - 13, 1, 13, C.woodLight);
+        c.p.pixel(px, py - 13, C.oak);
+      }
+      const [a, b] = [c.at(0.3, 0.5, 14), c.at(0.7, 0.5, 14)];
+      c.line(a, b, C.wood);
+    },
+  },
   'm-basketball-court': {
     footprint: [8, 5],
     h: 2,
     floor: true,
-    draw: (c) => c.top(0.1, 0.1, 7.8, 4.8, 0, C.orange),
+    draw(c) {
+      const ln = (a: [number, number], b: [number, number]) =>
+        c.edge([a[0], a[1], 0], [b[0], b[1], 0], C.line);
+      c.top(0.05, 0.05, 7.9, 4.9, 0, C.carpetGreen);
+      c.top(0.3, 0.3, 7.4, 4.4, 0, C.terracotta);
+      // Keys at both ends.
+      c.top(0.3, 1.7, 1.8, 1.6, 0, C.blueDark);
+      c.top(5.9, 1.7, 1.8, 1.6, 0, C.blueDark);
+      ln([0.3, 0.3], [7.7, 0.3]);
+      ln([0.3, 4.7], [7.7, 4.7]);
+      ln([0.3, 0.3], [0.3, 4.7]);
+      ln([7.7, 0.3], [7.7, 4.7]);
+      ln([4, 0.3], [4, 4.7]);
+      for (const [x0, x1] of [
+        [0.3, 2.1],
+        [5.9, 7.7],
+      ]) {
+        ln([x0, 1.7], [x1, 1.7]);
+        ln([x0, 3.3], [x1, 3.3]);
+        ln([x0 < 1 ? x1 : x0, 1.7], [x0 < 1 ? x1 : x0, 3.3]);
+      }
+      // Centre circle and three-point arcs.
+      const arcPts = (cx: number, r: number, a0: number, a1: number) => {
+        for (let t = a0; t <= a1; t += 0.05) {
+          const [px, py] = c.at(cx + Math.cos(t) * r, 2.5 + Math.sin(t) * r, 0);
+          c.p.pixel(px, py, C.line);
+        }
+      };
+      arcPts(4, 0.7, 0, Math.PI * 2);
+      arcPts(0.6, 2.0, -Math.PI / 2, Math.PI / 2);
+      arcPts(7.4, 2.0, Math.PI / 2, (Math.PI * 3) / 2);
+    },
   },
-  'm-hoop': { footprint: [1, 1], h: 64, draw: block(58, M.steel) },
+  'm-hoop': {
+    footprint: [1, 1],
+    h: 70,
+    draw(c) {
+      post(c, 0.3, 0.5, 0, 52, C.steelDark);
+      post(c, 0.32, 0.5, 0, 52, C.steel);
+      c.box(0.2, 0.4, 0.2, 0.2, 3, M.dark);
+      c.edge([0.3, 0.5, 50], [0.55, 0.5, 50], C.steelDark);
+      // Backboard facing the court, rim and net.
+      c.faceY(0.55, 0.15, 0.7, 44, 18, C.white);
+      c.faceY(0.551, 0.15, 0.7, 44, 1, C.silver);
+      c.faceY(0.552, 0.38, 0.24, 47, 7, C.orangeDark);
+      c.faceY(0.553, 0.41, 0.18, 48, 5, C.white);
+      const [rx, ry] = c.at(0.75, 0.5, 46);
+      for (let k = 0; k < 5; k++)
+        c.line([rx - 4 + k * 2, ry], [rx - 2 + k, ry + 7], C.offwhite);
+      c.line([rx - 3, ry + 4], [rx + 3, ry + 4], C.net);
+      c.p.ellipse(rx, ry, 5, 2, C.orange);
+      c.p.ellipse(rx, ry, 3.5, 1, C.orangeDark);
+    },
+  },
 };
 Object.assign(objects, bangladesh);
 
@@ -4095,11 +4663,24 @@ export function renderModernTile(n: number) {
         slab(C.concrete, n, 1, 0.02, C.concreteShade, 0.86),
       );
     case 14:
-      // Baitul Mukarram's white marble plaza (placeholder).
-      return texturedTile(n, slab(C.offwhite, n, 1, 0.01, C.pale));
+      // Baitul Mukarram's white marble plaza: large slabs, thin dark grout,
+      // soft grey veining.
+      return texturedTile(n, (u, v, x, y) => {
+        if (u > 0.965 || v > 0.965) return C.grey;
+        if (u < 0.03 || v < 0.03) return C.white;
+        const vein = tileNoise(u, v, 3, 141);
+        if (vein > 0.78 && tileHash(x, y, n) < 0.5) return C.pale;
+        if (vein < 0.12) return C.offwhite;
+        return tileHash(x, y, n + 3) < 0.004 ? C.silver : C.white;
+      });
     case 15:
-      // Packed-earth school yard (placeholder).
-      return texturedTile(n, slab(C.paper, n, 2, 0.03, C.ivory, 0.8));
+      // Packed-earth school yard: dusty patches, pebbles and scuffs.
+      return texturedTile(n, (u, v, x, y) => {
+        const patch = tileNoise(u, v, 3, 151);
+        if (tileHash(x, y, n) < 0.02) return C.sandDark;
+        if (tileHash(x, y, n + 9) < 0.015) return C.clay;
+        return patch > 0.66 ? C.sandShade : patch < 0.2 ? C.paper : C.sand;
+      });
     case 8:
       // Square pavers, four to a tile.
       return texturedTile(

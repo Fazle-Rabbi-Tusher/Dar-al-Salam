@@ -489,11 +489,109 @@ function person(p: Person): PortraitDef {
 }
 
 /** Five cloth tones (sheen … deepest) from a three-shade ramp. */
-const cloth = (r: string[], deep: string) => [r[0], r[0], r[1], r[2], deep];
 const ROSE_DEEP = '#A4536A';
 const P_ = (pts: P[], f: Face, c: string, regions = ['skin', 'beard']) => {
   for (const [x, y] of pts) if (regions.includes(f.region(x, y))) f.px(x, y, c);
 };
+
+/* ───────────── scarf framing the face (hijab, sari over the head) ───────────── */
+type Scarfed = Spec & {
+  cloth: string[];
+  after?: (f: Face, T: string[]) => void;
+};
+/** The face opening as an oval spanning the normal face's skin rows. */
+function faceOpening(f: Face) {
+  const spans = new Map<number, [number, number]>();
+  for (let y = -6; y < 30; y++) {
+    let lo = 99,
+      hi = -99;
+    for (let x = -8; x < 32; x++)
+      if (f.region(x, y) === 'skin') {
+        lo = Math.min(lo, x);
+        hi = Math.max(hi, x);
+      }
+    if (hi >= lo) spans.set(y, [lo, hi]);
+  }
+  if (!spans.size) return () => false;
+  const rows = [...spans.keys()],
+    top = Math.min(...rows),
+    bottom = Math.max(...rows),
+    lo0 = Math.min(...[...spans.values()].map((r) => r[0])),
+    hi0 = Math.max(...[...spans.values()].map((r) => r[1]));
+  return (x: number, y: number) => {
+    if (f.away || y < top || y > bottom || !f.has(x, y)) return false;
+    let lo = 99,
+      hi = -99;
+    for (const d of [-1, 0, 1]) {
+      const r = spans.get(y + d);
+      if (r) {
+        lo = Math.min(lo, r[0]);
+        hi = Math.max(hi, r[1]);
+      }
+    }
+    const ex = (x + 0.5 - (lo0 + hi0 + 1) / 2) / ((hi0 - lo0 + 1) / 2),
+      ey = (y + 0.5 - (top + bottom + 1) / 2) / ((bottom - top + 1) / 2);
+    return x >= lo && x <= hi && ex * ex + ey * ey <= 1.18;
+  };
+}
+function scarfed(p: Scarfed): PortraitDef {
+  return {
+    paint: (f) => {
+      const T = SKIN[p.skin],
+        C = p.cloth,
+        face = faceOpening(f);
+      each(f, (x, y) => {
+        if (!f.has(x, y)) return;
+        if (face(x, y)) {
+          let t = toneAt(x, y);
+          // The scarf's edge shades the rim of the face.
+          if (!face(x, y - 1) || !face(x - 1, y)) t = Math.max(t, 2);
+          f.px(x, y, T[t]);
+          return;
+        }
+        // Cloth lit from the top left; a folded hem around the face.
+        const dx = (x + 0.5 - 9) / 18,
+          dy = (y + 0.5 - 2) / 18;
+        let v = 0.62 - dx * 0.45 - dy * 0.4;
+        const hem =
+          !f.away &&
+          (face(x + 1, y) ||
+            face(x - 1, y) ||
+            face(x, y + 1) ||
+            face(x, y - 1));
+        if (hem) v += y < 12 ? 0.25 : -0.35;
+        if (y > 20) v += Math.sin(x * 0.9 + y) * 0.16;
+        if (!f.has(x, y + 1) || !f.has(x + 1, y)) v -= 0.22;
+        v += (hash(x, y) - 0.5) * 0.05;
+        f.px(x, y, band(C, v));
+      });
+      if (f.away) return;
+      // Features only inside the opening.
+      const g: Face = {
+        ...f,
+        region: (x, y) => (face(x, y) ? 'skin' : 'hat'),
+        px: (x, y, c) => {
+          if (face(Math.floor(x), Math.floor(y))) f.px(x, y, c);
+        },
+      };
+      g.pts = (pts, c) => pts.forEach(([x, y]) => g.px(x, y, c));
+      ageLines(g, p, T);
+      brows(g, p);
+      eyes(g, p, T);
+      // Nose: lit bridge and a soft shadow under the tip.
+      g.pts(
+        [
+          [17, 15],
+          [18, 15],
+        ],
+        T[4],
+      );
+      g.px(19, 14, T[0]);
+      mouth(g, p, T);
+      p.after?.(g, T);
+    },
+  };
+}
 
 export const BANGLADESH_MORE: Record<string, PortraitDef> = {
   // Clean-shaven, long dark wavy hair, large expressive eyes.
@@ -525,42 +623,21 @@ export const BANGLADESH_MORE: Record<string, PortraitDef> = {
     },
   }),
   // Round, gentle face; a white sari drawn over the head.
-  'begum-rokeya': person({
+  'begum-rokeya': scarfed({
     skin: 'skin-4',
-    hair: HAIR.black,
-    hairStyle: 'neat',
-    brow: 'thin',
+    brow: 'medium',
     browColour: '#3B322E',
     age: 1,
-    hat: { tones: cloth(['#FBFAF4', '#F5EEDB', '#EDE6CE'], '#CCC4AA'), kind: 'cloth' },
-    after: (f, T) => {
-      if (f.away) return;
-      // Fuller, rounder cheeks.
-      P_([[9, 16], [10, 16], [11, 16]], f, T[1], ['skin']);
-    },
+    cloth: ['#FBFAF4', '#F5EEDB', '#EDE6CE', '#CCC4AA', '#B39E74'],
   }),
   // Young; a rose dupatta over the hair, a warm smile and dark eyes.
-  'malala-yousafzai': person({
+  'malala-yousafzai': scarfed({
     skin: 'skin-3',
-    hair: HAIR.black,
-    hairStyle: 'neat',
     brow: 'medium',
     browColour: '#3B322E',
     iris: '#3B322E',
     bigSmile: true,
-    hat: { tones: cloth(['#EE8FB0', '#D07A8D', '#C2607F'], ROSE_DEEP), kind: 'cloth' },
-    after: (f) => {
-      if (f.away) return;
-      // Dark hair parted at the forehead, just visible under the scarf.
-      for (const [x, y] of [
-        [12, 4],
-        [13, 4],
-        [14, 4],
-        [15, 5],
-        [11, 5],
-      ] as P[])
-        if (f.region(x, y) === 'skin') f.px(x, y, HAIR.black[2]);
-    },
+    cloth: ['#EBAAB6', '#EE8FB0', '#D07A8D', '#C2607F', ROSE_DEEP],
   }),
   // Short dark hair, a short beard.
   'mashrafe-mortaza': person({
@@ -576,7 +653,12 @@ export const BANGLADESH_MORE: Record<string, PortraitDef> = {
       if (f.away) return;
       // A short beard: the cheeks above the jawline stay mostly bare.
       each(f, (x, y) => {
-        if (f.region(x, y) === 'beard' && y <= 16 && x >= 8 && hash(x, y) > 0.35)
+        if (
+          f.region(x, y) === 'beard' &&
+          y <= 16 &&
+          x >= 8 &&
+          hash(x, y) > 0.35
+        )
           f.px(x, y, T[3]);
       });
     },
@@ -612,7 +694,16 @@ export const BANGLADESH_MORE: Record<string, PortraitDef> = {
     after: (f, T) => {
       if (f.away) return;
       // Squint lines from long journeys in the sun.
-      P_([[7, 12], [7, 14], [12, 15]], f, T[4], ['skin']);
+      P_(
+        [
+          [7, 12],
+          [7, 14],
+          [12, 15],
+        ],
+        f,
+        T[4],
+        ['skin'],
+      );
       // A few grey hairs in the beard.
       for (const [x, y] of [
         [10, 19],
@@ -637,7 +728,18 @@ export const BANGLADESH_MORE: Record<string, PortraitDef> = {
     after: (f) => {
       if (f.away) return;
       // Goatee on the chin.
-      P_([[14, 21], [15, 21], [16, 21], [15, 22], [14, 22]], f, '#2E2B34', ['skin']);
+      P_(
+        [
+          [14, 21],
+          [15, 21],
+          [16, 21],
+          [15, 22],
+          [14, 22],
+        ],
+        f,
+        '#2E2B34',
+        ['skin'],
+      );
     },
   }),
 };
