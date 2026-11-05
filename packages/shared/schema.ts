@@ -91,6 +91,8 @@ export const characterSchema = z.object({
     .optional(),
   panelApproved: z.boolean().optional(),
   variant: z.object({ fromTemplate: z.string(), seed: z.number() }).optional(),
+  /** Short description of what an ambient person is doing (hover label). */
+  role: z.string().optional(),
 });
 export type Character = z.infer<typeof characterSchema>;
 export const objectSchema = z.object({
@@ -161,21 +163,24 @@ export const sortableSchema = z.object({
   tile: pointSchema,
   footprint: pointSchema,
   animation: z.array(z.string()).optional(),
+  /** Tile point where this sprite touches the ground (front boundary for strips). */
+  ground: pointSchema,
+  /** Pixel in the frame that sits on the ground point. */
+  pivot: pointSchema,
+  /** Height above the ground in world px (raised platforms). */
+  lift: z.number().default(0),
 });
 export type Sortable = z.infer<typeof sortableSchema>;
-const imageTileSchema = z.object({
-  x: z.number(),
-  y: z.number(),
-  url: z.string(),
-});
 export const manifestSchema = z.object({
   width: z.literal(4096),
   height: z.literal(4096),
-  chunkSize: z.literal(1024),
-  chunks: z.array(imageTileSchema),
-  lod: z.array(
-    z.object({ scale: z.number().positive(), tiles: z.array(imageTileSchema) }),
-  ),
+  /** Top-down floor of the mapped quarter in tile space, wrapped onto the planet. */
+  ground: z.object({
+    url: z.string(),
+    texelsPerTile: z.number().int().positive(),
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
+  }),
   atlases: z.array(z.string()),
   sortables: z.array(sortableSchema),
   characters: z.array(bakedCharacterSchema),

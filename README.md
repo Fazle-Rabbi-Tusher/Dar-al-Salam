@@ -1,6 +1,6 @@
 # Dar al-Salam
 
-An explorable isometric pixel-art prototype about knowledge, hospitality, mercy and everyday care. The first room, **The Peace Quarter**, is a modern Muslim neighbourhood with 157 ambient people and seventeen draft cards: fourteen modern figures (Fazlur Rahman Khan, Zaha Hadid, Aziz Sancar, Karim Benzema, Mesut Özil, Mohamed Salah, Sadio Mané, N’Golo Kanté, Khabib Nurmagomedov, Islam Makhachev, Kamaru Usman, Zabit Magomedsharipov, Khamzat Chimaev, Muhammad Ali) and three historical ones (Al-Khwarizmi, Ibn Sina, Fatima al-Fihri). The supplied Floor796 screenshots inform the cutaway, isometric presentation; all artwork here is original procedural placeholder art, not extracted from those images.
+An explorable pixel-art **little planet** about knowledge, hospitality, mercy and everyday care. Drag to spin the globe; zoom in to look across its curving surface. The first room, **The Peace Quarter**, is a modern Muslim neighbourhood wrapped onto the planet, with 188 ambient people and seventeen draft cards: fourteen modern figures (Fazlur Rahman Khan, Zaha Hadid, Aziz Sancar, Karim Benzema, Mesut Özil, Mohamed Salah, Sadio Mané, N’Golo Kanté, Khabib Nurmagomedov, Islam Makhachev, Kamaru Usman, Zabit Magomedsharipov, Khamzat Chimaev, Muhammad Ali) and three historical ones (Al-Khwarizmi, Ibn Sina, Fatima al-Fihri). Characters are drawn in a cute, readable chibi style with cartoon expressions that change with what they are doing; hovering anyone shows a short label ("Nurse caring for patients"). The reference screenshots informed density and the small-planet idea; all artwork here is original procedural placeholder art, not extracted from those images.
 
 ![Current cutaway world](docs/preview.png)
 
@@ -37,7 +37,8 @@ See [VERCEL.md](VERCEL.md). The repository-root configuration installs pinned pn
 
 ## Explore
 
-- Drag with mouse/touch; use the wheel or pinch to zoom toward the pointer/pinch centre. Arrow keys pan, +/− zoom. Camera inertia is applied after dragging. Zooms of at least 1× snap to integer levels when idle.
+- Drag with mouse/touch to spin the planet (north stays up); use the wheel or pinch to zoom. Arrow keys spin, +/− zoom, and the globe button shows the whole planet. The spin keeps inertia after dragging. Zooms of at least 1× snap to integer levels when idle.
+- Hover anyone to see what they are doing; named people (outlined in gold) open a story card when clicked.
 - Search names or aliases in any of the three languages. Select a result to fly to the character and open its draft card. Opaque sprite pixels are clickable; transparent pixels and ambient characters are not.
 - Pause/resume with the top-bar button. Reduced-motion preferences freeze the world automatically. The entire simulation repeats every 240 frames (20 seconds at 12 fps).
 - Click/drag the minimap to navigate. Camera state is encoded in `?x=&y=&z=` (world-centre coordinates); `/c/<id>` loads a selected character directly.
@@ -49,13 +50,14 @@ See [VERCEL.md](VERCEL.md). The repository-root configuration installs pinned pn
 
 - `packages/shared/`: strict zod schemas; coordinates; deterministic script evaluation; global clock; name rules; raw-pixel compositor; Aseprite importer; hit masks; spatial grid; LRU; URL helpers. No React.
 - `tools/placeholder/`: seeded raw-pixel art generator and sample room/content. Parts use the same Aseprite JSON-array export format as artist assets. No sacred text or symbols are generated.
-- `tools/build/`: validation, palette checks, composition, mirroring, tint ramps, outline/shadow, tight bounds, alpha masks, SHA-256 frame deduplication, 16 px object slices, 2048 px atlas packing with padding/extrusion, lossless WebP chunks, depth-sorted full-scene LODs and manifest generation.
-- `web/src/engine/`: PixiJS v8 engine, camera, chunks, sprite pooling, 256 px spatial grid, named-character hit testing and inspector. No React imports. Characters are world-level and can cross chunk borders.
+- `tools/build/`: validation, palette checks, composition, mirroring, tint ramps, outline/shadow, tight bounds, alpha masks, SHA-256 frame deduplication, 16 px object slices, 2048 px atlas packing with padding/extrusion, a top-down tile-space ground texture (`ground.webp`, 16 texels per tile), planet decorations and manifest generation.
+- `web/src/engine/`: PixiJS v8 planet engine: a GLSL shader draws the sphere (wrapping `ground.webp` onto it, plus grass, lakes and a ring road elsewhere, with lighting and a halo); every object strip and character is a billboard projected onto the surface and leaned outward toward the horizon; globe spin/zoom/pinch with inertia; depth sorting by camera depth; rotated pixel-accurate hit testing; inspector. No React imports.
+- `packages/shared/planet.ts`: the tile ↔ sphere mapping (azimuthal equidistant around tile (50, 30), radius 44 tiles), the north-up camera that looks at the focus point from 30° above its horizon (the same angle as the isometric art), billboard rotation and camera-dependent facing choice.
 - `web/src/ui/`: React 18 UI, Tailwind foundation, Zustand store and shared-compositor Character Lab.
 - `rooms/mosque-garden.tmj`: Tiled-compatible isometric map. Object x/y are tile coordinates in this prototype; the importer uses those coordinates directly. Footprints are in tile units. Footprint collision is added during build; walkable carpets do not block.
 - `web/public/world/` and `public-build/`: ignored build outputs. Source PNG/JSON part sheets, room and seed content are tracked. Built outputs are reproducible and should not be edited.
 
-The 4096×4096 world has sixteen 1024 px chunks. The room occupies the central four. At zoom <0.5, full-scene LOD stills replace live characters with a 150 ms fade. LOD stills use frame zero and the same shared depth and compositing logic. Live character updates happen only on 12 fps clock ticks or camera/interaction changes; the camera and Pixi render loop run independently.
+Content is still authored in tile space (scripts, collision, objects), so every validator and generator works unchanged; only rendering wraps it onto the planet. Every action is baked in all four facings, and the engine picks the one the camera sees, except that `back` characters are only ever shown from behind. Live character updates happen only on 12 fps clock ticks or camera/interaction changes; the camera and Pixi render loop run independently.
 
 ## Add a named character
 
@@ -119,7 +121,7 @@ The supplied Playwright configuration uses an installed Chromium. Change `CHROMI
 
 ## Content boundaries and prototype limitations
 
-The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictions of prophets, Ahl al-Bayt, the Prophet's wives, Maryam or Companions; no sacred text; faces are simple pixel faces without detailed features. Prayer poses are intentionally simple placeholders, flagged `needsPanelReview`, and require advisory/art review.
+The content rules in [AGENTS.md](AGENTS.md) are mandatory. There are no depictions of prophets, Ahl al-Bayt, the Prophet's wives, Maryam or Companions; no sacred text; faces are stylised cartoon faces without realistic detail. Prayer poses are intentionally simple placeholders, flagged `needsPanelReview`, and require advisory/art review.
 
 This is a functional foundation with procedural art, not the hand-drawn density or visual richness of the reference images. Named cards are drafts. Translations are prototype UI copy pending human proofreading. There is no persistence beyond URL/language settings and no backend. The developer performance display reports FPS, visible character count and instrumented WebGL draw calls; device-specific 60 fps and Android GPU performance require physical-device profiling. Approved-content release builds are deliberately gated on panel approval; public prototype deployments retain their draft labels.
 

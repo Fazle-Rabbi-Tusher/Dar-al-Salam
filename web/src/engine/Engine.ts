@@ -2,32 +2,50 @@ import {
   Application,
   Assets,
   Container,
+  GlProgram,
   Graphics,
+  Mesh,
+  MeshGeometry,
   Rectangle,
+  Shader,
   Sprite,
   Text,
   Texture,
   TextureStyle,
+  UniformGroup,
   type WebGLRenderer,
 } from 'pixi.js';
 import { OutlineFilter } from 'pixi-filters';
 import { globalFrame, frameMap } from '../../../packages/shared/clock';
 import { characterState } from '../../../packages/shared/script';
-import { depth, worldFromTile, type Rect } from '../../../packages/shared/iso';
-import {
-  SpatialGrid,
-  LRU,
-  visibleChunks,
-} from '../../../packages/shared/spatial';
 import { maskHit } from '../../../packages/shared/compositor';
+import {
+  FACING_DIRECTION,
+  PLANET,
+  RADIUS_PX,
+  WILD,
+  fitZoom,
+  focusFromWorld,
+  frame as planetFrame,
+  fromLatLon,
+  project,
+  screenFacing,
+  tileToPlanet,
+  worldFromFocus,
+  type Frame,
+  type Vec3,
+} from '../../../packages/shared/planet';
 import {
   manifestSchema,
   type BakedCharacter,
   type FrameMeta,
   type Manifest,
+  type Sortable,
 } from '../../../packages/shared/schema';
 import { type Camera } from '../../../packages/shared/url';
+import { worldFromTile, type Point } from '../../../packages/shared/iso';
 TextureStyle.defaultOptions.scaleMode = 'nearest';
+
 type EventMap = {
   characterClick: string;
   characterHover: string | null;
@@ -43,28 +61,119 @@ type Live = {
   character: BakedCharacter;
   frame: string;
   depth: number;
-  mask: Uint8Array;
 };
+type Static = {
+  sprite: Sprite;
+  sortable: Sortable;
+  point: Vec3;
+  size: number;
+};
+type ViewState = { lat: number; lon: number; zoom: number };
+const MIN_ZOOM = 0.3,
+  MAX_ZOOM = 4,
+  MAX_LAT = 1.32;
+
+const vertex = /* glsl */ `
+in vec2 aPosition;
+out vec2 vPos;
+uniform mat3 uProjectionMatrix;
+uniform mat3 uWorldTransformMatrix;
+uniform mat3 uTransformMatrix;
+void main() {
+  mat3 mvp = uProjectionMatrix * uWorldTransformMatrix * uTransformMatrix;
+  gl_Position = vec4((mvp * vec3(aPosition, 1.0)).xy, 0.0, 1.0);
+  vPos = aPosition;
+}`;
+const f = (n: number) => n.toFixed(6);
+const lakes = WILD.lakes
+  .map(([lat, lon, r], i) => {
+    const c = fromLatLon(lat, lon);
+    return `  { float d = acos(clamp(dot(p, vec3(${c.map(f).join(',')})), -1.0, 1.0));
+    if (d < ${f(r)}) return mix(WATER, WATER_LIGHT, step(0.5, fract(d * 90.0 + ${i}.0 * 0.3)) * 0.5);
+    if (d < ${f(r + 0.035)}) return SAND; }`;
+  })
+  .join('\n');
+// The planet: wraps the quarter's top-down floor onto a sphere, fills the rest
+// with grass, lakes and a ring road, then adds soft lighting and a halo.
+const fragment = /* glsl */ `
+in vec2 vPos;
+out vec4 finalColor;
+uniform sampler2D uGround;
+uniform vec2 uCentre;
+uniform float uRadius;
+uniform mat3 uRot;
+const vec2 MAP_CENTRE = vec2(${f(PLANET.centre[0])}, ${f(PLANET.centre[1])});
+const float RADIUS_TILES = ${f(PLANET.radiusTiles)};
+uniform vec2 uMapSize;
+uniform float uMode;
+const vec3 GRASS = vec3(0.639, 0.690, 0.525);
+const vec3 GRASS_MID = vec3(0.459, 0.588, 0.420);
+const vec3 GRASS_DARK = vec3(0.282, 0.451, 0.349);
+const vec3 WATER = vec3(0.475, 0.714, 0.698);
+const vec3 WATER_LIGHT = vec3(0.639, 0.812, 0.745);
+const vec3 SAND = vec3(0.894, 0.835, 0.725);
+const vec3 STONE = vec3(0.843, 0.863, 0.824);
+const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
+float hash(vec3 q) {
+  return fract(sin(dot(q, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
+}
+vec3 wild(vec3 p) {
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)}) {
+    float along = atan(p.y, p.x) * 140.0;
+    float across = p.z / ${f(WILD.roadHalfWidth)};
+    float joint = step(0.92, fract(along)) + step(0.86, abs(across));
+    return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
+  }
+${lakes}
+  float h = hash(floor(p * 260.0));
+  vec3 g = h > 0.93 ? GRASS_DARK : h > 0.7 ? GRASS_MID : GRASS;
+  if (h > 0.985) g = vec3(0.918, 0.773, 0.467);
+  return g;
+}
+void main() {
+  vec2 d = (vPos - uCentre) / uRadius;
+  d.y = -d.y;
+  float r2 = dot(d, d);
+  if (r2 > 1.0 || uMode < 0.5) {
+    // Halo pass (drawn behind everything) or outside the disc.
+    float glow = uMode < 0.5 ? smoothstep(1.085, 1.0, sqrt(r2)) * 0.7 : 0.0;
+    finalColor = vec4(vec3(1.0, 0.98, 0.92) * glow, glow);
+    return;
+  }
+  vec3 n = vec3(d, sqrt(1.0 - r2));
+  vec3 p = uRot * n;
+  float theta = acos(clamp(p.z, -1.0, 1.0));
+  float s = length(p.xy);
+  vec2 tile = MAP_CENTRE;
+  if (s > 1e-6) {
+    vec2 en = p.xy * (theta * RADIUS_TILES / s);
+    tile += vec2(en.x - en.y, -en.x - en.y) * 0.70710678;
+  }
+  vec3 col;
+  if (tile.x >= 0.0 && tile.y >= 0.0 && tile.x < uMapSize.x && tile.y < uMapSize.y)
+    col = texture(uGround, tile / uMapSize).rgb;
+  else col = wild(p);
+  float light = clamp(dot(n, normalize(vec3(-0.35, 0.6, 0.72))), 0.0, 1.0);
+  float shade = 0.74 + 0.26 * floor(light * 6.0) / 6.0;
+  float rim = smoothstep(0.32, 0.0, n.z);
+  col = mix(col * shade, vec3(0.96, 0.95, 1.0), rim * 0.35);
+  finalColor = vec4(col, 1.0);
+}`;
+
 export class Engine {
   private app = new Application();
-  private world = new Container();
-  private lod = new Container();
-  private chunks = new Container();
-  private sortables = new Container();
+  private behind = new Container();
+  private front = new Container();
   private highlight = new Container();
   private debug = new Container();
-  private grid = new SpatialGrid<BakedCharacter>();
+  private planet!: Mesh<MeshGeometry, Shader>;
+  private halo!: Mesh<MeshGeometry, Shader>;
+  private uniforms!: UniformGroup;
   private textures = new Map<string, Texture>();
   private metadata = new Map<string, FrameMeta>();
   private masks = new Map<string, Uint8Array>();
   private live = new Map<string, Live>();
-  private pool: Sprite[] = [];
-  private staticSprites: { sprite: Sprite; animation?: string[] }[] = [];
-  private chunkCache = new LRU<string, Sprite>(24, (s) => {
-    s.texture.destroy(true);
-    s.destroy();
-  });
-  private loadingChunks = new Set<string>();
+  private statics: Static[] = [];
   private listeners = new Map<string, Set<(data: never) => void>>();
   private resizeObserver: ResizeObserver;
   private abort = new AbortController();
@@ -74,33 +183,33 @@ export class Engine {
   private lastFrame = -1;
   private frame = 0;
   private motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-  private cam: Camera = { x: 2048, y: 1930, zoom: 2 };
-  private velocity = { x: 0, y: 0 };
+  private view: ViewState = { ...focusFromWorld(2048, 1930), zoom: 2 };
+  private proj!: Frame;
+  private velocity = { lat: 0, lon: 0 };
   private pointers = new Map<number, { x: number; y: number }>();
   private dragStart = { x: 0, y: 0 };
   private moved = 0;
   private zoomIdle = 0;
-  private fade = 1;
   private hover: string | null = null;
   private selected: string | null = null;
   private inspector = false;
   private flight: {
-    from: Camera;
-    to: Camera;
+    from: ViewState;
+    to: ViewState;
     elapsed: number;
     duration: number;
   } | null = null;
   private base = '/world/';
-  private lodLevels: Container[] = [];
   private emitElapsed = 0;
   private drawCalls = 0;
   private lastDrawCalls = 0;
-  private renderDirty = true;
+  private dirty = true;
   manifest: Manifest | null = null;
   constructor(private host: HTMLElement) {
     this.resizeObserver = new ResizeObserver(() => {
       if (this.ready) {
         this.app.renderer.resize(host.clientWidth, host.clientHeight);
+        this.resizePlanet();
         this.applyCamera();
       }
     });
@@ -128,7 +237,7 @@ export class Engine {
       height: this.host.clientHeight,
       resolution: 1,
       autoDensity: false,
-      background: '#d7dcd2',
+      backgroundAlpha: 0,
       antialias: false,
       preference: 'webgl',
     });
@@ -136,44 +245,16 @@ export class Engine {
       this.app.destroy(true);
       return;
     }
-    if (import.meta.env.DEV) {
-      const gl = (this.app.renderer as WebGLRenderer).gl;
-      const elements = gl.drawElements.bind(gl),
-        arrays = gl.drawArrays.bind(gl);
-      gl.drawElements = (mode, count, type, offset) => {
-        this.drawCalls++;
-        elements(mode, count, type, offset);
-      };
-      gl.drawArrays = (mode, first, count) => {
-        this.drawCalls++;
-        arrays(mode, first, count);
-      };
-      if (gl instanceof WebGL2RenderingContext) {
-        const instanced = gl.drawElementsInstanced.bind(gl);
-        gl.drawElementsInstanced = (mode, count, type, offset, instances) => {
-          this.drawCalls++;
-          instanced(mode, count, type, offset, instances);
-        };
-      }
-    }
+    if (import.meta.env.DEV) this.countDrawCalls();
     this.host.appendChild(this.app.canvas);
     this.app.canvas.setAttribute(
       'aria-label',
-      'Interactive Mosque and Garden. Drag to explore, scroll to zoom, or use arrow keys.',
+      'Interactive planet. Drag to spin the globe, scroll to zoom, or use arrow keys.',
     );
     this.app.canvas.tabIndex = 0;
-    this.world.addChild(
-      this.lod,
-      this.chunks,
-      this.sortables,
-      this.highlight,
-      this.debug,
-    );
-    this.app.stage.addChild(this.world);
-    this.sortables.sortableChildren = true;
     let completed = 0;
-    for (const url of manifest.atlases) {
-      const json = (await fetch(this.base + url, {
+    for (const atlas of manifest.atlases) {
+      const json = (await fetch(this.base + atlas, {
         signal: this.abort.signal,
       }).then((r) => r.json())) as {
         frames: Record<string, FrameMeta>;
@@ -196,57 +277,130 @@ export class Engine {
       }
       this.emit(
         'progress',
-        0.1 + 0.3 * (++completed / manifest.atlases.length),
+        0.1 + 0.5 * (++completed / manifest.atlases.length),
       );
     }
-    for (const level of manifest.lod) {
-      const container = new Container();
-      for (const tile of level.tiles) {
-        const texture = await Assets.load<Texture>(this.base + tile.url);
-        const sprite = new Sprite(texture);
-        sprite.position.set(tile.x, tile.y);
-        sprite.scale.set(1 / level.scale);
-        container.addChild(sprite);
-      }
-      this.lod.addChild(container);
-      this.lodLevels.push(container);
-    }
-    this.emit('progress', 0.7);
+    const ground = await Assets.load<Texture>(this.base + manifest.ground.url);
+    this.emit('progress', 0.75);
+    this.createPlanet(ground, manifest);
+    this.app.stage.addChild(
+      this.halo,
+      this.behind,
+      this.planet,
+      this.front,
+      this.highlight,
+      this.debug,
+    );
+    this.behind.sortableChildren = true;
+    this.front.sortableChildren = true;
     for (const s of manifest.sortables) {
       const sprite = new Sprite(this.textures.get(s.frame));
+      sprite.pivot.set(...s.pivot);
       const m = this.metadata.get(s.frame)!;
-      sprite.pivot.set(...m.anchor);
-      sprite.position.set(s.x, s.y);
-      sprite.zIndex = s.depth;
-      this.sortables.addChild(sprite);
-      this.staticSprites.push({ sprite, animation: s.animation });
+      this.statics.push({
+        sprite,
+        sortable: s,
+        point: tileToPlanet(...s.ground),
+        size: Math.max(m.frame.w, m.frame.h),
+      });
     }
-    for (const c of manifest.characters) this.grid.insert(c, c.loopBounds);
     this.ready = true;
     this.applyCamera();
-    await this.updateChunks();
-    this.updateCharacters();
+    this.update();
     this.bindInput();
     this.app.ticker.add((t) => this.tick(t.deltaMS));
+    if (import.meta.env.DEV)
+      (window as unknown as { __darEngine?: Engine }).__darEngine = this;
     this.emit('progress', 1);
   }
-  getCamera() {
-    return { ...this.cam };
+  private countDrawCalls() {
+    const gl = (this.app.renderer as WebGLRenderer).gl;
+    const elements = gl.drawElements.bind(gl),
+      arrays = gl.drawArrays.bind(gl);
+    gl.drawElements = (mode, count, type, offset) => {
+      this.drawCalls++;
+      elements(mode, count, type, offset);
+    };
+    gl.drawArrays = (mode, first, count) => {
+      this.drawCalls++;
+      arrays(mode, first, count);
+    };
+  }
+  private createPlanet(ground: Texture, manifest: Manifest) {
+    const glProgram = GlProgram.from({
+      vertex,
+      fragment,
+      name: 'dar-planet',
+      preferredFragmentPrecision: 'highp',
+    });
+    this.uniforms = new UniformGroup({
+      uCentre: { value: new Float32Array(2), type: 'vec2<f32>' },
+      uRadius: { value: 1, type: 'f32' },
+      uRot: { value: new Float32Array(9), type: 'mat3x3<f32>' },
+      uMapSize: {
+        value: new Float32Array([manifest.room.width, manifest.room.height]),
+        type: 'vec2<f32>',
+      },
+    });
+    const mesh = (mode: number) =>
+      new Mesh({
+        geometry: new MeshGeometry({
+          positions: new Float32Array(8),
+          uvs: new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]),
+          indices: new Uint32Array([0, 1, 2, 0, 2, 3]),
+        }),
+        shader: new Shader({
+          glProgram,
+          resources: {
+            uGround: ground.source,
+            planet: this.uniforms,
+            pass: { uMode: { value: mode, type: 'f32' } },
+          },
+        }),
+      });
+    this.halo = mesh(0);
+    this.planet = mesh(1);
+    this.resizePlanet();
+  }
+  private resizePlanet() {
+    const w = this.host.clientWidth,
+      h = this.host.clientHeight;
+    for (const m of [this.planet, this.halo])
+      m.geometry.positions = new Float32Array([0, 0, w, 0, w, h, 0, h]);
+  }
+  getCamera(): Camera {
+    const [x, y] = worldFromFocus(this.view.lat, this.view.lon);
+    return { x, y, zoom: this.view.zoom };
   }
   setMotion(on: boolean) {
     this.motion = on;
   }
   setZoom(zoom: number) {
-    this.zoomAt(zoom, this.host.clientWidth / 2, this.host.clientHeight / 2);
+    this.flight = null;
+    this.view.zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom));
+    this.zoomIdle = 240;
+    this.applyCamera();
+  }
+  private target(to: Camera) {
+    const f = focusFromWorld(to.x, to.y);
+    return {
+      lat: Math.max(-MAX_LAT, Math.min(MAX_LAT, f.lat)),
+      lon: f.lon,
+      zoom: Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, to.zoom)),
+    };
   }
   flyTo(to: Camera, ms = 600) {
-    this.velocity = { x: 0, y: 0 };
+    this.velocity = { lat: 0, lon: 0 };
     this.zoomIdle = ms + 240;
+    const goal = this.target(to);
+    // Spin the short way round.
+    const turn = goal.lon - this.view.lon;
+    goal.lon = this.view.lon + Math.atan2(Math.sin(turn), Math.cos(turn));
     this.flight = {
-      from: { ...this.cam },
-      to: { ...to, zoom: Math.max(0.125, Math.min(4, to.zoom)) },
+      from: { ...this.view },
+      to: goal,
       elapsed: 0,
-      duration: ms,
+      duration: Math.max(1, ms),
     };
   }
   focusCharacter(id: string) {
@@ -256,166 +410,161 @@ export class Engine {
     if (!c) return;
     const s = characterState(c, this.frame);
     this.selected = id;
-    this.flyTo({ x: s.position[0], y: s.position[1] - 24, zoom: 2 }, 600);
+    const [x, y] = worldFromTile(...s.tile);
+    this.flyTo({ x, y, zoom: Math.max(2, this.view.zoom) }, 700);
   }
   clearSelection() {
     this.selected = null;
-    this.renderDirty = true;
-  }
-  private rect(margin = 0): Rect {
-    return {
-      x: this.cam.x - this.host.clientWidth / 2 / this.cam.zoom - margin,
-      y: this.cam.y - this.host.clientHeight / 2 / this.cam.zoom - margin,
-      width: this.host.clientWidth / this.cam.zoom + margin * 2,
-      height: this.host.clientHeight / this.cam.zoom + margin * 2,
-    };
+    this.dirty = true;
   }
   private applyCamera() {
     if (!this.ready) return;
-    const w = this.host.clientWidth / this.cam.zoom,
-      h = this.host.clientHeight / this.cam.zoom;
-    this.cam.x = Math.max(
-      Math.min(w / 2, 2048),
-      Math.min(4096 - Math.min(w / 2, 2048), this.cam.x),
+    this.view.lat = Math.max(-MAX_LAT, Math.min(MAX_LAT, this.view.lat));
+    this.view.lon = Math.atan2(
+      Math.sin(this.view.lon),
+      Math.cos(this.view.lon),
     );
-    this.cam.y = Math.max(
-      Math.min(h / 2, 2048),
-      Math.min(4096 - Math.min(h / 2, 2048), this.cam.y),
-    );
-    this.world.scale.set(this.cam.zoom);
-    this.world.position.set(
-      Math.round(this.host.clientWidth / 2 - this.cam.x * this.cam.zoom),
-      Math.round(this.host.clientHeight / 2 - this.cam.y * this.cam.zoom),
-    );
-    this.renderDirty = true;
+    this.proj = planetFrame({
+      ...this.view,
+      width: this.host.clientWidth,
+      height: this.host.clientHeight,
+    });
+    const u = this.uniforms.uniforms as {
+      uCentre: Float32Array;
+      uRadius: number;
+      uRot: Float32Array;
+    };
+    u.uCentre[0] = this.proj.cx;
+    u.uCentre[1] = this.proj.cy;
+    u.uRadius = this.proj.radius;
+    // Row-major camera matrix read as column-major = its inverse (transpose).
+    u.uRot.set(this.proj.matrix);
+    this.dirty = true;
     this.emit('cameraChange', this.getCamera());
   }
-  private async updateChunks() {
+  private texture(sprite: Sprite, name: string, pivot?: Point) {
+    const t = this.textures.get(name);
+    if (!t || sprite.texture === t) return;
+    sprite.texture = t;
+    sprite.pivot.set(...(pivot ?? this.metadata.get(name)!.anchor));
+  }
+  /** Stand a sprite on the planet. Returns false when it is hidden. */
+  private place(
+    sprite: Sprite,
+    point: Vec3,
+    size: number,
+    lift = 0,
+    depthBias = 0,
+  ) {
+    const p = project(this.proj, point, lift),
+      zoom = this.view.zoom,
+      reach = size * zoom + 8,
+      w = this.host.clientWidth,
+      h = this.host.clientHeight;
+    if (
+      p.depth < -0.32 ||
+      p.x < -reach ||
+      p.y < -reach ||
+      p.x > w + reach ||
+      p.y > h + reach * 0.3
+    ) {
+      sprite.visible = false;
+      return null;
+    }
+    const layer = p.depth < 0 ? this.behind : this.front;
+    if (sprite.parent !== layer) layer.addChild(sprite);
+    sprite.visible = true;
+    sprite.position.set(Math.round(p.x), Math.round(p.y));
+    sprite.rotation = p.rotation;
+    sprite.scale.set(zoom);
+    sprite.zIndex = p.depth + depthBias;
+    return p;
+  }
+  private update() {
     if (!this.manifest) return;
-    const needed = new Set(visibleChunks(this.rect()));
-    for (const s of this.chunks.children) s.visible = needed.has(s.label);
-    await Promise.all(
-      [...needed].map(async (key) => {
-        const existing = this.chunkCache.get(key);
-        if (existing) {
-          existing.visible = true;
-          return;
-        }
-        if (this.loadingChunks.has(key)) return;
-        this.loadingChunks.add(key);
-        try {
-          const [x, y] = key.split(',').map(Number);
-          const c = this.manifest!.chunks.find(
-            (c) => c.x === x * 1024 && c.y === y * 1024,
-          )!;
-          const texture = await Assets.load<Texture>(this.base + c.url);
-          if (this.destroyed) return;
-          const sprite = new Sprite(texture);
-          sprite.label = key;
-          sprite.position.set(c.x, c.y);
-          this.chunks.addChild(sprite);
-          this.chunkCache.set(key, sprite);
-        } catch (e) {
-          this.emit(
-            'error',
-            `Chunk unavailable; overview remains visible. ${String(e)}`,
-          );
-        } finally {
-          this.loadingChunks.delete(key);
-        }
-      }),
-    );
-  }
-  private texture(sprite: Sprite, name: string) {
-    if (sprite.texture === this.textures.get(name)) return;
-    const m = this.metadata.get(name)!;
-    sprite.texture = this.textures.get(name)!;
-    sprite.pivot.set(...m.anchor);
-  }
-  private updateCharacters() {
-    const visible = this.grid.query(this.rect(64)).filter((c) => {
-      const a = c.loopBounds,
-        b = this.rect(64);
-      return (
-        a.x < b.x + b.width &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.height &&
-        a.y + a.height > b.y
-      );
-    });
-    const ids = new Set(visible.map((c) => c.id));
-    for (const [id, item] of this.live)
-      if (!ids.has(id)) {
-        this.sortables.removeChild(item.sprite);
-        if (item.shadow) {
-          this.sortables.removeChild(item.shadow);
-          this.pool.push(item.shadow);
-        }
-        item.sprite.filters = [];
-        this.pool.push(item.sprite);
-        this.live.delete(id);
-      }
-    for (const c of visible) {
+    for (const s of this.statics) {
+      if (s.sortable.animation)
+        this.texture(
+          s.sprite,
+          s.sortable.animation[
+            frameMap(this.frame, 60, s.sortable.animation.length)
+          ],
+          s.sortable.pivot,
+        );
+      this.place(s.sprite, s.point, s.size, s.sortable.lift);
+    }
+    let visible = 0;
+    for (const c of this.manifest.characters) {
       const state = characterState(c, this.frame),
-        name = c.frames[`${state.action}_${state.facing}`][state.index];
+        step = c.script[state.stepIndex];
       let item = this.live.get(c.id);
       if (!item) {
-        const sprite = this.pool.pop() ?? new Sprite();
-        this.sortables.addChild(sprite);
-        item = {
-          sprite,
-          character: c,
-          frame: name,
-          depth: 0,
-          mask: this.masks.get(name)!,
-        };
+        item = { sprite: new Sprite(), character: c, frame: '', depth: 0 };
         if (c.shadowFrame) {
-          const shadow = this.pool.pop() ?? new Sprite();
-          shadow.filters = [];
-          this.texture(shadow, c.shadowFrame);
-          this.sortables.addChild(shadow);
-          item.shadow = shadow;
+          item.shadow = new Sprite();
+          this.texture(item.shadow, c.shadowFrame);
         }
         this.live.set(c.id, item);
       }
+      const point = tileToPlanet(...state.tile);
+      const probe = project(this.proj, point, state.z);
+      let direction: Point = FACING_DIRECTION[state.facing];
+      if (step.path) {
+        const t = (this.frame % c.loop) - step.from,
+          next = characterState(c, (this.frame % c.loop) + (t < 0 ? 0 : 1));
+        const d: Point = [
+          next.tile[0] - state.tile[0],
+          next.tile[1] - state.tile[1],
+        ];
+        if (Math.hypot(...d) > 1e-6) direction = d;
+      }
+      const facing = screenFacing(
+        this.proj,
+        state.tile,
+        direction,
+        probe.rotation,
+        c.depiction === 'back',
+      );
+      const frames =
+        c.frames[`${state.action}_${facing}`] ??
+        c.frames[`${state.action}_${state.facing}`];
+      const name = frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
-      item.mask = this.masks.get(name)!;
-      item.sprite.position.set(
-        Math.round(state.position[0]),
-        Math.round(state.position[1]),
+      const m = this.metadata.get(name)!;
+      const p = this.place(
+        item.sprite,
+        point,
+        Math.max(m.frame.w, m.frame.h),
+        state.z,
+        2e-5,
       );
-      item.depth = depth(...state.tile);
-      item.sprite.zIndex = item.depth;
       if (item.shadow) {
-        const p = worldFromTile(...state.tile);
-        item.shadow.position.set(Math.round(p[0]), Math.round(p[1]));
-        item.shadow.zIndex = item.depth - 1;
+        const sp = p && this.place(item.shadow, point, 16, 0, 1e-5);
+        if (!sp) item.shadow.visible = false;
       }
-      const outlined = this.hover === c.id || this.selected === c.id;
-      if (outlined) {
+      if (!p) continue;
+      visible++;
+      item.depth = p.depth;
+      const outlined = this.hover === c.id && c.interactive;
+      if (outlined || this.selected === c.id) {
         let filter = item.sprite.filters?.[0] as OutlineFilter | undefined;
         if (!filter) {
           filter = new OutlineFilter({
-            thickness: 1,
+            thickness: Math.max(1, Math.round(this.view.zoom)),
             color: 0xd8ad57,
             quality: 0.1,
           });
           item.sprite.filters = [filter];
         }
         filter.alpha =
-          this.selected === c.id ? 0.65 + 0.35 * Math.sin(this.frame / 12) : 1;
-      } else item.sprite.filters = [];
+          this.selected === c.id ? 0.65 + 0.35 * Math.sin(this.frame / 4) : 1;
+      } else if (item.sprite.filters?.length) item.sprite.filters = [];
     }
-    for (const item of this.staticSprites)
-      if (item.animation)
-        this.texture(
-          item.sprite,
-          item.animation[frameMap(this.frame, 60, item.animation.length)],
-        );
-    this.sortables.sortChildren();
+    this.visibleCount = visible;
     if (this.inspector) this.drawInspector();
   }
+  private visibleCount = 0;
   private tick(dt: number) {
     if (!this.ready || this.destroyed) return;
     this.lastDrawCalls = this.drawCalls;
@@ -423,63 +572,52 @@ export class Engine {
     dt = Math.min(dt, 64);
     if (this.motion) this.elapsed += dt / 1000;
     this.frame = globalFrame(this.elapsed);
-    let cameraChanged = false;
+    let moved = false;
     if (this.flight) {
-      const f = this.flight;
-      f.elapsed += dt;
-      const t = Math.min(1, f.elapsed / f.duration),
+      const fl = this.flight;
+      fl.elapsed += dt;
+      const t = Math.min(1, fl.elapsed / fl.duration),
         ease = 1 - (1 - t) ** 3;
-      this.cam = {
-        x: f.from.x + (f.to.x - f.from.x) * ease,
-        y: f.from.y + (f.to.y - f.from.y) * ease,
-        zoom: f.from.zoom + (f.to.zoom - f.from.zoom) * ease,
+      this.view = {
+        lat: fl.from.lat + (fl.to.lat - fl.from.lat) * ease,
+        lon: fl.from.lon + (fl.to.lon - fl.from.lon) * ease,
+        zoom: fl.from.zoom + (fl.to.zoom - fl.from.zoom) * ease,
       };
-      cameraChanged = true;
+      moved = true;
       if (t === 1) this.flight = null;
     } else if (
       !this.pointers.size &&
-      Math.hypot(this.velocity.x, this.velocity.y) > 0.015
+      Math.hypot(this.velocity.lat, this.velocity.lon) > 1e-6
     ) {
-      this.cam.x -= (this.velocity.x * dt) / 16 / this.cam.zoom;
-      this.cam.y -= (this.velocity.y * dt) / 16 / this.cam.zoom;
-      const decay = Math.exp(-dt / 140);
-      this.velocity.x *= decay;
-      this.velocity.y *= decay;
-      cameraChanged = true;
+      this.view.lat += this.velocity.lat * dt;
+      this.view.lon += this.velocity.lon * dt;
+      const decay = Math.exp(-dt / 220);
+      this.velocity.lat *= decay;
+      this.velocity.lon *= decay;
+      moved = true;
     }
     if (this.zoomIdle > 0) {
       this.zoomIdle -= dt;
-      if (this.zoomIdle <= 0 && this.cam.zoom >= 1 && !this.pointers.size) {
-        this.cam.zoom = Math.round(this.cam.zoom);
-        cameraChanged = true;
+      if (this.zoomIdle <= 0 && this.view.zoom >= 1 && !this.pointers.size) {
+        this.view.zoom = Math.round(this.view.zoom);
+        moved = true;
       }
     }
-    if (cameraChanged) this.applyCamera();
-    const target = this.cam.zoom >= 0.5 ? 1 : 0;
-    this.fade +=
-      Math.sign(target - this.fade) *
-      Math.min(Math.abs(target - this.fade), dt / 150);
-    this.chunks.alpha = this.fade;
-    this.sortables.alpha = this.fade;
-    this.chunks.visible = this.fade > 0;
-    this.sortables.visible = this.fade > 0;
-    const level = this.cam.zoom < 0.25 ? 2 : this.cam.zoom < 0.5 ? 1 : 0;
-    this.lodLevels.forEach((c, i) => (c.visible = i === level));
-    if (this.lastFrame !== this.frame || this.renderDirty) {
-      if (this.cam.zoom >= 0.5) this.updateCharacters();
+    if (moved) this.applyCamera();
+    if (this.lastFrame !== this.frame || this.dirty) {
+      this.update();
       this.lastFrame = this.frame;
-      this.renderDirty = false;
+      this.dirty = false;
     }
     this.emitElapsed += dt;
     if (this.emitElapsed >= 120) {
       this.emitElapsed = 0;
-      void this.updateChunks();
       if (import.meta.env.DEV)
         this.emit('stats', {
           fps: Math.round(this.app.ticker.FPS),
           draws: this.lastDrawCalls,
           frame: this.frame,
-          visible: this.live.size,
+          visible: this.visibleCount,
         });
     }
   }
@@ -487,41 +625,61 @@ export class Engine {
     const r = this.app.canvas.getBoundingClientRect();
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   }
-  private pointerWorld(p: { x: number; y: number }) {
-    return {
-      x: (p.x - this.world.x) / this.cam.zoom,
-      y: (p.y - this.world.y) / this.cam.zoom,
-    };
+  /** Spin the globe so the ground follows the pointer. */
+  private drag(dx: number, dy: number) {
+    const r = RADIUS_PX * this.view.zoom,
+      cos = Math.max(0.2, Math.cos(this.view.lat));
+    const dLon = -dx / r / cos,
+      dLat = (dy / r) * 1.6;
+    this.view.lon += dLon;
+    this.view.lat += dLat;
+    return { lat: dLat, lon: dLon };
   }
-  private zoomAt(z: number, x: number, y: number) {
-    this.flight = null;
-    this.velocity = { x: 0, y: 0 };
-    const before = this.pointerWorld({ x, y });
-    this.cam.zoom = Math.max(0.125, Math.min(4, z));
-    this.cam.x = before.x - (x - this.host.clientWidth / 2) / this.cam.zoom;
-    this.cam.y = before.y - (y - this.host.clientHeight / 2) / this.cam.zoom;
-    this.zoomIdle = 240;
-    this.applyCamera();
-  }
-  private hit(p: { x: number; y: number }) {
-    if (this.cam.zoom < 0.5) return null;
-    const w = this.pointerWorld(p);
-    for (const item of [...this.live.values()]
-      .filter((i) => i.character.interactive)
-      .sort((a, b) => b.depth - a.depth)) {
+  private hit(p: { x: number; y: number }, interactiveOnly = true) {
+    const items = [...this.live.values()]
+      .filter(
+        (i) =>
+          i.sprite.visible &&
+          i.sprite.parent === this.front &&
+          (!interactiveOnly || i.character.interactive),
+      )
+      .sort((a, b) => b.depth - a.depth);
+    for (const item of items) {
       const m = this.metadata.get(item.frame)!;
+      const local = item.sprite.toLocal(p);
       if (
         maskHit(
-          item.mask,
+          this.masks.get(item.frame)!,
           m.frame.w,
           m.frame.h,
-          w.x - item.sprite.x + m.anchor[0],
-          w.y - item.sprite.y + m.anchor[1],
+          local.x,
+          local.y,
         )
       )
         return item.character.id;
     }
     return null;
+  }
+  /** Development/test helper: screen points over and beside a character. */
+  debugPoints(id: string) {
+    const item = this.live.get(id);
+    if (!item || !item.sprite.visible) return null;
+    const m = this.metadata.get(item.frame)!,
+      mask = this.masks.get(item.frame)!;
+    let opaque: Point | null = null,
+      empty: Point | null = null;
+    for (let y = 0; y < m.frame.h; y++)
+      for (let x = 0; x < m.frame.w; x++) {
+        const on = maskHit(mask, m.frame.w, m.frame.h, x, y);
+        if (on && !opaque && y > m.frame.h / 3) opaque = [x + 0.5, y + 0.5];
+        if (!on && !empty && x === 0) empty = [x + 0.5, y + 0.5];
+      }
+    const g = (q: Point | null) => {
+      if (!q) return null;
+      const s = item.sprite.toGlobal({ x: q[0], y: q[1] });
+      return { x: s.x, y: s.y };
+    };
+    return { opaque: g(opaque), transparent: g(empty) };
   }
   private bindInput() {
     const canvas = this.app.canvas,
@@ -535,7 +693,7 @@ export class Engine {
         this.pointers.set(e.pointerId, p);
         this.dragStart = p;
         this.moved = 0;
-        this.velocity = { x: 0, y: 0 };
+        this.velocity = { lat: 0, lon: 0 };
         this.flight = null;
       },
       options,
@@ -552,17 +710,15 @@ export class Engine {
             )![1];
             const a = Math.hypot(old.x - other.x, old.y - other.y),
               b = Math.hypot(p.x - other.x, p.y - other.y);
-            this.zoomAt(
-              (this.cam.zoom * b) / Math.max(1, a),
-              (p.x + other.x) / 2,
-              (p.y + other.y) / 2,
-            );
+            this.setZoom((this.view.zoom * b) / Math.max(1, a));
           } else {
-            const dx = p.x - old.x,
-              dy = p.y - old.y;
-            this.cam.x -= dx / this.cam.zoom;
-            this.cam.y -= dy / this.cam.zoom;
-            this.velocity = { x: dx, y: dy };
+            const v = this.drag(p.x - old.x, p.y - old.y),
+              dt = Math.max(
+                8,
+                e.timeStamp - (this.lastMove || e.timeStamp - 16),
+              );
+            this.velocity = { lat: v.lat / dt, lon: v.lon / dt };
+            this.lastMove = e.timeStamp;
             this.applyCamera();
           }
           this.pointers.set(e.pointerId, p);
@@ -571,14 +727,14 @@ export class Engine {
             Math.hypot(p.x - this.dragStart.x, p.y - this.dragStart.y),
           );
         } else {
-          const hit = this.hit(p);
+          const hit = this.hit(p, false);
           if (hit !== this.hover) {
             this.hover = hit;
-            this.renderDirty = true;
-            canvas.style.cursor = hit ? 'pointer' : 'grab';
+            this.dirty = true;
+            const c = hit && this.live.get(hit)?.character;
+            canvas.style.cursor = c && c.interactive ? 'pointer' : 'grab';
             this.emit('characterHover', hit);
           }
-          if (this.inspector) this.drawInspector();
         }
       },
       options,
@@ -590,8 +746,9 @@ export class Engine {
         if (hit) {
           this.selected = hit;
           this.emit('characterClick', hit);
-          this.renderDirty = true;
+          this.dirty = true;
         }
+        this.velocity = { lat: 0, lon: 0 };
       }
       this.pointers.delete(e.pointerId);
     };
@@ -600,7 +757,18 @@ export class Engine {
       'pointercancel',
       (e) => {
         this.pointers.delete(e.pointerId);
-        this.velocity = { x: 0, y: 0 };
+        this.velocity = { lat: 0, lon: 0 };
+      },
+      options,
+    );
+    canvas.addEventListener(
+      'pointerleave',
+      () => {
+        if (this.hover) {
+          this.hover = null;
+          this.dirty = true;
+          this.emit('characterHover', null);
+        }
       },
       options,
     );
@@ -608,8 +776,7 @@ export class Engine {
       'wheel',
       (e) => {
         e.preventDefault();
-        const p = this.point(e);
-        this.zoomAt(this.cam.zoom * Math.exp(-e.deltaY * 0.0015), p.x, p.y);
+        this.setZoom(this.view.zoom * Math.exp(-e.deltaY * 0.0015));
       },
       { ...options, passive: false },
     );
@@ -621,125 +788,99 @@ export class Engine {
         if (e.key.toLowerCase() === 'i' && import.meta.env.DEV) {
           this.inspector = !this.inspector;
           this.debug.visible = this.inspector;
-          this.renderDirty = true;
-          if (!this.inspector) this.emit('inspect', null);
+          if (!this.inspector) {
+            for (const c of this.debug.removeChildren()) c.destroy();
+            this.emit('inspect', null);
+          }
+          this.dirty = true;
         }
-        const delta = 80 / this.cam.zoom;
-        if (e.key === 'ArrowLeft') this.cam.x -= delta;
-        else if (e.key === 'ArrowRight') this.cam.x += delta;
-        else if (e.key === 'ArrowUp') this.cam.y -= delta;
-        else if (e.key === 'ArrowDown') this.cam.y += delta;
-        else if (['+', '='].includes(e.key)) this.setZoom(this.cam.zoom + 0.5);
-        else if (e.key === '-') this.setZoom(this.cam.zoom - 0.5);
+        const step = 90;
+        if (e.key === 'ArrowLeft') this.drag(step, 0);
+        else if (e.key === 'ArrowRight') this.drag(-step, 0);
+        else if (e.key === 'ArrowUp') this.drag(0, step / 2);
+        else if (e.key === 'ArrowDown') this.drag(0, -step / 2);
+        else if (['+', '='].includes(e.key)) this.setZoom(this.view.zoom + 0.5);
+        else if (e.key === '-') this.setZoom(this.view.zoom - 0.5);
         else return;
         e.preventDefault();
+        this.flight = null;
         this.applyCamera();
       },
       options,
+    );
+  }
+  private lastMove = 0;
+  /** Fit the whole planet in view. */
+  overview() {
+    const cam = this.getCamera();
+    this.flyTo(
+      {
+        ...cam,
+        zoom: fitZoom(this.host.clientWidth, this.host.clientHeight),
+      },
+      600,
     );
   }
   private drawInspector() {
     for (const c of this.debug.removeChildren()) c.destroy();
     const g = new Graphics();
     this.debug.addChild(g);
-    const { width: rw, height: rh } = this.manifest!.room;
-    for (let i = 0; i <= rw; i++)
-      g.moveTo(...worldFromTile(i, 0)).lineTo(...worldFromTile(i, rh));
-    for (let i = 0; i <= rh; i++)
-      g.moveTo(...worldFromTile(0, i)).lineTo(...worldFromTile(rw, i));
-    g.stroke({ color: 0x377d79, width: 0.5, alpha: 0.4 });
-    for (let i = 0; i <= 4; i++)
-      g.moveTo(i * 1024, 0)
-        .lineTo(i * 1024, 4096)
-        .moveTo(0, i * 1024)
-        .lineTo(4096, i * 1024);
-    g.stroke({ color: 0xc87865, width: 2, alpha: 0.6 });
-    const collision = this.manifest!.room.layers.find(
-      (l) => l.name === 'collision',
-    );
-    if (collision?.type === 'tilelayer')
-      for (let i = 0; i < collision.data.length; i++)
-        if (collision.data[i]) {
-          const x = i % rw,
-            y = Math.floor(i / rw);
-          g.poly(
-            [
-              worldFromTile(x, y),
-              worldFromTile(x + 1, y),
-              worldFromTile(x + 1, y + 1),
-              worldFromTile(x, y + 1),
-            ].flat(),
-          ).fill({ color: 0xd45454, alpha: 0.14 });
-        }
-    for (const s of this.manifest!.sortables) {
-      g.rect(
-        s.x - this.metadata.get(s.frame)!.anchor[0],
-        s.y - this.metadata.get(s.frame)!.anchor[1],
-        this.metadata.get(s.frame)!.frame.w,
-        this.metadata.get(s.frame)!.frame.h,
-      ).stroke({ color: 0xb99736, width: 0.5, alpha: 0.4 });
-    }
+    const at = (t: Point) => project(this.proj, tileToPlanet(...t));
     for (const item of this.live.values()) {
+      if (!item.sprite.visible) continue;
       const c = item.character;
       for (const s of c.script)
         if (s.path) {
-          const ps = s.path.map((p) => worldFromTile(...p));
-          g.moveTo(...ps[0]);
-          ps.slice(1).forEach((p) => g.lineTo(...p));
+          const ps = s.path.map((p) => at(p));
+          if (ps.some((p) => p.depth < 0)) continue;
+          g.moveTo(ps[0].x, ps[0].y);
+          ps.slice(1).forEach((p) => g.lineTo(p.x, p.y));
           g.stroke({ color: 0x448bbb, width: 1 });
-          for (let i = 1; i < ps.length; i++) {
-            const [x, y] = ps[i],
-              a = Math.atan2(y - ps[i - 1][1], x - ps[i - 1][0]);
-            g.moveTo(x - 5 * Math.cos(a - 0.5), y - 5 * Math.sin(a - 0.5))
-              .lineTo(x, y)
-              .lineTo(x - 5 * Math.cos(a + 0.5), y - 5 * Math.sin(a + 0.5))
-              .stroke({ color: 0x448bbb, width: 1 });
-          }
         }
-      const s = characterState(c, this.frame);
-      g.circle(...s.position, 2).fill(0xc87865);
-      const label = new Text({
-        text: `${c.id} ${item.depth.toFixed(0)}`,
-        style: { fontSize: 6, fill: 0x493c35 },
-      });
-      label.position.set(s.position[0] + 4, s.position[1]);
-      this.debug.addChild(label);
+      const s = characterState(c, this.frame),
+        p = at(s.tile);
+      g.circle(p.x, p.y, 2).fill(0xc87865);
       if (c.pairWith) {
-        const pair = this.manifest!.characters.find((p) => p.id === c.pairWith);
-        if (pair)
-          g.moveTo(...s.position)
-            .lineTo(...characterState(pair, this.frame).position)
+        const pair = this.live.get(c.pairWith);
+        if (pair?.sprite.visible)
+          g.moveTo(p.x, p.y)
+            .lineTo(pair.sprite.x, pair.sprite.y)
             .stroke({ color: 0xbd65ae, width: 1 });
+      }
+      if (this.view.zoom >= 2) {
+        const label = new Text({
+          text: c.id.replace(/^amb-/, ''),
+          style: { fontSize: 9, fill: 0x493c35 },
+        });
+        label.position.set(p.x + 4, p.y);
+        this.debug.addChild(label);
       }
     }
     if (this.hover) {
       const item = this.live.get(this.hover)!;
-      const state = characterState(item.character, this.frame),
-        m = this.metadata.get(item.frame)!;
-      for (let y = 0; y < m.frame.h; y++)
-        for (let x = 0; x < m.frame.w; x++)
-          if (maskHit(item.mask, m.frame.w, m.frame.h, x, y))
-            g.rect(
-              item.sprite.x - m.anchor[0] + x,
-              item.sprite.y - m.anchor[1] + y,
-              1,
-              1,
-            ).fill({ color: 0xe4b34e, alpha: 0.6 });
+      const state = characterState(item.character, this.frame);
+      const b = item.sprite.getBounds();
+      g.rect(b.x, b.y, b.width, b.height).stroke({ color: 0xe4b34e, width: 1 });
       this.emit('inspect', {
         id: this.hover,
         step: state.stepIndex,
         frame: state.index,
-        facing: state.facing,
-        depth: Math.round(item.depth),
+        action: state.action,
+        depth: item.depth.toFixed(3),
       });
-    } else this.emit('inspect', { frame: this.frame, visible: this.live.size });
+    } else
+      this.emit('inspect', {
+        frame: this.frame,
+        visible: this.visibleCount,
+        lat: ((this.view.lat * 180) / Math.PI).toFixed(1),
+        lon: ((this.view.lon * 180) / Math.PI).toFixed(1),
+      });
   }
   destroy() {
     this.destroyed = true;
     this.abort.abort();
     this.resizeObserver.disconnect();
     this.listeners.clear();
-    this.chunkCache.clear();
     if (this.ready) this.app.destroy(true, { children: true, texture: false });
   }
 }

@@ -6,7 +6,7 @@ import {
   serialiseUrl,
   type Camera,
 } from '../../../packages/shared/url';
-import { worldFromTile } from '../../../packages/shared/iso';
+import { tileFromWorld, worldFromTile } from '../../../packages/shared/iso';
 import { useStore, useT, type Language } from './store';
 import { Icon } from './Icon';
 import { Lab } from './Lab';
@@ -218,9 +218,25 @@ function World({ manifest }: { manifest: Manifest | null }) {
     } | null>(null),
     [inspect, setInspect] = useState<Record<string, string | number> | null>(
       null,
-    );
+    ),
+    [hovered, setHovered] = useState<string | null>(null),
+    [pointer, setPointer] = useState({ x: 0, y: 0 });
   const named = manifest?.characters.filter((c) => c.interactive) ?? [],
     card = named.find((c) => c.id === selected);
+  // Hovering anyone shows what they are doing; named people invite a click.
+  const hoverCharacter = hovered
+    ? manifest?.characters.find((c) => c.id === hovered)
+    : undefined;
+  const hoverLabel = hoverCharacter
+    ? hoverCharacter.name
+      ? {
+          title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
+          note: t('clickStory'),
+        }
+      : hoverCharacter.role
+        ? { title: hoverCharacter.role, note: '' }
+        : null
+    : null;
   const open = useCallback(
     (id: string) => {
       select(id);
@@ -264,6 +280,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
       }, 300);
     });
     world.on('stats', setStats);
+    world.on('characterHover', setHovered);
     world.on('inspect', setInspect);
     world.on('error', setError);
     world
@@ -328,7 +345,24 @@ function World({ manifest }: { manifest: Manifest | null }) {
   };
   return (
     <main className="world-page">
-      <div className="world-host" ref={host} />
+      <div
+        className="world-host"
+        ref={host}
+        onPointerMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          setPointer({ x: e.clientX - r.left, y: e.clientY - r.top });
+        }}
+      />
+      {hoverLabel && (
+        <div
+          className="hover-label"
+          role="tooltip"
+          style={{ left: pointer.x + 14, top: pointer.y + 14 }}
+        >
+          <strong>{hoverLabel.title}</strong>
+          {hoverLabel.note && <span>{hoverLabel.note}</span>}
+        </div>
+      )}
       <div className="scene-vignette" />
       <div className="world-top">
         <div className="chapter-pill">
@@ -552,6 +586,13 @@ function World({ manifest }: { manifest: Manifest | null }) {
           </button>
           <span className="control-divider" />
           <button
+            aria-label={t('overview')}
+            title={t('overview')}
+            onClick={() => engine.current?.overview()}
+          >
+            <Icon name="globe" size={17} />
+          </button>
+          <button
             aria-label={t('reset')}
             onClick={() => {
               close();
@@ -636,16 +677,17 @@ function Minimap({
 }) {
   const t = useT(),
     ref = useRef<HTMLDivElement>(null);
+  const { width: rw, height: rh } = manifest.room;
+  // The map is the quarter's floor in tile space; the dot is the camera focus.
   const move = (e: React.PointerEvent) => {
     const box = ref.current!.querySelector('img')!.getBoundingClientRect();
-    onMove({
-      ...camera,
-      x: ((e.clientX - box.left) / box.width) * 4096,
-      y: ((e.clientY - box.top) / box.height) * 4096,
-    });
+    const tx = ((e.clientX - box.left) / box.width) * rw,
+      ty = ((e.clientY - box.top) / box.height) * rh;
+    const [x, y] = worldFromTile(tx, ty);
+    onMove({ ...camera, x, y });
   };
-  const width = window.innerWidth / camera.zoom,
-    height = (window.innerHeight - 64) / camera.zoom;
+  const [fx, fy] = tileFromWorld(camera.x, camera.y);
+  const inside = fx >= 0 && fy >= 0 && fx <= rw && fy <= rh;
   return (
     <div
       className="minimap"
@@ -654,19 +696,20 @@ function Minimap({
       tabIndex={0}
       aria-label={t('viewMap')}
       aria-valuemin={0}
-      aria-valuemax={4096}
-      aria-valuenow={Math.round(camera.x)}
+      aria-valuemax={rw}
+      aria-valuenow={Math.round(fx)}
       onKeyDown={(e) => {
         const shifts: Record<string, [number, number]> = {
-          ArrowLeft: [-150, 0],
-          ArrowRight: [150, 0],
-          ArrowUp: [0, -150],
-          ArrowDown: [0, 150],
+          ArrowLeft: [-3, 3],
+          ArrowRight: [3, -3],
+          ArrowUp: [-3, -3],
+          ArrowDown: [3, 3],
         };
         const d = shifts[e.key];
         if (d) {
           e.preventDefault();
-          onMove({ ...camera, x: camera.x + d[0], y: camera.y + d[1] });
+          const [x, y] = worldFromTile(fx + d[0], fy + d[1]);
+          onMove({ ...camera, x, y });
         }
       }}
       onPointerDown={(e) => {
@@ -677,26 +720,24 @@ function Minimap({
         if (e.buttons === 1) move(e);
       }}
     >
-      <img
-        src={'/world/' + manifest.lod[2].tiles[0].url}
-        alt=""
-        draggable={false}
-      />
-      <svg
-        className="minimap-overlay"
-        viewBox="0 0 4096 4096"
-        aria-hidden="true"
-      >
-        <rect
-          x={camera.x - width / 2}
-          y={camera.y - height / 2}
-          width={width}
-          height={height}
-          fill="#8ca37b22"
-          stroke="#54765d"
-          strokeWidth="24"
-        />
-      </svg>
+      <img src={'/world/' + manifest.ground.url} alt="" draggable={false} />
+      {inside && (
+        <svg
+          className="minimap-overlay"
+          viewBox={`0 0 ${rw} ${rh}`}
+          aria-hidden="true"
+        >
+          <circle
+            cx={fx}
+            cy={fy}
+            r={6}
+            fill="#8ca37b33"
+            stroke="#2f4a3a"
+            strokeWidth={0.8}
+          />
+          <circle cx={fx} cy={fy} r={1.2} fill="#2f4a3a" />
+        </svg>
+      )}
       <span className="minimap-north">N</span>
     </div>
   );

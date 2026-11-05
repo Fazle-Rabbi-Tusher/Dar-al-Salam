@@ -27,7 +27,13 @@ import {
   facingFromSegment,
 } from '../../packages/shared/script';
 import { worldFromTile, depth } from '../../packages/shared/iso';
-import { stripDepth } from '../../packages/shared/slicing';
+import { stripDepth, stripGround } from '../../packages/shared/slicing';
+import {
+  PLANET,
+  planetToTile,
+  wildAt,
+  type Vec3,
+} from '../../packages/shared/planet';
 import type { ObjectArt } from '../placeholder/objects';
 const out = 'public-build';
 /** Flat walkable art (carpets, rugs) is baked into chunk backgrounds. */
@@ -98,13 +104,11 @@ async function build() {
     }
     const frames: Record<string, string[]> = {};
     for (const s of c.script) {
-      const facings: Facing[] = s.path
-        ? [
-            ...new Set(
-              s.path.slice(1).map((p, i) => facingFromSegment(s.path![i], p)),
-            ),
-          ]
-        : [s.facing!];
+      // On the planet the camera decides which side of a character is seen,
+      // so every facing is baked (back-only characters get NE/NW only).
+      const facings: Facing[] =
+        c.depiction === 'back' ? ['NE', 'NW'] : ['SE', 'SW', 'NE', 'NW'];
+      void facingFromSegment;
       for (const facing of facings) {
         const key = `${s.action}_${facing}`;
         if (frames[key]) continue;
@@ -181,22 +185,84 @@ async function build() {
         const names = slices.map((s) =>
           register(s, [art.anchor[0] - x, art.anchor[1]]),
         );
+        const column = x + width / 2 - art.anchor[0],
+          ground = stripGround([o.x, o.y], o.footprint, column),
+          base = worldFromTile(o.x, o.y),
+          at = worldFromTile(...ground),
+          m = metas[names[0]];
         sortables.push({
           frame: names[0],
           x: wx,
           y: wy,
-          depth: stripDepth(
-            [o.x, o.y],
-            o.footprint,
-            x + width / 2 - art.anchor[0],
-          ),
+          depth: stripDepth([o.x, o.y], o.footprint, column),
           objectId: o.id,
           tile: [o.x, o.y],
           footprint: o.footprint,
+          ground,
+          // Frame pixel resting on the ground point, so strips follow the curve.
+          pivot: [m.anchor[0] + at[0] - base[0], m.anchor[1] + at[1] - base[1]],
+          lift: o.z,
           ...(names.length > 1 ? { animation: names } : {}),
         });
       }
     }
+  // Trees and planters across the rest of the planet, on a Fibonacci lattice.
+  const wild = [
+    'm-tree',
+    'palm',
+    'cypress',
+    'detail-olive',
+    'm-tree',
+    'm-tree',
+  ];
+  const wildFrames = new Map<string, string>();
+  for (const type of wild) {
+    const art = objectArt[type];
+    wildFrames.set(
+      type,
+      register(await image(`art/${art.file}`), art.anchor as [number, number]),
+    );
+  }
+  const count = 900,
+    golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < count; i++) {
+    const y = 1 - ((i + 0.5) / count) * 2,
+      r = Math.sqrt(1 - y * y),
+      a = golden * i;
+    // Seeded jitter breaks up the lattice rows (build time only).
+    const j1 = Math.sin(i * 12.9898) * 43758.5453,
+      j2 = Math.sin(i * 78.233) * 12345.6789,
+      jx = (j1 - Math.floor(j1) - 0.5) * 0.09,
+      jy = (j2 - Math.floor(j2) - 0.5) * 0.09;
+    const q: Vec3 = [Math.cos(a) * r + jx, y + jy, Math.sin(a) * r - jx * 0.5],
+      ql = Math.hypot(...q),
+      p: Vec3 = [q[0] / ql, q[1] / ql, q[2] / ql];
+    if (Math.acos(p[2]) * PLANET.radiusTiles < 62) continue;
+    if (wildAt(p) !== 'grass' || Math.abs(p[1]) > 0.93) continue;
+    const tile = planetToTile(p),
+      inside =
+        tile[0] > -3 &&
+        tile[1] > -3 &&
+        tile[0] < room.width + 3 &&
+        tile[1] < room.height + 3;
+    if (inside || (i * 7919) % 5 === 0) continue;
+    const type = wild[(i * 31 + 7) % wild.length],
+      frame = wildFrames.get(type)!,
+      m = metas[frame];
+    const [wx, wy] = worldFromTile(...tile);
+    sortables.push({
+      frame,
+      x: wx,
+      y: wy,
+      depth: depth(...tile),
+      objectId: -1 - i,
+      tile,
+      footprint: [1, 1],
+      ground: tile,
+      pivot: [m.anchor[0], m.anchor[1]],
+      lift: 0,
+    });
+  }
   const packer = new MaxRectsPacker<Rectangle>(2048, 2048, 2, {
     smart: true,
     pot: true,
@@ -290,84 +356,30 @@ async function build() {
         Math.round(p[1] - art.anchor[1]),
       );
     }
-  const chunks: Manifest['chunks'] = [];
-  for (let y = 0; y < 4; y++)
-    for (let x = 0; x < 4; x++) {
-      const url = `chunk-${x}-${y}.webp`;
-      await sharp(Buffer.from(floor.data), {
-        raw: { width: 4096, height: 4096, channels: 4 },
-      })
-        .extract({ left: x * 1024, top: y * 1024, width: 1024, height: 1024 })
-        .webp({ lossless: true })
-        .toFile(`${out}/${url}`);
-      chunks.push({ x: x * 1024, y: y * 1024, url });
+  // Top-down floor in tile space: each texel samples the isometric floor art
+  // at the matching tile point. The planet shader wraps this onto the sphere.
+  const T = 16,
+    gw = room.width * T,
+    gh = room.height * T,
+    groundImage = new Pixels(gw, gh);
+  for (let j = 0; j < gh; j++)
+    for (let i = 0; i < gw; i++) {
+      const [wx, wy] = worldFromTile((i + 0.5) / T, (j + 0.5) / T),
+        k = (Math.floor(wy) * 4096 + Math.floor(wx)) * 4;
+      groundImage.data.set(floor.data.subarray(k, k + 4), (j * gw + i) * 4);
+      groundImage.data[(j * gw + i) * 4 + 3] = 255;
     }
-  const full = new Pixels(4096, 4096);
-  full.data.set(floor.data);
-  const items = [
-    ...sortables.map((s) => ({
-      name: s.frame,
-      x: s.x,
-      y: s.y,
-      depth: s.depth,
-    })),
-    ...baked
-      .filter((c) => c.shadowFrame)
-      .map((c) => {
-        const s = characterState(c, 0),
-          p = worldFromTile(...s.tile);
-        return {
-          name: c.shadowFrame!,
-          x: p[0],
-          y: p[1],
-          depth: depth(...s.tile) - 1,
-        };
-      }),
-    ...baked.map((c) => {
-      const s = characterState(c, 0);
-      return {
-        name: c.frames[`${s.action}_${s.facing}`][s.index],
-        x: s.position[0],
-        y: s.position[1],
-        depth: depth(...s.tile),
-      };
-    }),
-  ].sort((a, b) => a.depth - b.depth);
-  for (const i of items) {
-    const m = metas[i.name];
-    blit(
-      full,
-      images.get(i.name)!,
-      Math.round(i.x - m.anchor[0]),
-      Math.round(i.y - m.anchor[1]),
-    );
-  }
-  const lod: Manifest['lod'] = [];
-  for (const scale of [0.5, 0.25, 0.125]) {
-    const size = 4096 * scale;
-    const data = await sharp(Buffer.from(full.data), {
-      raw: { width: 4096, height: 4096, channels: 4 },
-    })
-      .resize(size, size, { kernel: 'nearest' })
-      .raw()
-      .toBuffer();
-    const tiles: Manifest['lod'][number]['tiles'] = [];
-    for (let y = 0; y < size; y += 1024)
-      for (let x = 0; x < size; x += 1024) {
-        const url = `lod-${scale}-${x}-${y}.webp`;
-        await sharp(data, { raw: { width: size, height: size, channels: 4 } })
-          .extract({
-            left: x,
-            top: y,
-            width: Math.min(1024, size - x),
-            height: Math.min(1024, size - y),
-          })
-          .webp({ lossless: true })
-          .toFile(`${out}/${url}`);
-        tiles.push({ x: x / scale, y: y / scale, url });
-      }
-    lod.push({ scale, tiles });
-  }
+  await sharp(Buffer.from(groundImage.data), {
+    raw: { width: gw, height: gh, channels: 4 },
+  })
+    .webp({ lossless: true })
+    .toFile(`${out}/ground.webp`);
+  const ground: Manifest['ground'] = {
+    url: 'ground.webp',
+    texelsPerTile: T,
+    width: gw,
+    height: gh,
+  };
   await fs.mkdir(`${out}/i18n`, { recursive: true });
   const i18n: Record<string, string> = {};
   for (const f of await files('content/i18n', '.json')) {
@@ -377,9 +389,7 @@ async function build() {
   const manifest: Manifest = {
     width: 4096,
     height: 4096,
-    chunkSize: 1024,
-    chunks,
-    lod,
+    ground,
     atlases: atlasUrls,
     sortables,
     characters: baked,

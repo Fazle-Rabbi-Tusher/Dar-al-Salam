@@ -1,6 +1,4 @@
 import { test, expect, type Page } from '@playwright/test';
-import type { Manifest, FrameMeta } from '../packages/shared/schema';
-import { worldFromTile } from '../packages/shared/iso';
 async function ready(page: Page, path = '/') {
   await page.goto(path);
   await expect(page.locator('.loading-screen')).toHaveCount(0);
@@ -35,48 +33,40 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toBeVisible();
   await page.locator('.card-close').click();
   await page.waitForTimeout(1100);
-  const manifest: Manifest = await page.request
-    .get('/world/world.json')
-    .then((r) => r.json());
-  const c = manifest.characters.find((c) => c.id === 'al-khwarizmi')!;
-  const step = c.script[0],
-    name = c.frames[`${step.action}_${step.facing}`][0];
-  const atlas = (await page.request
-    .get('/world/atlas-0.json')
-    .then((r) => r.json())) as { frames: Record<string, FrameMeta> };
-  const m = atlas.frames[name],
-    mask = Buffer.from(m.hitMask, 'base64');
+  // On the planet the sprite is rotated and scaled, so ask the dev engine
+  // for screen points over an opaque pixel and over transparent space.
+  const points = await page.evaluate(() =>
+    (
+      window as unknown as {
+        __darEngine: {
+          debugPoints(id: string): {
+            opaque: { x: number; y: number };
+            transparent: { x: number; y: number };
+          } | null;
+        };
+      }
+    ).__darEngine.debugPoints('al-khwarizmi'),
+  );
+  expect(points?.opaque && points.transparent).toBeTruthy();
   const canvas = await page.locator('.world-host canvas').boundingBox();
-  const cam = new URL(page.url()).searchParams;
-  const x = Number(cam.get('x')),
-    y = Number(cam.get('y')),
-    z = Number(cam.get('z'));
-  const pos = worldFromTile(...step.at!);
-  const left = canvas!.x + canvas!.width / 2 + (pos[0] - x - m.anchor[0]) * z,
-    top = canvas!.y + canvas!.height / 2 + (pos[1] - y - m.anchor[1]) * z;
-  let opaque = 0,
-    transparent = 0;
-  for (let i = 0; i < m.frame.w * m.frame.h; i++) {
-    if (mask[i >> 3] & (1 << (i % 8))) opaque = i;
-    else if (i % m.frame.w === 0) transparent = i;
-  }
   await page.mouse.click(
-    left + ((transparent % m.frame.w) + 0.5) * z,
-    top + (Math.floor(transparent / m.frame.w) + 0.5) * z,
+    canvas!.x + points!.transparent.x,
+    canvas!.y + points!.transparent.y,
   );
   await expect(page.locator('.story-card')).toHaveCount(0);
   await page.mouse.move(
-    left + ((opaque % m.frame.w) + 0.5) * z,
-    top + (Math.floor(opaque / m.frame.w) + 0.5) * z,
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
   );
+  await expect(page.locator('.hover-label')).toContainText('Al-Khwarizmi');
   await page.mouse.click(
-    left + ((opaque % m.frame.w) + 0.5) * z,
-    top + (Math.floor(opaque / m.frame.w) + 0.5) * z,
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
   );
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
-test('pan, zoom, overview LOD, inspector and minimap operate without runtime errors', async ({
+test('spin, zoom, whole-planet overview, inspector and minimap operate without runtime errors', async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -94,7 +84,9 @@ test('pan, zoom, overview LOD, inspector and minimap operate without runtime err
   await expect(page.locator('.inspector-panel')).toBeVisible();
   for (let i = 0; i < 5; i++)
     await page.getByLabel('Zoom out', { exact: true }).click();
-  await expect(page.locator('.zoom-controls')).toContainText('13');
+  await expect(page.locator('.zoom-controls')).toContainText('30');
+  await page.getByLabel('See the whole planet', { exact: true }).click();
+  await page.waitForTimeout(800);
   await page.waitForTimeout(500);
   await page.screenshot({ path: '.playwright/overview.png' });
   await page.getByLabel('Return to the quarter').click();
@@ -221,13 +213,13 @@ test('initial asset loading preserves a character deep link before an immediate 
     release = resolve;
   });
   let requested = 0;
-  await page.route('**/world/chunk-*.webp', async (route) => {
+  await page.route('**/world/ground.webp', async (route) => {
     requested++;
     await gate;
     await route.continue();
   });
   try {
-    await page.goto('/c/ibn-sina');
+    await page.goto('/c/ibn-sina', { waitUntil: 'commit' });
     await expect.poll(() => requested, { timeout: 20000 }).toBeGreaterThan(0);
     await page.waitForTimeout(450);
     expect(new URL(page.url()).pathname).toBe('/c/ibn-sina');

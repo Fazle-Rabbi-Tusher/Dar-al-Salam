@@ -200,6 +200,17 @@ html[lang='bn'] .brand strong {
   position: absolute;
   inset: 0;
   touch-action: none;
+  /* Sky behind the little planet. */
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      #fff8e6 0%,
+      #fdebd7 22%,
+      transparent 58%
+    ),
+    radial-gradient(circle at 15% 85%, #f6d4c5 0%, transparent 45%),
+    radial-gradient(circle at 85% 10%, #dfe3f2 0%, transparent 45%),
+    linear-gradient(180deg, #e4e8f3 0%, #f3e6dc 55%, #f7dccb 100%);
 }
 .world-host canvas {
   display: block;
@@ -585,7 +596,7 @@ html[lang='bn'] .brand strong {
 }
 .minimap {
   width: 180px;
-  height: 130px;
+  height: 120px;
   position: relative;
   overflow: hidden;
   background: #ded7c4;
@@ -596,9 +607,9 @@ html[lang='bn'] .brand strong {
 .minimap img {
   position: absolute;
   width: 180px;
-  height: 180px;
+  height: 120px;
   left: 0;
-  top: -25px;
+  top: 0;
   image-rendering: pixelated;
   pointer-events: none;
 }
@@ -610,9 +621,16 @@ html[lang='bn'] .brand strong {
   transform: translateY(-25px);
   pointer-events: none;
 }
+.minimap-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 .minimap-north {
   position: absolute;
-  right: 5px;
+  left: 5px;
   top: 5px;
   font-size: 7px;
   color: #7a896e;
@@ -1520,4 +1538,28 @@ html[dir='rtl'] .portrait-decoration {
   .build-label {
     top: auto;
   }
+}
+.hover-label {
+  position: absolute;
+  z-index: 12;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 240px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #fbf8efee;
+  border: 1px solid #d9cfb6;
+  box-shadow: 0 6px 18px #4b3f2f22;
+  color: #2f4a3a;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.hover-label strong {
+  font-weight: 600;
+}
+.hover-label span {
+  font-size: 10px;
+  color: #8b7a55;
 }

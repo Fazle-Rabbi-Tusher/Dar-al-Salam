@@ -1566,6 +1566,7 @@ export function modernQuarter() {
       { id: 3, name: 'objects', type: 'objectgroup', objects },
     ],
   });
+  for (const c of ambient) c.role ??= roleFor(c.id.replace(/^amb-/, ''));
   const cards = namedCards();
   for (const c of [...ambient, ...cards]) {
     const errors = scriptErrors(characterSchema.parse(c), room);
@@ -1658,6 +1659,75 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     links: wiki('Fatima_al-Fihri'),
   },
 };
+
+/** Hover labels: what each ambient person is doing (English for now). */
+const ROLES: [RegExp, string][] = [
+  [/^worshipper/, 'Praying together in the prayer hall'],
+  [/^teacher$/, 'Teaching the Qur’an study circle'],
+  [/^student-\d/, 'Learning in the Qur’an study circle'],
+  [/^wudu/, 'Making wudu before prayer'],
+  [/^drafter/, 'Drafting building plans'],
+  [/^designer/, 'Designing on the computer'],
+  [/^engineer-1/, 'Structural engineer discussing a tower'],
+  [/^chemist/, 'Scientist running a lab experiment'],
+  [/^roboticist/, 'Programming the robot arm'],
+  [/^student-lab/, 'Student studying science'],
+  [/^patient/, 'Patient resting in hospital'],
+  [/^doctor/, 'Doctor checking on a patient'],
+  [/^nurse/, 'Nurse caring for patients'],
+  [/^waiting/, 'Waiting to see the doctor'],
+  [/^receptionist/, 'Welcoming visitors at reception'],
+  [/^elder-/, 'Neighbours chatting on a bench'],
+  [/^reader-/, 'Reading a book'],
+  [/^sweeper/, 'Keeping the park clean'],
+  [/^picnic/, 'Enjoying a picnic'],
+  [/^diner/, 'Sharing a community meal'],
+  [/^cook/, 'Volunteer cooking free meals'],
+  [/^baker/, 'Baker handing out fresh bread'],
+  [/^passerby/, 'Neighbour picking up bread'],
+  [/^water-carrier/, 'Bringing water to the tables'],
+  [/^volunteer/, 'Volunteer delivering meal boxes'],
+  [/^coder/, 'Child learning to code'],
+  [/^mentor/, 'Mentor teaching the coding class'],
+  [/^librarian/, 'Librarian looking after the books'],
+  [/^student-desk/, 'Student working on a laptop'],
+  [/^barista/, 'Barista making coffee'],
+  [/^cafe/, 'Relaxing at the café'],
+  [/^commuter/, 'Waiting for the bus'],
+  [/^gardener/, 'Gardener tending the solar garden'],
+  [/^waterer/, 'Watering the planters'],
+  [/^technician/, 'Technician checking the solar panels'],
+  [/^engineer-solar/, 'Engineer inspecting the solar array'],
+  [/^bench-pair/, 'Resting on a garden bench'],
+  [/^kid-wave/, 'Children playing in the garden'],
+  [
+    /^(traveller|stroller|students-walk|fan-walk)/,
+    'Walking through the quarter',
+  ],
+  [/^jogger/, 'Out for a morning jog'],
+  [/^helpful-child/, 'Helping an elder walk'],
+  [/^walking-elder/, 'Out for a walk with a grandchild'],
+  [/^queue|^shopper|^vendor|^cyclist/, 'Shopping at the street market'],
+  [/^(teammate|lfc)/, 'Footballer celebrating a goal'],
+  [/^keeper/, 'Goalkeeper guarding the net'],
+  [/^ozil-keeper/, 'Goalkeeper rushing out'],
+  [/^ozil-defender/, 'Defender sliding in to tackle'],
+  [/^referee-octagon/, 'Referee in the octagon'],
+  [/^referee/, 'Referee keeping the match fair'],
+  [/^coach/, 'Coach directing from the touchline'],
+  [/^kit-manager/, 'Kit manager with the team tablet'],
+  [/^commentator/, 'Commentating on the fight'],
+  [/^cornerman/, 'Cornerman cheering on his fighter'],
+  [/^ali-opponent/, 'Knocked-down boxer'],
+  [/^(fan|fight-fan|ringside)/, 'Fan cheering from the crowd'],
+  [/^cat-/, 'A neighbourhood cat'],
+  [/^bird-/, 'A bird visiting the feeder'],
+  [/^ozil-ball/, 'The match ball'],
+];
+function roleFor(id: string) {
+  return ROLES.find(([re]) => re.test(id))?.[1];
+}
+
 /** Draft named cards. Never approved here; research and panel review pending. */
 export function namedCards(): Character[] {
   // Heights of the octagon mat and boxing ring platform, in px.

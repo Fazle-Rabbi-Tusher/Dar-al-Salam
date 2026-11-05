@@ -9,7 +9,7 @@
   "chapter": "CHAPTER 01",
   "room": "The Peace Quarter",
   "introTitle": "A little world.\nA shared peace.",
-  "introText": "Wander a modern neighbourhood where a mosque, a science lab, a hospital, a community kitchen and a coding class sit side by side. There is a story around every corner.",
+  "introText": "Spin a little planet where a mosque, a science lab, a hospital, a community kitchen, a coding class, a football stadium and a fight-night arena sit side by side. There is a story around every corner.",
   "explore": "Explore the quarter",
   "introNote": "An evolving pixel-art prototype",
   "live": "The quarter is alive",
@@ -18,7 +18,7 @@
   "knowledge": "Knowledge",
   "hospitality": "Hospitality",
   "community": "Community",
-  "drag": "DRAG TO EXPLORE",
+  "drag": "DRAG TO SPIN THE PLANET",
   "scroll": "SCROLL TO ZOOM",
   "map": "YOUR PLACE IN THE WORLD",
   "zoomIn": "Zoom in",
@@ -44,7 +44,7 @@
   "rule3": "Named and ambient characters are checked against a reviewed denylist and exact full-name allowlist.",
   "rule4": "Historical cards remain drafts until panel approval. Production builds reject unapproved cards.",
   "rule5": "Characters marked “back” face away from the viewer only.",
-  "rule6": "Everyone wears modest dress. Faces are simple pixel faces with no detailed features.",
+  "rule6": "Everyone wears modest dress. Faces are friendly cartoon faces, never realistic portraits.",
   "rule7": "Placeholder art contains no sacred text, calligraphy, Qur’an pages or religious symbols.",
   "research": "These are demonstration cards. Biographies, stories and citations have not yet been researched.",
   "listTitle": "People of the quarter",
@@ -83,5 +83,7 @@
   "copyError": "Copy unavailable — select the JSON below.",
   "quickFacts": "Quick facts",
   "summaryNote": "Unreviewed summary — check the linked article. Full story awaiting research.",
-  "learnMore": "Learn more"
+  "learnMore": "Learn more",
+  "clickStory": "Click to read their story",
+  "overview": "See the whole planet"
 }
