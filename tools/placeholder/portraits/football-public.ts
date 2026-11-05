@@ -578,10 +578,6 @@ function hairFill(
       f.px(x, y, tones[v > 1.15 ? 0 : v > 0.7 ? 1 : v > 0.25 ? 2 : 3]);
     }
 }
-const rows = (spec: Record<number, [number, number][]>) => {
-  return (x: number, y: number) =>
-    (spec[y] ?? []).some(([a, b]) => x >= a && x <= b);
-};
 
 /* ───────────── people ───────────── */
 /** Checker dither between two colours over a mask. */
