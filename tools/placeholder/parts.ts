@@ -1,17 +1,20 @@
 import fs from 'node:fs/promises';
-import { Pixels, blit } from '../../packages/shared/pixels';
+import { Pixels, blit, hexAt } from '../../packages/shared/pixels';
 import { ACTIONS, type Action } from '../../packages/shared/schema';
 import { canvasFor } from '../../packages/shared/canvas';
 import { png, writeJson } from '../build/io';
 import type { Aseprite } from '../../packages/shared/compositor';
 
 /*
- * Procedural placeholder paper-doll parts on a 48×72 canvas (foot anchor 24,68).
- * Chibi style: a big 22×20 head on a short body, ~49 px tall in all. Every part
- * is drawn from one shared pose skeleton so any garment, headwear and prop fits
- * any adult base; children are scaled by the compositor. Only reserved key
- * colours and fixed palette colours are used. Faces are stylised cartoon faces
- * (eyes with a highlight, brows, mouth) whose expression follows the action.
+ * Procedural placeholder paper-doll parts on a 56×84 canvas (foot anchor 28,80).
+ * Realistic proportions: a 10×11 head on a ~64 px adult (about six heads),
+ * with elbows, knees, hands with a thumb and soled shoes. Every part is drawn
+ * from one shared pose skeleton so any garment, headwear and prop fits any
+ * adult base; children are scaled by the compositor. Shapes are lit from the
+ * top left with a distance-field shader, then given folds, seams and contact
+ * shadows. Only reserved key colours and fixed palette colours are used. Faces
+ * are small stylised faces (eyes with a lid line, brows, nose and mouth) whose
+ * expression follows the action; NE frames show the back of the head.
  */
 export const bases = [
   'adult-man',
@@ -127,12 +130,17 @@ const F = {
 type P = [number, number];
 type Limb = [P, P, P];
 type Mode = 'stand' | 'chair' | 'floor' | 'bow' | 'prostrate' | 'kneel';
+/** Head orientation: upright, crown forward with the face down, or face up. */
+type Turn = 'up' | 'down' | 'back';
 type Pose = {
-  /** Original (pre-chibi) head top-left; only used to find the neck direction. */
+  /** Authoring head top-left (before the realistic mapping). */
   head: P;
-  /** Chibi head centre and the top-left of its 22×20 box. */
+  /** Head centre on the canvas and the top-left of its 10×11 box. */
   headC: P;
   box: P;
+  turn: Turn;
+  /** Base of the neck, between the shoulders. */
+  neck: P;
   chest: P;
   hip: P;
   arms: [Limb, Limb];
@@ -230,7 +238,6 @@ class Mask {
     return this;
   }
 }
-
 /** Paint a mask with a 3-shade ramp: top-left light, right/bottom dark. */
 function paint(
   p: Pixels,
@@ -263,79 +270,319 @@ function paint(
     }
   }
 }
-const mk = (p: Pixels) => new Mask(p.width, p.height);
+
+const mk = (p: { width: number; height: number }) => new Mask(p.width, p.height);
 const lerp = (a: P, b: P, t: number): P => [
   a[0] + (b[0] - a[0]) * t,
   a[1] + (b[1] - a[1]) * t,
 ];
 const add = (a: P, dx: number, dy: number): P => [a[0] + dx, a[1] + dy];
-
-/* ───────────── chibi skeleton ───────────── */
-const AX = 24,
-  AY = 68,
-  SX = 0.9,
-  SY = 0.7,
-  HEAD_RX = 11,
-  HEAD_RY = 10;
-/** Squash a full-size skeleton point toward the foot anchor. */
-const T = (p: P): P => [AX + (p[0] - AX) * SX, AY - (AY - p[1]) * SY];
-/** Squash an authoring y coordinate the same way. */
-const Y = (y: number) => AY - (AY - y) * SY;
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+const norm = (a: P, b: P): P => {
+  const dx = b[0] - a[0],
+    dy = b[1] - a[1],
+    l = Math.hypot(dx, dy) || 1;
+  return [dx / l, dy / l];
+};
+function bbox(m: Mask) {
+  let x0 = m.width,
+    y0 = m.height,
+    x1 = -1,
+    y1 = -1;
+  for (let y = 0; y < m.height; y++)
+    for (let x = 0; x < m.width; x++)
+      if (m.data[y * m.width + x]) {
+        x0 = Math.min(x0, x);
+        y0 = Math.min(y0, y);
+        x1 = Math.max(x1, x);
+        y1 = Math.max(y1, y);
+      }
+  return x1 < 0 ? null : { x0, y0, x1, y1 };
+}
+function copyMask(m: Mask) {
+  const c = new Mask(m.width, m.height);
+  c.data.set(m.data);
+  return c;
+}
+function union(...ms: Mask[]) {
+  const c = copyMask(ms[0]);
+  for (const m of ms.slice(1))
+    for (let i = 0; i < c.data.length; i++) if (m.data[i]) c.data[i] = 1;
+  return c;
+}
+function intersect(a: Mask, b: Mask) {
+  const c = copyMask(a);
+  for (let i = 0; i < c.data.length; i++) if (!b.data[i]) c.data[i] = 0;
+  return c;
+}
+const opaque = (p: Pixels, x: number, y: number) =>
+  x >= 0 &&
+  y >= 0 &&
+  x < p.width &&
+  y < p.height &&
+  p.data[(y * p.width + x) * 4 + 3] > 0;
+const colourAt = (p: Pixels, x: number, y: number) =>
+  opaque(p, x, y) ? hexAt(p, (y * p.width + x) * 4) : null;
+
+/* ───────────── lighting ───────────── */
+// Light from the top left, slightly in front.
+const LIGHT = [-0.5, -0.58, 0.64];
 /**
- * Body points move toward the anchor; raised hands are lifted extra so they
- * clear the big head; the head sits on the neck direction above the chest.
+ * Shade a mask as a soft rounded form: a distance field gives each pixel a
+ * surface normal; the lit band sits one pixel inside the top-left edge and the
+ * shadow side falls on the right and bottom. `r` is how far the roundness
+ * reaches into the shape (small for flat cloth, larger for limbs and heads).
  */
-function chibify(q0: Pose): Pose {
-  const arms = q0.arms.map((arm) => {
-    const s0 = arm[0],
-      s1 = T(s0);
-    const map = (pt: P): P => {
-      if (pt[1] >= s0[1]) return T(pt);
-      const w = clamp((s0[1] - pt[1]) / 8, 0, 1);
-      return [
-        s1[0] + (pt[0] - s0[0]) * SX * (1 + w),
-        s1[1] - (s0[1] - pt[1]) * SY * (1 + 1.3 * w),
-      ];
-    };
-    return [s1, map(arm[1]), map(arm[2])] as Limb;
-  }) as [Limb, Limb];
-  const q: Pose = {
-    ...q0,
-    chest: T(q0.chest),
-    hip: T(q0.hip),
-    arms,
-    legs: q0.legs.map((l) => l.map(T)) as [Limb, Limb],
-  };
-  const h0: P = [q0.head[0] + 5, q0.head[1] + 5.5],
-    h1 = T(h0);
-  let dx = h1[0] - q.chest[0],
-    dy = h1[1] - q.chest[1];
-  const len = Math.hypot(dx, dy) || 1;
-  dx /= len;
-  dy /= len;
-  const reach = 1 / Math.hypot(dx / HEAD_RX, dy / HEAD_RY);
-  const hc: P = [
-    q.chest[0] + dx * (3.2 + reach),
-    q.chest[1] + dy * (3.2 + reach),
-  ];
-  if (q.mode === 'prostrate') {
-    // Forehead on the floor.
-    const fy = q.away ? -0.5 : 0.12;
-    hc[0] = h1[0] - 2;
-    hc[1] = Y(66 + (h0[0] - 24) * fy) - HEAD_RY + 1;
+function shade(
+  p: Pixels,
+  m: Mask,
+  ramp: string[],
+  o: { r?: number; hi?: number; lo?: number; light?: number[] } = {},
+) {
+  const bb = bbox(m);
+  if (!bb) return;
+  const R = o.r ?? 2.4,
+    hi = o.hi ?? 0.8,
+    lo = o.lo ?? 0.22,
+    L = o.light ?? LIGHT;
+  const x0 = bb.x0 - 1,
+    y0 = bb.y0 - 1,
+    w = bb.x1 - bb.x0 + 3,
+    h = bb.y1 - bb.y0 + 3;
+  const d = new Float32Array(w * h);
+  for (let j = 0; j < h; j++)
+    for (let i = 0; i < w; i++) d[j * w + i] = m.has(x0 + i, y0 + j) ? 1e6 : 0;
+  const D = Math.SQRT2;
+  const at = (i: number, j: number) =>
+    i < 0 || j < 0 || i >= w || j >= h ? 0 : d[j * w + i];
+  for (let j = 0; j < h; j++)
+    for (let i = 0; i < w; i++) {
+      const k = j * w + i;
+      if (!d[k]) continue;
+      d[k] = Math.min(
+        d[k],
+        at(i - 1, j) + 1,
+        at(i, j - 1) + 1,
+        at(i - 1, j - 1) + D,
+        at(i + 1, j - 1) + D,
+      );
+    }
+  for (let j = h - 1; j >= 0; j--)
+    for (let i = w - 1; i >= 0; i--) {
+      const k = j * w + i;
+      if (!d[k]) continue;
+      d[k] = Math.min(
+        d[k],
+        at(i + 1, j) + 1,
+        at(i, j + 1) + 1,
+        at(i + 1, j + 1) + D,
+        at(i - 1, j + 1) + D,
+      );
+    }
+  for (let j = 1; j < h - 1; j++)
+    for (let i = 1; i < w - 1; i++) {
+      const dv = d[j * w + i];
+      if (!dv) continue;
+      const gx =
+          at(i + 1, j) -
+          at(i - 1, j) +
+          0.5 * (at(i + 1, j - 1) - at(i - 1, j - 1)) +
+          0.5 * (at(i + 1, j + 1) - at(i - 1, j + 1)),
+        gy =
+          at(i, j + 1) -
+          at(i, j - 1) +
+          0.5 * (at(i - 1, j + 1) - at(i - 1, j - 1)) +
+          0.5 * (at(i + 1, j + 1) - at(i + 1, j - 1)),
+        len = Math.hypot(gx, gy);
+      const s = clamp(1 - (dv - 1) / R, 0, 1),
+        nx = len ? (-gx / len) * s : 0,
+        ny = len ? (-gy / len) * s : 0,
+        nz = Math.sqrt(Math.max(0, 1 - s * s)),
+        I = nx * L[0] + ny * L[1] + nz * L[2];
+      p.pixel(x0 + i, y0 + j, I > hi ? ramp[0] : I < lo ? ramp[2] : ramp[1]);
+    }
+}
+/** Flat fill in one colour. */
+function fill(p: Pixels, m: Mask, c: string) {
+  for (let y = 0; y < m.height; y++)
+    for (let x = 0; x < m.width; x++) if (m.has(x, y)) p.pixel(x, y, c);
+}
+const SHADES: string[][] = [];
+function darker(c: string, n = 1) {
+  for (const r of SHADES) {
+    const i = r.indexOf(c);
+    if (i >= 0) return r[Math.min(r.length - 1, i + n)];
   }
-  hc[0] = clamp(hc[0], HEAD_RX + 1, 47 - HEAD_RX);
-  hc[1] = clamp(hc[1], HEAD_RY + 1, 57.5);
-  q.headC = hc;
-  q.box = [Math.round(hc[0] - HEAD_RX), Math.round(hc[1] - HEAD_RY)];
+  return c;
+}
+function lighter(c: string) {
+  for (const r of SHADES) {
+    const i = r.indexOf(c);
+    if (i >= 0) return r[Math.max(0, i - 1)];
+  }
+  return c;
+}
+/** Darken an already painted pixel one step along its own ramp. */
+function dim(p: Pixels, x: number, y: number, n = 1) {
+  const c = colourAt(p, Math.floor(x), Math.floor(y));
+  if (c) p.pixel(x, y, darker(c, n));
+}
+function brighten(p: Pixels, x: number, y: number) {
+  const c = colourAt(p, Math.floor(x), Math.floor(y));
+  if (c) p.pixel(x, y, lighter(c));
+}
+/**
+ * Contour: darken the edge of a freshly painted shape wherever it lies over
+ * other painted pixels, so overlapping forms (an arm over the torso) separate.
+ */
+function contour(p: Pixels, m: Mask, under: Mask | null = null, n = 1) {
+  const edge: P[] = [];
+  for (let y = 0; y < m.height; y++)
+    for (let x = 0; x < m.width; x++) {
+      if (!m.has(x, y)) continue;
+      for (const [dx, dy] of [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+      ])
+        if (
+          !m.has(x + dx, y + dy) &&
+          (under ? under.has(x + dx, y + dy) : opaque(p, x + dx, y + dy))
+        ) {
+          edge.push([x, y]);
+          break;
+        }
+    }
+  for (const [x, y] of edge) dim(p, x, y, n);
+}
+/** Soft cast shadow: darken pixels just below/right of a shape. */
+function castShadow(p: Pixels, m: Mask, dx = 1, dy = 1, onto: Mask | null = null) {
+  const pts: P[] = [];
+  for (let y = 0; y < m.height; y++)
+    for (let x = 0; x < m.width; x++)
+      if (
+        m.has(x, y) &&
+        !m.has(x + dx, y + dy) &&
+        (onto ? onto.has(x + dx, y + dy) : opaque(p, x + dx, y + dy))
+      )
+        pts.push([x + dx, y + dy]);
+  for (const [x, y] of pts) dim(p, x, y);
+}
+/** A crease line inside a mask: dark pixels with a lit pixel above-left. */
+function crease(p: Pixels, m: Mask, pts: P[], highlight = true) {
+  for (let k = 0; k < pts.length - 1; k++) {
+    const [a, b] = [pts[k], pts[k + 1]],
+      n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1])));
+    for (let i = 0; i <= n; i++) {
+      const x = Math.floor(a[0] + ((b[0] - a[0]) * i) / n),
+        y = Math.floor(a[1] + ((b[1] - a[1]) * i) / n);
+      if (!m.has(x, y)) continue;
+      dim(p, x, y);
+      if (highlight && m.has(x - 1, y) && !(i % 2)) brighten(p, x - 1, y);
+    }
+  }
+}
+
+/* ───────────── realistic skeleton ───────────── */
+const AX = 28,
+  AY = 80,
+  /** Row of the foot centres when standing (soles end on row 79). */
+  GROUND = 78;
+/** Authoring y (feet at 65) → canvas y, used only to place the hips. */
+function ymap(y: number) {
+  const pts: P[] = [
+    [14, 16],
+    [28, 30.5],
+    [41, 45],
+    [45, 48],
+    [65, GROUND],
+    [68, AY],
+  ];
+  if (y <= pts[0][0]) return pts[0][1] + (y - pts[0][0]) * 1.04;
+  for (let i = 1; i < pts.length; i++)
+    if (y <= pts[i][0]) {
+      const [a, b] = [pts[i - 1], pts[i]];
+      return a[1] + ((y - a[0]) * (b[1] - a[1])) / (b[0] - a[0]);
+    }
+  return AY + (y - 68) * 0.67;
+}
+const HEAD_W = 10,
+  HEAD_H = 11;
+/**
+ * Turn the authored pose into adult proportions. Each segment keeps its
+ * authored direction but gets a realistic length: long legs, longer arms, a
+ * modest head on a short neck. Poses standing or kneeling on the ground are
+ * then dropped so the lowest foot lands on the floor line.
+ */
+function realistic(q0: Pose): Pose {
+  const X = (x: number) => AX + (x - 24) * 1.15;
+  const rel = (a0: P, b0: P, a1: P, sx: number, sy = sx): P => [
+    a1[0] + (b0[0] - a0[0]) * sx,
+    a1[1] + (b0[1] - a0[1]) * sy,
+  ];
+  const hip: P = [X(q0.hip[0]), ymap(q0.hip[1])];
+  const chest = rel(q0.hip, q0.chest, hip, 1.15, 1.1);
+  const arms = q0.arms.map((a) => {
+    const s = rel(q0.chest, a[0], chest, 1.15, 1.1),
+      e = rel(a[0], a[1], s, 1.3),
+      h = rel(a[1], a[2], e, 1.3);
+    return [s, e, h] as Limb;
+  }) as [Limb, Limb];
+  const legs = q0.legs.map((l) => {
+    const t = rel(q0.hip, l[0], hip, 1.15, 0.75),
+      k = rel(l[0], l[1], t, 1.5),
+      f = rel(l[1], l[2], k, 1.5);
+    return [t, k, f] as Limb;
+  }) as [Limb, Limb];
+  const h0: P = [q0.head[0] + 5, q0.head[1] + 5.5];
+  const headC = rel(q0.chest, h0, chest, 1.1, 1.06);
+  const q: Pose = { ...q0, hip, chest, arms, legs, headC };
+  // Drop grounded poses onto the floor line.
+  const footA = Math.max(...q0.legs.map((l) => l[2][1]));
+  if (footA >= 62) {
+    const dy = GROUND + (footA - 65) - Math.max(...legs.map((l) => l[2][1]));
+    const move = (pt: P) => {
+      pt[1] += dy;
+    };
+    [q.hip, q.chest, q.headC].forEach(move);
+    for (const l of [...q.arms, ...q.legs]) l.forEach(move);
+  }
+  q.turn =
+    q.action === 'lie'
+      ? 'back'
+      : q.mode === 'prostrate' || (q.action === 'pray' && q.mode === 'bow')
+        ? 'down'
+        : 'up';
+  const dir = norm(q.chest, q.headC);
+  q.neck = add(q.chest, dir[0] * 4.6, dir[1] * 4.6);
+  fixPose(q);
+  q.headC[0] = clamp(q.headC[0], 6.5, 49.5);
+  q.headC[1] = clamp(q.headC[1], 6.5, 76);
+  q.box =
+    q.turn === 'up'
+      ? [Math.round(q.headC[0] - HEAD_W / 2), Math.round(q.headC[1] - HEAD_H / 2)]
+      : [Math.round(q.headC[0]), Math.round(q.headC[1])];
   return q;
+}
+/** Small per-action corrections after the mapping (contacts with the floor). */
+function fixPose(q: Pose) {
+  const fy = q.away ? -0.5 : 0.12;
+  if (q.mode === 'prostrate') {
+    // Palms flat on the floor either side of the head.
+    for (const arm of q.arms) {
+      const h = arm[2];
+      h[1] = GROUND - 0.5 + (h[0] - AX) * fy * 0.9;
+      arm[1] = add(lerp(arm[0], h, 0.5), 1.2, -0.8);
+    }
+  }
 }
 /** One skeleton for every part, so all layers line up frame by frame. */
 function pose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
-  return chibify(rawPose(action, facing, f));
+  return realistic(rawPose(action, facing, f));
 }
-/** Full-size pose authoring; chibify() turns it into the chibi skeleton. */
+SHADES.push(K.skin, K.hair, K.cloth, K.sash, K.hat, K.prop, F.charcoal, F.steel);
+/** Pose authoring (feet at y 65); realistic() maps it to the canvas. */
 function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
   const away = facing === 'NE',
     fy = away ? -0.5 : 0.5,
@@ -344,6 +591,8 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
     head: [19 + hx, 14 + b],
     headC: [0, 0],
     box: [0, 0],
+    turn: 'up',
+    neck: [0, 0],
     chest: [24, 31 + b],
     hip: [24, 41 + b],
     arms: [
@@ -954,9 +1203,595 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
   return q;
 }
 
-/* ───────────── faces ───────────── */
+/* ───────────── heads ───────────── */
+/*
+ * Heads are drawn in a small head space (the 10×11 head box plus margins for
+ * hair, beards and hats), then placed on the canvas upright or turned for
+ * bowing and lying poses. Templates are written in head-box coordinates: each
+ * string starts at x = -3 and the first row is y = -3.
+ */
+const HS = { w: 22, h: 26, ox: 6, oy: 6 };
+type Template = string[];
+function cells(t: Template, ch = '#'): P[] {
+  const out: P[] = [];
+  t.forEach((row, j) => {
+    for (let i = 0; i < row.length; i++)
+      if (ch.includes(row[i])) out.push([i - 3, j - 3]);
+  });
+  return out;
+}
+/** Mask in head space from template cells. */
+function tmask(t: Template, ch = '#') {
+  const m = new Mask(HS.w, HS.h);
+  for (const [x, y] of cells(t, ch)) m.set(x + HS.ox, y + HS.oy);
+  return m;
+}
+const hp = (hs: Pixels, x: number, y: number, c: string) =>
+  hs.pixel(x + HS.ox, y + HS.oy, c);
+const hmk = () => new Mask(HS.w, HS.h);
+/** Head-box rectangle / ellipse helpers in head space. */
+const hrect = (m: Mask, x: number, y: number, w: number, h: number) =>
+  m.rect(x + HS.ox, y + HS.oy, w, h);
+const hell = (m: Mask, cx: number, cy: number, rx: number, ry: number) =>
+  m.ellipse(cx + HS.ox, cy + HS.oy, rx, ry);
+
+// Bare head silhouettes: 3/4 view toward the right, and the back of the head.
+const SKULL_SE: Template = [
+  '.................',
+  '.................',
+  '.................',
+  '......####.......',
+  '....########.....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...#########.....',
+  '...##########....',
+  '....##########...',
+  '....#########....',
+  '.....########....',
+  '......######.....',
+];
+const SKULL_NE: Template = [
+  '.................',
+  '.................',
+  '.................',
+  '......####.......',
+  '....########.....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '....########.....',
+  '.....######......',
+];
+type Hair = {
+  se: Template;
+  ne: Template;
+  beard?: Template;
+  /** Beard edge seen from behind (on the right cheek). */
+  beardNE?: Template;
+  style: 'straight' | 'curly' | 'buzz' | 'none';
+  /** Bleached tips (on top). */
+  tips?: boolean;
+};
+const SHORT_NE: Template = [
+  '.................',
+  '.................',
+  '.....######......',
+  '....########.....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...##########....',
+  '...#########.....',
+  '...########......',
+  '...########......',
+  '...########......',
+  '....######.......',
+];
+const BEARD_SHORT: Template = [
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.......#.........',
+  '......###........',
+  '.....####.###....',
+  '.....####...#....',
+  '......#######....',
+  '.......#####.....',
+];
+const BEARD_FULL: Template = [
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '......##.........',
+  '......###........',
+  '....#####.###....',
+  '....#####...#....',
+  '.....########....',
+  '......#######....',
+  '.......#####.....',
+];
+const BEARD_NE_SHORT: Template = [
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '.................',
+  '...........#.....',
+  '...........##....',
+  '..........###....',
+  '.........###.....',
+];
+const HAIR: Record<string, Hair> = {
+  'adult-man': {
+    style: 'straight',
+    se: [
+      '.................',
+      '.................',
+      '.....######......',
+      '....########.....',
+      '...##########....',
+      '...#######.......',
+      '...#####.........',
+      '...##..#.........',
+      '...##..#.........',
+      '...##............',
+      '...##............',
+      '....#............',
+    ],
+    ne: SHORT_NE,
+    beard: BEARD_SHORT,
+    beardNE: BEARD_NE_SHORT,
+  },
+  'adult-man-short': {
+    style: 'straight',
+    se: [
+      '.................',
+      '.................',
+      '.....######......',
+      '....########.....',
+      '...##########....',
+      '...######........',
+      '...####..........',
+      '...##..#.........',
+      '...##............',
+      '...##............',
+      '...##............',
+    ],
+    ne: SHORT_NE,
+  },
+  child: {
+    style: 'straight',
+    se: [
+      '.................',
+      '.................',
+      '.....######......',
+      '....########.....',
+      '...##########....',
+      '...#########.....',
+      '...#####.........',
+      '...##..#.........',
+      '...##............',
+      '...##............',
+      '...##............',
+    ],
+    ne: SHORT_NE,
+  },
+  'adult-man-beard': {
+    style: 'straight',
+    se: [
+      '.................',
+      '.................',
+      '.....#####.......',
+      '....########.....',
+      '...##########....',
+      '...######........',
+      '...####..........',
+      '...##..#.........',
+      '...##..#.........',
+      '...##..#.........',
+      '...##............',
+    ],
+    ne: SHORT_NE,
+    beard: BEARD_FULL,
+    beardNE: BEARD_NE_SHORT,
+  },
+  'adult-man-swept-beard': {
+    style: 'straight',
+    se: [
+      '.................',
+      '.......#####.....',
+      '.....#########...',
+      '....#########....',
+      '...##########....',
+      '...#######.......',
+      '...####..........',
+      '...##..#.........',
+      '...##..#.........',
+      '...##............',
+      '...##............',
+    ],
+    ne: [
+      '.................',
+      '.......#####.....',
+      '.....#########...',
+      '....#########....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...#########.....',
+      '...########......',
+      '...########......',
+      '...########......',
+      '....######.......',
+    ],
+    beard: BEARD_SHORT,
+    beardNE: BEARD_NE_SHORT,
+  },
+  'adult-man-clean': {
+    style: 'straight',
+    se: [
+      '.................',
+      '.......#####.....',
+      '.....#########...',
+      '....#########....',
+      '...##########....',
+      '...#####.........',
+      '...###...........',
+      '...##..#.........',
+      '...##............',
+      '...##............',
+      '...##............',
+    ],
+    ne: [
+      '.................',
+      '.......#####.....',
+      '.....#########...',
+      '....#########....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...#########.....',
+      '...########......',
+      '...########......',
+      '...#######.......',
+      '....#####........',
+    ],
+  },
+  'adult-man-curly': {
+    style: 'curly',
+    se: [
+      '....######.......',
+      '..##########.....',
+      '.#############...',
+      '.##############..',
+      '.##############..',
+      '.##########......',
+      '.#######.........',
+      '.######..........',
+      '.######..........',
+      '.#####...........',
+      '..####...........',
+      '...##............',
+    ],
+    ne: [
+      '....######.......',
+      '..##########.....',
+      '.##############..',
+      '.##############..',
+      '.##############..',
+      '.##############..',
+      '.##############..',
+      '.#############...',
+      '.############....',
+      '..##########.....',
+      '..#########......',
+      '...#######.......',
+      '....#####........',
+    ],
+    beard: BEARD_FULL,
+    beardNE: BEARD_NE_SHORT,
+  },
+  'adult-man-goatee': {
+    style: 'straight',
+    tips: true,
+    se: [
+      '.................',
+      '.................',
+      '.....######......',
+      '....########.....',
+      '...##########....',
+      '...#####.........',
+      '...###...........',
+      '...##............',
+      '...##............',
+      '...##............',
+      '...#.............',
+    ],
+    ne: SHORT_NE,
+    beard: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '..........###....',
+      '.................',
+      '........####.....',
+      '.........##......',
+    ],
+  },
+  'adult-man-shaved': {
+    style: 'buzz',
+    se: [
+      '.................',
+      '.................',
+      '.................',
+      '......####.......',
+      '....#######......',
+      '...######........',
+      '...####..........',
+      '...##............',
+      '...##............',
+      '...#.............',
+    ],
+    ne: [
+      '.................',
+      '.................',
+      '.................',
+      '......####.......',
+      '....########.....',
+      '...##########....',
+      '...##########....',
+      '...#########.....',
+      '...########......',
+      '...#######.......',
+      '....#####........',
+    ],
+  },
+  'adult-man-shaved-beard': {
+    style: 'buzz',
+    se: [
+      '.................',
+      '.................',
+      '.................',
+      '......####.......',
+      '....#######......',
+      '...######........',
+      '...####..........',
+      '...##............',
+      '...##............',
+      '...#.............',
+    ],
+    ne: [
+      '.................',
+      '.................',
+      '.................',
+      '......####.......',
+      '....########.....',
+      '...##########....',
+      '...##########....',
+      '...#########.....',
+      '...########......',
+      '...#######.......',
+      '....#####........',
+    ],
+    beard: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.......#.........',
+      '......###........',
+      '....#####.###....',
+      '....#####...#....',
+      '.....#########...',
+      '.....########....',
+      '......######.....',
+      '.......####......',
+    ],
+    beardNE: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '...........#.....',
+      '...........##....',
+      '..........###....',
+      '..........###....',
+      '.........###.....',
+      '........###......',
+    ],
+  },
+  elder: {
+    style: 'straight',
+    se: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '...###...........',
+      '...####..........',
+      '...####..........',
+      '...##..#.........',
+      '...##..#.........',
+      '...##............',
+      '...##............',
+      '....#............',
+    ],
+    ne: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '...#........#....',
+      '...##########....',
+      '...##########....',
+      '...#########.....',
+      '...########......',
+      '...########......',
+      '....######.......',
+    ],
+    beard: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '......##.........',
+      '......###........',
+      '....#####.####...',
+      '....#####...##...',
+      '.....########....',
+      '.....#########...',
+      '......#######....',
+      '.......######....',
+      '........####.....',
+      '.........##......',
+    ],
+    beardNE: [
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '.................',
+      '...........#.....',
+      '...........##....',
+      '..........###....',
+      '.........####....',
+      '........####.....',
+      '........###......',
+    ],
+  },
+  'adult-woman': {
+    style: 'straight',
+    se: [
+      '.................',
+      '.................',
+      '.....######......',
+      '..##########.....',
+      '.############....',
+      '.#########.......',
+      '..######.........',
+      '...#####.........',
+      '...####..........',
+      '...####..........',
+      '...####..........',
+      '...###...........',
+      '....#............',
+    ],
+    ne: [
+      '.................',
+      '.................',
+      '.....######......',
+      '....########.....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...##########....',
+      '...#########.....',
+      '...########......',
+      '....######.......',
+      '....######.......',
+      '.....####........',
+    ],
+  },
+  'adult-woman-loose': {
+    style: 'straight',
+    se: [
+      '.................',
+      '....######.......',
+      '..##########.....',
+      '.#############...',
+      '.#############...',
+      '.########...##...',
+      '.######.....##...',
+      '.#####.......#...',
+      '.#####.......#...',
+      '.#####.......#...',
+      '.#####...........',
+      '.######..........',
+      '.######..........',
+      '.#######.........',
+      '.#######.........',
+      '..######.........',
+      '..#####..........',
+      '...###...........',
+    ],
+    ne: [
+      '.................',
+      '....######.......',
+      '..##########.....',
+      '.############....',
+      '.#############...',
+      '.#############...',
+      '.#############...',
+      '.#############...',
+      '.#############...',
+      '.#############...',
+      '.############....',
+      '.############....',
+      '.############....',
+      '..###########....',
+      '..##########.....',
+      '...########......',
+      '....#####........',
+    ],
+  },
+};
 type Eyes = 'open' | 'happy' | 'down' | 'closed' | 'blink' | 'determined';
-type Mouth = 'smile' | 'open' | 'flat' | 'shout' | 'o' | 'calm';
+type Mouth = 'smile' | 'open' | 'flat' | 'shout' | 'o' | 'calm' | 'grin';
 /** Expression by action and frame, so viewers can read what people do. */
 function expression(
   a: Action,
@@ -971,21 +1806,21 @@ function expression(
     case 'wave':
       return {
         eyes: f % 2 ? 'happy' : 'open',
-        mouth: f % 2 ? 'open' : 'smile',
+        mouth: f % 2 ? 'grin' : 'smile',
       };
     case 'cheer':
     case 'celebrate':
-      return { eyes: 'happy', mouth: f % 2 ? 'smile' : 'open' };
+      return { eyes: 'happy', mouth: f % 2 ? 'grin' : 'shout' };
     case 'arms-out':
     case 'hand-on-heart':
-      return { eyes: 'happy', mouth: f >= 2 ? 'open' : 'smile' };
+      return { eyes: 'happy', mouth: f >= 2 ? 'open' : 'grin' };
     case 'belt-pose':
       return {
         eyes: f === 3 ? 'happy' : 'open',
-        mouth: f >= 2 ? 'open' : 'smile',
+        mouth: f >= 2 ? 'grin' : 'smile',
       };
     case 'read':
-      return { eyes: 'down', mouth: f === 3 ? 'o' : 'smile' };
+      return { eyes: 'down', mouth: f === 3 ? 'o' : 'calm' };
     case 'write':
       return { eyes: 'down', mouth: 'flat' };
     case 'pray':
@@ -1015,1466 +1850,579 @@ function expression(
     case 'ride':
       return { eyes: f === 2 ? 'happy' : 'open', mouth: 'smile' };
     case 'speech':
-      return { eyes: 'open', mouth: f % 2 ? 'open' : 'smile', brows: 'raised' };
+      return { eyes: 'open', mouth: f % 2 ? 'open' : 'grin', brows: 'raised' };
     default:
       return { eyes: 'open', mouth: 'smile' };
   }
 }
 const FACE = {
   eye: '#3B322E',
-  shine: '#FBFAF4',
-  mouth: '#A65D4F',
-  inner: '#704C36',
-  tongue: '#D07A8D',
-  blush: '#EBAAB6',
+  lid: '#3B322E',
+  white: '#F5EEDB',
+  mouth: '#704C36',
+  inner: '#3B322E',
+  teeth: '#F5EEDB',
 };
-/**
- * Cartoon face on the SE (3/4 right) side of a head box at (x0, y0): two big
- * eyes with a white highlight, brows, a mouth and a touch of blush.
- */
-function features(p: Pixels, q: Pose, x0: number, y0: number, beard = false) {
-  const { eyes, mouth, brows } = expression(q.action, q.frame),
-    fc = x0 + 13,
-    ey = y0 + 10,
-    brow = K.hair[2];
-  for (const [i, ex] of [fc - 5, fc + 2].entries()) {
-    const inner = i === 0 ? 1 : -1;
-    switch (eyes) {
-      case 'open':
-        p.rect(ex, ey, 3, 4, FACE.eye);
-        p.pixel(ex, ey, FACE.shine);
-        p.pixel(ex + 2, ey + 3, FACE.shine);
-        break;
-      case 'determined':
-        p.rect(ex, ey + 1, 3, 3, FACE.eye);
-        p.pixel(i ? ex + 2 : ex, ey + 1, FACE.shine);
-        break;
-      case 'happy':
-        p.pixel(ex, ey + 2, FACE.eye);
-        p.pixel(ex + 1, ey + 1, FACE.eye);
-        p.pixel(ex + 2, ey + 2, FACE.eye);
-        break;
-      case 'closed':
-        p.pixel(ex, ey + 2, FACE.eye);
-        p.pixel(ex + 1, ey + 3, FACE.eye);
-        p.pixel(ex + 2, ey + 2, FACE.eye);
-        break;
-      case 'blink':
-        p.rect(ex, ey + 2, 3, 1, FACE.eye);
-        break;
-      case 'down':
-        p.rect(ex, ey + 2, 3, 2, FACE.eye);
-        p.rect(ex, ey + 1, 3, 1, K.skin[2]);
-        break;
+const SK = K.skin;
+/** Skin of the bare head, lit from the top left, with facial planes. */
+function paintSkull(hs: Pixels, away: boolean) {
+  const skull = tmask(away ? SKULL_NE : SKULL_SE);
+  shade(hs, skull, SK, { r: 3.2, hi: 0.78, lo: 0.12 });
+  if (away) {
+    // Right ear and the edge of the jaw.
+    hp(hs, 9, 5, SK[1]);
+    hp(hs, 10, 5, SK[1]);
+    hp(hs, 10, 6, SK[2]);
+    hp(hs, 9, 6, SK[2]);
+    hp(hs, 9, 7, SK[1]);
+    for (let y = 8; y <= 10; y++) hp(hs, 1 + (y - 8), y, SK[2]);
+    return skull;
+  }
+  // Eye sockets in soft shadow, a lit nose bridge and cheekbone.
+  hp(hs, 4, 5, SK[1]);
+  hp(hs, 5, 5, SK[1]);
+  hp(hs, 8, 5, SK[1]);
+  hp(hs, 7, 4, SK[0]);
+  hp(hs, 7, 5, SK[0]);
+  hp(hs, 7, 6, SK[0]);
+  hp(hs, 8, 7, SK[2]); // nostril
+  hp(hs, 9, 7, SK[1]);
+  hp(hs, 10, 7, SK[1]);
+  hp(hs, 8, 8, SK[1]);
+  hp(hs, 9, 8, SK[1]);
+  hp(hs, 5, 7, SK[0]); // cheekbone
+  hp(hs, 6, 7, SK[0]);
+  // Jaw shadow and the far cheek.
+  for (const [x, y] of [
+    [1, 8],
+    [2, 9],
+    [3, 10],
+    [9, 6],
+    [9, 9],
+    [8, 10],
+  ] as P[])
+    hp(hs, x, y, SK[2]);
+  hp(hs, 4, 10, SK[1]);
+  // Ear.
+  hp(hs, 2, 5, SK[1]);
+  hp(hs, 2, 6, SK[1]);
+  hp(hs, 3, 6, SK[2]);
+  hp(hs, 2, 7, SK[2]);
+  hp(hs, 1, 6, SK[1]);
+  return skull;
+}
+/** Hair and beard strands: lit streaks and dark partings in a mask. */
+function texture(hs: Pixels, m: Mask, style: Hair['style'], beard = false) {
+  const H = K.hair;
+  for (let y = 0; y < HS.h; y++)
+    for (let x = 0; x < HS.w; x++) {
+      if (!m.has(x, y)) continue;
+      const c = colourAt(hs, x, y);
+      if (style === 'curly') {
+        // Tight curls: lit dots with dark gaps between them.
+        const k = (x * 3 + y * 5 + (y % 2) * 2) % 6;
+        if (k === 0 && c !== H[2]) hs.pixel(x, y, H[0]);
+        else if (k === 3) hs.pixel(x, y, H[2]);
+      } else if (style === 'buzz') {
+        // Close crop: skin shows through a fine stipple.
+        if ((x + y) % 2) hs.pixel(x, y, H[2]);
+      } else if (beard) {
+        // Beard: vertical strands, dark at the edges.
+        if (x % 2 && c === H[1]) hs.pixel(x, y, H[2]);
+        if (!m.has(x, y + 1) && x % 2 === 0) hs.pixel(x, y, H[1]);
+      } else if (c === H[1]) {
+        // Combed strands running back over the head.
+        if ((x * 2 + y) % 5 === 0) hs.pixel(x, y, H[0]);
+        else if ((x + y * 2) % 7 === 0) hs.pixel(x, y, H[2]);
+      }
     }
-    // Brows: angled down toward the nose when determined.
-    if (eyes === 'determined') {
-      p.pixel(ex + (inner > 0 ? 0 : 2), ey - 2, brow);
-      p.pixel(ex + 1, ey - 1, brow);
-      p.pixel(ex + (inner > 0 ? 2 : 0), ey, brow);
-    } else if (brows === 'raised') {
-      // Lively, arched brows lifted off the eyes.
-      p.rect(ex, ey - 3, 3, 1, brow);
-      p.pixel(ex + 1, ey - 4, brow);
-    } else p.rect(ex, ey - 2, 3, 1, brow);
+}
+function paintHair(hs: Pixels, id: string, away: boolean) {
+  const spec = HAIR[id] ?? HAIR['adult-man'],
+    H = K.hair;
+  const m = tmask(away ? spec.ne : spec.se);
+  if (spec.style === 'buzz') {
+    // Skin stays visible; the stipple sits over the scalp.
+    texture(hs, m, 'buzz');
+  } else {
+    shade(hs, m, H, { r: 2.6, hi: 0.72, lo: 0.2 });
+    texture(hs, m, spec.style);
+    if (!away && spec.style === 'straight') {
+      // Fine hairline at the forehead and temple.
+      for (let y = 0; y < HS.h; y++)
+        for (let x = 0; x < HS.w; x++)
+          if (m.has(x, y) && !m.has(x + 1, y) && !m.has(x, y + 1))
+            hs.pixel(x, y, H[2]);
+    }
   }
-  if (eyes !== 'determined') {
-    p.rect(fc - 7, ey + 5, 2, 1, FACE.blush);
-    p.rect(fc + 5, ey + 5, 2, 1, FACE.blush);
-  }
-  const mx = fc - 1,
-    my = y0 + 16;
+  if (spec.tips)
+    for (const [x, y] of cells(away ? spec.ne : spec.se).filter(
+      ([, y]) => y <= -1,
+    ))
+      if ((x + y) % 2 === 0) hp(hs, x, y, F.gold);
+  const beard = spec[away ? 'beardNE' : 'beard'];
+  let bm: Mask | null = null;
   if (beard) {
-    // Keep the mouth readable through the beard.
-    p.rect(mx - 2, my - 1, 7, 3, K.skin[1]);
+    bm = tmask(beard);
+    shade(hs, bm, H, { r: 2, hi: 0.86, lo: 0.3 });
+    texture(hs, bm, spec.style === 'curly' ? 'curly' : 'straight', true);
   }
+  return { hair: m, beard: bm };
+}
+/** Brows, eyes, nose and mouth on the SE (3/4 right) face. */
+function features(hs: Pixels, q: Pose, beard: boolean) {
+  const { eyes, mouth, brows } = expression(q.action, q.frame),
+    B = K.hair[2];
+  // Brows.
+  const by = brows === 'raised' ? 3 : 4;
+  if (eyes === 'determined') {
+    hp(hs, 3, 4, B);
+    hp(hs, 4, 4, B);
+    hp(hs, 5, 5, B);
+    hp(hs, 8, 5, B);
+    hp(hs, 9, 4, B);
+  } else {
+    hp(hs, 3, by, B);
+    hp(hs, 4, by, B);
+    hp(hs, 5, by, B);
+    hp(hs, 8, by, B);
+    hp(hs, 9, by, B);
+    if (brows === 'raised') hp(hs, 4, 2, B);
+  }
+  // Eyes: lid line on row 5, the eye itself on row 6.
+  const lid = (x: number) => hp(hs, x, 5, FACE.lid);
+  switch (eyes) {
+    case 'open':
+    case 'determined':
+      lid(4);
+      lid(5);
+      lid(8);
+      hp(hs, 4, 6, FACE.white);
+      hp(hs, 5, 6, FACE.eye);
+      hp(hs, 8, 6, FACE.eye);
+      hp(hs, 4, 7, SK[1]);
+      break;
+    case 'happy':
+      lid(4);
+      lid(5);
+      lid(8);
+      hp(hs, 4, 6, SK[1]);
+      hp(hs, 5, 6, FACE.eye);
+      hp(hs, 8, 6, SK[1]);
+      hp(hs, 4, 7, SK[0]);
+      hp(hs, 5, 7, SK[0]);
+      break;
+    case 'down':
+      hp(hs, 4, 5, SK[1]);
+      hp(hs, 5, 5, SK[1]);
+      hp(hs, 4, 6, FACE.lid);
+      hp(hs, 5, 6, FACE.lid);
+      hp(hs, 8, 6, FACE.lid);
+      break;
+    case 'closed':
+    case 'blink':
+      hp(hs, 4, 5, SK[0]);
+      hp(hs, 5, 5, SK[1]);
+      hp(hs, 4, 6, FACE.lid);
+      hp(hs, 5, 6, FACE.lid);
+      hp(hs, 8, 6, FACE.lid);
+      hp(hs, 3, 6, SK[1]);
+      break;
+  }
+  // Mouth on row 9; an open mouth drops the jaw a pixel.
+  const lip = SK[2];
+  if (beard) for (let x = 6; x <= 8; x++) hp(hs, x, 9, SK[1]);
   switch (mouth) {
     case 'smile':
-      p.pixel(mx - 1, my, FACE.mouth);
-      p.rect(mx, my + 1, 2, 1, FACE.mouth);
-      p.pixel(mx + 2, my, FACE.mouth);
+      hp(hs, 6, 8, lip);
+      hp(hs, 7, 9, FACE.mouth);
+      hp(hs, 8, 9, FACE.mouth);
       break;
-    case 'open':
-      p.rect(mx - 1, my, 4, 2, FACE.inner);
-      p.rect(mx, my + 1, 2, 1, FACE.tongue);
-      break;
-    case 'shout':
-      p.rect(mx - 1, my - 1, 4, 3, FACE.inner);
-      p.rect(mx, my + 1, 2, 1, FACE.tongue);
-      break;
-    case 'o':
-      p.rect(mx, my, 2, 2, FACE.inner);
-      break;
-    case 'flat':
-      p.rect(mx - 1, my + 1, 4, 1, FACE.mouth);
+    case 'grin':
+      hp(hs, 6, 8, lip);
+      hp(hs, 6, 9, FACE.mouth);
+      hp(hs, 7, 9, FACE.teeth);
+      hp(hs, 8, 9, FACE.teeth);
+      hp(hs, 9, 9, FACE.mouth);
       break;
     case 'calm':
-      p.rect(mx, my + 1, 2, 1, FACE.mouth);
+      hp(hs, 7, 9, lip);
+      hp(hs, 8, 9, FACE.mouth);
+      break;
+    case 'flat':
+      hp(hs, 6, 9, FACE.mouth);
+      hp(hs, 7, 9, FACE.mouth);
+      hp(hs, 8, 9, FACE.mouth);
+      break;
+    case 'o':
+      hp(hs, 7, 9, FACE.inner);
+      hp(hs, 7, 10, lip);
+      break;
+    case 'open':
+      hp(hs, 7, 9, FACE.teeth);
+      hp(hs, 8, 9, FACE.inner);
+      hp(hs, 7, 10, FACE.inner);
+      hp(hs, 8, 10, lip);
+      if (!beard) for (let x = 4; x <= 7; x++) hp(hs, x, 11, SK[2]);
+      break;
+    case 'shout':
+      hp(hs, 6, 9, FACE.inner);
+      hp(hs, 7, 9, FACE.teeth);
+      hp(hs, 8, 9, FACE.teeth);
+      hp(hs, 6, 10, FACE.inner);
+      hp(hs, 7, 10, FACE.inner);
+      hp(hs, 8, 10, FACE.inner);
+      if (!beard) for (let x = 4; x <= 8; x++) hp(hs, x, 11, SK[2]);
       break;
   }
 }
-/* ───────────── bases ───────────── */
-function headMask(p: Pixels, q: Pose) {
-  const [x0, y0] = q.box;
-  return mk(p)
-    .ellipse(x0 + 11, y0 + 10, 11, 10)
-    .rect(x0 + 1, y0 + 3, 20, 13);
+/** The whole base head (skin, hair, beard, face) in head space. */
+function headSprite(id: string, q: Pose) {
+  const hs = new Pixels(HS.w, HS.h);
+  paintSkull(hs, q.away);
+  const { beard } = paintHair(hs, id, q.away);
+  if (!q.away) features(hs, q, !!beard);
+  return hs;
 }
-/** Clear body-layer pixels that would cover the head (arms are drawn after). */
+/** Head space → canvas transform for the pose's head turn. */
+function headXY(q: Pose, x: number, y: number): P {
+  // x, y in head-box coordinates.
+  if (q.turn === 'up') return [q.box[0] + x, q.box[1] + y];
+  const [cx, cy] = q.box;
+  // Turned 90°: the crown points to the screen right.
+  return q.turn === 'down'
+    ? [cx + (5 - y), cy + (x - 5)]
+    : [cx + (5 - y), cy - (x - 5)];
+}
+/** Blit a head-space sprite onto the canvas. */
+function placeHead(p: Pixels, q: Pose, hs: Pixels) {
+  for (let j = 0; j < HS.h; j++)
+    for (let i = 0; i < HS.w; i++) {
+      const c = colourAt(hs, i, j);
+      if (!c) continue;
+      const [x, y] = headXY(q, i - HS.ox, j - HS.oy);
+      p.pixel(x, y, c);
+    }
+}
+/** Canvas mask of a head-space mask. */
+function headMaskOn(p: Pixels, q: Pose, m: Mask) {
+  const out = mk(p);
+  for (let j = 0; j < HS.h; j++)
+    for (let i = 0; i < HS.w; i++)
+      if (m.has(i, j)) {
+        const [x, y] = headXY(q, i - HS.ox, j - HS.oy);
+        out.set(x, y);
+      }
+  return out;
+}
+/** The bare head silhouette on the canvas. */
+function skullMask(p: Pixels, q: Pose) {
+  return headMaskOn(p, q, tmask(q.away ? SKULL_NE : SKULL_SE));
+}
+/** Clear body-layer pixels that would cover the head and throat. */
 function clearHead(p: Pixels, q: Pose) {
-  const m = headMask(p, q),
-    [x0, y0] = q.box;
-  m.rect(x0 + 3, y0 + 18, 16, 4);
-  for (let i = 0; i < m.data.length; i++) if (m.data[i]) p.data[i * 4 + 3] = 0;
+  const m = tmask(q.away ? SKULL_NE : SKULL_SE).grow(0.6);
+  hrect(m, 2, 9, 8, 4);
+  const c = headMaskOn(p, q, m);
+  for (let i = 0; i < c.data.length; i++) if (c.data[i]) p.data[i * 4 + 3] = 0;
 }
-function drawHead(p: Pixels, q: Pose, id: string) {
-  const [x0, y0] = q.box,
-    head = headMask(p, q);
-  paint(p, head, K.skin, { light: 0, dark: 1, top: false });
-  const inHead = (m: Mask) => {
-    for (let i = 0; i < m.data.length; i++) if (!head.data[i]) m.data[i] = 0;
-    return m;
-  };
-  const top = (rows: number) =>
-    inHead(mk(p).rect(x0 - 2, y0 - 2, 26, rows + 2));
-  let hair = mk(p);
-  const beard = mk(p);
-  if (q.away) {
-    // Back of the head: hair over most of it, a strip of nape below.
-    switch (id) {
-      case 'adult-man-shaved':
-      case 'adult-man-shaved-beard':
-        hair = top(4);
-        break;
-      case 'adult-man-short':
-        hair = top(12);
-        break;
-      case 'adult-man-swept-beard':
-        hair = top(16).ellipse(x0 + 11, y0 + 1, 10, 4);
-        break;
-      case 'adult-woman-loose':
-        // Thick loose hair falling past the shoulders.
-        hair = top(22).rect(x0 - 1, y0 + 12, 24, 12).ellipse(x0 + 11, y0 + 2, 12, 5);
-        break;
-      case 'adult-man-goatee':
-        hair.ellipse(x0 + 11, y0 + 1, 8, 4);
-        p.rect(x0 + 6, y0 - 1, 9, 1, F.gold);
-        break;
-      case 'elder':
-        hair = inHead(mk(p).rect(x0 - 1, y0 + 5, 24, 11));
-        hair.rect(x0 + 5, y0 + 1, 12, 2);
-        break;
-      case 'adult-man-curly':
-        hair.ellipse(x0 + 11, y0 + 7, 14.5, 11);
-        break;
-      default:
-        hair = top(id === 'child' ? 14 : 16);
-    }
-    if (id === 'adult-woman')
-      hair = top(20)
-        .disc(x0 + 11, y0 + 1, 5)
-        .rect(x0 + 2, y0 + 14, 18, 6);
-  } else {
-    // 3/4 view toward the right: hair at the top and back (left), face right.
-    switch (id) {
-      case 'adult-woman':
-        hair = top(6)
-          .rect(x0, y0 + 3, 5, 15)
-          .rect(x0 + 19, y0 + 4, 3, 9)
-          .disc(x0 + 2, y0 + 2.5, 4)
-          .poly([
-            [x0 + 4, y0 + 5],
-            [x0 + 16, y0 + 5],
-            [x0 + 8, y0 + 8.5],
-          ]);
-        break;
-      case 'child':
-        hair = top(8)
-          .rect(x0, y0 + 3, 5, 10)
-          .rect(x0 + 19, y0 + 4, 3, 7);
-        break;
-      case 'elder':
-        hair = inHead(mk(p).rect(x0, y0 + 4, 5, 10))
-          .rect(x0 + 19, y0 + 5, 3, 5)
-          .rect(x0 + 4, y0, 13, 2);
-        beard
-          .rect(x0 + 5, y0 + 15, 17, 5)
-          .rect(x0 + 7, y0 + 19, 13, 3)
-          .rect(x0 + 10, y0 + 22, 7, 2)
-          .rect(x0 + 19, y0 + 10, 3, 6);
-        break;
-      case 'adult-man-beard':
-        hair = top(5).rect(x0, y0 + 3, 5, 9);
-        beard
-          .rect(x0 + 4, y0 + 15, 18, 5)
-          .rect(x0 + 7, y0 + 19, 13, 3)
-          .rect(x0 + 19, y0 + 9, 3, 7)
-          .rect(x0 + 4, y0 + 8, 3, 8);
-        break;
-      case 'adult-man-clean':
-        hair = top(6)
-          .rect(x0, y0 + 3, 5, 10)
-          .ellipse(x0 + 14, y0 + 1, 8, 3.6);
-        break;
-      case 'adult-man-curly':
-        hair.ellipse(x0 + 9, y0 + 7, 15, 11.5);
-        hair.minus(mk(p).ellipse(x0 + 14, y0 + 13, 8.5, 8));
-        beard
-          .rect(x0 + 5, y0 + 15, 17, 5)
-          .rect(x0 + 8, y0 + 19, 12, 3)
-          .rect(x0 + 19, y0 + 9, 3, 7);
-        break;
-      case 'adult-man-goatee':
-        hair.ellipse(x0 + 12, y0 + 1, 8.5, 4);
-        beard.rect(x0 + 10, y0 + 18, 5, 3).rect(x0 + 11, y0 + 21, 3, 1);
-        break;
-      case 'adult-man-shaved':
-        hair = top(3).rect(x0, y0 + 3, 4, 3);
-        break;
-      case 'adult-man-shaved-beard':
-        // Close-shaved head with a full, thick beard.
-        hair = top(3).rect(x0, y0 + 3, 4, 3);
-        beard
-          .rect(x0 + 4, y0 + 14, 18, 6)
-          .rect(x0 + 7, y0 + 19, 13, 3)
-          .rect(x0 + 19, y0 + 8, 3, 8)
-          .rect(x0 + 4, y0 + 8, 3, 8);
-        break;
-      case 'adult-man-short':
-        // Close-cropped hair, clean-shaven.
-        hair = top(5).rect(x0, y0 + 3, 4, 8).rect(x0 + 19, y0 + 4, 2, 4);
-        break;
-      case 'adult-man-swept-beard':
-        // Thick dark hair swept up and back, with a full trimmed beard.
-        hair = top(7)
-          .rect(x0, y0 + 3, 5, 9)
-          .ellipse(x0 + 13, y0 + 0.5, 10, 4.2);
-        beard
-          .rect(x0 + 4, y0 + 15, 18, 5)
-          .rect(x0 + 7, y0 + 19, 13, 3)
-          .rect(x0 + 19, y0 + 9, 3, 7)
-          .rect(x0 + 4, y0 + 9, 3, 7);
-        break;
-      case 'adult-woman-loose':
-        // Thick, voluminous hair worn loose to the shoulders; no bun.
-        hair = top(6)
-          .ellipse(x0 + 11, y0 + 1.5, 13, 5)
-          .rect(x0 - 2, y0 + 2, 7, 22)
-          .rect(x0 + 19, y0 + 3, 4, 16)
-          .poly([
-            [x0 + 4, y0 + 5],
-            [x0 + 17, y0 + 5],
-            [x0 + 7, y0 + 9],
-          ]);
-        break;
-      default:
-        // adult-man: short neat hair and a short beard.
-        hair = top(6)
-          .rect(x0, y0 + 3, 5, 11)
-          .rect(x0 + 12, y0 + 5, 4, 1);
-        beard
-          .rect(x0 + 5, y0 + 17, 17, 3)
-          .rect(x0 + 8, y0 + 19, 11, 2)
-          .rect(x0 + 19, y0 + 11, 3, 6)
-          .rect(x0 + 5, y0 + 11, 2, 6);
-    }
-    if (beard.data.some(Boolean)) {
-      inHead(beard);
-      if (
-        id === 'elder' ||
-        id === 'adult-man-beard' ||
-        id === 'adult-man-curly' ||
-        id === 'adult-man-shaved-beard' ||
-        id === 'adult-man-swept-beard'
-      )
-        beard.rect(x0 + 8, y0 + 19, 11, id === 'elder' ? 5 : 3);
-      if (id === 'adult-man-goatee')
-        beard.rect(x0 + 10, y0 + 18, 5, 3).rect(x0 + 11, y0 + 21, 3, 1);
-    }
-    // Ear peeking out under short hair.
-    if (!['adult-woman', 'adult-woman-loose', 'adult-man-curly'].includes(id))
-      p.rect(x0 + 5, y0 + 10, 2, 3, K.skin[2]);
+
+/* ───────────── body ───────────── */
+/** Index of the arm/leg nearer the viewer (the character's right in SE). */
+const nearI = (q: Pose) => (q.away ? 1 : 0);
+const farI = (q: Pose) => (q.away ? 0 : 1);
+const upright = (q: Pose) => q.mode !== 'bow' && q.mode !== 'prostrate';
+/** Actions where the far forearm and hand come round in front of the body. */
+const FAR_FRONT = new Set<Action>([
+  'carry',
+  'cross-arms',
+  'guard',
+  'punch',
+  'read',
+  'teach',
+  'write',
+  'sit',
+  'ride',
+  'pour',
+  'sweep',
+  'hand-on-heart',
+  'pray',
+  'belt-pose',
+  'taunt',
+]);
+const farFront = (q: Pose) =>
+  FAR_FRONT.has(q.action) && !(q.action === 'pray' && !upright(q));
+/** Spine frame: u runs up the back, v to the screen right when upright. */
+function spine(q: Pose) {
+  const u = norm(q.hip, q.chest),
+    v: P = [-u[1], u[0]];
+  const at = (base: P, du: number, dv: number): P => [
+    base[0] + u[0] * du + v[0] * dv,
+    base[1] + u[1] * du + v[1] * dv,
+  ];
+  return { u, v, at };
+}
+/**
+ * Torso silhouette from the hips to the base of the neck: broad shoulders,
+ * a narrower waist, with rounded shoulder caps. `w` widens it for loose
+ * clothing, `drop` extends it below the hips (jackets and tunics).
+ */
+function torsoMask(
+  p: Pixels,
+  q: Pose,
+  o: { w?: number; drop?: number; neck?: number } = {},
+) {
+  const { at } = spine(q),
+    w = o.w ?? 0,
+    drop = o.drop ?? 0;
+  const waist = lerp(q.hip, q.chest, 0.42),
+    side = (du: number, hw: number, base: P) => [
+      at(base, du, -hw),
+      at(base, du, hw),
+    ];
+  const rows: [P, P][] = [
+    side(-1.8 - drop, 5.4 + w + drop * 0.25, q.hip),
+    side(0, 5.5 + w, q.hip),
+    side(0, 4.9 + w, waist),
+    side(0, 6 + w, q.chest),
+    side(3, 6.4 + w, q.chest),
+    side(4.3, 4.2 + w * 0.5, q.chest),
+    side(4.9, o.neck ?? 2.3, q.chest),
+  ] as [P, P][];
+  const m = mk(p).poly([...rows.map((r) => r[0]), ...rows.reverse().map((r) => r[1])]);
+  for (const arm of q.arms) m.disc(arm[0][0], arm[0][1], 2.3 + w * 0.5);
+  return m;
+}
+function armMask(p: Pixels, q: Pose, i: number, o: { r?: number; to?: number } = {}) {
+  const [s, e, h] = q.arms[i],
+    r = o.r ?? 0,
+    wrist = lerp(e, h, o.to ?? 0.8);
+  return mk(p)
+    .capsule(s, e, 2.2 + r, 1.9 + r)
+    .capsule(e, wrist, 1.9 + r, 1.5 + r);
+}
+function legMask(p: Pixels, q: Pose, i: number, o: { r?: number; to?: number } = {}) {
+  const [t, k, f] = q.legs[i],
+    r = o.r ?? 0,
+    ankle = lerp(k, ankleOf(q, i), o.to ?? 1);
+  const m = mk(p)
+    .capsule(t, k, 2.9 + r, 2.2 + r)
+    .capsule(k, ankle, 2.2 + r, 1.4 + r);
+  // Calf: a little fuller behind the shin.
+  const back = q.away ? 0.4 : -0.4,
+    c = lerp(k, ankle, 0.3);
+  m.disc(c[0] + back, c[1], 2.3 + r);
+  void f;
+  return m;
+}
+/** Ankle: just above the foot centre when standing, at the foot otherwise. */
+function ankleOf(q: Pose, i: number): P {
+  const f = q.legs[i][2];
+  return q.mode === 'floor' || q.mode === 'kneel' || q.mode === 'prostrate'
+    ? f
+    : [f[0], f[1] - 1.6];
+}
+type HandKind = 'relaxed' | 'open' | 'fist' | 'point' | 'hold' | 'flat';
+function handKind(q: Pose, i: number): HandKind {
+  const a = q.action,
+    front = i === 1;
+  switch (a) {
+    case 'guard':
+    case 'punch':
+    case 'taunt':
+      return 'fist';
+    case 'celebrate':
+    case 'speech':
+      return front ? 'point' : a === 'speech' ? 'open' : 'fist';
+    case 'wave':
+    case 'talk':
+    case 'teach':
+      return front ? 'open' : 'relaxed';
+    case 'cheer':
+    case 'arms-out':
+      return 'open';
+    case 'pray':
+      return upright(q) ? 'hold' : 'flat';
+    case 'carry':
+    case 'read':
+    case 'pour':
+    case 'sweep':
+    case 'write':
+    case 'ride':
+    case 'belt-pose':
+    case 'cross-arms':
+    case 'hand-on-heart':
+      return 'hold';
+    default:
+      return 'relaxed';
   }
-  paint(p, hair, K.hair, { light: 1, dark: 1 });
-  paint(p, beard, K.hair, { light: 0, dark: 1, top: false });
-  if (id === 'adult-man-curly')
-    for (let j = 0; j < p.height; j++)
-      for (let i = 0; i < p.width; i++)
-        if (hair.has(i, j) && (i * 3 + j * 5) % 7 === 0)
-          p.pixel(i, j, K.hair[0]);
-  if (id === 'adult-man-goatee' && !q.away)
-    p.rect(x0 + 7, y0 - 2, 10, 1, F.gold);
-  if (!q.away) features(p, q, x0, y0, beard.data.some(Boolean));
 }
-function chairUnder(p: Pixels, q: Pose) {
+/** A hand with a thumb, shaped by what it is doing. */
+function handMask(p: Pixels, q: Pose, i: number) {
+  const [, e, h] = q.arms[i],
+    d = norm(e, h),
+    n: P = [-d[1], d[0]],
+    t: P = n[0] > 0.3 || (Math.abs(n[0]) <= 0.3 && n[1] < 0) ? n : [-n[0], -n[1]],
+    kind = handKind(q, i),
+    m = mk(p);
+  const at = (a: number, b: number): P => [
+    h[0] + d[0] * a + t[0] * b,
+    h[1] + d[1] * a + t[1] * b,
+  ];
+  switch (kind) {
+    case 'fist':
+      m.disc(h[0], h[1], 1.9);
+      break;
+    case 'point': {
+      m.disc(h[0], h[1], 1.7);
+      const dir: P = q.action === 'celebrate' ? [0.15, -1] : norm(e, h);
+      m.capsule(h, [h[0] + dir[0] * 3.6, h[1] + dir[1] * 3.6], 0.6);
+      break;
+    }
+    case 'open':
+      m.capsule(at(-0.7, 0), at(1.6, 0), 1.5);
+      m.capsule(at(1.2, -0.5), at(2.8, -0.6), 0.9);
+      m.disc(...at(0.2, 1.6), 0.8);
+      break;
+    case 'flat':
+      m.capsule(at(-0.6, 0), at(1.6, 0), 1.3);
+      break;
+    case 'hold':
+      m.capsule(at(-0.5, 0), at(0.9, 0), 1.6);
+      m.disc(...at(0.4, 1.3), 0.8);
+      break;
+    default:
+      m.capsule(at(-0.7, 0), at(1.3, -0.2), 1.4);
+      m.capsule(at(1.2, -0.3), at(2.2, -0.4), 0.9);
+      m.disc(...at(0.1, 1.4), 0.7);
+  }
+  return m;
+}
+function drawHand(p: Pixels, q: Pose, i: number) {
+  const m = handMask(p, q, i);
+  shade(p, m, K.skin, { r: 1.6, hi: 0.74, lo: 0.1 });
+  contour(p, m);
+  const kind = handKind(q, i),
+    h = q.arms[i][2];
+  if (kind === 'fist') {
+    // Knuckles and the thumb across the fingers.
+    const d = norm(q.arms[i][1], h);
+    p.pixel(h[0] + d[0] * 1.2, h[1] + d[1] * 1.2, K.skin[2]);
+    p.pixel(h[0] - 0.5, h[1] + 0.5, K.skin[0]);
+  }
+}
+function drawHands(p: Pixels, q: Pose, which: number[] = [0, 1]) {
+  for (const i of which) drawHand(p, q, i);
+}
+/** Shoes with a sole, pointing the way the person faces. */
+function shoeMask(p: Pixels, q: Pose, i: number) {
+  const [fx, fy] = q.legs[i][2],
+    m = mk(p);
+  if (q.mode === 'floor' || q.mode === 'kneel' || q.mode === 'prostrate') {
+    m.ellipse(fx, fy, 2.6, 1.6);
+    return { m, sole: null as Mask | null };
+  }
+  if (q.away) {
+    m.ellipse(fx + 0.6, fy + 0.4, 2.3, 1.7).rect(fx - 1, fy - 1.5, 3, 2);
+    m.rect(fx + 1, fy - 1, 2, 1);
+  } else {
+    m.ellipse(fx + 1.3, fy + 0.5, 3.2, 1.6)
+      .rect(fx - 1.5, fy - 0.5, 3.5, 2)
+      .rect(fx - 1, fy - 1.5, 3, 1);
+  }
+  const sole = mk(p);
+  for (let x = 0; x < p.width; x++)
+    for (let y = p.height - 1; y >= 0; y--)
+      if (m.has(x, y)) {
+        sole.set(x, y);
+        break;
+      }
+  return { m, sole };
+}
+const SHOE = [F.charcoal[1], F.charcoal[2], F.ink];
+function drawShoes(p: Pixels, q: Pose, which = [farI(q), nearI(q)]) {
+  for (const i of which) {
+    const { m, sole } = shoeMask(p, q, i);
+    shade(p, m, SHOE, { r: 1.6, hi: 0.7, lo: 0.25 });
+    contour(p, m);
+    if (sole) fill(p, sole, F.ink);
+    // Toe-cap shine.
+    const [fx, fy] = q.legs[i][2];
+    if (q.mode !== 'floor' && q.mode !== 'kneel' && q.mode !== 'prostrate')
+      p.pixel(fx + (q.away ? 1 : 2.5), fy - (q.away ? 0.5 : 0), F.charcoal[0]);
+  }
+}
+/** The neck from the top of the torso up under the jaw. */
+function drawNeck(p: Pixels, q: Pose) {
+  const top = headXY(q, q.away ? 5 : 4, 9.5),
+    m = mk(p).capsule(q.neck, top, 2.2, 2);
+  shade(p, m, K.skin, { r: 2, hi: 0.85, lo: 0.3 });
+  // Shadow under the jaw.
+  if (q.turn === 'up') {
+    const jaw = skullMask(p, q);
+    castShadow(p, jaw, 0, 1, m);
+    castShadow(p, jaw, 0, 2, m);
+  }
+}
+function stool(p: Pixels, q: Pose) {
   // A simple stool under chair-seated poses, so desk workers never float.
-  const [x, y] = q.hip;
-  p.rect(x - 1, y + 4, 2, 64 - y - 4, F.steel[2]);
-  p.rect(x - 5, 64, 10, 1, F.steel[2]);
-  p.rect(x - 5, 65, 2, 1, F.ink);
-  p.rect(x + 3, 65, 2, 1, F.ink);
-  paint(p, mk(p).ellipse(x + 1, y + 3, 7, 2.2), F.steel, { dark: 2 });
+  const [x] = q.hip,
+    top = Math.round(q.hip[1] + 2.5);
+  const post = mk(p).rect(x - 0.5, top + 1, 2, AY - top - 2);
+  shade(p, post, F.steel, { r: 1 });
+  const foot = mk(p).rect(x - 5, AY - 2, 11, 1).rect(x - 5, AY - 1, 2, 1).rect(x + 4, AY - 1, 2, 1);
+  fill(p, foot, F.charcoal[2]);
+  const seat = mk(p).ellipse(x + 1, top + 0.5, 7, 2);
+  shade(p, seat, F.charcoal, { r: 1.5 });
 }
 function drawBase(p: Pixels, id: string, q: Pose) {
-  if (q.mode === 'chair') chairUnder(p, q);
-  const under = mk(p);
-  under.capsule(q.chest, q.hip, 5.5);
-  for (const leg of q.legs)
-    under.capsule(leg[0], leg[1], 2.4).capsule(leg[1], leg[2], 2.2);
-  paint(p, under, F.charcoal);
-  for (const arm of q.arms) {
-    const m = mk(p).capsule(arm[0], arm[1], 2.1).capsule(arm[1], arm[2], 1.9);
-    paint(p, m, F.charcoal, { dark: 1 });
+  if (q.mode === 'chair') stool(p, q);
+  const U = F.charcoal,
+    fi = farI(q),
+    ni = nearI(q);
+  // A plain dark undersuit; garments cover it.
+  const fa = armMask(p, q, fi);
+  shade(p, fa, U, { r: 2 });
+  if (!farFront(q)) drawHand(p, q, fi);
+  for (const i of [fi, ni]) {
+    const l = legMask(p, q, i);
+    shade(p, l, U, { r: 2.2 });
+    contour(p, l);
   }
-  shoes(p, q);
-  hands(p, q);
-  drawHead(p, q, id);
-}
-function shoes(p: Pixels, q: Pose) {
-  for (const leg of q.legs) {
-    const [x, y] = leg[2];
-    const m = mk(p);
-    if (q.mode === 'prostrate' || q.mode === 'kneel' || q.mode === 'floor')
-      m.ellipse(x, y, 2.6, 1.8);
-    else m.ellipse(x + (q.away ? 0.5 : 1), y + 1, 3.6, 2.1);
-    paint(p, m, [F.charcoal[1], F.ink, F.ink], { light: 1, dark: 1 });
+  drawShoes(p, q);
+  const t = torsoMask(p, q);
+  shade(p, t, U, { r: 3 });
+  drawNeck(p, q);
+  if (farFront(q)) {
+    const fore = mk(p).capsule(q.arms[fi][1], lerp(q.arms[fi][1], q.arms[fi][2], 0.8), 1.9, 1.5);
+    shade(p, fore, U, { r: 2 });
+    contour(p, fore);
+    drawHand(p, q, fi);
   }
-}
-function hands(p: Pixels, q: Pose) {
-  for (const arm of q.arms) {
-    const m = mk(p).disc(arm[2][0], arm[2][1] + 0.5, 2.5);
-    if (q.action === 'celebrate' && arm === q.arms[1])
-      m.rect(arm[2][0] - 0.5, arm[2][1] - 5, 2, 4); // raised index finger
-    if (q.action === 'speech' && arm === q.arms[1])
-      m.capsule(arm[2], add(arm[2], 2.5, -3.5), 0.9); // pointing finger
-    paint(p, m, K.skin, { dark: 1, light: 0, top: false });
-  }
+  const na = armMask(p, q, ni);
+  shade(p, na, U, { r: 2 });
+  contour(p, na);
+  drawHand(p, q, ni);
+  placeHead(p, q, headSprite(id, q));
 }
 
-/* ───────────── garments ───────────── */
-function torso(p: Pixels, q: Pose, ramp: string[], r = 5.6) {
-  const m = mk(p).capsule(q.chest, q.hip, r);
-  paint(p, m, ramp);
-  return m;
-}
-function sleeves(
-  p: Pixels,
-  q: Pose,
-  ramp: string[],
-  o: { wide?: boolean; short?: string[] } = {},
-) {
-  clearHead(p, q);
-  for (const arm of q.arms) {
-    const m = mk(p).capsule(arm[0], arm[1], 2.4);
-    if (!o.short) m.capsule(arm[1], arm[2], 2.1, o.wide ? 3.2 : 2.1);
-    paint(p, m, ramp, { dark: 1 });
-    if (o.short) {
-      const f = mk(p).capsule(lerp(arm[1], arm[0], 0.1), arm[2], 1.9);
-      paint(p, f, o.short, { dark: 1 });
-    }
-    // Cuff line.
-    const c = lerp(arm[1], arm[2], 0.78);
-    if (!o.short) p.pixel(c[0], c[1], ramp[2]);
-  }
-  hands(p, q);
-}
-function trousers(p: Pixels, q: Pose, ramp: string[]) {
-  const m = mk(p);
-  for (const leg of q.legs)
-    m.capsule(leg[0], leg[1], 2.6).capsule(
-      leg[1],
-      lerp(leg[1], leg[2], 0.9),
-      2.3,
-    );
-  if (q.mode === 'floor') m.ellipse(24, 63.5, 10, 3);
-  paint(p, m, ramp);
-  return m;
-}
-/** Long garment from the hips to the ankles, following any posture. */
-function robe(
-  p: Pixels,
-  q: Pose,
-  ramp: string[],
-  o: { flare?: number; hem?: number } = {},
-) {
-  const flare = o.flare ?? 3,
-    m = mk(p);
-  const [l, r] = q.legs;
-  if (q.mode === 'stand') {
-    const hem = Y(o.hem ?? 63),
-      xs = [l[2][0], r[2][0]];
-    m.poly([
-      [q.hip[0] - 5.6, q.hip[1] - 2],
-      [q.hip[0] + 5.6, q.hip[1] - 2],
-      [Math.max(...xs) + 2.5 + flare * 0.5, hem],
-      [Math.min(...xs) - 2.5 - flare * 0.5, hem],
-    ]);
-    m.rect(
-      Math.min(...xs) - 2 - flare * 0.5,
-      hem - 1,
-      Math.abs(xs[1] - xs[0]) + 4 + flare,
-      1,
-    );
-  } else if (q.mode === 'floor') {
-    m.ellipse(24, 62.5, 11, 4).rect(q.hip[0] - 5.6, q.hip[1] - 4, 11.2, 6);
-  } else {
-    for (const leg of [l, r])
-      m.capsule(leg[0], leg[1], 3.4).capsule(
-        leg[1],
-        lerp(leg[1], leg[2], 0.75),
-        3.0,
-      );
-    m.poly([
-      [q.hip[0] - 5, q.hip[1] - 3],
-      [q.hip[0] + 5, q.hip[1] - 3],
-      l[1],
-      r[1],
-    ]);
-    if (q.mode === 'chair')
-      m.poly([l[1], r[1], add(r[2], 2.5, -2), add(l[2], -2.5, -2)]);
-  }
-  paint(p, m, ramp, { light: 2, dark: 3 });
-  // Vertical folds.
-  if (q.mode === 'stand')
-    for (const dx of [-2, 2]) {
-      for (let y = q.hip[1] + 3; y < Y(o.hem ?? 63) - 1; y++)
-        if (y % 4 !== 0)
-          p.pixel(q.hip[0] + dx + (y - q.hip[1]) * dx * 0.06, y, ramp[2]);
-    }
-  return m;
-}
-function hemTrim(p: Pixels, m: Mask, ramp: string[], rows = 1) {
-  for (let x = 0; x < m.width; x++) {
-    let bottom = -1;
-    for (let y = m.height - 1; y >= 0; y--)
-      if (m.has(x, y)) {
-        bottom = y;
-        break;
-      }
-    if (bottom > 54)
-      for (let k = 1; k <= rows; k++)
-        p.pixel(x, bottom - k, ramp[(x + k) % 2 ? 1 : 0]);
-  }
-}
-function belt(p: Pixels, q: Pose, c: string[], h = 2) {
-  if (q.mode === 'bow' || q.mode === 'prostrate') return;
-  const y = Math.round(q.hip[1] - 1);
-  for (let x = Math.round(q.hip[0] - 5.5); x < q.hip[0] + 5.5; x++)
-    for (let k = 0; k < h; k++) p.pixel(x, y + k, k ? c[2] : c[1]);
-}
-function frontLine(
-  p: Pixels,
-  q: Pose,
-  c: string,
-  from: number,
-  to: number,
-  dx = 0,
-) {
-  if (q.away || q.mode === 'bow' || q.mode === 'prostrate') return;
-  for (let y = from; y < to; y++) p.pixel(q.chest[0] + 1 + dx, y, c);
-}
+/* STUBS */
 function drawGarment(p: Pixels, id: string, q: Pose) {
-  const C = K.cloth,
-    S = K.sash,
-    top = Math.round(q.chest[1] - 4),
-    upright = q.mode !== 'bow' && q.mode !== 'prostrate';
-  const neck = (c: string) => {
-    if (!q.away && upright) {
-      p.rect(q.chest[0] - 1, top, 4, 1, c);
-      p.pixel(q.chest[0], top + 1, c);
-      p.pixel(q.chest[0] + 1, top + 1, c);
-    }
-  };
-  switch (id) {
-    case 'thobe': {
-      robe(p, q, C, { flare: 2 });
-      torso(p, q, C);
-      neck(C[2]);
-      frontLine(p, q, C[2], top + 2, top + 10);
-      if (!q.away && upright)
-        for (let y = top + 3; y < top + 10; y += 3)
-          p.pixel(q.chest[0] + 2, y, C[0]);
-      sleeves(p, q, C);
-      break;
-    }
-    case 'jubba': {
-      robe(p, q, S, { flare: 2 });
-      torso(p, q, S);
-      const coat = robe(p, q, C, { flare: 3, hem: 62 });
-      void coat;
-      const t = torso(p, q, C);
-      void t;
-      if (!q.away && upright) {
-        p.rect(q.chest[0] - 1, top, 4, 12, S[1]);
-        p.rect(q.chest[0] + 2, top, 1, 12, C[2]);
-        if (q.mode === 'stand') p.rect(q.chest[0] - 1, q.hip[1], 4, 14, S[1]);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'qaba': {
-      robe(p, q, C, { flare: 2 });
-      torso(p, q, C);
-      if (!q.away && upright)
-        for (let k = 0; k < 9; k++)
-          p.pixel(q.chest[0] - 3 + k * 0.7, top + 1 + k, C[2]);
-      belt(p, q, S, 3);
-      if (q.mode === 'stand' && !q.away)
-        p.rect(q.hip[0] + 2, q.hip[1] + 1, 2, 7, S[2]);
-      sleeves(p, q, C);
-      break;
-    }
-    case 'kaftan': {
-      const r = robe(p, q, C, { flare: 3 });
-      hemTrim(p, r, S, 2);
-      torso(p, q, C);
-      if (!q.away && upright) {
-        for (let k = 0; k < 6; k++) {
-          p.pixel(q.chest[0] - 2 + k * 0.5, top + k, S[0]);
-          p.pixel(q.chest[0] + 3 - k * 0.5, top + k, S[0]);
-        }
-        frontLine(p, q, S[1], top + 6, top + 16);
-      }
-      sleeves(p, q, C);
-      for (const arm of q.arms) {
-        const c = lerp(arm[1], arm[2], 0.72);
-        p.rect(c[0] - 2, c[1], 4, 1, S[0]);
-      }
-      break;
-    }
-    case 'abaya': {
-      const r = robe(p, q, C, { flare: 5, hem: 64 });
-      torso(p, q, C, 6);
-      sleeves(p, q, C, { wide: true });
-      if (!q.away && upright)
-        frontLine(p, q, S[1], top + 1, q.mode === 'stand' ? Y(63) : top + 11);
-      for (const arm of q.arms) {
-        const c = lerp(arm[1], arm[2], 0.75);
-        p.rect(c[0] - 2.5, c[1], 5, 1, S[1]);
-      }
-      hemTrim(p, r, S, 1);
-      break;
-    }
-    case 'panjabi-lungi': {
-      const lungi = robe(p, q, S, { flare: 1 });
-      for (let y = 0; y < p.height; y++)
-        for (let x = 0; x < p.width; x++)
-          if (lungi.has(x, y) && (x % 4 === 0 || y % 4 === 0))
-            p.pixel(x, y, S[2]);
-      torso(p, q, C);
-      if (q.mode === 'stand') {
-        const m = mk(p).poly([
-          [q.hip[0] - 5.6, q.hip[1] - 2],
-          [q.hip[0] + 5.6, q.hip[1] - 2],
-          [q.hip[0] + 7, Y(54)],
-          [q.hip[0] - 7, Y(54)],
-        ]);
-        paint(p, m, C, { light: 2, dark: 2 });
-      }
-      neck(C[2]);
-      frontLine(p, q, C[2], top + 2, top + 9);
-      sleeves(p, q, C);
-      break;
-    }
-    case 'boubou': {
-      robe(p, q, C, { flare: 6, hem: 64 });
-      const cape = mk(p).capsule(q.chest, q.hip, 7.5);
-      for (const arm of q.arms) cape.capsule(arm[0], arm[2], 3.6);
-      paint(p, cape, C, { light: 2, dark: 2 });
-      clearHead(p, q);
-      if (!q.away && upright) {
-        p.rect(q.chest[0] - 2, top + 3, 6, 6, S[1]);
-        p.rect(q.chest[0] - 1, top + 4, 4, 4, S[0]);
-        p.rect(q.chest[0], top + 5, 2, 2, S[2]);
-      }
-      hands(p, q);
-      break;
-    }
-    case 'baju-kurung': {
-      const skirt = robe(p, q, S, { flare: 3 });
-      for (let x = 0; x < p.width; x++)
-        for (let y = Math.round(Y(56)); y < p.height; y++)
-          if (skirt.has(x, y) && y % 4 === 0) p.pixel(x, y, S[0]);
-      torso(p, q, C);
-      if (q.mode === 'stand') {
-        const m = mk(p).poly([
-          [q.hip[0] - 5.6, q.hip[1] - 2],
-          [q.hip[0] + 5.6, q.hip[1] - 2],
-          [q.hip[0] + 7.5, Y(56)],
-          [q.hip[0] - 7.5, Y(56)],
-        ]);
-        paint(p, m, C, { light: 2, dark: 2 });
-      }
-      neck(C[2]);
-      sleeves(p, q, C);
-      break;
-    }
-    case 'hui-robe': {
-      robe(p, q, C, { flare: 2 });
-      torso(p, q, C);
-      if (!q.away && upright) {
-        for (let k = 0; k < 7; k++)
-          p.pixel(q.chest[0] - 1 + k, top + 1 + k * 0.5, C[2]);
-        for (let y = top + 4; y < top + 21; y += 3)
-          p.rect(q.chest[0] + 4, y, 2, 1, S[1]);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'scholar-robe': {
-      robe(p, q, C, { flare: 2 });
-      torso(p, q, C);
-      const cloak = mk(p);
-      for (const arm of q.arms)
-        cloak.capsule(arm[0], lerp(arm[0], arm[1], 0.8), 3.4);
-      if (upright) {
-        cloak.rect(q.chest[0] - 7, top, 3, 16).rect(q.chest[0] + 4, top, 3, 16);
-        if (q.mode === 'stand')
-          cloak.poly([
-            [q.chest[0] - 7.5, top + 14],
-            [q.chest[0] - 4, top + 14],
-            [q.chest[0] - 5, Y(61)],
-            [q.chest[0] - 10, Y(61)],
-          ]);
-      }
-      paint(p, cloak, S, { dark: 2 });
-      sleeves(p, q, C, { wide: true });
-      break;
-    }
-    case 'apron': {
-      trousers(p, q, F.charcoal);
-      torso(p, q, C);
-      sleeves(p, q, C);
-      if (!q.away && upright) {
-        const m = mk(p).rect(q.chest[0] - 4, top + 3, 9, 7);
-        if (q.mode === 'stand')
-          m.poly([
-            [q.hip[0] - 5, q.hip[1] - 2],
-            [q.hip[0] + 6, q.hip[1] - 2],
-            [q.hip[0] + 6.5, Y(58)],
-            [q.hip[0] - 5.5, Y(58)],
-          ]);
-        paint(p, m, S, { light: 1, dark: 1 });
-        p.rect(q.chest[0] - 1, q.hip[1] + 3, 4, 3, S[2]);
-        p.pixel(q.chest[0] - 4, top + 2, S[2]);
-        p.pixel(q.chest[0] + 4, top + 2, S[2]);
-      }
-      if (q.away) belt(p, q, S, 1);
-      break;
-    }
-    case 'shirt-trousers': {
-      trousers(p, q, S);
-      torso(p, q, C);
-      belt(p, q, F.charcoal);
-      neck(C[0]);
-      if (!q.away && upright) {
-        p.pixel(q.chest[0] - 2, top, C[0]);
-        p.pixel(q.chest[0] + 3, top, C[0]);
-        for (let y = top + 3; y < q.hip[1] - 1; y += 3)
-          p.pixel(q.chest[0] + 1, y, C[2]);
-        p.rect(q.chest[0] - 4, top + 4, 3, 1, C[2]);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'suit': {
-      trousers(p, q, C);
-      const jacket = mk(p).capsule(q.chest, add(q.hip, 0, 2), 5.8);
-      paint(p, jacket, C);
-      if (!q.away && upright) {
-        p.poly(
-          [
-            [q.chest[0] - 1.5, top - 0.5],
-            [q.chest[0] + 3.5, top - 0.5],
-            [q.chest[0] + 1, top + 9],
-          ],
-          F.white,
-        );
-        p.rect(q.chest[0], top + 1, 2, 7, S[1]);
-        p.pixel(q.chest[0], top + 1, S[0]);
-        for (let k = 0; k < 9; k++) {
-          p.pixel(q.chest[0] - 2 + k * 0.3, top + k, C[2]);
-          p.pixel(q.chest[0] + 4 - k * 0.3, top + k, C[2]);
-        }
-        p.pixel(q.chest[0] + 1, top + 11, C[2]);
-        p.pixel(q.chest[0] + 1, top + 14, C[2]);
-        p.rect(q.chest[0] - 4, top + 3, 2, 1, F.white);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'blazer-open': {
-      // Smart-casual: dark blazer over a white open-collar shirt, no tie.
-      trousers(p, q, S);
-      const jacket = mk(p).capsule(q.chest, add(q.hip, 0, 2), 5.8);
-      paint(p, jacket, C);
-      if (!q.away && upright) {
-        p.poly(
-          [
-            [q.chest[0] - 2, top - 0.5],
-            [q.chest[0] + 4, top - 0.5],
-            [q.chest[0] + 1, top + 8],
-          ],
-          F.white,
-        );
-        // Open collar points and a hint of the neck.
-        p.pixel(q.chest[0] - 2, top + 1, F.white);
-        p.pixel(q.chest[0] + 4, top + 1, F.white);
-        p.rect(q.chest[0], top, 2, 2, K.skin[1]);
-        p.pixel(q.chest[0], top + 2, K.skin[2]);
-        for (let k = 0; k < 9; k++) {
-          p.pixel(q.chest[0] - 3 + k * 0.35, top + k, C[2]);
-          p.pixel(q.chest[0] + 5 - k * 0.35, top + k, C[2]);
-        }
-        p.pixel(q.chest[0] + 1, top + 10, C[2]);
-        p.pixel(q.chest[0] + 1, top + 13, C[2]);
-        // Pocket square.
-        p.rect(q.chest[0] - 5, top + 4, 2, 1, F.white);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'lab-coat': {
-      trousers(p, q, S);
-      torso(p, q, S);
-      if (q.mode === 'stand') {
-        const coat = mk(p).poly([
-          [q.hip[0] - 5.8, q.chest[1]],
-          [q.hip[0] + 5.8, q.chest[1]],
-          [q.hip[0] + 7.5, Y(57)],
-          [q.hip[0] - 7.5, Y(57)],
-        ]);
-        paint(p, coat, C, { light: 2, dark: 2 });
-      } else if (q.mode === 'chair') robe(p, q, C, { flare: 1 });
-      const t = mk(p).capsule(q.chest, q.hip, 5.9);
-      paint(p, t, C);
-      if (!q.away && upright) {
-        p.rect(q.chest[0] - 1, top, 4, q.mode === 'stand' ? 19 : 11, S[1]);
-        p.rect(q.chest[0] - 1, top, 1, q.mode === 'stand' ? 19 : 11, S[0]);
-        for (let k = 0; k < 5; k++) {
-          p.pixel(q.chest[0] - 2 + k * 0.2, top + k, C[2]);
-          p.pixel(q.chest[0] + 3 - k * 0.2, top + k, C[2]);
-        }
-        p.rect(q.chest[0] - 5, top + 5, 3, 1, C[2]);
-        p.pixel(q.chest[0] - 4, top + 4, F.screen);
-        if (q.mode === 'stand') {
-          p.rect(q.chest[0] - 6, q.hip[1] + 3, 4, 1, C[2]);
-          p.rect(q.chest[0] + 4, q.hip[1] + 3, 4, 1, C[2]);
-        }
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'scrubs': {
-      trousers(p, q, C);
-      torso(p, q, C);
-      if (!q.away && upright) {
-        for (let k = 0; k < 5; k++) {
-          p.pixel(q.chest[0] - 2 + k * 0.5, top + k, S[1]);
-          p.pixel(q.chest[0] + 3 - k * 0.5, top + k, S[1]);
-        }
-        p.rect(q.chest[0] - 1, top, 3, 3, S[1]);
-        p.rect(q.chest[0] - 5, top + 6, 3, 3, C[2]);
-        p.rect(q.chest[0] - 5, top + 6, 3, 1, C[0]);
-      }
-      sleeves(p, q, C, { short: S });
-      break;
-    }
-    case 'hoodie-jeans': {
-      const jeans = trousers(p, q, S);
-      for (let y = 0; y < p.height; y++)
-        for (let x = 0; x < p.width; x++)
-          if (jeans.has(x, y) && (x + y) % 5 === 0 && y > 54)
-            p.pixel(x, y, S[0]);
-      torso(p, q, C, 6);
-      if (upright) {
-        const hood = mk(p).ellipse(
-          q.chest[0] + (q.away ? 0 : -2),
-          top - 1,
-          5,
-          2.4,
-        );
-        paint(p, hood, C, { dark: 1 });
-      }
-      if (!q.away && upright) {
-        p.rect(q.chest[0] - 3, q.hip[1] - 5, 8, 4, C[2]);
-        p.rect(q.chest[0] - 2, q.hip[1] - 5, 6, 1, C[1]);
-        p.rect(q.chest[0], top + 1, 1, 4, F.white);
-        p.rect(q.chest[0] + 2, top + 1, 1, 3, F.white);
-        p.rect(q.hip[0] - 5, q.hip[1] - 1, 11, 1, C[2]);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'long-dress': {
-      const r = robe(p, q, C, { flare: 4, hem: 64 });
-      for (let y = 0; y < p.height; y++)
-        for (let x = 0; x < p.width; x++)
-          if (r.has(x, y) && y > 52 && (x + Math.floor(y / 3)) % 5 === 0)
-            p.pixel(x, y, C[0]);
-      torso(p, q, C, 5.8);
-      belt(p, q, S, 2);
-      neck(C[2]);
-      sleeves(p, q, C);
-      break;
-    }
-    case 'football-kit':
-    case 'football-kit-captain':
-    case 'football-kit-long':
-    case 'football-kit-sleeved': {
-      const long = id === 'football-kit-long',
-        sleeved = id === 'football-kit-sleeved',
-        shortsR = long ? S : C,
-        socksR = long ? S : C;
-      // Shorts to the knee and long socks: knees stay covered.
-      const shorts = mk(p);
-      for (const leg of q.legs)
-        shorts.capsule(leg[0], lerp(leg[0], leg[1], 1.05), 3);
-      if (q.mode === 'floor') shorts.ellipse(24, 63, 10, 3);
-      paint(p, shorts, shortsR);
-      if (q.mode !== 'floor')
-        for (const leg of q.legs) {
-          const socks = mk(p).capsule(
-            lerp(leg[1], leg[2], 0.1),
-            lerp(leg[1], leg[2], 0.92),
-            2.3,
-          );
-          paint(p, socks, socksR, { dark: 1 });
-          const band = lerp(leg[1], leg[2], 0.2);
-          p.rect(band[0] - 2, band[1], 4, 1, long ? C[1] : S[1]);
-        }
-      torso(p, q, C, 5.9);
-      if (upright) {
-        if (!q.away) {
-          // Polo collar with trim and a short placket.
-          p.rect(q.chest[0] - 3, top - 1, 7, 2, C[0]);
-          p.rect(q.chest[0] - 3, top + 1, 2, 1, S[1]);
-          p.rect(q.chest[0] + 2, top + 1, 2, 1, S[1]);
-          p.rect(q.chest[0], top, 1, 5, S[2]);
-          p.pixel(q.chest[0] + 1, top + 3, C[2]);
-        } else p.rect(q.chest[0] - 3, top - 1, 7, 2, S[1]);
-        for (let y = Math.round(q.chest[1]); y < q.hip[1]; y += 4)
-          p.pixel(q.chest[0] - 3 + ((y / 4) % 2), y, C[0]);
-      }
-      if (long) sleeves(p, q, S);
-      else if (sleeved) {
-        sleeves(p, q, C);
-        for (const arm of q.arms) {
-          const c = lerp(arm[1], arm[2], 0.7);
-          p.rect(c[0] - 2, c[1], 4, 1, S[1]);
-        }
-      } else {
-        sleeves(p, q, C, { short: K.skin });
-        for (const arm of q.arms) {
-          const c = lerp(arm[0], arm[1], 0.85);
-          p.rect(c[0] - 2, c[1], 4, 1, S[1]);
-        }
-      }
-      if (id === 'football-kit-captain') {
-        const arm = q.arms[0],
-          c = lerp(arm[0], arm[1], 0.45);
-        p.rect(c[0] - 2.5, c[1] - 1, 5, 3, F.screen);
-        p.rect(c[0] - 2.5, c[1], 5, 1, F.white);
-      }
-      break;
-    }
-    case 'fight-kit': {
-      // Rash guard and knee-length fight shorts over grappling spats.
-      const shorts = mk(p);
-      for (const leg of q.legs)
-        shorts.capsule(leg[0], lerp(leg[0], leg[1], 1.08), 3.1);
-      if (q.mode === 'floor') shorts.ellipse(24, 63, 10, 3);
-      paint(p, shorts, S);
-      for (const leg of q.legs) {
-        const c = lerp(leg[0], leg[1], 0.55);
-        p.rect(c[0] - 2.5, c[1], 1, 4, C[1]);
-      }
-      torso(p, q, C, 5.9);
-      if (upright && !q.away) {
-        p.rect(q.chest[0] - 2, top, 5, 1, S[1]);
-        for (let y = top + 3; y < q.hip[1] - 1; y += 3)
-          p.pixel(q.chest[0] + 3, y, S[1]);
-      }
-      sleeves(p, q, C);
-      break;
-    }
-    case 'boxing-kit': {
-      // Sleeveless vest and knee-length trunks with a dark waistband.
-      const trunks = mk(p);
-      for (const leg of q.legs)
-        trunks.capsule(leg[0], lerp(leg[0], leg[1], 1.05), 3.3);
-      if (q.mode === 'floor') trunks.ellipse(24, 63, 10, 3);
-      paint(p, trunks, S, { light: 2 });
-      if (q.mode === 'stand')
-        for (const [i, leg] of q.legs.entries()) {
-          const c = lerp(leg[0], leg[1], 0.45);
-          p.rect(c[0] + (i ? 2.5 : -3), c[1] - 2, 1, 5, F.ink);
-        }
-      torso(p, q, C, 5.7);
-      belt(p, q, [F.ink, F.ink, F.outline], 3);
-      clearHead(p, q);
-      for (const arm of q.arms) {
-        const m = mk(p).capsule(arm[0], arm[1], 2.3).capsule(arm[1], arm[2], 2);
-        paint(p, m, K.skin, { dark: 1 });
-      }
-      hands(p, q);
-      break;
-    }
-    case 'hi-vis': {
-      trousers(p, q, S);
-      torso(p, q, C, 6);
-      sleeves(p, q, C);
-      if (upright) {
-        const y1 = Math.round(q.chest[1] + 3),
-          y2 = Math.round(q.hip[1] - 2);
-        for (const y of [y1, y2])
-          p.rect(q.chest[0] - 5.5, y, 11, 2, F.steel[0]);
-        for (const arm of q.arms) {
-          const c = lerp(arm[1], arm[2], 0.4);
-          p.rect(c[0] - 2, c[1], 4, 1, F.steel[0]);
-        }
-        if (!q.away) p.rect(q.chest[0], top, 1, y2 - top, C[2]);
-      }
-      break;
-    }
-    default:
-      throw Error(`No placeholder art for garment ${id}`);
-  }
-}
-
-/* ───────────── headwear ───────────── */
-/** Re-paint the face inside a scarf opening (headwear covers the base head). */
-function faceOpening(p: Pixels, q: Pose, opening: Mask) {
-  const [x0, y0] = q.box;
-  paint(p, opening, K.skin, { light: 0, dark: 1, top: false });
-  features(p, q, x0, y0);
+  void id;
+  const t = torsoMask(p, q);
+  shade(p, t, K.cloth, { r: 3 });
+  clearHead(p, q);
 }
 function drawHeadwear(p: Pixels, id: string, q: Pose) {
-  const [x0, y0] = q.box,
-    cx = x0 + 11,
-    H = K.hat,
-    upright = q.mode !== 'bow' && q.mode !== 'prostrate';
-  /** A dome over the top of the head, cut off below row `bottom`. */
-  const dome = (ry: number, bottom: number, rx = 12, dy = 0) => {
-    const m = mk(p).ellipse(cx, y0 + bottom + dy, rx, ry);
-    for (let j = y0 + bottom + 1; j < p.height; j++)
-      for (let i = 0; i < p.width; i++) m.data[j * p.width + i] = 0;
-    return m;
-  };
-  switch (id) {
-    case 'kufi': {
-      const m = dome(8, 6);
-      paint(p, m, H, { dark: 2 });
-      p.rect(x0, y0 + 5, 22, 2, H[2]);
-      for (let i = 0; i < 6; i++) p.pixel(x0 + 2 + i * 3.5, y0 + 2, H[0]);
-      break;
-    }
-    case 'taqiyah': {
-      const m = dome(9.5, 6);
-      paint(p, m, H, { dark: 2 });
-      for (let j = y0 - 3; j < y0 + 6; j += 2)
-        for (let i = x0; i < x0 + 22; i += 2)
-          if (m.has(i + (j % 4 ? 1 : 0), j))
-            p.pixel(i + (j % 4 ? 1 : 0), j, H[0]);
-      p.rect(x0, y0 + 5, 22, 2, H[2]);
-      break;
-    }
-    case 'hui-cap': {
-      const m = mk(p)
-        .rect(x0 - 1, y0 - 1, 24, 8)
-        .rect(x0, y0 - 2, 22, 1);
-      paint(p, m, H, { dark: 2 });
-      p.rect(x0, y0 - 2, 22, 1, H[0]);
-      break;
-    }
-    case 'songkok': {
-      const m = mk(p).rect(x0, y0 - 5, 22, 12);
-      paint(p, m, H, { dark: 2 });
-      p.rect(x0 + 1, y0 - 5, 20, 1, H[0]);
-      p.rect(x0, y0 + 5, 22, 1, H[2]);
-      break;
-    }
-    case 'imamah': {
-      // Turban: wide, rounded wraps with a tail at the back.
-      const m = dome(9, 7, 13.5, -1);
-      paint(p, m, H, { dark: 2 });
-      for (let k = 0; k < 4; k++)
-        for (let i = 0; i < 20; i++)
-          p.pixel(x0 + 1 + i, y0 - 4 + k * 3 + i * 0.28, H[2]);
-      p.rect(x0 + 5, y0 - 2, 11, 1, H[0]);
-      if (upright) {
-        const tail = mk(p).rect(q.away ? x0 + 9 : x0 - 1, y0 + 6, 4, 12);
-        paint(p, tail, H, { dark: 1 });
-      }
-      break;
-    }
-    case 'hijab':
-    case 'khimar': {
-      // A rounded scarf hugging the head and hair, draping over the shoulders.
-      const long = id === 'khimar',
-        m = headMask(p, q).grow(3);
-      if (upright) {
-        const bottom = long ? q.hip[1] + 2 : q.chest[1] + 2,
-          w = long ? 9.5 : 8.5;
-        m.poly([
-          [x0 + 1, y0 + 13],
-          [x0 + 21, y0 + 13],
-          [q.chest[0] + w, bottom],
-          [q.chest[0] - w, bottom],
-        ])
-          .disc(q.chest[0] - w + 2, bottom - 2, 2.5)
-          .disc(q.chest[0] + w - 2, bottom - 2, 2.5);
-      } else m.capsule([cx, y0 + 9], [cx - 3, y0 + 15], 10);
-      paint(p, m, H, { light: 2, dark: 2 });
-      if (upright)
-        for (const dx of [-3, 3]) {
-          const fx = Math.round(q.chest[0] + dx);
-          for (
-            let j = Math.round(y0 + 22);
-            j < q.chest[1] + (long ? 6 : 1);
-            j++
-          )
-            if (m.has(fx, j)) p.pixel(fx, j, H[2]);
-        }
-      if (!q.away) {
-        const opening = mk(p).ellipse(x0 + 13.5, y0 + 12.5, 7.5, 7.5);
-        faceOpening(p, q, opening);
-        // Scarf edge framing the face.
-        for (let a = 0; a < 48; a++) {
-          const t = (a / 48) * Math.PI * 2;
-          const ix = Math.floor(x0 + 13.5 + Math.cos(t) * 8),
-            iy = Math.floor(y0 + 12.5 + Math.sin(t) * 8);
-          if (m.has(ix, iy) && !opening.has(ix, iy)) p.pixel(ix, iy, H[2]);
-        }
-      }
-      break;
-    }
-    case 'headwrap': {
-      // Wrapped scarf tied high: covers hair and ears, face fully visible.
-      const m = dome(10, 7, 13, 0).rect(x0 - 1, y0 + 3, 7, 12);
-      if (q.away) m.rect(x0 - 1, y0, 24, 17);
-      else m.rect(x0 + 19, y0 + 4, 4, 7);
-      for (let j = 0; j < p.height; j++)
-        for (let i = 0; i < p.width; i++)
-          if (m.has(i, j) && !headMask(p, q).grow(2.5).has(i, j))
-            m.data[j * p.width + i] = 0;
-      m.disc(x0 + 2, y0 + 1, 3.2);
-      paint(p, m, H, { dark: 2 });
-      for (let k = 0; k < 2; k++)
-        for (let i = 0; i < 15; i++)
-          p.pixel(x0 + 5 + i, y0 + 1 + k * 3 - i * 0.25, H[2]);
-      if (!q.away) {
-        const opening = headMask(p, q);
-        opening.minus(m);
-        for (let j = 0; j < y0 + 7; j++)
-          for (let i = 0; i < p.width; i++) opening.data[j * p.width + i] = 0;
-        faceOpening(p, q, opening);
-      }
-      break;
-    }
-    case 'cap': {
-      const m = dome(8, 6);
-      paint(p, m, H, { dark: 2 });
-      p.rect(x0, y0 + 5, 22, 1, H[2]);
-      if (q.away) p.rect(x0 + 15, y0 + 1, 8, 2, H[2]);
-      else {
-        p.rect(x0 + 15, y0 + 5, 10, 2, H[2]);
-        p.rect(x0 + 16, y0 + 5, 8, 1, H[1]);
-      }
-      p.rect(cx - 1, y0 - 3, 2, 1, H[0]);
-      break;
-    }
-    case 'hard-hat': {
-      const m = dome(9, 5, 11.5).rect(x0 - 3, y0 + 4, 28, 2);
-      paint(p, m, H, { dark: 2 });
-      p.rect(cx - 1, y0 - 4, 3, 9, H[0]);
-      p.rect(x0 - 3, y0 + 5, 28, 1, H[2]);
-      break;
-    }
-    case 'scrub-cap': {
-      const m = dome(8, 7);
-      if (q.away) m.rect(cx - 3, y0 + 6, 6, 4);
-      else m.rect(x0 - 2, y0 + 6, 3, 4);
-      paint(p, m, H, { dark: 2 });
-      for (let i = 0; i < 6; i++)
-        p.pixel(x0 + 2 + i * 3.5, y0 + 1 + (i % 2) * 2, H[0]);
-      break;
-    }
-    case 'papakha': {
-      // Tall, fluffy sheepskin hat.
-      const m = dome(9, 6, 12.5, -1);
-      for (let i = 0; i < 7; i++)
-        m.disc(x0 + 1 + i * 3.3, y0 - 6.5 + Math.abs(i - 3) * 0.7, 2);
-      paint(p, m, H, { light: 2, dark: 2 });
-      for (let j = y0 - 10; j < y0 + 6; j++)
-        for (let i = x0 - 3; i < x0 + 25; i++)
-          if (m.has(i, j) && (i * 5 + j * 3) % 5 === 0)
-            p.pixel(i, j, (i + j) % 3 ? H[0] : H[2]);
-      p.rect(x0, y0 + 4, 22, 1, H[2]);
-      break;
-    }
-    default:
-      throw Error(`No placeholder art for headwear ${id}`);
-  }
+  void p;
+  void id;
+  void q;
 }
-
-/* ───────────── props ───────────── */
 function drawProp(p: Pixels, id: string, q: Pose) {
-  const R = K.prop,
-    hand = q.arms[1][2],
-    other = q.arms[0][2],
-    [hx, hy] = hand,
-    both = lerp(hand, other, 0.5),
-    f = q.frame,
-    a = q.action,
-    box = (x: number, y: number, w: number, h: number, ramp = R) =>
-      paint(p, mk(p).rect(x, y, w, h), ramp, { dark: 1 });
-  switch (id) {
-    case 'book': {
-      if (a === 'read' || a === 'pray') {
-        // Open book held up in both hands; a page turns on the last frame.
-        const [cx, cy] = both;
-        box(cx - 7, cy - 4, 14, 7);
-        p.rect(cx - 6, cy - 6, 6, 7, F.white);
-        p.rect(cx, cy - 6, 6, 7, F.cream);
-        p.rect(cx, cy - 6, 1, 7, F.steel[1]);
-        for (let k = 0; k < 3; k++) {
-          p.rect(cx - 5, cy - 4 + k * 2, 4, 1, F.steel[0]);
-          p.rect(cx + 2, cy - 4 + k * 2, 3, 1, F.steel[0]);
-        }
-        if (f === 3)
-          p.poly(
-            [
-              [cx, cy - 6],
-              [cx + 4, cy - 10],
-              [cx + 5, cy - 5],
-              [cx + 1, cy],
-            ],
-            F.white,
-          );
-      } else {
-        box(hx - 1, hy - 7, 5, 8);
-        p.rect(hx, hy - 6, 3, 1, R[0]);
-        p.rect(hx + 3, hy - 6, 1, 6, F.cream);
-      }
-      break;
-    }
-    case 'scroll': {
-      p.rect(hx - 1, hy - 7, 3, 9, F.cream);
-      p.rect(hx - 2, hy - 8, 5, 2, R[1]);
-      p.rect(hx - 2, hy + 1, 5, 2, R[2]);
-      break;
-    }
-    case 'astrolabe': {
-      const m = mk(p).disc(hx + 1, hy - 3, 3.5);
-      paint(p, m, R);
-      p.rect(hx - 1, hy - 3, 5, 1, R[2]);
-      p.pixel(hx + 1, hy - 3, F.white);
-      break;
-    }
-    case 'water-skin':
-    case 'water-jug': {
-      const [cx, cy] = a === 'carry' ? both : [hx + 2, hy - 1];
-      const tilt = a === 'pour' ? Math.min(3, f) : 0;
-      const m =
-        id === 'water-jug'
-          ? mk(p)
-              .rect(cx - 3, cy - 9 + tilt, 7, 10)
-              .rect(cx - 1, cy - 11 + tilt, 3, 2)
-          : mk(p)
-              .ellipse(cx, cy - 3, 3.5, 5)
-              .rect(cx - 1, cy - 9, 2, 2);
-      paint(p, m, R, { light: 1, dark: 2 });
-      if (id === 'water-jug') p.rect(cx - 2, cy - 7 + tilt, 1, 6, F.waterLight);
-      if (a === 'pour' && f > 1) {
-        p.rect(cx + 4, cy - 6 + tilt, 1, 8 + (f % 3), F.water);
-        p.pixel(cx + 4, cy + 3 + (f % 3), F.waterLight);
-      }
-      break;
-    }
-    case 'basket':
-    case 'bread':
-    case 'tray':
-    case 'meal-box': {
-      const [cx, cy] = a === 'carry' || a === 'pour' ? both : [hx, hy];
-      if (id === 'basket') {
-        const m = mk(p).rect(cx - 5, cy - 4, 10, 6);
-        paint(p, m, R);
-        for (let i = 0; i < 5; i++) p.pixel(cx - 4 + i * 2, cy - 2, R[2]);
-        p.rect(cx - 4, cy - 6, 2, 2, F.gold);
-        p.rect(cx + 1, cy - 6, 3, 2, '#C87865');
-      } else if (id === 'bread') {
-        const m = mk(p).ellipse(cx, cy - 2, 5, 2.5);
-        paint(p, m, ['#EAC577', '#D8AD57', '#AF853E']);
-        for (let i = 0; i < 3; i++) p.pixel(cx - 2 + i * 2, cy - 3, '#AF853E');
-      } else if (id === 'tray') {
-        p.rect(cx - 6, cy - 1, 12, 2, R[1]);
-        p.rect(cx - 6, cy, 12, 1, R[2]);
-        p.rect(cx - 4, cy - 4, 3, 3, F.white);
-        p.rect(cx + 1, cy - 3, 3, 2, '#C87865');
-      } else {
-        box(cx - 5, cy - 6, 10, 7);
-        p.rect(cx - 5, cy - 6, 10, 2, R[0]);
-        p.rect(cx - 1, cy - 6, 2, 7, F.white);
-      }
-      break;
-    }
-    case 'scale': {
-      p.rect(hx, hy - 9, 1, 9, R[2]);
-      p.rect(hx - 5, hy - 9, 11, 1, R[1]);
-      p.rect(hx - 6, hy - 6, 4, 2, R[0]);
-      p.rect(hx + 3, hy - 6, 4, 2, R[0]);
-      break;
-    }
-    case 'broom': {
-      const top: P = add(other, -3, -9),
-        bottom: P = [hx + 4, 64];
-      const m = mk(p).capsule(top, bottom, 0.8);
-      paint(p, m, R, { dark: 1, light: 0 });
-      const b = mk(p).poly([
-        [bottom[0] - 2, bottom[1] - 4],
-        [bottom[0] + 2, bottom[1] - 4],
-        [bottom[0] + 5, bottom[1] + 2],
-        [bottom[0] - 4, bottom[1] + 2],
-      ]);
-      paint(p, b, ['#EAC577', '#D8AD57', '#AF853E']);
-      break;
-    }
-    case 'pen': {
-      p.rect(hx + 1, hy - 4 - (f % 2), 1, 5, R[1]);
-      p.pixel(hx + 1, hy - 5 - (f % 2), R[0]);
-      if (a === 'write') {
-        p.rect(hx - 6, hy + 1, 9, 3, F.white);
-        p.rect(hx - 6, hy + 3, 9, 1, F.cream);
-      }
-      break;
-    }
-    case 'laptop': {
-      if (a === 'write' || a === 'sit' || a === 'read' || a === 'teach') {
-        const [cx, cy] = both;
-        p.poly(
-          [
-            [cx - 6, cy + 1],
-            [cx + 5, cy + 1],
-            [cx + 7, cy + 3],
-            [cx - 4, cy + 3],
-          ],
-          R[1],
-        );
-        box(cx - 5, cy - 8, 9, 9, [R[1], R[2], R[2]]);
-        p.rect(cx - 4, cy - 7, 7, 7, F.screen);
-        p.rect(cx - 3, cy - 6, 3, 1, F.glow);
-        p.rect(cx - 3, cy - 4, 5, 1, F.water);
-        p.rect(cx - 3, cy - 2, 2, 1, F.gold);
-      } else {
-        box(hx - 4, hy - 9, 3, 11);
-        p.rect(hx - 3, hy - 9, 1, 11, F.steel[0]);
-      }
-      break;
-    }
-    case 'tablet':
-    case 'phone': {
-      const big = id === 'tablet';
-      box(hx - (big ? 3 : 1), hy - (big ? 8 : 5), big ? 7 : 3, big ? 9 : 5);
-      p.rect(
-        hx - (big ? 2 : 0),
-        hy - (big ? 7 : 4),
-        big ? 5 : 1,
-        big ? 6 : 3,
-        F.screen,
-      );
-      if (big) p.rect(hx - 1, hy - 5, 3, 1, F.glow);
-      break;
-    }
-    case 'coffee': {
-      box(hx - 1, hy - 5, 4, 5);
-      p.rect(hx - 1, hy - 6, 4, 1, F.white);
-      p.rect(hx - 1, hy - 3, 4, 1, F.cream);
-      if (f % 2 === 0) p.pixel(hx + 1, hy - 8, F.steel[0]);
-      break;
-    }
-    case 'flask': {
-      const [cx, cy] = [hx + 1, hy - 1];
-      const m = mk(p).poly([
-        [cx - 1, cy - 9],
-        [cx + 2, cy - 9],
-        [cx + 2, cy - 6],
-        [cx + 5, cy + 1],
-        [cx - 4, cy + 1],
-        [cx - 1, cy - 6],
-      ]);
-      paint(p, m, F.steel, { light: 1, dark: 1 });
-      const liquid = mk(p).poly([
-        [cx - 2.5, cy - 2],
-        [cx + 3.5, cy - 2],
-        [cx + 4.5, cy + 0.5],
-        [cx - 3.5, cy + 0.5],
-      ]);
-      paint(p, liquid, R, { dark: 1 });
-      if (a === 'pour' && f > 1) p.rect(cx + 3, cy - 9, 1, 3 + (f % 3), R[0]);
-      break;
-    }
-    case 'stethoscope': {
-      if (q.mode === 'bow' || q.mode === 'prostrate') break;
-      const [cx, cy] = q.chest;
-      const m = mk(p)
-        .capsule([cx - 4, cy - 4], [cx - 3, cy + 4], 0.6)
-        .capsule([cx + 4.5, cy - 4], [cx + 3.5, cy + 2], 0.6)
-        .capsule([cx - 3, cy + 4], [cx + 1, cy + 7], 0.6);
-      paint(p, m, R, { light: 0, dark: 0, top: false });
-      p.rect(cx + 1, cy + 6, 3, 3, F.steel[1]);
-      p.pixel(cx + 1, cy + 6, F.steel[0]);
-      break;
-    }
-    case 'clipboard': {
-      box(hx - 3, hy - 9, 7, 10);
-      p.rect(hx - 2, hy - 7, 5, 7, F.white);
-      p.rect(hx - 1, hy - 10, 3, 2, F.steel[2]);
-      for (let k = 0; k < 3; k++)
-        p.rect(hx - 1, hy - 6 + k * 2, 3, 1, F.steel[1]);
-      break;
-    }
-    case 'blueprint': {
-      const m = mk(p).capsule([hx - 5, hy - 9], [hx + 3, hy + 1], 1.6);
-      paint(p, m, R, { dark: 1 });
-      p.rect(hx + 2, hy, 2, 2, F.white);
-      break;
-    }
-    case 'cane': {
-      const m = mk(p).capsule([hx + 1, hy], [hx + 3, 66], 0.7);
-      paint(p, m, R, { light: 0, dark: 0, top: false });
-      p.rect(hx - 1, hy - 1, 3, 1, R[0]);
-      break;
-    }
-    case 'football': {
-      const foot = q.legs[1][2],
-        held = a === 'carry' || a === 'read' || a === 'teach';
-      const [cx, cy] = held ? both : [foot[0] + 4, foot[1] - 0.5];
-      const m = mk(p).disc(cx, cy, 2.8);
-      paint(p, m, [F.white, F.cream, F.steel[1]], { dark: 1 });
-      p.rect(cx - 0.5, cy - 0.5, 2, 2, R[2]);
-      p.pixel(cx - 2, cy + 1, R[2]);
-      p.pixel(cx + 1, cy - 2, R[2]);
-      break;
-    }
-    case 'wrist-tape': {
-      for (const arm of q.arms) {
-        const w = lerp(arm[1], arm[2], 0.75);
-        if (arm === q.arms[1] || a === 'cheer')
-          paint(
-            p,
-            mk(p).rect(w[0] - 2, w[1] - 1, 4, 3),
-            [F.white, F.white, F.cream],
-            { dark: 1, light: 0 },
-          );
-      }
-      break;
-    }
-    case 'mma-gloves':
-    case 'boxing-gloves': {
-      const big = id === 'boxing-gloves';
-      for (const arm of q.arms) {
-        const [gx, gy] = arm[2];
-        const m = mk(p).disc(gx, gy + 0.5, big ? 3.8 : 2.9);
-        paint(p, m, R, { dark: 1 });
-        const cuff = lerp(arm[1], arm[2], 0.72);
-        p.rect(cuff[0] - 2, cuff[1], 4, big ? 2 : 1, big ? F.white : R[0]);
-        if (!big) p.pixel(gx + 1, gy + 1, K.skin[1]);
-      }
-      break;
-    }
-    case 'title-belt': {
-      if (q.mode === 'bow' || q.mode === 'prostrate') break;
-      const [bx, by] = q.hip;
-      p.rect(bx - 6.5, by - 2, 13, 4, F.ink);
-      const plate = mk(p).poly([
-        [bx - 4, by - 4],
-        [bx + 4, by - 4],
-        [bx + 5.5, by - 1],
-        [bx + 4, by + 3],
-        [bx - 4, by + 3],
-        [bx - 5.5, by - 1],
-      ]);
-      if (!q.away) {
-        paint(p, plate, ['#EAC577', '#D8AD57', '#AF853E'], { light: 2 });
-        p.rect(bx - 2, by - 2, 4, 3, '#AF853E');
-        p.pixel(bx - 3, by - 3, F.white);
-        p.pixel(bx + 3, by + 1, R[0]);
-      }
-      break;
-    }
-    case 'scooter': {
-      // Kick scooter: steel deck and stem, dark wheels, T-handlebar.
-      const wheel = (x: number, y: number) => {
-        paint(p, mk(p).disc(x, y, 2.3), [F.charcoal[1], F.ink, F.ink], {
-          light: 0,
-          dark: 1,
-        });
-        p.pixel(x - 0.5 + (f % 2), y - 0.5, F.steel[1]);
-      };
-      if (a === 'ride') {
-        // One stem only, at the front; a long low deck between two wheels.
-        const feet = q.legs.map((l) => l[2]),
-          deckY = Math.round(Math.max(...feet.map((v) => v[1])) + 1.6),
-          back = Math.round(Math.min(...feet.map((v) => v[0])) - 8),
-          barX = Math.round(Math.max(hx, other[0]) + 0.5),
-          barY = Math.round(Math.min(hy, other[1]) - 0.5),
-          front = barX + 5;
-        paint(
-          p,
-          mk(p).rect(back, deckY, front - back + 1, 2),
-          [R[0], R[1], R[2]],
-          { light: 1, dark: 1 },
-        );
-        // Tiny rear fender over the back wheel.
-        p.rect(back - 1, deckY - 1, 3, 1, R[2]);
-        const stem = mk(p).capsule([front, deckY + 1], [barX + 1, barY], 0.9);
-        paint(p, stem, F.steel, { light: 0, dark: 1, top: false });
-        p.rect(barX - 2, barY - 1, 6, 2, R[1]);
-        p.rect(barX - 3, barY - 1, 2, 2, F.ink);
-        p.rect(barX + 4, barY - 1, 2, 2, F.ink);
-        wheel(back + 1, deckY + 2.5);
-        wheel(front, deckY + 2.5);
-      } else {
-        // Parked: one stem leaning back from the front wheel, well clear of
-        // the person (screen-left).
-        const back = 1,
-          front = 11,
-          deckY = 64;
-        paint(
-          p,
-          mk(p).rect(back, deckY, front - back + 1, 2),
-          [R[0], R[1], R[2]],
-          {
-            light: 1,
-            dark: 1,
-          },
-        );
-        p.rect(back - 1, deckY - 1, 3, 1, R[2]);
-        const stem = mk(p).capsule([front, deckY + 1], [front - 3, 47], 0.9);
-        paint(p, stem, F.steel, { light: 0, dark: 1, top: false });
-        p.rect(front - 6, 46, 6, 2, R[1]);
-        p.rect(front - 7, 46, 2, 2, F.ink);
-        p.rect(front, 46, 2, 2, F.ink);
-        wheel(back + 1, deckY + 2.5);
-        wheel(front, deckY + 2.5);
-      }
-      break;
-    }
-    case 'shopping-bag': {
-      const [cx, cy] = a === 'carry' ? both : [hx, hy + 5];
-      box(cx - 3, cy - 2, 7, 8);
-      p.rect(cx - 2, cy - 4, 1, 2, R[2]);
-      p.rect(cx + 2, cy - 4, 1, 2, R[2]);
-      p.rect(cx - 2, cy - 1, 2, 2, '#75966B');
-      p.rect(cx + 1, cy - 2, 2, 2, '#C87865');
-      break;
-    }
-    default:
-      throw Error(`No placeholder art for prop ${id}`);
-  }
+  void p;
+  void id;
+  void q;
 }
-
 /* ───────────── animals ───────────── */
 function drawCat(p: Pixels, action: Action, face: string, f: number) {
   const C = K.cloth,
@@ -2624,7 +2572,7 @@ function drawBall(p: Pixels, action: Action, f: number) {
   const [a, b] = patches[spin];
   p.pixel(a + 1, b - 1, K.prop[1]);
 }
-function drawPart(
+export function drawPart(
   id: string,
   category: string,
   action: Action,

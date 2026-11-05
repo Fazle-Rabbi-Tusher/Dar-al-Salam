@@ -5,7 +5,7 @@ export type CanvasSpec = {
   anchor: [number, number];
 };
 export const CANVAS = {
-  person: { width: 48, height: 72, anchor: [24, 68] },
+  person: { width: 56, height: 84, anchor: [28, 80] },
   cat: { width: 32, height: 24, anchor: [16, 22] },
   bird: { width: 20, height: 20, anchor: [10, 19] },
   ball: { width: 12, height: 12, anchor: [6, 11] },
@@ -20,4 +20,4 @@ export function canvasFor(base: string): CanvasSpec {
         : CANVAS.person;
 }
 /** Children reuse adult garments, scaled around the foot anchor. */
-export const CHILD_SCALE = 0.74;
+export const CHILD_SCALE = 0.72;
