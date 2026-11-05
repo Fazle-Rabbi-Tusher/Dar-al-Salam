@@ -25,6 +25,10 @@ export const bases = [
   'adult-man-curly',
   'adult-man-goatee',
   'adult-man-shaved',
+  'adult-man-short',
+  'adult-man-shaved-beard',
+  'adult-man-swept-beard',
+  'adult-woman-loose',
   'ball',
 ];
 export const garments = [
@@ -1139,7 +1143,18 @@ function drawHead(p: Pixels, q: Pose, id: string) {
     // Back of the head: hair over most of it, a strip of nape below.
     switch (id) {
       case 'adult-man-shaved':
+      case 'adult-man-shaved-beard':
         hair = top(4);
+        break;
+      case 'adult-man-short':
+        hair = top(12);
+        break;
+      case 'adult-man-swept-beard':
+        hair = top(16).ellipse(x0 + 11, y0 + 1, 10, 4);
+        break;
+      case 'adult-woman-loose':
+        // Thick loose hair falling past the shoulders.
+        hair = top(22).rect(x0 - 1, y0 + 12, 24, 12).ellipse(x0 + 11, y0 + 2, 12, 5);
         break;
       case 'adult-man-goatee':
         hair.ellipse(x0 + 11, y0 + 1, 8, 4);
@@ -1216,6 +1231,42 @@ function drawHead(p: Pixels, q: Pose, id: string) {
       case 'adult-man-shaved':
         hair = top(3).rect(x0, y0 + 3, 4, 3);
         break;
+      case 'adult-man-shaved-beard':
+        // Close-shaved head with a full, thick beard.
+        hair = top(3).rect(x0, y0 + 3, 4, 3);
+        beard
+          .rect(x0 + 4, y0 + 14, 18, 6)
+          .rect(x0 + 7, y0 + 19, 13, 3)
+          .rect(x0 + 19, y0 + 8, 3, 8)
+          .rect(x0 + 4, y0 + 8, 3, 8);
+        break;
+      case 'adult-man-short':
+        // Close-cropped hair, clean-shaven.
+        hair = top(5).rect(x0, y0 + 3, 4, 8).rect(x0 + 19, y0 + 4, 2, 4);
+        break;
+      case 'adult-man-swept-beard':
+        // Thick dark hair swept up and back, with a full trimmed beard.
+        hair = top(7)
+          .rect(x0, y0 + 3, 5, 9)
+          .ellipse(x0 + 13, y0 + 0.5, 10, 4.2);
+        beard
+          .rect(x0 + 4, y0 + 15, 18, 5)
+          .rect(x0 + 7, y0 + 19, 13, 3)
+          .rect(x0 + 19, y0 + 9, 3, 7)
+          .rect(x0 + 4, y0 + 9, 3, 7);
+        break;
+      case 'adult-woman-loose':
+        // Thick, voluminous hair worn loose to the shoulders; no bun.
+        hair = top(6)
+          .ellipse(x0 + 11, y0 + 1.5, 13, 5)
+          .rect(x0 - 2, y0 + 2, 7, 22)
+          .rect(x0 + 19, y0 + 3, 4, 16)
+          .poly([
+            [x0 + 4, y0 + 5],
+            [x0 + 17, y0 + 5],
+            [x0 + 7, y0 + 9],
+          ]);
+        break;
       default:
         // adult-man: short neat hair and a short beard.
         hair = top(6)
@@ -1232,14 +1283,16 @@ function drawHead(p: Pixels, q: Pose, id: string) {
       if (
         id === 'elder' ||
         id === 'adult-man-beard' ||
-        id === 'adult-man-curly'
+        id === 'adult-man-curly' ||
+        id === 'adult-man-shaved-beard' ||
+        id === 'adult-man-swept-beard'
       )
         beard.rect(x0 + 8, y0 + 19, 11, id === 'elder' ? 5 : 3);
       if (id === 'adult-man-goatee')
         beard.rect(x0 + 10, y0 + 18, 5, 3).rect(x0 + 11, y0 + 21, 3, 1);
     }
     // Ear peeking out under short hair.
-    if (!['adult-woman', 'adult-man-curly'].includes(id))
+    if (!['adult-woman', 'adult-woman-loose', 'adult-man-curly'].includes(id))
       p.rect(x0 + 5, y0 + 10, 2, 3, K.skin[2]);
   }
   paint(p, hair, K.hair, { light: 1, dark: 1 });

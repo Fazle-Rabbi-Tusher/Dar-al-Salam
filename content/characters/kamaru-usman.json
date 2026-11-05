@@ -12,12 +12,12 @@
   "district": "modern-quarter",
   "depiction": "full",
   "look": {
-    "base": "adult-man-shaved",
+    "base": "adult-man-shaved-beard",
     "garment": "fight-kit",
     "headwear": "none",
     "prop": "mma-gloves",
     "colours": {
-      "skin": "skin-7",
+      "skin": "skin-8",
       "hair": "hair-black",
       "garmentPrimary": "emerald",
       "garmentSecondary": "lab-white",

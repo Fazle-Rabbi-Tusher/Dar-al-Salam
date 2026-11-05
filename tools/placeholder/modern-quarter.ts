@@ -2143,12 +2143,12 @@ export function namedCards(): Character[] {
       place: 'Kampala · New York City',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man-beard',
+        base: 'adult-man-swept-beard',
         garment: 'suit',
         headwear: 'none',
         prop: 'scooter',
         colours: {
-          skin: 'skin-3',
+          skin: 'skin-4',
           hair: 'hair-black',
           garmentPrimary: 'navy',
           garmentSecondary: 'sky',
@@ -2222,7 +2222,7 @@ export function namedCards(): Character[] {
       place: 'Baghdad · London',
       district: 'modern-quarter',
       look: {
-        base: 'adult-woman',
+        base: 'adult-woman-loose',
         garment: 'long-dress',
         headwear: 'none',
         prop: 'tablet',
@@ -2313,7 +2313,7 @@ export function namedCards(): Character[] {
         prop: 'none',
         colours: {
           skin: 'skin-2',
-          hair: 'hair-brown',
+          hair: 'hair-black',
           garmentPrimary: 'kit-red',
           garmentSecondary: 'lab-white',
           headwear: 'white-linen',
@@ -2452,7 +2452,7 @@ export function namedCards(): Character[] {
       place: 'Makhachkala',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man-beard',
+        base: 'adult-man-shaved-beard',
         garment: 'fight-kit',
         headwear: 'none',
         prop: 'mma-gloves',
@@ -2510,12 +2510,12 @@ export function namedCards(): Character[] {
       place: 'Auchi · Denver',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man-shaved',
+        base: 'adult-man-shaved-beard',
         garment: 'fight-kit',
         headwear: 'none',
         prop: 'mma-gloves',
         colours: {
-          skin: 'skin-7',
+          skin: 'skin-8',
           hair: 'hair-black',
           garmentPrimary: 'emerald',
           garmentSecondary: 'lab-white',
@@ -2633,7 +2633,7 @@ export function namedCards(): Character[] {
       place: 'Chechnya · Sweden',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man-beard',
+        base: 'adult-man-shaved-beard',
         garment: 'fight-kit',
         headwear: 'none',
         prop: 'mma-gloves',
@@ -2690,7 +2690,7 @@ export function namedCards(): Character[] {
       place: 'Louisville',
       district: 'modern-quarter',
       look: {
-        base: 'adult-man-clean',
+        base: 'adult-man-short',
         garment: 'boxing-kit',
         headwear: 'none',
         prop: 'boxing-gloves',
