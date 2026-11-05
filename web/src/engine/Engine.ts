@@ -505,6 +505,7 @@ export class Engine {
     size: number,
     lift = 0,
     depthBias = 0,
+    density = 1,
   ) {
     const p = project(this.proj, point, lift),
       zoom = this.view.zoom,
@@ -526,7 +527,7 @@ export class Engine {
     sprite.visible = true;
     sprite.position.set(Math.round(p.x), Math.round(p.y));
     sprite.rotation = p.rotation;
-    sprite.scale.set(zoom);
+    sprite.scale.set(zoom / density);
     sprite.zIndex = p.depth + depthBias;
     return p;
   }
@@ -582,12 +583,14 @@ export class Engine {
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
+      const density = m.density ?? 1;
       const p = this.place(
         item.sprite,
         point,
-        Math.max(m.frame.w, m.frame.h),
+        Math.max(m.frame.w, m.frame.h) / density,
         state.z,
         2e-5,
+        density,
       );
       if (item.shadow) {
         const sp = p && this.place(item.shadow, point, 16, 0, 1e-5);

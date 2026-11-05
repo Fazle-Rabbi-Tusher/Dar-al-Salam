@@ -704,6 +704,14 @@ html[lang='bn'] .brand strong {
     26px 'Noto Naskh Arabic',
     serif;
 }
+.portrait-face {
+  height: 104px;
+  width: auto;
+  image-rendering: pixelated;
+  border: 1px solid #b7c5a8;
+  border-radius: 30px 30px 3px 3px;
+  background: linear-gradient(#f4efe0, #e3e6d8);
+}
 .portrait-decoration > svg {
   padding: 13px;
   box-sizing: content-box;

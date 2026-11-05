@@ -7,6 +7,7 @@ import {
   type Aseprite,
 } from '../../packages/shared/compositor';
 import type { PixelImage } from '../../packages/shared/pixels';
+import { canvasFor } from '../../packages/shared/canvas';
 export const readJson = async (p: string) =>
   JSON.parse(await fs.readFile(p, 'utf8'));
 export async function writeJson(p: string, v: unknown) {
@@ -49,4 +50,26 @@ export async function loadParts() {
     );
   }
   return parts;
+}
+/** Sharp heads for named characters (art/heads/<character id>.json). */
+export async function loadHeads() {
+  const heads: Record<string, Part> = {};
+  try {
+    await fs.access('art/heads');
+  } catch {
+    return heads;
+  }
+  for (const p of await files('art/heads', '.json')) {
+    const json: Aseprite & { meta: { density?: number } } = await readJson(p);
+    const id = path.basename(p, '.json'),
+      d = json.meta.density ?? 2,
+      foot = canvasFor('person').anchor;
+    heads[id] = importAseprite(
+      id,
+      json,
+      await image(path.join(path.dirname(p), json.meta.image)),
+      [foot[0] * d, foot[1] * d],
+    );
+  }
+  return heads;
 }

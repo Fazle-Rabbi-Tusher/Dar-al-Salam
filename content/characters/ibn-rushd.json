@@ -1,0 +1,69 @@
+{
+  "id": "ibn-rushd",
+  "kind": "person",
+  "name": {
+    "en": "Ibn Rushd",
+    "ar": "ابن رشد",
+    "bn": "ইবনে রুশদ"
+  },
+  "aliases": ["Averroes"],
+  "years": "1126–1198",
+  "place": "Córdoba · Marrakesh",
+  "district": "maghreb",
+  "depiction": "full",
+  "look": {
+    "base": "elder",
+    "garment": "jubba",
+    "headwear": "imamah",
+    "prop": "book",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-grey",
+      "garmentPrimary": "black-cloth",
+      "garmentSecondary": "wool-cream",
+      "headwear": "wool-cream",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "teach",
+      "at": [12.6, 54.8],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "read",
+      "at": [12.6, 54.8],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Philosopher, judge and physician of Córdoba, known in Europe as Averroes. His commentaries on Aristotle were studied in European universities for centuries."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Averroes"
+    }
+  ],
+  "panelApproved": false
+}

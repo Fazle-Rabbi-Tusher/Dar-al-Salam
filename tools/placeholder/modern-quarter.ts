@@ -247,33 +247,21 @@ export function modernQuarter() {
   obj('m-shoe-rack', 12, 19.6);
   obj('m-desk-plant', 7.3, 7.3);
   obj('m-bookshelf', 16.2, 7.05);
-  // Two rows of six praying together, facing the qibla wall (away from the viewer).
-  for (let row = 0; row < 2; row++)
-    for (let i = 0; i < 6; i++)
-      person(
-        `worshipper-${row}-${i}`,
-        [9.4 + i * 1.65, 10.4 + row * 3],
-        'pray',
-        withProp(man(), 'none'),
-        'NE',
-      );
-  // Qur'an study circle: a teacher shown from behind with five children.
-  person(
-    'teacher',
-    [19.4, 18.4],
-    'teach',
-    L('elder', 'jubba', 'imamah', 'none', { garmentPrimary: 'charcoal' }),
-    'NE',
-    120,
-    { depiction: 'back' },
-  );
+  // A small gathering listening to Mufti Ismail Menk's talk (facing him).
+  for (let i = 0; i < 3; i++)
+    person(
+      `listener-${i}`,
+      [11.05 + i * 1.65, 13.4],
+      'read',
+      withProp(i === 1 ? woman() : man(), 'none'),
+      'NE',
+    );
+  // Study circle: Habib Umar bin Hafiz teaches; the students face him.
   (
     [
-      [17.8, 16.4, 'SE'],
-      [19.1, 15.8, 'SE'],
-      [20.4, 16.1, 'SW'],
-      [17.4, 17.6, 'SE'],
-      [21.2, 17.2, 'SW'],
+      [17.4, 17.6, 'NE'],
+      [19.4, 18.4, 'NE'],
+      [21.2, 17.2, 'NW'],
     ] as [number, number, Facing][]
   ).forEach(([x, y, f], i) =>
     person(`student-${i}`, [x, y], 'read', withProp(child(), 'book'), f),
@@ -1888,6 +1876,19 @@ export function modernQuarter() {
       { id: 3, name: 'objects', type: 'objectgroup', objects },
     ],
   });
+  // Only the people famous scenes need stay (plus animals); the quarter is
+  // moving toward named characters only.
+  const scene = ambient.filter(
+    (c) => c.kind !== 'person' || SCENE_ROLES.some((re) => re.test(c.id)),
+  );
+  const kept = new Set(scene.map((c) => c.id));
+  for (const c of scene) {
+    if (c.id === 'amb-patient-2') c.pairWith = 'al-zahrawi';
+    if (c.pairWith?.startsWith('amb-') && !kept.has(c.pairWith))
+      delete c.pairWith;
+  }
+  ambient.length = 0;
+  ambient.push(...scene);
   for (const c of ambient) c.role ??= roleFor(c.id.replace(/^amb-/, ''));
   const cards = namedCards();
   for (const c of [...ambient, ...cards]) {
@@ -1988,10 +1989,78 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Founder of the al-Qarawiyyin mosque in Fez in 859, which grew into a renowned centre of learning, today’s University of al-Qarawiyyin.',
     links: wiki('Fatima_al-Fihri'),
   },
+  'ibn-al-haytham': {
+    en: 'Mathematician and physicist of Basra and Cairo, known in Europe as Alhazen. His Book of Optics explained that we see because light enters the eye, and he tested his ideas by careful experiment.',
+    links: wiki('Ibn_al-Haytham'),
+  },
+  'al-zahrawi': {
+    en: 'Surgeon of Córdoba, known in Europe as Abulcasis. His medical encyclopaedia, al-Tasrif, described and illustrated hundreds of surgical instruments.',
+    links: wiki('Al-Zahrawi'),
+  },
+  'al-jazari': {
+    en: 'Engineer at the Artuqid court in Diyarbakır. His Book of Knowledge of Ingenious Mechanical Devices (1206) describes water clocks, including the famous elephant clock, pumps and automata.',
+    links: wiki('Ismail_al-Jazari'),
+  },
+  'al-biruni': {
+    en: 'Scholar from Khwarazm who wrote on astronomy, mathematics, geography and India. He estimated the radius of the Earth by measuring the dip of the horizon from a mountain.',
+    links: wiki('Al-Biruni'),
+  },
+  'ibn-khaldun': {
+    en: 'Historian and thinker born in Tunis. His Muqaddimah (1377) set out how societies rise and decline and is seen as a founding work of sociology and the study of history.',
+    links: wiki('Ibn_Khaldun'),
+  },
+  'ibn-rushd': {
+    en: 'Philosopher, judge and physician of Córdoba, known in Europe as Averroes. His commentaries on Aristotle were studied in European universities for centuries.',
+    links: wiki('Averroes'),
+  },
+  'mufti-ismail-menk': {
+    en: 'Zimbabwean Islamic scholar who studied in India and at the Islamic University of Madinah. He is known around the world for short, gentle talks on good character, patience and kindness.',
+    links: wiki('Ismail_Menk'),
+  },
+  'hamza-yusuf': {
+    en: 'American Islamic scholar who co-founded Zaytuna College in Berkeley, California, the first accredited Muslim liberal-arts college in the United States.',
+    links: wiki('Hamza_Yusuf'),
+  },
+  'omar-suleiman': {
+    en: 'American Islamic scholar from New Orleans and founder of the Yaqeen Institute for Islamic Research in Dallas, Texas, known for his lectures and civil-rights work.',
+    links: wiki('Omar_Suleiman_(imam)'),
+  },
+  'habib-umar-bin-hafiz': {
+    en: 'Yemeni Islamic scholar from Tarim, Hadramawt, where he founded Dar al-Mustafa, a seminary that welcomes students from around the world.',
+    links: wiki('Umar_bin_Hafiz'),
+  },
+  'ahmed-zewail': {
+    en: 'Egyptian-American chemist at Caltech. He won the 1999 Nobel Prize in Chemistry for watching chemical reactions with ultrashort laser flashes, the field known as femtochemistry.',
+    links: wiki('Ahmed_Zewail'),
+  },
 };
 
+/** Ambient people kept because a named character's scene needs them. */
+const SCENE_ROLES = [
+  // Özil's goal, Benzema's and Liverpool's celebrations.
+  /^amb-ozil-/,
+  /^amb-keeper-west$/,
+  /^amb-referee$/,
+  /^amb-teammate-/,
+  /^amb-lfc-/,
+  // The octagon and the ring.
+  /^amb-referee-octagon$/,
+  /^amb-cornerman$/,
+  /^amb-ali-opponent$/,
+  /^amb-fight-fan-/,
+  // Abdul El-Sayed's front rows.
+  /^amb-rally-[0-9]$/,
+  // Audiences and partners of scholars and scientists.
+  /^amb-listener-/,
+  /^amb-student-[0-2]$/,
+  /^amb-coder-[0-2]$/,
+  /^amb-patient(-2)?$/,
+  /^amb-students-walk$/,
+  /^amb-engineer-1$/,
+];
 /** Hover labels: what each ambient person is doing (English for now). */
 const ROLES: [RegExp, string][] = [
+  [/^listener/, 'Listening to the talk'],
   [/^halal-vendor/, 'Halal cart vendor serving lunch'],
   [/^halal-queue/, 'Queueing for halal food'],
   [/^bodega-owner/, 'Bodega owner minding the shop'],
@@ -2883,5 +2952,221 @@ export function namedCards(): Character[] {
       script: two('wave', 'talk', [38.2, 21.2], 'SE', 'SW'),
       pairWith: 'amb-students-walk',
     }),
+    ...scholars().map(card),
+  ];
+}
+/*
+ * Scholars at work: golden-age scholars (no photographs exist, so their looks
+ * follow traditional portraits and statues), today's Islamic scholars and a
+ * modern scientist. Each stands where people like them work in the quarter.
+ */
+function scholars(): (Partial<Character> &
+  Pick<Character, 'id' | 'look' | 'script'>)[] {
+  const look = (
+    base: string,
+    garment: string,
+    headwear: string,
+    prop: string,
+    colours: Partial<Look['colours']>,
+  ): Look => ({
+    base,
+    garment,
+    headwear,
+    prop,
+    colours: {
+      skin: 'skin-3',
+      hair: 'hair-black',
+      garmentPrimary: 'white-linen',
+      garmentSecondary: 'white-linen',
+      headwear: 'white-linen',
+      prop: 'cocoa',
+      ...colours,
+    },
+  });
+  const two = (
+    a: Step['action'],
+    b: Step['action'],
+    at: Pt,
+    fa: Facing,
+    fb: Facing,
+  ): Step[] => [
+    { from: 0, to: 60, action: a, at, facing: fa },
+    { from: 60, to: 120, action: b, at, facing: fb },
+  ];
+  return [
+    {
+      id: 'ibn-al-haytham',
+      name: { en: 'Ibn al-Haytham', ar: 'ابن الهيثم', bn: 'ইবনে আল-হাইসাম' },
+      aliases: ['Alhazen'],
+      years: '965–c. 1040',
+      place: 'Basra · Cairo',
+      district: 'house-of-wisdom',
+      look: look('adult-man-beard', 'qaba', 'imamah', 'book', {
+        skin: 'skin-3',
+        garmentPrimary: 'indigo',
+        garmentSecondary: 'saffron',
+      }),
+      // Explaining his optics experiments in the university lab.
+      script: two('talk', 'idle', [47.6, 14.9], 'SE', 'SW'),
+    },
+    {
+      id: 'al-zahrawi',
+      name: { en: 'al-Zahrawi', ar: 'الزهراوي', bn: 'আল-জাহরাবি' },
+      aliases: ['Abulcasis'],
+      years: '936–1013',
+      place: 'Córdoba',
+      district: 'maghreb',
+      look: look('adult-man-beard', 'jubba', 'imamah', 'scroll', {
+        skin: 'skin-2',
+        garmentPrimary: 'emerald',
+        headwear: 'wool-cream',
+        prop: 'wool-cream',
+      }),
+      // At the hospital, explaining a treatment to a patient.
+      script: two('talk', 'idle', [10.6, 29.6], 'SW', 'SE'),
+      pairWith: 'amb-patient-2',
+    },
+    {
+      id: 'al-jazari',
+      name: { en: 'al-Jazari', ar: 'الجزري', bn: 'আল-জাজারি' },
+      years: 'c. 1136–1206',
+      place: 'Diyarbakır',
+      district: 'house-of-wisdom',
+      look: look('adult-man-beard', 'qaba', 'imamah', 'blueprint', {
+        skin: 'skin-4',
+        garmentPrimary: 'mustard',
+        garmentSecondary: 'madder-red',
+        headwear: 'madder-red',
+        prop: 'sky',
+      }),
+      // Beside the robot arm with the plans of his machines.
+      script: two('talk', 'idle', [52.3, 14.6], 'SW', 'SE'),
+    },
+    {
+      id: 'al-biruni',
+      name: { en: 'al-Biruni', ar: 'البيروني', bn: 'আল-বিরুনী' },
+      years: '973–c. 1050',
+      place: 'Khwarazm · Ghazni',
+      district: 'house-of-wisdom',
+      look: look('elder', 'qaba', 'imamah', 'astrolabe', {
+        skin: 'skin-3',
+        hair: 'hair-grey',
+        garmentPrimary: 'navy',
+        garmentSecondary: 'brass',
+        prop: 'brass',
+      }),
+      // Taking a sighting with his astrolabe in the park.
+      script: two('idle', 'talk', [30, 27.4], 'SE', 'SW'),
+    },
+    {
+      id: 'ibn-khaldun',
+      name: { en: 'Ibn Khaldun', ar: 'ابن خلدون', bn: 'ইবনে খালদুন' },
+      years: '1332–1406',
+      place: 'Tunis · Cairo',
+      district: 'maghreb',
+      look: look('adult-man-beard', 'scholar-robe', 'imamah', 'book', {
+        skin: 'skin-3',
+        garmentPrimary: 'wool-cream',
+        garmentSecondary: 'cocoa',
+      }),
+      // Reading and explaining in the library's reading corner.
+      script: two('read', 'teach', [10.6, 54.2], 'SE', 'SW'),
+    },
+    {
+      id: 'ibn-rushd',
+      name: { en: 'Ibn Rushd', ar: 'ابن رشد', bn: 'ইবনে রুশদ' },
+      aliases: ['Averroes'],
+      years: '1126–1198',
+      place: 'Córdoba · Marrakesh',
+      district: 'maghreb',
+      look: look('elder', 'jubba', 'imamah', 'book', {
+        skin: 'skin-2',
+        hair: 'hair-grey',
+        garmentPrimary: 'black-cloth',
+        garmentSecondary: 'wool-cream',
+        headwear: 'wool-cream',
+      }),
+      script: two('teach', 'read', [12.6, 54.8], 'SW', 'SE'),
+    },
+    {
+      id: 'mufti-ismail-menk',
+      name: {
+        en: 'Mufti Ismail Menk',
+        ar: 'المفتي إسماعيل منك',
+        bn: 'মুফতি ইসমাইল মেংক',
+      },
+      aliases: ['Mufti Menk'],
+      years: 'b. 1975',
+      place: 'Harare',
+      district: 'modern-quarter',
+      look: look('adult-man-beard', 'thobe', 'kufi', 'none', {
+        skin: 'skin-4',
+      }),
+      // A talk in the prayer hall for a small gathering.
+      script: two('talk', 'idle', [12.7, 10.4], 'SW', 'SE'),
+    },
+    {
+      id: 'hamza-yusuf',
+      name: { en: 'Hamza Yusuf', ar: 'حمزة يوسف', bn: 'হামজা ইউসুফ' },
+      years: 'b. 1958',
+      place: 'Berkeley, California',
+      district: 'modern-quarter',
+      look: look('elder', 'jubba', 'imamah', 'book', {
+        skin: 'skin-1',
+        hair: 'hair-grey',
+        garmentPrimary: 'khaki',
+        garmentSecondary: 'white-linen',
+      }),
+      // Teaching from a book in the park.
+      script: two('talk', 'idle', [34.5, 33.6], 'SW', 'SE'),
+    },
+    {
+      id: 'omar-suleiman',
+      name: { en: 'Omar Suleiman', ar: 'عمر سليمان', bn: 'ওমর সুলাইমান' },
+      years: 'b. 1986',
+      place: 'New Orleans · Dallas',
+      district: 'modern-quarter',
+      look: look('adult-man-beard', 'jubba', 'none', 'none', {
+        skin: 'skin-3',
+        garmentPrimary: 'navy',
+        garmentSecondary: 'white-linen',
+      }),
+      // Greeting people at the mosque entrance.
+      script: two('talk', 'wave', [9, 17.7], 'SE', 'SW'),
+    },
+    {
+      id: 'habib-umar-bin-hafiz',
+      name: {
+        en: 'Habib Umar bin Hafiz',
+        ar: 'الحبيب عمر بن حفيظ',
+        bn: 'হাবিব উমর বিন হাফিজ',
+      },
+      years: 'b. 1963',
+      place: 'Tarim, Yemen',
+      district: 'modern-quarter',
+      look: look('elder', 'jubba', 'imamah', 'none', {
+        skin: 'skin-4',
+        hair: 'hair-white',
+        garmentSecondary: 'emerald',
+      }),
+      // Teaching the study circle.
+      script: two('teach', 'teach', [19.1, 15.8], 'SW', 'SE'),
+    },
+    {
+      id: 'ahmed-zewail',
+      name: { en: 'Ahmed Zewail', ar: 'أحمد زويل', bn: 'আহমেদ জেওয়াইল' },
+      years: '1946–2016',
+      place: 'Damanhur · Pasadena',
+      district: 'modern-quarter',
+      look: look('adult-man-clean', 'lab-coat', 'none', 'tablet', {
+        skin: 'skin-4',
+        hair: 'hair-grey',
+        garmentPrimary: 'lab-white',
+        garmentSecondary: 'navy',
+        prop: 'graphite',
+      }),
+      // Talking through a laser experiment in the lab.
+      script: two('talk', 'idle', [42.4, 9.9], 'SW', 'SE'),
+    },
   ];
 }

@@ -4,8 +4,21 @@ import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { MaxRectsPacker, Rectangle } from 'maxrects-packer';
 import { loadContent, validateCharacter } from './validate';
-import { readJson, writeJson, loadParts, image, png, files } from './io';
-import { compose, trimFrame } from '../../packages/shared/compositor';
+import {
+  readJson,
+  writeJson,
+  loadParts,
+  loadHeads,
+  image,
+  png,
+  files,
+} from './io';
+import {
+  HEAD_DENSITY,
+  compose,
+  composeWithHead,
+  trimFrame,
+} from '../../packages/shared/compositor';
 import {
   Pixels,
   blit,
@@ -44,7 +57,8 @@ const hash = (d: Uint8Array | string) =>
 async function build() {
   const prod = process.argv.includes('--prod');
   const content = await loadContent(),
-    parts = await loadParts();
+    parts = await loadParts(),
+    heads = await loadHeads();
   const { characters, room, keys, ramps, palette } = content;
   const warnings = characters.flatMap((c) =>
     validateCharacter(c, content.rules, room, parts, content.wardrobe, prod),
@@ -65,14 +79,14 @@ async function build() {
   await fs.mkdir(out, { recursive: true });
   const images = new Map<string, PixelImage>(),
     metas: Record<string, Omit<FrameMeta, 'frame'>> = {};
-  function register(img: PixelImage, anchor: [number, number]) {
+  function register(img: PixelImage, anchor: [number, number], density = 1) {
     const t = trimFrame(img, anchor),
       key =
         'f-' +
         hash(
           Buffer.concat([
             Buffer.from(t.image.data),
-            Buffer.from(JSON.stringify([t.image.width, t.anchor])),
+            Buffer.from(JSON.stringify([t.image.width, t.anchor, density])),
           ]),
         ).slice(0, 24);
     if (!images.has(key)) {
@@ -80,10 +94,18 @@ async function build() {
       if (errors.length)
         throw Error(`Baked frame: palette violation ${errors.slice(0, 4)}`);
       images.set(key, t.image);
+      // Bounds stay in world px; anchor and hit mask are in sprite px.
+      const b = t.bounds;
       metas[key] = {
         anchor: t.anchor,
-        bounds: t.bounds,
+        bounds: {
+          x: b.x / density,
+          y: b.y / density,
+          width: b.width / density,
+          height: b.height / density,
+        },
         hitMask: Buffer.from(t.mask).toString('base64'),
+        ...(density > 1 ? { density } : {}),
       };
     }
     return key;
@@ -114,21 +136,43 @@ async function build() {
         if (frames[key]) continue;
         frames[key] = [];
         for (let f = 0; f < ACTIONS[s.action]; f++) {
-          const img = compose(
-            c.look,
-            s.action,
-            facing,
-            f,
-            parts,
-            {
-              keys,
-              ramps,
-              outline: '#493C35',
-              shadow: '#493C35',
-            },
-            !lifted,
-          );
-          frames[key].push(register(img, parts[c.look.base].anchor));
+          const pal = {
+            keys,
+            ramps,
+            outline: '#493C35',
+            shadow: '#493C35',
+          };
+          const head = heads[c.id],
+            anchor = parts[c.look.base].anchor;
+          if (head) {
+            const { image: img, overhang } = composeWithHead(
+              c.look,
+              s.action,
+              facing,
+              f,
+              parts,
+              pal,
+              head,
+              !lifted,
+            );
+            if (overhang)
+              throw Error(
+                `${c.id}: sharp head ${s.action}/${facing}/${f} reaches ${overhang} px outside the body; regenerate art/heads after changing a look`,
+              );
+            frames[key].push(
+              register(
+                img,
+                [anchor[0] * HEAD_DENSITY, anchor[1] * HEAD_DENSITY],
+                HEAD_DENSITY,
+              ),
+            );
+          } else
+            frames[key].push(
+              register(
+                compose(c.look, s.action, facing, f, parts, pal, !lifted),
+                anchor,
+              ),
+            );
           bakedCount++;
         }
       }
@@ -154,10 +198,36 @@ async function build() {
       maxX = Math.max(maxX, state.position[0] + b.x + b.width);
       maxY = Math.max(maxY, state.position[1] + b.y + b.height);
     }
+    let portrait: string | undefined;
+    if (heads[c.id]) {
+      // Story-card close-up: head and shoulders from the idle pose.
+      const { image: full } = composeWithHead(
+        c.look,
+        'idle',
+        'SE',
+        0,
+        parts,
+        { keys, ramps, outline: '#493C35', shadow: '#493C35' },
+        heads[c.id],
+        false,
+      );
+      let top = full.height;
+      for (let i = 0; i < full.data.length; i += 4)
+        if (full.data[i + 3]) {
+          top = Math.floor(i / 4 / full.width);
+          break;
+        }
+      const ax = parts[c.look.base].anchor[0] * HEAD_DENSITY,
+        bust = new Pixels(52, 60);
+      blit(bust, crop(full, ax - 26, Math.max(0, top - 4), 52, 60));
+      portrait = `portraits/${c.id}.png`;
+      await png(`${out}/${portrait}`, bust);
+    }
     baked.push({
       ...c,
       frames,
       shadowFrame,
+      ...(portrait ? { portrait } : {}),
       interactive: Boolean(c.name),
       needsPanelReview: c.script.some((s) => s.action === 'pray'),
       loopBounds: { x: minX, y: minY, width: maxX - minX, height: maxY - minY },

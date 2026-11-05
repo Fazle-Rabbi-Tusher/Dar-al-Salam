@@ -38,6 +38,7 @@ export function importAseprite(
   id: string,
   json: Aseprite,
   sheet: PixelImage,
+  expected: [number, number] = canvasFor(id).anchor,
 ): Part {
   const frames: Part['frames'] = {};
   const foot = json.meta.slices.find((s) => s.name === 'foot')?.keys[0];
@@ -58,7 +59,6 @@ export function importAseprite(
         s = f.spriteSourceSize;
       const canvas = new Pixels(f.sourceSize.w, f.sourceSize.h);
       blit(canvas, crop(sheet, r.x, r.y, r.w, r.h), s.x, s.y);
-      const expected = canvasFor(id).anchor;
       if (anchor[0] !== expected[0] || anchor[1] !== expected[1])
         throw Error(`${id}: incorrect foot anchor`);
       frames[`${action}_${facing.toUpperCase()}_${i - tag.from}`] = {
@@ -159,6 +159,42 @@ export function compose(
     ]);
   blit(result, outlined);
   return result;
+}
+/** Sprite pixels per world pixel in sharp heads (see art/heads). */
+export const HEAD_DENSITY = 2;
+/**
+ * A named character with a sharp head: the normal frame doubled, then the
+ * head sheet (drawn at twice the density) over it. Returns the frame and the
+ * number of head pixels that fell outside the normal silhouette.
+ */
+export function composeWithHead(
+  look: Look,
+  action: Action,
+  facing: Facing,
+  index: number,
+  parts: Record<string, Part>,
+  palette: Palette,
+  head: Part,
+  includeShadow = true,
+) {
+  const base = compose(look, action, facing, index, parts, palette, includeShadow),
+    d = HEAD_DENSITY,
+    out = new Pixels(base.width * d, base.height * d);
+  for (let y = 0; y < out.height; y++)
+    for (let x = 0; x < out.width; x++) {
+      const k = (Math.floor(y / d) * base.width + Math.floor(x / d)) * 4;
+      out.data.set(base.data.subarray(k, k + 4), (y * out.width + x) * 4);
+    }
+  const f = resolveFrame(head, action, facing, index);
+  let overhang = 0;
+  for (let y = 0; y < f.frame.height; y++)
+    for (let x = 0; x < f.frame.width; x++) {
+      const sx = f.mirror ? f.frame.width - 1 - x : x;
+      if (!f.frame.data[(y * f.frame.width + sx) * 4 + 3]) continue;
+      if (!out.data[(y * out.width + x) * 4 + 3]) overhang++;
+    }
+  blit(out, f.frame, 0, 0, f.mirror);
+  return { image: out, overhang };
 }
 export function trimFrame(img: PixelImage, anchor: [number, number]) {
   let x = img.width,

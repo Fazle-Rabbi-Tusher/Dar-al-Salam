@@ -510,7 +510,16 @@ function World({ manifest }: { manifest: Manifest | null }) {
               {String(named.indexOf(card) + 1).padStart(2, '0')}
             </span>
             <div className="portrait-decoration">
-              <Icon name="book" size={32} />
+              {card.portrait ? (
+                <img
+                  className="portrait-face"
+                  src={'/world/' + card.portrait}
+                  alt=""
+                  draggable={false}
+                />
+              ) : (
+                <Icon name="book" size={32} />
+              )}
               <span>{card.name?.ar}</span>
             </div>
             <span className="draft-badge">{t('draft')}</span>

@@ -1,0 +1,69 @@
+{
+  "id": "ibn-khaldun",
+  "kind": "person",
+  "name": {
+    "en": "Ibn Khaldun",
+    "ar": "ابن خلدون",
+    "bn": "ইবনে খালদুন"
+  },
+  "aliases": [],
+  "years": "1332–1406",
+  "place": "Tunis · Cairo",
+  "district": "maghreb",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "scholar-robe",
+    "headwear": "imamah",
+    "prop": "book",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "wool-cream",
+      "garmentSecondary": "cocoa",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "read",
+      "at": [10.6, 54.2],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "teach",
+      "at": [10.6, 54.2],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Historian and thinker born in Tunis. His Muqaddimah (1377) set out how societies rise and decline and is seen as a founding work of sociology and the study of history."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ibn_Khaldun"
+    }
+  ],
+  "panelApproved": false
+}

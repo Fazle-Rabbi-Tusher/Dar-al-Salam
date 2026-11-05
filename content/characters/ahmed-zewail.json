@@ -1,0 +1,69 @@
+{
+  "id": "ahmed-zewail",
+  "kind": "person",
+  "name": {
+    "en": "Ahmed Zewail",
+    "ar": "أحمد زويل",
+    "bn": "আহমেদ জেওয়াইল"
+  },
+  "aliases": [],
+  "years": "1946–2016",
+  "place": "Damanhur · Pasadena",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-clean",
+    "garment": "lab-coat",
+    "headwear": "none",
+    "prop": "tablet",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-grey",
+      "garmentPrimary": "lab-white",
+      "garmentSecondary": "navy",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [42.4, 9.9],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [42.4, 9.9],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Egyptian-American chemist at Caltech. He won the 1999 Nobel Prize in Chemistry for watching chemical reactions with ultrashort laser flashes, the field known as femtochemistry."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ahmed_Zewail"
+    }
+  ],
+  "panelApproved": false
+}

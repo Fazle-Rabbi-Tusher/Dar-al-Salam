@@ -10,7 +10,9 @@ import {
   generateModernTiles,
 } from './modern';
 import { modernQuarter } from './modern-quarter';
-import { png, writeJson } from '../build/io';
+import { png, writeJson, readJson, files } from '../build/io';
+import { generatePortraits } from './portraits/core';
+import { PORTRAITS, PORTRAIT_COLOURS } from './portraits';
 /*
  * `pnpm gen:placeholder` seeds missing art and content and preserves anything
  * authored. `pnpm gen:placeholder --refresh` regenerates placeholder parts,
@@ -103,7 +105,12 @@ async function seed(path: string, data: unknown) {
 await seed('content/palettes/key-colours.json', keys);
 await seed('content/palettes/ramps.json', ramps);
 await seed('content/palettes/world-palette.json', [
-  ...new Set([...fixed, ...Object.values(ramps).flat(), ...MODERN_COLOURS]),
+  ...new Set([
+    ...fixed,
+    ...Object.values(ramps).flat(),
+    ...MODERN_COLOURS,
+    ...PORTRAIT_COLOURS,
+  ]),
 ]);
 await seed('content/rules/never-depict.json', {
   comment:
@@ -159,6 +166,11 @@ await seed('content/rules/never-depict.json', {
     'Mohamed Salah',
     // Approved by the project owner (2026-11): the boxer, 1942–2016.
     'Muhammad Ali',
+    // Approved by the project owner (2026-11): today's scholars and a
+    // Nobel laureate, each as an exact full name.
+    'Mufti Ismail Menk',
+    'Hamza Yusuf',
+    'Ahmed Zewail',
   ],
 });
 const traditional = [
@@ -261,10 +273,15 @@ for (let i = 0; i < 6; i++) {
   await png(`art/tiles/tile-${i + 1}.png`, p);
 }
 await generateParts(refresh);
+// Sharp heads follow the cards as they are on disk (authored looks included).
+const onDisk = [];
+for (const f of await files('content/characters', '.json'))
+  onDisk.push(await readJson(f));
+const heads = await generatePortraits(onDisk, PORTRAITS, ramps, keys, refresh);
 await generateObjects();
 await generateDetails();
 await generateModernObjects();
 await generateModernTiles();
 console.log(
-  `Placeholder art and the Peace Quarter: ${ambient.length} ambient people, ${cards.length} draft cards${refresh ? ' (refreshed)' : '; authored content preserved'}. Room centre: ${worldFromTile(32, 32)}.`,
+  `Placeholder art and the Peace Quarter: ${ambient.length} ambient people, ${cards.length} draft cards, ${heads} sharp heads${refresh ? ' (refreshed)' : '; authored content preserved'}. Room centre: ${worldFromTile(32, 32)}.`,
 );

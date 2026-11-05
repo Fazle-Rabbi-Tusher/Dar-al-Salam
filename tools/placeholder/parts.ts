@@ -105,7 +105,7 @@ export const props = [
   'title-belt',
   'scooter',
 ];
-const K = {
+export const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
   hair: ['#00FFFF', '#00CCCC', '#009999'],
   cloth: ['#FFFF00', '#CCCC00', '#999900'],
@@ -114,7 +114,7 @@ const K = {
   prop: ['#0080FF', '#0066CC', '#004C99'],
 };
 // Fixed palette colours (all present in world-palette.json).
-const F = {
+export const F = {
   ink: '#3B322E',
   outline: '#493C35',
   charcoal: ['#80766B', '#65564B', '#493C35'],
@@ -131,8 +131,8 @@ type P = [number, number];
 type Limb = [P, P, P];
 type Mode = 'stand' | 'chair' | 'floor' | 'bow' | 'prostrate' | 'kneel';
 /** Head orientation: upright, crown forward with the face down, or face up. */
-type Turn = 'up' | 'down' | 'back';
-type Pose = {
+export type Turn = 'up' | 'down' | 'back';
+export type Pose = {
   /** Authoring head top-left (before the realistic mapping). */
   head: P;
   /** Head centre on the canvas and the top-left of its 10×11 box. */
@@ -152,7 +152,7 @@ type Pose = {
   action: Action;
 };
 
-class Mask {
+export class Mask {
   data: Uint8Array;
   constructor(
     public width: number,
@@ -322,7 +322,7 @@ const opaque = (p: Pixels, x: number, y: number) =>
   x < p.width &&
   y < p.height &&
   p.data[(y * p.width + x) * 4 + 3] > 0;
-const colourAt = (p: Pixels, x: number, y: number) =>
+export const colourAt = (p: Pixels, x: number, y: number) =>
   opaque(p, x, y) ? hexAt(p, (y * p.width + x) * 4) : null;
 
 /* ───────────── lighting ───────────── */
@@ -590,7 +590,7 @@ function fixPose(q: Pose) {
   }
 }
 /** One skeleton for every part, so all layers line up frame by frame. */
-function pose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
+export function pose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
   return realistic(rawPose(action, facing, f));
 }
 SHADES.push(
@@ -1231,8 +1231,8 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
  * bowing and lying poses. Templates are written in head-box coordinates: each
  * string starts at x = -3 and the first row is y = -3.
  */
-const HS = { w: 22, h: 26, ox: 6, oy: 6 };
-type Template = string[];
+export const HS = { w: 22, h: 26, ox: 6, oy: 6 };
+export type Template = string[];
 function cells(t: Template, ch = '#'): P[] {
   const out: P[] = [];
   t.forEach((row, j) => {
@@ -1242,7 +1242,7 @@ function cells(t: Template, ch = '#'): P[] {
   return out;
 }
 /** Mask in head space from template cells. */
-function tmask(t: Template, ch = '#') {
+export function tmask(t: Template, ch = '#') {
   const m = new Mask(HS.w, HS.h);
   for (const [x, y] of cells(t, ch)) m.set(x + HS.ox, y + HS.oy);
   return m;
@@ -1257,7 +1257,7 @@ const hell = (m: Mask, cx: number, cy: number, rx: number, ry: number) =>
   m.ellipse(cx + HS.ox, cy + HS.oy, rx, ry);
 
 // Bare head silhouettes: 3/4 view toward the right, and the back of the head.
-const SKULL_SE: Template = [
+export const SKULL_SE: Template = [
   '.................',
   '.................',
   '.................',
@@ -1273,7 +1273,7 @@ const SKULL_SE: Template = [
   '.....########....',
   '......######.....',
 ];
-const SKULL_NE: Template = [
+export const SKULL_NE: Template = [
   '.................',
   '.................',
   '.................',
@@ -1289,7 +1289,7 @@ const SKULL_NE: Template = [
   '....########.....',
   '.....######......',
 ];
-type Hair = {
+export type Hair = {
   se: Template;
   ne: Template;
   beard?: Template;
@@ -1365,7 +1365,7 @@ const BEARD_NE_SHORT: Template = [
   '..........###....',
   '.........###.....',
 ];
-const HAIR: Record<string, Hair> = {
+export const HAIR: Record<string, Hair> = {
   'adult-man': {
     style: 'straight',
     se: [
@@ -1811,10 +1811,11 @@ const HAIR: Record<string, Hair> = {
     ],
   },
 };
-type Eyes = 'open' | 'happy' | 'down' | 'closed' | 'blink' | 'determined';
-type Mouth = 'smile' | 'open' | 'flat' | 'shout' | 'o' | 'calm' | 'grin';
+export type Eyes =
+  'open' | 'happy' | 'down' | 'closed' | 'blink' | 'determined';
+export type Mouth = 'smile' | 'open' | 'flat' | 'shout' | 'o' | 'calm' | 'grin';
 /** Expression by action and frame, so viewers can read what people do. */
-function expression(
+export function expression(
   a: Action,
   f: number,
 ): { eyes: Eyes; mouth: Mouth; brows?: 'raised' } {
@@ -2109,7 +2110,7 @@ function features(hs: Pixels, q: Pose, beard: boolean) {
   }
 }
 /** The whole base head (skin, hair, beard, face) in head space. */
-function headSprite(id: string, q: Pose) {
+export function headSprite(id: string, q: Pose) {
   const hs = new Pixels(HS.w, HS.h);
   paintSkull(hs, q.away);
   const { beard } = paintHair(hs, id, q.away);
@@ -2117,7 +2118,7 @@ function headSprite(id: string, q: Pose) {
   return hs;
 }
 /** Head space → canvas transform for the pose's head turn. */
-function headXY(q: Pose, x: number, y: number): P {
+export function headXY(q: Pose, x: number, y: number): P {
   // x, y in head-box coordinates.
   if (q.turn === 'up') return [q.box[0] + x, q.box[1] + y];
   const [cx, cy] = q.box;
@@ -2163,7 +2164,7 @@ function clearHead(p: Pixels, q: Pose) {
 /** Index of the arm/leg nearer the viewer (the character's right in SE). */
 const nearI = (q: Pose) => (q.away ? 1 : 0);
 const farI = (q: Pose) => (q.away ? 0 : 1);
-const upright = (q: Pose) => q.mode !== 'bow' && q.mode !== 'prostrate';
+export const upright = (q: Pose) => q.mode !== 'bow' && q.mode !== 'prostrate';
 /** Actions where the far forearm and hand come round in front of the body. */
 const FAR_FRONT = new Set<Action>([
   'carry',
@@ -3627,7 +3628,8 @@ function capMask(away: boolean, bottom: number, grow = 0.8) {
     for (let i = 0; i < HS.w; i++) m.data[j * HS.w + i] = 0;
   return m;
 }
-function drawHeadwear(p: Pixels, id: string, q: Pose) {
+/** Headwear in head space (drapes over the body are painted onto `p`). */
+export function headwearSprite(p: Pixels, id: string, q: Pose) {
   const H = K.hat,
     hs = new Pixels(HS.w, HS.h),
     away = q.away,
@@ -3860,7 +3862,10 @@ function drawHeadwear(p: Pixels, id: string, q: Pose) {
     default:
       throw Error(`No placeholder art for headwear ${id}`);
   }
-  placeHead(p, q, hs);
+  return hs;
+}
+function drawHeadwear(p: Pixels, id: string, q: Pose) {
+  placeHead(p, q, headwearSprite(p, id, q));
 }
 
 /* ───────────── props ───────────── */

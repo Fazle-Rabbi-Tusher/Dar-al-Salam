@@ -1,0 +1,69 @@
+{
+  "id": "habib-umar-bin-hafiz",
+  "kind": "person",
+  "name": {
+    "en": "Habib Umar bin Hafiz",
+    "ar": "الحبيب عمر بن حفيظ",
+    "bn": "হাবিব উমর বিন হাফিজ"
+  },
+  "aliases": [],
+  "years": "b. 1963",
+  "place": "Tarim, Yemen",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "elder",
+    "garment": "jubba",
+    "headwear": "imamah",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-white",
+      "garmentPrimary": "white-linen",
+      "garmentSecondary": "emerald",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "teach",
+      "at": [19.1, 15.8],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "teach",
+      "at": [19.1, 15.8],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Yemeni Islamic scholar from Tarim, Hadramawt, where he founded Dar al-Mustafa, a seminary that welcomes students from around the world."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Umar_bin_Hafiz"
+    }
+  ],
+  "panelApproved": false
+}

@@ -146,6 +146,8 @@ export const frameMetaSchema = z.object({
   anchor: pointSchema,
   bounds: rectSchema,
   hitMask: z.string(),
+  /** Sprite pixels per world pixel (2 for named characters' sharp heads). */
+  density: z.number().int().positive().optional(),
 });
 export type FrameMeta = z.infer<typeof frameMetaSchema>;
 export const bakedCharacterSchema = characterSchema.extend({
@@ -154,6 +156,8 @@ export const bakedCharacterSchema = characterSchema.extend({
   interactive: z.boolean(),
   needsPanelReview: z.boolean(),
   shadowFrame: z.string().optional(),
+  /** Close-up of the sharp head for the story card (named characters). */
+  portrait: z.string().optional(),
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({

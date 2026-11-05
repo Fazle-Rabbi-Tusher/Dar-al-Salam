@@ -1,0 +1,69 @@
+{
+  "id": "hamza-yusuf",
+  "kind": "person",
+  "name": {
+    "en": "Hamza Yusuf",
+    "ar": "حمزة يوسف",
+    "bn": "হামজা ইউসুফ"
+  },
+  "aliases": [],
+  "years": "b. 1958",
+  "place": "Berkeley, California",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "elder",
+    "garment": "jubba",
+    "headwear": "imamah",
+    "prop": "book",
+    "colours": {
+      "skin": "skin-1",
+      "hair": "hair-grey",
+      "garmentPrimary": "khaki",
+      "garmentSecondary": "white-linen",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [34.5, 33.6],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [34.5, 33.6],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "American Islamic scholar who co-founded Zaytuna College in Berkeley, California, the first accredited Muslim liberal-arts college in the United States."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hamza_Yusuf"
+    }
+  ],
+  "panelApproved": false
+}

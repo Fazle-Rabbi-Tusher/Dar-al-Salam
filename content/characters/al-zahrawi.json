@@ -1,0 +1,70 @@
+{
+  "id": "al-zahrawi",
+  "kind": "person",
+  "name": {
+    "en": "al-Zahrawi",
+    "ar": "الزهراوي",
+    "bn": "আল-জাহরাবি"
+  },
+  "aliases": ["Abulcasis"],
+  "years": "936–1013",
+  "place": "Córdoba",
+  "district": "maghreb",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "jubba",
+    "headwear": "imamah",
+    "prop": "scroll",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-black",
+      "garmentPrimary": "emerald",
+      "garmentSecondary": "white-linen",
+      "headwear": "wool-cream",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [10.6, 29.6],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [10.6, 29.6],
+      "facing": "SE"
+    }
+  ],
+  "pairWith": "amb-patient-2",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Surgeon of Córdoba, known in Europe as Abulcasis. His medical encyclopaedia, al-Tasrif, described and illustrated hundreds of surgical instruments."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Al-Zahrawi"
+    }
+  ],
+  "panelApproved": false
+}

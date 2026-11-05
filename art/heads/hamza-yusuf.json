@@ -1,0 +1,370 @@
+{
+  "frames": [
+    {
+      "filename": "idle_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 36
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 24,
+        "w": 26,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_1",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 36
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 24,
+        "w": 26,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_2",
+      "frame": {
+        "x": 26,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_3",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_0",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 24,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_1",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 24,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_2",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_3",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 36
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 24,
+        "w": 26,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_1",
+      "frame": {
+        "x": 104,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_2",
+      "frame": {
+        "x": 130,
+        "y": 0,
+        "w": 26,
+        "h": 36
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 24,
+        "w": 26,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_3",
+      "frame": {
+        "x": 104,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_0",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 24,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_1",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_2",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 24,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_3",
+      "frame": {
+        "x": 78,
+        "y": 0,
+        "w": 26,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    }
+  ],
+  "meta": {
+    "image": "hamza-yusuf.png",
+    "size": {
+      "w": 156,
+      "h": 36
+    },
+    "density": 2,
+    "frameTags": [
+      {
+        "name": "idle_se",
+        "from": 0,
+        "to": 3
+      },
+      {
+        "name": "idle_ne",
+        "from": 4,
+        "to": 7
+      },
+      {
+        "name": "talk_se",
+        "from": 8,
+        "to": 11
+      },
+      {
+        "name": "talk_ne",
+        "from": 12,
+        "to": 15
+      }
+    ],
+    "slices": [
+      {
+        "name": "foot",
+        "keys": [
+          {
+            "frame": 0,
+            "bounds": {
+              "x": 56,
+              "y": 160,
+              "w": 1,
+              "h": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
