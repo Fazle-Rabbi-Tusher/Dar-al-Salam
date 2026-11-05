@@ -181,13 +181,16 @@ function normalHead(
             : 'hat';
       } else if (hc && !covered(garment, x, y)) {
         c = hc;
+        // Brows are hair-coloured but belong to the face.
         r = beardM?.has(x, y)
           ? 'beard'
-          : hairM.has(x, y) || HAIRK.has(hc)
+          : hairM.has(x, y)
             ? skull.has(x, y) && SKIN.has(hc)
               ? 'skin'
               : 'hair'
-            : 'skin';
+            : HAIRK.has(hc) && !skull.has(x, y)
+              ? 'hair'
+              : 'skin';
       }
       if (!c || covered(prop, x, y)) continue;
       // Hat colours inside a scarf opening are the face; keep them as hat.
