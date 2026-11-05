@@ -3,9 +3,10 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { CANVAS } from '../../packages/shared/canvas';
 import sharp from 'sharp';
 import { loadContent, validateCharacter } from './validate';
-import { loadParts, image } from './io';
+import { loadParts, loadHeads, image } from './io';
 import {
   compose,
+  composeWithHead,
   browserComposite,
   importAseprite,
   resolveFrame,
@@ -27,7 +28,11 @@ beforeAll(async () => {
   content = await loadContent();
   parts = await loadParts();
 });
-const { width: PW, height: PH, anchor: [AX, AY] } = CANVAS.person;
+const {
+  width: PW,
+  height: PH,
+  anchor: [AX, AY],
+} = CANVAS.person;
 describe('real content validation', () => {
   it('validates every example with every ambient scenario', async () => {
     const files = await fs.readdir('content/characters');
@@ -493,6 +498,93 @@ describe('card info and links', () => {
       expect(c.summary?.en?.length).toBeGreaterThan(40);
       expect(c.links?.[0].url).toMatch(/^https:\/\/en\.wikipedia\.org\/wiki\//);
       expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
+    }
+  });
+});
+
+describe('scholars and scene roles', () => {
+  const scholars = [
+    'ibn-al-haytham',
+    'al-zahrawi',
+    'al-jazari',
+    'al-biruni',
+    'ibn-khaldun',
+    'ibn-rushd',
+    'mufti-ismail-menk',
+    'hamza-yusuf',
+    'omar-suleiman',
+    'habib-umar-bin-hafiz',
+    'ahmed-zewail',
+  ];
+  it('adds the scholars as unapproved drafts under exact approved names', async () => {
+    const { forbiddenName } = await import('../../packages/shared/rules');
+    for (const id of scholars) {
+      const c = content.characters.find((c) => c.id === id)!;
+      expect(c.panelApproved).toBe(false);
+      expect(c.depiction).toBe('full');
+      expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
+      expect(forbiddenName(c.name!.en, content.rules)).toBe(false);
+      for (const a of c.aliases)
+        expect(forbiddenName(a, content.rules)).toBe(false);
+    }
+    // Approval covers the exact full names only, not the given names.
+    for (const n of ['Ismail', 'Hamza Ahmed', 'Yusuf Menk', 'Ahmed Rahman'])
+      expect(forbiddenName(n, content.rules)).toBe(true);
+  });
+  it('keeps only the ambient people that named scenes need', () => {
+    const people = content.characters.filter(
+      (c) => !c.name && c.kind === 'person',
+    );
+    expect(people.length).toBeLessThanOrEqual(60);
+    for (const c of people) expect(c.role).toBeTruthy();
+    const ids = new Set(content.characters.map((c) => c.id));
+    for (const c of content.characters)
+      if (c.pairWith) expect(ids.has(c.pairWith)).toBe(true);
+  });
+});
+
+describe('sharp heads', () => {
+  it('gives every named person a 2× head that fits the body exactly', async () => {
+    const heads = await loadHeads(),
+      pal = {
+        keys: content.keys,
+        ramps: content.ramps,
+        outline: '#493C35',
+        shadow: '#493C35',
+      },
+      allowed = new Set(content.palette);
+    const named = content.characters.filter(
+      (c) => c.name && c.kind === 'person',
+    );
+    expect(named.length).toBeGreaterThanOrEqual(30);
+    for (const c of named) {
+      expect(heads[c.id], c.id).toBeDefined();
+      for (const action of new Set(c.script.map((s) => s.action)))
+        for (const facing of ['SE', 'NW'] as const) {
+          const { image: img, overhang } = composeWithHead(
+            c.look,
+            action,
+            facing,
+            0,
+            parts,
+            pal,
+            heads[c.id],
+          );
+          expect(overhang, `${c.id} ${action} ${facing}`).toBe(0);
+          expect([img.width, img.height]).toEqual([PW * 2, PH * 2]);
+          expect(paletteErrors(img, allowed)).toEqual([]);
+          // Away from the head the frame is the normal frame, doubled.
+          const base = compose(c.look, action, facing, 0, parts, pal),
+            head = resolveFrame(heads[c.id], action, facing, 0);
+          for (let y = 0; y < PH; y += 2)
+            for (let x = 0; x < PW; x += 2) {
+              const hx = head.mirror ? PW * 2 - 1 - x * 2 : x * 2;
+              if (head.frame.data[(y * 2 * PW * 2 + hx) * 4 + 3]) continue;
+              expect(hexAt(img, (y * 2 * img.width + x * 2) * 4)).toBe(
+                hexAt(base, (y * PW + x) * 4),
+              );
+            }
+        }
     }
   });
 });

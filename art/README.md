@@ -27,6 +27,10 @@ Use exact RGB shades from `content/palettes/key-colours.json`. Each slot maps to
 
 People are realistic: adults are about 64 px tall, around 6.5–7 heads, with detailed pixel faces (eyes, brows, nose and mouth shading, ears) whose expression follows the action: smiling, talking, shouting, focused while reading, eyes closed in prayer, determined when sparring. Hair has strand highlights and clothing has folds and shading. Children reuse adult garment sheets and are scaled by the compositor (`CHILD_SCALE`). Elders differ by hair and a fuller beard. Prop sheets omit `pray` frames: hands are free during prayer. Prayer frames follow standing → bowing → prostration → sitting and are marked for advisory review.
 
+## Sharp heads (named characters)
+
+Named people also have `art/heads/<character id>.png/.json`: Aseprite JSON-array sheets on a doubled person canvas (112×168, foot slice at 56,160, `meta.density: 2`), with tags `<action>_<se|ne>` for every action the character's script uses plus `idle`. Each frame holds only the head, drawn at twice the density, and must stay inside the silhouette of the character's normal head in that frame. The build rejects any head pixel that falls outside the body. Use world-palette colours directly; heads are not recoloured. SW/NW are mirrored from SE/NE. `pnpm gen:placeholder` seeds missing heads and keeps existing ones; `--refresh` regenerates them.
+
 ## World assets
 
 - Tiles: `art/tiles/tile-<id>.png`, 32×16, transparent outside the diamond. The `floor` layer uses these numeric IDs.

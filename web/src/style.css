@@ -693,7 +693,7 @@ html[lang='bn'] .brand strong {
   font-size: 7px;
 }
 .portrait-decoration {
-  height: 105px;
+  min-height: 105px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -705,7 +705,8 @@ html[lang='bn'] .brand strong {
     serif;
 }
 .portrait-face {
-  height: 104px;
+  /* 2× the 52×60 close-up, so pixels stay square and crisp. */
+  height: 120px;
   width: auto;
   image-rendering: pixelated;
   border: 1px solid #b7c5a8;

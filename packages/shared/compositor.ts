@@ -177,7 +177,15 @@ export function composeWithHead(
   head: Part,
   includeShadow = true,
 ) {
-  const base = compose(look, action, facing, index, parts, palette, includeShadow),
+  const base = compose(
+      look,
+      action,
+      facing,
+      index,
+      parts,
+      palette,
+      includeShadow,
+    ),
     d = HEAD_DENSITY,
     out = new Pixels(base.width * d, base.height * d);
   for (let y = 0; y < out.height; y++)
