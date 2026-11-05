@@ -1,0 +1,69 @@
+{
+  "id": "muhammad-yunus",
+  "kind": "person",
+  "name": {
+    "en": "Muhammad Yunus",
+    "ar": "محمد يونس",
+    "bn": "মুহাম্মদ ইউনূস"
+  },
+  "aliases": [],
+  "years": "b. 1940",
+  "place": "Chattogram · Dhaka",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-clean",
+    "garment": "shirt-trousers",
+    "headwear": "none",
+    "prop": "tablet",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-grey",
+      "garmentPrimary": "khaki",
+      "garmentSecondary": "charcoal",
+      "headwear": "white-linen",
+      "prop": "graphite"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "talk",
+      "at": [49, 117],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [49, 117],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Bangladeshi economist who founded Grameen Bank, pioneering small loans for people too poor for ordinary banks. He and the bank shared the 2006 Nobel Peace Prize."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Muhammad_Yunus"
+    }
+  ],
+  "panelApproved": false
+}

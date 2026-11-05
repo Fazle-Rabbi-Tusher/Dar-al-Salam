@@ -171,6 +171,8 @@ await seed('content/rules/never-depict.json', {
     'Mufti Ismail Menk',
     'Hamza Yusuf',
     'Ahmed Zewail',
+    // Approved by the project owner (2026-11): the economist, b. 1940.
+    'Muhammad Yunus',
   ],
 });
 const traditional = [

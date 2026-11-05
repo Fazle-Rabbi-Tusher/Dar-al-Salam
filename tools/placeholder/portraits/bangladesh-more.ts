@@ -594,6 +594,18 @@ function scarfed(p: Scarfed): PortraitDef {
 }
 
 export const BANGLADESH_MORE: Record<string, PortraitDef> = {
+  // Neat grey hair, clean-shaven, a warm smile.
+  'muhammad-yunus': person({
+    bias: 0,
+    skin: 'skin-4',
+    hair: HAIR.grey,
+    hairStyle: 'neat',
+    shaven: true,
+    brow: 'medium',
+    browColour: '#8B9D96',
+    age: 2,
+    bigSmile: true,
+  }),
   // Clean-shaven, long dark wavy hair, large expressive eyes.
   'kazi-nazrul-islam': person({
     bias: -0.15,

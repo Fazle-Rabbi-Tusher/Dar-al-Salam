@@ -2200,6 +2200,10 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Traveller from Tangier whose Rihla describes nearly thirty years of journeys across Africa, Asia and Europe, including a visit to Bengal in 1346.',
     links: wiki('Ibn_Battuta'),
   },
+  'muhammad-yunus': {
+    en: 'Bangladeshi economist who founded Grameen Bank, pioneering small loans for people too poor for ordinary banks. He and the bank shared the 2006 Nobel Peace Prize.',
+    links: wiki('Muhammad_Yunus'),
+  },
   'hakeem-olajuwon': {
     en: 'Nigerian-American basketball centre who won two NBA championships with the Houston Rockets (1994 and 1995) and is in the Basketball Hall of Fame.',
     links: wiki('Hakeem_Olajuwon'),
@@ -3486,6 +3490,21 @@ function bangladeshAndMore(): (Partial<Character> &
       }),
       // A traveller arriving at the mosque plaza.
       script: two('talk', 'wave', [16, 110.5], 'SE', 'SW'),
+    },
+    {
+      id: 'muhammad-yunus',
+      name: { en: 'Muhammad Yunus', ar: 'محمد يونس', bn: 'মুহাম্মদ ইউনূস' },
+      years: 'b. 1940',
+      place: 'Chattogram · Dhaka',
+      district: 'modern-quarter',
+      look: look('adult-man-clean', 'shirt-trousers', 'none', 'tablet', {
+        hair: 'hair-grey',
+        garmentPrimary: 'khaki',
+        garmentSecondary: 'charcoal',
+        prop: 'graphite',
+      }),
+      // Talking with traders by the rickshaw street.
+      script: two('talk', 'idle', [49, 117], 'SE', 'SW'),
     },
     {
       id: 'hakeem-olajuwon',
