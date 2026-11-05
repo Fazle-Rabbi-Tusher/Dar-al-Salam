@@ -84,7 +84,16 @@ test('spin, zoom, whole-planet overview, inspector and minimap operate without r
   await expect(page.locator('.inspector-panel')).toBeVisible();
   for (let i = 0; i < 5; i++)
     await page.getByLabel('Zoom out', { exact: true }).click();
-  await expect(page.locator('.zoom-controls')).toContainText('30');
+  await expect
+    .poll(async () =>
+      Number(
+        (await page.locator('.zoom-controls>span').first().innerText()).replace(
+          '%',
+          '',
+        ),
+      ),
+    )
+    .toBeLessThanOrEqual(50);
   await page.getByLabel('See the whole planet', { exact: true }).click();
   await page.waitForTimeout(800);
   await page.waitForTimeout(500);
@@ -149,6 +158,12 @@ test('mobile touch layout opens the story bottom sheet and supports zoom', async
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await ready(page);
+  // Phones open at 40% and can zoom right out to 5%.
+  await expect(page.locator('.zoom-controls>span').first()).toContainText('40');
+  for (let i = 0; i < 12; i++)
+    await page.getByLabel('Zoom out', { exact: true }).click();
+  await expect(page.locator('.zoom-controls>span').first()).toContainText('5');
+  await page.screenshot({ path: '.playwright/mobile-planet.png' });
   await page.getByLabel('Find a person or a story…').click();
   await page.getByLabel('Find a person or a story…').fill('Fatima');
   await page.getByRole('button', { name: /Fatima al-Fihri/ }).click();

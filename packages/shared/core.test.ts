@@ -209,9 +209,12 @@ describe('pixel masks and URLs', () => {
     expect(parseUrl(serialiseUrl(c, 'ibn-sina'))).toEqual({
       ...c,
       id: 'ibn-sina',
+      hasZoom: true,
     });
     expect(parseUrl('/?x=nope&z=999').x).toBe(2048);
-    expect(parseUrl('/?z=-2').zoom).toBe(0.125);
+    expect(parseUrl('/?z=-2').zoom).toBe(0.05);
+    expect(parseUrl('/?z=-2').hasZoom).toBe(true);
+    expect(parseUrl('/c/ibn-sina').hasZoom).toBe(false);
   });
 });
 

@@ -1,4 +1,10 @@
 export type Camera = { x: number; y: number; zoom: number };
+/** Smallest zoom a link can ask for (phones can zoom out this far). */
+export const MIN_URL_ZOOM = 0.05;
+/** Viewports narrower than this are treated as phones. */
+export const PHONE_WIDTH = 768;
+/** Opening zoom on phones: the planet fills the screen. */
+export const PHONE_ZOOM = 0.4;
 export function parseUrl(url: string) {
   const u = new URL(url, 'http://local');
   const num = (k: string, fallback: number) => {
@@ -8,7 +14,9 @@ export function parseUrl(url: string) {
   return {
     x: num('x', 2048),
     y: num('y', 1930),
-    zoom: Math.min(4, Math.max(0.125, num('z', 2))),
+    zoom: Math.min(4, Math.max(MIN_URL_ZOOM, num('z', 2))),
+    /** True when the link chose a zoom; otherwise the app picks one for the screen. */
+    hasZoom: u.searchParams.has('z'),
     id: u.pathname.startsWith('/c/')
       ? decodeURIComponent(u.pathname.slice(3))
       : undefined,

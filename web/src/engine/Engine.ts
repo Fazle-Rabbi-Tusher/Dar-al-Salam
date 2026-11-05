@@ -42,7 +42,11 @@ import {
   type Manifest,
   type Sortable,
 } from '../../../packages/shared/schema';
-import { type Camera } from '../../../packages/shared/url';
+import {
+  MIN_URL_ZOOM,
+  PHONE_WIDTH,
+  type Camera,
+} from '../../../packages/shared/url';
 import { worldFromTile, type Point } from '../../../packages/shared/iso';
 TextureStyle.defaultOptions.scaleMode = 'nearest';
 
@@ -69,8 +73,7 @@ type Static = {
   size: number;
 };
 type ViewState = { lat: number; lon: number; zoom: number };
-const MIN_ZOOM = 0.3,
-  MAX_ZOOM = 4,
+const MAX_ZOOM = 4,
   MAX_LAT = 1.32;
 
 const vertex = /* glsl */ `
@@ -368,6 +371,10 @@ export class Engine {
     for (const m of [this.planet, this.halo])
       m.geometry.positions = new Float32Array([0, 0, w, 0, w, h, 0, h]);
   }
+  /** Phones can zoom right out until the planet is a small ball; desktops stop at 30%. */
+  minZoom() {
+    return this.host.clientWidth < PHONE_WIDTH ? MIN_URL_ZOOM : 0.3;
+  }
   getCamera(): Camera {
     const [x, y] = worldFromFocus(this.view.lat, this.view.lon);
     return { x, y, zoom: this.view.zoom };
@@ -377,7 +384,7 @@ export class Engine {
   }
   setZoom(zoom: number) {
     this.flight = null;
-    this.view.zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom));
+    this.view.zoom = Math.max(this.minZoom(), Math.min(MAX_ZOOM, zoom));
     this.zoomIdle = 240;
     this.applyCamera();
   }
@@ -386,7 +393,7 @@ export class Engine {
     return {
       lat: Math.max(-MAX_LAT, Math.min(MAX_LAT, f.lat)),
       lon: f.lon,
-      zoom: Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, to.zoom)),
+      zoom: Math.max(this.minZoom(), Math.min(MAX_ZOOM, to.zoom)),
     };
   }
   flyTo(to: Camera, ms = 600) {

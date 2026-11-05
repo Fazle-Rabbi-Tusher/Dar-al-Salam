@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Engine } from '../engine/Engine';
 import type { BakedCharacter, Manifest } from '../../../packages/shared/schema';
 import {
+  PHONE_WIDTH,
+  PHONE_ZOOM,
   parseUrl,
   serialiseUrl,
   type Camera,
@@ -292,7 +294,18 @@ function World({ manifest }: { manifest: Manifest | null }) {
         if (initial.id) {
           select(initial.id);
           world.focusCharacter(initial.id);
-        } else world.flyTo(initial, 1);
+        } else
+          world.flyTo(
+            {
+              ...initial,
+              // Phones open on the whole planet unless the link sets a zoom.
+              zoom:
+                !initial.hasZoom && window.innerWidth < PHONE_WIDTH
+                  ? PHONE_ZOOM
+                  : initial.zoom,
+            },
+            1,
+          );
       })
       .catch((e) => {
         if (!cancelled) setError(String(e));
@@ -562,7 +575,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
               engine.current?.setZoom(
                 camera.zoom > 1
                   ? Math.ceil(camera.zoom) - 1
-                  : camera.zoom - 0.25,
+                  : camera.zoom * 0.8,
               )
             }
           >
@@ -578,7 +591,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
               engine.current?.setZoom(
                 camera.zoom >= 1
                   ? Math.floor(camera.zoom) + 1
-                  : camera.zoom + 0.25,
+                  : Math.min(1, camera.zoom / 0.8),
               )
             }
           >
