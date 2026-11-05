@@ -1794,11 +1794,138 @@ export function modernQuarter() {
     'NW',
   );
 
+  /* ════════ Bangladesh (x 2–94, y 95–122), south of New York ════════ */
+  // Baitul Mukarram, the national mosque: the cube, its gate and arcades on a
+  // white marble plaza (no calligraphy is drawn).
+  obj('m-baitul-mukarram', 8, 96);
+  obj('m-bm-gate', 9.5, 104);
+  obj('m-bm-arcade', 18, 103.5);
+  obj('m-bm-arcade', 25, 103.5);
+  obj('m-bm-pavilion', 4.5, 108);
+  obj('m-tea-stall', 36.5, 112);
+  obj('m-street-lamp', 34, 106.5);
+  obj('m-street-lamp', 34, 119);
+  for (const [x, y] of [
+    [4, 120],
+    [38, 96],
+    [38, 120],
+  ])
+    obj('m-tree', x, y);
+  // A school with its yard, flag and a shapla (water-lily) pond.
+  obj('m-bd-school', 46, 96.6);
+  obj('m-bd-flag', 59, 101.5);
+  obj('m-shapla-pond', 66, 98);
+  for (const x of [44, 61]) obj('m-tree', x, 108.8);
+  // Cycle rickshaws parked along the street.
+  for (const x of [46, 53, 60]) obj('m-rickshaw', x, 113.1);
+  // Cricket ground and a basketball court.
+  obj('m-cricket-pitch', 77, 113.8);
+  obj('m-stumps', 77.5, 114);
+  obj('m-stumps', 77.5, 120.8);
+  obj('m-basketball-court', 84, 96);
+  obj('m-hoop', 84, 98);
+  obj('m-hoop', 91, 98);
+  for (const x of [66, 92]) obj('m-tree', x, 121);
+  const lungi = (headwear: string, c: Partial<Look['colours']> = {}) =>
+    L('adult-man', 'panjabi-lungi', headwear, 'none', {
+      garmentPrimary: 'white-linen',
+      ...c,
+    });
+  walker(
+    'bd-worshipper-0',
+    [
+      [14, 109.5],
+      [26, 109.5],
+      [26, 115.5],
+      [14, 115.5],
+    ],
+    lungi('taqiyah'),
+    240,
+  );
+  walker(
+    'bd-worshipper-1',
+    [
+      [28, 117.5],
+      [20, 117.5],
+      [20, 112.5],
+      [28, 112.5],
+    ],
+    lungi('kufi', { garmentSecondary: 'emerald' }),
+    240,
+  );
+  person(
+    'bd-tea-seller',
+    [37.6, 113.6],
+    'pour',
+    withProp(
+      lungi('none', { garmentPrimary: 'khaki', garmentSecondary: 'emerald' }),
+      'water-jug',
+    ),
+    'SW',
+  );
+  person(
+    'bd-tea-drinker',
+    [35.8, 114.4],
+    'sit',
+    L('elder', 'panjabi-lungi', 'taqiyah', 'coffee', {
+      garmentPrimary: 'wool-cream',
+    }),
+    'SE',
+  );
+  // Pupils in uniform listening to their teacher in the yard.
+  (
+    [
+      [48.5, 105.8, 'NE', 'boy'],
+      [50.2, 106.6, 'NE', 'girl'],
+      [52, 105.9, 'NW', 'boy'],
+      [49.2, 108, 'NE', 'girl'],
+      [51.2, 108.2, 'NW', 'boy'],
+      [53.2, 107.6, 'NW', 'girl'],
+    ] as [number, number, Facing, string][]
+  ).forEach(([x, y, f, kind], i) =>
+    person(
+      `bd-pupil-${i}`,
+      [x, y],
+      'read',
+      kind === 'boy'
+        ? L('child', 'shirt-trousers', 'none', 'book', {
+            garmentPrimary: 'white-linen',
+            garmentSecondary: 'navy',
+          })
+        : L('child', 'long-dress', 'hijab', 'book', {
+            garmentPrimary: 'sky',
+            headwear: 'white-linen',
+          }),
+      f,
+    ),
+  );
+  person(
+    'bd-umpire',
+    [76.4, 119.6],
+    'idle',
+    L('adult-man', 'shirt-trousers', 'cap', 'none', {
+      garmentPrimary: 'white-linen',
+      garmentSecondary: 'charcoal',
+      headwear: 'white-linen',
+    }),
+    'NE',
+  );
+  person(
+    'bd-fielder',
+    [70.5, 116.5],
+    'idle',
+    L('adult-man-short', 'shirt-trousers', 'none', 'none', {
+      garmentPrimary: 'emerald',
+      garmentSecondary: 'emerald',
+    }),
+    'SE',
+  );
+
   /* ════════ Floor ════════ */
   const floor: number[] = [];
   const stone = (x: number, y: number) => 1 + ((x * 3 + y * 7) % 3);
   const W = 96,
-    H = 94;
+    H = 124;
   const streetRow = [63, 64, 76, 77, 89, 90],
     streetCol = [4, 5, 22, 23, 40, 41, 55, 56];
   for (let y = 0; y < H; y++)
@@ -1806,7 +1933,27 @@ export function modernQuarter() {
       const inX = (a: number, b: number) => x >= a && x <= b,
         inY = (a: number, b: number) => y >= a && y <= b;
       let t: number;
-      if (y >= 61 && x >= 2 && x <= 57) {
+      if (y >= 93) {
+        // Bangladesh block: a road along the top, a street through the middle.
+        t =
+          y <= 94 || inX(40, 41) || (inY(111, 112) && x >= 42)
+            ? 12
+            : x <= 1 || x >= 95 || y >= 122
+              ? 7
+              : x <= 39
+                ? inX(3, 38) && inY(96, 121)
+                  ? 14
+                  : 7
+                : y <= 110
+                  ? x <= 63
+                    ? inX(44, 62) && inY(100, 110)
+                      ? 15
+                      : 8
+                    : 4
+                  : x >= 62
+                    ? 4
+                    : 8;
+      } else if (y >= 61 && x >= 2 && x <= 57) {
         // New York: asphalt avenues, concrete sidewalks, paved blocks, a park.
         const street = streetRow.includes(y) || streetCol.includes(x),
           kerb =
@@ -2029,6 +2176,34 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Yemeni Islamic scholar from Tarim, Hadramawt, where he founded Dar al-Mustafa, a seminary that welcomes students from around the world.',
     links: wiki('Umar_bin_Hafiz'),
   },
+  'kazi-nazrul-islam': {
+    en: 'Bengali poet, writer and composer known as the “Rebel Poet” for verse against injustice. He wrote thousands of songs and is the national poet of Bangladesh.',
+    links: wiki('Kazi_Nazrul_Islam'),
+  },
+  'begum-rokeya': {
+    en: 'Bengali writer and educator, a pioneer of education for women. She founded the Sakhawat Memorial Girls’ School in Kolkata in 1911 and wrote the feminist story “Sultana’s Dream” (1905).',
+    links: wiki('Begum_Rokeya'),
+  },
+  'mashrafe-mortaza': {
+    en: 'Bangladeshi fast bowler from Narail and a long-serving captain of the national one-day team, known for leading through repeated knee injuries.',
+    links: wiki('Mashrafe_Mortaza'),
+  },
+  'tamim-iqbal': {
+    en: 'Left-handed opening batsman from Chattogram and former one-day captain, one of Bangladesh’s most prolific run-scorers.',
+    links: wiki('Tamim_Iqbal'),
+  },
+  'malala-yousafzai': {
+    en: 'Pakistani campaigner for girls’ education from the Swat Valley. In 2014 she became the youngest person to receive the Nobel Peace Prize.',
+    links: wiki('Malala_Yousafzai'),
+  },
+  'ibn-battuta': {
+    en: 'Traveller from Tangier whose Rihla describes nearly thirty years of journeys across Africa, Asia and Europe, including a visit to Bengal in 1346.',
+    links: wiki('Ibn_Battuta'),
+  },
+  'hakeem-olajuwon': {
+    en: 'Nigerian-American basketball centre who won two NBA championships with the Houston Rockets (1994 and 1995) and is in the Basketball Hall of Fame.',
+    links: wiki('Hakeem_Olajuwon'),
+  },
   'ahmed-zewail': {
     en: 'Egyptian-American chemist at Caltech. He won the 1999 Nobel Prize in Chemistry for watching chemical reactions with ultrashort laser flashes, the field known as femtochemistry.',
     links: wiki('Ahmed_Zewail'),
@@ -2050,6 +2225,8 @@ const SCENE_ROLES = [
   /^amb-fight-fan-/,
   // Abdul El-Sayed's front rows.
   /^amb-rally-[0-9]$/,
+  // People of Bangladesh: worshippers, a tea stall, pupils and the cricket.
+  /^amb-bd-/,
   // Audiences and partners of scholars and scientists.
   /^amb-listener-/,
   /^amb-student-[0-2]$/,
@@ -2060,6 +2237,12 @@ const SCENE_ROLES = [
 ];
 /** Hover labels: what each ambient person is doing (English for now). */
 const ROLES: [RegExp, string][] = [
+  [/^bd-worshipper/, 'Crossing the plaza of Baitul Mukarram'],
+  [/^bd-tea-seller/, 'Pouring cha at the tea stall'],
+  [/^bd-tea-drinker/, 'Enjoying a cup of cha'],
+  [/^bd-pupil/, 'Pupil at a Bangladeshi school'],
+  [/^bd-umpire/, 'Umpire at the cricket match'],
+  [/^bd-fielder/, 'Fielding at the cricket match'],
   [/^listener/, 'Listening to the talk'],
   [/^halal-vendor/, 'Halal cart vendor serving lunch'],
   [/^halal-queue/, 'Queueing for halal food'],
@@ -2953,6 +3136,7 @@ export function namedCards(): Character[] {
       pairWith: 'amb-students-walk',
     }),
     ...scholars().map(card),
+    ...bangladeshAndMore().map(card),
   ];
 }
 /*
@@ -3167,6 +3351,159 @@ function scholars(): (Partial<Character> &
       }),
       // Talking through a laser experiment in the lab.
       script: two('talk', 'idle', [42.4, 9.9], 'SW', 'SE'),
+    },
+  ];
+}
+
+/* Famous Muslims of Bangladesh, and others whose work the new block hosts. */
+function bangladeshAndMore(): (Partial<Character> &
+  Pick<Character, 'id' | 'look' | 'script'>)[] {
+  const look = (
+    base: string,
+    garment: string,
+    headwear: string,
+    prop: string,
+    colours: Partial<Look['colours']>,
+  ): Look => ({
+    base,
+    garment,
+    headwear,
+    prop,
+    colours: {
+      skin: 'skin-4',
+      hair: 'hair-black',
+      garmentPrimary: 'white-linen',
+      garmentSecondary: 'white-linen',
+      headwear: 'white-linen',
+      prop: 'cocoa',
+      ...colours,
+    },
+  });
+  const two = (
+    a: Step['action'],
+    b: Step['action'],
+    at: Pt,
+    fa: Facing,
+    fb: Facing,
+  ): Step[] => [
+    { from: 0, to: 60, action: a, at, facing: fa },
+    { from: 60, to: 120, action: b, at, facing: fb },
+  ];
+  const cricket = { garmentPrimary: 'emerald', garmentSecondary: 'emerald' };
+  return [
+    {
+      id: 'kazi-nazrul-islam',
+      name: {
+        en: 'Kazi Nazrul Islam',
+        ar: 'قاضي نذر الإسلام',
+        bn: 'কাজী নজরুল ইসলাম',
+      },
+      aliases: ['Nazrul'],
+      years: '1899–1976',
+      place: 'Churulia · Dhaka',
+      district: 'modern-quarter',
+      look: look('adult-man-clean', 'panjabi-lungi', 'none', 'book', {
+        skin: 'skin-3',
+        garmentPrimary: 'wool-cream',
+        garmentSecondary: 'madder-red',
+      }),
+      // Reciting his poems beside the shapla pond.
+      script: two('talk', 'idle', [65, 102.6], 'SE', 'SW'),
+    },
+    {
+      id: 'begum-rokeya',
+      name: { en: 'Begum Rokeya', ar: 'بيغم رقية', bn: 'বেগম রোকেয়া' },
+      aliases: ['Rokeya Sakhawat Hossain'],
+      years: '1880–1932',
+      place: 'Rangpur · Kolkata',
+      district: 'modern-quarter',
+      look: look('adult-woman', 'long-dress', 'hijab', 'book', {
+        garmentSecondary: 'navy',
+      }),
+      // Teaching her pupils in the school yard.
+      script: two('teach', 'teach', [50.6, 103.8], 'SW', 'SE'),
+    },
+    {
+      id: 'malala-yousafzai',
+      name: {
+        en: 'Malala Yousafzai',
+        ar: 'ملالا يوسفزاي',
+        bn: 'মালালা ইউসুফজাই',
+      },
+      years: 'b. 1997',
+      place: 'Mingora · Birmingham',
+      district: 'modern-quarter',
+      look: look('adult-woman', 'long-dress', 'hijab', 'book', {
+        skin: 'skin-3',
+        garmentPrimary: 'coral',
+        garmentSecondary: 'rose',
+        headwear: 'rose',
+      }),
+      // Visiting the school to talk about girls' education.
+      script: two('talk', 'wave', [56, 102.6], 'SW', 'SE'),
+    },
+    {
+      id: 'mashrafe-mortaza',
+      name: {
+        en: 'Mashrafe Mortaza',
+        ar: 'مشرفي مرتضى',
+        bn: 'মাশরাফি মর্তুজা',
+      },
+      years: 'b. 1983',
+      place: 'Narail',
+      district: 'modern-quarter',
+      look: look('adult-man-beard', 'shirt-trousers', 'none', 'none', {
+        skin: 'skin-5',
+        ...cricket,
+      }),
+      // Celebrating a wicket at the bowler's end.
+      script: two('celebrate', 'cheer', [80, 119.6], 'SE', 'SW'),
+    },
+    {
+      id: 'tamim-iqbal',
+      name: { en: 'Tamim Iqbal', ar: 'تميم إقبال', bn: 'তামিম ইকবাল' },
+      years: 'b. 1989',
+      place: 'Chattogram',
+      district: 'modern-quarter',
+      look: look('adult-man-beard', 'shirt-trousers', 'none', 'cricket-bat', {
+        ...cricket,
+        prop: 'wool-cream',
+      }),
+      // At the crease, then raising his bat.
+      script: two('idle', 'cheer', [78.8, 115.4], 'SW', 'SE'),
+    },
+    {
+      id: 'ibn-battuta',
+      name: { en: 'Ibn Battuta', ar: 'ابن بطوطة', bn: 'ইবনে বতুতা' },
+      years: '1304–c. 1369',
+      place: 'Tangier',
+      district: 'maghreb',
+      look: look('adult-man-beard', 'kaftan', 'imamah', 'scroll', {
+        skin: 'skin-3',
+        garmentPrimary: 'khaki',
+        garmentSecondary: 'cocoa',
+        prop: 'wool-cream',
+      }),
+      // A traveller arriving at the mosque plaza.
+      script: two('talk', 'wave', [16, 110.5], 'SE', 'SW'),
+    },
+    {
+      id: 'hakeem-olajuwon',
+      name: {
+        en: 'Hakeem Olajuwon',
+        ar: 'حكيم أولاجوون',
+        bn: 'হাকিম ওলাজুওন',
+      },
+      aliases: ['Hakeem the Dream'],
+      years: 'b. 1963',
+      place: 'Lagos · Houston',
+      district: 'modern-quarter',
+      look: look('adult-man-short', 'football-kit', 'none', 'none', {
+        skin: 'skin-8',
+        garmentPrimary: 'kit-red',
+        garmentSecondary: 'white-linen',
+      }),
+      script: two('celebrate', 'idle', [88, 99.6], 'SE', 'SW'),
     },
   ];
 }

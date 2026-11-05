@@ -1,0 +1,69 @@
+{
+  "id": "hakeem-olajuwon",
+  "kind": "person",
+  "name": {
+    "en": "Hakeem Olajuwon",
+    "ar": "حكيم أولاجوون",
+    "bn": "হাকিম ওলাজুওন"
+  },
+  "aliases": ["Hakeem the Dream"],
+  "years": "b. 1963",
+  "place": "Lagos · Houston",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-short",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-8",
+      "hair": "hair-black",
+      "garmentPrimary": "kit-red",
+      "garmentSecondary": "white-linen",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "celebrate",
+      "at": [88, 99.6],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "idle",
+      "at": [88, 99.6],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Nigerian-American basketball centre who won two NBA championships with the Houston Rockets (1994 and 1995) and is in the Basketball Hall of Fame."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hakeem_Olajuwon"
+    }
+  ],
+  "panelApproved": false
+}

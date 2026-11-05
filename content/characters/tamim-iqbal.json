@@ -1,0 +1,69 @@
+{
+  "id": "tamim-iqbal",
+  "kind": "person",
+  "name": {
+    "en": "Tamim Iqbal",
+    "ar": "تميم إقبال",
+    "bn": "তামিম ইকবাল"
+  },
+  "aliases": [],
+  "years": "b. 1989",
+  "place": "Chattogram",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "shirt-trousers",
+    "headwear": "none",
+    "prop": "cricket-bat",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-black",
+      "garmentPrimary": "emerald",
+      "garmentSecondary": "emerald",
+      "headwear": "white-linen",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "idle",
+      "at": [78.8, 115.4],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "cheer",
+      "at": [78.8, 115.4],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Left-handed opening batsman from Chattogram and former one-day captain, one of Bangladesh’s most prolific run-scorers."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tamim_Iqbal"
+    }
+  ],
+  "panelApproved": false
+}

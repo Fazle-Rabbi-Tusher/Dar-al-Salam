@@ -1318,5 +1318,124 @@
     ],
     "width": 128,
     "height": 172
+  },
+  "m-baitul-mukarram": {
+    "file": "objects/m-baitul-mukarram.png",
+    "anchor": [
+      144,
+      137
+    ],
+    "width": 288,
+    "height": 271
+  },
+  "m-bm-gate": {
+    "file": "objects/m-bm-gate.png",
+    "anchor": [
+      48,
+      61
+    ],
+    "width": 144,
+    "height": 123
+  },
+  "m-bm-arcade": {
+    "file": "objects/m-bm-arcade.png",
+    "anchor": [
+      32,
+      45
+    ],
+    "width": 160,
+    "height": 119
+  },
+  "m-bm-pavilion": {
+    "file": "objects/m-bm-pavilion.png",
+    "anchor": [
+      48,
+      29
+    ],
+    "width": 96,
+    "height": 67
+  },
+  "m-bd-school": {
+    "file": "objects/m-bd-school.png",
+    "anchor": [
+      64,
+      77
+    ],
+    "width": 240,
+    "height": 187
+  },
+  "m-bd-flag": {
+    "file": "objects/m-bd-flag.png",
+    "anchor": [
+      16,
+      69
+    ],
+    "width": 32,
+    "height": 85
+  },
+  "m-shapla-pond": {
+    "file": "objects/m-shapla-pond.png",
+    "anchor": [
+      64,
+      3
+    ],
+    "width": 144,
+    "height": 65
+  },
+  "m-tea-stall": {
+    "file": "objects/m-tea-stall.png",
+    "anchor": [
+      32,
+      29
+    ],
+    "width": 80,
+    "height": 59
+  },
+  "m-rickshaw": {
+    "file": "objects/m-rickshaw.png",
+    "anchor": [
+      32,
+      25
+    ],
+    "width": 80,
+    "height": 55
+  },
+  "m-cricket-pitch": {
+    "file": "objects/m-cricket-pitch.png",
+    "anchor": [
+      128,
+      1
+    ],
+    "width": 160,
+    "height": 78,
+    "floor": true
+  },
+  "m-stumps": {
+    "file": "objects/m-stumps.png",
+    "anchor": [
+      32,
+      11
+    ],
+    "width": 64,
+    "height": 33
+  },
+  "m-basketball-court": {
+    "file": "objects/m-basketball-court.png",
+    "anchor": [
+      80,
+      1
+    ],
+    "width": 208,
+    "height": 104,
+    "floor": true
+  },
+  "m-hoop": {
+    "file": "objects/m-hoop.png",
+    "anchor": [
+      32,
+      57
+    ],
+    "width": 64,
+    "height": 79
   }
 }

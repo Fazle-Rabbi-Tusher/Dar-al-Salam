@@ -104,6 +104,7 @@ export const props = [
   'boxing-gloves',
   'title-belt',
   'scooter',
+  'cricket-bat',
 ];
 export const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
@@ -4179,6 +4180,23 @@ function drawProp(p: Pixels, id: string, q: Pose) {
       solid(mk(p).capsule([hx - 6, hy - 11], [hx + 4, hy + 2], 1.8), R, 1.5);
       p.rect(hx + 3, hy + 1, 2, 2, F.white);
       p.pixel(hx - 6, hy - 11, F.white);
+      break;
+    }
+    case 'cricket-bat': {
+      // Grip in the hand, the blade carried on along the forearm: hanging by
+      // the leg at rest, raised high when celebrating.
+      const elbow = q.arms[1][1],
+        [dx, dy] = norm(elbow, hand),
+        at = (t: number): P => [hx + dx * t, hy + dy * t];
+      solid(
+        mk(p).capsule(at(-1), at(4), 0.8),
+        [F.charcoal[0], F.charcoal[1], F.ink],
+        1,
+      );
+      const blade = mk(p).capsule(at(4.5), at(15), 1.5, 1.8);
+      solid(blade, R, 1.4);
+      const [ex, ey] = at(15);
+      p.pixel(ex, ey, R[2]);
       break;
     }
     case 'cane': {

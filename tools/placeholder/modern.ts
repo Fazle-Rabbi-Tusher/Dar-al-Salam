@@ -3816,6 +3816,54 @@ const nyc: Record<string, Spec> = {
 };
 Object.assign(objects, nyc);
 
+/* ════════ Bangladesh block: Baitul Mukarram, a school, cricket and more ════════ */
+// Placeholder massing; the detailed art replaces these draw functions.
+const block = (h: number, m: Material) => (c: IsoCanvas) => {
+  c.box(0.05, 0.05, 0.9, 0.9, h, m);
+};
+const bangladesh: Record<string, Spec> = {
+  'm-baitul-mukarram': {
+    footprint: [8, 8],
+    h: 150,
+    draw: (c) => c.box(0.2, 0.2, 7.6, 7.6, 140, M.white),
+  },
+  'm-bm-gate': {
+    footprint: [5, 2],
+    h: 74,
+    draw: (c) => c.box(0.2, 0.2, 4.6, 1.6, 64, M.white),
+  },
+  'm-bm-arcade': {
+    footprint: [7, 1.5],
+    h: 54,
+    draw: (c) => c.box(0.1, 0.1, 6.8, 1.3, 46, M.white),
+  },
+  'm-bm-pavilion': { footprint: [2, 2], h: 48, draw: block(30, M.white) },
+  'm-bd-school': {
+    footprint: [10, 3],
+    h: 90,
+    draw: (c) => c.box(0.2, 0.2, 9.6, 2.6, 80, M.stone),
+  },
+  'm-bd-flag': { footprint: [0.5, 0.5], h: 76, draw: block(70, M.white) },
+  'm-shapla-pond': { footprint: [4, 3], h: 10, draw: block(4, M.stone) },
+  'm-tea-stall': { footprint: [2, 1], h: 44, draw: block(30, M.wood) },
+  'm-rickshaw': { footprint: [2, 1], h: 40, draw: block(26, M.white) },
+  'm-cricket-pitch': {
+    footprint: [2, 8],
+    h: 2,
+    floor: true,
+    draw: (c) => c.top(0.3, 0.1, 1.4, 7.8, 0, C.woodLight),
+  },
+  'm-stumps': { footprint: [1, 1], h: 16, draw: block(12, M.wood) },
+  'm-basketball-court': {
+    footprint: [8, 5],
+    h: 2,
+    floor: true,
+    draw: (c) => c.top(0.1, 0.1, 7.8, 4.8, 0, C.orange),
+  },
+  'm-hoop': { footprint: [1, 1], h: 64, draw: block(58, M.steel) },
+};
+Object.assign(objects, bangladesh);
+
 export const MODERN_OBJECTS: Record<
   string,
   { footprint: [number, number]; floor?: boolean; side?: boolean }
@@ -4046,6 +4094,12 @@ export function renderModernTile(n: number) {
         n,
         slab(C.concrete, n, 1, 0.02, C.concreteShade, 0.86),
       );
+    case 14:
+      // Baitul Mukarram's white marble plaza (placeholder).
+      return texturedTile(n, slab(C.offwhite, n, 1, 0.01, C.pale));
+    case 15:
+      // Packed-earth school yard (placeholder).
+      return texturedTile(n, slab(C.paper, n, 2, 0.03, C.ivory, 0.8));
     case 8:
       // Square pavers, four to a tile.
       return texturedTile(
@@ -4113,6 +4167,6 @@ export function renderModernTile(n: number) {
   }
 }
 export async function generateModernTiles() {
-  for (let n = 1; n <= 13; n++)
+  for (let n = 1; n <= 15; n++)
     await png(`art/tiles/tile-${n}.png`, renderModernTile(n));
 }

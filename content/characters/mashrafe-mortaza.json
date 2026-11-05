@@ -1,0 +1,69 @@
+{
+  "id": "mashrafe-mortaza",
+  "kind": "person",
+  "name": {
+    "en": "Mashrafe Mortaza",
+    "ar": "مشرفي مرتضى",
+    "bn": "মাশরাফি মর্তুজা"
+  },
+  "aliases": [],
+  "years": "b. 1983",
+  "place": "Narail",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "shirt-trousers",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-5",
+      "hair": "hair-black",
+      "garmentPrimary": "emerald",
+      "garmentSecondary": "emerald",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "celebrate",
+      "at": [80, 119.6],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "cheer",
+      "at": [80, 119.6],
+      "facing": "SW"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Bangladeshi fast bowler from Narail and a long-serving captain of the national one-day team, known for leading through repeated knee injuries."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mashrafe_Mortaza"
+    }
+  ],
+  "panelApproved": false
+}

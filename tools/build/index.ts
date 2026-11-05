@@ -307,7 +307,13 @@ async function build() {
     const q: Vec3 = [Math.cos(a) * r + jx, y + jy, Math.sin(a) * r - jx * 0.5],
       ql = Math.hypot(...q),
       p: Vec3 = [q[0] / ql, q[1] / ql, q[2] / ql];
-    if (Math.acos(p[2]) * PLANET.radiusTiles < 62) continue;
+    // Keep clear of the mapped rooms (out to the far corners, plus a margin).
+    const reach =
+      Math.hypot(
+        Math.max(PLANET.centre[0], room.width - PLANET.centre[0]),
+        Math.max(PLANET.centre[1], room.height - PLANET.centre[1]),
+      ) * 0.86;
+    if (Math.acos(p[2]) * PLANET.radiusTiles < reach) continue;
     if (wildAt(p) !== 'grass' || Math.abs(p[1]) > 0.93) continue;
     const tile = planetToTile(p),
       inside =

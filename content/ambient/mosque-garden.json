@@ -2003,5 +2003,399 @@
       }
     ],
     "role": "Supporter celebrating at the victory rally"
+  },
+  {
+    "id": "amb-bd-worshipper-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [14, 109.5],
+          [26, 109.5],
+          [26, 115.5],
+          [14, 115.5],
+          [14, 109.5]
+        ]
+      }
+    ],
+    "role": "Crossing the plaza of Baitul Mukarram"
+  },
+  {
+    "id": "amb-bd-worshipper-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "emerald",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "walk",
+        "path": [
+          [28, 117.5],
+          [20, 117.5],
+          [20, 112.5],
+          [28, 112.5],
+          [28, 117.5]
+        ]
+      }
+    ],
+    "role": "Crossing the plaza of Baitul Mukarram"
+  },
+  {
+    "id": "amb-bd-tea-seller",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "panjabi-lungi",
+      "headwear": "none",
+      "prop": "water-jug",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-brown",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "emerald",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "pour",
+        "at": [37.6, 113.6],
+        "facing": "SW"
+      }
+    ],
+    "role": "Pouring cha at the tea stall"
+  },
+  {
+    "id": "amb-bd-tea-drinker",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "elder",
+      "garment": "panjabi-lungi",
+      "headwear": "taqiyah",
+      "prop": "coffee",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-grey",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "denim",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "sit",
+        "at": [35.8, 114.4],
+        "facing": "SE"
+      }
+    ],
+    "role": "Enjoying a cup of cha"
+  },
+  {
+    "id": "amb-bd-pupil-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [48.5, 105.8],
+        "facing": "NE"
+      }
+    ],
+    "role": "Pupil at a Bangladeshi school"
+  },
+  {
+    "id": "amb-bd-pupil-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "sky"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [50.2, 106.6],
+        "facing": "NE"
+      }
+    ],
+    "role": "Pupil at a Bangladeshi school"
+  },
+  {
+    "id": "amb-bd-pupil-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [52, 105.9],
+        "facing": "NW"
+      }
+    ],
+    "role": "Pupil at a Bangladeshi school"
+  },
+  {
+    "id": "amb-bd-pupil-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [49.2, 108],
+        "facing": "NE"
+      }
+    ],
+    "role": "Pupil at a Bangladeshi school"
+  },
+  {
+    "id": "amb-bd-pupil-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-8",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "navy",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [51.2, 108.2],
+        "facing": "NW"
+      }
+    ],
+    "role": "Pupil at a Bangladeshi school"
+  },
+  {
+    "id": "amb-bd-pupil-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "book",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "graphite",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "read",
+        "at": [53.2, 107.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "Pupil at a Bangladeshi school"
+  },
+  {
+    "id": "amb-bd-umpire",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-7",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "graphite"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [76.4, 119.6],
+        "facing": "NE"
+      }
+    ],
+    "role": "Umpire at the cricket match"
+  },
+  {
+    "id": "amb-bd-fielder",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "emerald",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 120,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "idle",
+        "at": [70.5, 116.5],
+        "facing": "SE"
+      }
+    ],
+    "role": "Fielding at the cricket match"
   }
 ]

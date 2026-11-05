@@ -1,0 +1,69 @@
+{
+  "id": "begum-rokeya",
+  "kind": "person",
+  "name": {
+    "en": "Begum Rokeya",
+    "ar": "بيغم رقية",
+    "bn": "বেগম রোকেয়া"
+  },
+  "aliases": ["Rokeya Sakhawat Hossain"],
+  "years": "1880–1932",
+  "place": "Rangpur · Kolkata",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-woman",
+    "garment": "long-dress",
+    "headwear": "hijab",
+    "prop": "book",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-black",
+      "garmentPrimary": "white-linen",
+      "garmentSecondary": "navy",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 120,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "teach",
+      "at": [50.6, 103.8],
+      "facing": "SW"
+    },
+    {
+      "from": 60,
+      "to": 120,
+      "action": "teach",
+      "at": [50.6, 103.8],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Bengali writer and educator, a pioneer of education for women. She founded the Sakhawat Memorial Girls’ School in Kolkata in 1911 and wrote the feminist story “Sultana’s Dream” (1905)."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Begum_Rokeya"
+    }
+  ],
+  "panelApproved": false
+}
