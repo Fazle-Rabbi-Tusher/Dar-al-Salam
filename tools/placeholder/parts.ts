@@ -3715,6 +3715,9 @@ function drawHeadwear(p: Pixels, id: string, q: Pose) {
         skull = tmask(away ? SKULL_NE : SKULL_SE),
         m = copyMask(skull).grow(1.4);
       hell(m, 4.6, 11, 5.6, 3.4);
+      // Wide enough to hide any hair style worn underneath.
+      for (const b of ['adult-woman', 'adult-woman-loose', 'child'])
+        m.data.set(union(m, tmask(HAIR[b][away ? 'ne' : 'se']).grow(0.8)).data);
       const opening = hmk();
       if (!away) hell(opening, 6.6, 5.6, 3.3, 4.6);
       m.minus(opening);
