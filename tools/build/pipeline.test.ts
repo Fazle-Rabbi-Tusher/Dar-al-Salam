@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { CANVAS } from '../../packages/shared/canvas';
 import sharp from 'sharp';
 import { loadContent, validateCharacter } from './validate';
 import { loadParts, image } from './io';
@@ -26,6 +27,7 @@ beforeAll(async () => {
   content = await loadContent();
   parts = await loadParts();
 });
+const { width: PW, height: PH, anchor: [AX, AY] } = CANVAS.person;
 describe('real content validation', () => {
   it('validates every example with every ambient scenario', async () => {
     const files = await fs.readdir('content/characters');
@@ -181,10 +183,10 @@ describe('compositor and importer', () => {
       outline: '#493C35',
       shadow: '#493C35',
     });
-    expect(img.data[(67 * 48 + 16) * 4 + 3]).toBe(89);
+    expect(img.data[((AY - 1) * PW + AX - 8) * 4 + 3]).toBe(89);
     const at = (x: number, y: number) =>
-      Array.from(img.data.slice((y * 48 + x) * 4, (y * 48 + x) * 4 + 4));
-    expect(at(24, 2)).toEqual([0, 0, 0, 0]);
+      Array.from(img.data.slice((y * PW + x) * 4, (y * PW + x) * 4 + 4));
+    expect(at(AX, 2)).toEqual([0, 0, 0, 0]);
     expect(
       Array.from(img.data).filter((v, i) => i % 4 === 3 && v === 255).length,
     ).toBeGreaterThan(100);
@@ -233,7 +235,7 @@ describe('compositor and importer', () => {
         filename: `idle_${i}`,
         frame: { x: i * 2, y: 0, w: 2, h: 2 },
         spriteSourceSize: { x: 22, y: 30, w: 2, h: 2 },
-        sourceSize: { w: 48, h: 72 },
+        sourceSize: { w: PW, h: PH },
         duration: 83,
         userData: 'layerBias=5',
       })),
@@ -241,14 +243,14 @@ describe('compositor and importer', () => {
         image: 'fixture.png',
         frameTags: [{ name: 'idle_se', from: 0, to: 3 }],
         slices: [
-          { name: 'foot', keys: [{ bounds: { x: 24, y: 68, w: 1, h: 1 } }] },
+          { name: 'foot', keys: [{ bounds: { x: AX, y: AY, w: 1, h: 1 } }] },
         ],
       },
     };
     const part = importAseprite('fixture', json, sheet);
-    expect(part.anchor).toEqual([24, 68]);
+    expect(part.anchor).toEqual([AX, AY]);
     expect(part.frames.idle_SE_0.layerBias).toBe(5);
-    expect(part.frames.idle_SE_0.data[(30 * 48 + 22) * 4 + 3]).toBe(255);
+    expect(part.frames.idle_SE_0.data[(30 * PW + 22) * 4 + 3]).toBe(255);
     expect(() =>
       importAseprite(
         'fixture',
@@ -273,7 +275,7 @@ describe('compositor and importer', () => {
   });
   it('loads real Aseprite-format source sheets without conversion at runtime', async () => {
     const im = await image('art/parts/bases/adult-man.png');
-    expect(im.width).toBe(48 * 16);
+    expect(im.width).toBe(PW * 16);
     expect(Object.keys(parts['adult-man'].frames).length).toBeGreaterThan(100);
   });
 });
@@ -348,14 +350,14 @@ it('keeps child clothes proportional and elevated shadows on the floor', () => {
       outline: '#493C35',
       shadow: '#493C35',
     };
-  const adult = trimFrame(compose(c.look, 'idle', 'SE', 0, parts, p), [24, 68]);
+  const adult = trimFrame(compose(c.look, 'idle', 'SE', 0, parts, p), [AX, AY]);
   const child = trimFrame(
     compose({ ...c.look, base: 'child' }, 'idle', 'SE', 0, parts, p),
-    [24, 68],
+    [AX, AY],
   );
   expect(child.image.height).toBeLessThan(adult.image.height - 10);
   const lifted = compose(c.look, 'idle', 'SE', 0, parts, p, false);
-  expect(lifted.data[(67 * 48 + 16) * 4 + 3]).toBe(0);
+  expect(lifted.data[((AY - 1) * PW + AX - 8) * 4 + 3]).toBe(0);
 });
 
 describe('larger, modern characters', () => {
@@ -365,7 +367,7 @@ describe('larger, modern characters', () => {
     outline: '#493C35',
     shadow: '#493C35',
   });
-  it('draws adults about 54 px tall on a 48×72 canvas', () => {
+  it('draws full-height adults on the person canvas', () => {
     const look = {
       base: 'adult-woman',
       garment: 'lab-coat',
@@ -381,7 +383,7 @@ describe('larger, modern characters', () => {
       },
     };
     const img = compose(look, 'idle', 'SE', 0, parts, palette());
-    expect([img.width, img.height]).toEqual([48, 72]);
+    expect([img.width, img.height]).toEqual([PW, PH]);
     const t = trimFrame(img, parts['adult-woman'].anchor);
     expect(t.bounds.height).toBeGreaterThanOrEqual(52);
     expect(paletteErrors(img, new Set(content.palette))).toEqual([]);
