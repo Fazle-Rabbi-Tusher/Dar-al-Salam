@@ -66,6 +66,8 @@ async function build() {
   const allowed = new Set(palette),
     sourceAllowed = new Set([...palette, ...Object.values(keys).flat()]);
   for (const p of await files('art', '.png')) {
+    // Illustrated story-card portraits are not pixel art.
+    if (p.startsWith('art/illustrations/')) continue;
     const errors = paletteErrors(
       await image(p),
       p.startsWith('art/parts') ? sourceAllowed : allowed,
@@ -224,13 +226,16 @@ async function build() {
       await png(`${out}/${portrait}`, bust);
     }
     let illustration: string | undefined;
-    try {
-      await fs.access(`art/illustrations/${c.id}.svg`);
-      illustration = `illustrations/${c.id}.svg`;
+    for (const ext of ['png', 'svg']) {
+      try {
+        await fs.access(`art/illustrations/${c.id}.${ext}`);
+      } catch {
+        continue;
+      }
+      illustration = `illustrations/${c.id}.${ext}`;
       await fs.mkdir(`${out}/illustrations`, { recursive: true });
       await fs.copyFile(`art/${illustration}`, `${out}/${illustration}`);
-    } catch {
-      /* No illustrated portrait for this character. */
+      break;
     }
     baked.push({
       ...c,

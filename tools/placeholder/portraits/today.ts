@@ -1,3 +1,4 @@
+import MENK_FACE from './menk-face.json';
 import { nearest, type Face, type PortraitDef } from './core';
 
 /*
@@ -491,67 +492,68 @@ function person(p: Person): PortraitDef {
 
 export const TODAY: Record<string, PortraitDef> = {
   // Dark full beard greying at the chin, white kufi, a warm smile.
-  'mufti-ismail-menk': person({
-    // From the owner's photo: fair skin, thick straight brows, almond eyes, a
-    // trimmed moustache and a very full, curly black beard; gentle closed smile.
-    bias: -0.3,
-    skin: 'skin-2',
-    hair: HAIR.black,
-    hairStyle: 'neat',
-    beard: { tones: HAIR.black, style: 'full' },
-    brow: 'thick',
-    browColour: '#2E2B34',
-    hat: { tones: CLOTH.white, kind: 'keep' },
-    after: (f, T) => {
-      if (f.away) return;
-      // The beard starts below the cheekbone: clear cheeks around the eyes.
-      for (let y = 9; y <= 15; y++)
-        for (let x = 6; x <= 20; x++)
-          if (f.region(x, y) === 'beard')
-            f.px(x, y, y >= 15 && x < 10 ? T[3] : x < 9 ? T[2] : T[1]);
-      // Almond eyes under thick straight brows.
+  // From the owner's pixel portrait (menk-face.json, downsampled from it):
+  // the face is stamped inside the ghutra, then eyes and brows are sharpened.
+  'mufti-ismail-menk': {
+    paint: (f) => {
+      if (f.away) {
+        person({
+          skin: 'skin-2',
+          hair: HAIR.black,
+          hairStyle: 'neat',
+          beard: { tones: HAIR.black, style: 'full' },
+          brow: 'thick',
+          browColour: '#2E2B34',
+          hat: { tones: CLOTH.white, kind: 'keep' },
+        }).paint(f);
+        return;
+      }
+      MENK_FACE.forEach((row, y) =>
+        row.forEach((c, x) => {
+          const r = f.region(4 + x, 5 + y);
+          if (r === 'skin' || r === 'beard' || r === 'hair')
+            f.px(4 + x, 5 + y, c);
+        }),
+      );
+      const open = f.eyes === 'open' || f.eyes === 'determined';
       for (const [x, y, c] of [
-        [8, 12, '#2E2B34'],
-        [9, 12, '#2E2B34'],
-        [10, 12, '#2E2B34'],
-        [11, 12, '#2E2B34'],
-        [8, 13, '#D7DCD2'],
-        [9, 13, '#3B322E'],
-        [10, 13, '#3B322E'],
-        [11, 13, '#E6E4DE'],
-        [9, 14, T[2]],
-        [10, 14, T[2]],
-        [16, 12, '#2E2B34'],
-        [17, 12, '#2E2B34'],
-        [16, 13, '#3B322E'],
-        [17, 13, '#E6E4DE'],
-        [7, 9, '#2E2B34'],
-        [8, 9, '#2E2B34'],
-        [9, 9, '#2E2B34'],
-        [10, 9, '#2E2B34'],
-        [11, 10, '#2E2B34'],
-        [8, 8, '#2E2B34'],
-        [9, 8, '#2E2B34'],
-        [15, 9, '#2E2B34'],
-        [16, 9, '#2E2B34'],
-        [17, 9, '#2E2B34'],
+        [6, 7, '#2E2B34'],
+        [7, 7, '#2E2B34'],
+        [8, 7, '#2E2B34'],
+        [9, 7, '#2E2B34'],
+        [14, 7, '#2E2B34'],
+        [15, 7, '#2E2B34'],
+        [16, 7, '#2E2B34'],
+        [17, 7, '#2E2B34'],
+        ...(open
+          ? [
+              [7, 9, '#E6E4DE'],
+              [8, 9, '#3B322E'],
+              [9, 9, '#3B322E'],
+              [10, 9, '#E6E4DE'],
+              [14, 9, '#E6E4DE'],
+              [15, 9, '#3B322E'],
+              [16, 9, '#3B322E'],
+              [17, 9, '#E6E4DE'],
+            ]
+          : [
+              [7, 9, '#3B322E'],
+              [8, 9, '#3B322E'],
+              [9, 9, '#3B322E'],
+              [15, 9, '#3B322E'],
+              [16, 9, '#3B322E'],
+              [17, 9, '#3B322E'],
+            ]),
       ] as [number, number, string][])
-        if (
-          f.has(x, y) &&
-          f.region(x, y) !== 'hat' &&
-          !(f.eyes !== 'open' && y >= 12 && y <= 14)
-        )
-          f.px(x, y, c);
-      // Tight curls through the beard: dark gaps and lit crescents.
-      for (let y = 12; y < 34; y++)
-        for (let x = 0; x < 26; x++) {
-          if (f.region(x, y) !== 'beard' || y <= 15) continue;
-          const k = (x * 3 + y * 5 + (y % 2) * 2) % 7;
-          if (k === 0) f.px(x, y, '#65564B');
-          else if (k === 3 || k === 5) f.px(x, y, '#2E2B34');
-        }
+        if (f.region(x, y) !== 'hat') f.px(x, y, c);
+      // Lips under the moustache.
+      for (const x of [12, 13, 14, 15]) f.px(x, 16, '#A8644C');
+      f.px(13, 17, '#C87865');
+      // Talking opens the mouth a little.
+      if (f.mouth === 'open' || f.mouth === 'shout' || f.mouth === 'grin')
+        for (const x of [12, 13, 14, 15]) f.px(x, 16, '#3B322E');
     },
-  }),
+  },
   // Grey-white beard, white turban, light skin and thin glasses.
   'hamza-yusuf': person({
     skin: 'skin-1',
