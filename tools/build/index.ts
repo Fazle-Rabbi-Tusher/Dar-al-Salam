@@ -66,8 +66,10 @@ async function build() {
   const allowed = new Set(palette),
     sourceAllowed = new Set([...palette, ...Object.values(keys).flat()]);
   for (const p of await files('art', '.png')) {
-    // Illustrated story-card portraits are not pixel art.
-    if (p.startsWith('art/illustrations/')) continue;
+    // Illustrated portraits and supplied full-body sprites are not limited
+    // to the pixel-art palette.
+    if (p.startsWith('art/illustrations/') || p.startsWith('art/sprites/'))
+      continue;
     const errors = paletteErrors(
       await image(p),
       p.startsWith('art/parts') ? sourceAllowed : allowed,
@@ -81,7 +83,12 @@ async function build() {
   await fs.mkdir(out, { recursive: true });
   const images = new Map<string, PixelImage>(),
     metas: Record<string, Omit<FrameMeta, 'frame'>> = {};
-  function register(img: PixelImage, anchor: [number, number], density = 1) {
+  function register(
+    img: PixelImage,
+    anchor: [number, number],
+    density = 1,
+    anyColour = false,
+  ) {
     const t = trimFrame(img, anchor),
       key =
         'f-' +
@@ -92,7 +99,7 @@ async function build() {
           ]),
         ).slice(0, 24);
     if (!images.has(key)) {
-      const errors = paletteErrors(t.image, allowed);
+      const errors = anyColour ? [] : paletteErrors(t.image, allowed);
       if (errors.length)
         throw Error(`Baked frame: palette violation ${errors.slice(0, 4)}`);
       images.set(key, t.image);
@@ -112,6 +119,65 @@ async function build() {
     }
     return key;
   }
+  /*
+   * A supplied full-body sprite (art/sprites/<id>.png, front view on a
+   * transparent background) replaces a named character's front-facing frames.
+   * It is drawn at four sprite pixels per world pixel, scaled to adult height,
+   * standing on the foot anchor with the usual outline and floor shadow.
+   */
+  const SPRITE_DENSITY = 4;
+  async function fullBodySprite(id: string) {
+    try {
+      await fs.access(`art/sprites/${id}.png`);
+    } catch {
+      return null;
+    }
+    const D = SPRITE_DENSITY,
+      spec = { width: 56 * D, height: 84 * D, foot: [28 * D, 80 * D] },
+      { data, info } = await sharp(`art/sprites/${id}.png`)
+        .trim()
+        .resize({ height: 66 * D, kernel: 'lanczos3' })
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+    const body = new Pixels(info.width, info.height);
+    body.data.set(data);
+    const out = new Pixels(spec.width, spec.height),
+      x0 = Math.round(spec.foot[0] - info.width / 2),
+      y0 = spec.foot[1] - info.height;
+    out.ellipse(
+      spec.foot[0],
+      spec.foot[1] - D,
+      8 * D,
+      2.5 * D,
+      [73, 60, 53, 89],
+    );
+    // A two-pixel outline around the figure, like the drawn characters.
+    const solid = (x: number, y: number) =>
+      x >= 0 &&
+      y >= 0 &&
+      x < info.width &&
+      y < info.height &&
+      body.data[(y * info.width + x) * 4 + 3] > 96;
+    for (let y = -2; y < info.height + 2; y++)
+      for (let x = -2; x < info.width + 2; x++)
+        if (
+          !solid(x, y) &&
+          [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+            [2, 0],
+            [-2, 0],
+            [0, 2],
+            [0, -2],
+          ].some(([dx, dy]) => solid(x + dx, y + dy))
+        )
+          out.pixel(x0 + x, y0 + y, '#493C35');
+    blit(out, body, x0, y0);
+    return { image: out, anchor: spec.foot as [number, number] };
+  }
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
   for (const c of characters) {
@@ -127,6 +193,7 @@ async function build() {
       shadowFrame = register(shadow, [8, 4]);
     }
     const frames: Record<string, string[]> = {};
+    const sprite = await fullBodySprite(c.id);
     for (const s of c.script) {
       // On the planet the camera decides which side of a character is seen,
       // so every facing is baked (back-only characters get NE/NW only).
@@ -137,6 +204,24 @@ async function build() {
         const key = `${s.action}_${facing}`;
         if (frames[key]) continue;
         frames[key] = [];
+        if (sprite && (facing === 'SE' || facing === 'SW')) {
+          const img =
+            facing === 'SE'
+              ? sprite.image
+              : (() => {
+                  const m = new Pixels(sprite.image.width, sprite.image.height);
+                  blit(m, sprite.image, 0, 0, true);
+                  return m;
+                })();
+          const anchor: [number, number] =
+            facing === 'SE'
+              ? sprite.anchor
+              : [sprite.image.width - sprite.anchor[0], sprite.anchor[1]];
+          const name = register(img, anchor, SPRITE_DENSITY, true);
+          for (let f = 0; f < ACTIONS[s.action]; f++) frames[key].push(name);
+          bakedCount += ACTIONS[s.action];
+          continue;
+        }
         for (let f = 0; f < ACTIONS[s.action]; f++) {
           const pal = {
             keys,
