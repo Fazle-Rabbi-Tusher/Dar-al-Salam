@@ -3287,8 +3287,12 @@ function scholars(): (Partial<Character> &
       years: 'b. 1975',
       place: 'Harare',
       district: 'modern-quarter',
-      look: look('adult-man-beard', 'thobe', 'kufi', 'none', {
-        skin: 'skin-4',
+      // As in his photographs: a white ghutra, a thick black beard and a
+      // cream robe over a white thobe.
+      look: look('adult-man-beard', 'jubba', 'ghutra', 'none', {
+        skin: 'skin-2',
+        garmentPrimary: 'white-linen',
+        garmentSecondary: 'brass',
       }),
       // A talk in the prayer hall for a small gathering.
       script: two('talk', 'idle', [12.7, 10.4], 'SW', 'SE'),

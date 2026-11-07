@@ -492,24 +492,64 @@ function person(p: Person): PortraitDef {
 export const TODAY: Record<string, PortraitDef> = {
   // Dark full beard greying at the chin, white kufi, a warm smile.
   'mufti-ismail-menk': person({
+    // From the owner's photo: fair skin, thick straight brows, almond eyes, a
+    // trimmed moustache and a very full, curly black beard; gentle closed smile.
     bias: -0.3,
-    skin: 'skin-4',
+    skin: 'skin-2',
     hair: HAIR.black,
     hairStyle: 'neat',
     beard: { tones: HAIR.black, style: 'full' },
     brow: 'thick',
     browColour: '#2E2B34',
-    bigSmile: true,
     hat: { tones: CLOTH.white, kind: 'keep' },
-    after: (f) => {
-      // A few grey hairs at the point of the chin.
-      for (const [x, y] of [
-        [13, 23],
-        [15, 24],
-        [14, 25],
-        [16, 23],
-      ] as P[])
-        if (f.region(x, y) === 'beard') f.px(x, y, '#80766B');
+    after: (f, T) => {
+      if (f.away) return;
+      // The beard starts below the cheekbone: clear cheeks around the eyes.
+      for (let y = 9; y <= 15; y++)
+        for (let x = 6; x <= 20; x++)
+          if (f.region(x, y) === 'beard')
+            f.px(x, y, y >= 15 && x < 10 ? T[3] : x < 9 ? T[2] : T[1]);
+      // Almond eyes under thick straight brows.
+      for (const [x, y, c] of [
+        [8, 12, '#2E2B34'],
+        [9, 12, '#2E2B34'],
+        [10, 12, '#2E2B34'],
+        [11, 12, '#2E2B34'],
+        [8, 13, '#D7DCD2'],
+        [9, 13, '#3B322E'],
+        [10, 13, '#3B322E'],
+        [11, 13, '#E6E4DE'],
+        [9, 14, T[2]],
+        [10, 14, T[2]],
+        [16, 12, '#2E2B34'],
+        [17, 12, '#2E2B34'],
+        [16, 13, '#3B322E'],
+        [17, 13, '#E6E4DE'],
+        [7, 9, '#2E2B34'],
+        [8, 9, '#2E2B34'],
+        [9, 9, '#2E2B34'],
+        [10, 9, '#2E2B34'],
+        [11, 10, '#2E2B34'],
+        [8, 8, '#2E2B34'],
+        [9, 8, '#2E2B34'],
+        [15, 9, '#2E2B34'],
+        [16, 9, '#2E2B34'],
+        [17, 9, '#2E2B34'],
+      ] as [number, number, string][])
+        if (
+          f.has(x, y) &&
+          f.region(x, y) !== 'hat' &&
+          !(f.eyes !== 'open' && y >= 12 && y <= 14)
+        )
+          f.px(x, y, c);
+      // Tight curls through the beard: dark gaps and lit crescents.
+      for (let y = 12; y < 34; y++)
+        for (let x = 0; x < 26; x++) {
+          if (f.region(x, y) !== 'beard' || y <= 15) continue;
+          const k = (x * 3 + y * 5 + (y % 2) * 2) % 7;
+          if (k === 0) f.px(x, y, '#65564B');
+          else if (k === 3 || k === 5) f.px(x, y, '#2E2B34');
+        }
     },
   }),
   // Grey-white beard, white turban, light skin and thin glasses.

@@ -74,6 +74,7 @@ export const headwear = [
   'scrub-cap',
   'headwrap',
   'papakha',
+  'ghutra',
 ];
 export const props = [
   'book',
@@ -3760,6 +3761,57 @@ export function headwearSprite(p: Pixels, id: string, q: Pose) {
           if (!s) continue;
           crease(p, d, [at(q.neck, -1, s * 0.6), at(end, long ? 2 : 0.5, s)]);
         }
+      }
+      break;
+    }
+    case 'ghutra': {
+      // A plain white head cloth (shemagh/ghutra) over a cap: it frames the
+      // face and beard and falls behind the ears onto the shoulders.
+      const skull = tmask(away ? SKULL_NE : SKULL_SE),
+        m = copyMask(skull).grow(1.5);
+      hell(m, 4.6, 1.5, 6.2, 4);
+      hrect(m, away ? -1 : -2, 3, away ? 13 : 6, 12);
+      const opening = hmk();
+      if (!away) {
+        hell(opening, 6.6, 7.4, 4.4, 4.4);
+        hrect(opening, 3, 7, 9, 8);
+      }
+      m.minus(opening);
+      shade(hs, m, H, { r: 2.6, hi: 0.84, lo: 0.2 });
+      if (!away) {
+        // Folded edge over the brow and along the cheek.
+        const ring = copyMask(opening).grow(1);
+        ring.minus(opening);
+        for (let j = 0; j < HS.h; j++)
+          for (let i = 0; i < HS.w; i++)
+            if (ring.has(i, j) && m.has(i, j))
+              hs.pixel(i, j, j < 4 + HS.oy ? H[0] : H[1]);
+        for (let y = 6; y <= 14; y++) hp(hs, 0 + (y % 4 ? 0 : 1), y, H[2]);
+      } else for (let y = 3; y <= 14; y++) hp(hs, 4 + (y % 3 ? 0 : 1), y, H[2]);
+      if (up) {
+        // Ends falling over the shoulders and down the back.
+        const { at } = spine(q);
+        const end = lerp(q.chest, q.hip, 0.1);
+        const d = mk(p).poly([
+          at(q.neck, 1.8, -4),
+          at(q.neck, 1.8, 4),
+          at(q.chest, 2.6, 7.6),
+          at(end, 0, 7.2),
+          at(end, 0, -7.2),
+          at(q.chest, 2.6, -7.6),
+        ]);
+        // Leave the chest open in front so the beard and thobe show.
+        if (!away)
+          d.minus(
+            mk(p).poly([
+              at(q.neck, 3, -3.2),
+              at(q.neck, 3, 3.2),
+              at(end, 3, 3.6),
+              at(end, 3, -3.6),
+            ]),
+          );
+        shade(p, d, H, { r: 2.6, hi: 0.82, lo: 0.18 });
+        contour(p, d);
       }
       break;
     }

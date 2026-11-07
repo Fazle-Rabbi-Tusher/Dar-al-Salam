@@ -13,14 +13,14 @@
   "depiction": "full",
   "look": {
     "base": "adult-man-beard",
-    "garment": "thobe",
-    "headwear": "kufi",
+    "garment": "jubba",
+    "headwear": "ghutra",
     "prop": "none",
     "colours": {
-      "skin": "skin-4",
+      "skin": "skin-2",
       "hair": "hair-black",
       "garmentPrimary": "white-linen",
-      "garmentSecondary": "white-linen",
+      "garmentSecondary": "brass",
       "headwear": "white-linen",
       "prop": "cocoa"
     }
