@@ -158,6 +158,8 @@ export const bakedCharacterSchema = characterSchema.extend({
   shadowFrame: z.string().optional(),
   /** Close-up of the sharp head for the story card (named characters). */
   portrait: z.string().optional(),
+  /** Smooth illustrated portrait for the story card, when one is drawn. */
+  illustration: z.string().optional(),
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({

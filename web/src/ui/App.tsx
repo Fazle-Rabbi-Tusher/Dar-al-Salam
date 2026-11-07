@@ -510,7 +510,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
               {String(named.indexOf(card) + 1).padStart(2, '0')}
             </span>
             <div className="portrait-decoration">
-              {card.portrait ? (
+              {card.illustration ? (
+                <img
+                  className="portrait-illustration"
+                  src={'/world/' + card.illustration}
+                  alt=""
+                  draggable={false}
+                />
+              ) : card.portrait ? (
                 <img
                   className="portrait-face"
                   src={'/world/' + card.portrait}

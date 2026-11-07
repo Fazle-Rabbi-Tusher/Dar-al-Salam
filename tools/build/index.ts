@@ -223,10 +223,20 @@ async function build() {
       portrait = `portraits/${c.id}.png`;
       await png(`${out}/${portrait}`, bust);
     }
+    let illustration: string | undefined;
+    try {
+      await fs.access(`art/illustrations/${c.id}.svg`);
+      illustration = `illustrations/${c.id}.svg`;
+      await fs.mkdir(`${out}/illustrations`, { recursive: true });
+      await fs.copyFile(`art/${illustration}`, `${out}/${illustration}`);
+    } catch {
+      /* No illustrated portrait for this character. */
+    }
     baked.push({
       ...c,
       frames,
       shadowFrame,
+      ...(illustration ? { illustration } : {}),
       ...(portrait ? { portrait } : {}),
       interactive: Boolean(c.name),
       needsPanelReview: c.script.some((s) => s.action === 'pray'),

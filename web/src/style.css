@@ -704,6 +704,13 @@ html[lang='bn'] .brand strong {
     26px 'Noto Naskh Arabic',
     serif;
 }
+.portrait-illustration {
+  height: 168px;
+  width: auto;
+  border: 1px solid #b7c5a8;
+  border-radius: 30px 30px 3px 3px;
+  background: linear-gradient(#f4efe0, #e3e6d8);
+}
 .portrait-face {
   /* 2× the 52×60 close-up, so pixels stay square and crisp. */
   height: 120px;
