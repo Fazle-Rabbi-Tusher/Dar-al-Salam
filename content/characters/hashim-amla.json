@@ -1,0 +1,95 @@
+{
+  "id": "hashim-amla",
+  "kind": "person",
+  "name": {
+    "en": "Hashim Amla",
+    "ar": "هاشم أملا",
+    "bn": "হাশিম আমলা"
+  },
+  "aliases": [],
+  "years": "b. 1983",
+  "place": "Durban",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "shirt-trousers",
+    "headwear": "none",
+    "prop": "cricket-bat",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-black",
+      "garmentPrimary": "emerald",
+      "garmentSecondary": "emerald",
+      "headwear": "emerald",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 36,
+      "action": "bat",
+      "at": [86.4, 117.2],
+      "facing": "SE"
+    },
+    {
+      "from": 36,
+      "to": 60,
+      "action": "walk",
+      "path": [
+        [86.4, 117.2],
+        [88.2, 115.2]
+      ]
+    },
+    {
+      "from": 60,
+      "to": 200,
+      "action": "idle",
+      "at": [88.2, 115.2],
+      "facing": "SE"
+    },
+    {
+      "from": 200,
+      "to": 240,
+      "action": "walk",
+      "path": [
+        [88.2, 115.2],
+        [86.4, 117.2]
+      ]
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "South African batsman known for his calm style and long beard. He declined to wear the team’s beer-sponsor logo on his shirt, so his was the only shirt without it, and reportedly gave up his fee from beer-sponsored matches."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hashim_Amla"
+    },
+    {
+      "label": "Cricket.com.au",
+      "url": "https://www.cricket.com.au/news/3239535"
+    },
+    {
+      "label": "Cape Argus",
+      "url": "https://capeargus.co.za/sport/2009-12-28-no-beer-money-in-amlas-coffers"
+    }
+  ],
+  "panelApproved": false
+}

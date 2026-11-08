@@ -64,3 +64,5 @@ statue as the reference instead.
 | hakim-ziyech.png | Hakim Ziyech | red Morocco-style kit with green trim (no crest) |
 | yassine-bounou.png | Yassine Bounou (Bono) | green goalkeeper kit, goalkeeper gloves |
 | sofiane-boufal.png | Sofiane Boufal | red Morocco-style kit with green trim (no crest) |
+| usman-khawaja.png | Usman Khawaja | cricket whites, green cap (no crest) |
+| hashim-amla.png | Hashim Amla | green and gold cricket shirt and trousers, plain (no logo), cricket bat |

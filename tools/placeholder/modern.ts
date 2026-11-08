@@ -4658,6 +4658,61 @@ const stadiumScenes: Record<string, Spec> = {
 };
 Object.assign(objects, stadiumScenes);
 
+/* ════════ Cricket ground scenes (scene bible) ════════ */
+const cricketScenes: Record<string, Spec> = {
+  // A low presentation platform people stand on (z 10), baked into the floor.
+  'm-presentation-stage': {
+    footprint: [5, 2],
+    h: 12,
+    floor: true,
+    draw(c) {
+      const Z = 9;
+      // Skirt on the two visible faces, with a trim band and vertical folds.
+      c.faceX(0, 1.7, 5, 0, Z, C.navy);
+      c.faceY(5, 0, 1.7, 0, Z, C.blueDark);
+      for (let u = 0.25; u < 5; u += 0.5)
+        c.edge([u, 1.7, 0], [u, 1.7, Z - 2], C.blueDark);
+      for (let u = 0.25; u < 1.7; u += 0.5)
+        c.edge([5, u, 0], [5, u, Z - 2], C.navy);
+      c.edge([0, 1.7, Z - 1], [5, 1.7, Z - 1], C.gold);
+      c.edge([5, 0, Z - 1], [5, 1.7, Z - 1], C.gold);
+      c.edge([0, 1.7, 0], [5, 1.7, 0], C.ink);
+      c.edge([5, 0, 0], [5, 1.7, 0], C.ink);
+      // Carpeted top with a lighter border.
+      c.top(0, 0, 5, 1.7, Z, C.slate);
+      c.top(0.12, 0.12, 4.76, 1.46, Z, C.grey);
+      for (let k = 0; k < 24; k++) {
+        const [x, y] = c.at(
+          0.3 + ((k * 7) % 44) / 10,
+          0.25 + ((k * 11) % 12) / 10,
+          Z,
+        );
+        c.p.pixel(x, y, C.silver);
+      }
+      c.edge([0, 1.7, Z], [5, 1.7, Z], C.silver);
+      c.edge([5, 0, Z], [5, 1.7, Z], C.silver);
+      // A front step in the middle of the long side.
+      c.box(1.9, 1.7, 1.2, 0.3, 4, M.stone);
+    },
+  },
+  // The plain backdrop along the stage's back edge: colour bands only.
+  'm-presentation-backdrop': {
+    footprint: [5, 0.4],
+    h: 46,
+    draw(c) {
+      // Two slim posts and a panel standing on the stage top (z 9).
+      for (const x of [0.15, 4.75]) c.box(x, 0.12, 0.1, 0.16, 44, M.steel, 0);
+      c.box(0.1, 0.1, 4.8, 0.2, 34, M.white, 10);
+      c.faceX(0.1, 0.301, 4.8, 36, 5, C.blueDark);
+      c.faceX(0.1, 0.302, 4.8, 30, 4, C.green);
+      c.faceX(0.1, 0.302, 4.8, 14, 3, C.blue);
+      c.faceX(0.1, 0.302, 4.8, 11, 2, C.gold);
+      c.edge([0.1, 0.303, 44], [4.9, 0.303, 44], C.silver);
+    },
+  },
+};
+Object.assign(objects, cricketScenes);
+
 export const MODERN_OBJECTS: Record<
   string,
   { footprint: [number, number]; floor?: boolean; side?: boolean }

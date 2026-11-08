@@ -15,4 +15,11 @@ export const STADIUM: Record<string, PortraitDef> = {
   'hakim-ziyech': portrait({ hairStyle: 'swept', beardStyle: 'trim' }),
   'yassine-bounou': portrait({ hairStyle: 'straight', beardStyle: 'full' }),
   'sofiane-boufal': portrait({ hairStyle: 'curly', beardStyle: 'trim' }),
+  // Cricket ground.
+  'usman-khawaja': portrait({ hairStyle: 'straight', beardStyle: 'trim' }),
+  'hashim-amla': portrait({
+    hairStyle: 'buzz',
+    beardStyle: 'full',
+    brow: 'thick',
+  }),
 };

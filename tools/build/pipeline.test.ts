@@ -685,3 +685,23 @@ describe('scene bible: stadium (batch 1b)', () => {
     expect(index['m-mosque-door'].frames).toHaveLength(2);
   });
 });
+
+describe('scene bible: cricket ground', () => {
+  it('adds Khawaja and Amla as unapproved drafts; Rizwan waits for approval', async () => {
+    const { forbiddenName } = await import('../../packages/shared/rules');
+    const { characterState } = await import('../../packages/shared/script');
+    for (const id of ['usman-khawaja', 'hashim-amla']) {
+      const c = content.characters.find((c) => c.id === id)!;
+      expect(c.panelApproved).toBe(false);
+      expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
+      expect(forbiddenName(c.name!.en, content.rules)).toBe(false);
+      expect(characterState(c, 0)).toEqual(characterState(c, 240));
+    }
+    expect(forbiddenName('Mohammad Rizwan', content.rules)).toBe(true);
+    expect(content.characters.some((c) => /rizwan/.test(c.id))).toBe(false);
+    // Khawaja steps off the stage and comes back up.
+    const k = content.characters.find((c) => c.id === 'usman-khawaja')!;
+    expect(characterState(k, 100).z).toBe(0);
+    expect(characterState(k, 180).z).toBe(10);
+  });
+});

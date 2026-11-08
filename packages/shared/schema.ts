@@ -29,6 +29,8 @@ export const ACTIONS = {
   speech: 4,
   /** Prostration held still (sujood after a goal); flagged for panel review. */
   sujood: 2,
+  /** Cricket cover drive. */
+  bat: 4,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,

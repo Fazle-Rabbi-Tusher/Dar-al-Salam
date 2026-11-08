@@ -1496,5 +1496,24 @@
     ],
     "width": 112,
     "height": 91
+  },
+  "m-presentation-stage": {
+    "file": "objects/m-presentation-stage.png",
+    "anchor": [
+      32,
+      8
+    ],
+    "width": 128,
+    "height": 63,
+    "floor": true
+  },
+  "m-presentation-backdrop": {
+    "file": "objects/m-presentation-backdrop.png",
+    "anchor": [
+      16,
+      43
+    ],
+    "width": 112,
+    "height": 92
   }
 }

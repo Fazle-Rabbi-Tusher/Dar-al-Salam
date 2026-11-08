@@ -49,6 +49,7 @@ export const garments = [
   'scholar-robe',
   'apron',
   'shirt-trousers',
+  'shirt-trousers-sponsor',
   'suit',
   'lab-coat',
   'scrubs',
@@ -113,6 +114,7 @@ export const props = [
   'keys',
   'envelope',
   'keeper-gloves',
+  'bottle',
 ];
 export const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
@@ -824,6 +826,58 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       )[f];
       q.arms[0][1] = [19, 37 + b];
       q.arms[0][2] = [24.5, 34 + b];
+      break;
+    }
+    case 'bat': {
+      // A cover drive: stance with the bat up behind, front foot forward as
+      // the bat comes down, through the ball low, then a high follow-through.
+      q = standing(0);
+      const hands: [P, P, P, P][] = [
+        // [front elbow, front hand, back elbow, back hand]
+        [
+          [26, 35],
+          [21, 31],
+          [20, 37],
+          [22, 32],
+        ],
+        [
+          [28, 31],
+          [32, 34],
+          [24, 34],
+          [31, 34],
+        ],
+        [
+          [31, 40],
+          [35, 46],
+          [27, 40],
+          [34, 45],
+        ],
+        [
+          [32, 30],
+          [35, 22],
+          [27, 30],
+          [34, 23],
+        ],
+      ];
+      const [fe, fh, be, bh] = hands[f];
+      q.arms[1][1] = fe;
+      q.arms[1][2] = fh;
+      q.arms[0][1] = be;
+      q.arms[0][2] = bh;
+      if (f >= 1) {
+        // Front (right in SE) leg strides toward the ball, back leg braced.
+        q.legs[1] = [
+          [26.5, 45],
+          [31, 54],
+          [33.5, 64],
+        ];
+        q.legs[0] = [
+          [21.5, 45],
+          [20, 55],
+          [18, 64.5],
+        ];
+        q.head = add(q.head, f === 2 ? 2 : 1, f === 2 ? 1 : 0);
+      }
       break;
     }
     case 'cheer': {
@@ -1882,6 +1936,8 @@ export function expression(
       return { eyes: 'determined', mouth: 'shout' };
     case 'taunt':
       return { eyes: 'determined', mouth: 'shout' };
+    case 'bat':
+      return { eyes: 'determined', mouth: 'flat' };
     case 'lie':
       return { eyes: 'closed', mouth: 'o' };
     case 'sweep':
@@ -2320,6 +2376,7 @@ function handKind(q: Pose, i: number): HandKind {
       return upright(q) ? 'hold' : 'flat';
     case 'sujood':
       return 'flat';
+    case 'bat':
     case 'carry':
     case 'read':
     case 'pour':
@@ -3222,16 +3279,28 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
       });
       break;
     }
-    case 'shirt-trousers': {
+    case 'shirt-trousers':
+    case 'shirt-trousers-sponsor': {
+      // The sponsor variant is a cricket kit: shirt and trousers match, and a
+      // plain block across the chest (garmentSecondary) stands in for a logo.
+      const sponsor = id === 'shirt-trousers-sponsor';
       wear(p, q, {
         sleeve: long(C),
-        lower: () => trousers(p, q, S),
+        lower: () => trousers(p, q, sponsor ? C : S),
         torso: () => bodice(p, q, C),
         details: () => {
           collar(p, q, 'shirt', C);
           placket(p, q, C[2], 2.8, -9.5, C[0]);
           belt(p, q, F.charcoal, 2, F.steel[1]);
-          if (front) {
+          if (sponsor && front) {
+            const block = mk(p).poly([
+              at(q.chest, -0.6, -4.6),
+              at(q.chest, -0.6, 4.6),
+              at(q.chest, -5.4, 4.6),
+              at(q.chest, -5.4, -4.6),
+            ]);
+            shade(p, block, S, { r: 1.4, hi: 0.8, lo: 0.3 });
+          } else if (front) {
             const [x, y] = at(q.chest, 1.6, -3.6);
             p.rect(x, y, 3, 1, C[2]);
           }
@@ -4372,6 +4441,29 @@ function drawProp(p: Pixels, id: string, q: Pose) {
       solid(blade, R, 1.4);
       const [ex, ey] = at(15);
       p.pixel(ex, ey, R[2]);
+      break;
+    }
+    case 'bottle': {
+      // A plain dark-green bottle (no label): shaken overhead when
+      // celebrating, otherwise held at the side, neck up.
+      const up = a === 'cheer' || a === 'celebrate' || a === 'arms-out',
+        shake = up ? [0, 1.2, -1.2, 0.6][f % 4] : 0,
+        g = ['#45A272', '#2F6E4F', '#1F4F38'],
+        base: P = up ? [hx + shake, hy - 1] : [hx + 0.5, hy + 2.5],
+        top: P = up ? [hx + shake * 1.8, hy - 9] : [hx + 0.5, hy - 4.5];
+      const body = mk(p).capsule(
+        lerp(base, top, 0.05),
+        lerp(base, top, 0.62),
+        1.9,
+        1.9,
+      );
+      solid(body, g, 1.4);
+      const neck = mk(p).capsule(lerp(base, top, 0.66), top, 0.8, 0.7);
+      solid(neck, g, 1);
+      p.rect(top[0] - 0.5, top[1] - 1, 2, 1, F.steel[0]);
+      // A highlight down the glass.
+      const [lx, ly] = lerp(base, top, 0.25);
+      p.rect(lx - 1, ly - 2, 1, 3, '#7FC7AE');
       break;
     }
     case 'cane': {
