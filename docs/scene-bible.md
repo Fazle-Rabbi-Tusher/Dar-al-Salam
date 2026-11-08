@@ -11,11 +11,12 @@ A planning document: for each person, one famous moment, the deed that shows the
 
 ### Who is already in the world, and what is new
 
-| Status                                                                                              | People                                                                                                                                                                                                                                                |
-| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Already has a card (scene ideas below can upgrade the existing loop)                                | Mesut Özil, Mohamed Salah, Sadio Mané, N'Golo Kanté, Khabib Nurmagomedov, Muhammad Ali, Hakeem Olajuwon, Fazlur Rahman Khan                                                                                                                           |
-| New, names pass the denylist                                                                        | Frédéric Kanouté, Hakim Ziyech, Yassine Bounou, Sofiane Boufal, Usman Khawaja, Hashim Amla, Bilqis Abdul-Qaadir, Zahra Lari, Sheikh Muszaphar Shukor, Sultan AlNeyadi, Abdul Sattar Edhi, Bilquis Edhi, Ali Banat, Malcolm X, Abdul Basit Abdus Samad |
-| New, **blocked by `never-depict.json` until the owner approves an exact full-name allowlist entry** | Mohammad Rizwan (Mohammad), Mo Farah (Mohamed, if the full name or alias is used), Ibtihaj Muhammad (Muhammad), Sara Ahmed (Ahmed), Yusuf Islam (Yusuf)                                                                                               |
+| Status                                                                                              | People                                                                                                                                                                                                                                                                                                                                                                         |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Already has a card (scene ideas below can upgrade the existing loop)                                | Mesut Özil, Mohamed Salah, Sadio Mané, N'Golo Kanté, Khabib Nurmagomedov, Muhammad Ali, Hakeem Olajuwon, Fazlur Rahman Khan, Fatima al-Fihri, Ibn al-Haytham, al-Biruni, al-Jazari, Ibn Battuta, Omar Suleiman, Mufti Menk, Hamza Yusuf                                                                                                                                        |
+| New, names pass the denylist                                                                        | Frédéric Kanouté, Hakim Ziyech, Yassine Bounou, Sofiane Boufal, Usman Khawaja, Hashim Amla, Bilqis Abdul-Qaadir, Zahra Lari, Sheikh Muszaphar Shukor, Sultan AlNeyadi, Abdul Sattar Edhi, Bilquis Edhi, Ali Banat, Malcolm X, Abdul Basit Abdus Samad, Abu Hanifa, Malik ibn Anas, Umm al-Darda the Younger (panel to confirm), Tariq Jamil, Zakir Naik, Mizanur Rahman Azhari |
+| New, **blocked by `never-depict.json` until the owner approves an exact full-name allowlist entry** | Mohammad Rizwan (Mohammad), Mo Farah (Mohamed, if the full name or alias is used), Ibtihaj Muhammad (Muhammad), Sara Ahmed (Ahmed), Yusuf Islam (Yusuf), al-Shafi'i (Muhammad), Ahmad ibn Hanbal (Ahmad), al-Bukhari (Muhammad, Ismail), al-Ghazali (Muhammad), Ahmed Deedat (Ahmed)                                                                                           |
+| **Never depicted** (AGENTS.md: Ahl al-Bayt)                                                         | Ja'far al-Sadiq: named in card text only                                                                                                                                                                                                                                                                                                                                       |
 
 None of the new people should be added as cards until the panel agrees, and the blocked names need your explicit approval one by one, as with Mohamed Salah and Muhammad Ali.
 
@@ -38,14 +39,16 @@ The Qur'an and hadith lines below are short meanings with references, not exact 
 
 ## Where each scene goes
 
-| Zone in the Peace Quarter                     | Scenes                                                                 | Feel                                                                         |
-| --------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| ⚽ Stadium (east of the ring road)            | Özil, Salah, Mané, Kanouté, Kanté, Ziyech, Morocco 2022                | Floodlights and crowd; a hospital ward and a village road just off the pitch |
-| 🏏 Cricket ground (Bangladesh block)          | Khawaja, Amla, Rizwan                                                  | Afternoon light, a podium, a drinks break                                    |
-| 🥊 Fight-night arena and a new track/ice area | Ali, Khabib, Hakeem, Mo Farah, Ibtihaj, Bilqis, Zahra Lari, Sara Ahmed | A multi-sport corner next to the arena                                       |
-| 🔬 Science lab and architecture studio        | Fazlur Rahman Khan, Shukor, AlNeyadi                                   | A skyscraper, an airport tent roof, a space station overhead                 |
-| 🤲 Hospital and community kitchen             | Edhi, Bilquis Edhi, Ali Banat                                          | Karachi lanes, a cradle outside a centre, a village in Togo                  |
-| 🕌 Mosque and garden                          | Malcolm X, Abdul Basit, Yusuf Islam                                    | The calm heart of the map; the adhan comes from here                         |
+| Zone in the Peace Quarter                     | Scenes                                                                                      | Feel                                                                         |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| ⚽ Stadium (east of the ring road)            | Özil, Salah, Mané, Kanouté, Kanté, Ziyech, Morocco 2022                                     | Floodlights and crowd; a hospital ward and a village road just off the pitch |
+| 🏏 Cricket ground (Bangladesh block)          | Khawaja, Amla, Rizwan                                                                       | Afternoon light, a podium, a drinks break                                    |
+| 🥊 Fight-night arena and a new track/ice area | Ali, Khabib, Hakeem, Mo Farah, Ibtihaj, Bilqis, Zahra Lari, Sara Ahmed                      | A multi-sport corner next to the arena                                       |
+| 🔬 Science lab and architecture studio        | Fazlur Rahman Khan, Shukor, AlNeyadi                                                        | A skyscraper, an airport tent roof, a space station overhead                 |
+| 🤲 Hospital and community kitchen             | Edhi, Bilquis Edhi, Ali Banat                                                               | Karachi lanes, a cradle outside a centre, a village in Togo                  |
+| 🕌 Mosque and garden                          | Malcolm X, Abdul Basit, Yusuf Islam                                                         | The calm heart of the map; the adhan comes from here                         |
+| 📜 House of Wisdom and Maghreb                | The imams, Umm al-Darda, Ibn al-Haytham, al-Biruni, al-Jazari, Fatima al-Fihri, Ibn Battuta | Courtyards, lamps, ink and instruments                                       |
+| 🎙️ Modern quarter lecture hall                | Deedat, Omar Suleiman, Mufti Menk, Hamza Yusuf, Tariq Jamil, Zakir Naik, Azhari             | One rotating speaker, easy to swap                                           |
 
 ## ⚽ Stadium
 
@@ -284,6 +287,192 @@ The Qur'an and hadith lines below are short meanings with references, not exact 
 - **Deed today:** Drop one habit that pulls you away from good.
 - **Sources:** _To add — research pending,_ including the school's founding year.
 
+## 📜 Scholars
+
+Historical scholars follow the same depiction rules as every other card: full or back (AGENTS.md), with the existing House of Wisdom and Maghreb cards as the model. No scene draws readable text: pages, scrolls and bones stay blank.
+
+### Imam Ja'far al-Sadiq — not depicted
+
+He is of Ahl al-Bayt, so AGENTS.md rules out any figure, silhouette or light. He appears **only in card text**: Abu Hanifa and Malik are both reported to have learned from him, and he is respected by Sunni and Shia Muslims alike. That makes a good line on their cards about the schools beginning as one family of teachers and students. Sources: [Wikipedia](https://en.wikipedia.org/wiki/Ja%27far_al-Sadiq) · [New World Encyclopedia](https://newworldencyclopedia.org/entry/Ja'far_al-Sadiq)
+
+### Imam Abu Hanifa — Kufa · 8th century · Honesty in business
+
+- **Moment:** A silk merchant as well as a jurist. He sent goods to his partner and warned him that one piece had a defect the buyer must be told about. The partner forgot and sold everything for 30,000 dirhams; Abu Hanifa gave the whole sum to charity and ended the partnership.
+- **Beats:** 0–1.5 s bolts of silk, one with a small flaw circled in chalk · 1.5–2.5 s a sale, coins pour into a bag · 2.5–5 s the bag comes back to him; he hears what happened, opens it at the door, and coins flow into the hands of the poor.
+- **Line:** Whoever cheats us is not one of us (Muslim).
+- **Deed today:** Tell the full truth in one deal, even when it costs you.
+- **Sources:** [Al-Haadi](https://alhaadi.org.za/?p=19424) · [Uswatul Muslimah](https://uswatulmuslimah.co.za/piety-before-profit/)
+
+### Imam Malik ibn Anas — Madinah · 8th century · Humility in knowledge
+
+- **Moment:** A man travelled six months to ask him a question. Malik said "I do not know." When the man asked what to tell his people, Malik answered: tell them Malik said, I do not know. Once, asked 48 questions, he reportedly said "I do not know" to 32 of them.
+- **Beats:** 0–2 s a dusty traveller arrives with his camel · 2–3 s he asks; the imam gently shakes his head · 3–5 s the traveller walks home thoughtful, and back home people nod with respect.
+- **Line:** Do not follow what you have no knowledge of (Qur'an 17:36).
+- **Deed today:** Say "I don't know" when you don't.
+- **Sources:** [Abu Amina Elias, from Jami' Bayan al-'Ilm](https://www.abuaminaelias.com/dailyhadithonline/2021/08/06/malik-i-do-not-know/) · [Islam21c](https://www.islam21c.com/history/four-imams-the-imam-of-madinah/)
+
+### Imam al-Shafi'i — Makkah · 8th century · Hunger for learning — _name needs allowlist approval (Muhammad ibn Idris)_
+
+- **Moment:** Raised poor, he memorised the Qur'an by seven and Malik's Muwatta by ten. With no money for paper, he wrote his lessons on bones.
+- **Beats:** 0–2.5 s a small boy in a tent camp writes by lamplight on a camel's shoulder bone; a pile of bones beside him · 2.5–5 s years later in Madinah he recites the Muwatta from memory to its old author, who looks up in surprise.
+- **Line:** My Lord, increase me in knowledge (Qur'an 20:114).
+- **Deed today:** Memorise one new ayah or hadith.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Al-Shafi%27i) · [Qibla / Gibril Haddad](https://islamqa.org/shafii/qibla-shafii/34146/biography-of-imam-shafii)
+
+### Imam Ahmad ibn Hanbal — Baghdad · 830s–847 · Standing firm — _name needs allowlist approval (Ahmad)_
+
+- **Moment:** During the Mihna, the caliphs demanded scholars declare the Qur'an created. He refused, saying show me proof from the Qur'an or Sunnah and I will say it. He was imprisoned and flogged but did not give in, and outlived the inquisition, which ended in 847.
+- **Beats:** No violence on screen · 0–2 s chained hands hold a closed book; an official leans in and asks · 2–3 s he shakes his head · 3–4 s seasons change through the barred window · 4–5 s the chains fall away and he is teaching a full circle again.
+- **Line:** Those who say "Our Lord is Allah" and then stand firm, the angels descend on them (Qur'an 41:30).
+- **Deed today:** Stand by a truth calmly, even if it's unpopular.
+- **Sources:** [islam.wiki on the Mihna](https://islam.wiki/history/mihna-mutazilite-inquisition) · [New World Encyclopedia](https://newworldencyclopedia.org/entry/Ahmad_ibn_Hanbal)
+
+### Imam al-Bukhari — Bukhara / Makkah · 9th century · Sincerity and care — _name needs allowlist approval (Muhammad ibn Ismail)_
+
+- **Moment:** He spent 16 years compiling his Sahih, choosing about 7,000 narrations from some 600,000. He said he never placed a hadith in it without first taking a bath and praying two rak'ahs.
+- **Beats:** 0–1 s the pen hovers over a blank page · 1–2 s he sets it down and washes · 2–3.5 s two rak'ahs · 3.5–4.5 s he writes one line · 4.5–5 s the loop repeats, and each pass the stack of pages grows a little.
+- **Line:** Actions are judged by intentions (Bukhari, the first hadith in his own book).
+- **Deed today:** Set your intention before you start your work.
+- **Sources:** [Islamic Urdu Books, citing Ibn Hajar](https://en.islamicurdubooks.com/book-evaluation-by-scholars.php?bsc_id=443) · [Toronto Dawah](https://torontodawah.com/i-did-not-put-in-my-book-as-saheeh-a-single-hadeeth-except-that-i-showered-before-that-and-prayed-two-rakah)
+
+### Imam al-Ghazali — Baghdad · 1095 · A sound heart — _name needs allowlist approval (Abu Hamid Muhammad)_
+
+- **Moment:** At the top of his career as chief professor of the Nizamiyya college in Baghdad, a spiritual crisis left him unable to lecture. In November 1095 he gave it up and left Baghdad, returning to teach only in 1106.
+- **Beats:** 0–2 s a packed lecture hall, he stands silent · 2–3 s he sets his fine robe on the chair · 3–5 s he walks out through the city gate with a simple bag, down a long road towards Damascus.
+- **Line:** The Day when wealth and children will not help, except whoever comes to Allah with a sound heart (Qur'an 26:88–89).
+- **Deed today:** Ask yourself why you do one thing you do for praise.
+- **Sources:** [Britannica](https://www.britannica.com/biography/al-Ghazali) · [New World Encyclopedia](https://www.newworldencyclopedia.org/entry/Al-Ghazali)
+
+### Umm al-Darda the Younger — Damascus · 7th century · Women who taught the ummah — _panel to confirm she is not the Companion_
+
+- **Moment:** A jurist and hadith scholar who taught men and women in the great mosque of Damascus and in Jerusalem, without fees. The caliph Abd al-Malik sat in her classes, and when she was old he would help her walk to prayer and back.
+- **Beats:** 0–2 s an elderly woman teaching a large circle in the great mosque · 2–3.5 s a man in fine robes sits among the students, taking notes · 3.5–5 s when the adhan sounds he stands and offers his arm, and they walk to prayer together.
+- **Card note:** Sources separate her (as-Sughra, a Tabi'iyya) from the Companion Umm al-Darda al-Kubra, but at least one scholar's index merges the two. AGENTS.md forbids depicting the Sahaba, so the panel must be sure which woman this is before any card exists. If in doubt, leave her out.
+- **Line:** Seeking knowledge is an obligation on every Muslim (Ibn Majah).
+- **Deed today:** Thank a woman who taught you something.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Umm_al-Darda_as-Sughra) · [Muslim Women Times / Akram Nadwi](https://themuslimwomentimes.com/?p=922)
+
+### Fatima al-Fihri — Fez · 859 · Building something that lasts (has a card)
+
+- **Moment:** She used her inheritance to found the al-Qarawiyyin mosque in Fez, which UNESCO and Guinness describe as the oldest continuously operating university. By tradition she fasted until the building was finished, and used clay and stone dug from the site itself.
+- **Beats:** 0–2 s she watches workers dig clay from the very ground they stand on · 2–3.5 s walls and a minaret rise; at sunset she breaks her fast with a date · 3.5–5 s the courtyard fills with students holding books.
+- **Card note:** Her story was first written down centuries later and the link from her mosque to the university is debated, so research notes should say "tradition says".
+- **Line:** When a person dies, their deeds end except three: ongoing charity, beneficial knowledge, and a righteous child who prays for them (Muslim).
+- **Deed today:** Give to something that will keep helping after today, like a school or a well.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Fatima_al-Fihriya) · [SeekersGuidance](https://seekersguidance.org/uncategorized/ustadha-zaynab-ansari-on-amazing-muslim-women-fatima-al-fihri/)
+
+### Ibn al-Haytham — Cairo · 1011–1021 · Turning a setback into a discovery (has a card)
+
+- **Moment:** Legend says he pretended to be mad to escape a caliph's impossible order to dam the Nile and was kept under house arrest. In that time he wrote the Book of Optics, showing that we see because light enters the eye, and testing ideas by experiment.
+- **Beats:** 0–2 s a dark, locked room, a single pinhole in the shutter · 2–4 s an upside-down image of the street outside appears on the far wall · 4–5 s he smiles and starts to write.
+- **Line:** Those who reflect on creation say, "Our Lord, You did not create this in vain" (Qur'an 3:191).
+- **Deed today:** Test one thing yourself instead of assuming.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Ibn_al-Haytham) · [arXiv, Erik Høg](https://arxiv.org/pdf/1104.4554)
+
+### Al-Biruni — Nandana (in today's Pakistan) · 11th century · Curiosity (has a card)
+
+- **Moment:** He worked out the Earth's radius from one hilltop: he measured the hill's height, climbed it, measured how far the horizon dipped, and used trigonometry. His answer, about 6,340 km, is close to the modern figure.
+- **Beats:** 0–2 s he climbs a hill with an astrolabe · 2–3 s sights along the horizon · 3–5 s faint lines arc up from the instrument and curve into the outline of the whole globe.
+- **Line:** Look again: do you see any flaw? (Qur'an 67:3).
+- **Deed today:** Work out something with your own maths instead of looking it up.
+- **Sources:** [St Andrews MacTutor](https://mathshistory.st-andrews.ac.uk/SH/al_biruni_sh.pdf) · [Muslim Heritage](https://muslimheritage.com/the-science-of-al-biruni/)
+
+### Al-Jazari — Upper Mesopotamia · 1206 · Making useful things well (has a card)
+
+- **Moment:** Court engineer whose Book of Knowledge of Ingenious Mechanical Devices described about 50 machines he had built himself, including the water-powered elephant clock, decorated with figures from many cultures.
+- **Beats:** 0–2 s water drips inside the elephant · 2–3 s a ball rolls, a little figure strikes a cymbal, a bird whistles · 3–5 s the half-hour is marked and the engineer nods and tweaks a gear.
+- **Line:** Allah brought you out of your mothers' wombs knowing nothing, and gave you hearing, sight and hearts so that you may be grateful (Qur'an 16:78).
+- **Deed today:** Fix something broken yourself.
+- **Sources:** [Lapham's Quarterly](https://www.laphamsquarterly.org/node/11187) · [Atlas Obscura](https://www.atlasobscura.com/places/elephant-clock)
+
+### Ibn Battuta — Tangier · 1325 · Seeing the world as a believer (has a card)
+
+- **Moment:** At 21 he left Tangier alone to make Hajj. The trip became a journey of nearly 30 years and about 117,000 km, from West Africa to China, and he served as a judge in the Maldives.
+- **Beats:** 0–1.5 s a young man ties his sandals at the city gate and looks back at his parents · 1.5–4 s a line draws itself behind him across a map: desert, sea, mountains, a far port · 4–5 s the line loops back to Tangier.
+- **Card note:** Hidden link: a full-size replica of al-Jazari's elephant clock stands in the Ibn Battuta Mall in Dubai, so this scene can pass the visitor to al-Jazari.
+- **Line:** Travel through the land and see how He began creation (Qur'an 29:20).
+- **Deed today:** Call a relative who lives far away.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Ibn_Battuta) · [UNESCO Silk Roads](https://es.unesco.org/silkroad/node/9376)
+
+## 🎙️ Modern preachers (living or recent)
+
+These names bring huge audiences, and some of them bring arguments too. Three ways to include them safely:
+
+- **Put them in one swappable lecture hall** in the modern quarter, with a rotating speaker, rather than as permanent characters in the streets.
+- **Tie each scene to one dated good deed**, never to their opinions or debates.
+- **Review the line-up every year**, because living people's situations change, sometimes quickly. The panel's living-person policy (DECISIONS.md item 18) applies to all of them.
+
+### At a glance
+
+| Person                                 | Card status                                | Known for                                                                            | What visitors may raise                                                                                                                                                                                                                                         | Fit for this site                                                               |
+| -------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Ahmed Deedat (South Africa, 1918–2005) | New; name needs allowlist approval (Ahmed) | Comparative-religion debates; IPCI; King Faisal Prize 1986                           | His booklets and debates attacked other religions; some South African Muslim groups denounced that                                                                                                                                                              | Good, if the scene uses his years of patience, not the debates                  |
+| Omar Suleiman (USA)                    | Has a card                                 | Yaqeen Institute (2016); MUHSEN for people with special needs; interfaith work       | Outspoken activism; arrested at a 2017 Capitol sit-in on immigration; some critics call him extreme                                                                                                                                                             | Good                                                                            |
+| Mufti Menk (Zimbabwe)                  | Has a card                                 | Short motivational reminders, "Motivational Moments" book; millions of followers     | Barred from Singapore (2017) over "segregationist and divisive teachings"; two-year entry ban in Denmark (2018)                                                                                                                                                 | Medium                                                                          |
+| Hamza Yusuf (USA)                      | Has a card                                 | Co-founded Zaytuna, the first accredited Muslim college in the US (2015)             | Fewer flash points than others here; check recent news before adding                                                                                                                                                                                            | Good                                                                            |
+| Maulana Tariq Jamil (Pakistan)         | New; name passes the denylist              | Tablighi Jamaat preacher; topped YouGov's "most admired man" poll in Pakistan (2020) | 2020 remarks blaming women's immodesty, later apologised to the media                                                                                                                                                                                           | Medium                                                                          |
+| Zakir Naik (India, lives in Malaysia)  | New; name passes the denylist              | Peace TV (2006); comparative-religion Q&A quoting scripture from memory              | Peace TV banned in India, Bangladesh, Canada, Sri Lanka and the UK; barred from the UK (2010) and Canada; Bangladeshi officials said his talks may have inspired the 2016 Holey Artisan attackers; wanted in India on money-laundering charges, which he denies | Included at the owner's request; high risk, especially for Bangladeshi visitors |
+| Mizanur Rahman Azhari (Bangladesh)     | New; name passes the denylist              | Hugely popular tafsir mahfils since 2015                                             | Left Bangladesh in 2020 amid cancelled events, returned Oct 2024; Australia cancelled his visa in April 2026 over remarks it called extremist and antisemitic (he says he gave no speech there); reported UK entry ban (2021)                                   | High risk right now, in both Bangladesh and Australia                           |
+| Nouman Ali Khan (USA)                  | Not proposed                               | Bayyinah Institute, Qur'anic Arabic                                                  | 2017 allegations of misconduct with women, examined by panels of clerics; he denied them                                                                                                                                                                        | Leave out                                                                       |
+
+### Ahmed Deedat — South Africa · 1996–2005 · Patience — _name needs allowlist approval (Ahmed)_
+
+- **Moment:** After a stroke in 1996 left him paralysed from the neck down and unable to speak, he learned to talk by moving his eyes as someone pointed along an alphabet chart. He lived nine more years like this, still receiving visitors and letters from around the world.
+- **Beats:** 0–1 s a flash of his old life: a packed hall, a man at the podium · 1–2 s the hall fades to a quiet bedroom · 2–4 s his wife Hawa holds up a chart card, his eyes move, and squares on the card light up one by one (no readable letters) · 4–5 s a line of visitors waits at the door.
+- **Line:** Give good news to the patient, who say when struck by hardship, "To Allah we belong and to Him we return" (Qur'an 2:155–156).
+- **Deed today:** Visit or call someone who is ill.
+- **Sources:** [Arab News](https://www.arabnews.com/node/271347) · [Wikipedia](https://en.wikipedia.org/wiki/Ahmed_Deedat)
+
+### Omar Suleiman — USA · Making room for everyone (has a card)
+
+- **Moment:** Founder of the Yaqeen Institute and of MUHSEN, a nonprofit that helps mosques welcome Muslims with disabilities and special needs. Earlier he led Hurricane Katrina relief work in New Orleans.
+- **Beats:** 0–2 s a boy in a wheelchair stops at the mosque steps · 2–3.5 s volunteers lay a ramp, and a sign-language interpreter stands beside the minbar · 3.5–5 s the boy rolls into the front row as the prayer begins.
+- **Line:** The believers are like one body; when one part hurts, the whole body feels it (Bukhari, Muslim).
+- **Deed today:** Make one thing easier for someone with a disability.
+- **Sources:** [Wikipedia](<https://en.wikipedia.org/wiki/Omar_Suleiman_(imam)>) · [Apple Podcasts bio](https://podcasts.apple.com/in/podcast/omar-suleiman/id1017074168)
+
+### Mufti Menk — Zimbabwe · Helping in a disaster (has a card)
+
+- **Moment:** Known for short daily reminders to "do good, help others". He visited flood-hit areas of Pakistan in 2022.
+- **Beats:** 0–2 s a flooded village, water to the knees · 2–4 s a man in a white turban wades in with relief boxes and hands them up to a family on a rooftop · 4–5 s the water drains away, leaving a dry path to a tent clinic.
+- **Card note:** The flood visit was only checked from a headline; confirm the details before animating.
+- **Line:** Help one another in goodness and piety (Qur'an 5:2).
+- **Deed today:** Give to a relief appeal.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Ismail_ibn_Musa_Menk) · [Al Jazeera](https://www.aljazeera.com/news/2017/10/31/singapore-bans-mufti-menk-from-entering-country)
+
+### Hamza Yusuf — USA · 2015 · Building a place of learning (has a card)
+
+- **Moment:** Zaytuna College in Berkeley, which he co-founded, became the first accredited Muslim college in the United States in 2015. Students study the liberal arts alongside Arabic and Islamic texts.
+- **Beats:** 0–2 s an empty hilltop · 2–4 s a library rises and students fill it with books · 4–5 s graduates throw their caps into the sky.
+- **Line:** Read in the name of your Lord, who taught by the pen (Qur'an 96:1–4).
+- **Deed today:** Read 10 pages of a good book.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Zaytuna_College) · [Express Tribune](https://tribune.com.pk/story/852075/entertainment)
+
+### Maulana Tariq Jamil — Pakistan · Soft-hearted preaching
+
+- **Moment:** One of Pakistan's best-loved preachers, known for emotional sermons on faith, morality and unity.
+- **Beats:** 0–2 s a vast gathering in a field · 2–5 s he raises his hands in dua with tears, and the whole crowd's hands rise with his like a wave.
+- **Line:** The believers are brothers, so make peace between your brothers (Qur'an 49:10).
+- **Deed today:** Make up with someone you've fallen out with.
+- **Sources:** [Arab News](https://www.arabnews.com/node/1665861/amp) · [MDPI academic profile](https://mdpi.com/2077-1444/14/1/60)
+
+### Zakir Naik — India / Malaysia · Knowing your sources — _included at the owner's request; see the table above_
+
+- **Moment:** A medical doctor turned preacher, famous for long public Q&A sessions where he answers questions on comparative religion by quoting chapter and verse from memory. He founded Peace TV in 2006.
+- **Beats:** 0–1 s a huge hall, a man in a dark suit and cap at the lectern · 1–2 s a young student stands and asks a question into a microphone · 2–4 s he answers, and open books flutter up beside him one by one (blank pages) · 4–5 s the student nods, sits down smiling, and opens a notebook.
+- **Card note:** Keep research notes to his Q&A style and medical background. No Peace TV logo (no logos anywhere, and the channel is banned in Bangladesh). Weigh the bans and charges in the table when deciding where he sits and how prominent he is.
+- **Line:** Invite to the way of your Lord with wisdom and good advice, and argue in the best way (Qur'an 16:125).
+- **Deed today:** Learn one ayah with its surah and verse number.
+- **Sources:** [Wikipedia](https://en.wikipedia.org/wiki/Zakir_Naik) · [UPI](https://www.upi.com/Top_News/World-News/2016/07/11/Bangladesh-bans-Peace-TV-provocative-television-channel/7961468242745/) · [BenarNews](https://www.benarnews.org/english/news/malaysian/naik-passport-07182017155203.html)
+
+### Mizanur Rahman Azhari — Bangladesh · if the owner still wants him
+
+He is very popular with Bangladeshi visitors, so here is a safe moment for him. Read the table above first: his visa cancellation in Australia is very recent and may lead some people to dismiss the whole site.
+
+- **Beats:** 0–2 s a night mahfil, lamps strung over a huge crowd · 2–4 s a young speaker recites, then explains in Bangla (any recitation audio must be artist-supplied) · 4–5 s a family on the edge of the crowd turns to each other and talks about what they heard.
+- **Line:** Let there be among you people who call to good (Qur'an 3:104).
+- **Sources:** [Dhaka Tribune](https://www.dhakatribune.com/bangladesh/people/361270/who-is-mizanur-rahman-azhari) · [Jago News](https://www.jagonews24.com/en/international/news/91371)
+
 ## Story trails, world mechanics and background life
 
 ### Story trails (click one scene, the next one lights up)
@@ -294,6 +483,8 @@ The Qur'an and hadith lines below are short meanings with references, not exact 
 - **The mothers trail:** Khabib's gloves → Boufal dancing with his mother → Bilquis Edhi at the cradle.
 - **Saying no, with respect:** Kanouté's plain shirt → Amla's plain shirt → Khawaja's podium.
 - **Hijab on the world stage:** Ibtihaj's mask comes off → Bilqis's sign flips → Zahra Lari's line of girls → Sara Ahmed's gym.
+- **The chain of teachers:** Abu Hanifa and Malik (both reported to have learned from Ja'far al-Sadiq, named on their cards but never depicted) → Malik teaches al-Shafi'i → al-Shafi'i teaches Ahmad ibn Hanbal.
+- **The engineers' trail:** al-Jazari's elephant clock → Ibn Battuta's journey (the clock replica stands in the Dubai mall named after him) → Fazlur Khan's tent roofs.
 
 ### World mechanics
 
@@ -325,7 +516,8 @@ The Qur'an and hadith lines below are short meanings with references, not exact 
 
 - **Indonesia and Malaysia**: the largest Muslim populations, with only Shukor here so far.
 - **Turkey, Bosnia, Central Asia and West Africa** beyond Senegal and Mali.
-- **Women scholars, doctors and teachers**: the new list leans towards athletes.
+- **Women scholars, doctors and teachers**: Umm al-Darda and Fatima al-Fihri are a start; more modern women would balance the list.
+- **Bangladesh** beyond Fazlur Rahman Khan and the cricketers.
 
 ### Guardrails (in addition to AGENTS.md)
 
