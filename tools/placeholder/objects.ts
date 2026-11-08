@@ -22,6 +22,8 @@ export type ObjectArt = {
   width: number;
   height: number;
   frames?: string[];
+  /** Frames per animation cycle on the 240-frame master clock (default 60). */
+  period?: number;
   /** Flat walkable art baked into the floor chunks instead of sorted. */
   floor?: boolean;
 };

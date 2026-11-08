@@ -625,3 +625,30 @@ describe('Bangladesh block', () => {
     expect(pupils.length).toBeGreaterThanOrEqual(6);
   });
 });
+
+describe('scene bible: stadium (batch 1a)', () => {
+  it('plays the new beats for Salah, Mané and Kanté on the master loop', async () => {
+    const { characterState, frameKey } =
+      await import('../../packages/shared/script');
+    const byId = (id: string) => content.characters.find((c) => c.id === id)!;
+    for (const id of ['mohamed-salah', 'sadio-mane']) {
+      const c = byId(id);
+      expect(c.loop).toBe(240);
+      expect(c.script.some((s) => s.action === 'sujood')).toBe(true);
+      expect(characterState(c, 0)).toEqual(characterState(c, 240));
+      expect(c.panelApproved).toBe(false);
+    }
+    const kante = byId('ngolo-kante');
+    expect(kante.script.some((s) => s.prop === 'trophy')).toBe(true);
+    expect(frameKey('carry', 'trophy', 'SE')).toBe('carry@trophy_SE');
+    expect(frameKey('idle', undefined, 'NW')).toBe('idle_NW');
+    const ambulance = byId('amb-stadium-ambulance');
+    expect(ambulance.kind).toBe('vehicle');
+    expect(characterState(ambulance, 120).tile[0]).toBeGreaterThan(
+      characterState(ambulance, 0).tile[0],
+    );
+  });
+  it('draws no named Elneny (his first name is denylisted)', () => {
+    expect(content.characters.some((c) => /elneny/i.test(c.id))).toBe(false);
+  });
+});

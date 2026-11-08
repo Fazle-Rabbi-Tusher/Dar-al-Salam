@@ -204,6 +204,8 @@ type Spec = {
   h: number;
   pad?: number;
   frames?: number;
+  /** Frames per animation cycle on the 240-frame master clock (default 60). */
+  period?: number;
   floor?: boolean;
   side?: boolean;
   /** Finishing pass options; `false` leaves the art exactly as drawn. */
@@ -4432,6 +4434,227 @@ const bangladesh: Record<string, Spec> = {
 };
 Object.assign(objects, bangladesh);
 
+/* ════════ Stadium scenes (scene bible, batch 1) ════════ */
+/** An arched opening on the +y face: a rectangle with a rounded top. */
+function archX(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  z: number,
+  h: number,
+  col: string,
+) {
+  c.faceX(x, y, w, z, h - w * 8, col);
+  const steps = 6;
+  for (let i = 0; i < steps; i++) {
+    const t = (i + 0.5) / steps,
+      half = (w / 2) * Math.sqrt(1 - t * t);
+    c.faceX(
+      x + w / 2 - half,
+      y,
+      half * 2,
+      z + h - w * 8 + (i * w * 8) / steps,
+      (w * 8) / steps + 0.6,
+      col,
+    );
+  }
+}
+const stadiumScenes: Record<string, Spec> = {
+  'm-hospital-stand': {
+    // Children from the hospital ward, in light-blue gowns, behind the goal.
+    // The tiers face +x so the children and their plain banner face the viewer.
+    footprint: [2, 7],
+    h: 62,
+    frames: 2,
+    period: 240,
+    draw(c, f) {
+      const gowns = [C.glass, C.glassLight, C.mint, C.glass];
+      const treads: [number, number, number][] = [
+        [0, 0.67, 30],
+        [0.67, 0.67, 20],
+        [1.33, 0.67, 10],
+      ];
+      for (const [x, d, z] of treads) c.box(x, 0, d, 7, z, M.white);
+      c.faceY(2.001, 0, 7, 9, 1, C.glassDark);
+      let n = 0;
+      for (const [x, d, z] of treads)
+        for (let k = 0; k < 8; k++, n++) {
+          if (n === 23) continue;
+          const y = 0.45 + k * 0.84,
+            [px, py] = c.at(x + d * 0.55, y, z),
+            skin = fanSkins[(n * 3) % 4],
+            up = f === 1;
+          c.p.rect(px - 1, py - 8, 4, 6, gowns[n % gowns.length]);
+          c.p.pixel(px + 2, py - 3, C.glassDark);
+          c.p.rect(px - 1, py - 11, 3, 3, skin);
+          c.p.rect(px - 1, py - 12, 3, 1, n % 3 ? C.fanHair : C.woodDark);
+          if (up) {
+            c.p.rect(px - 2, py - 14, 1, 5, skin);
+            c.p.rect(px + 3, py - 14, 1, 5, skin);
+          }
+        }
+      // A plain white banner: held low across the front row, then high.
+      const z0 = f === 1 ? 46 : 24,
+        bh = 9;
+      c.poly(
+        [
+          [1.9, 0.5, z0],
+          [1.9, 6.5, z0],
+          [1.9, 6.5, z0 + bh],
+          [1.9, 0.5, z0 + bh],
+        ],
+        C.white,
+      );
+      c.edge([1.9, 0.5, z0], [1.9, 6.5, z0], C.pale);
+      c.edge([1.9, 0.5, z0 + bh], [1.9, 6.5, z0 + bh], C.silver);
+      c.edge([1.9, 0.5, z0 + bh - 2], [1.9, 6.5, z0 + bh - 2], C.glassLight);
+      for (const y of [0.5, 6.5]) c.edge([1.9, y, z0 - 6], [1.9, y, z0 + bh], C.woodDark);
+    },
+  },
+  'm-village-school': {
+    // A village school in Senegal: sand walls, blue shutters, a tin roof.
+    footprint: [4, 2],
+    h: 58,
+    draw(c) {
+      const sand = {
+        top: C.sand,
+        front: C.sand,
+        side: C.sandShade,
+        edge: C.sandDark,
+      };
+      c.box(0.2, 0.25, 3.6, 1.5, 30, sand);
+      // Lower wall band, worn paint.
+      c.faceX(0.2, 1.751, 3.6, 0, 4, C.clay);
+      c.faceY(3.801, 0.25, 1.5, 0, 4, C.terracottaDark);
+      // Blue door and shuttered windows on the front.
+      c.faceX(1.75, 1.752, 0.5, 0, 20, C.blue);
+      c.faceX(1.8, 1.753, 0.4, 2, 16, C.blueDark);
+      for (const x of [0.5, 2.6]) {
+        c.faceX(x, 1.752, 0.75, 10, 11, C.ink);
+        c.faceX(x, 1.753, 0.3, 10, 11, C.blue);
+        c.faceX(x + 0.45, 1.753, 0.3, 10, 11, C.blue);
+      }
+      c.faceY(3.802, 0.6, 0.6, 10, 11, C.blue);
+      // Corrugated tin roof with a low ridge and an overhang.
+      c.poly(
+        [
+          [0.05, 1.95, 29],
+          [3.95, 1.95, 29],
+          [3.95, 1.0, 40],
+          [0.05, 1.0, 40],
+        ],
+        C.steel,
+      );
+      c.poly(
+        [
+          [0.05, 0.05, 29],
+          [3.95, 0.05, 29],
+          [3.95, 1.0, 40],
+          [0.05, 1.0, 40],
+        ],
+        C.steelLight,
+      );
+      for (let x = 0.15; x < 3.95; x += 0.2)
+        c.edge([x, 1.95, 29], [x, 1.0, 40], C.steelDark);
+      c.poly(
+        [
+          [3.95, 0.05, 29],
+          [3.95, 1.95, 29],
+          [3.95, 1.0, 40],
+        ],
+        C.steelDark,
+      );
+      c.edge([0.05, 1.95, 29], [3.95, 1.95, 29], C.slate);
+      // A shade tree beside the yard.
+      c.box(0.1, 1.85, 0.12, 0.12, 30, M.wood);
+      c.greenery(0.15, 1.9, 44, 11, R.leaf);
+    },
+  },
+  'm-ambulance-centre': {
+    // A small new ambulance station with an open garage bay.
+    footprint: [4, 2],
+    h: 50,
+    draw(c) {
+      c.box(0.15, 0.2, 3.7, 1.6, 38, M.white);
+      // Wide open bay: dark garage, roller door rolled up at the top.
+      c.faceX(0.4, 1.801, 2.2, 0, 28, C.charcoal);
+      c.faceX(0.5, 1.802, 2.0, 0, 24, C.ink);
+      c.faceX(0.4, 1.802, 2.2, 26, 2, C.silver);
+      for (let z = 1; z < 24; z += 4) c.faceX(0.5, 1.803, 2.0, z, 1, C.slate);
+      // Office door and window.
+      c.faceX(2.95, 1.802, 0.45, 0, 18, C.glassDark);
+      c.faceX(3.45, 1.802, 0.3, 9, 9, C.glass);
+      // Blue band and roof parapet.
+      c.faceX(0.15, 1.803, 3.7, 31, 3, C.blue);
+      c.faceY(3.851, 0.2, 1.6, 31, 3, C.blueDark);
+      c.box(0.15, 0.2, 3.7, 0.12, 4, M.white, 38);
+      c.faceY(3.852, 0.6, 0.7, 12, 10, C.glassDark);
+      // A blue lamp on the roof corner.
+      const [lx, ly] = c.at(3.6, 1.6, 40);
+      c.p.rect(lx - 1, ly - 3, 3, 3, C.blue);
+      c.p.pixel(lx, ly - 3, C.glassLight);
+    },
+  },
+  'm-mosque-door': {
+    // A white mosque front: frame 0 dark inside, frame 1 lit for Friday prayer.
+    footprint: [3, 1],
+    h: 72,
+    frames: 2,
+    period: 240,
+    draw(c, f) {
+      const lit = f === 1;
+      c.box(0, 0.45, 3, 0.55, 58, M.white);
+      c.box(0, 0.45, 3, 0.55, 4, M.stone, 58);
+      for (let x = 0.1; x < 3; x += 0.4) c.box(x, 0.5, 0.2, 0.45, 5, M.white, 62);
+      const glow = lit ? C.windowLit : C.glassDeep,
+        deep = lit ? C.lampGlow : C.ink;
+      for (const x of [0.3, 2.25]) {
+        archX(c, x, 1.001, 0.45, 20, 26, C.pale);
+        archX(c, x + 0.05, 1.002, 0.35, 22, 22, glow);
+      }
+      // Tall wooden double door in an arched frame.
+      archX(c, 1.05, 1.001, 0.9, 0, 40, C.pale);
+      archX(c, 1.12, 1.002, 0.76, 0, 36, lit ? deep : C.woodDark);
+      if (!lit) {
+        c.faceX(1.14, 1.003, 0.34, 0, 28, C.wood);
+        c.faceX(1.52, 1.003, 0.34, 0, 28, C.wood);
+        c.faceX(1.49, 1.004, 0.02, 0, 28, C.woodDark);
+      } else {
+        // Doors open inward; warm light spills out.
+        c.faceX(1.12, 1.003, 0.12, 0, 28, C.wood);
+        c.faceX(1.76, 1.003, 0.12, 0, 28, C.wood);
+        c.top(1.15, 1.0, 0.7, 0.4, 0, C.lamp);
+      }
+      c.box(0.9, 1.0, 1.2, 0.18, 2, M.stone);
+    },
+  },
+  'm-tunnel': {
+    // The players' tunnel: a dark mouth under a short canopy, seats above.
+    footprint: [3, 2],
+    h: 48,
+    draw(c) {
+      c.box(0, 0, 3, 1.6, 30, M.concrete);
+      for (let i = 0; i < 3; i++)
+        c.box(0, i * 0.45, 3, 0.45, 6, M.concrete, 30 + (2 - i) * 4);
+      for (let i = 0; i < 3; i++)
+        for (let k = 0; k < 8; k++) {
+          const [sx, sy] = c.at(0.2 + k * 0.36, i * 0.45 + 0.25, 36 + (2 - i) * 4);
+          c.p.rect(sx - 1, sy - 3, 3, 3, C.seatGrey);
+        }
+      // Tunnel mouth.
+      c.faceX(0.8, 1.601, 1.4, 0, 22, C.charcoal);
+      c.faceX(0.95, 1.602, 1.1, 0, 19, C.ink);
+      c.faceX(1.2, 1.603, 0.6, 0, 15, C.ink);
+      // Canopy on two posts.
+      c.box(0.7, 1.6, 1.6, 0.35, 2, M.white, 22);
+      for (const x of [0.75, 2.2]) c.box(x, 1.85, 0.06, 0.06, 22, M.steel);
+      c.faceX(0.7, 1.951, 1.6, 22, 1, C.teal);
+    },
+  },
+};
+Object.assign(objects, stadiumScenes);
+
 export const MODERN_OBJECTS: Record<
   string,
   { footprint: [number, number]; floor?: boolean; side?: boolean }
@@ -4536,6 +4759,7 @@ export async function generateModernObjects() {
         width: images[0].width,
         height: images[0].height,
         ...(s.floor ? { floor: true } : {}),
+        ...(s.period ? { period: s.period } : {}),
       };
       if (images.length > 1) {
         entry.frames = [];

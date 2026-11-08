@@ -17,7 +17,7 @@ import {
 } from 'pixi.js';
 import { OutlineFilter } from 'pixi-filters';
 import { globalFrame, frameMap } from '../../../packages/shared/clock';
-import { characterState } from '../../../packages/shared/script';
+import { characterState, frameKey } from '../../../packages/shared/script';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
   FACING_DIRECTION,
@@ -546,7 +546,11 @@ export class Engine {
         this.texture(
           s.sprite,
           s.sortable.animation[
-            frameMap(this.frame, 60, s.sortable.animation.length)
+            frameMap(
+              this.frame,
+              s.sortable.period ?? 60,
+              s.sortable.animation.length,
+            )
           ],
           s.sortable.pivot,
         );
@@ -585,8 +589,8 @@ export class Engine {
         c.depiction === 'back',
       );
       const frames =
-        c.frames[`${state.action}_${facing}`] ??
-        c.frames[`${state.action}_${state.facing}`];
+        c.frames[frameKey(state.action, step.prop, facing)] ??
+        c.frames[frameKey(state.action, step.prop, state.facing)];
       const name = frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;

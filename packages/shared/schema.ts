@@ -27,6 +27,8 @@ export const ACTIONS = {
   lie: 2,
   ride: 4,
   speech: 4,
+  /** Prostration held still (sujood after a goal); flagged for panel review. */
+  sujood: 2,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,
@@ -34,6 +36,7 @@ export const ACTIONS = {
   bird_peck: 4,
   ball_roll: 4,
   ball_still: 1,
+  vehicle_drive: 2,
 } as const;
 export type Action = keyof typeof ACTIONS;
 export const facingSchema = z.enum(['SE', 'SW', 'NE', 'NW']);
@@ -56,6 +59,8 @@ export const stepSchema = z
     facing: facingSchema.optional(),
     path: z.array(pointSchema).min(2).optional(),
     z: z.union([z.number(), z.array(z.number())]).optional(),
+    /** Prop held during this step only (e.g. a trophy or keys changing hands). */
+    prop: z.string().optional(),
   })
   .refine(
     (s) =>
@@ -66,7 +71,7 @@ export const stepSchema = z
 export type Step = z.infer<typeof stepSchema>;
 export const characterSchema = z.object({
   id: z.string().min(1),
-  kind: z.enum(['person', 'cat', 'bird', 'ball']).default('person'),
+  kind: z.enum(['person', 'cat', 'bird', 'ball', 'vehicle']).default('person'),
   name: z.record(z.string()).optional(),
   aliases: z.array(z.string()).default([]),
   years: z.string().optional(),
@@ -171,6 +176,8 @@ export const sortableSchema = z.object({
   tile: pointSchema,
   footprint: pointSchema,
   animation: z.array(z.string()).optional(),
+  /** Frames per animation cycle (default 60), so a scene can sync to the loop. */
+  period: z.number().int().positive().optional(),
   /** Tile point where this sprite touches the ground (front boundary for strips). */
   ground: pointSchema,
   /** Pixel in the frame that sits on the ground point. */

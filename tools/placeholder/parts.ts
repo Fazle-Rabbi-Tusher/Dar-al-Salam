@@ -3,6 +3,7 @@ import { Pixels, blit, hexAt } from '../../packages/shared/pixels';
 import { ACTIONS, type Action } from '../../packages/shared/schema';
 import { canvasFor } from '../../packages/shared/canvas';
 import { png, writeJson } from '../build/io';
+import { isoCanvas } from './iso-draw';
 import type { Aseprite } from '../../packages/shared/compositor';
 
 /*
@@ -33,6 +34,7 @@ export const bases = [
   'adult-man-swept-beard',
   'adult-woman-loose',
   'ball',
+  'ambulance',
 ];
 export const garments = [
   'thobe',
@@ -58,6 +60,7 @@ export const garments = [
   'football-kit-captain',
   'football-kit-long',
   'football-kit-sleeved',
+  'football-kit-sponsor',
   'fight-kit',
   'boxing-kit',
 ];
@@ -106,6 +109,10 @@ export const props = [
   'title-belt',
   'scooter',
   'cricket-bat',
+  'trophy',
+  'keys',
+  'envelope',
+  'keeper-gloves',
 ];
 export const K = {
   skin: ['#FF00FF', '#CC00CC', '#990099'],
@@ -1112,6 +1119,18 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       q.arms[1][2] = hand[f];
       break;
     }
+    case 'sujood': {
+      // The prostration of the prayer held still; the back rises a little
+      // with each breath.
+      q = rawPose('pray', facing, 4);
+      q.action = 'sujood';
+      q.frame = f;
+      if (f === 1) {
+        q.chest = [q.chest[0], q.chest[1] - 0.6];
+        q.hip = [q.hip[0], q.hip[1] - 0.3];
+      }
+      break;
+    }
     case 'pray': {
       // Facing the viewer, forward lean is kept shallow so poses stay on the canvas.
       const fy = away ? -0.5 : 0.12;
@@ -1848,6 +1867,7 @@ export function expression(
     case 'write':
       return { eyes: 'down', mouth: 'flat' };
     case 'pray':
+    case 'sujood':
       return { eyes: 'closed', mouth: 'calm' };
     case 'guard':
       return { eyes: 'determined', mouth: 'flat' };
@@ -2298,6 +2318,8 @@ function handKind(q: Pose, i: number): HandKind {
       return 'open';
     case 'pray':
       return upright(q) ? 'hold' : 'flat';
+    case 'sujood':
+      return 'flat';
     case 'carry':
     case 'read':
     case 'pour':
@@ -3462,7 +3484,8 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
     case 'football-kit':
     case 'football-kit-captain':
     case 'football-kit-long':
-    case 'football-kit-sleeved': {
+    case 'football-kit-sleeved':
+    case 'football-kit-sponsor': {
       const lng = id === 'football-kit-long',
         sleeved = id === 'football-kit-sleeved',
         shortsR = lng ? S : C,
@@ -3521,6 +3544,16 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
         details: () => {
           if (!up) return;
           collar(p, q, sleeved || lng ? 'crew' : 'polo', [C[0], S[1], S[2]]);
+          if (id === 'football-kit-sponsor' && !q.away) {
+            // A plain colour block across the chest stands in for a sponsor.
+            const block = mk(p).poly([
+              at(q.chest, -1.2, -4.6),
+              at(q.chest, -1.2, 4.6),
+              at(q.chest, -4.8, 4.6),
+              at(q.chest, -4.8, -4.6),
+            ]);
+            shade(p, block, S, { r: 1.4, hi: 0.8, lo: 0.3 });
+          }
           if (!q.away)
             for (let s = -4.5; s <= 4.5; s += 3)
               p.pixel(...at(q.chest, -1.5, s), C[0]);
@@ -4234,6 +4267,96 @@ function drawProp(p: Pixels, id: string, q: Pose) {
       p.pixel(hx - 6, hy - 11, F.white);
       break;
     }
+    case 'trophy': {
+      // A generic golden cup: bowl, two handles, stem and a plain base.
+      const lift =
+        a === 'cheer' || a === 'celebrate' || a === 'arms-out' || a === 'wave';
+      const [cx, cy] =
+        a === 'carry' || a === 'read' || a === 'teach' || seated
+          ? [both[0], both[1] - 1]
+          : lift
+            ? [hx, hy - 1]
+            : [hx + 1, hy];
+      const G = BRASS,
+        top = cy - 15;
+      const bowl = mk(p).poly([
+        [cx - 4.5, top],
+        [cx + 5.5, top],
+        [cx + 4.5, top + 5],
+        [cx + 1.5, top + 8],
+        [cx - 0.5, top + 8],
+        [cx - 3.5, top + 5],
+      ]);
+      solid(bowl, G, 2);
+      for (const [x0, dir] of [
+        [cx - 4.5, -1],
+        [cx + 5.5, 1],
+      ] as [number, number][]) {
+        p.pixel(x0 + dir, top + 1, G[1]);
+        p.pixel(x0 + dir * 2, top + 2, G[2]);
+        p.pixel(x0 + dir * 2, top + 3, G[2]);
+        p.pixel(x0 + dir, top + 4, G[1]);
+      }
+      p.rect(cx - 3.5, top, 9, 1, G[0]);
+      p.rect(cx, top + 8, 1, 3, G[1]);
+      p.rect(cx + 1, top + 8, 1, 3, G[2]);
+      const base = mk(p).rect(cx - 3, top + 11, 7, 3);
+      solid(base, [F.charcoal[0], F.charcoal[1], F.ink], 1);
+      p.rect(cx - 3, top + 12, 7, 1, G[1]);
+      p.pixel(cx - 2.5, top + 1, F.white);
+      break;
+    }
+    case 'keys': {
+      // A small ring of keys hanging from the fingers.
+      const [kx, ky] = [hx + 0.5, hy + 1];
+      const ring = mk(p).disc(kx, ky, 1.9);
+      ring.minus(mk(p).disc(kx, ky, 0.9));
+      solid(ring, F.steel, 1);
+      for (const [dx, len, c] of [
+        [-1.5, 4, BRASS[1]],
+        [0.5, 5, F.steel[1]],
+        [2, 3.5, BRASS[2]],
+      ] as [number, number, string][]) {
+        p.rect(kx + dx, ky + 1.5, 1, len, c);
+        p.rect(kx + dx - 0.5, ky + 1.5 + len - 1, 2, 1, c);
+      }
+      break;
+    }
+    case 'envelope': {
+      // A plain cream envelope held flat in the hand.
+      const [ex, ey] =
+        a === 'carry' ? [both[0] - 4, both[1] - 4] : [hx - 3, hy - 5];
+      const env = mk(p).rect(ex, ey, 8, 5);
+      solid(env, [F.white, F.cream, F.steel[1]], 1);
+      p.pixel(ex + 1, ey + 1, F.steel[0]);
+      p.pixel(ex + 2, ey + 2, F.steel[0]);
+      p.pixel(ex + 3, ey + 3, F.steel[1]);
+      p.pixel(ex + 4, ey + 3, F.steel[1]);
+      p.pixel(ex + 5, ey + 2, F.steel[0]);
+      p.pixel(ex + 6, ey + 1, F.steel[0]);
+      break;
+    }
+    case 'keeper-gloves': {
+      // Big padded goalkeeper gloves: a wide palm with a flat finger block.
+      for (const arm of q.arms) {
+        const [gx, gy] = arm[2],
+          d = norm(arm[1], arm[2]),
+          n: P = [-d[1], d[0]];
+        const m = mk(p)
+          .disc(gx + d[0] * 0.8, gy + d[1] * 0.8, 3.4)
+          .capsule(
+            [gx + d[0] * 2.2 - n[0] * 1.6, gy + d[1] * 2.2 - n[1] * 1.6],
+            [gx + d[0] * 2.2 + n[0] * 1.6, gy + d[1] * 2.2 + n[1] * 1.6],
+            2.6,
+          );
+        solid(m, R, 2.4);
+        const cuff = lerp(arm[1], arm[2], 0.68);
+        for (let k = -2.5; k <= 2.5; k += 0.5)
+          p.pixel(cuff[0] + n[0] * k, cuff[1] + n[1] * k, F.white);
+        p.pixel(gx + d[0] * 3.4, gy + d[1] * 3.4, F.white);
+      }
+      break;
+    }
     case 'cricket-bat': {
       // Grip in the hand, the blade carried on along the forearm: hanging by
       // the leg at rest, raised high when celebrating.
@@ -4596,6 +4719,65 @@ function drawBird(p: Pixels, action: Action, face: string, f: number) {
   }
 }
 
+/** A white emergency van in iso; blue roof lights alternate between frames. */
+function drawAmbulance(p: Pixels, face: string, f: number) {
+  const along = face === 'NE' ? 'y' : 'x',
+    L = 1.8,
+    W = 0.9,
+    c = along === 'x' ? isoCanvas(72, 56, 29, 33) : isoCanvas(72, 56, 43, 33);
+  const [w, d] = along === 'x' ? [L, W] : [W, L];
+  const body = {
+    top: '#FBFBF7',
+    front: '#EEF0EC',
+    side: '#DADFDC',
+    edge: '#B9C0BE',
+  };
+  // Shadow under the van.
+  c.top(-0.1, -0.05, w + 0.2, d + 0.15, 0, '#B5C3BA');
+  c.box(0, 0, w, d, 22, body);
+  // Red side stripe on both visible faces.
+  c.faceX(0, d + 0.001, w, 8, 3, '#E05A4F');
+  c.faceX(0, d + 0.002, w, 8, 1, '#B23A35');
+  c.faceY(w + 0.001, 0, d, 8, 3, '#C93A3A');
+  // Windows: the cab glass where the van points, side windows elsewhere.
+  if (along === 'x') {
+    c.faceY(w + 0.002, 0.1, d - 0.2, 13, 7, '#2A2E33');
+    c.faceY(w + 0.003, 0.12, 0.25, 15, 4, '#548FBD');
+    c.faceX(1.2, d + 0.003, 0.45, 13, 6, '#36557A');
+    c.faceX(0.2, d + 0.003, 0.7, 12, 7, '#DADFDC');
+    c.faceX(0.22, d + 0.004, 0.33, 12, 7, '#B9C0BE');
+  } else {
+    c.faceX(0.1, d + 0.003, w - 0.2, 11, 8, '#DADFDC');
+    c.faceX(0.12, d + 0.004, 0.33, 11, 8, '#B9C0BE');
+    c.faceX(0.47, d + 0.004, 0.33, 11, 8, '#B9C0BE');
+    c.faceY(w + 0.002, 0.15, 0.5, 13, 6, '#36557A');
+  }
+  // Wheels along the visible long side.
+  const wheels: [number, number][] =
+    along === 'x'
+      ? [
+          [0.35, d],
+          [1.45, d],
+        ]
+      : [
+          [w, 0.35],
+          [w, 1.45],
+        ];
+  for (const [x, y] of wheels) {
+    const [wx, wy] = c.at(x, y, 2);
+    c.p.ellipse(wx, wy, 3.4, 3.4, '#2A2E33');
+    c.p.ellipse(wx, wy, 1.6, 1.6, '#8E9796');
+  }
+  // Roof light bar: blue lamps take turns to flash.
+  const [lx, ly] =
+    along === 'x' ? c.at(w - 0.35, d / 2, 23) : c.at(w / 2, 0.35, 23);
+  c.p.rect(lx - 5, ly - 1, 11, 3, '#5E6668');
+  c.p.rect(lx - 4, ly - 2, 4, 2, f ? '#2A57A0' : '#9FD0E3');
+  c.p.rect(lx + 1, ly - 2, 4, 2, f ? '#9FD0E3' : '#2A57A0');
+  if (f === 0) c.p.pixel(lx - 3, ly - 3, '#CDE9F2');
+  else c.p.pixel(lx + 2, ly - 3, '#CDE9F2');
+  blit(p, c.p);
+}
 function drawBall(p: Pixels, action: Action, f: number) {
   const m = mk(p).disc(6, 8, 3.3);
   shade(p, m, [F.white, F.cream, F.steel[1]], { r: 2.4, hi: 0.7 });
@@ -4631,6 +4813,10 @@ export function drawPart(
     drawBall(p, action, f);
     return p;
   }
+  if (id === 'ambulance') {
+    drawAmbulance(p, face, f);
+    return p;
+  }
   if (face === 'SW') {
     // Explicit SW frames (pour/write): drawn from the SE pose, then mirrored here
     // in the source so the compositor's explicit-frame path is exercised.
@@ -4644,7 +4830,8 @@ export function drawPart(
   if (category === 'garments') drawGarment(p, id, q);
   if (category === 'headwear') drawHeadwear(p, id, q);
   // Hands are free during prayer: props are not drawn for it.
-  if (category === 'props' && action !== 'pray') drawProp(p, id, q);
+  if (category === 'props' && action !== 'pray' && action !== 'sujood')
+    drawProp(p, id, q);
   return p;
 }
 export async function generateParts(overwrite = false) {
@@ -4668,11 +4855,14 @@ export async function generateParts(overwrite = false) {
             ? ['bird_fly', 'bird_peck']
             : id === 'ball'
               ? ['ball_roll', 'ball_still']
+              : id === 'ambulance'
+                ? ['vehicle_drive']
               : Object.keys(ACTIONS).filter(
                   (a) =>
                     !a.startsWith('cat_') &&
                     !a.startsWith('bird_') &&
-                    !a.startsWith('ball_'),
+                    !a.startsWith('ball_') &&
+                    !a.startsWith('vehicle_'),
                 )
       ) as Action[];
       const frames: Aseprite['frames'] = [],

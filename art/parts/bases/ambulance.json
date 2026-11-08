@@ -1,0 +1,119 @@
+{
+  "frames": [
+    {
+      "filename": "vehicle_drive_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 56
+      },
+      "duration": 83
+    },
+    {
+      "filename": "vehicle_drive_SE_1",
+      "frame": {
+        "x": 72,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 56
+      },
+      "duration": 83
+    },
+    {
+      "filename": "vehicle_drive_NE_0",
+      "frame": {
+        "x": 144,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 56
+      },
+      "duration": 83
+    },
+    {
+      "filename": "vehicle_drive_NE_1",
+      "frame": {
+        "x": 216,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 56
+      },
+      "duration": 83
+    }
+  ],
+  "meta": {
+    "image": "ambulance.png",
+    "size": {
+      "w": 1152,
+      "h": 56
+    },
+    "frameTags": [
+      {
+        "name": "vehicle_drive_se",
+        "from": 0,
+        "to": 1
+      },
+      {
+        "name": "vehicle_drive_ne",
+        "from": 2,
+        "to": 3
+      }
+    ],
+    "slices": [
+      {
+        "name": "foot",
+        "keys": [
+          {
+            "frame": 0,
+            "bounds": {
+              "x": 36,
+              "y": 50,
+              "w": 1,
+              "h": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
