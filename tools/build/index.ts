@@ -36,6 +36,7 @@ import {
   type Facing,
 } from '../../packages/shared/schema';
 import {
+  frameKey,
   characterState,
   facingFromSegment,
 } from '../../packages/shared/script';
@@ -212,12 +213,14 @@ async function build() {
         c.depiction === 'back' ? ['NE', 'NW'] : ['SE', 'SW', 'NE', 'NW'];
       void facingFromSegment;
       for (const facing of facings) {
-        const key = `${s.action}_${facing}`;
+        const key = frameKey(s.action, s.prop, facing),
+          look = s.prop ? { ...c.look, prop: s.prop } : c.look;
         if (frames[key]) continue;
         frames[key] = [];
         if (
           sprite &&
           !s.path &&
+          !s.prop &&
           SPRITE_ACTIONS.has(s.action) &&
           (facing === 'SE' || facing === 'SW')
         ) {
@@ -246,10 +249,10 @@ async function build() {
             shadow: '#493C35',
           };
           const head = heads[c.id],
-            anchor = parts[c.look.base].anchor;
+            anchor = parts[look.base].anchor;
           if (head) {
             const { image: img, overhang } = composeWithHead(
-              c.look,
+              look,
               s.action,
               facing,
               f,
@@ -272,7 +275,7 @@ async function build() {
           } else
             frames[key].push(
               register(
-                compose(c.look, s.action, facing, f, parts, pal, !lifted),
+                compose(look, s.action, facing, f, parts, pal, !lifted),
                 anchor,
               ),
             );
@@ -286,7 +289,16 @@ async function build() {
       maxY = -Infinity;
     for (let f = 0; f < c.loop; f++) {
       const state = characterState(c, f),
-        m = metas[frames[`${state.action}_${state.facing}`][state.index]],
+        m =
+          metas[
+            frames[
+              frameKey(
+                state.action,
+                c.script[state.stepIndex].prop,
+                state.facing,
+              )
+            ][state.index]
+          ],
         b = m.bounds;
       if (shadowFrame) {
         const p = worldFromTile(...state.tile),
@@ -359,7 +371,9 @@ async function build() {
       ...(illustration ? { illustration } : {}),
       ...(portrait ? { portrait } : {}),
       interactive: Boolean(c.name),
-      needsPanelReview: c.script.some((s) => s.action === 'pray'),
+      needsPanelReview: c.script.some(
+        (s) => s.action === 'pray' || s.action === 'sujood',
+      ),
       loopBounds: { x: minX, y: minY, width: maxX - minX, height: maxY - minY },
     });
   }
@@ -403,6 +417,7 @@ async function build() {
           pivot: [m.anchor[0] + at[0] - base[0], m.anchor[1] + at[1] - base[1]],
           lift: o.z,
           ...(names.length > 1 ? { animation: names } : {}),
+          ...(names.length > 1 && art.period ? { period: art.period } : {}),
         });
       }
     }

@@ -1,6 +1,6 @@
 import { ACTIONS, type Action, type Facing, type Look } from './schema';
 import { Pixels, blit, crop, hexAt, rgb, type PixelImage } from './pixels';
-import { CHILD_SCALE, canvasFor } from './canvas';
+import { CHILD_SCALE, VEHICLES, canvasFor } from './canvas';
 export type PartFrame = PixelImage & { layerBias: number };
 export type Part = {
   id: string;
@@ -152,7 +152,12 @@ export function compose(
   blit(outlined, dst);
   const result = new Pixels(dst.width, dst.height);
   const [ax, ay] = base.anchor;
-  if (includeShadow && look.base !== 'bird' && look.base !== 'ball')
+  if (
+    includeShadow &&
+    look.base !== 'bird' &&
+    look.base !== 'ball' &&
+    !VEHICLES.includes(look.base)
+  )
     result.ellipse(ax, ay - 1, look.base === 'cat' ? 7 : 8, 2.5, [
       ...rgb(palette.shadow).slice(0, 3),
       89,

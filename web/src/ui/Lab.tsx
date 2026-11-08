@@ -153,12 +153,17 @@ export function Lab() {
       {t(key)}
       <select
         disabled={
-          ['cat', 'bird', 'ball'].includes(look.base) ? key !== 'base' : false
+          ['cat', 'bird', 'ball', 'ambulance'].includes(look.base)
+            ? key !== 'base'
+            : false
         }
         value={look[key]}
         onChange={(e) => {
           const val = e.target.value;
-          if (key === 'base' && ['cat', 'bird', 'ball'].includes(val)) {
+          if (
+            key === 'base' &&
+            ['cat', 'bird', 'ball', 'ambulance'].includes(val)
+          ) {
             setLook({
               ...look,
               base: val,
@@ -171,15 +176,21 @@ export function Lab() {
                 ? 'cat_idle'
                 : val === 'ball'
                   ? 'ball_roll'
-                  : 'bird_fly',
+                  : val === 'ambulance'
+                    ? 'vehicle_drive'
+                    : 'bird_fly',
             );
           } else {
             setLook(
-              key === 'base' && ['cat', 'bird', 'ball'].includes(look.base)
+              key === 'base' &&
+                ['cat', 'bird', 'ball', 'ambulance'].includes(look.base)
                 ? { ...initial, base: val, colours: look.colours }
                 : { ...look, [key]: val },
             );
-            if (key === 'base' && ['cat', 'bird', 'ball'].includes(look.base))
+            if (
+              key === 'base' &&
+              ['cat', 'bird', 'ball', 'ambulance'].includes(look.base)
+            )
               setAction('idle');
           }
         }}
@@ -190,7 +201,7 @@ export function Lab() {
       </select>
     </label>
   );
-  const animal = ['cat', 'bird', 'ball'].includes(look.base);
+  const animal = ['cat', 'bird', 'ball', 'ambulance'].includes(look.base);
   return (
     <main className="document lab-page">
       <a className="back-link" href="/">

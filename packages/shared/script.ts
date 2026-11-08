@@ -92,7 +92,8 @@ export function scriptErrors(c: Character, room?: Room) {
         room &&
         collision?.type === 'tilelayer' &&
         c.kind !== 'bird' &&
-        c.kind !== 'ball'
+        c.kind !== 'ball' &&
+        c.kind !== 'vehicle'
       ) {
         for (let j = 0; j <= Math.ceil(len * 16); j++) {
           const p = sampleStep(s, j / Math.max(1, Math.ceil(len * 16))).tile,
@@ -114,4 +115,13 @@ export function scriptErrors(c: Character, room?: Room) {
   }
   if (last !== c.loop) errors.push(`script must cover 0…${c.loop}`);
   return errors;
+}
+
+/** Baked frame-set key: action, optional step prop, facing. */
+export function frameKey(
+  action: string,
+  prop: string | undefined,
+  facing: string,
+) {
+  return `${action}${prop ? '@' + prop : ''}_${facing}`;
 }

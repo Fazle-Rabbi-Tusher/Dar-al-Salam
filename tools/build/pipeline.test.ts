@@ -535,7 +535,8 @@ describe('scholars and scene roles', () => {
     const people = content.characters.filter(
       (c) => !c.name && c.kind === 'person',
     );
-    expect(people.length).toBeLessThanOrEqual(60);
+    // Only scene roles (named scenes' partners); the scene bible adds a few per scene.
+    expect(people.length).toBeLessThanOrEqual(90);
     for (const c of people) expect(c.role).toBeTruthy();
     const ids = new Set(content.characters.map((c) => c.id));
     for (const c of content.characters)
@@ -623,5 +624,32 @@ describe('Bangladesh block', () => {
       c.id.startsWith('amb-bd-pupil'),
     );
     expect(pupils.length).toBeGreaterThanOrEqual(6);
+  });
+});
+
+describe('scene bible: stadium (batch 1a)', () => {
+  it('plays the new beats for Salah, Mané and Kanté on the master loop', async () => {
+    const { characterState, frameKey } =
+      await import('../../packages/shared/script');
+    const byId = (id: string) => content.characters.find((c) => c.id === id)!;
+    for (const id of ['mohamed-salah', 'sadio-mane']) {
+      const c = byId(id);
+      expect(c.loop).toBe(240);
+      expect(c.script.some((s) => s.action === 'sujood')).toBe(true);
+      expect(characterState(c, 0)).toEqual(characterState(c, 240));
+      expect(c.panelApproved).toBe(false);
+    }
+    const kante = byId('ngolo-kante');
+    expect(kante.script.some((s) => s.prop === 'trophy')).toBe(true);
+    expect(frameKey('carry', 'trophy', 'SE')).toBe('carry@trophy_SE');
+    expect(frameKey('idle', undefined, 'NW')).toBe('idle_NW');
+    const ambulance = byId('amb-stadium-ambulance');
+    expect(ambulance.kind).toBe('vehicle');
+    expect(characterState(ambulance, 120).tile[0]).toBeGreaterThan(
+      characterState(ambulance, 0).tile[0],
+    );
+  });
+  it('draws no named Elneny (his first name is denylisted)', () => {
+    expect(content.characters.some((c) => /elneny/i.test(c.id))).toBe(false);
   });
 });

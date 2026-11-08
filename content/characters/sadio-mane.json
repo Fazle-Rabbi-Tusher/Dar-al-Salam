@@ -29,24 +29,42 @@
   "script": [
     {
       "from": 0,
+      "to": 24,
+      "action": "walk",
+      "path": [
+        [80.4, 24.4],
+        [84.6, 27.6]
+      ]
+    },
+    {
+      "from": 24,
+      "to": 36,
+      "action": "kick",
+      "at": [84.6, 27.6],
+      "facing": "SE"
+    },
+    {
+      "from": 36,
       "to": 120,
-      "action": "hand-on-heart",
-      "at": [80.4, 24.4],
-      "facing": "SW"
+      "action": "sujood",
+      "at": [84.6, 27.6],
+      "facing": "SE"
     },
     {
       "from": 120,
       "to": 180,
-      "action": "celebrate",
-      "at": [80.4, 24.4],
-      "facing": "SW"
+      "action": "hand-on-heart",
+      "at": [84.6, 27.6],
+      "facing": "SE"
     },
     {
       "from": 180,
       "to": 240,
-      "action": "hand-on-heart",
-      "at": [80.4, 24.4],
-      "facing": "SE"
+      "action": "walk",
+      "path": [
+        [84.6, 27.6],
+        [80.4, 24.4]
+      ]
     }
   ],
   "pairWith": "mohamed-salah",

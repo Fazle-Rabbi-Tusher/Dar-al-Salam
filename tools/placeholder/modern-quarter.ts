@@ -9,6 +9,12 @@ import {
 } from '../../packages/shared/schema';
 import { scriptErrors } from '../../packages/shared/script';
 import { MODERN_OBJECTS } from './modern';
+import {
+  STADIUM_LINKS,
+  STADIUM_OBJECTS,
+  STADIUM_UPGRADES,
+  stadiumAmbient,
+} from './scenes/stadium';
 import { detailFootprints, type DetailType } from './details';
 
 /*
@@ -1327,6 +1333,10 @@ export function modernQuarter() {
     'SE',
   );
 
+  // Scene-bible stadium scenes (docs/scene-bible.md).
+  for (const [type, x, y] of STADIUM_OBJECTS) obj(type, x, y);
+  ambient.push(...stadiumAmbient());
+
   /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */
   // Octagon at (64, 47): flat mat baked into the floor, cage pieces on each
   // edge so fighters inside sort between the back and front walls.
@@ -2229,6 +2239,8 @@ const SCENE_ROLES = [
   /^amb-fight-fan-/,
   // Abdul El-Sayed's front rows.
   /^amb-rally-[0-9]$/,
+  // Scene-bible stadium scenes: passers, trophy teammates, the ambulance.
+  /^amb-stadium-/,
   // People of Bangladesh: worshippers, a tea stall, pupils and the cricket.
   /^amb-bd-/,
   // Audiences and partners of scholars and scientists.
@@ -3145,6 +3157,15 @@ export function namedCards(): Character[] {
     // Calm standing beats, so each person's supplied full-body sprite
     // (art/sprites/<id>.png) shows for part of their loop.
     for (const [i, action] of STANDING[c.id] ?? []) c.script[i].action = action;
+    // Scene-bible loops (docs/scene-bible.md) replace the earlier ones.
+    const up = STADIUM_UPGRADES[c.id];
+    if (up) {
+      c.loop = up.loop;
+      c.script = up.script;
+      if (up.look) c.look = { ...c.look, ...up.look };
+    }
+    if (STADIUM_LINKS[c.id])
+      c.links = [...(c.links ?? []), ...STADIUM_LINKS[c.id]!];
     return c;
   });
 }
