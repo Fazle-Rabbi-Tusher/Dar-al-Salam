@@ -54,7 +54,7 @@
     {
       "from": 180,
       "to": 240,
-      "action": "guard",
+      "action": "idle",
       "at": [74.4, 53.4],
       "facing": "SW",
       "z": 0

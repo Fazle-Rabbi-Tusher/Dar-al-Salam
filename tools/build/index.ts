@@ -126,6 +126,17 @@ async function build() {
    * standing on the foot anchor with the usual outline and floor shadow.
    */
   const SPRITE_DENSITY = 4;
+  /** Calm standing poses where the still sprite stands in for the drawing. */
+  const SPRITE_ACTIONS = new Set([
+    'idle',
+    'talk',
+    'speech',
+    'wave',
+    'belt-pose',
+    'hand-on-heart',
+    'cross-arms',
+    'pour',
+  ]);
   async function fullBodySprite(id: string) {
     try {
       await fs.access(`art/sprites/${id}.png`);
@@ -204,7 +215,12 @@ async function build() {
         const key = `${s.action}_${facing}`;
         if (frames[key]) continue;
         frames[key] = [];
-        if (sprite && (facing === 'SE' || facing === 'SW')) {
+        if (
+          sprite &&
+          !s.path &&
+          SPRITE_ACTIONS.has(s.action) &&
+          (facing === 'SE' || facing === 'SW')
+        ) {
           const img =
             facing === 'SE'
               ? sprite.image
@@ -321,6 +337,20 @@ async function build() {
       await fs.mkdir(`${out}/illustrations`, { recursive: true });
       await fs.copyFile(`art/${illustration}`, `${out}/${illustration}`);
       break;
+    }
+    if (!illustration && sprite) {
+      // Head-and-shoulders card portrait cropped from the supplied sprite.
+      const src = `art/sprites/${c.id}.png`,
+        meta = await sharp(src).trim().toBuffer({ resolveWithObject: true });
+      const w = meta.info.width,
+        h = Math.round(Math.min(meta.info.height, w * 1.1));
+      illustration = `illustrations/${c.id}.png`;
+      await fs.mkdir(`${out}/illustrations`, { recursive: true });
+      await sharp(meta.data)
+        .extract({ left: 0, top: 0, width: w, height: h })
+        .resize({ width: 280 })
+        .png({ palette: true, quality: 90 })
+        .toFile(`${out}/${illustration}`);
     }
     baked.push({
       ...c,

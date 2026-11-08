@@ -54,7 +54,7 @@
     {
       "from": 180,
       "to": 240,
-      "action": "punch",
+      "action": "idle",
       "at": [65.6, 51],
       "facing": "SE",
       "z": 4

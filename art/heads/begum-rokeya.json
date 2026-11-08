@@ -161,7 +161,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_SE_0",
+      "filename": "talk_SE_0",
       "frame": {
         "x": 0,
         "y": 0,
@@ -170,7 +170,7 @@
       },
       "spriteSourceSize": {
         "x": 44,
-        "y": 80,
+        "y": 28,
         "w": 28,
         "h": 34
       },
@@ -181,7 +181,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_SE_1",
+      "filename": "talk_SE_1",
       "frame": {
         "x": 82,
         "y": 0,
@@ -189,8 +189,8 @@
         "h": 34
       },
       "spriteSourceSize": {
-        "x": 44,
-        "y": 82,
+        "x": 46,
+        "y": 32,
         "w": 28,
         "h": 34
       },
@@ -201,7 +201,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_SE_2",
+      "filename": "talk_SE_2",
       "frame": {
         "x": 0,
         "y": 0,
@@ -209,8 +209,8 @@
         "h": 34
       },
       "spriteSourceSize": {
-        "x": 44,
-        "y": 80,
+        "x": 46,
+        "y": 28,
         "w": 28,
         "h": 34
       },
@@ -221,7 +221,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_SE_3",
+      "filename": "talk_SE_3",
       "frame": {
         "x": 82,
         "y": 0,
@@ -230,7 +230,7 @@
       },
       "spriteSourceSize": {
         "x": 44,
-        "y": 82,
+        "y": 32,
         "w": 28,
         "h": 34
       },
@@ -241,7 +241,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_NE_0",
+      "filename": "talk_NE_0",
       "frame": {
         "x": 56,
         "y": 0,
@@ -250,7 +250,7 @@
       },
       "spriteSourceSize": {
         "x": 42,
-        "y": 80,
+        "y": 28,
         "w": 26,
         "h": 32
       },
@@ -261,7 +261,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_NE_1",
+      "filename": "talk_NE_1",
       "frame": {
         "x": 56,
         "y": 0,
@@ -269,8 +269,8 @@
         "h": 32
       },
       "spriteSourceSize": {
-        "x": 42,
-        "y": 82,
+        "x": 44,
+        "y": 32,
         "w": 26,
         "h": 32
       },
@@ -281,7 +281,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_NE_2",
+      "filename": "talk_NE_2",
       "frame": {
         "x": 56,
         "y": 0,
@@ -289,8 +289,8 @@
         "h": 32
       },
       "spriteSourceSize": {
-        "x": 42,
-        "y": 80,
+        "x": 44,
+        "y": 28,
         "w": 26,
         "h": 32
       },
@@ -301,7 +301,7 @@
       "duration": 83
     },
     {
-      "filename": "teach_NE_3",
+      "filename": "talk_NE_3",
       "frame": {
         "x": 56,
         "y": 0,
@@ -310,7 +310,7 @@
       },
       "spriteSourceSize": {
         "x": 42,
-        "y": 82,
+        "y": 32,
         "w": 26,
         "h": 32
       },
@@ -340,12 +340,12 @@
         "to": 7
       },
       {
-        "name": "teach_se",
+        "name": "talk_se",
         "from": 8,
         "to": 11
       },
       {
-        "name": "teach_ne",
+        "name": "talk_ne",
         "from": 12,
         "to": 15
       }

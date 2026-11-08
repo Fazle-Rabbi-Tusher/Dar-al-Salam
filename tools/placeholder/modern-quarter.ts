@@ -3141,8 +3141,37 @@ export function namedCards(): Character[] {
     }),
     ...scholars().map(card),
     ...bangladeshAndMore().map(card),
-  ];
+  ].map((c) => {
+    // Calm standing beats, so each person's supplied full-body sprite
+    // (art/sprites/<id>.png) shows for part of their loop.
+    for (const [i, action] of STANDING[c.id] ?? []) c.script[i].action = action;
+    return c;
+  });
 }
+const STANDING: Record<string, [number, Step['action']][]> = {
+  'islam-makhachev': [[3, 'idle']],
+  'kamaru-usman': [[3, 'idle']],
+  'khamzat-chimaev': [[2, 'idle']],
+  'zabit-magomedsharipov': [[3, 'idle']],
+  'muhammad-ali': [[1, 'idle']],
+  'mashrafe-mortaza': [[1, 'idle']],
+  'begum-rokeya': [
+    [0, 'talk'],
+    [1, 'talk'],
+  ],
+  'ibn-khaldun': [
+    [0, 'idle'],
+    [1, 'talk'],
+  ],
+  'ibn-rushd': [
+    [0, 'talk'],
+    [1, 'idle'],
+  ],
+  'al-khwarizmi': [
+    [0, 'idle'],
+    [1, 'talk'],
+  ],
+};
 /*
  * Scholars at work: golden-age scholars (no photographs exist, so their looks
  * follow traditional portraits and statues), today's Islamic scholars and a
