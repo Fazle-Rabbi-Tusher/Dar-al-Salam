@@ -18,6 +18,7 @@ import {
 import { OutlineFilter } from 'pixi-filters';
 import { globalFrame, frameMap } from '../../../packages/shared/clock';
 import { characterState, frameKey } from '../../../packages/shared/script';
+import { motionFor } from '../../../packages/shared/motion';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
   FACING_DIRECTION,
@@ -595,15 +596,23 @@ export class Engine {
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
-      const density = m.density ?? 1;
+      const density = m.density ?? 1,
+        motion = m.still ? motionFor(state.action, this.frame) : null;
       const p = this.place(
         item.sprite,
         point,
         Math.max(m.frame.w, m.frame.h) / density,
-        state.z,
+        state.z + (motion?.lift ?? 0),
         2e-5,
         density,
       );
+      if (p && motion) {
+        // Animate the supplied still without redrawing it.
+        const toward = facing === 'SE' || facing === 'NE' ? 1 : -1;
+        item.sprite.scale.x *= motion.sx;
+        item.sprite.scale.y *= motion.sy;
+        item.sprite.rotation += motion.lean * toward;
+      }
       if (item.shadow) {
         const sp = p && this.place(item.shadow, point, 16, 0, 1e-5);
         if (!sp) item.shadow.visible = false;

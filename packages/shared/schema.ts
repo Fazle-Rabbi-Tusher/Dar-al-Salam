@@ -155,6 +155,8 @@ export const frameMetaSchema = z.object({
   hitMask: z.string(),
   /** Sprite pixels per world pixel (2 for named characters' sharp heads). */
   density: z.number().int().positive().optional(),
+  /** A supplied still sprite the engine animates (packages/shared/motion.ts). */
+  still: z.boolean().optional(),
 });
 export type FrameMeta = z.infer<typeof frameMetaSchema>;
 export const bakedCharacterSchema = characterSchema.extend({
