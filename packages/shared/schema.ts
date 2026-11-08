@@ -157,6 +157,8 @@ export const frameMetaSchema = z.object({
   density: z.number().int().positive().optional(),
   /** A supplied still sprite the engine animates (packages/shared/motion.ts). */
   still: z.boolean().optional(),
+  /** Supplied animation strip frame: world ticks per frame (motion.ts). */
+  tempo: z.number().int().positive().optional(),
 });
 export type FrameMeta = z.infer<typeof frameMetaSchema>;
 export const bakedCharacterSchema = characterSchema.extend({
@@ -165,6 +167,8 @@ export const bakedCharacterSchema = characterSchema.extend({
   interactive: z.boolean(),
   needsPanelReview: z.boolean(),
   shadowFrame: z.string().optional(),
+  /** Frame keys the engine draws flipped left-right (mirrored at runtime). */
+  mirror: z.array(z.string()).optional(),
   /** Close-up of the sharp head for the story card (named characters). */
   portrait: z.string().optional(),
   /** Smooth illustrated portrait for the story card, when one is drawn. */

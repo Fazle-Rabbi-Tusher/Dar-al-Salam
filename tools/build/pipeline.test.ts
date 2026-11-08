@@ -620,10 +620,10 @@ describe('Bangladesh block', () => {
       expect(c.panelApproved).toBe(false);
       expect(forbiddenName(c.name!.en, content.rules)).toBe(false);
     }
-    const pupils = content.characters.filter((c) =>
-      c.id.startsWith('amb-bd-pupil'),
-    );
-    expect(pupils.length).toBeGreaterThanOrEqual(6);
+    // Background people were removed (only main characters remain).
+    expect(
+      content.characters.some((c) => c.id.startsWith('amb-bd-pupil')),
+    ).toBe(false);
   });
 });
 
@@ -703,5 +703,38 @@ describe('scene bible: cricket ground', () => {
     const k = content.characters.find((c) => c.id === 'usman-khawaja')!;
     expect(characterState(k, 100).z).toBe(0);
     expect(characterState(k, 180).z).toBe(10);
+  });
+});
+
+describe('main characters only, with supplied animation strips', () => {
+  it('keeps no background people: only named characters, balls, vehicles and animals', () => {
+    for (const c of content.characters)
+      if (!c.name) expect(c.kind, c.id).not.toBe('person');
+    const ids = new Set(content.characters.map((c) => c.id));
+    for (const c of content.characters)
+      if (c.pairWith) expect(ids.has(c.pairWith), c.id).toBe(true);
+  });
+  it('has a prepared strip, both views, for every action of every sprite character', async () => {
+    const strips = new Set(await fs.readdir('art/sprites/anim'));
+    const sprites = new Set(await fs.readdir('art/sprites'));
+    for (const c of content.characters) {
+      if (!c.name || !sprites.has(`${c.id}.png`)) continue;
+      for (const s of c.script) {
+        const key = `${c.id}__${s.action}${s.prop ? '@' + s.prop : ''}`;
+        expect(strips.has(`${key}_SE.png`), key).toBe(true);
+        expect(strips.has(`${key}_NE.png`), key).toBe(true);
+      }
+    }
+  });
+  it('prepared strips are 224×336 frames with transparent backgrounds', async () => {
+    for (const f of [
+      'mohamed-salah__walk_NE.png',
+      'mufti-ismail-menk__talk_SE.png',
+    ]) {
+      const m = await sharp(`art/sprites/anim/${f}`).metadata();
+      expect(m.height).toBe(336);
+      expect(m.width % 224).toBe(0);
+      expect(m.hasAlpha).toBe(true);
+    }
   });
 });

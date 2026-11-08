@@ -2045,9 +2045,11 @@ export function modernQuarter() {
   });
   // Only the people famous scenes need stay (plus animals); the quarter is
   // moving toward named characters only.
-  const scene = ambient.filter(
-    (c) => c.kind !== 'person' || SCENE_ROLES.some((re) => re.test(c.id)),
-  );
+  // Only the main (named) characters remain as people (owner's request,
+  // 2026-11); balls, the ambulance and animals stay as part of the scenes.
+  // SCENE_ROLES is kept so a scene's partners can be restored easily.
+  void SCENE_ROLES;
+  const scene = ambient.filter((c) => c.kind !== 'person');
   const kept = new Set(scene.map((c) => c.id));
   for (const c of scene) {
     if (c.id === 'amb-patient-2') c.pairWith = 'al-zahrawi';
@@ -2058,6 +2060,10 @@ export function modernQuarter() {
   ambient.push(...scene);
   for (const c of ambient) c.role ??= roleFor(c.id.replace(/^amb-/, ''));
   const cards = namedCards();
+  // Partners that no longer exist are dropped from the cards too.
+  for (const c of cards)
+    if (c.pairWith?.startsWith('amb-') && !kept.has(c.pairWith))
+      delete c.pairWith;
   for (const c of [...ambient, ...cards]) {
     const errors = scriptErrors(characterSchema.parse(c), room);
     if (errors.length) throw Error(`${c.id}: ${errors.join('; ')}`);

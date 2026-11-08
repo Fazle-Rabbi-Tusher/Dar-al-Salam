@@ -41,6 +41,7 @@ import {
   facingFromSegment,
 } from '../../packages/shared/script';
 import { worldFromTile, depth } from '../../packages/shared/iso';
+import { stripTempo } from '../../packages/shared/motion';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
   PLANET,
@@ -90,6 +91,7 @@ async function build() {
     density = 1,
     anyColour = false,
     still = false,
+    tempo = 0,
   ) {
     const t = trimFrame(img, anchor),
       key =
@@ -98,7 +100,7 @@ async function build() {
           Buffer.concat([
             Buffer.from(t.image.data),
             Buffer.from(
-              JSON.stringify([t.image.width, t.anchor, density, still]),
+              JSON.stringify([t.image.width, t.anchor, density, still, tempo]),
             ),
           ]),
         ).slice(0, 24);
@@ -120,6 +122,7 @@ async function build() {
         hitMask: Buffer.from(t.mask).toString('base64'),
         ...(density > 1 ? { density } : {}),
         ...(still ? { still } : {}),
+        ...(tempo ? { tempo } : {}),
       };
     }
     return key;
@@ -187,14 +190,6 @@ async function build() {
     blit(out, body, x0, y0);
     return { image: out, anchor: spec.foot as [number, number] };
   }
-  const mirrored = (img: PixelImage, anchor: [number, number]) => {
-    const m = new Pixels(img.width, img.height);
-    blit(m, img, 0, 0, true);
-    return {
-      image: m,
-      anchor: [img.width - anchor[0], anchor[1]] as [number, number],
-    };
-  };
   async function characterSprite(id: string) {
     const exists = async (f: string) =>
       fs.access(f).then(
@@ -208,18 +203,70 @@ async function build() {
         : null;
     // Without a back view the camera always sees the front, turned the way
     // the character is heading (left or right).
+    // Right-facing views are the same images flipped by the engine.
     const views: Record<
       Facing,
-      { image: PixelImage; anchor: [number, number] }
+      { image: PixelImage; anchor: [number, number]; flip: boolean }
     > = {
-      SW: front,
-      SE: mirrored(front.image, front.anchor),
-      NW: back ?? front,
-      NE: back
-        ? mirrored(back.image, back.anchor)
-        : mirrored(front.image, front.anchor),
+      SW: { ...front, flip: false },
+      SE: { ...front, flip: true },
+      NW: { ...(back ?? front), flip: false },
+      NE: { ...(back ?? front), flip: true },
     };
     return views;
+  }
+  /*
+   * Supplied animation strips: art/sprites/anim/<id>__<action>[@prop]_<SE|NE>.png,
+   * frames of 224×336 at four sprite pixels per world pixel, feet at 112,320
+   * (prepared from the owner's strips: background removed, feet pinned).
+   * SW and NW are mirrors of SE and NE.
+   */
+  async function stripFrames(id: string, key: string, facing: Facing) {
+    const view = facing === 'SE' || facing === 'SW' ? 'SE' : 'NE',
+      file = `art/sprites/anim/${id}__${key}_${view}.png`;
+    try {
+      await fs.access(file);
+    } catch {
+      return null;
+    }
+    const strip = await image(file),
+      FW = 224,
+      out: { image: PixelImage; anchor: [number, number] }[] = [];
+    for (let x = 0; x + FW <= strip.width; x += FW)
+      out.push({
+        image: outlined(crop(strip, x, 0, FW, strip.height)),
+        anchor: [112, 320],
+      });
+    // Left-facing views reuse these frames, flipped by the engine.
+    return { frames: out, flip: facing === 'SW' || facing === 'NW' };
+  }
+  /** The same two-pixel outline as the sprites and drawn characters. */
+  function outlined(img: PixelImage) {
+    const out = new Pixels(img.width, img.height),
+      solid = (x: number, y: number) =>
+        x >= 0 &&
+        y >= 0 &&
+        x < img.width &&
+        y < img.height &&
+        img.data[(y * img.width + x) * 4 + 3] > 96;
+    for (let y = 0; y < img.height; y++)
+      for (let x = 0; x < img.width; x++)
+        if (
+          !solid(x, y) &&
+          [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+            [2, 0],
+            [-2, 0],
+            [0, 2],
+            [0, -2],
+          ].some(([dx, dy]) => solid(x + dx, y + dy))
+        )
+          out.pixel(x, y, '#493C35');
+    blit(out, img);
+    return out;
   }
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
@@ -243,7 +290,8 @@ async function build() {
       shadow.ellipse(8, 4, 6, 2, [73, 60, 53, 89]);
       shadowFrame = register(shadow, [8, 4]);
     }
-    const frames: Record<string, string[]> = {};
+    const frames: Record<string, string[]> = {},
+      mirror: string[] = [];
     for (const s of c.script) {
       // On the planet the camera decides which side of a character is seen,
       // so every facing is baked (back-only characters get NE/NW only).
@@ -255,7 +303,26 @@ async function build() {
           look = s.prop ? { ...c.look, prop: s.prop } : c.look;
         if (frames[key]) continue;
         frames[key] = [];
+        const strip = await stripFrames(
+          c.id,
+          `${s.action}${s.prop ? '@' + s.prop : ''}`,
+          facing,
+        );
+        if (strip) {
+          const n = ACTIONS[s.action],
+            tempo = stripTempo(s.action);
+          if (strip.flip) mirror.push(key);
+          for (let f = 0; f < n; f++) {
+            const fr = strip.frames[Math.floor((f * strip.frames.length) / n)];
+            frames[key].push(
+              register(fr.image, fr.anchor, SPRITE_DENSITY, true, false, tempo),
+            );
+          }
+          bakedCount += n;
+          continue;
+        }
         if (sprite && !s.prop && !DRAWN_ACTIONS.has(s.action)) {
+          if (sprite[facing].flip) mirror.push(key);
           const v = sprite[facing],
             name = register(v.image, v.anchor, SPRITE_DENSITY, true, true);
           for (let f = 0; f < ACTIONS[s.action]; f++) frames[key].push(name);
@@ -310,17 +377,13 @@ async function build() {
       maxY = -Infinity;
     for (let f = 0; f < c.loop; f++) {
       const state = characterState(c, f),
-        m =
-          metas[
-            frames[
-              frameKey(
-                state.action,
-                c.script[state.stepIndex].prop,
-                state.facing,
-              )
-            ][state.index]
-          ],
-        b = m.bounds;
+        fk = frameKey(
+          state.action,
+          c.script[state.stepIndex].prop,
+          state.facing,
+        ),
+        mb = metas[frames[fk][state.index]].bounds,
+        b = mirror.includes(fk) ? { ...mb, x: -(mb.x + mb.width) } : mb;
       if (shadowFrame) {
         const p = worldFromTile(...state.tile),
           sb = metas[shadowFrame].bounds;
@@ -389,6 +452,7 @@ async function build() {
     baked.push({
       ...c,
       frames,
+      ...(mirror.length ? { mirror } : {}),
       shadowFrame,
       ...(illustration ? { illustration } : {}),
       ...(portrait ? { portrait } : {}),
@@ -568,13 +632,22 @@ async function build() {
         sourceSize: { w: im.width, h: im.height },
       };
     }
-    await png(`${out}/atlas-${i}.png`, atlas);
+    // Smooth (high-density) art compresses far better as WebP; pixel art
+    // stays lossless PNG so its palette is exact.
+    const file = `atlas-${i}.${smooth ? 'webp' : 'png'}`;
+    if (smooth)
+      await sharp(Buffer.from(atlas.data), {
+        raw: { width: atlas.width, height: atlas.height, channels: 4 },
+      })
+        .webp({ quality: 90, alphaQuality: 100, effort: 5 })
+        .toFile(`${out}/${file}`);
+    else await png(`${out}/${file}`, atlas);
     await writeJson(`${out}/atlas-${i}.json`, {
       frames,
       meta: {
         app: 'Dar al-Salam',
         version: '1.0',
-        image: `atlas-${i}.png`,
+        image: file,
         format: 'RGBA8888',
         size: { w: bin.width, h: bin.height },
         scale: '1',
@@ -699,10 +772,15 @@ async function build() {
       const frames = [];
       for (let i = 0; i < names.length; i++) {
         // One file per unique frame (sprites repeat the same still).
-        const url = `${names[i]}.png`;
+        const url = `${names[i]}.webp`;
         if (!reviewed.has(url)) {
           reviewed.add(url);
-          await png(`${out}/review/${url}`, images.get(names[i])!);
+          const im = images.get(names[i])!;
+          await sharp(Buffer.from(im.data), {
+            raw: { width: im.width, height: im.height, channels: 4 },
+          })
+            .webp({ lossless: true, effort: 4 })
+            .toFile(`${out}/review/${url}`);
         }
         frames.push(`<img src="${url}" alt="${escape(action)} frame ${i}">`);
       }

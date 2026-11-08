@@ -589,10 +589,15 @@ export class Engine {
         probe.rotation,
         c.depiction === 'back',
       );
-      const frames =
-        c.frames[frameKey(state.action, step.prop, facing)] ??
-        c.frames[frameKey(state.action, step.prop, state.facing)];
-      const name = frames[state.index % frames.length];
+      let key = frameKey(state.action, step.prop, facing);
+      if (!c.frames[key]) key = frameKey(state.action, step.prop, state.facing);
+      const frames = c.frames[key],
+        flip = Boolean(c.mirror?.includes(key));
+      // Supplied animation strips play at their own tempo on the world clock.
+      const tempo = this.metadata.get(frames[0])?.tempo,
+        name = tempo
+          ? frames[Math.floor((this.frame % (frames.length * tempo)) / tempo)]
+          : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
@@ -606,6 +611,8 @@ export class Engine {
         2e-5,
         density,
       );
+      // Left/right views share frames; the engine flips them about the feet.
+      if (p && flip) item.sprite.scale.x *= -1;
       if (p && motion) {
         // Animate the supplied still without redrawing it.
         const toward = facing === 'SE' || facing === 'NE' ? 1 : -1;
