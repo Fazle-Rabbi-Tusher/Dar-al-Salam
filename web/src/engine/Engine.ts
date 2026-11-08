@@ -236,8 +236,10 @@ export class Engine {
     await this.app.init({
       width: this.host.clientWidth,
       height: this.host.clientHeight,
-      resolution: 1,
-      autoDensity: false,
+      // Render at the screen's real pixel density (like Floor796) so phones
+      // and high-DPI displays show crisp art instead of stretched pixels.
+      resolution: Math.min(window.devicePixelRatio || 1, 3),
+      autoDensity: true,
       backgroundAlpha: 0,
       antialias: false,
       preference: 'webgl',
@@ -259,9 +261,15 @@ export class Engine {
         signal: this.abort.signal,
       }).then((r) => r.json())) as {
         frames: Record<string, FrameMeta>;
-        meta: { image: string };
+        meta: { image: string; smooth?: boolean };
       };
       const sheet = await Assets.load<Texture>(this.base + json.meta.image);
+      if (json.meta.smooth) {
+        // Detailed high-density art: smooth filtering with mipmaps.
+        sheet.source.scaleMode = 'linear';
+        sheet.source.autoGenerateMipmaps = true;
+        sheet.source.updateMipmaps();
+      }
       for (const [name, m] of Object.entries(json.frames)) {
         this.textures.set(
           name,

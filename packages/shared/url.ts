@@ -3,8 +3,8 @@ export type Camera = { x: number; y: number; zoom: number };
 export const MIN_URL_ZOOM = 0.05;
 /** Viewports whose shorter side is under this are phones (either orientation). */
 export const PHONE_WIDTH = 600;
-/** Opening zoom on phones: the planet fills the screen. */
-export const PHONE_ZOOM = 0.4;
+/** Opening zoom on phones: people are readable without zooming in. */
+export const PHONE_ZOOM = 1;
 export function parseUrl(url: string) {
   const u = new URL(url, 'http://local');
   const num = (k: string, fallback: number) => {

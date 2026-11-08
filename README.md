@@ -37,7 +37,7 @@ See [VERCEL.md](VERCEL.md). The repository-root configuration installs pinned pn
 
 ## Explore
 
-- Drag with mouse/touch to spin the planet (north stays up); use the wheel or pinch to zoom. Arrow keys spin, +/− zoom, and the globe button shows the whole planet. On phones the planet opens at 40% and zooms out to 5%. The spin keeps inertia after dragging. Zooms of at least 1× snap to integer levels when idle.
+- Drag with mouse/touch to spin the planet (north stays up); use the wheel or pinch to zoom. Arrow keys spin, +/− zoom, and the globe button shows the whole planet. On phones the world opens at 100% (people readable) and zooms out to 5%. The spin keeps inertia after dragging. Zooms of at least 1× snap to integer levels when idle.
 - Hover anyone to see what they are doing; named people (outlined in gold) open a story card when clicked.
 - Search names or aliases in any of the three languages. Select a result to fly to the character and open its draft card. Opaque sprite pixels are clickable; transparent pixels and ambient characters are not.
 - Pause/resume with the top-bar button. Reduced-motion preferences freeze the world automatically. The entire simulation repeats every 240 frames (20 seconds at 12 fps).

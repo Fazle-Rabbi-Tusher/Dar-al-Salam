@@ -469,17 +469,31 @@ async function build() {
       lift: 0,
     });
   }
-  const packer = new MaxRectsPacker<Rectangle>(2048, 2048, 2, {
-    smart: true,
-    pot: true,
-    square: false,
-    allowRotation: false,
-    border: 2,
-  });
+  // Pixel art packs into sharp (nearest-filtered) atlases; the detailed,
+  // high-density frames (sharp heads, supplied sprites) into smooth ones that
+  // the engine filters linearly with mipmaps, so they never look crunchy.
+  const newPacker = () =>
+    new MaxRectsPacker<Rectangle>(2048, 2048, 2, {
+      smart: true,
+      pot: true,
+      square: false,
+      allowRotation: false,
+      border: 2,
+    });
+  const packer = newPacker(),
+    smoothPacker = newPacker();
   for (const [id, im] of images)
-    packer.add(im.width + 2, im.height + 2, { id });
+    ((metas[id].density ?? 1) > 1 ? smoothPacker : packer).add(
+      im.width + 2,
+      im.height + 2,
+      { id },
+    );
   const atlasUrls: string[] = [];
-  for (const [i, bin] of packer.bins.entries()) {
+  const bins = [
+    ...packer.bins.map((bin) => ({ bin, smooth: false })),
+    ...smoothPacker.bins.map((bin) => ({ bin, smooth: true })),
+  ];
+  for (const [i, { bin, smooth }] of bins.entries()) {
     const atlas = new Pixels(bin.width, bin.height),
       frames: Record<
         string,
@@ -527,6 +541,7 @@ async function build() {
         format: 'RGBA8888',
         size: { w: bin.width, h: bin.height },
         scale: '1',
+        smooth,
       },
     });
     atlasUrls.push(`atlas-${i}.json`);
@@ -667,7 +682,12 @@ async function build() {
   let bytes = 0;
   for (const f of outputFiles) bytes += (await fs.stat(f)).size;
   console.log(
-    `${prod ? 'Production' : 'Development'} assets: ${baked.length} characters, ${bakedCount} frames baked → ${images.size} unique; ${packer.bins.length} atlas(es) ${packer.bins.map((b) => `${b.width}×${b.height}`).join(', ')}; ${(bytes / 1024 / 1024).toFixed(2)} MB; ${warnings.length} warnings.\nReview: public-build/review/characters.html`,
+    `${prod ? 'Production' : 'Development'} assets: ${baked.length} characters, ${bakedCount} frames baked → ${images.size} unique; ${bins.length} atlas(es) ${bins
+      .map(({ bin: b }) => b)
+      .map((b) => `${b.width}×${b.height}`)
+      .join(
+        ', ',
+      )}; ${(bytes / 1024 / 1024).toFixed(2)} MB; ${warnings.length} warnings.\nReview: public-build/review/characters.html`,
   );
   for (const w of warnings) console.warn(w);
 }
