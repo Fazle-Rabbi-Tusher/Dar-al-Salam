@@ -76,3 +76,27 @@ export function motionFor(action: Action, frame: number): Motion {
     };
   return { ...STILL, sy: 1 + breath * 0.012 };
 }
+
+/**
+ * Animation speed for supplied frame strips, in world ticks (12 fps) per
+ * frame. Short steps (a 12-tick kick) play their four frames exactly once.
+ */
+export function stripTempo(action: Action): number {
+  switch (action) {
+    case 'walk':
+      return 2;
+    case 'sujood':
+      return 12;
+    case 'idle':
+    case 'sit':
+      return 6;
+    case 'speech':
+    case 'pour':
+    case 'belt-pose':
+    case 'hand-on-heart':
+    case 'cross-arms':
+      return 4;
+    default:
+      return 3;
+  }
+}

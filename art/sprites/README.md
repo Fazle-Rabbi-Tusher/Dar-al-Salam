@@ -2,6 +2,10 @@
 
 Each named character's look in the world comes from `art/sprites/<character id>.png`: a full-body **isometric** sprite, three-quarter view **facing down-left (SW)**, on a flat dark background (cut out automatically) or transparent. The build mirrors it for the right-facing views and the engine animates it (breathing, walking bob, hops, lunges) without redrawing it (DECISIONS.md, decision 47). Seated, kneeling, prayer and prop-in-hand moments still use the drawn character.
 
+## Animation strips
+
+`art/sprites/anim/<id>__<action>[@prop]_<SE|NE>.png`: one row of 224×336 frames per action and view, prepared from the owner's strips (DECISIONS.md, decision 48). The prompts are in `docs/animation-prompts.md`. Left-facing views are flipped by the engine. Seated, prostrating, riding and prop moments with a strip play the strip; anything without a strip falls back to the still sprite or the drawn character.
+
 ## Back views (optional, recommended)
 
 Add `art/sprites/<character id>-back.png` to show the back when the camera sees someone walking away. Prompt (attach the front sprite):
