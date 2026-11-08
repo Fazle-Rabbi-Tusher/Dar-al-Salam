@@ -1527,18 +1527,18 @@ export function modernQuarter() {
   obj('m-brownstone', 16.6, 71.6);
   obj('m-water-tower', 19.6, 66.6);
   obj('m-hydrant', 7, 66.4);
-  obj('m-street-lamp', 10.6, 66.4);
-  // Block B: City Hall and its plaza.
+  obj('m-city-lamp', 10.6, 66.4);
+  // Block B: City Hall and its plaza, framed by cherry trees.
   obj('m-city-hall', 27, 66.2);
-  obj('m-tree', 25, 72.4);
-  obj('m-tree', 37.6, 72.4);
+  obj('m-street-cherry', 25, 72.4);
+  obj('m-street-cherry', 37.6, 72.4);
   obj('m-bench', 29, 73.6);
   obj('m-bench', 34, 73.6);
-  obj('m-street-lamp', 25.2, 67);
-  obj('m-street-lamp', 38, 67);
-  // Block C: glass towers and a newsstand.
+  obj('m-city-lamp', 25.2, 67);
+  obj('m-city-lamp', 38, 67);
+  // Block C: downtown. A glass tower, a taller one and the broadcast tower
+  // (scenes/city.ts), with a newsstand.
   obj('m-skyscraper-glass', 43, 66.2);
-  obj('m-skyscraper-glass', 49.6, 66.6);
   obj('m-newsstand', 45, 73.2);
   obj('m-bike-rack', 50.4, 73.4);
   // Block D: a corner bodega and more brownstones.
@@ -1546,9 +1546,9 @@ export function modernQuarter() {
   obj('m-brownstone', 11, 78.4);
   obj('m-brownstone', 16.4, 78.4);
   obj('m-tree', 8, 86.6);
-  obj('m-street-lamp', 14, 86.8);
+  obj('m-city-lamp', 14, 86.8);
   obj('m-hydrant', 19.8, 87);
-  // Block E: a small park with a halal cart on the corner.
+  // Block E: a small park of cherry trees with a halal cart on the corner.
   for (const [x, y] of [
     [25, 79],
     [31, 80],
@@ -1556,16 +1556,15 @@ export function modernQuarter() {
     [26.2, 86.4],
     [34.8, 86.8],
   ])
-    obj('m-tree', x, y);
+    obj('m-street-cherry', x, y);
   obj('m-bench', 28, 82.6);
   obj('m-bench', 33, 84.6);
   obj('m-planter-box', 29.6, 87.4);
   obj('m-halal-cart', 36.6, 78.6);
-  // Block F: subway entrance, a glass tower and a bus stop.
+  // Block F: subway entrance, a slim tower (scenes/city.ts) and a bus stop.
   obj('m-subway-entrance', 43.4, 79);
-  obj('m-skyscraper-glass', 49.4, 79.2);
   obj('m-bus-shelter', 43, 86.6);
-  obj('m-street-lamp', 47, 87.2);
+  obj('m-city-lamp', 47, 87.2);
   // Parked yellow taxis on the inner lanes (the scooter loop uses the outer ones).
   for (const [x, y] of [
     [8, 64],

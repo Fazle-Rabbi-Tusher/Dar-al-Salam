@@ -2927,7 +2927,8 @@ function windowsSide(
 /** A setback tier of the art-deco tower: limestone box with piers and windows. */
 function decoTier(c: IsoCanvas, o: number, size: number, z: number, h: number) {
   c.box(o, o, size, size, h, NM.limestone, z);
-  windowsFront(
+  // Evening: whole floors lit warm or cool, the rest dark glass.
+  nightWindowsFront(
     c,
     o + 0.08,
     o + size - 0.05,
@@ -2938,8 +2939,9 @@ function decoTier(c: IsoCanvas, o: number, size: number, z: number, h: number) {
     6,
     0.1,
     4,
+    z,
   );
-  windowsSide(
+  nightWindowsSide(
     c,
     o + size + 0.002,
     o + 0.08,
@@ -2950,6 +2952,7 @@ function decoTier(c: IsoCanvas, o: number, size: number, z: number, h: number) {
     6,
     0.1,
     4,
+    z,
   );
   // Piers between window columns catch the light; spandrels sit in shade.
   for (let u = o + 0.2; u < o + size - 0.1; u += 0.22) {
@@ -3041,16 +3044,17 @@ const nyc: Record<string, Spec> = {
     h: 292,
     draw(c) {
       c.box(0, 0, 3, 3, 34, NM.limestone);
-      // Ground-floor lobby glass and doors.
-      c.faceX(0.3, 3.002, 2.4, 2, 20, C.glassDark);
-      c.faceY(3.002, 0.3, 2.4, 2, 20, C.glassDeep);
+      // Ground-floor lobby, lit warm behind the glass.
+      c.faceX(0.3, 3.002, 2.4, 2, 20, CN.warm);
+      c.faceX(0.3, 3.002, 2.4, 16, 4, CN.amber);
+      c.faceY(3.002, 0.3, 2.4, 2, 20, CN.warmSide);
       for (let u = 0.45; u < 2.7; u += 0.45) {
         c.faceX(u, 3.003, 0.06, 2, 20, C.limestoneLight);
         c.faceY(3.003, u, 0.06, 2, 20, C.limestone);
       }
       c.faceX(0.3, 3.003, 2.4, 14, 1, C.limestoneLight);
       c.faceY(3.003, 0.3, 2.4, 14, 1, C.limestone);
-      c.edge([0.35, 3.004, 4], [0.7, 3.004, 18], C.glassLight);
+      c.edge([0.35, 3.004, 4], [0.7, 3.004, 18], C.lamp);
       c.faceX(0, 3.003, 3, 26, 3, C.gold);
       decoTier(c, 0.25, 2.5, 34, 104);
       decoTier(c, 0.55, 1.9, 138, 58);
@@ -3069,8 +3073,7 @@ const nyc: Record<string, Spec> = {
       const [mx, my] = c.at(1.5, 1.5, 268);
       c.p.rect(mx - 1, my - 22, 2, 22, C.silver);
       c.p.rect(mx, my - 22, 1, 22, C.steelDark);
-      c.p.pixel(mx, my - 24, C.white);
-      c.p.pixel(mx, my - 23, C.silver);
+      aircraftLight(c, 1.5, 1.5, 292);
     },
   },
   'm-skyscraper-glass': {
@@ -3129,7 +3132,8 @@ const nyc: Record<string, Spec> = {
         // Two sash windows per floor with lintels, sills and curtains.
         for (const z of [34, 56, 74])
           for (const dx of [0.15, 0.75]) {
-            const warm = k === 1 && z === 56;
+            // Evening: about half the rooms are lit.
+            const warm = cityHash(k * 2 + (dx > 0.5 ? 1 : 0), z, 3) < 0.5;
             sashFront(c, x + dx + 0.03, 1.502, 0.26, z + 1, 9, {
               frame: C.limestoneLight,
               glass: warm ? C.windowLit : C.glassDark,
@@ -3146,6 +3150,13 @@ const nyc: Record<string, Spec> = {
               C.limestoneLight,
             );
           }
+        // A window air-conditioner on an upper floor.
+        const acX = x + (k % 2 ? 0.18 : 0.78),
+          acZ = k === 1 ? 74 : 56;
+        c.box(acX, 1.5, 0.22, 0.12, 5, M.steel, acZ + 1);
+        c.faceX(acX + 0.02, 1.621, 0.18, acZ + 2, 3, C.steelDark);
+        for (let g = 0; g < 3; g++)
+          c.faceX(acX + 0.04 + g * 0.05, 1.622, 0.02, acZ + 2, 3, C.steel);
         // A window box of flowers on the parlour floor.
         c.box(x + 0.7, 1.5, 0.42, 0.1, 3, NM.brownstone, 31);
         for (let i = 0; i < 6; i++) {
@@ -3184,7 +3195,7 @@ const nyc: Record<string, Spec> = {
           post(c, rx, 1.98, 4, 8, C.ink);
         }
         // Garden-level window with bars, and a bin by the railings.
-        c.faceX(x + 0.72, 1.502, 0.36, 4, 9, C.glassDeep);
+        c.faceX(x + 0.72, 1.502, 0.36, 4, 9, k === 2 ? CN.amber : C.glassDeep);
         for (let i = 1; i < 4; i++)
           c.edge(
             [x + 0.72 + i * 0.09, 1.503, 4],
@@ -3203,13 +3214,18 @@ const nyc: Record<string, Spec> = {
     footprint: [3, 1],
     h: 72,
     draw(c) {
+      // Warm light from the shop spills onto the pavement.
+      lightPool(c, 1.2, 1.05, 40, 8, 0.6);
       c.box(0, 0, 3, 0.8, 62, NM.brick);
       // Plain colour sign band above the awning (no text).
       c.faceX(0.1, 0.802, 2.8, 40, 7, C.yellow);
       c.faceX(0.1, 0.803, 2.8, 40, 1, C.yellowDark);
       windowsFront(c, 0.3, 2.8, 0.802, 50, 60, 0.6, 12, 0.3, 8);
-      // Shopfront glass with shelves of goods behind.
-      c.faceX(0.15, 0.802, 2.0, 4, 26, C.glassDark);
+      // Shopfront glass, lit warm, with shelves of goods behind.
+      c.faceX(0.15, 0.802, 2.0, 4, 26, CN.hot);
+      c.faceX(0.15, 0.802, 2.0, 24, 6, CN.amber);
+      for (const z of [7, 14, 21])
+        c.faceX(0.18, 0.8025, 1.94, z, 1, C.woodDark);
       for (let k = 0; k < 14; k++)
         c.faceX(
           0.2 + k * 0.14,
@@ -3220,7 +3236,7 @@ const nyc: Record<string, Spec> = {
           accents[k % accents.length],
         );
       c.faceX(2.3, 0.802, 0.5, 4, 26, C.greenDark);
-      c.faceX(2.35, 0.803, 0.4, 6, 18, C.glassLight);
+      c.faceX(2.35, 0.803, 0.4, 6, 18, CN.warm);
       c.faceX(2.45, 0.804, 0.2, 4, 4, C.ink);
       // Striped awning projecting over the pavement.
       for (let i = 0; i < 10; i++) {
@@ -3340,10 +3356,18 @@ const nyc: Record<string, Spec> = {
         c.faceX(x, 2.502, 1.3, 46, 2, C.silver);
         c.faceX(x, 2.502, 1.3, 48, 4, C.white);
       }
+      // A few offices still lit in the evening.
+      const litPane: Sash = {
+        ...pane,
+        glass: C.windowLit,
+        shade: C.yellowDark,
+        glint: undefined,
+      };
       for (const x of [0.15, 4.85])
         for (const z of [12, 32])
           for (const dx of [0, 0.5]) {
-            sashFront(c, x + dx, 2.503, 0.3, z, 12, pane);
+            const on = x > 1 !== (z === 12) ? dx === 0 : dx > 0;
+            sashFront(c, x + dx, 2.503, 0.3, z, 12, on ? litPane : pane);
             const [ax, ay] = c.at(x + dx + 0.15, 2.504, z + 13);
             c.p.ellipse(ax + 2, ay, 3, 2.5, C.pale);
             c.p.ellipse(ax + 2, ay, 2, 1.5, C.glassDark);
@@ -3372,7 +3396,7 @@ const nyc: Record<string, Spec> = {
       for (let k = 0; k < 3; k++) {
         c.faceX(2.38 + k * 0.45, 2.503, 0.36, 6, 22, C.woodDark);
         c.faceX(2.42 + k * 0.45, 2.504, 0.12, 8, 18, C.wood);
-        c.faceX(2.38 + k * 0.45, 2.504, 0.36, 28, 6, C.glassDark);
+        c.faceX(2.38 + k * 0.45, 2.504, 0.36, 28, 6, CN.warm);
       }
       c.box(1.6, 2.4, 2.8, 0.3, 7, M.white, 44);
       c.faceX(1.6, 2.701, 2.8, 47, 2, C.pale);
@@ -3432,8 +3456,8 @@ const nyc: Record<string, Spec> = {
       for (let k = 0; k < 5; k++) {
         const [wx, wy] = c.at(2.7 + k * 0.14, 1.5 + 0.5, 70);
         c.p.rect(wx - 1, wy - 13, 3, 12, C.pale);
-        c.p.rect(wx - 1, wy - 12, 2, 10, C.glassDark);
-        c.p.pixel(wx - 1, wy - 11, C.glassLight);
+        c.p.rect(wx - 1, wy - 12, 2, 10, C.windowLit);
+        c.p.pixel(wx - 1, wy - 11, C.lamp);
       }
       c.cylinder(3.0, 1.5, 86, 9, 10, R.white);
       const [dx, dy] = c.at(3.0, 1.5, 96);
@@ -5004,6 +5028,54 @@ function rockShade(
   if (d2 - d1 < 1.3) v -= 0.75;
   return tone(t, v, [0.62, 0.3, 0.0, -0.3, -0.62]);
 }
+/**
+ * Cliff stone: big angular rock masses laid in rough strata along the face
+ * (so they follow the isometric slope). Each mass is lit toward its top
+ * left, with a dark crack around it. `face` 1 is a lit front (constant y),
+ * 2 a shaded side (constant x). `lift` brightens or darkens.
+ */
+function cliffShade(
+  px: number,
+  py: number,
+  face: 1 | 2,
+  seed: number,
+  lift = 0,
+  t: Tones = ROCK,
+) {
+  const r = face === 1 ? py - px * 0.5 : py + px * 0.5,
+    CW = 15,
+    CH = 9,
+    gx = Math.floor(px / CW),
+    gy = Math.floor(r / CH);
+  let d1 = 1e9,
+    d2 = 1e9,
+    bx = 0,
+    by = 0,
+    id = 0;
+  for (let j = -1; j <= 1; j++)
+    for (let i = -1; i <= 1; i++) {
+      const cx = (gx + i + 0.1 + nhash(gx + i, gy + j, seed) * 0.8) * CW,
+        cy = (gy + j + 0.3 + nhash(gx + i, gy + j, seed + 1) * 0.4) * CH,
+        d = Math.hypot((px - cx) / CW, ((r - cy) / CH) * 1.1);
+      if (d < d1) {
+        d2 = d1;
+        d1 = d;
+        bx = cx;
+        by = cy;
+        id = (gx + i) * 31 + gy + j;
+      } else if (d < d2) d2 = d;
+    }
+  const local = -(((px - bx) / CW) * 0.5 + ((r - by) / CH) * 0.9);
+  let v =
+    (face === 1 ? 0.1 : -0.38) +
+    lift +
+    local * 0.45 +
+    (nhash(id, 0, seed + 2) - 0.5) * 0.3 +
+    (nhash(px, py, seed + 3) - 0.5) * 0.1;
+  if (d2 - d1 < 0.09) v -= 0.75;
+  else if (d2 - d1 < 0.16 && local > 0) v += 0.25;
+  return tone(t, v, [0.62, 0.3, 0.0, -0.3, -0.62]);
+}
 /** Fill pixels of marker colour `m` with `shade(x, y)`. */
 function recolour(c: IsoCanvas, m: string, shade: (x: number, y: number) => string) {
   const { p } = c,
@@ -5048,31 +5120,6 @@ function boulder(
       let col = tone(t, v, [0.6, 0.3, 0.0, -0.32, -0.62]);
       if (moss && dy < -0.25 && nhash(px, py, seed + 5) < 0.75 - dy * 0.2)
         col = tone(MOSS, v + 0.2, [0.55, 0.05]);
-      c.p.pixel(px, py, col);
-    }
-}
-/** Sea water in a screen-space ellipse with foam crests (frame shifts them). */
-function seaPatch(
-  c: IsoCanvas,
-  cx: number,
-  cy: number,
-  rx: number,
-  ry: number,
-  f: number,
-  seed: number,
-) {
-  for (let py = Math.floor(cy - ry); py <= cy + ry; py++)
-    for (let px = Math.floor(cx - rx); px <= cx + rx; px++) {
-      const dx = (px + 0.5 - cx) / rx,
-        dy = (py + 0.5 - cy) / ry,
-        d = Math.hypot(dx, dy);
-      const edge = 1 - (nhash(px, py, seed) * 0.12);
-      if (d > edge) continue;
-      const wave = Math.sin(px * 0.45 + py * 1.3 + f * Math.PI) * 0.5 + 0.5;
-      let v = 0.15 - dy * 0.35 + (wave - 0.5) * 0.35 - d * 0.25;
-      let col = tone(SEA, v, [0.62, 0.32, 0.05, -0.2, -0.45]);
-      if (wave > 0.86 && nhash(px >> 1, py, seed + f) < 0.55) col = SEA[0];
-      if (d > edge - 0.12 && nhash(px, py, seed + 9 + f) < 0.6) col = SEA[0];
       c.p.pixel(px, py, col);
     }
 }
@@ -5190,55 +5237,92 @@ const nature: Record<string, Spec> = {
     },
   },
   'm-palm': {
-    // Coconut palm: ringed, curving trunk and drooping fronds.
+    // Coconut palm: a ringed trunk curving toward the light under a crown of
+    // arching, drooping fronds fringed with leaflets.
     footprint: [1, 1],
-    h: 106,
-    pad: 36,
+    h: 104,
+    pad: 40,
     detail: { grain: 0 },
     draw(c) {
       const [x, y] = c.at(0.5, 0.5, 0);
-      const top: [number, number] = [x + 10, y - 82],
-        ctrl: [number, number] = [x - 6, y - 40],
-        palmBark = [NC.palm0, NC.palm1, NC.palm2] as const;
-      for (let j = 0; j <= 84; j++) {
-        const s = j / 84,
-          bx = (1 - s) * (1 - s) * x + 2 * (1 - s) * s * ctrl[0] + s * s * top[0],
-          by = (1 - s) * (1 - s) * y + 2 * (1 - s) * s * ctrl[1] + s * s * top[1],
-          half = 3.6 - s * 1.4,
-          ring = Math.floor(j / 3.5) % 2;
+      tufts(c, x, y + 1, 12, 95);
+      const top: [number, number] = [x + 9, y - 80],
+        ctrl: [number, number] = [x - 7, y - 38],
+        palmBark = [NC.palm0, NC.palm1, NC.palm2, NC.bark2] as const;
+      for (let j = 0; j <= 82; j++) {
+        const s = j / 82,
+          bx =
+            (1 - s) * (1 - s) * x + 2 * (1 - s) * s * ctrl[0] + s * s * top[0],
+          by =
+            (1 - s) * (1 - s) * y + 2 * (1 - s) * s * ctrl[1] + s * s * top[1],
+          half = 3.9 - s * 1.7 + (j < 4 ? (4 - j) * 0.6 : 0),
+          ring = j % 4 === 0 ? 1 : 0;
         for (let i = Math.floor(bx - half); i <= bx + half; i++) {
           const u = (i + 0.5 - bx) / half;
-          c.p.pixel(i, by, palmBark[u < -0.3 ? 0 : u > 0.45 ? 2 : ring ? 1 : 0]);
+          c.p.pixel(i, by, palmBark[(u < -0.35 ? 0 : u > 0.4 ? 2 : 1) + ring]);
         }
       }
-      const fronds = [-172, -146, -122, -100, -78, -54, -30, -8];
-      for (const [k, deg] of fronds.entries()) {
+      // Fronds pointing away are drawn first and a shade darker.
+      const fronds = [
+        -160, -115, -70, -25, 15, 60, 110, 155,
+      ].sort((a, b) => Math.sin((a * Math.PI) / 180) - Math.sin((b * Math.PI) / 180));
+      const frond = (deg: number, k: number) => {
         const a = (deg * Math.PI) / 180,
-          L = 30 + nhash(k, 90) * 6,
-          droop = 16 + nhash(k, 91) * 6;
-        for (let i = 0; i <= 30; i++) {
-          const s = i / 30,
-            fx = top[0] + Math.cos(a) * L * s,
-            fy = top[1] + Math.sin(a) * L * s * 0.55 + droop * s * s,
-            lit = Math.cos(a) < 0;
-          c.p.pixel(fx, fy, FOLIAGE[lit ? 2 : 3]);
-          c.p.pixel(fx, fy + 1, FOLIAGE[4]);
-          if (i % 2 === 0 && s > 0.12) {
-            const len = 6 * (1 - s * 0.55);
-            for (let q = 1; q <= len; q++) {
-              c.p.pixel(fx - q * 0.35, fy + q * 0.9, FOLIAGE[lit ? 1 : 3]);
-              c.p.pixel(fx + q * 0.35, fy + q * 0.9, FOLIAGE[lit ? 2 : 4]);
-            }
+          away = Math.sin(a) < 0,
+          L = (away ? 27 : 33) + nhash(k, 90) * 6,
+          pts: [number, number][] = [];
+        for (let i = 0; i <= 40; i++) {
+          const s = i / 40;
+          pts.push([
+            top[0] + Math.cos(a) * L * s,
+            top[1] + Math.sin(a) * L * s * 0.5 - 10 * s + 25 * s * s,
+          ]);
+        }
+        // A tapered blade: lit above the midrib, shaded below, with a
+        // serrated lower edge of leaflet tips.
+        const d = away ? 1 : 0;
+        for (let i = 1; i < pts.length; i++) {
+          const s = i / 40,
+            [fx, fy] = pts[i],
+            tx = fx - pts[i - 1][0],
+            ty = fy - pts[i - 1][1],
+            tl = Math.hypot(tx, ty) || 1;
+          let nx = -ty / tl,
+            ny = tx / tl;
+          if (ny < 0) {
+            nx = -nx;
+            ny = -ny;
+          }
+          const w =
+              1.2 + 5 * Math.sin(Math.PI * (0.12 + 0.85 * s)) * (1 - 0.4 * s),
+            tip = w < 2 ? 0 : i % 3 === 0 ? 1.6 : i % 3 === 1 ? 0.6 : 0,
+            edge = w * 0.65 + tip;
+          for (let q = -w * 0.35; q <= edge; q += 0.5) {
+            // The lowest pixel is a dark edge, so overlapping fronds part.
+            const t =
+              q < -0.6 ? 1 : q < 0.6 ? 2 : q < w * 0.45 ? 3 : q > edge - 0.5 ? 5 : 4;
+            c.p.pixel(fx + nx * q, fy + ny * q, FOLIAGE[Math.min(5, t + d)]);
           }
         }
-      }
-      for (const [dx, dy] of [
-        [-2, 4],
-        [2, 5],
-        [5, 3],
-      ]) {
-        c.p.ellipse(top[0] + dx, top[1] + dy, 2.2, 2.2, NC.coconut);
-        c.p.pixel(top[0] + dx - 1, top[1] + dy - 1, NC.palm0);
+      };
+      const coconuts = () => {
+        for (const [dx, dy] of [
+          [-3, 4],
+          [2, 5],
+          [5, 2],
+          [-1, 1],
+        ]) {
+          c.p.ellipse(top[0] + dx, top[1] + dy, 2.3, 2.3, NC.coconut);
+          c.p.pixel(top[0] + dx - 1, top[1] + dy - 1, NC.palm1);
+        }
+      };
+      let nuts = false;
+      for (const [k, deg] of fronds.entries()) {
+        if (!nuts && Math.sin((deg * Math.PI) / 180) >= 0) {
+          coconuts();
+          nuts = true;
+        }
+        frond(deg, k);
       }
     },
   },
@@ -5332,7 +5416,8 @@ const nature: Record<string, Spec> = {
     },
   },
   'm-waterfall': {
-    // A mossy cliff with a waterfall falling into a misty, foaming pool.
+    // A mossy outcrop of stepped blue-grey rock. A stream crosses the top,
+    // spills from a notch as a bright waterfall and churns a misty pool.
     footprint: [5, 4],
     h: 156,
     pad: 22,
@@ -5340,149 +5425,329 @@ const nature: Record<string, Spec> = {
     period: 12,
     detail: { grain: 0 },
     draw(c, f) {
-      const FY = 2.3,
-        ridge = (x: number) =>
-          118 + Math.sin(x * 1.7 + 0.5) * 9 + (nhash(Math.round(x * 3), 7) - 0.5) * 10,
-        back = (x: number) => ridge(x) + 16 + Math.sin(x * 2.3) * 5;
-      // Silhouette with marker colours: top, front, side.
-      const MT = '#010203',
-        MF = '#010204',
-        MS = '#010205';
-      const xs: number[] = [];
-      for (let x = 0; x <= 5.0001; x += 0.25) xs.push(Math.min(5, x));
-      c.poly(
-        [
-          ...xs.map((x) => [x, FY, ridge(x)] as P3),
-          ...[...xs].reverse().map((x) => [x, 0, back(x)] as P3),
-        ],
-        MT,
-      );
-      c.poly(
-        [
-          [0, FY, 0],
-          [5, FY, 0],
-          ...[...xs].reverse().map((x) => [x, FY, ridge(x)] as P3),
-        ],
-        MF,
-      );
-      const ys: number[] = [];
-      for (let y = 0; y <= FY + 0.0001; y += 0.23) ys.push(Math.min(FY, y));
-      c.poly(
-        [
-          [5, FY, 0],
-          [5, 0, 0],
-          ...ys.map((y) => [5, y, ridge(5) + ((FY - y) / FY) * (back(5) - ridge(5))] as P3),
-        ],
-        MS,
-      );
-      const ridgeY = new Map<number, number>();
-      for (let x = 0; x <= 5; x += 1 / 16) {
-        const [px, py] = c.at(x, FY, ridge(x));
-        ridgeY.set(Math.round(px), py);
-      }
-      recolour(c, MT, (px, py) => {
-        const v = nhash(px >> 1, py >> 1, 5);
-        return v < 0.7 ? tone(MOSS, 0.4 - (v - 0.35), [0.55, 0.1]) : rockShade(px, py, 0, 3);
-      });
-      recolour(c, MF, (px, py) => {
-        const top = ridgeY.get(px) ?? py,
-          below = py - top;
-        if (below < 10 && nhash(px, py, 6) < 0.85 - below * 0.07)
-          return tone(MOSS, 0.2 - below * 0.04, [0.55, 0.05]);
-        return rockShade(px, py, 1, 3, 10);
-      });
-      recolour(c, MS, (px, py) => rockShade(px, py, 2, 4, 10));
-      // Ferns and bushes along the ridge, two small trees behind.
-      canopy(c, 101, ...c.at(0.7, 0.5, back(0.7) + 14), 13, 12, PINE, 12, 4, 6);
-      canopy(c, 102, ...c.at(4.4, 0.4, back(4.4) + 16), 14, 13, FOLIAGE, 12, 4.5, 6.5);
-      for (const x of [0.4, 1.3, 3.5, 4.3]) {
-        const [px, py] = c.at(x, FY, ridge(x));
-        canopy(c, 110 + Math.round(x * 10), px, py - 2, 9, 5, FOLIAGE, 8, 3, 4.5);
-        // Fronds hanging over the edge.
-        for (let i = 0; i < 4; i++)
-          branch(c, px - 6 + i * 4, py + 1, px - 7 + i * 4, py + 7 + (i % 2) * 3, 0.6, [FOLIAGE[2], FOLIAGE[2], FOLIAGE[3], FOLIAGE[3]]);
-      }
-      // The pool in front of the cliff.
-      const PZ = 3,
-        impact = c.at(2.5, FY + 0.35, PZ);
-      const MW = '#010206';
-      c.poly(
-        [
-          [0.5, FY, PZ],
-          [4.6, FY, PZ],
-          [4.7, 3.85, PZ],
-          [0.45, 3.85, PZ],
-        ],
-        MW,
-      );
-      recolour(c, MW, (px, py) => {
-        const dx = px - impact[0],
-          dy = (py - impact[1]) * 2,
-          rr = Math.hypot(dx, dy);
-        if (rr < 12 && nhash(px, py, 20 + f) < 0.75 - rr * 0.04) return FALL[0];
-        const ring = (((rr - f * 2.5) % 10) + 10) % 10;
-        let v = 0.05 - rr * 0.012 + (py - impact[1]) * 0.01;
-        if (ring < 1.4) v += 0.45;
-        return tone(FALL, v, [0.75, 0.45, 0.2, -0.05, -0.3, -0.6]);
-      });
-      // The falling water: bright streaks that flow down; edges thinner, darker.
-      for (let px = Math.ceil(c.at(1.95, FY, 0)[0]); px <= c.at(3.05, FY, 0)[0]; px++) {
-        const x = (px - c.at(0, FY, 0)[0]) / 16,
-          u = (x - 1.95) / 1.1,
-          col = Math.floor(u * 9),
-          off = nhash(col, 31) * 22,
-          zTop = ridge(x) + 2;
-        for (let z = PZ; z <= zTop; z++) {
-          const py = c.at(x, FY, z)[1] + 1,
-            phase = (((z + f * 5.5 + off) % 22) + 22) % 22 / 22;
-          let v = 0.35 - Math.abs(u - 0.5) * 1.1 + (phase < 0.4 ? 0.35 : phase < 0.55 ? 0.1 : -0.15);
-          if (zTop - z < 4) v += 0.5;
-          if (z < PZ + 14 && nhash(px, py, 40 + f) < 0.6 - (z - PZ) * 0.04) v = 1;
-          c.p.pixel(px, py, tone(FALL, v, [0.72, 0.42, 0.15, -0.1, -0.35, -0.6]));
+      const { p } = c,
+        W = p.width,
+        H = Math.floor(p.data.length / (4 * W)),
+        [ax, ay] = c.at(0, 0, 0);
+      /*
+       * The rock is a height map of quarter-tile columns drawn into a small
+       * scene buffer (what each pixel shows, how near it is, and where on
+       * that surface it lies), then painted in one pass.
+       */
+      const TOP = 0,
+        FRONT = 1,
+        SIDE = 2,
+        STREAM = 3,
+        FALLING = 4,
+        POOL = 5;
+      const kind = new Int8Array(W * H).fill(-1),
+        near = new Float32Array(W * H).fill(-1e9),
+        ua = new Float32Array(W * H),
+        ub = new Float32Array(W * H),
+        uc = new Float32Array(W * H);
+      const put = (
+        px: number,
+        py: number,
+        k: number,
+        d: number,
+        a: number,
+        b: number,
+        e = 0,
+      ) => {
+        px = Math.floor(px);
+        py = Math.floor(py);
+        if (px < 0 || py < 0 || px >= W || py >= H) return;
+        const i = py * W + px;
+        if (d < near[i]) return;
+        near[i] = d;
+        kind[i] = k;
+        ua[i] = a;
+        ub[i] = b;
+        uc[i] = e;
+      };
+      const G = 0.25,
+        NX = 20,
+        NY = 16,
+        stream = (i: number) => i >= 8 && i <= 11,
+        hill = (x: number) =>
+          Math.max(0, 1 - Math.abs(x - 2.5) / 2.6) ** 0.7;
+      // Where the cliff face stands (tile y), per column: rounded, with the
+      // stream's notch set back between two jutting buttresses.
+      const frontY = (i: number) => {
+        if (stream(i)) return 2;
+        const x = (i + 0.5) * G,
+          r = Math.sqrt(Math.max(0, 1 - ((x - 2.5) / 2.65) ** 2)),
+          v =
+            Math.round(
+              (1.2 + 1.05 * r + (nhash(i >> 1, 0, 140) - 0.5) * 0.3) / G,
+            ) * G;
+        return i >= 6 && i <= 13 ? Math.max(2.25, v) : v;
+      };
+      const rockH = (i: number, j: number) => {
+        const x = (i + 0.5) * G,
+          y = (j + 0.5) * G,
+          v =
+            22 +
+            84 * hill(x) +
+            (frontY(i) - y) * 9 +
+            (nhash(i >> 1, j >> 1, 141) - 0.5) * 16;
+        return Math.max(8, Math.round(v / 6) * 6);
+      };
+      // The stream bed steps down toward the edge in little cascades.
+      const bed: number[] = [];
+      for (let j = 0; j < 8; j++)
+        bed.push(
+          Math.min(
+            j ? bed[j - 1] : 1e9,
+            Math.round((Math.min(rockH(7, j), rockH(12, j)) - 8) / 4) * 4,
+          ),
+        );
+      const cellH = (i: number, j: number) =>
+        stream(i) ? bed[j] : rockH(i, j);
+      for (let j = 0; j < NY; j++)
+        for (let i = 0; i < NX; i++) {
+          if ((j + 0.5) * G >= frontY(i)) continue;
+          const h = cellH(i, j),
+            water = stream(i),
+            x0 = i * G,
+            x1 = x0 + G,
+            y0 = j * G,
+            y1 = y0 + G;
+          // Front face (constant y, facing the light).
+          for (
+            let px = Math.ceil(ax + (x0 - y1) * 16 - 0.5);
+            px + 0.5 < ax + (x1 - y1) * 16;
+            px++
+          ) {
+            const x = (px + 0.5 - ax) / 16 + y1,
+              py0 = ay + (x + y1) * 8;
+            for (let z = 0; z < h; z++)
+              if (water) put(px, py0 - z, FALLING, x + y1, x - 2, z, h);
+              else put(px, py0 - z, FRONT, x + y1, h - z, h);
+          }
+          // Side face (constant x, in shade).
+          for (
+            let px = Math.ceil(ax + (x1 - y1) * 16 - 0.5);
+            px + 0.5 < ax + (x1 - y0) * 16;
+            px++
+          ) {
+            const y = x1 - (px + 0.5 - ax) / 16,
+              py0 = ay + (x1 + y) * 8;
+            for (let z = 0; z < h; z++)
+              if (water) put(px, py0 - z, FALLING, x1 + y, 1, z, h);
+              else put(px, py0 - z, SIDE, x1 + y, h - z, h);
+          }
+          // Top.
+          for (
+            let py = Math.floor(ay + (x0 + y0) * 8 - h);
+            py <= ay + (x1 + y1) * 8 - h;
+            py++
+          )
+            for (
+              let px = Math.floor(ax + (x0 - y1) * 16);
+              px <= ax + (x1 - y0) * 16;
+              px++
+            ) {
+              const X = (px + 0.5 - ax) / 16,
+                S = (py + 0.5 - ay + h) / 8,
+                x = (S + X) / 2,
+                y = (S - X) / 2;
+              if (x >= x0 && x < x1 && y >= y0 && y < y1)
+                put(px, py, water ? STREAM : TOP, x + y, x, y, h);
+            }
         }
-      }
-      // Thin trickles elsewhere on the face.
-      for (const tx of [0.9, 4.1]) {
-        const [px] = c.at(tx, FY, 0);
-        for (let z = 20; z < ridge(tx) - 4; z++) {
-          const py = c.at(tx, FY, z)[1];
-          if ((z + f * 3) % 7 < 5) c.p.pixel(px, py, FALL[(z + f) % 3 === 0 ? 1 : 3]);
+      // The pool at the foot of the cliff.
+      const frontAt = (x: number) =>
+        frontY(Math.max(0, Math.min(NX - 1, Math.floor(x / G))));
+      for (let py = ay; py <= ay + 72; py++)
+        for (let px = ax - 64; px <= ax + 80; px++) {
+          const X = (px + 0.5 - ax) / 16,
+            S = (py + 0.5 - ay) / 8,
+            x = (S + X) / 2,
+            y = (S - X) / 2,
+            ang = Math.atan2(y - 2.95, x - 2.5),
+            e = Math.hypot((x - 2.5) / 2.05, (y - 2.95) / 0.95);
+          if (e < 1 - nhash(Math.round(ang * 5), 0, 142) * 0.1 && y > frontAt(x))
+            put(px, py, POOL, x + y, x, y);
         }
+      // Paint.
+      const MOSSY = [NC.leaf0, NC.moss0, NC.leaf2, NC.moss1, NC.moss2] as const,
+        WATER = [0.72, 0.42, 0.15, -0.1, -0.35, -0.6],
+        impact = c.at(2.5, 2.05, 0);
+      for (let py = 0; py < H; py++)
+        for (let px = 0; px < W; px++) {
+          const i = py * W + px,
+            k = kind[i];
+          if (k < 0) continue;
+          let col: string;
+          if (k === TOP) {
+            // Moss and grass, a bright lip where the top breaks into cliff.
+            const below = py + 1 < H ? kind[i + W] : -1,
+              lip = below === FRONT || below === SIDE,
+              n = nhash(px >> 1, py, 150);
+            col =
+              nhash(px >> 2, py >> 1, 151) < 0.14 && !lip
+                ? rockShade(px, py, 0, 3)
+                : tone(MOSSY, 0.25 + (n - 0.5) * 0.6 + (lip ? 0.45 : 0), [
+                    0.62, 0.3, 0.0, -0.3,
+                  ]);
+          } else if (k === FRONT || k === SIDE) {
+            // Blocky stone in strata; moss and a few long vines hang over
+            // each ledge, with a shadow under the overhang. The rock is
+            // lighter near the top and darker toward the ground.
+            const depth = ua[i],
+              vine = nhash(px, 0, 155) < 0.1,
+              drape =
+                (k === FRONT ? 2 : 1) +
+                nhash(px, 0, 152) * (k === FRONT ? 8 : 4) +
+                (vine ? 8 + nhash(px, 0, 156) * 26 : 0);
+            if (depth < drape)
+              col = tone(
+                MOSS,
+                (k === FRONT ? 0.35 : -0.1) - depth * (vine ? 0.02 : 0.05),
+                [0.5, 0.0],
+              );
+            else if (depth < drape + 2 && !vine)
+              col = k === FRONT ? NC.rock4 : NC.rock5;
+            else
+              col = cliffShade(
+                px,
+                py,
+                k === FRONT ? 1 : 2,
+                3,
+                0.12 - Math.min(1, depth / Math.max(24, ub[i])) * 0.3,
+              );
+          } else if (k === STREAM) {
+            // The stream on top, ripples drifting toward the edge.
+            const ph = (((py - px / 2 - f * 4) % 16) + 16) % 16;
+            col = tone(
+              FALL,
+              0.05 + (ph < 4 ? 0.4 : 0) + (nhash(px, py, 153 + f) - 0.5) * 0.3,
+              WATER,
+            );
+          } else if (k === FALLING) {
+            // Falling water: bright streaks flow down; the lip and the foot
+            // are white with foam.
+            const u = ua[i],
+              z = ub[i],
+              lipZ = uc[i],
+              off = nhash(Math.floor(u * 10), 0, 31) * 22,
+              ph = ((((z + f * 5.5 + off) % 22) + 22) % 22) / 22;
+            let v =
+              0.3 -
+              Math.abs(u - 0.5) * 0.9 +
+              (ph < 0.4 ? 0.35 : ph < 0.55 ? 0.1 : -0.15);
+            if (lipZ - z < 4) v += 0.5;
+            if (z < 14 && nhash(px, py, 40 + f) < 0.7 - z * 0.045) v = 1;
+            col = tone(FALL, v, WATER);
+          } else {
+            // The pool: churning foam where the water lands, rings spreading
+            // out, deeper and darker in the middle, shaded by the cliff.
+            const x = ua[i],
+              y = ub[i],
+              rr = Math.hypot(px - impact[0], (py - impact[1]) * 2),
+              e = Math.hypot((x - 2.5) / 2.05, (y - 2.95) / 0.95);
+            if (rr < 14 && nhash(px, py, 20 + f) < 0.8 - rr * 0.045)
+              col = FALL[0];
+            else {
+              const ring = (((rr - f * 2.5) % 10) + 10) % 10;
+              let v = 0.02 - (1 - e) * 0.3 + (nhash(px >> 1, py, 154) - 0.5) * 0.12;
+              if (e > 0.82) v += 0.35;
+              if (ring < 1.3 && rr < 64) v += 0.45 * (1 - rr / 72);
+              if (y - frontAt(x) < 0.2) v -= 0.3;
+              col = tone(FALL, v, [0.75, 0.45, 0.2, -0.05, -0.3, -0.6]);
+            }
+          }
+          p.pixel(px, py, col);
+        }
+      // Trees and shrubs on the top, ferns over the notch.
+      const onTop = (x: number, y: number) =>
+        c.at(x, y, cellH(Math.floor(x / G), Math.floor(y / G)));
+      {
+        const [tx, ty] = onTop(1.15, 0.55);
+        trunk(c, tx, ty, 10, 4, 3, BARK, false);
+        for (let t = 0; t < 4; t++)
+          paintClumps(
+            c,
+            clumpsIn(160 + t, tx, ty - 12 - t * 7, 11 - t * 2.4, 4, 6, 3, 4.5),
+            PINE,
+            { cx: tx, cy: ty - 22, rx: 12, ry: 16 },
+            161 + t,
+          );
       }
-      // Spray and mist above the impact.
-      for (let i = 0; i < 70; i++) {
+      {
+        const [tx, ty] = onTop(3.95, 0.5);
+        trunk(c, tx, ty, 9, 5, 3);
+        canopy(c, 165, tx, ty - 18, 13, 11, FOLIAGE, 14, 4, 6);
+      }
+      for (const [x, y, r] of [
+        [0.45, 0.9, 7],
+        [1.8, 1.6, 6],
+        [3.35, 1.55, 6],
+        [4.55, 1.0, 7],
+        [2.6, 0.35, 5],
+      ] as const) {
+        const [bx, by] = onTop(x, y);
+        canopy(c, 170 + Math.round(x * 10), bx, by - r * 0.4, r, r * 0.65, FOLIAGE, 8, 2.5, 3.8);
+      }
+      for (const i of [7, 12]) {
+        const x = (i + 0.5) * G,
+          [fx, fy] = c.at(x, frontY(i), rockH(i, Math.floor(frontY(i) / G) - 1));
+        for (let k = 0; k < 5; k++)
+          branch(c, fx - 5 + k * 2.5, fy - 1, fx - 6 + k * 2.6, fy + 5 + (k % 2) * 4, 0.6, [
+            FOLIAGE[2],
+            FOLIAGE[2],
+            FOLIAGE[3],
+            FOLIAGE[3],
+          ]);
+      }
+      // Wet stones in the pool and a ring of boulders around it.
+      boulder(c, ...c.at(1.65, 2.55, 2), 4.5, 3, 181, ROCK, false);
+      boulder(c, ...c.at(3.4, 2.5, 2), 3.5, 2.6, 182, ROCK, false);
+      for (let t = -0.35; t < Math.PI + 0.4; t += 0.31) {
+        const k = Math.round(t * 10),
+          [bx, by] = c.at(2.5 + Math.cos(t) * 2.12, 2.95 + Math.sin(t) * 1.0, 1);
+        boulder(c, bx, by, 3 + nhash(k, 0, 183) * 2.5, 2.2 + nhash(k, 0, 184) * 1.3, 185 + k);
+      }
+      tufts(c, ...c.at(0.35, 3.6, 0), 12, 97, [C.white, C.yellow]);
+      tufts(c, ...c.at(4.75, 3.3, 0), 12, 98, [C.pink]);
+      tufts(c, ...c.at(2.5, 3.98, 0), 10, 99, [C.white]);
+      // Spray and mist rising from the foot of the fall.
+      for (let i = 0; i < 80; i++) {
         const a = nhash(i, 50 + f) * Math.PI,
-          r = 4 + nhash(i, 51 + f) * 24;
+          r = 3 + nhash(i, 51 + f) * 22;
         c.p.pixel(
-          impact[0] + Math.cos(a) * r * 1.1 * (nhash(i, 52) < 0.5 ? -1 : 1),
-          impact[1] - Math.sin(a) * r * 0.45 - 2,
+          impact[0] + Math.cos(a) * r * 1.2,
+          impact[1] - Math.sin(a) * r * 0.5 - 3,
           i % 3 ? FALL[0] : FALL[1],
         );
       }
-      // Stones around the pool and grass at the edges.
-      for (let x = 0.55; x < 4.7; x += 0.42) {
-        const [px, py] = c.at(x, 3.93, PZ - 1);
-        boulder(c, px, py, 3.5 + nhash(Math.round(x * 10), 91) * 2.5, 2.8 + nhash(Math.round(x * 10), 92) * 1.5, 93 + Math.round(x * 10));
-      }
-      for (const y of [2.6, 3.2]) {
-        boulder(c, ...c.at(0.4, y, PZ), 4, 3, 95 + Math.round(y * 10));
-        boulder(c, ...c.at(4.75, y, PZ), 4, 3, 96 + Math.round(y * 10));
-      }
-      tufts(c, ...c.at(0.3, 3.95, 0), 14, 97, [C.white, C.yellow]);
-      tufts(c, ...c.at(4.8, 3.9, 0), 14, 98, [C.pink]);
     },
   },
   'm-ship': {
-    // A wooden sailing ship on a patch of sea; sails and waves bob gently.
+    // A wooden sailing ship (no flags or emblems). It sits on the planet's
+    // open sea, so it carries only its own shadow, bow wave and wake; the
+    // hull bobs and the sails fill between the two frames.
     footprint: [3, 2],
     h: 110,
     pad: 26,
     frames: 2,
     period: 48,
     detail: { grain: 0 },
+    shadow: false,
     draw(c, f) {
-      const [gx, gy] = c.at(1.5, 1, 0);
-      seaPatch(c, gx, gy, 58, 24, f, 3);
+      // Shadow on the water along the hull.
+      for (let py = 0; py < c.p.height; py++)
+        for (let px = 0; px < c.p.width; px++) {
+          const [ax, ay] = c.at(0, 0, 0),
+            X = (px + 0.5 - ax) / 16,
+            S = (py + 0.5 - ay) / 8,
+            x = (S + X) / 2,
+            y = (S - X) / 2,
+            e = Math.hypot((x - 1.65) / 1.5, (y - 1.05) / 0.42);
+          if (e < 1 - nhash(px >> 1, py, 4 + f) * 0.15)
+            c.p.pixel(px, py, e < 0.7 ? SEA[4] : SEA[3]);
+        }
       const zb = f ? 1 : 0,
         HULL = 22 + zb;
       const MH = '#010301',
@@ -5509,11 +5774,19 @@ const nature: Record<string, Spec> = {
         ],
         MD,
       );
-      recolour(c, MH, (_px, py) => {
-        const band = (py >> 2) % 2;
-        return [NC.hull0, NC.hull1, NC.hull2][band ? 1 : (py >> 1) % 3 === 0 ? 2 : 0];
+      // Planks run along the hull: height above the water from the pixel.
+      const [hax, hay] = c.at(0, 0, 0);
+      recolour(c, MH, (px, py) => {
+        const z = hay + (px - hax) / 2 + 16 * 1.3 - py;
+        if (z < 8 + zb) return NC.hull2;
+        if (z > HULL - 2) return C.woodLight;
+        return Math.floor(z) % 4 === 0 ? NC.hull1 : NC.hull0;
       });
-      recolour(c, MD, (px) => (px % 4 === 0 ? NC.hull1 : C.woodLight));
+      // Deck planks run fore and aft.
+      recolour(c, MD, (px, py) => {
+        const y = ((py + 0.5 - hay + HULL) / 8 - (px + 0.5 - hax) / 16) / 2;
+        return (((y * 9) % 1) + 1) % 1 < 0.2 ? NC.hull0 : C.woodLight;
+      });
       // Dark wale and stern castle.
       c.edge([0.32, 1.33, HULL - 4], [2.25, 1.37, HULL - 4], NC.hull2);
       c.box(0.28, 0.66, 0.55, 0.68, 12, { top: C.woodLight, front: NC.hull0, side: NC.hull1, edge: NC.hull2 }, HULL);
@@ -5569,40 +5842,73 @@ const nature: Record<string, Spec> = {
         c.edge([mx, 1, mh], [0.3, 1, HULL + 12], NC.hull2);
         c.edge([mx, 1, mh], [Math.min(2.98, mx + 0.75), 1, HULL + 2], NC.hull2);
       }
-      // Bow wave and wake.
-      for (let i = 0; i < 18; i++) {
-        const [px, py] = c.at(2.95 + nhash(i, 60 + f) * 0.25, 1.05 + (nhash(i, 61) - 0.5) * 0.6, 0);
-        c.p.pixel(px, py, SEA[0]);
+      // Foam along the waterline, a bow wave and a widening wake.
+      for (let x = 0.3; x < 2.9; x += 1 / 32) {
+        const [px, py] = c.at(x, 1.3 + (x > 2.2 ? (2.2 - x) * 0.4 : 0), 2);
+        if (nhash(Math.round(x * 32), 64, f) < 0.7) c.p.pixel(px, py, SEA[0]);
       }
-      for (let i = 0; i < 24; i++) {
-        const [px, py] = c.at(0.25 - nhash(i, 62 + f) * 0.6, 1.0 + (nhash(i, 63) - 0.5) * 0.7, 0);
-        c.p.pixel(px, py, i % 2 ? SEA[0] : SEA[1]);
+      for (let i = 0; i < 26; i++) {
+        const [px, py] = c.at(
+          2.9 + nhash(i, 60 + f) * 0.3,
+          1.0 + (nhash(i, 61) - 0.5) * 0.7,
+          0,
+        );
+        c.p.pixel(px, py, SEA[0]);
+        c.p.pixel(px + 1, py, SEA[1]);
+      }
+      for (let i = 0; i < 40; i++) {
+        const k = nhash(i, 62 + f),
+          [px, py] = c.at(
+            0.25 - k * 0.9,
+            1.0 + (nhash(i, 63) - 0.5) * (0.3 + k * 0.9),
+            0,
+          );
+        c.p.pixel(px, py, i % 3 ? SEA[0] : SEA[1]);
       }
     },
   },
   'm-beach-rocks': {
-    // Wet rocks in the shallows with white surf around them.
+    // Wet rocks at the water's edge: a little tide pool at their feet with
+    // surf lapping in and out between the two frames.
     footprint: [2, 1],
-    h: 28,
+    h: 26,
     pad: 18,
     frames: 2,
     period: 24,
-    detail: { grain: 0 },
+    // No outline: the wet sand and pool fade into the beach.
+    detail: { grain: 0, outline: false },
+    shadow: false,
     draw(c, f) {
       const [gx, gy] = c.at(1, 0.5, 0);
-      seaPatch(c, gx, gy + 1, 36, 13, f, 11);
-      const wet = [NC.rock2, NC.rock3, NC.rock4, NC.rock5, NC.rock5, NC.rock5] as const;
-      boulder(c, gx - 10, gy - 6, 9, 7.5, 121, wet, false);
-      boulder(c, gx + 8, gy - 3, 7, 5.5, 122, wet, false);
-      boulder(c, gx + 1, gy + 2, 4, 3, 123, wet, false);
-      // Glints and foam at the rocks' feet.
-      for (let i = 0; i < 40; i++) {
-        const a = nhash(i, 124 + f) * Math.PI * 2,
-          r = 8 + nhash(i, 125 + f) * 10;
-        c.p.pixel(gx - 2 + Math.cos(a) * r * 1.6, gy + 1 + Math.sin(a) * r * 0.45, SEA[0]);
+      // Darker wet sand, then the shallow pool and its foam edge.
+      for (let py = gy - 9; py <= gy + 9; py++)
+        for (let px = gx - 30; px <= gx + 30; px++) {
+          const dx = (px + 0.5 - gx) / 29,
+            dy = (py + 0.5 - gy - 1) / 8.5,
+            d = Math.hypot(dx, dy) + (nhash(px >> 1, py, 130) - 0.5) * 0.12,
+            reach = f ? 0.8 : 0.7;
+          if (d > 1 || (d > 0.86 && nhash(px, py, 131) < (d - 0.86) * 7)) continue;
+          let col: string = C.sandDark;
+          if (d < reach) {
+            const wave = Math.sin(px * 0.5 + py * 1.4 + f * Math.PI);
+            col = d < reach - 0.25 ? SEA[2] : SEA[1];
+            if (wave > 0.82) col = SEA[0];
+          } else if (d < reach + 0.07) col = SEA[0];
+          c.p.pixel(px, py, col);
+        }
+      const wet = [NC.rock1, NC.rock2, NC.rock3, NC.rock4, NC.rock5, NC.rock5] as const;
+      boulder(c, gx - 9, gy - 5, 9, 7, 121, wet, true);
+      boulder(c, gx + 9, gy - 2, 7, 5.5, 122, wet, false);
+      boulder(c, gx + 1, gy + 3, 4, 3, 123, wet, false);
+      // Foam around the rocks' feet and glints of wet stone.
+      for (let i = 0; i < 30; i++) {
+        const a = nhash(i, 124 + f) * Math.PI,
+          r = 7 + nhash(i, 125 + f) * 5;
+        c.p.pixel(gx - 9 + Math.cos(a) * r * 1.3, gy + 1 + Math.sin(a) * r * 0.35, SEA[0]);
       }
-      c.p.pixel(gx - 13, gy - 11, NC.water0);
-      c.p.pixel(gx + 6, gy - 6, NC.water0);
+      c.p.pixel(gx - 13, gy - 9, NC.water0);
+      c.p.pixel(gx - 12, gy - 9, NC.water0);
+      c.p.pixel(gx + 6, gy - 5, NC.water0);
     },
   },
 };
@@ -5764,8 +6070,8 @@ function lightPool(
   y: number,
   rx: number,
   ry: number,
-  strength = 0.55,
-  inner: string = C.lamp,
+  strength = 0.7,
+  inner: string = CN.hot,
   outer: string = CN.warm,
 ) {
   const [gx, gy] = c.at(x, y, 0);
@@ -5813,18 +6119,50 @@ function nightTower(
   const z0 = 16,
     z1 = z0 + shaftH,
     e = o + size;
-  c.box(o, o, size, size, shaftH, {
-    top: CN.glass4,
-    front: CN.glass3,
-    side: CN.glass1,
-    edge: CN.glass0,
-  }, z0);
+  c.box(
+    o,
+    o,
+    size,
+    size,
+    shaftH,
+    {
+      top: CN.glass4,
+      front: CN.glass3,
+      side: CN.glass1,
+      edge: CN.glass0,
+    },
+    z0,
+  );
   // Sky reflected on the upper glass; the base sits in the dusk shadow.
   ditherFront(c, o, e, e + 0.001, z1 - shaftH * 0.34, z1, CN.glass4, 0.5);
   ditherFront(c, o, e, e + 0.001, z1 - shaftH * 0.12, z1, CN.glass5, 0.5);
   ditherSide(c, e + 0.001, o, e, z1 - shaftH * 0.3, z1, CN.glass2);
-  nightWindowsFront(c, o + 0.06, e - 0.04, e + 0.002, z0 + 4, z1 - 4, 0.205, 6, 0.13, 3, seed);
-  nightWindowsSide(c, e + 0.002, o + 0.06, e - 0.04, z0 + 4, z1 - 4, 0.205, 6, 0.13, 3, seed);
+  nightWindowsFront(
+    c,
+    o + 0.06,
+    e - 0.04,
+    e + 0.002,
+    z0 + 4,
+    z1 - 4,
+    0.205,
+    6,
+    0.13,
+    3,
+    seed,
+  );
+  nightWindowsSide(
+    c,
+    e + 0.002,
+    o + 0.06,
+    e - 0.04,
+    z0 + 4,
+    z1 - 4,
+    0.205,
+    6,
+    0.13,
+    3,
+    seed,
+  );
   // Vertical fins catch a thin rim of light on the lit corner.
   c.edge([o, e + 0.003, z0], [o, e + 0.003, z1], CN.glass6);
   c.edge([e + 0.003, e + 0.003, z0], [e + 0.003, e + 0.003, z1], CN.glass0);
@@ -5861,26 +6199,36 @@ function utilityPole(dirs: number[]): Spec {
       c.p.rect(px - 2, py - 92, 1, 92, CN.conc0);
       c.p.rect(px + 1, py - 92, 1, 92, CN.conc2);
       c.p.rect(px - 3, py - 4, 6, 4, CN.conc2);
-      for (let z = 20; z < 88; z += 17) c.p.rect(px - 2, py - z, 4, 1, CN.conc2);
-      for (let z = 30; z < 70; z += 6) c.p.pixel(px + (z % 12 ? 2 : -3), py - z, C.steelDark);
+      for (let z = 20; z < 88; z += 17)
+        c.p.rect(px - 2, py - z, 4, 1, CN.conc2);
+      for (let z = 30; z < 70; z += 6)
+        c.p.pixel(px + (z % 12 ? 2 : -3), py - z, C.steelDark);
       // Transformer drum, a junction box and a small plain plate.
       c.cylinder(0.62, 0.5, 52, 4, 11, [CN.conc1, CN.conc2, CN.conc3]);
       c.p.rect(px + 1, py - 66, 6, 1, C.steelDark);
       c.p.rect(px + 2, py - 40, 3, 6, C.slate);
       c.p.rect(px + 2, py - 40, 1, 6, C.grey);
       c.p.rect(px - 2, py - 28, 4, 3, C.yellow);
-      // Cross-arms run across the street (along y); wires run along x.
-      const arms = [86, 76],
-        lanes = [0.12, 0.5, 0.88];
-      for (const z of arms) {
-        c.thick(c.at(0.5, 0.05, z), c.at(0.5, 0.95, z), 0.6, CN.conc2);
-        c.line(c.at(0.5, 0.05, z + 1), c.at(0.5, 0.95, z + 1), CN.conc1);
-        for (const v of lanes) {
-          const [ix, iy] = c.at(0.5, v, z + 1);
-          c.p.rect(ix, iy - 2, 1, 2, C.offwhite);
-        }
+      // Cross-arms run across the street (along y): the top one carries the
+      // three power lines along x; the lower one holds the transformer leads.
+      const lanes = [0.12, 0.5, 0.88];
+      for (const [z, v0, v1] of [
+        [86, 0.05, 0.95],
+        [76, 0.3, 0.7],
+      ]) {
+        c.thick(c.at(0.5, v0, z), c.at(0.5, v1, z), 0.6, CN.conc2);
+        c.line(c.at(0.5, v0, z + 1), c.at(0.5, v1, z + 1), CN.conc1);
       }
-      for (const z0 of arms)
+      for (const v of lanes) {
+        const [ix, iy] = c.at(0.5, v, 87);
+        c.p.rect(ix, iy - 2, 1, 2, C.offwhite);
+      }
+      for (const v of [0.34, 0.66]) {
+        const [ix, iy] = c.at(0.5, v, 77);
+        c.p.rect(ix, iy - 2, 1, 2, C.offwhite);
+        c.line([ix, iy - 2], c.at(0.62, 0.5, 63), C.charcoal);
+      }
+      for (const z0 of [86])
         for (const v of lanes)
           for (const dir of dirs) {
             let last = c.at(0.5, v, z0 + 1);
@@ -5910,6 +6258,123 @@ function utilityPole(dirs: number[]): Spec {
     },
   };
 }
+/** Colourway for a shop house: walls, awning stripes, plain sign panel. */
+type ShopLook = {
+  wall: Material;
+  trim: string;
+  awning: [string, string, string];
+  sign: [string, string];
+  /** Which of the two upper windows are lit. */
+  lit: [boolean, boolean];
+};
+/**
+ * A narrow two-storey shop house: a warm lit shop window and door under a
+ * striped awning, a plain sign panel (no text), a paper lantern, upper
+ * windows with a wall air-conditioner, and rooftop plant.
+ */
+function awningShop(o: ShopLook): Spec {
+  return {
+    footprint: [2, 1],
+    h: 82,
+    pad: 8,
+    draw(c) {
+      // Light from the shop spills onto the pavement in front.
+      lightPool(c, 0.8, 1.2, 24, 6, 0.5);
+      c.box(0, 0, 2, 0.8, 66, o.wall);
+      c.box(
+        0,
+        0,
+        2,
+        0.84,
+        3,
+        { top: o.wall.side, front: o.trim, side: o.trim },
+        66,
+      );
+      // Rooftop clutter: a condenser unit and a small water tank.
+      c.box(0.2, 0.15, 0.36, 0.26, 6, M.steel, 69);
+      c.faceX(0.24, 0.411, 0.28, 70, 4, C.steelDark);
+      for (let g = 0; g < 4; g++)
+        c.faceX(0.26 + g * 0.065, 0.412, 0.03, 70, 4, C.steel);
+      c.cylinder(1.55, 0.4, 69, 4, 8, R.steel);
+      c.edge([1.2, 0.42, 69], [1.2, 0.42, 74], C.steelDark);
+      // Shop window: warm interior with shelf silhouettes.
+      c.faceX(0.12, 0.801, 1.3, 3, 22, CN.hot);
+      c.faceX(0.12, 0.802, 1.3, 19, 6, CN.amber);
+      for (const z of [8, 14, 20]) c.faceX(0.16, 0.803, 1.22, z, 1, C.woodDark);
+      for (let k = 0; k < 9; k++)
+        c.faceX(
+          0.2 + k * 0.13,
+          0.803,
+          0.06,
+          9 + (k % 3) * 6,
+          3,
+          accents[(k * 4) % accents.length],
+        );
+      c.faceX(0.12, 0.803, 1.3, 3, 1, C.woodDark);
+      // Door with a lit glass pane.
+      c.faceX(1.55, 0.801, 0.34, 0, 24, C.woodDark);
+      c.faceX(1.6, 0.802, 0.24, 8, 13, CN.warm);
+      c.p.pixel(...c.at(1.82, 0.803, 12), C.gold);
+      // Awning: a sloped striped canopy with a scalloped valance.
+      const [aLight, aDark, aDeep] = o.awning;
+      c.poly(
+        [
+          [0.02, 0.8, 34],
+          [1.98, 0.8, 34],
+          [1.98, 1.14, 27],
+          [0.02, 1.14, 27],
+        ],
+        aDark,
+      );
+      for (let u = 0.02; u < 1.98; u += 0.28)
+        c.poly(
+          [
+            [u, 0.8, 34],
+            [u + 0.14, 0.8, 34],
+            [u + 0.14, 1.14, 27],
+            [u, 1.14, 27],
+          ],
+          aLight,
+        );
+      for (let u = 0.02; u < 1.96; u += 0.14) {
+        c.faceX(
+          u,
+          1.141,
+          0.14,
+          24,
+          3,
+          Math.round(u / 0.14) % 2 ? aLight : aDark,
+        );
+        c.faceX(u + 0.04, 1.142, 0.06, 23, 1, aDeep);
+      }
+      // A plain sign panel above the awning (no text) and a paper lantern.
+      c.faceX(0.3, 0.801, 1.2, 37, 7, o.sign[0]);
+      c.faceX(0.34, 0.802, 1.12, 38, 5, o.sign[1]);
+      const [lx, ly] = c.at(1.9, 0.95, 40);
+      c.p.ellipse(lx, ly, 3, 4, CN.amber);
+      c.p.ellipse(lx - 1, ly - 1, 1.5, 2, CN.hot);
+      c.p.pixel(lx, ly - 5, C.ink);
+      // Upper floor: two windows, an AC unit on the wall between them.
+      for (const [x, on] of [
+        [0.2, o.lit[0]],
+        [1.2, o.lit[1]],
+      ] as [number, boolean][]) {
+        c.faceX(x, 0.801, 0.5, 46, 12, o.trim);
+        c.faceX(x + 0.04, 0.802, 0.42, 47, 10, on ? CN.warm : CN.glass3);
+        c.faceX(x + 0.04, 0.803, 0.42, 55, 2, on ? CN.amber : CN.glass2);
+        if (!on) c.edge([x + 0.08, 0.804, 49], [x + 0.2, 0.804, 55], CN.glass5);
+      }
+      c.box(0.85, 0.8, 0.28, 0.14, 7, M.steel, 44);
+      c.faceX(0.88, 0.941, 0.22, 45, 5, C.steelDark);
+      for (let k = 0; k < 3; k++)
+        c.faceX(0.9 + k * 0.07, 0.942, 0.04, 45, 5, C.steel);
+      c.faceY(2.001, 0.1, 0.6, 46, 12, o.lit[1] ? CN.amberSide : CN.glass1);
+      // A potted plant by the door.
+      c.pot(1.46, 1.0, 0, 3, 5, R.terracotta, C.soil);
+      c.greenery(1.46, 1.0, 9, 5, R.leaf);
+    },
+  };
+}
 const city: Record<string, Spec> = {
   // CITY-OBJECTS
   'm-tower-tall': {
@@ -5918,22 +6383,38 @@ const city: Record<string, Spec> = {
     draw(c) {
       const top = nightTower(c, 0.25, 2.5, 272, 11);
       // Stepped crown with glowing bands, then a lit spire.
-      c.box(0.55, 0.55, 1.9, 1.9, 16, {
-        top: CN.glass4,
-        front: CN.glass3,
-        side: CN.glass1,
-        edge: CN.glass0,
-      }, top);
+      c.box(
+        0.55,
+        0.55,
+        1.9,
+        1.9,
+        16,
+        {
+          top: CN.glass4,
+          front: CN.glass3,
+          side: CN.glass1,
+          edge: CN.glass0,
+        },
+        top,
+      );
       for (const z of [top + 4, top + 9, top + 14]) {
         c.faceX(0.55, 2.451, 1.9, z, 1, CN.hot);
         c.faceY(2.451, 0.55, 1.9, z, 1, CN.warmSide);
       }
-      c.box(0.95, 0.95, 1.1, 1.1, 14, {
-        top: CN.glass5,
-        front: CN.glass4,
-        side: CN.glass2,
-        edge: CN.glass0,
-      }, top + 16);
+      c.box(
+        0.95,
+        0.95,
+        1.1,
+        1.1,
+        14,
+        {
+          top: CN.glass5,
+          front: CN.glass4,
+          side: CN.glass2,
+          edge: CN.glass0,
+        },
+        top + 16,
+      );
       c.faceX(0.95, 2.051, 1.1, top + 22, 3, CN.cool);
       c.faceY(2.051, 0.95, 1.1, top + 22, 3, CN.coolSide);
       const [sx, sy] = c.at(1.5, 1.5, top + 30);
@@ -5943,6 +6424,82 @@ const city: Record<string, Spec> = {
       aircraftLight(c, 1.5, 1.5, top + 64);
       aircraftLight(c, 0.6, 0.6, top + 17);
       aircraftLight(c, 2.4, 2.4, top + 17);
+    },
+  },
+  'm-tower-slim': {
+    footprint: [2, 2],
+    h: 262,
+    draw(c) {
+      const top = nightTower(c, 0.2, 1.6, 206, 23, 2);
+      // A lantern crown: a cool-lit glass box under a thin cap, then a mast.
+      c.box(
+        0.35,
+        0.35,
+        1.3,
+        1.3,
+        18,
+        {
+          top: CN.glass5,
+          front: CN.glass3,
+          side: CN.glass1,
+          edge: CN.glass0,
+        },
+        top,
+      );
+      for (let u = 0.42; u < 1.6; u += 0.18) {
+        c.faceX(u, 1.651, 0.1, top + 3, 12, CN.cool);
+        c.faceY(1.651, u, 0.1, top + 3, 12, CN.coolSide);
+      }
+      c.box(
+        0.3,
+        0.3,
+        1.4,
+        1.4,
+        2,
+        {
+          top: C.slate,
+          front: C.charcoal,
+          side: C.ink,
+          edge: C.ink,
+        },
+        top + 18,
+      );
+      c.edge([0.3, 1.7, top + 20], [1.7, 1.7, top + 20], CN.glass6);
+      const [mx, my] = c.at(1, 1, top + 20);
+      c.p.rect(mx, my - 18, 1, 18, C.silver);
+      aircraftLight(c, 1, 1, top + 39);
+    },
+  },
+  'm-tower-slim-b': {
+    footprint: [2, 2],
+    h: 228,
+    draw(c) {
+      const top = nightTower(c, 0.2, 1.6, 180, 41, 2);
+      // A stepped crown ringed with warm light, rooftop plant and a mast.
+      c.box(
+        0.4,
+        0.4,
+        1.2,
+        1.2,
+        12,
+        {
+          top: CN.glass4,
+          front: CN.glass3,
+          side: CN.glass1,
+          edge: CN.glass0,
+        },
+        top,
+      );
+      for (const z of [top + 3, top + 8]) {
+        c.faceX(0.4, 1.601, 1.2, z, 1, CN.hot);
+        c.faceY(1.601, 0.4, 1.2, z, 1, CN.warmSide);
+      }
+      c.box(0.75, 0.75, 0.5, 0.5, 6, M.steel, top + 12);
+      c.faceY(1.251, 0.85, 0.2, top + 12, 4, CN.warm);
+      const [mx, my] = c.at(1, 1, top + 18);
+      c.p.rect(mx, my - 12, 1, 12, C.silver);
+      aircraftLight(c, 1, 1, top + 31);
+      aircraftLight(c, 0.4, 1.6, top + 13);
     },
   },
   'm-broadcast-tower': {
@@ -5977,7 +6534,13 @@ const city: Record<string, Spec> = {
         const wx = pcx + Math.cos(a) * 16,
           wy = pcy + Math.sin(a) * 8;
         const k = Math.floor(a / 0.09);
-        c.p.rect(wx, wy - 2, 1, 3, k % 5 === 4 ? CN.glass2 : k % 3 ? CN.warm : CN.hot);
+        c.p.rect(
+          wx,
+          wy - 2,
+          1,
+          3,
+          k % 5 === 4 ? CN.glass2 : k % 3 ? CN.warm : CN.hot,
+        );
       }
       c.cylinder(1, 1, 163, 18, 3, [CN.conc0, CN.conc1, CN.conc2]);
       const [rx0, ry0] = c.at(1, 1, 166);
@@ -5994,8 +6557,13 @@ const city: Record<string, Spec> = {
       // Antenna mast with white and red bands and aircraft lights.
       const [mx, my] = c.at(1, 1, 215);
       for (let z = 0; z < 44; z++)
-        c.p.rect(mx - (z < 20 ? 1 : 0), my - z, z < 20 ? 3 : 2, 1,
-          Math.floor(z / 6) % 2 ? C.redDark : C.offwhite);
+        c.p.rect(
+          mx - (z < 20 ? 1 : 0),
+          my - z,
+          z < 20 ? 3 : 2,
+          1,
+          Math.floor(z / 6) % 2 ? C.redDark : C.offwhite,
+        );
       c.p.rect(mx, my - 52, 1, 8, C.silver);
       aircraftLight(c, 1, 1, 236);
       aircraftLight(c, 1, 1, 268);
@@ -6016,51 +6584,88 @@ const city: Record<string, Spec> = {
       for (let k = 0; k < 46; k++) {
         const a = cityHash(k, 1) * Math.PI * 2,
           r = 4 + cityHash(k, 2) * 22;
-        c.p.pixel(bx + Math.cos(a) * r, by + Math.sin(a) * r * 0.5,
-          k % 3 ? CN.petal1 : CN.petal0);
+        c.p.pixel(
+          bx + Math.cos(a) * r,
+          by + Math.sin(a) * r * 0.5,
+          k % 3 ? CN.petal1 : CN.petal0,
+        );
       }
       c.top(0.32, 0.32, 0.36, 0.36, 0, C.soil);
-      // Trunk and branches reaching up into the canopy.
-      c.thick([bx, by], [bx + 1, by - 26], 1.6, CN.bark);
-      c.thick([bx - 1, by - 2], [bx, by - 24], 0.6, CN.barkLight);
+      // Trunk and branches spreading wide into the canopy.
+      c.thick([bx, by], [bx + 1, by - 24], 1.6, CN.bark);
+      c.thick([bx - 1, by - 2], [bx, by - 22], 0.6, CN.barkLight);
       const branches: [number, number, number, number][] = [
-        [1, -26, -14, -44],
-        [1, -26, 15, -42],
-        [1, -30, 2, -52],
-        [-6, -36, -20, -50],
-        [9, -36, 22, -52],
+        [1, -24, -16, -40],
+        [1, -24, 17, -38],
+        [1, -28, 3, -52],
+        [-8, -32, -26, -42],
+        [10, -31, 27, -40],
+        [-14, -38, -12, -54],
+        [13, -36, 12, -52],
       ];
       for (const [x0, y0, x1, y1] of branches)
         c.thick([bx + x0, by + y0], [bx + x1, by + y1], 0.8, CN.bark);
-      // Blossom: soft clusters, light upper-left, deep pink lower-right.
+      // Blossom: a broad, airy crown of soft clusters, lit from the upper
+      // left, deep pink in the shade underneath.
       const clusters: [number, number, number][] = [
-        [-16, -50, 11],
-        [16, -50, 11],
-        [0, -60, 12],
-        [-8, -42, 9],
-        [10, -40, 9],
-        [-22, -42, 7],
-        [23, -44, 7],
-        [3, -48, 12],
+        [-24, -42, 8],
+        [25, -41, 8],
+        [-14, -36, 8],
+        [14, -35, 8],
+        [-17, -50, 10],
+        [17, -49, 10],
+        [0, -44, 11],
+        [-6, -58, 10],
+        [8, -57, 10],
+        [0, -64, 7],
       ];
       for (const [dx, dy, r] of clusters) {
-        c.p.ellipse(bx + dx + 1, by + dy + 1, r, r * 0.78, CN.petal3);
-        c.p.ellipse(bx + dx, by + dy, r * 0.94, r * 0.72, CN.petal2);
-        c.p.ellipse(bx + dx - r * 0.18, by + dy - r * 0.16, r * 0.72, r * 0.54, CN.petal1);
-        c.p.ellipse(bx + dx - r * 0.34, by + dy - r * 0.3, r * 0.38, r * 0.28, CN.petal0);
+        c.p.ellipse(bx + dx + 1, by + dy + 2, r, r * 0.74, CN.petal3);
+        c.p.ellipse(bx + dx, by + dy, r * 0.95, r * 0.7, CN.petal2);
       }
-      // Blossom texture and a few dark twigs showing through.
-      for (let k = 0; k < 90; k++) {
-        const x = bx - 30 + Math.floor(cityHash(k, 5) * 60),
-          y = by - 70 + Math.floor(cityHash(k, 6) * 36),
+      for (const [dx, dy, r] of clusters) {
+        c.p.ellipse(
+          bx + dx - r * 0.16,
+          by + dy - r * 0.18,
+          r * 0.72,
+          r * 0.5,
+          CN.petal1,
+        );
+        c.p.ellipse(
+          bx + dx - r * 0.34,
+          by + dy - r * 0.34,
+          r * 0.36,
+          r * 0.24,
+          CN.petal0,
+        );
+      }
+      // Loose petals break up the outline; texture inside the crown.
+      for (let k = 0; k < 140; k++) {
+        const [dx, dy, r] = clusters[k % clusters.length],
+          a = cityHash(k, 7) * Math.PI * 2,
+          d = r * (0.9 + cityHash(k, 8) * 0.3),
+          x = Math.round(bx + dx + Math.cos(a) * d),
+          y = Math.round(by + dy + Math.sin(a) * d * 0.72);
+        c.p.pixel(x, y, Math.sin(a) > 0.3 ? CN.petal2 : CN.petal1);
+      }
+      for (let k = 0; k < 110; k++) {
+        const x = bx - 32 + Math.floor(cityHash(k, 5) * 64),
+          y = by - 72 + Math.floor(cityHash(k, 6) * 44),
           i = (y * c.p.width + x) * 4;
         if (!c.p.data[i + 3]) continue;
-        c.p.pixel(x, y, k % 4 === 0 ? CN.petal3 : k % 3 ? CN.petal0 : CN.petal2);
+        c.p.pixel(
+          x,
+          y,
+          k % 4 === 0 ? CN.petal3 : k % 3 ? CN.petal0 : CN.petal2,
+        );
       }
+      // Dark twigs showing through gaps in the blossom.
       for (const [x0, y0, x1, y1] of [
-        [-9, -46, -13, -51],
-        [12, -47, 15, -50],
-        [2, -55, 1, -59],
+        [-11, -44, -15, -49],
+        [12, -43, 16, -47],
+        [2, -55, 1, -60],
+        [-20, -40, -23, -44],
+        [21, -39, 24, -42],
       ])
         c.line([bx + x0, by + y0], [bx + x1, by + y1], CN.bark);
       // Petals drifting down.
@@ -6078,6 +6683,7 @@ const city: Record<string, Spec> = {
     footprint: [1, 1],
     h: 46,
     pad: 10,
+    side: true,
     draw(c) {
       // Light spilling onto the pavement in front.
       lightPool(c, 0.55, 1.15, 20, 7, 0.6);
@@ -6087,7 +6693,8 @@ const city: Record<string, Spec> = {
         c.faceX(x + 0.04, 0.801, 0.34, 18, 19, panel);
         for (let row = 0; row < 3; row++)
           for (let k = 0; k < 5; k++) {
-            const col = accents[(k * 3 + row * 2 + (x > 0.5 ? 1 : 0)) % accents.length];
+            const col =
+              accents[(k * 3 + row * 2 + (x > 0.5 ? 1 : 0)) % accents.length];
             c.faceX(x + 0.06 + k * 0.064, 0.802, 0.04, 21 + row * 6, 3, col);
           }
         c.faceX(x + 0.04, 0.802, 0.34, 36, 1, C.white);
@@ -6098,94 +6705,67 @@ const city: Record<string, Spec> = {
         c.faceX(x + 0.08, 0.802, 0.26, 4, 6, C.ink);
         c.faceX(x + 0.1, 0.803, 0.22, 5, 1, C.charcoal);
       };
-      machine(0.04, {
-        top: C.red,
-        front: C.redDark,
-        side: C.carpet,
-        edge: C.carpetDark,
-      }, CN.hot);
-      machine(0.52, {
-        top: C.white,
-        front: C.offwhite,
-        side: C.pale,
-        edge: C.silver,
-      }, C.lamp);
+      machine(
+        0.04,
+        {
+          top: C.red,
+          front: C.redDark,
+          side: C.carpet,
+          edge: C.carpetDark,
+        },
+        CN.hot,
+      );
+      machine(
+        0.52,
+        {
+          top: C.white,
+          front: C.offwhite,
+          side: C.pale,
+          edge: C.silver,
+        },
+        C.lamp,
+      );
       // A small recycling bin beside them.
       c.cylinder(1.02, 0.6, 0, 2.5, 9, [C.blue, C.blueDark, C.navy]);
     },
   },
-  'm-awning-shop': {
-    footprint: [2, 1],
-    h: 82,
-    pad: 8,
-    draw(c) {
-      // Two-storey shop house in warm plaster with a flat roof.
-      c.box(0, 0, 2, 0.8, 66, {
-        top: C.warmGreyLight,
-        front: C.creamShade,
-        side: C.warmGrey,
-        edge: C.warmGreyDark,
-      });
-      c.box(0, 0, 2, 0.84, 3, {
-        top: C.warmGrey,
-        front: C.warmGreyDark,
-        side: C.warmGreyDark,
-      }, 66);
-      // Shop window: warm interior with shelf silhouettes.
-      c.faceX(0.12, 0.801, 1.3, 3, 22, CN.hot);
-      c.faceX(0.12, 0.802, 1.3, 19, 6, CN.amber);
-      for (const z of [8, 14, 20])
-        c.faceX(0.16, 0.803, 1.22, z, 1, C.woodDark);
-      for (let k = 0; k < 9; k++)
-        c.faceX(0.2 + k * 0.13, 0.803, 0.06, 9 + (k % 3) * 6, 3,
-          accents[(k * 4) % accents.length]);
-      c.faceX(0.12, 0.803, 1.3, 3, 1, C.woodDark);
-      // Door with a lit glass pane.
-      c.faceX(1.55, 0.801, 0.34, 0, 24, C.woodDark);
-      c.faceX(1.6, 0.802, 0.24, 8, 13, CN.warm);
-      c.p.pixel(...c.at(1.82, 0.803, 12), C.gold);
-      // Awning: a sloped canopy with a scalloped valance (plain colour).
-      c.poly([
-        [0.02, 0.8, 34],
-        [1.98, 0.8, 34],
-        [1.98, 1.14, 27],
-        [0.02, 1.14, 27],
-      ], C.tealDark);
-      for (let u = 0.02; u < 1.98; u += 0.28)
-        c.poly([
-          [u, 0.8, 34],
-          [u + 0.14, 0.8, 34],
-          [u + 0.14, 1.14, 27],
-          [u, 1.14, 27],
-        ], C.teal);
-      for (let u = 0.02; u < 1.96; u += 0.14) {
-        c.faceX(u, 1.141, 0.14, 24, 3, (Math.round(u / 0.14) % 2) ? C.teal : C.tealDark);
-        c.faceX(u + 0.04, 1.142, 0.06, 23, 1, C.deepTeal);
-      }
-      // A plain sign panel above the awning (no text) and a paper lantern.
-      c.faceX(0.3, 0.801, 1.2, 37, 7, C.redDark);
-      c.faceX(0.34, 0.802, 1.12, 38, 5, C.red);
-      const [lx, ly] = c.at(1.9, 0.95, 40);
-      c.p.ellipse(lx, ly, 3, 4, CN.amber);
-      c.p.ellipse(lx - 1, ly - 1, 1.5, 2, CN.hot);
-      c.p.pixel(lx, ly - 5, C.ink);
-      // Upper floor: one warm window, one dark, an AC unit on the wall.
-      c.faceX(0.2, 0.801, 0.5, 46, 12, C.warmGreyDark);
-      c.faceX(0.24, 0.802, 0.42, 47, 10, CN.warm);
-      c.faceX(0.24, 0.803, 0.42, 55, 2, CN.amber);
-      c.faceX(1.2, 0.801, 0.5, 46, 12, C.warmGreyDark);
-      c.faceX(1.24, 0.802, 0.42, 47, 10, CN.glass3);
-      c.box(0.85, 0.8, 0.28, 0.14, 7, M.steel, 44);
-      c.faceX(0.88, 0.941, 0.22, 45, 5, C.steelDark);
-      for (let k = 0; k < 3; k++)
-        c.faceX(0.9 + k * 0.07, 0.942, 0.04, 45, 5, C.steel);
-      c.faceY(2.001, 0.1, 0.6, 46, 12, CN.amberSide);
-      // Potted plants by the door and light spilling onto the pavement.
-      c.pot(1.46, 1.0, 0, 3, 5, R.terracotta, C.soil);
-      c.greenery(1.46, 1.0, 9, 5, R.leaf);
-      lightPool(c, 0.8, 1.2, 24, 6, 0.5);
+  // Two-storey shop houses with awnings, in three colourways.
+  'm-awning-shop': awningShop({
+    wall: {
+      top: C.warmGreyLight,
+      front: C.creamShade,
+      side: C.warmGrey,
+      edge: C.warmGreyDark,
     },
-  },
+    trim: C.warmGreyDark,
+    awning: [C.teal, C.tealDark, C.deepTeal],
+    sign: [C.redDark, C.red],
+    lit: [true, false],
+  }),
+  'm-awning-shop-b': awningShop({
+    wall: {
+      top: C.offwhite,
+      front: C.stone,
+      side: C.stoneShade,
+      edge: C.stoneLine,
+    },
+    trim: C.stoneLine,
+    awning: [C.white, C.red, C.redDark],
+    sign: [C.stageNavy, C.blueDark],
+    lit: [false, true],
+  }),
+  'm-awning-shop-c': awningShop({
+    wall: {
+      top: C.terracottaLight,
+      front: C.terracotta,
+      side: C.terracottaDark,
+      edge: C.brickDark,
+    },
+    trim: C.terracottaDark,
+    awning: [C.orange, C.orangeDark, C.terracottaDark],
+    sign: [C.greenDark, C.green],
+    lit: [true, true],
+  }),
   'm-city-lamp': {
     footprint: [1, 1],
     h: 70,
@@ -6194,7 +6774,7 @@ const city: Record<string, Spec> = {
     draw(c) {
       // A warm pool of light on the pavement.
       const [gx, gy] = c.at(0.5, 0.5, 0);
-      lightPool(c, 0.5, 0.5, 26, 13, 0.7);
+      lightPool(c, 0.5, 0.5, 26, 13, 0.9);
       // Dark cast-iron post with a curved arm and a glowing lantern.
       c.p.rect(gx - 1, gy - 60, 3, 60, C.ink);
       c.p.rect(gx - 1, gy - 60, 1, 60, C.charcoal);
