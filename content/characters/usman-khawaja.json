@@ -1,0 +1,114 @@
+{
+  "id": "usman-khawaja",
+  "kind": "person",
+  "name": {
+    "en": "Usman Khawaja",
+    "ar": "عثمان خواجة",
+    "bn": "উসমান খাজা"
+  },
+  "aliases": [],
+  "years": "b. 1986",
+  "place": "Islamabad · Sydney",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "shirt-trousers",
+    "headwear": "cap",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "white-linen",
+      "garmentSecondary": "white-linen",
+      "headwear": "emerald",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "idle",
+      "at": [66.2, 114.6],
+      "facing": "SE",
+      "z": 10
+    },
+    {
+      "from": 60,
+      "to": 84,
+      "action": "walk",
+      "path": [
+        [66.2, 114.6],
+        [66.2, 116.4]
+      ],
+      "z": [10, 0]
+    },
+    {
+      "from": 84,
+      "to": 120,
+      "action": "idle",
+      "at": [66.2, 116.4],
+      "facing": "NW"
+    },
+    {
+      "from": 120,
+      "to": 144,
+      "action": "walk",
+      "path": [
+        [66.2, 116.4],
+        [66.2, 114.6]
+      ],
+      "z": [0, 10]
+    },
+    {
+      "from": 144,
+      "to": 216,
+      "action": "cheer",
+      "at": [66.2, 114.6],
+      "facing": "SE",
+      "z": 10
+    },
+    {
+      "from": 216,
+      "to": 240,
+      "action": "idle",
+      "at": [66.2, 114.6],
+      "facing": "SE",
+      "z": 10
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Australian opening batsman born in Islamabad, the first Muslim to play Test cricket for Australia. When his team celebrated the 2022 Ashes with champagne, he stepped aside, and captain Pat Cummins stopped the spraying so he could rejoin the photo."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Usman_Khawaja"
+    },
+    {
+      "label": "Yahoo Sport Australia",
+      "url": "https://au.sports.yahoo.com/ashes-2022-pat-cummins-classy-gesture-during-celebrations-215013421.html"
+    },
+    {
+      "label": "The Roar",
+      "url": "https://www.theroar.com.au/?p=1172613"
+    }
+  ],
+  "panelApproved": false
+}

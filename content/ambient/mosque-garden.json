@@ -2375,6 +2375,424 @@
     "role": "Dancing with her son after the win"
   },
   {
+    "id": "amb-cricket-aussie-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "cheer",
+        "at": [64.2, 114.6],
+        "facing": "SE",
+        "z": 10,
+        "prop": "bottle"
+      },
+      {
+        "from": 96,
+        "to": 144,
+        "action": "idle",
+        "at": [64.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "cheer",
+        "at": [64.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "idle",
+        "at": [64.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      }
+    ],
+    "role": "Teammate on the podium"
+  },
+  {
+    "id": "amb-cricket-aussie-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "shirt-trousers",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "cheer",
+        "at": [65.2, 114.6],
+        "facing": "SE",
+        "z": 10,
+        "prop": "bottle"
+      },
+      {
+        "from": 96,
+        "to": 144,
+        "action": "idle",
+        "at": [65.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "cheer",
+        "at": [65.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "idle",
+        "at": [65.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      }
+    ],
+    "role": "Teammate on the podium"
+  },
+  {
+    "id": "amb-cricket-captain",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "cheer",
+        "at": [67.2, 114.6],
+        "facing": "SE",
+        "z": 10,
+        "prop": "bottle"
+      },
+      {
+        "from": 96,
+        "to": 144,
+        "action": "wave",
+        "at": [67.2, 114.6],
+        "facing": "SW",
+        "z": 10
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "cheer",
+        "at": [67.2, 114.6],
+        "facing": "SE",
+        "z": 10,
+        "prop": "trophy"
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "idle",
+        "at": [67.2, 114.6],
+        "facing": "SE",
+        "z": 10
+      }
+    ],
+    "role": "Team captain, calling his teammate back"
+  },
+  {
+    "id": "amb-cricket-aussie-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "shirt-trousers",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "cheer",
+        "at": [68, 114.6],
+        "facing": "SE",
+        "z": 10,
+        "prop": "bottle"
+      },
+      {
+        "from": 96,
+        "to": 144,
+        "action": "idle",
+        "at": [68, 114.6],
+        "facing": "SE",
+        "z": 10
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "cheer",
+        "at": [68, 114.6],
+        "facing": "SE",
+        "z": 10
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "idle",
+        "at": [68, 114.6],
+        "facing": "SE",
+        "z": 10
+      }
+    ],
+    "role": "Teammate on the podium"
+  },
+  {
+    "id": "amb-cricket-amla-ball",
+    "kind": "ball",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "ball",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 12,
+        "action": "ball_still",
+        "at": [86.9, 117.6],
+        "facing": "SE"
+      },
+      {
+        "from": 12,
+        "to": 40,
+        "action": "ball_roll",
+        "path": [
+          [86.9, 117.6],
+          [92.6, 119.2]
+        ]
+      },
+      {
+        "from": 40,
+        "to": 220,
+        "action": "ball_still",
+        "at": [92.6, 119.2],
+        "facing": "SE"
+      },
+      {
+        "from": 220,
+        "to": 240,
+        "action": "ball_roll",
+        "path": [
+          [92.6, 119.2],
+          [86.9, 117.6]
+        ]
+      }
+    ],
+    "role": "The ball racing to the boundary"
+  },
+  {
+    "id": "amb-cricket-proteas-0",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers-sponsor",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "mustard",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [85.6, 115.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Teammate in the line, shirt with the sponsor"
+  },
+  {
+    "id": "amb-cricket-proteas-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers-sponsor",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "mustard",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [86.9, 115.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Teammate in the line, shirt with the sponsor"
+  },
+  {
+    "id": "amb-cricket-proteas-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers-sponsor",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "mustard",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [89.5, 115.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Teammate in the line, shirt with the sponsor"
+  },
+  {
+    "id": "amb-cricket-proteas-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-short",
+      "garment": "shirt-trousers-sponsor",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "emerald",
+        "garmentSecondary": "mustard",
+        "headwear": "emerald",
+        "prop": "wool-cream"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [90.8, 115.2],
+        "facing": "SE"
+      }
+    ],
+    "role": "Teammate in the line, shirt with the sponsor"
+  },
+  {
     "id": "amb-referee-octagon",
     "kind": "person",
     "aliases": [],
@@ -3405,7 +3823,7 @@
         "from": 0,
         "to": 120,
         "action": "idle",
-        "at": [70.5, 116.5],
+        "at": [72.6, 118.6],
         "facing": "SE"
       }
     ],

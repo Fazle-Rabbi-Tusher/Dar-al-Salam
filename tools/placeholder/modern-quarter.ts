@@ -1344,7 +1344,7 @@ export function modernQuarter() {
   // Scene-bible stadium scenes (docs/scene-bible.md).
   for (const [type, x, y] of STADIUM_OBJECTS) obj(type, x, y);
   ambient.push(...stadiumAmbient(), ...stadiumAmbient1b());
-  for (const [type, x, y] of CRICKET_OBJECTS) obj(type, x, y);
+  for (const [type, x, y, z] of CRICKET_OBJECTS) obj(type, x, y, false, z);
   ambient.push(...cricketAmbient());
 
   /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */
@@ -1932,7 +1932,7 @@ export function modernQuarter() {
   );
   person(
     'bd-fielder',
-    [70.5, 116.5],
+    [72.6, 118.6],
     'idle',
     L('adult-man-short', 'shirt-trousers', 'none', 'none', {
       garmentPrimary: 'emerald',

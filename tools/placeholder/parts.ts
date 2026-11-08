@@ -835,10 +835,10 @@ function rawPose(action: Action, facing: 'SE' | 'NE', f: number): Pose {
       const hands: [P, P, P, P][] = [
         // [front elbow, front hand, back elbow, back hand]
         [
-          [29, 30],
-          [25, 24],
+          [26, 35],
+          [21, 31],
+          [20, 37],
           [22, 32],
-          [26, 25],
         ],
         [
           [28, 31],

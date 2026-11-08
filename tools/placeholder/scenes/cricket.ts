@@ -72,10 +72,11 @@ const ROW = 114.6;
 const KHAWAJA: Pt = [66.2, ROW];
 const BELOW: Pt = [66.2, 116.4];
 
-export const CRICKET_OBJECTS: [string, number, number][] = [
+/** [type, x, y, z]: z lifts the backdrop onto the stage top. */
+export const CRICKET_OBJECTS: [string, number, number, number][] = [
   // Khawaja's podium at the west end of the cricket ground.
-  ['m-presentation-stage', 63.6, 113.6],
-  ['m-presentation-backdrop', 63.6, 113.15],
+  ['m-presentation-stage', 63.6, 113.6, 0],
+  ['m-presentation-backdrop', 63.6, 113.6, STAGE],
 ];
 
 /** Australia in whites and green caps; South Africa in green and gold. */
@@ -85,7 +86,12 @@ const proteas = (sponsor: boolean) =>
   look(
     'adult-man-short',
     sponsor ? 'shirt-trousers-sponsor' : 'shirt-trousers',
-    { garmentPrimary: 'emerald', garmentSecondary: 'mustard', skin: 'skin-3' },
+    {
+      garmentPrimary: 'emerald',
+      // The sponsor kit's chest block; the plain kit's trousers match the shirt.
+      garmentSecondary: sponsor ? 'mustard' : 'emerald',
+      skin: 'skin-3',
+    },
   );
 
 export function cricketAmbient(): Character[] {
@@ -137,7 +143,7 @@ export function cricketAmbient(): Character[] {
       'ball',
     ),
     // The line of South Africa shirts: all carry the sponsor block but his.
-    ...[86.6, 87.4, 89.0, 89.8].map((x, i) =>
+    ...[85.6, 86.9, 89.5, 90.8].map((x, i) =>
       scene(
         `proteas-${i}`,
         'Teammate in the line, shirt with the sponsor',

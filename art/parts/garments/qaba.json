@@ -4919,6 +4919,166 @@
         "h": 84
       },
       "duration": 83
+    },
+    {
+      "filename": "bat_SE_0",
+      "frame": {
+        "x": 336,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_SE_1",
+      "frame": {
+        "x": 392,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_SE_2",
+      "frame": {
+        "x": 448,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_SE_3",
+      "frame": {
+        "x": 504,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_NE_0",
+      "frame": {
+        "x": 560,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_NE_1",
+      "frame": {
+        "x": 616,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_NE_2",
+      "frame": {
+        "x": 672,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "bat_NE_3",
+      "frame": {
+        "x": 728,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
     }
   ],
   "meta": {
@@ -5217,6 +5377,16 @@
         "name": "sujood_ne",
         "from": 244,
         "to": 245
+      },
+      {
+        "name": "bat_se",
+        "from": 246,
+        "to": 249
+      },
+      {
+        "name": "bat_ne",
+        "from": 250,
+        "to": 253
       }
     ],
     "slices": [
