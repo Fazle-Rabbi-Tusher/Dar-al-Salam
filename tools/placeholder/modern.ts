@@ -13,7 +13,6 @@ import {
   type DetailOptions,
   type IsoCanvas,
   type Material,
-  type P3,
 } from './iso-draw';
 
 /** Every colour this module paints. Keys are descriptive; values are the palette. */
@@ -4813,9 +4812,23 @@ Object.assign(objects, cricketScenes);
  * Everything is deterministic (seeded hashes), so frames and builds repeat.
  */
 type Tones = readonly string[];
-const FOLIAGE: Tones = [NC.leaf0, NC.leaf1, NC.leaf2, NC.leaf3, NC.leaf4, NC.leaf5];
+const FOLIAGE: Tones = [
+  NC.leaf0,
+  NC.leaf1,
+  NC.leaf2,
+  NC.leaf3,
+  NC.leaf4,
+  NC.leaf5,
+];
 const OAK: Tones = [NC.oak0, NC.oak1, NC.oak2, NC.oak3, NC.oak4, NC.oak5];
-const PINE: Tones = [NC.pine0, NC.pine1, NC.pine2, NC.pine3, NC.pine4, NC.pine5];
+const PINE: Tones = [
+  NC.pine0,
+  NC.pine1,
+  NC.pine2,
+  NC.pine3,
+  NC.pine4,
+  NC.pine5,
+];
 const BLOSSOM: Tones = [
   NC.blossom0,
   NC.blossom1,
@@ -4824,16 +4837,40 @@ const BLOSSOM: Tones = [
   NC.blossom4,
   NC.blossom5,
 ];
-const BIRCH_LEAF: Tones = [NC.birch0, NC.birch1, NC.birch2, NC.birch3, NC.birch4, NC.leaf4];
+const BIRCH_LEAF: Tones = [
+  NC.birch0,
+  NC.birch1,
+  NC.birch2,
+  NC.birch3,
+  NC.birch4,
+  NC.leaf4,
+];
 const BARK: Tones = [NC.bark0, NC.bark1, NC.bark2, NC.bark3];
-const ROCK: Tones = [NC.rock0, NC.rock1, NC.rock2, NC.rock3, NC.rock4, NC.rock5];
+const ROCK: Tones = [
+  NC.rock0,
+  NC.rock1,
+  NC.rock2,
+  NC.rock3,
+  NC.rock4,
+  NC.rock5,
+];
 const MOSS: Tones = [NC.moss0, NC.moss1, NC.moss2];
-const FALL: Tones = [NC.water0, NC.water1, NC.water2, NC.water3, NC.water4, NC.water5, NC.water6];
+const FALL: Tones = [
+  NC.water0,
+  NC.water1,
+  NC.water2,
+  NC.water3,
+  NC.water4,
+  NC.water5,
+  NC.water6,
+];
 const SEA: Tones = [NC.sea0, NC.sea1, NC.sea2, NC.sea3, NC.sea4, NC.sea5];
 /** 0..1 hash of integer coordinates and a seed. */
 function nhash(x: number, y: number, s = 0) {
   let h = Math.imul(
-    (Math.floor(x) * 374761393) ^ (Math.floor(y) * 668265263) ^ (s * 2246822519),
+    (Math.floor(x) * 374761393) ^
+      (Math.floor(y) * 668265263) ^
+      (s * 2246822519),
     1274126177,
   );
   h ^= h >>> 13;
@@ -4897,7 +4934,10 @@ function paintClumps(
             ((q.y - box.cy) / box.ry) * 0.85
           );
         let v =
-          local * 0.78 + glob * 0.55 + (nhash(px, py, seed) - 0.5) * 0.22 + extra;
+          local * 0.78 +
+          glob * 0.55 +
+          (nhash(px, py, seed) - 0.5) * 0.22 +
+          extra;
         // A bright cap on the lit side, a dark rim on the shaded side, so
         // each clump reads on its own.
         if (d < 0.55 && dx + dy < -0.15) v += 0.2;
@@ -4921,7 +4961,23 @@ function canopy(
   rMax = 9.5,
 ) {
   const box = { cx, cy, rx, ry };
-  paintClumps(c, clumpsIn(seed + 50, cx + 2, cy + 3, rx * 0.92, ry * 0.85, Math.round(n * 0.5), rMin, rMax), t, box, seed + 3, -0.45);
+  paintClumps(
+    c,
+    clumpsIn(
+      seed + 50,
+      cx + 2,
+      cy + 3,
+      rx * 0.92,
+      ry * 0.85,
+      Math.round(n * 0.5),
+      rMin,
+      rMax,
+    ),
+    t,
+    box,
+    seed + 3,
+    -0.45,
+  );
   paintClumps(c, clumpsIn(seed, cx, cy, rx, ry, n, rMin, rMax), t, box, seed);
 }
 /** Tapered trunk with lit left side, bark streaks and root flares. */
@@ -5011,9 +5067,7 @@ function rockShade(
     for (let i = -1; i <= 1; i++) {
       const cxp = (gx + i + 0.15 + nhash(gx + i, gy + j, seed) * 0.7) * cell,
         cyp =
-          (gy + j + 0.15 + nhash(gx + i, gy + j, seed + 1) * 0.7) *
-          cell *
-          0.75;
+          (gy + j + 0.15 + nhash(gx + i, gy + j, seed + 1) * 0.7) * cell * 0.75;
       const d = Math.hypot(px - cxp, (py - cyp) * 1.25);
       if (d < d1) {
         d2 = d1;
@@ -5077,11 +5131,19 @@ function cliffShade(
   return tone(t, v, [0.62, 0.3, 0.0, -0.3, -0.62]);
 }
 /** Fill pixels of marker colour `m` with `shade(x, y)`. */
-function recolour(c: IsoCanvas, m: string, shade: (x: number, y: number) => string) {
+function recolour(
+  c: IsoCanvas,
+  m: string,
+  shade: (x: number, y: number) => string,
+) {
   const { p } = c,
     w = p.width,
     h = Math.floor(p.data.length / (4 * w)),
-    [mr, mg, mb] = [parseInt(m.slice(1, 3), 16), parseInt(m.slice(3, 5), 16), parseInt(m.slice(5, 7), 16)];
+    [mr, mg, mb] = [
+      parseInt(m.slice(1, 3), 16),
+      parseInt(m.slice(3, 5), 16),
+      parseInt(m.slice(5, 7), 16),
+    ];
   for (let y = 0; y < h; y++)
     for (let x = 0; x < w; x++) {
       const i = (y * w + x) * 4;
@@ -5200,9 +5262,19 @@ const nature: Record<string, Spec> = {
             r: 4.6 - t * 0.25,
           });
           if (i % 2 === 0 && Math.abs(u) < 0.7)
-            clumps.push({ x: x + u * half * 0.55, y: cy - 6, r: 4.2 - t * 0.2 });
+            clumps.push({
+              x: x + u * half * 0.55,
+              y: cy - 6,
+              r: 4.2 - t * 0.2,
+            });
         }
-        paintClumps(c, clumps.sort((p, q) => p.y - q.y), PINE, tierBox, 30 + t);
+        paintClumps(
+          c,
+          clumps.sort((p, q) => p.y - q.y),
+          PINE,
+          tierBox,
+          30 + t,
+        );
       }
       paintClumps(c, [{ x, y: y - 100, r: 3.2 }], PINE, box, 40);
     },
@@ -5228,12 +5300,25 @@ const nature: Record<string, Spec> = {
       const bark = [NC.bark1, NC.bark2, NC.bark3, NC.bark3] as const;
       trunk(c, x, y, 38, 7, 4, bark);
       const box = { cx: x, cy: y - 60, rx: 28, ry: 21 };
-      paintClumps(c, clumpsIn(61, x + 2, y - 58, 26, 18, 14, 6, 9), BLOSSOM, box, 62, -0.5);
+      paintClumps(
+        c,
+        clumpsIn(61, x + 2, y - 58, 26, 18, 14, 6, 9),
+        BLOSSOM,
+        box,
+        62,
+        -0.5,
+      );
       branch(c, x - 1, y - 32, x - 20, y - 54, 1.8, bark);
       branch(c, x + 1, y - 30, x + 21, y - 52, 1.8, bark);
       branch(c, x, y - 36, x + 3, y - 70, 1.6, bark);
       branch(c, x - 10, y - 44, x - 15, y - 66, 1.1, bark);
-      paintClumps(c, clumpsIn(63, x, y - 62, 28, 21, 22, 5.5, 8.5), BLOSSOM, box, 64);
+      paintClumps(
+        c,
+        clumpsIn(63, x, y - 62, 28, 21, 22, 5.5, 8.5),
+        BLOSSOM,
+        box,
+        64,
+      );
     },
   },
   'm-palm': {
@@ -5263,9 +5348,9 @@ const nature: Record<string, Spec> = {
         }
       }
       // Fronds pointing away are drawn first and a shade darker.
-      const fronds = [
-        -160, -115, -70, -25, 15, 60, 110, 155,
-      ].sort((a, b) => Math.sin((a * Math.PI) / 180) - Math.sin((b * Math.PI) / 180));
+      const fronds = [-160, -115, -70, -25, 15, 60, 110, 155].sort(
+        (a, b) => Math.sin((a * Math.PI) / 180) - Math.sin((b * Math.PI) / 180),
+      );
       const frond = (deg: number, k: number) => {
         const a = (deg * Math.PI) / 180,
           away = Math.sin(a) < 0,
@@ -5300,7 +5385,15 @@ const nature: Record<string, Spec> = {
           for (let q = -w * 0.35; q <= edge; q += 0.5) {
             // The lowest pixel is a dark edge, so overlapping fronds part.
             const t =
-              q < -0.6 ? 1 : q < 0.6 ? 2 : q < w * 0.45 ? 3 : q > edge - 0.5 ? 5 : 4;
+              q < -0.6
+                ? 1
+                : q < 0.6
+                  ? 2
+                  : q < w * 0.45
+                    ? 3
+                    : q > edge - 0.5
+                      ? 5
+                      : 4;
             c.p.pixel(fx + nx * q, fy + ny * q, FOLIAGE[Math.min(5, t + d)]);
           }
         }
@@ -5335,10 +5428,16 @@ const nature: Record<string, Spec> = {
     draw(c) {
       const [x, y] = c.at(0.5, 0.5, 0);
       tufts(c, x, y + 1, 12, 7, [C.yellow, C.white]);
-      const birch = [NC.birchBark0, NC.birchBark1, NC.birchBark1, NC.birchMark] as const;
+      const birch = [
+        NC.birchBark0,
+        NC.birchBark1,
+        NC.birchBark1,
+        NC.birchMark,
+      ] as const;
       trunk(c, x, y, 56, 5, 3, birch, false);
       for (let j = 4; j < 54; j += 5)
-        if (nhash(j, 33) < 0.7) c.p.rect(x - 2 + (j % 3), y - j, 2 + (j % 2), 1, NC.birchMark);
+        if (nhash(j, 33) < 0.7)
+          c.p.rect(x - 2 + (j % 3), y - j, 2 + (j % 2), 1, NC.birchMark);
       branch(c, x, y - 42, x - 11, y - 60, 1, birch);
       branch(c, x, y - 46, x + 10, y - 66, 1, birch);
       canopy(c, 41, x + 1, y - 68, 20, 22, BIRCH_LEAF, 24, 4.5, 7.5);
@@ -5375,11 +5474,15 @@ const nature: Record<string, Spec> = {
     floor: true,
     draw(c) {
       const colours = [C.pink, C.white, C.yellow, C.purple, BLOSSOM[1]];
-      for (let i = 0; i < 22; i++) {
-        const [px, py] = c.at(0.12 + nhash(i, 71) * 0.76, 0.12 + nhash(i, 72) * 0.76, 0);
+      for (let i = 0; i < 30; i++) {
+        const [px, py] = c.at(
+          0.1 + nhash(i, 71) * 0.8,
+          0.1 + nhash(i, 72) * 0.8,
+          0,
+        );
         c.p.pixel(px, py, FOLIAGE[3]);
         c.p.pixel(px, py - 1, FOLIAGE[2]);
-        if (i % 2) {
+        if (i % 3) {
           const col = colours[i % colours.length];
           c.p.pixel(px - 1, py - 2, col);
           c.p.pixel(px + 1, py - 2, col);
@@ -5410,8 +5513,21 @@ const nature: Record<string, Spec> = {
     floor: true,
     draw(c) {
       for (let i = 0; i < 6; i++) {
-        const [px, py] = c.at(0.15 + nhash(i, 75) * 0.7, 0.15 + nhash(i, 76) * 0.7, 0);
-        boulder(c, px, py - 1, 2 + nhash(i, 77) * 1.8, 1.4 + nhash(i, 78), 79 + i, ROCK, false);
+        const [px, py] = c.at(
+          0.15 + nhash(i, 75) * 0.7,
+          0.15 + nhash(i, 76) * 0.7,
+          0,
+        );
+        boulder(
+          c,
+          px,
+          py - 1,
+          2 + nhash(i, 77) * 1.8,
+          1.4 + nhash(i, 78),
+          79 + i,
+          ROCK,
+          false,
+        );
       }
     },
   },
@@ -5469,8 +5585,7 @@ const nature: Record<string, Spec> = {
         NX = 20,
         NY = 16,
         stream = (i: number) => i >= 8 && i <= 11,
-        hill = (x: number) =>
-          Math.max(0, 1 - Math.abs(x - 2.5) / 2.6) ** 0.7;
+        hill = (x: number) => Math.max(0, 1 - Math.abs(x - 2.5) / 2.6) ** 0.7;
       // Where the cliff face stands (tile y), per column: rounded, with the
       // stream's notch set back between two jutting buttresses.
       const frontY = (i: number) => {
@@ -5567,7 +5682,10 @@ const nature: Record<string, Spec> = {
             y = (S - X) / 2,
             ang = Math.atan2(y - 2.95, x - 2.5),
             e = Math.hypot((x - 2.5) / 2.05, (y - 2.95) / 0.95);
-          if (e < 1 - nhash(Math.round(ang * 5), 0, 142) * 0.1 && y > frontAt(x))
+          if (
+            e < 1 - nhash(Math.round(ang * 5), 0, 142) * 0.1 &&
+            y > frontAt(x)
+          )
             put(px, py, POOL, x + y, x, y);
         }
       // Paint.
@@ -5588,9 +5706,11 @@ const nature: Record<string, Spec> = {
             col =
               nhash(px >> 2, py >> 1, 151) < 0.14 && !lip
                 ? rockShade(px, py, 0, 3)
-                : tone(MOSSY, 0.25 + (n - 0.5) * 0.6 + (lip ? 0.45 : 0), [
-                    0.62, 0.3, 0.0, -0.3,
-                  ]);
+                : tone(
+                    MOSSY,
+                    0.25 + (n - 0.5) * 0.6 + (lip ? 0.45 : 0),
+                    [0.62, 0.3, 0.0, -0.3],
+                  );
           } else if (k === FRONT || k === SIDE) {
             // Blocky stone in strata; moss and a few long vines hang over
             // each ledge, with a shadow under the overhang. The rock is
@@ -5651,7 +5771,8 @@ const nature: Record<string, Spec> = {
               col = FALL[0];
             else {
               const ring = (((rr - f * 2.5) % 10) + 10) % 10;
-              let v = 0.02 - (1 - e) * 0.3 + (nhash(px >> 1, py, 154) - 0.5) * 0.12;
+              let v =
+                0.02 - (1 - e) * 0.3 + (nhash(px >> 1, py, 154) - 0.5) * 0.12;
               if (e > 0.82) v += 0.35;
               if (ring < 1.3 && rr < 64) v += 0.45 * (1 - rr / 72);
               if (y - frontAt(x) < 0.2) v -= 0.3;
@@ -5688,26 +5809,55 @@ const nature: Record<string, Spec> = {
         [2.6, 0.35, 5],
       ] as const) {
         const [bx, by] = onTop(x, y);
-        canopy(c, 170 + Math.round(x * 10), bx, by - r * 0.4, r, r * 0.65, FOLIAGE, 8, 2.5, 3.8);
+        canopy(
+          c,
+          170 + Math.round(x * 10),
+          bx,
+          by - r * 0.4,
+          r,
+          r * 0.65,
+          FOLIAGE,
+          8,
+          2.5,
+          3.8,
+        );
       }
       for (const i of [7, 12]) {
         const x = (i + 0.5) * G,
-          [fx, fy] = c.at(x, frontY(i), rockH(i, Math.floor(frontY(i) / G) - 1));
+          [fx, fy] = c.at(
+            x,
+            frontY(i),
+            rockH(i, Math.floor(frontY(i) / G) - 1),
+          );
         for (let k = 0; k < 5; k++)
-          branch(c, fx - 5 + k * 2.5, fy - 1, fx - 6 + k * 2.6, fy + 5 + (k % 2) * 4, 0.6, [
-            FOLIAGE[2],
-            FOLIAGE[2],
-            FOLIAGE[3],
-            FOLIAGE[3],
-          ]);
+          branch(
+            c,
+            fx - 5 + k * 2.5,
+            fy - 1,
+            fx - 6 + k * 2.6,
+            fy + 5 + (k % 2) * 4,
+            0.6,
+            [FOLIAGE[2], FOLIAGE[2], FOLIAGE[3], FOLIAGE[3]],
+          );
       }
       // Wet stones in the pool and a ring of boulders around it.
       boulder(c, ...c.at(1.65, 2.55, 2), 4.5, 3, 181, ROCK, false);
       boulder(c, ...c.at(3.4, 2.5, 2), 3.5, 2.6, 182, ROCK, false);
       for (let t = -0.35; t < Math.PI + 0.4; t += 0.31) {
         const k = Math.round(t * 10),
-          [bx, by] = c.at(2.5 + Math.cos(t) * 2.12, 2.95 + Math.sin(t) * 1.0, 1);
-        boulder(c, bx, by, 3 + nhash(k, 0, 183) * 2.5, 2.2 + nhash(k, 0, 184) * 1.3, 185 + k);
+          [bx, by] = c.at(
+            2.5 + Math.cos(t) * 2.12,
+            2.95 + Math.sin(t) * 1.0,
+            1,
+          );
+        boulder(
+          c,
+          bx,
+          by,
+          3 + nhash(k, 0, 183) * 2.5,
+          2.2 + nhash(k, 0, 184) * 1.3,
+          185 + k,
+        );
       }
       tufts(c, ...c.at(0.35, 3.6, 0), 12, 97, [C.white, C.yellow]);
       tufts(c, ...c.at(4.75, 3.3, 0), 12, 98, [C.pink]);
@@ -5789,7 +5939,15 @@ const nature: Record<string, Spec> = {
       });
       // Dark wale and stern castle.
       c.edge([0.32, 1.33, HULL - 4], [2.25, 1.37, HULL - 4], NC.hull2);
-      c.box(0.28, 0.66, 0.55, 0.68, 12, { top: C.woodLight, front: NC.hull0, side: NC.hull1, edge: NC.hull2 }, HULL);
+      c.box(
+        0.28,
+        0.66,
+        0.55,
+        0.68,
+        12,
+        { top: C.woodLight, front: NC.hull0, side: NC.hull1, edge: NC.hull2 },
+        HULL,
+      );
       for (const x of [0.35, 0.55])
         c.faceX(x, 1.341, 0.1, HULL + 4, 4, NC.hull2);
       // Masts, yards and square sails (bellied), a jib at the bow.
@@ -5823,7 +5981,11 @@ const nature: Record<string, Spec> = {
             const dx = (px2 - cx) / 14,
               dy = (py2 - cy) / ((z1 - z0) / 2);
             const v = 0.5 - Math.abs(dx) * 0.5 - dy * 0.25 + (f ? 0.05 : 0);
-            return tone([NC.sail0, NC.sail1, NC.sail2, NC.sail3], v, [0.42, 0.15, -0.1]);
+            return tone(
+              [NC.sail0, NC.sail1, NC.sail2, NC.sail3],
+              v,
+              [0.42, 0.15, -0.1],
+            );
           });
           c.edge([mx, 0.46, z1 + 1], [mx, 1.54, z1 + 1], NC.hull2);
         }
@@ -5887,7 +6049,8 @@ const nature: Record<string, Spec> = {
             dy = (py + 0.5 - gy - 1) / 8.5,
             d = Math.hypot(dx, dy) + (nhash(px >> 1, py, 130) - 0.5) * 0.12,
             reach = f ? 0.8 : 0.7;
-          if (d > 1 || (d > 0.86 && nhash(px, py, 131) < (d - 0.86) * 7)) continue;
+          if (d > 1 || (d > 0.86 && nhash(px, py, 131) < (d - 0.86) * 7))
+            continue;
           let col: string = C.sandDark;
           if (d < reach) {
             const wave = Math.sin(px * 0.5 + py * 1.4 + f * Math.PI);
@@ -5896,7 +6059,14 @@ const nature: Record<string, Spec> = {
           } else if (d < reach + 0.07) col = SEA[0];
           c.p.pixel(px, py, col);
         }
-      const wet = [NC.rock1, NC.rock2, NC.rock3, NC.rock4, NC.rock5, NC.rock5] as const;
+      const wet = [
+        NC.rock1,
+        NC.rock2,
+        NC.rock3,
+        NC.rock4,
+        NC.rock5,
+        NC.rock5,
+      ] as const;
       boulder(c, gx - 9, gy - 5, 9, 7, 121, wet, true);
       boulder(c, gx + 9, gy - 2, 7, 5.5, 122, wet, false);
       boulder(c, gx + 1, gy + 3, 4, 3, 123, wet, false);
@@ -5904,7 +6074,11 @@ const nature: Record<string, Spec> = {
       for (let i = 0; i < 30; i++) {
         const a = nhash(i, 124 + f) * Math.PI,
           r = 7 + nhash(i, 125 + f) * 5;
-        c.p.pixel(gx - 9 + Math.cos(a) * r * 1.3, gy + 1 + Math.sin(a) * r * 0.35, SEA[0]);
+        c.p.pixel(
+          gx - 9 + Math.cos(a) * r * 1.3,
+          gy + 1 + Math.sin(a) * r * 0.35,
+          SEA[0],
+        );
       }
       c.p.pixel(gx - 13, gy - 9, NC.water0);
       c.p.pixel(gx - 12, gy - 9, NC.water0);

@@ -14251,8 +14251,7 @@
         1,
         1,
         0,
-        0,
-        0,
+        1,
         0,
         0,
         0,
@@ -14260,6 +14259,7 @@
         0,
         1,
         1,
+        1,
         0,
         0,
         0,
@@ -15205,11 +15205,11 @@
         1,
         1,
         1,
-        0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -15402,8 +15402,8 @@
         0,
         1,
         1,
-        0,
         0,
+        1,
         0,
         0,
         0,
@@ -15890,7 +15890,6 @@
         1,
         1,
         1,
-        0,
         0,
         0,
         0,
@@ -15899,9 +15898,10 @@
         0,
         0,
         0,
-        0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -16289,11 +16289,11 @@
         0,
         1,
         1,
-        0,
         0,
-        0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -16670,7 +16670,6 @@
         1,
         1,
         1,
-        0,
         0,
         0,
         0,
@@ -16680,6 +16679,7 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -16966,8 +16966,8 @@
         1,
         1,
         1,
-        0,
         0,
+        1,
         0,
         0,
         0,
@@ -17150,8 +17150,8 @@
         0,
         1,
         1,
-        0,
         0,
+        1,
         0,
         0,
         0,
@@ -17241,9 +17241,8 @@
         0,
         1,
         1,
-        0,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -17251,6 +17250,7 @@
         0,
         0,
         0,
+        1,
         0,
         1,
         1,
@@ -18302,11 +18302,11 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
+        1,
+        1,
         1,
         1,
+        0,
         1,
         1,
         0,
@@ -18337,9 +18337,6 @@
         0,
         1,
         1,
-        0,
-        0,
-        0,
         0,
         0,
         0,
@@ -18363,7 +18360,10 @@
         0,
         0,
         0,
-        0,
+        1,
+        1,
+        1,
+        1,
         0,
         1,
         1,
@@ -18373,18 +18373,18 @@
         0,
         1,
         1,
-        0,
+        1,
         0,
         0,
         0,
         1,
-        0,
         1,
         1,
         1,
         1,
         1,
         1,
+        1,
         0,
         0,
         0,
@@ -18398,14 +18398,13 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
         1,
         1,
         1,
         1,
         0,
+        1,
+        1,
         0,
         0,
         0,
@@ -18422,6 +18421,7 @@
         0,
         0,
         0,
+        0,
         1,
         1,
         0,
@@ -18433,7 +18433,6 @@
         0,
         1,
         1,
-        0,
         0,
         0,
         0,
@@ -18457,7 +18456,8 @@
         0,
         0,
         0,
-        0,
+        1,
+        1,
         0,
         0,
         0,
@@ -18494,11 +18494,11 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
+        1,
+        1,
         1,
         1,
+        0,
         1,
         1,
         0,
@@ -18590,9 +18590,6 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
         1,
         1,
         1,
@@ -18600,8 +18597,10 @@
         0,
         0,
         0,
-        1,
+        0,
         0,
+        0,
+        1,
         0,
         0,
         0,
@@ -18695,6 +18694,7 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -18939,17 +18939,17 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
-        0,
+        1,
+        1,
+        1,
+        1,
         0,
         1,
         1,
         1,
         1,
         1,
-        0,
+        1,
         0,
         0,
         0,
@@ -19118,7 +19118,6 @@
         0,
         1,
         1,
-        0,
         0,
         0,
         0,
@@ -19127,50 +19126,51 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        1,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
+        1,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -19525,7 +19525,7 @@
         1,
         1,
         1,
-        0,
+        1,
         0,
         0,
         0,
@@ -19553,8 +19553,7 @@
         0,
         0,
         0,
-        1,
-        1,
+        0,
         1,
         1,
         0,
@@ -19604,6 +19603,7 @@
         0,
         0,
         0,
+        0,
         1,
         0,
         0,
@@ -19649,8 +19649,7 @@
         0,
         0,
         0,
-        1,
-        1,
+        0,
         1,
         1,
         0,
@@ -19700,6 +19699,7 @@
         0,
         0,
         0,
+        0,
         1,
         0,
         0,
@@ -19745,8 +19745,7 @@
         0,
         0,
         0,
-        1,
-        1,
+        0,
         1,
         1,
         0,
@@ -19814,6 +19813,7 @@
         0,
         0,
         0,
+        1,
         0,
         1,
         0,
@@ -19841,10 +19841,7 @@
         0,
         0,
         0,
-        1,
-        1,
-        1,
-        1,
+        0,
         0,
         0,
         0,
@@ -19911,6 +19908,9 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         1,
         0,
         0,
@@ -20019,7 +20019,6 @@
         0,
         1,
         1,
-        0,
         0,
         0,
         0,
@@ -20102,6 +20101,7 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -20185,10 +20185,10 @@
         0,
         0,
         1,
-        0,
-        0,
-        0,
-        0,
+        1,
+        1,
+        1,
+        1,
         0,
         1,
         0,
@@ -20222,14 +20222,14 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
         0,
         0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         0,
         0,
         0,
@@ -20320,8 +20320,6 @@
         1,
         0,
         1,
-        0,
-        0,
         0,
         0,
         0,
@@ -20378,51 +20376,53 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
+        1,
         0,
+        1,
         0,
         0,
         1,
         1,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -20592,8 +20592,6 @@
         0,
         1,
         1,
-        0,
-        0,
         0,
         0,
         0,
@@ -20667,17 +20665,13 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -20689,11 +20683,13 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -20705,11 +20701,13 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -21113,12 +21111,14 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -21192,8 +21192,6 @@
         1,
         1,
         1,
-        0,
-        0,
         0,
         0,
         0,
@@ -21207,12 +21205,14 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        1,
         0,
         0,
+        1,
+        1,
+        1,
+        1,
+        1,
         0,
         0,
         0,
@@ -21288,12 +21288,6 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
         0,
         0,
         0,
@@ -21310,8 +21304,14 @@
         0,
         0,
         0,
+        1,
+        1,
+        1,
+        1,
+        1,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -21398,15 +21398,15 @@
         1,
         1,
         1,
-        0,
-        0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        1,
+        1,
+        1,
+        1,
+        1,
         0,
+        1,
         0,
         0,
         0,
@@ -21494,18 +21494,18 @@
         1,
         1,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
         0,
-        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         0,
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -21597,7 +21597,7 @@
         0,
         0,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -21936,8 +21936,6 @@
         1,
         1,
         1,
-        0,
-        0,
         0,
         0,
         0,
@@ -21976,6 +21974,7 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -21988,6 +21987,7 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -22093,7 +22093,7 @@
         0,
         0,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -22182,7 +22182,7 @@
         0,
         0,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -22379,7 +22379,7 @@
         0,
         0,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -22452,8 +22452,7 @@
         0,
         0,
         0,
-        0,
-        0,
+        1,
         0,
         0,
         0,
@@ -22473,6 +22472,7 @@
         0,
         0,
         0,
+        1,
         0,
         0,
         0,
@@ -26088,6 +26088,1230 @@
         },
         {
           "id": 189,
+          "type": "m-waterfall",
+          "x": 72,
+          "y": 96,
+          "footprint": [
+            5,
+            4
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 190,
+          "type": "m-oak",
+          "x": 69,
+          "y": 96,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 191,
+          "type": "m-pine",
+          "x": 71,
+          "y": 95,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 192,
+          "type": "m-birch",
+          "x": 78,
+          "y": 95,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 193,
+          "type": "m-pine",
+          "x": 79,
+          "y": 97,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 194,
+          "type": "m-tree",
+          "x": 81,
+          "y": 99,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 195,
+          "type": "m-rock",
+          "x": 78,
+          "y": 98,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 196,
+          "type": "m-bush",
+          "x": 71,
+          "y": 99,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 197,
+          "type": "m-bush",
+          "x": 77,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 198,
+          "type": "m-flowers",
+          "x": 70,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 199,
+          "type": "m-flowers",
+          "x": 72,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 200,
+          "type": "m-flowers",
+          "x": 73,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 201,
+          "type": "m-rocks-small",
+          "x": 74,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 202,
+          "type": "m-flowers",
+          "x": 75,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 203,
+          "type": "m-flowers",
+          "x": 76,
+          "y": 100,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 204,
+          "type": "m-cherry",
+          "x": 70,
+          "y": 104,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 205,
+          "type": "m-pine",
+          "x": 68,
+          "y": 109,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 206,
+          "type": "m-cherry",
+          "x": 83,
+          "y": 104,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 207,
+          "type": "m-oak",
+          "x": 86,
+          "y": 106,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 208,
+          "type": "m-birch",
+          "x": 93,
+          "y": 105,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 209,
+          "type": "m-tree",
+          "x": 91,
+          "y": 108,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 210,
+          "type": "m-bush",
+          "x": 88,
+          "y": 109,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 211,
+          "type": "m-flowers",
+          "x": 89,
+          "y": 109,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 212,
+          "type": "m-flowers",
+          "x": 84,
+          "y": 108,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 213,
+          "type": "m-flowers",
+          "x": 85,
+          "y": 108,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 214,
+          "type": "m-bush",
+          "x": 27,
+          "y": 24,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 215,
+          "type": "m-flowers",
+          "x": 26,
+          "y": 25,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 216,
+          "type": "m-flowers",
+          "x": 28,
+          "y": 25,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 217,
+          "type": "m-bush",
+          "x": 33,
+          "y": 24,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 218,
+          "type": "m-flowers",
+          "x": 32,
+          "y": 25,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 219,
+          "type": "m-cherry",
+          "x": 27,
+          "y": 36,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 220,
+          "type": "m-bush",
+          "x": 25,
+          "y": 34,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 221,
+          "type": "m-flowers",
+          "x": 26,
+          "y": 35,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 222,
+          "type": "m-flowers",
+          "x": 28,
+          "y": 35,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 223,
+          "type": "m-flowers",
+          "x": 26,
+          "y": 37,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 224,
+          "type": "m-flowers",
+          "x": 28,
+          "y": 37,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 225,
+          "type": "m-birch",
+          "x": 42,
+          "y": 41,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 226,
+          "type": "m-oak",
+          "x": 45,
+          "y": 41,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 227,
+          "type": "m-flowers",
+          "x": 40,
+          "y": 41,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 228,
+          "type": "m-flowers",
+          "x": 41,
+          "y": 41,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 229,
+          "type": "m-flowers",
+          "x": 47,
+          "y": 41,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 230,
+          "type": "m-flowers",
+          "x": 48,
+          "y": 41,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 231,
+          "type": "m-flowers",
+          "x": 39,
+          "y": 44,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 232,
+          "type": "m-flowers",
+          "x": 40,
+          "y": 44,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 233,
+          "type": "m-flowers",
+          "x": 41,
+          "y": 44,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 234,
+          "type": "m-bush",
+          "x": 50,
+          "y": 45,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 235,
+          "type": "m-cherry",
+          "x": 53,
+          "y": 45,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 236,
+          "type": "m-pine",
+          "x": 55,
+          "y": 49,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 237,
+          "type": "m-pine",
+          "x": 55,
+          "y": 52,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 238,
+          "type": "m-tree",
+          "x": 47,
+          "y": 54,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 239,
+          "type": "m-flowers",
+          "x": 48,
+          "y": 55,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 240,
+          "type": "m-flowers",
+          "x": 49,
+          "y": 55,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 241,
+          "type": "m-bush",
+          "x": 50,
+          "y": 55,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 242,
+          "type": "m-rock",
+          "x": 42,
+          "y": 55,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 243,
+          "type": "m-rocks-small",
+          "x": 43,
+          "y": 54,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 244,
+          "type": "m-tower-tall",
+          "x": 46.8,
+          "y": 66.2,
+          "footprint": [
+            3,
+            3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 245,
+          "type": "m-broadcast-tower",
+          "x": 51,
+          "y": 66.6,
+          "footprint": [
+            2,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 246,
+          "type": "m-tower-slim",
+          "x": 50,
+          "y": 79.6,
+          "footprint": [
+            2,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 247,
+          "type": "m-tower-slim-b",
+          "x": 8,
+          "y": 67,
+          "footprint": [
+            2,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 248,
+          "type": "m-utility-pole-start",
+          "x": 8,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 249,
+          "type": "m-utility-pole",
+          "x": 14,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 250,
+          "type": "m-utility-pole",
+          "x": 20,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 251,
+          "type": "m-utility-pole",
+          "x": 26,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 252,
+          "type": "m-utility-pole",
+          "x": 32,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 253,
+          "type": "m-utility-pole",
+          "x": 38,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 254,
+          "type": "m-utility-pole",
+          "x": 44,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 255,
+          "type": "m-utility-pole-end",
+          "x": 50,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 256,
+          "type": "m-utility-pole-start",
+          "x": 8,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 257,
+          "type": "m-utility-pole",
+          "x": 14,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 258,
+          "type": "m-utility-pole",
+          "x": 20,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 259,
+          "type": "m-utility-pole",
+          "x": 26,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 260,
+          "type": "m-utility-pole",
+          "x": 32,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 261,
+          "type": "m-utility-pole",
+          "x": 38,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 262,
+          "type": "m-utility-pole",
+          "x": 44,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 263,
+          "type": "m-utility-pole-end",
+          "x": 50,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 264,
+          "type": "m-utility-pole-start-side",
+          "x": 21,
+          "y": 67,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 265,
+          "type": "m-utility-pole-side",
+          "x": 21,
+          "y": 73,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 266,
+          "type": "m-utility-pole-side",
+          "x": 21,
+          "y": 79,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 267,
+          "type": "m-utility-pole-end-side",
+          "x": 21,
+          "y": 85,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 268,
+          "type": "m-street-cherry",
+          "x": 9,
+          "y": 91,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 269,
+          "type": "m-street-cherry",
+          "x": 15,
+          "y": 91,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 270,
+          "type": "m-street-cherry",
+          "x": 27,
+          "y": 91,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 271,
+          "type": "m-street-cherry",
+          "x": 33,
+          "y": 91,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 272,
+          "type": "m-street-cherry",
+          "x": 45,
+          "y": 91,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 273,
+          "type": "m-street-cherry",
+          "x": 51,
+          "y": 91,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 274,
+          "type": "m-awning-shop-c",
+          "x": 11,
+          "y": 73,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 275,
+          "type": "m-awning-shop",
+          "x": 13,
+          "y": 73,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 276,
+          "type": "m-awning-shop-b",
+          "x": 9,
+          "y": 86,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 277,
+          "type": "m-awning-shop-c",
+          "x": 11,
+          "y": 86,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 278,
+          "type": "m-awning-shop-b",
+          "x": 48,
+          "y": 86,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 279,
+          "type": "m-awning-shop",
+          "x": 50,
+          "y": 86,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 280,
+          "type": "m-awning-shop-c",
+          "x": 52,
+          "y": 86,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 281,
+          "type": "m-vending",
+          "x": 11,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 282,
+          "type": "m-vending",
+          "x": 35,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 283,
+          "type": "m-vending",
+          "x": 47,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 284,
+          "type": "m-vending",
+          "x": 17,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 285,
+          "type": "m-vending-side",
+          "x": 21,
+          "y": 82,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 286,
+          "type": "m-vending-side",
+          "x": 54,
+          "y": 70,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 287,
+          "type": "m-city-lamp",
+          "x": 6,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 288,
+          "type": "m-city-lamp",
+          "x": 42,
+          "y": 75,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 289,
+          "type": "m-city-lamp",
+          "x": 24,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 290,
+          "type": "m-city-lamp",
+          "x": 54,
+          "y": 88,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 291,
           "type": "m-octagon-mat",
           "x": 64,
           "y": 47,
@@ -26099,7 +27323,7 @@
           "z": 0
         },
         {
-          "id": 190,
+          "id": 292,
           "type": "m-cage-straight",
           "x": 65.5,
           "y": 46.85,
@@ -26111,7 +27335,7 @@
           "z": 4
         },
         {
-          "id": 191,
+          "id": 293,
           "type": "m-cage-straight",
           "x": 65.5,
           "y": 52.85,
@@ -26123,7 +27347,7 @@
           "z": 4
         },
         {
-          "id": 192,
+          "id": 294,
           "type": "m-cage-straight-side",
           "x": 63.85,
           "y": 48.5,
@@ -26135,7 +27359,7 @@
           "z": 4
         },
         {
-          "id": 193,
+          "id": 295,
           "type": "m-cage-straight-side",
           "x": 69.85,
           "y": 48.5,
@@ -26147,7 +27371,7 @@
           "z": 4
         },
         {
-          "id": 194,
+          "id": 296,
           "type": "m-cage-diag-a",
           "x": 64,
           "y": 47,
@@ -26159,7 +27383,7 @@
           "z": 4
         },
         {
-          "id": 195,
+          "id": 297,
           "type": "m-cage-diag-a",
           "x": 68.5,
           "y": 51.5,
@@ -26171,7 +27395,7 @@
           "z": 4
         },
         {
-          "id": 196,
+          "id": 298,
           "type": "m-cage-diag-b",
           "x": 68.5,
           "y": 47,
@@ -26183,7 +27407,7 @@
           "z": 4
         },
         {
-          "id": 197,
+          "id": 299,
           "type": "m-cage-diag-b",
           "x": 64,
           "y": 51.5,
@@ -26195,7 +27419,7 @@
           "z": 4
         },
         {
-          "id": 198,
+          "id": 300,
           "type": "m-ring-base",
           "x": 78,
           "y": 47,
@@ -26207,7 +27431,7 @@
           "z": 0
         },
         {
-          "id": 199,
+          "id": 301,
           "type": "m-ring-ropes",
           "x": 78,
           "y": 46.85,
@@ -26219,7 +27443,7 @@
           "z": 8
         },
         {
-          "id": 200,
+          "id": 302,
           "type": "m-ring-ropes",
           "x": 78,
           "y": 52.85,
@@ -26231,7 +27455,7 @@
           "z": 8
         },
         {
-          "id": 201,
+          "id": 303,
           "type": "m-ring-ropes-side",
           "x": 77.85,
           "y": 47,
@@ -26243,7 +27467,7 @@
           "z": 8
         },
         {
-          "id": 202,
+          "id": 304,
           "type": "m-ring-ropes-side",
           "x": 83.85,
           "y": 47,
@@ -26255,7 +27479,7 @@
           "z": 8
         },
         {
-          "id": 203,
+          "id": 305,
           "type": "m-ring-steps",
           "x": 80.5,
           "y": 53.05,
@@ -26267,7 +27491,7 @@
           "z": 0
         },
         {
-          "id": 204,
+          "id": 306,
           "type": "m-corner-stool",
           "x": 77.1,
           "y": 52.4,
@@ -26279,7 +27503,7 @@
           "z": 0
         },
         {
-          "id": 205,
+          "id": 307,
           "type": "m-corner-stool",
           "x": 84.3,
           "y": 47.4,
@@ -26291,7 +27515,7 @@
           "z": 0
         },
         {
-          "id": 206,
+          "id": 308,
           "type": "m-ringside-seats",
           "x": 63.5,
           "y": 54.8,
@@ -26303,7 +27527,7 @@
           "z": 0
         },
         {
-          "id": 207,
+          "id": 309,
           "type": "m-ringside-seats",
           "x": 67.5,
           "y": 54.8,
@@ -26315,7 +27539,7 @@
           "z": 0
         },
         {
-          "id": 208,
+          "id": 310,
           "type": "m-ringside-seats",
           "x": 77.5,
           "y": 54.8,
@@ -26327,7 +27551,7 @@
           "z": 0
         },
         {
-          "id": 209,
+          "id": 311,
           "type": "m-ringside-seats",
           "x": 81.5,
           "y": 54.8,
@@ -26339,7 +27563,7 @@
           "z": 0
         },
         {
-          "id": 210,
+          "id": 312,
           "type": "m-ringside-seats-side",
           "x": 86.6,
           "y": 47.5,
@@ -26351,7 +27575,7 @@
           "z": 0
         },
         {
-          "id": 211,
+          "id": 313,
           "type": "m-ringside-seats-side",
           "x": 86.6,
           "y": 51.5,
@@ -26363,7 +27587,7 @@
           "z": 0
         },
         {
-          "id": 212,
+          "id": 314,
           "type": "m-commentary-desk",
           "x": 72,
           "y": 51,
@@ -26375,7 +27599,7 @@
           "z": 0
         },
         {
-          "id": 213,
+          "id": 315,
           "type": "m-arena-banner",
           "x": 72.4,
           "y": 45.4,
@@ -26387,7 +27611,7 @@
           "z": 0
         },
         {
-          "id": 214,
+          "id": 316,
           "type": "m-arena-banner",
           "x": 89,
           "y": 45.4,
@@ -26399,7 +27623,7 @@
           "z": 0
         },
         {
-          "id": 215,
+          "id": 317,
           "type": "m-skyscraper-deco",
           "x": 13,
           "y": 66.2,
@@ -26411,7 +27635,7 @@
           "z": 0
         },
         {
-          "id": 216,
+          "id": 318,
           "type": "m-brownstone",
           "x": 6.4,
           "y": 71.6,
@@ -26423,7 +27647,7 @@
           "z": 0
         },
         {
-          "id": 217,
+          "id": 319,
           "type": "m-brownstone",
           "x": 16.6,
           "y": 71.6,
@@ -26435,7 +27659,7 @@
           "z": 0
         },
         {
-          "id": 218,
+          "id": 320,
           "type": "m-water-tower",
           "x": 19.6,
           "y": 66.6,
@@ -26447,7 +27671,7 @@
           "z": 0
         },
         {
-          "id": 219,
+          "id": 321,
           "type": "m-hydrant",
           "x": 7,
           "y": 66.4,
@@ -26459,19 +27683,19 @@
           "z": 0
         },
         {
-          "id": 220,
-          "type": "m-street-lamp",
+          "id": 322,
+          "type": "m-city-lamp",
           "x": 10.6,
           "y": 66.4,
           "footprint": [
-            0.5,
-            0.5
+            1,
+            1
           ],
           "walkable": false,
           "z": 0
         },
         {
-          "id": 221,
+          "id": 323,
           "type": "m-city-hall",
           "x": 27,
           "y": 66.2,
@@ -26483,8 +27707,8 @@
           "z": 0
         },
         {
-          "id": 222,
-          "type": "m-tree",
+          "id": 324,
+          "type": "m-street-cherry",
           "x": 25,
           "y": 72.4,
           "footprint": [
@@ -26495,8 +27719,8 @@
           "z": 0
         },
         {
-          "id": 223,
-          "type": "m-tree",
+          "id": 325,
+          "type": "m-street-cherry",
           "x": 37.6,
           "y": 72.4,
           "footprint": [
@@ -26507,7 +27731,7 @@
           "z": 0
         },
         {
-          "id": 224,
+          "id": 326,
           "type": "m-bench",
           "x": 29,
           "y": 73.6,
@@ -26519,7 +27743,7 @@
           "z": 0
         },
         {
-          "id": 225,
+          "id": 327,
           "type": "m-bench",
           "x": 34,
           "y": 73.6,
@@ -26531,31 +27755,31 @@
           "z": 0
         },
         {
-          "id": 226,
-          "type": "m-street-lamp",
+          "id": 328,
+          "type": "m-city-lamp",
           "x": 25.2,
           "y": 67,
           "footprint": [
-            0.5,
-            0.5
+            1,
+            1
           ],
           "walkable": false,
           "z": 0
         },
         {
-          "id": 227,
-          "type": "m-street-lamp",
+          "id": 329,
+          "type": "m-city-lamp",
           "x": 38,
           "y": 67,
           "footprint": [
-            0.5,
-            0.5
+            1,
+            1
           ],
           "walkable": false,
           "z": 0
         },
         {
-          "id": 228,
+          "id": 330,
           "type": "m-skyscraper-glass",
           "x": 43,
           "y": 66.2,
@@ -26567,19 +27791,7 @@
           "z": 0
         },
         {
-          "id": 229,
-          "type": "m-skyscraper-glass",
-          "x": 49.6,
-          "y": 66.6,
-          "footprint": [
-            3,
-            3
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 230,
+          "id": 331,
           "type": "m-newsstand",
           "x": 45,
           "y": 73.2,
@@ -26591,7 +27803,7 @@
           "z": 0
         },
         {
-          "id": 231,
+          "id": 332,
           "type": "m-bike-rack",
           "x": 50.4,
           "y": 73.4,
@@ -26603,7 +27815,7 @@
           "z": 0
         },
         {
-          "id": 232,
+          "id": 333,
           "type": "m-bodega",
           "x": 6.4,
           "y": 78.6,
@@ -26615,7 +27827,7 @@
           "z": 0
         },
         {
-          "id": 233,
+          "id": 334,
           "type": "m-brownstone",
           "x": 11,
           "y": 78.4,
@@ -26627,7 +27839,7 @@
           "z": 0
         },
         {
-          "id": 234,
+          "id": 335,
           "type": "m-brownstone",
           "x": 16.4,
           "y": 78.4,
@@ -26639,7 +27851,7 @@
           "z": 0
         },
         {
-          "id": 235,
+          "id": 336,
           "type": "m-tree",
           "x": 8,
           "y": 86.6,
@@ -26651,19 +27863,19 @@
           "z": 0
         },
         {
-          "id": 236,
-          "type": "m-street-lamp",
+          "id": 337,
+          "type": "m-city-lamp",
           "x": 14,
           "y": 86.8,
           "footprint": [
-            0.5,
-            0.5
+            1,
+            1
           ],
           "walkable": false,
           "z": 0
         },
         {
-          "id": 237,
+          "id": 338,
           "type": "m-hydrant",
           "x": 19.8,
           "y": 87,
@@ -26675,8 +27887,8 @@
           "z": 0
         },
         {
-          "id": 238,
-          "type": "m-tree",
+          "id": 339,
+          "type": "m-street-cherry",
           "x": 25,
           "y": 79,
           "footprint": [
@@ -26687,8 +27899,8 @@
           "z": 0
         },
         {
-          "id": 239,
-          "type": "m-tree",
+          "id": 340,
+          "type": "m-street-cherry",
           "x": 31,
           "y": 80,
           "footprint": [
@@ -26699,8 +27911,8 @@
           "z": 0
         },
         {
-          "id": 240,
-          "type": "m-tree",
+          "id": 341,
+          "type": "m-street-cherry",
           "x": 37.2,
           "y": 81.8,
           "footprint": [
@@ -26711,8 +27923,8 @@
           "z": 0
         },
         {
-          "id": 241,
-          "type": "m-tree",
+          "id": 342,
+          "type": "m-street-cherry",
           "x": 26.2,
           "y": 86.4,
           "footprint": [
@@ -26723,8 +27935,8 @@
           "z": 0
         },
         {
-          "id": 242,
-          "type": "m-tree",
+          "id": 343,
+          "type": "m-street-cherry",
           "x": 34.8,
           "y": 86.8,
           "footprint": [
@@ -26735,7 +27947,7 @@
           "z": 0
         },
         {
-          "id": 243,
+          "id": 344,
           "type": "m-bench",
           "x": 28,
           "y": 82.6,
@@ -26747,7 +27959,7 @@
           "z": 0
         },
         {
-          "id": 244,
+          "id": 345,
           "type": "m-bench",
           "x": 33,
           "y": 84.6,
@@ -26759,7 +27971,7 @@
           "z": 0
         },
         {
-          "id": 245,
+          "id": 346,
           "type": "m-planter-box",
           "x": 29.6,
           "y": 87.4,
@@ -26771,7 +27983,7 @@
           "z": 0
         },
         {
-          "id": 246,
+          "id": 347,
           "type": "m-halal-cart",
           "x": 36.6,
           "y": 78.6,
@@ -26783,7 +27995,7 @@
           "z": 0
         },
         {
-          "id": 247,
+          "id": 348,
           "type": "m-subway-entrance",
           "x": 43.4,
           "y": 79,
@@ -26795,19 +28007,7 @@
           "z": 0
         },
         {
-          "id": 248,
-          "type": "m-skyscraper-glass",
-          "x": 49.4,
-          "y": 79.2,
-          "footprint": [
-            3,
-            3
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 249,
+          "id": 349,
           "type": "m-bus-shelter",
           "x": 43,
           "y": 86.6,
@@ -26819,19 +28019,19 @@
           "z": 0
         },
         {
-          "id": 250,
-          "type": "m-street-lamp",
+          "id": 350,
+          "type": "m-city-lamp",
           "x": 47,
           "y": 87.2,
           "footprint": [
-            0.5,
-            0.5
+            1,
+            1
           ],
           "walkable": false,
           "z": 0
         },
         {
-          "id": 251,
+          "id": 351,
           "type": "m-taxi",
           "x": 8,
           "y": 64,
@@ -26843,7 +28043,7 @@
           "z": 0
         },
         {
-          "id": 252,
+          "id": 352,
           "type": "m-taxi",
           "x": 45,
           "y": 64,
@@ -26855,7 +28055,7 @@
           "z": 0
         },
         {
-          "id": 253,
+          "id": 353,
           "type": "m-taxi",
           "x": 10,
           "y": 90,
@@ -26867,7 +28067,7 @@
           "z": 0
         },
         {
-          "id": 254,
+          "id": 354,
           "type": "m-taxi",
           "x": 30,
           "y": 90,
@@ -26879,7 +28079,7 @@
           "z": 0
         },
         {
-          "id": 255,
+          "id": 355,
           "type": "m-taxi",
           "x": 47,
           "y": 77,
@@ -26891,7 +28091,7 @@
           "z": 0
         },
         {
-          "id": 256,
+          "id": 356,
           "type": "m-taxi-side",
           "x": 4,
           "y": 80,
@@ -26903,7 +28103,7 @@
           "z": 0
         },
         {
-          "id": 257,
+          "id": 357,
           "type": "m-taxi-side",
           "x": 56,
           "y": 68,
@@ -26915,7 +28115,7 @@
           "z": 0
         },
         {
-          "id": 258,
+          "id": 358,
           "type": "m-taxi-side",
           "x": 23,
           "y": 82,
@@ -26927,7 +28127,7 @@
           "z": 0
         },
         {
-          "id": 259,
+          "id": 359,
           "type": "m-crosswalk",
           "x": 6,
           "y": 63,
@@ -26939,7 +28139,7 @@
           "z": 0
         },
         {
-          "id": 260,
+          "id": 360,
           "type": "m-crosswalk",
           "x": 24.5,
           "y": 76,
@@ -26951,7 +28151,7 @@
           "z": 0
         },
         {
-          "id": 261,
+          "id": 361,
           "type": "m-crosswalk",
           "x": 42,
           "y": 89,
@@ -26963,7 +28163,7 @@
           "z": 0
         },
         {
-          "id": 262,
+          "id": 362,
           "type": "m-stage-backdrop",
           "x": 72,
           "y": 64.19999999999999,
@@ -26975,7 +28175,7 @@
           "z": 0
         },
         {
-          "id": 263,
+          "id": 363,
           "type": "m-stage-base",
           "x": 72,
           "y": 64.6,
@@ -26987,7 +28187,7 @@
           "z": 0
         },
         {
-          "id": 264,
+          "id": 364,
           "type": "m-podium",
           "x": 75.2,
           "y": 66.3,
@@ -26999,7 +28199,7 @@
           "z": 8
         },
         {
-          "id": 265,
+          "id": 365,
           "type": "m-us-flag",
           "x": 72.4,
           "y": 64.89999999999999,
@@ -27011,7 +28211,7 @@
           "z": 8
         },
         {
-          "id": 266,
+          "id": 366,
           "type": "m-state-flag",
           "x": 73.4,
           "y": 64.89999999999999,
@@ -27023,7 +28223,7 @@
           "z": 8
         },
         {
-          "id": 267,
+          "id": 367,
           "type": "m-state-flag",
           "x": 77.2,
           "y": 64.89999999999999,
@@ -27035,7 +28235,7 @@
           "z": 8
         },
         {
-          "id": 268,
+          "id": 368,
           "type": "m-us-flag",
           "x": 78.2,
           "y": 64.89999999999999,
@@ -27047,7 +28247,7 @@
           "z": 8
         },
         {
-          "id": 269,
+          "id": 369,
           "type": "m-speaker-stack",
           "x": 70.6,
           "y": 66.19999999999999,
@@ -27059,7 +28259,7 @@
           "z": 0
         },
         {
-          "id": 270,
+          "id": 370,
           "type": "m-speaker-stack",
           "x": 79.4,
           "y": 66.19999999999999,
@@ -27071,7 +28271,7 @@
           "z": 0
         },
         {
-          "id": 271,
+          "id": 371,
           "type": "m-camera-riser",
           "x": 74.6,
           "y": 78,
@@ -27083,7 +28283,7 @@
           "z": 0
         },
         {
-          "id": 272,
+          "id": 372,
           "type": "m-brick-building",
           "x": 61,
           "y": 63.4,
@@ -27095,7 +28295,7 @@
           "z": 0
         },
         {
-          "id": 273,
+          "id": 373,
           "type": "m-brick-building",
           "x": 86,
           "y": 63.4,
@@ -27107,7 +28307,7 @@
           "z": 0
         },
         {
-          "id": 274,
+          "id": 374,
           "type": "m-brick-building-side",
           "x": 61.2,
           "y": 72,
@@ -27119,7 +28319,7 @@
           "z": 0
         },
         {
-          "id": 275,
+          "id": 375,
           "type": "m-brick-building-side",
           "x": 92,
           "y": 72,
@@ -27131,7 +28331,7 @@
           "z": 0
         },
         {
-          "id": 276,
+          "id": 376,
           "type": "m-street-lamp",
           "x": 64,
           "y": 85.4,
@@ -27143,7 +28343,7 @@
           "z": 0
         },
         {
-          "id": 277,
+          "id": 377,
           "type": "m-street-lamp",
           "x": 70,
           "y": 85.4,
@@ -27155,7 +28355,7 @@
           "z": 0
         },
         {
-          "id": 278,
+          "id": 378,
           "type": "m-street-lamp",
           "x": 82,
           "y": 85.4,
@@ -27167,7 +28367,7 @@
           "z": 0
         },
         {
-          "id": 279,
+          "id": 379,
           "type": "m-street-lamp",
           "x": 88,
           "y": 85.4,
@@ -27179,7 +28379,7 @@
           "z": 0
         },
         {
-          "id": 280,
+          "id": 380,
           "type": "m-tree",
           "x": 62,
           "y": 88.6,
@@ -27191,7 +28391,7 @@
           "z": 0
         },
         {
-          "id": 281,
+          "id": 381,
           "type": "m-tree",
           "x": 74,
           "y": 88.6,
@@ -27203,7 +28403,7 @@
           "z": 0
         },
         {
-          "id": 282,
+          "id": 382,
           "type": "m-tree",
           "x": 91,
           "y": 88.6,
@@ -27215,7 +28415,7 @@
           "z": 0
         },
         {
-          "id": 283,
+          "id": 383,
           "type": "m-baitul-mukarram",
           "x": 8,
           "y": 96,
@@ -27227,7 +28427,7 @@
           "z": 0
         },
         {
-          "id": 284,
+          "id": 384,
           "type": "m-bm-gate",
           "x": 9.5,
           "y": 104,
@@ -27239,7 +28439,7 @@
           "z": 0
         },
         {
-          "id": 285,
+          "id": 385,
           "type": "m-bm-arcade",
           "x": 18,
           "y": 103.5,
@@ -27251,7 +28451,7 @@
           "z": 0
         },
         {
-          "id": 286,
+          "id": 386,
           "type": "m-bm-arcade",
           "x": 25,
           "y": 103.5,
@@ -27263,7 +28463,7 @@
           "z": 0
         },
         {
-          "id": 287,
+          "id": 387,
           "type": "m-bm-pavilion",
           "x": 4.5,
           "y": 108,
@@ -27275,7 +28475,7 @@
           "z": 0
         },
         {
-          "id": 288,
+          "id": 388,
           "type": "m-tea-stall",
           "x": 36.5,
           "y": 112,
@@ -27287,7 +28487,7 @@
           "z": 0
         },
         {
-          "id": 289,
+          "id": 389,
           "type": "m-street-lamp",
           "x": 34,
           "y": 106.5,
@@ -27299,7 +28499,7 @@
           "z": 0
         },
         {
-          "id": 290,
+          "id": 390,
           "type": "m-street-lamp",
           "x": 34,
           "y": 119,
@@ -27311,7 +28511,7 @@
           "z": 0
         },
         {
-          "id": 291,
+          "id": 391,
           "type": "m-tree",
           "x": 4,
           "y": 120,
@@ -27323,7 +28523,7 @@
           "z": 0
         },
         {
-          "id": 292,
+          "id": 392,
           "type": "m-tree",
           "x": 38,
           "y": 96,
@@ -27335,7 +28535,7 @@
           "z": 0
         },
         {
-          "id": 293,
+          "id": 393,
           "type": "m-tree",
           "x": 38,
           "y": 120,
@@ -27347,7 +28547,7 @@
           "z": 0
         },
         {
-          "id": 294,
+          "id": 394,
           "type": "m-bd-school",
           "x": 46,
           "y": 96.6,
@@ -27359,7 +28559,7 @@
           "z": 0
         },
         {
-          "id": 295,
+          "id": 395,
           "type": "m-bd-flag",
           "x": 59,
           "y": 101.5,
@@ -27371,7 +28571,7 @@
           "z": 0
         },
         {
-          "id": 296,
+          "id": 396,
           "type": "m-shapla-pond",
           "x": 66,
           "y": 98,
@@ -27383,7 +28583,7 @@
           "z": 0
         },
         {
-          "id": 297,
+          "id": 397,
           "type": "m-tree",
           "x": 44,
           "y": 108.8,
@@ -27395,7 +28595,7 @@
           "z": 0
         },
         {
-          "id": 298,
+          "id": 398,
           "type": "m-tree",
           "x": 61,
           "y": 108.8,
@@ -27407,7 +28607,7 @@
           "z": 0
         },
         {
-          "id": 299,
+          "id": 399,
           "type": "m-rickshaw",
           "x": 46,
           "y": 113.1,
@@ -27419,7 +28619,7 @@
           "z": 0
         },
         {
-          "id": 300,
+          "id": 400,
           "type": "m-rickshaw",
           "x": 53,
           "y": 113.1,
@@ -27431,7 +28631,7 @@
           "z": 0
         },
         {
-          "id": 301,
+          "id": 401,
           "type": "m-rickshaw",
           "x": 60,
           "y": 113.1,
@@ -27443,7 +28643,7 @@
           "z": 0
         },
         {
-          "id": 302,
+          "id": 402,
           "type": "m-cricket-pitch",
           "x": 77,
           "y": 113.8,
@@ -27455,7 +28655,7 @@
           "z": 0
         },
         {
-          "id": 303,
+          "id": 403,
           "type": "m-stumps",
           "x": 77.5,
           "y": 114,
@@ -27467,7 +28667,7 @@
           "z": 0
         },
         {
-          "id": 304,
+          "id": 404,
           "type": "m-stumps",
           "x": 77.5,
           "y": 120.8,
@@ -27479,7 +28679,7 @@
           "z": 0
         },
         {
-          "id": 305,
+          "id": 405,
           "type": "m-basketball-court",
           "x": 84,
           "y": 96,
@@ -27491,7 +28691,7 @@
           "z": 0
         },
         {
-          "id": 306,
+          "id": 406,
           "type": "m-hoop",
           "x": 84,
           "y": 98,
@@ -27503,7 +28703,7 @@
           "z": 0
         },
         {
-          "id": 307,
+          "id": 407,
           "type": "m-hoop",
           "x": 91,
           "y": 98,
@@ -27515,7 +28715,7 @@
           "z": 0
         },
         {
-          "id": 308,
+          "id": 408,
           "type": "m-tree",
           "x": 66,
           "y": 121,
@@ -27527,7 +28727,7 @@
           "z": 0
         },
         {
-          "id": 309,
+          "id": 409,
           "type": "m-tree",
           "x": 92,
           "y": 121,
