@@ -1,0 +1,106 @@
+{
+  "id": "frederic-kanoute",
+  "kind": "person",
+  "name": {
+    "en": "Frédéric Kanouté",
+    "ar": "فريدريك كانوتيه",
+    "bn": "ফ্রেদেরিক কানুতে"
+  },
+  "aliases": ["Frederic Kanoute"],
+  "years": "b. 1977",
+  "place": "Lyon · Seville",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-shaved-beard",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-7",
+      "hair": "hair-black",
+      "garmentPrimary": "lab-white",
+      "garmentSecondary": "kit-red",
+      "headwear": "white-linen",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 60,
+      "action": "idle",
+      "at": [66.4, 39.2],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 96,
+      "action": "celebrate",
+      "at": [66.4, 39.2],
+      "facing": "SE"
+    },
+    {
+      "from": 96,
+      "to": 120,
+      "action": "walk",
+      "path": [
+        [66.4, 39.2],
+        [67.8, 38.9]
+      ]
+    },
+    {
+      "from": 120,
+      "to": 180,
+      "action": "talk",
+      "at": [67.8, 38.9],
+      "facing": "NW",
+      "prop": "keys"
+    },
+    {
+      "from": 180,
+      "to": 216,
+      "action": "wave",
+      "at": [67.8, 38.9],
+      "facing": "SE"
+    },
+    {
+      "from": 216,
+      "to": 240,
+      "action": "walk",
+      "path": [
+        [67.8, 38.9],
+        [66.4, 39.2]
+      ]
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Malian forward who starred for Sevilla. He declined to wear a gambling sponsor on his shirt, and in 2007 he paid for the premises of Seville’s main mosque when its lease ran out, so the community could keep it."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Kanout%C3%A9"
+    },
+    {
+      "label": "Expatica / El País",
+      "url": "https://expatica.com/es/general/kanout-strikes-chord-with-seville-faithful-2-40407"
+    }
+  ],
+  "panelApproved": false
+}

@@ -1,0 +1,620 @@
+{
+  "frames": [
+    {
+      "filename": "idle_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_1",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_3",
+      "frame": {
+        "x": 22,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_0",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_1",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_2",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_3",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_1",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_3",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_4",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_5",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_4",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_5",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    }
+  ],
+  "meta": {
+    "image": "sofiane-boufal.png",
+    "size": {
+      "w": 110,
+      "h": 28
+    },
+    "density": 2,
+    "frameTags": [
+      {
+        "name": "idle_se",
+        "from": 0,
+        "to": 3
+      },
+      {
+        "name": "idle_ne",
+        "from": 4,
+        "to": 7
+      },
+      {
+        "name": "cheer_se",
+        "from": 8,
+        "to": 11
+      },
+      {
+        "name": "cheer_ne",
+        "from": 12,
+        "to": 15
+      },
+      {
+        "name": "walk_se",
+        "from": 16,
+        "to": 21
+      },
+      {
+        "name": "walk_ne",
+        "from": 22,
+        "to": 27
+      }
+    ],
+    "slices": [
+      {
+        "name": "foot",
+        "keys": [
+          {
+            "frame": 0,
+            "bounds": {
+              "x": 56,
+              "y": 160,
+              "w": 1,
+              "h": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

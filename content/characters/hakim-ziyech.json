@@ -1,0 +1,96 @@
+{
+  "id": "hakim-ziyech",
+  "kind": "person",
+  "name": {
+    "en": "Hakim Ziyech",
+    "ar": "حكيم زياش",
+    "bn": "হাকিম জিয়েশ"
+  },
+  "aliases": [],
+  "years": "b. 1993",
+  "place": "Dronten · Morocco",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-2",
+      "hair": "hair-black",
+      "garmentPrimary": "kit-red",
+      "garmentSecondary": "emerald",
+      "headwear": "white-linen",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 12,
+      "action": "kick",
+      "at": [79.2, 39.4],
+      "facing": "SE"
+    },
+    {
+      "from": 12,
+      "to": 60,
+      "action": "celebrate",
+      "at": [79.2, 39.4],
+      "facing": "SE"
+    },
+    {
+      "from": 60,
+      "to": 110,
+      "action": "idle",
+      "at": [79.2, 39.4],
+      "facing": "SE",
+      "prop": "envelope"
+    },
+    {
+      "from": 110,
+      "to": 150,
+      "action": "talk",
+      "at": [79.2, 39.4],
+      "facing": "SW",
+      "prop": "envelope"
+    },
+    {
+      "from": 150,
+      "to": 240,
+      "action": "wave",
+      "at": [79.2, 39.4],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Moroccan winger born in the Netherlands who chose to play for Morocco. Since joining the national team he has been reported to give his international earnings to charity and to team staff."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hakim_Ziyech"
+    },
+    {
+      "label": "NBC",
+      "url": "https://www.nbcsandiego.com/news/sports/hakim-ziyech-donates-2022-world-cup-earnings-to-poor-in-morocco/3123829/"
+    }
+  ],
+  "panelApproved": false
+}
