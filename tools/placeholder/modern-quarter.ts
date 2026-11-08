@@ -12,8 +12,10 @@ import { MODERN_OBJECTS } from './modern';
 import {
   STADIUM_LINKS,
   STADIUM_OBJECTS,
+  STADIUM_CARDS,
   STADIUM_UPGRADES,
   stadiumAmbient,
+  stadiumAmbient1b,
 } from './scenes/stadium';
 import { detailFootprints, type DetailType } from './details';
 
@@ -1035,7 +1037,8 @@ export function modernQuarter() {
   obj('m-dugout', 82, 33.4);
   obj('m-ball-rack', 77.6, 33.6);
   for (let i = 0; i < 4; i++) {
-    obj('m-tree', 66 + i * 8, 41.5);
+    // Trees at x 74 and 82 would hide the strip's scenes (scene bible).
+    if (i === 0 || i === 3) obj('m-tree', 66 + i * 8, 41.5);
     obj('m-street-lamp', 70 + i * 8, 41.6);
   }
   obj('m-bike-rack', 88, 41.2);
@@ -1335,7 +1338,7 @@ export function modernQuarter() {
 
   // Scene-bible stadium scenes (docs/scene-bible.md).
   for (const [type, x, y] of STADIUM_OBJECTS) obj(type, x, y);
-  ambient.push(...stadiumAmbient());
+  ambient.push(...stadiumAmbient(), ...stadiumAmbient1b());
 
   /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */
   // Octagon at (64, 47): flat mat baked into the floor, cage pieces on each
@@ -2228,7 +2231,6 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
 const SCENE_ROLES = [
   // Özil's goal, Benzema's and Liverpool's celebrations.
   /^amb-ozil-/,
-  /^amb-keeper-west$/,
   /^amb-referee$/,
   /^amb-teammate-/,
   /^amb-lfc-/,
@@ -3153,6 +3155,7 @@ export function namedCards(): Character[] {
     }),
     ...scholars().map(card),
     ...bangladeshAndMore().map(card),
+    ...STADIUM_CARDS.map(card),
   ].map((c) => {
     // Calm standing beats, so each person's supplied full-body sprite
     // (art/sprites/<id>.png) shows for part of their loop.

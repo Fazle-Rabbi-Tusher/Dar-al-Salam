@@ -1,0 +1,95 @@
+{
+  "id": "yassine-bounou",
+  "kind": "person",
+  "name": {
+    "en": "Yassine Bounou",
+    "ar": "ياسين بونو",
+    "bn": "ইয়াসিন বুনু"
+  },
+  "aliases": ["Bono"],
+  "years": "b. 1991",
+  "place": "Montreal · Casablanca",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "keeper-gloves",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "emerald",
+      "garmentSecondary": "kit-red",
+      "headwear": "white-linen",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 12,
+      "action": "idle",
+      "at": [68.4, 22.8],
+      "facing": "SE"
+    },
+    {
+      "from": 12,
+      "to": 36,
+      "action": "dive",
+      "at": [68.4, 22.8],
+      "facing": "SW"
+    },
+    {
+      "from": 36,
+      "to": 72,
+      "action": "cheer",
+      "at": [68.4, 22.8],
+      "facing": "SE"
+    },
+    {
+      "from": 72,
+      "to": 132,
+      "action": "cheer",
+      "at": [68.4, 22.8],
+      "facing": "SE",
+      "z": [0, 18, 4, 18, 0]
+    },
+    {
+      "from": 132,
+      "to": 240,
+      "action": "idle",
+      "at": [68.4, 22.8],
+      "facing": "SE"
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Moroccan goalkeeper who saved penalties in the shootout as Morocco beat Spain at the 2022 World Cup, on the way to becoming the first African team to reach a World Cup semi-final."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Yassine_Bounou"
+    },
+    {
+      "label": "CBS Sports",
+      "url": "https://www.cbssports.com/soccer/news/world-cup-score-spain-eliminated-as-morocco-advance-in-fifa-world-cup-2022-upset-after-penalty-shootout/live"
+    }
+  ],
+  "panelApproved": false
+}

@@ -1,0 +1,880 @@
+{
+  "frames": [
+    {
+      "filename": "idle_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_1",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_SE_3",
+      "frame": {
+        "x": 22,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "idle_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_0",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_1",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 32,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_2",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_3",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 32,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_SE_0",
+      "frame": {
+        "x": 110,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 50,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_SE_1",
+      "frame": {
+        "x": 132,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 50,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_SE_2",
+      "frame": {
+        "x": 110,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 50,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_SE_3",
+      "frame": {
+        "x": 132,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 50,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "celebrate_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_1",
+      "frame": {
+        "x": 154,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 50,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 50,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_SE_3",
+      "frame": {
+        "x": 154,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "talk_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_SE_1",
+      "frame": {
+        "x": 132,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_SE_3",
+      "frame": {
+        "x": 132,
+        "y": 0,
+        "w": 22,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "wave_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    }
+  ],
+  "meta": {
+    "image": "hakim-ziyech.png",
+    "size": {
+      "w": 176,
+      "h": 28
+    },
+    "density": 2,
+    "frameTags": [
+      {
+        "name": "idle_se",
+        "from": 0,
+        "to": 3
+      },
+      {
+        "name": "idle_ne",
+        "from": 4,
+        "to": 7
+      },
+      {
+        "name": "kick_se",
+        "from": 8,
+        "to": 11
+      },
+      {
+        "name": "kick_ne",
+        "from": 12,
+        "to": 15
+      },
+      {
+        "name": "celebrate_se",
+        "from": 16,
+        "to": 19
+      },
+      {
+        "name": "celebrate_ne",
+        "from": 20,
+        "to": 23
+      },
+      {
+        "name": "talk_se",
+        "from": 24,
+        "to": 27
+      },
+      {
+        "name": "talk_ne",
+        "from": 28,
+        "to": 31
+      },
+      {
+        "name": "wave_se",
+        "from": 32,
+        "to": 35
+      },
+      {
+        "name": "wave_ne",
+        "from": 36,
+        "to": 39
+      }
+    ],
+    "slices": [
+      {
+        "name": "foot",
+        "keys": [
+          {
+            "frame": 0,
+            "bounds": {
+              "x": 56,
+              "y": 160,
+              "w": 1,
+              "h": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

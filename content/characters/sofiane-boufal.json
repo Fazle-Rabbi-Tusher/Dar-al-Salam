@@ -1,0 +1,82 @@
+{
+  "id": "sofiane-boufal",
+  "kind": "person",
+  "name": {
+    "en": "Sofiane Boufal",
+    "ar": "سفيان بوفال",
+    "bn": "সোফিয়ান বুফাল"
+  },
+  "aliases": [],
+  "years": "b. 1993",
+  "place": "Paris · Morocco",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "football-kit",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "kit-red",
+      "garmentSecondary": "emerald",
+      "headwear": "white-linen",
+      "prop": "wool-cream"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 132,
+      "action": "cheer",
+      "at": [71.6, 26.6],
+      "facing": "SE"
+    },
+    {
+      "from": 132,
+      "to": 240,
+      "action": "walk",
+      "path": [
+        [71.6, 26.6],
+        [71.42, 27.02],
+        [71, 27.2],
+        [70.58, 27.02],
+        [70.4, 26.6],
+        [70.58, 26.18],
+        [71, 26],
+        [71.42, 26.18],
+        [71.6, 26.6]
+      ]
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Moroccan winger who brought his mother onto the pitch and danced with her after Morocco beat Portugal in the 2022 World Cup quarter-final."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sofiane_Boufal"
+    },
+    {
+      "label": "The New Arab",
+      "url": "https://www.newarab.com/news/world-cup-morocco-team-kin-melt-hearts-celebrations"
+    }
+  ],
+  "panelApproved": false
+}

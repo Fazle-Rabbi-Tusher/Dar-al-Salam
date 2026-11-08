@@ -60,3 +60,7 @@ statue as the reference instead.
 | zabit-magomedsharipov.png | Zabit Magomedsharipov | black rash guard, knee-length fight shorts, MMA gloves |
 | zaha-hadid.png | Zaha Hadid | long black dress, tablet |
 | zohran-mamdani.png | Zohran Mamdani | navy suit |
+| frederic-kanoute.png | Frédéric Kanouté | white Sevilla-style kit with red trim, plain shirt (no sponsor, no crest) |
+| hakim-ziyech.png | Hakim Ziyech | red Morocco-style kit with green trim (no crest) |
+| yassine-bounou.png | Yassine Bounou (Bono) | green goalkeeper kit, goalkeeper gloves |
+| sofiane-boufal.png | Sofiane Boufal | red Morocco-style kit with green trim (no crest) |

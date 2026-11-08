@@ -653,3 +653,35 @@ describe('scene bible: stadium (batch 1a)', () => {
     expect(content.characters.some((c) => /elneny/i.test(c.id))).toBe(false);
   });
 });
+
+describe('scene bible: stadium (batch 1b)', () => {
+  it('adds Kanouté, Ziyech, Bounou and Boufal as unapproved drafts', async () => {
+    const { forbiddenName } = await import('../../packages/shared/rules');
+    const { characterState } = await import('../../packages/shared/script');
+    for (const id of [
+      'frederic-kanoute',
+      'hakim-ziyech',
+      'yassine-bounou',
+      'sofiane-boufal',
+    ]) {
+      const c = content.characters.find((c) => c.id === id)!;
+      expect(c.panelApproved).toBe(false);
+      expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
+      expect(forbiddenName(c.name!.en, content.rules)).toBe(false);
+      expect(c.links?.length).toBeGreaterThanOrEqual(2);
+      expect(c.loop).toBe(240);
+      expect(characterState(c, 0)).toEqual(characterState(c, 240));
+    }
+    // Bono replaces the unnamed west keeper.
+    expect(content.characters.some((c) => c.id === 'amb-keeper-west')).toBe(
+      false,
+    );
+  });
+  it('syncs the mosque door lights to the master loop', async () => {
+    const index = JSON.parse(
+      await fs.readFile('art/objects/index.json', 'utf8'),
+    );
+    expect(index['m-mosque-door'].period).toBe(240);
+    expect(index['m-mosque-door'].frames).toHaveLength(2);
+  });
+});
