@@ -1441,5 +1441,60 @@
     ],
     "width": 64,
     "height": 78
+  },
+  "m-hospital-stand": {
+    "file": "objects/m-hospital-stand.png",
+    "anchor": [
+      128,
+      41
+    ],
+    "width": 176,
+    "height": 119,
+    "period": 240,
+    "frames": [
+      "objects/m-hospital-stand-0.png",
+      "objects/m-hospital-stand-1.png"
+    ]
+  },
+  "m-village-school": {
+    "file": "objects/m-village-school.png",
+    "anchor": [
+      48,
+      36
+    ],
+    "width": 128,
+    "height": 90
+  },
+  "m-ambulance-centre": {
+    "file": "objects/m-ambulance-centre.png",
+    "anchor": [
+      48,
+      39
+    ],
+    "width": 128,
+    "height": 93
+  },
+  "m-mosque-door": {
+    "file": "objects/m-mosque-door.png",
+    "anchor": [
+      32,
+      63
+    ],
+    "width": 96,
+    "height": 101,
+    "period": 240,
+    "frames": [
+      "objects/m-mosque-door-0.png",
+      "objects/m-mosque-door-1.png"
+    ]
+  },
+  "m-tunnel": {
+    "file": "objects/m-tunnel.png",
+    "anchor": [
+      48,
+      45
+    ],
+    "width": 112,
+    "height": 91
   }
 }

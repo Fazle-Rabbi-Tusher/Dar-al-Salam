@@ -15,7 +15,7 @@
     "base": "adult-man-shaved",
     "garment": "football-kit",
     "headwear": "none",
-    "prop": "football",
+    "prop": "none",
     "colours": {
       "skin": "skin-7",
       "hair": "hair-black",
@@ -25,19 +25,38 @@
       "prop": "graphite"
     }
   },
-  "loop": 120,
+  "loop": 240,
   "script": [
     {
       "from": 0,
-      "to": 120,
-      "action": "walk",
-      "path": [
-        [77, 29.6],
-        [82, 29.6],
-        [83.2, 27.6],
-        [78.4, 27.2],
-        [77, 29.6]
-      ]
+      "to": 96,
+      "action": "idle",
+      "at": [81.8, 29.8],
+      "facing": "NW"
+    },
+    {
+      "from": 96,
+      "to": 150,
+      "action": "carry",
+      "at": [81.8, 29.8],
+      "facing": "SE",
+      "prop": "trophy"
+    },
+    {
+      "from": 150,
+      "to": 210,
+      "action": "cheer",
+      "at": [81.8, 29.8],
+      "facing": "SE",
+      "prop": "trophy",
+      "z": [0, 14, 14, 14, 0]
+    },
+    {
+      "from": 210,
+      "to": 240,
+      "action": "idle",
+      "at": [81.8, 29.8],
+      "facing": "SW"
     }
   ],
   "bio": {
@@ -61,6 +80,10 @@
     {
       "label": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/N%27Golo_Kant%C3%A9"
+    },
+    {
+      "label": "ESPN",
+      "url": "https://www.espn.co.uk/football/story/_/id/49028067/utils"
     }
   ],
   "panelApproved": false

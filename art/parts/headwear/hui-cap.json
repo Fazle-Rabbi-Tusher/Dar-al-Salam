@@ -4839,6 +4839,86 @@
         "h": 84
       },
       "duration": 83
+    },
+    {
+      "filename": "sujood_SE_0",
+      "frame": {
+        "x": 112,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_SE_1",
+      "frame": {
+        "x": 168,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_NE_0",
+      "frame": {
+        "x": 224,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_NE_1",
+      "frame": {
+        "x": 280,
+        "y": 1260,
+        "w": 56,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 84
+      },
+      "duration": 83
     }
   ],
   "meta": {
@@ -5127,6 +5207,16 @@
         "name": "speech_ne",
         "from": 238,
         "to": 241
+      },
+      {
+        "name": "sujood_se",
+        "from": 242,
+        "to": 243
+      },
+      {
+        "name": "sujood_ne",
+        "from": 244,
+        "to": 245
       }
     ],
     "slices": [

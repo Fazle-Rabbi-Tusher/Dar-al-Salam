@@ -535,7 +535,8 @@ describe('scholars and scene roles', () => {
     const people = content.characters.filter(
       (c) => !c.name && c.kind === 'person',
     );
-    expect(people.length).toBeLessThanOrEqual(60);
+    // Only scene roles (named scenes' partners); the scene bible adds a few per scene.
+    expect(people.length).toBeLessThanOrEqual(90);
     for (const c of people) expect(c.role).toBeTruthy();
     const ids = new Set(content.characters.map((c) => c.id));
     for (const c of content.characters)

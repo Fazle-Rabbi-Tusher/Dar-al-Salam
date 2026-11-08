@@ -29,24 +29,42 @@
   "script": [
     {
       "from": 0,
+      "to": 24,
+      "action": "walk",
+      "path": [
+        [78.4, 22.6],
+        [75, 26.4]
+      ]
+    },
+    {
+      "from": 24,
+      "to": 36,
+      "action": "kick",
+      "at": [75, 26.4],
+      "facing": "SW"
+    },
+    {
+      "from": 36,
       "to": 120,
-      "action": "arms-out",
-      "at": [78.4, 22.6],
-      "facing": "SE"
+      "action": "sujood",
+      "at": [75, 26.4],
+      "facing": "SW"
     },
     {
       "from": 120,
       "to": 180,
       "action": "cheer",
-      "at": [78.4, 22.6],
+      "at": [75, 26.4],
       "facing": "SE"
     },
     {
       "from": 180,
       "to": 240,
-      "action": "idle",
-      "at": [78.4, 22.6],
-      "facing": "SW"
+      "action": "walk",
+      "path": [
+        [75, 26.4],
+        [78.4, 22.6]
+      ]
     }
   ],
   "pairWith": "sadio-mane",
@@ -71,6 +89,10 @@
     {
       "label": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Mohamed_Salah"
+    },
+    {
+      "label": "Al Jazeera",
+      "url": "https://www.aljazeera.com/news/2021/1/12/liverpools-salah-donates-oxygen-to-support-his-egyptian-village"
     }
   ],
   "panelApproved": false

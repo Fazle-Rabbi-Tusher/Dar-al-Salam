@@ -3547,14 +3547,14 @@ function drawGarment(p: Pixels, id: string, q: Pose) {
           if (id === 'football-kit-sponsor' && !q.away) {
             // A plain colour block across the chest stands in for a sponsor.
             const block = mk(p).poly([
-              at(q.chest, -1.2, -4.6),
-              at(q.chest, -1.2, 4.6),
-              at(q.chest, -4.8, 4.6),
-              at(q.chest, -4.8, -4.6),
+              at(q.chest, -0.8, -5),
+              at(q.chest, -0.8, 5),
+              at(q.chest, -6.2, 5),
+              at(q.chest, -6.2, -5),
             ]);
             shade(p, block, S, { r: 1.4, hi: 0.8, lo: 0.3 });
           }
-          if (!q.away)
+          if (!q.away && id !== 'football-kit-sponsor')
             for (let s = -4.5; s <= 4.5; s += 3)
               p.pixel(...at(q.chest, -1.5, s), C[0]);
         },
@@ -4857,13 +4857,13 @@ export async function generateParts(overwrite = false) {
               ? ['ball_roll', 'ball_still']
               : id === 'ambulance'
                 ? ['vehicle_drive']
-              : Object.keys(ACTIONS).filter(
-                  (a) =>
-                    !a.startsWith('cat_') &&
-                    !a.startsWith('bird_') &&
-                    !a.startsWith('ball_') &&
-                    !a.startsWith('vehicle_'),
-                )
+                : Object.keys(ACTIONS).filter(
+                    (a) =>
+                      !a.startsWith('cat_') &&
+                      !a.startsWith('bird_') &&
+                      !a.startsWith('ball_') &&
+                      !a.startsWith('vehicle_'),
+                  )
       ) as Action[];
       const frames: Aseprite['frames'] = [],
         tags: Aseprite['meta']['frameTags'] = [];

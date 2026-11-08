@@ -161,9 +161,489 @@
       "duration": 83
     },
     {
-      "filename": "hand-on-heart_SE_0",
+      "filename": "walk_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_1",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_3",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_4",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_5",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 34,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_4",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_5",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 34,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_0",
       "frame": {
         "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_1",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 32,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_2",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_SE_3",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 30,
+        "w": 22,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 32,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "kick_NE_3",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 30,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_SE_0",
+      "frame": {
+        "x": 110,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 80,
+        "y": 140,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_SE_1",
+      "frame": {
+        "x": 110,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 80,
+        "y": 140,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_NE_0",
+      "frame": {
+        "x": 132,
+        "y": 0,
+        "w": 24,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 78,
+        "y": 118,
+        "w": 24,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "sujood_NE_1",
+      "frame": {
+        "x": 156,
+        "y": 0,
+        "w": 24,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 78,
+        "y": 118,
+        "w": 24,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "hand-on-heart_SE_0",
+      "frame": {
+        "x": 180,
         "y": 0,
         "w": 22,
         "h": 26
@@ -183,7 +663,7 @@
     {
       "filename": "hand-on-heart_SE_1",
       "frame": {
-        "x": 66,
+        "x": 180,
         "y": 0,
         "w": 22,
         "h": 26
@@ -203,7 +683,7 @@
     {
       "filename": "hand-on-heart_SE_2",
       "frame": {
-        "x": 88,
+        "x": 202,
         "y": 0,
         "w": 22,
         "h": 26
@@ -223,7 +703,7 @@
     {
       "filename": "hand-on-heart_SE_3",
       "frame": {
-        "x": 88,
+        "x": 202,
         "y": 0,
         "w": 22,
         "h": 26
@@ -319,172 +799,12 @@
         "h": 168
       },
       "duration": 83
-    },
-    {
-      "filename": "celebrate_SE_0",
-      "frame": {
-        "x": 110,
-        "y": 0,
-        "w": 22,
-        "h": 26
-      },
-      "spriteSourceSize": {
-        "x": 50,
-        "y": 30,
-        "w": 22,
-        "h": 26
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_SE_1",
-      "frame": {
-        "x": 66,
-        "y": 0,
-        "w": 22,
-        "h": 26
-      },
-      "spriteSourceSize": {
-        "x": 50,
-        "y": 34,
-        "w": 22,
-        "h": 26
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_SE_2",
-      "frame": {
-        "x": 110,
-        "y": 0,
-        "w": 22,
-        "h": 26
-      },
-      "spriteSourceSize": {
-        "x": 50,
-        "y": 30,
-        "w": 22,
-        "h": 26
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_SE_3",
-      "frame": {
-        "x": 66,
-        "y": 0,
-        "w": 22,
-        "h": 26
-      },
-      "spriteSourceSize": {
-        "x": 50,
-        "y": 34,
-        "w": 22,
-        "h": 26
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_NE_0",
-      "frame": {
-        "x": 44,
-        "y": 0,
-        "w": 22,
-        "h": 24
-      },
-      "spriteSourceSize": {
-        "x": 48,
-        "y": 30,
-        "w": 22,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_NE_1",
-      "frame": {
-        "x": 44,
-        "y": 0,
-        "w": 22,
-        "h": 24
-      },
-      "spriteSourceSize": {
-        "x": 48,
-        "y": 34,
-        "w": 22,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_NE_2",
-      "frame": {
-        "x": 44,
-        "y": 0,
-        "w": 22,
-        "h": 24
-      },
-      "spriteSourceSize": {
-        "x": 48,
-        "y": 30,
-        "w": 22,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "celebrate_NE_3",
-      "frame": {
-        "x": 44,
-        "y": 0,
-        "w": 22,
-        "h": 24
-      },
-      "spriteSourceSize": {
-        "x": 48,
-        "y": 34,
-        "w": 22,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
     }
   ],
   "meta": {
     "image": "sadio-mane.png",
     "size": {
-      "w": 132,
+      "w": 224,
       "h": 26
     },
     "density": 2,
@@ -500,24 +820,44 @@
         "to": 7
       },
       {
-        "name": "hand-on-heart_se",
+        "name": "walk_se",
         "from": 8,
-        "to": 11
+        "to": 13
       },
       {
-        "name": "hand-on-heart_ne",
-        "from": 12,
-        "to": 15
-      },
-      {
-        "name": "celebrate_se",
-        "from": 16,
+        "name": "walk_ne",
+        "from": 14,
         "to": 19
       },
       {
-        "name": "celebrate_ne",
+        "name": "kick_se",
         "from": 20,
         "to": 23
+      },
+      {
+        "name": "kick_ne",
+        "from": 24,
+        "to": 27
+      },
+      {
+        "name": "sujood_se",
+        "from": 28,
+        "to": 29
+      },
+      {
+        "name": "sujood_ne",
+        "from": 30,
+        "to": 31
+      },
+      {
+        "name": "hand-on-heart_se",
+        "from": 32,
+        "to": 35
+      },
+      {
+        "name": "hand-on-heart_ne",
+        "from": 36,
+        "to": 39
       }
     ],
     "slices": [

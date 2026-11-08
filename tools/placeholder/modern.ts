@@ -4465,51 +4465,49 @@ const stadiumScenes: Record<string, Spec> = {
     // Children from the hospital ward, in light-blue gowns, behind the goal.
     // The tiers face +x so the children and their plain banner face the viewer.
     footprint: [2, 7],
-    h: 62,
+    h: 66,
     frames: 2,
     period: 240,
     draw(c, f) {
-      const gowns = [C.glass, C.glassLight, C.mint, C.glass];
+      const gowns = [C.glass, C.glassLight, C.mint, C.glassDark];
       const treads: [number, number, number][] = [
         [0, 0.67, 30],
         [0.67, 0.67, 20],
         [1.33, 0.67, 10],
       ];
-      for (const [x, d, z] of treads) c.box(x, 0, d, 7, z, M.white);
-      c.faceY(2.001, 0, 7, 9, 1, C.glassDark);
+      for (const [x, d, z] of treads) c.box(x, 0, d, 7, z, M.concrete);
+      c.faceY(2.001, 0, 7, 8, 2, C.glassDark);
+      const up = f === 1;
       let n = 0;
       for (const [x, d, z] of treads)
         for (let k = 0; k < 8; k++, n++) {
           if (n === 23) continue;
           const y = 0.45 + k * 0.84,
-            [px, py] = c.at(x + d * 0.55, y, z),
-            skin = fanSkins[(n * 3) % 4],
-            up = f === 1;
-          c.p.rect(px - 1, py - 8, 4, 6, gowns[n % gowns.length]);
-          c.p.pixel(px + 2, py - 3, C.glassDark);
-          c.p.rect(px - 1, py - 11, 3, 3, skin);
-          c.p.rect(px - 1, py - 12, 3, 1, n % 3 ? C.fanHair : C.woodDark);
+            [px, py] = c.at(x + d * 0.5, y, z),
+            skin = fanSkins[(n * 3) % 4];
+          // Gown, head and hair; arms raised when the banner goes up.
+          c.p.rect(px - 2, py - 10, 5, 8, gowns[n % gowns.length]);
+          c.p.rect(px + 2, py - 10, 1, 8, C.glassDark);
+          c.p.rect(px - 1, py - 14, 4, 4, skin);
+          c.p.rect(px - 1, py - 15, 4, 1, n % 3 ? C.fanHair : C.woodDark);
+          c.p.pixel(px + 2, py - 12, C.edge);
           if (up) {
-            c.p.rect(px - 2, py - 14, 1, 5, skin);
-            c.p.rect(px + 3, py - 14, 1, 5, skin);
+            c.p.rect(px - 3, py - 17, 1, 7, skin);
+            c.p.rect(px + 4, py - 17, 1, 7, skin);
+          } else {
+            c.p.rect(px - 3, py - 9, 1, 4, skin);
+            c.p.rect(px + 4, py - 9, 1, 4, skin);
           }
         }
-      // A plain white banner: held low across the front row, then high.
-      const z0 = f === 1 ? 46 : 24,
-        bh = 9;
-      c.poly(
-        [
-          [1.9, 0.5, z0],
-          [1.9, 6.5, z0],
-          [1.9, 6.5, z0 + bh],
-          [1.9, 0.5, z0 + bh],
-        ],
-        C.white,
-      );
-      c.edge([1.9, 0.5, z0], [1.9, 6.5, z0], C.pale);
-      c.edge([1.9, 0.5, z0 + bh], [1.9, 6.5, z0 + bh], C.silver);
-      c.edge([1.9, 0.5, z0 + bh - 2], [1.9, 6.5, z0 + bh - 2], C.glassLight);
-      for (const y of [0.5, 6.5]) c.edge([1.9, y, z0 - 6], [1.9, y, z0 + bh], C.woodDark);
+      // A plain white banner, no text: held low across the front, then high.
+      const z0 = up ? 50 : 22,
+        bh = 10;
+      c.faceY(1.95, 0.6, 5.8, z0, bh, C.white);
+      c.faceY(1.951, 0.6, 5.8, z0, 1, C.silver);
+      c.faceY(1.951, 0.6, 5.8, z0 + bh - 2, 1, C.glass);
+      c.faceY(1.951, 0.6, 5.8, z0 + 2, 1, C.glass);
+      for (const y of [0.6, 6.4])
+        c.edge([1.95, y, z0 - 8], [1.95, y, z0 + bh], C.woodDark);
     },
   },
   'm-village-school': {
@@ -4606,7 +4604,8 @@ const stadiumScenes: Record<string, Spec> = {
       const lit = f === 1;
       c.box(0, 0.45, 3, 0.55, 58, M.white);
       c.box(0, 0.45, 3, 0.55, 4, M.stone, 58);
-      for (let x = 0.1; x < 3; x += 0.4) c.box(x, 0.5, 0.2, 0.45, 5, M.white, 62);
+      for (let x = 0.1; x < 3; x += 0.4)
+        c.box(x, 0.5, 0.2, 0.45, 5, M.white, 62);
       const glow = lit ? C.windowLit : C.glassDeep,
         deep = lit ? C.lampGlow : C.ink;
       for (const x of [0.3, 2.25]) {
@@ -4639,7 +4638,11 @@ const stadiumScenes: Record<string, Spec> = {
         c.box(0, i * 0.45, 3, 0.45, 6, M.concrete, 30 + (2 - i) * 4);
       for (let i = 0; i < 3; i++)
         for (let k = 0; k < 8; k++) {
-          const [sx, sy] = c.at(0.2 + k * 0.36, i * 0.45 + 0.25, 36 + (2 - i) * 4);
+          const [sx, sy] = c.at(
+            0.2 + k * 0.36,
+            i * 0.45 + 0.25,
+            36 + (2 - i) * 4,
+          );
           c.p.rect(sx - 1, sy - 3, 3, 3, C.seatGrey);
         }
       // Tunnel mouth.

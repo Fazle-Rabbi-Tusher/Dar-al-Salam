@@ -161,7 +161,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_SE_0",
+      "filename": "carry_SE_0",
       "frame": {
         "x": 0,
         "y": 0,
@@ -181,7 +181,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_SE_1",
+      "filename": "carry_SE_1",
       "frame": {
         "x": 0,
         "y": 0,
@@ -201,7 +201,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_SE_2",
+      "filename": "carry_SE_2",
       "frame": {
         "x": 0,
         "y": 0,
@@ -221,7 +221,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_SE_3",
+      "filename": "carry_SE_3",
       "frame": {
         "x": 0,
         "y": 0,
@@ -241,7 +241,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_SE_4",
+      "filename": "carry_SE_4",
       "frame": {
         "x": 0,
         "y": 0,
@@ -261,7 +261,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_SE_5",
+      "filename": "carry_SE_5",
       "frame": {
         "x": 0,
         "y": 0,
@@ -281,7 +281,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_NE_0",
+      "filename": "carry_NE_0",
       "frame": {
         "x": 44,
         "y": 0,
@@ -301,7 +301,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_NE_1",
+      "filename": "carry_NE_1",
       "frame": {
         "x": 44,
         "y": 0,
@@ -321,7 +321,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_NE_2",
+      "filename": "carry_NE_2",
       "frame": {
         "x": 44,
         "y": 0,
@@ -341,7 +341,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_NE_3",
+      "filename": "carry_NE_3",
       "frame": {
         "x": 44,
         "y": 0,
@@ -361,7 +361,7 @@
       "duration": 83
     },
     {
-      "filename": "walk_NE_4",
+      "filename": "carry_NE_4",
       "frame": {
         "x": 44,
         "y": 0,
@@ -381,7 +381,167 @@
       "duration": 83
     },
     {
-      "filename": "walk_NE_5",
+      "filename": "carry_NE_5",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 36,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_0",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 32,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_1",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 32,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_2",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 36,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_SE_3",
+      "frame": {
+        "x": 88,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 48,
+        "y": 36,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_0",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 32,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_1",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 32,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_2",
+      "frame": {
+        "x": 44,
+        "y": 0,
+        "w": 22,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 36,
+        "w": 22,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "cheer_NE_3",
       "frame": {
         "x": 44,
         "y": 0,
@@ -404,8 +564,8 @@
   "meta": {
     "image": "ngolo-kante.png",
     "size": {
-      "w": 66,
-      "h": 22
+      "w": 110,
+      "h": 24
     },
     "density": 2,
     "frameTags": [
@@ -420,14 +580,24 @@
         "to": 7
       },
       {
-        "name": "walk_se",
+        "name": "carry_se",
         "from": 8,
         "to": 13
       },
       {
-        "name": "walk_ne",
+        "name": "carry_ne",
         "from": 14,
         "to": 19
+      },
+      {
+        "name": "cheer_se",
+        "from": 20,
+        "to": 23
+      },
+      {
+        "name": "cheer_ne",
+        "from": 24,
+        "to": 27
       }
     ],
     "slices": [
