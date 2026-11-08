@@ -200,17 +200,12 @@ html[lang='bn'] .brand strong {
   position: absolute;
   inset: 0;
   touch-action: none;
-  /* Sky behind the little planet. */
+  /* Painted pixel-art sky behind the little planet (tools/build/sky.ts),
+     over a matching gradient while it loads. */
   background:
-    radial-gradient(
-      circle at 50% 40%,
-      #fff8e6 0%,
-      #fdebd7 22%,
-      transparent 58%
-    ),
-    radial-gradient(circle at 15% 85%, #f6d4c5 0%, transparent 45%),
-    radial-gradient(circle at 85% 10%, #dfe3f2 0%, transparent 45%),
-    linear-gradient(180deg, #e4e8f3 0%, #f3e6dc 55%, #f7dccb 100%);
+    url('/world/sky.webp') center / cover no-repeat,
+    linear-gradient(180deg, #4a7db6 0%, #96bedb 50%, #f6f0df 100%);
+  image-rendering: pixelated;
 }
 .world-host canvas {
   display: block;
