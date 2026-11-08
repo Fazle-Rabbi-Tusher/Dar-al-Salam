@@ -17,6 +17,11 @@ import {
   stadiumAmbient,
   stadiumAmbient1b,
 } from './scenes/stadium';
+import {
+  CRICKET_CARDS,
+  CRICKET_OBJECTS,
+  cricketAmbient,
+} from './scenes/cricket';
 import { detailFootprints, type DetailType } from './details';
 
 /*
@@ -1339,6 +1344,8 @@ export function modernQuarter() {
   // Scene-bible stadium scenes (docs/scene-bible.md).
   for (const [type, x, y] of STADIUM_OBJECTS) obj(type, x, y);
   ambient.push(...stadiumAmbient(), ...stadiumAmbient1b());
+  for (const [type, x, y] of CRICKET_OBJECTS) obj(type, x, y);
+  ambient.push(...cricketAmbient());
 
   /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */
   // Octagon at (64, 47): flat mat baked into the floor, cage pieces on each
@@ -2243,6 +2250,8 @@ const SCENE_ROLES = [
   /^amb-rally-[0-9]$/,
   // Scene-bible stadium scenes: passers, trophy teammates, the ambulance.
   /^amb-stadium-/,
+  // Scene-bible cricket scenes: the podium team, the line of shirts.
+  /^amb-cricket-/,
   // People of Bangladesh: worshippers, a tea stall, pupils and the cricket.
   /^amb-bd-/,
   // Audiences and partners of scholars and scientists.
@@ -3156,6 +3165,7 @@ export function namedCards(): Character[] {
     ...scholars().map(card),
     ...bangladeshAndMore().map(card),
     ...STADIUM_CARDS.map(card),
+    ...CRICKET_CARDS.map(card),
   ].map((c) => {
     // Calm standing beats, so each person's supplied full-body sprite
     // (art/sprites/<id>.png) shows for part of their loop.
