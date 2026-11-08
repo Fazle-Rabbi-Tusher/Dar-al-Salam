@@ -25,10 +25,10 @@ import {
   PLANET,
   RADIUS_PX,
   WILD,
+  WILD_GLSL,
   fitZoom,
   focusFromWorld,
   frame as planetFrame,
-  fromLatLon,
   planetToTile,
   project,
   screenFacing,
@@ -87,14 +87,6 @@ void main() {
   vPos = aPosition;
 }`;
 const f = (n: number) => n.toFixed(6);
-const lakes = WILD.lakes
-  .map(([lat, lon, r], i) => {
-    const c = fromLatLon(lat, lon);
-    return `  { float d = acos(clamp(dot(p, vec3(${c.map(f).join(',')})), -1.0, 1.0));
-    if (d < ${f(r)}) return mix(WATER, WATER_LIGHT, step(0.5, fract(d * 90.0 + ${i}.0 * 0.3)) * 0.5);
-    if (d < ${f(r + 0.035)}) return SAND; }`;
-  })
-  .join('\n');
 // The planet: wraps the quarter's top-down floor onto a sphere, fills the rest
 // with grass, lakes and a ring road, then adds soft lighting and a halo.
 const fragment = /* glsl */ `
@@ -108,29 +100,92 @@ const vec2 MAP_CENTRE = vec2(${f(PLANET.centre[0])}, ${f(PLANET.centre[1])});
 const float RADIUS_TILES = ${f(PLANET.radiusTiles)};
 uniform vec2 uMapSize;
 uniform float uMode;
-const vec3 GRASS = vec3(0.639, 0.690, 0.525);
-const vec3 GRASS_MID = vec3(0.459, 0.588, 0.420);
-const vec3 GRASS_DARK = vec3(0.282, 0.451, 0.349);
-const vec3 WATER = vec3(0.475, 0.714, 0.698);
-const vec3 WATER_LIGHT = vec3(0.639, 0.812, 0.745);
-const vec3 SAND = vec3(0.894, 0.835, 0.725);
+uniform float uTime;
+const vec3 DEEP = vec3(0.122, 0.361, 0.525);
+const vec3 SEA = vec3(0.180, 0.490, 0.659);
+const vec3 SEA_LIGHT = vec3(0.373, 0.659, 0.784);
+const vec3 SHALLOW = vec3(0.247, 0.686, 0.722);
+const vec3 SHALLOW_LIGHT = vec3(0.498, 0.847, 0.816);
+const vec3 FOAM = vec3(0.949, 0.984, 0.969);
+const vec3 WET_SAND = vec3(0.788, 0.675, 0.486);
+const vec3 SAND = vec3(0.910, 0.827, 0.635);
+const vec3 SAND_LIGHT = vec3(0.953, 0.894, 0.745);
+const vec3 MEADOW = vec3(0.525, 0.702, 0.353);
+const vec3 MEADOW_LIGHT = vec3(0.639, 0.788, 0.416);
+const vec3 MEADOW_DARK = vec3(0.416, 0.604, 0.282);
+const vec3 FOREST = vec3(0.310, 0.502, 0.251);
+const vec3 FOREST_LIGHT = vec3(0.400, 0.600, 0.290);
+const vec3 FOREST_DARK = vec3(0.227, 0.396, 0.208);
+const vec3 ROCK = vec3(0.541, 0.592, 0.627);
+const vec3 ROCK_LIGHT = vec3(0.702, 0.741, 0.761);
+const vec3 ROCK_DARK = vec3(0.373, 0.420, 0.459);
+const vec3 MOSS = vec3(0.431, 0.549, 0.306);
 const vec3 STONE = vec3(0.843, 0.863, 0.824);
 const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
 float hash(vec3 q) {
   return fract(sin(dot(q, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
 }
-vec3 wild(vec3 p) {
-  if (abs(p.z) < ${f(WILD.roadHalfWidth)}) {
+${WILD_GLSL}
+vec3 flower(float h) {
+  float k = fract(h * 97.0);
+  return k < 0.3 ? vec3(0.922, 0.667, 0.714)
+    : k < 0.55 ? vec3(0.961, 0.933, 0.859)
+    : k < 0.8 ? vec3(0.961, 0.784, 0.259)
+    : vec3(0.659, 0.518, 0.690);
+}
+// Banded, dithered colour steps (pixel-art painting), lit by the planet shade.
+vec3 wild(vec3 p, vec2 tile) {
+  // Texels at the quarter's own floor density (16 per tile).
+  vec3 cell = floor(p * ${f(PLANET.radiusTiles * 16)});
+  float h = hash(cell), h2 = hash(cell + 17.0);
+  // The world clock (12 fps frames, 0–239): every motion loops every 240.
+  float t = uTime * 6.2831853 / 240.0;
+  float land = landField(p, tile);
+  if (land < 0.0) {
+    float depth = -land + (h - 0.5) * 1.2;
+    vec3 col = depth > 9.0 ? DEEP : depth > ${f(WILD.shallows)} ? SEA
+      : depth > 2.2 ? SHALLOW : SHALLOW_LIGHT;
+    // Long light dashes drifting across the open water.
+    float stripe = sin(p.y * 620.0 + coveField(p) * 6.0 + t * 3.0);
+    float dash = sin(p.x * 260.0 - p.z * 210.0 + h * 1.5);
+    if (depth > 2.0 && stripe > 0.94 && dash > 0.1)
+      col = depth > ${f(WILD.shallows)} ? SEA_LIGHT : SHALLOW_LIGHT;
+    // Surf: the foam line laps in and out, and a wave rolls in every 5 s.
+    float swash = 0.35 + 0.55 * (0.5 + 0.5 * sin(t * 4.0 + coveField(p) * 9.0));
+    if (-land < swash && h > 0.15) col = FOAM;
+    float roll = fract(uTime / 60.0), line = 3.8 * (1.0 - roll);
+    if (abs(-land - line) < 0.2 && h > 0.25 + 0.5 * roll) col = mix(col, FOAM, 0.8);
+    // Sparkles on the open water.
+    if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
+    return col;
+  }
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5) {
     float along = atan(p.y, p.x) * 140.0;
     float across = p.z / ${f(WILD.roadHalfWidth)};
     float joint = step(0.92, fract(along)) + step(0.86, abs(across));
     return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
   }
-${lakes}
-  float h = hash(floor(p * 260.0));
-  vec3 g = h > 0.93 ? GRASS_DARK : h > 0.7 ? GRASS_MID : GRASS;
-  if (h > 0.985) g = vec3(0.918, 0.773, 0.467);
-  return g;
+  float edge = land + (h - 0.5) * 0.8;
+  if (edge < ${f(WILD.beach)}) {
+    if (land < 0.55) return h > 0.93 ? SAND_LIGHT : WET_SAND;
+    return h > 0.9 ? SAND_LIGHT : h < 0.07 ? WET_SAND : SAND;
+  }
+  float d = mapDistance(tile), dither = (h - 0.5) * 0.06;
+  float rock = rockField(p);
+  if (land > 10.0 && d > 6.0 && rock + dither > ${f(WILD.rockAbove)}) {
+    // Rocky hills: mottled stone in clumps, moss in the cracks.
+    float clump = hash(floor(p * ${f(PLANET.radiusTiles * 4)}));
+    if (rock < ${f(WILD.rockAbove + 0.03)} || h > 0.88) return MOSS;
+    if (h < 0.05) return ROCK_DARK;
+    return clump > 0.66 ? ROCK_LIGHT : clump < 0.22 ? ROCK_DARK : ROCK;
+  }
+  float patchy = forestField(p) * 0.5 + coveField(p) * 0.25 + (h - 0.5) * 0.35;
+  if (d > 4.0 && forestField(p) + dither > ${f(WILD.forestAbove)}) {
+    if (h2 > 0.97) return MOSS;
+    return patchy > 0.3 ? FOREST_DARK : patchy < -0.05 ? FOREST_LIGHT : FOREST;
+  }
+  if (h2 > 0.982) return flower(h2);
+  return patchy > 0.28 ? MEADOW_DARK : patchy < -0.28 ? MEADOW_LIGHT : MEADOW;
 }
 void main() {
   vec2 d = (vPos - uCentre) / uRadius;
@@ -154,7 +209,7 @@ void main() {
   vec3 col;
   if (tile.x >= 0.0 && tile.y >= 0.0 && tile.x < uMapSize.x && tile.y < uMapSize.y)
     col = texture(uGround, tile / uMapSize).rgb;
-  else col = wild(p);
+  else col = wild(p, tile);
   float light = clamp(dot(n, normalize(vec3(-0.35, 0.6, 0.72))), 0.0, 1.0);
   float shade = 0.74 + 0.26 * floor(light * 6.0) / 6.0;
   float rim = smoothstep(0.32, 0.0, n.z);
@@ -351,6 +406,8 @@ export class Engine {
         value: new Float32Array([manifest.room.width, manifest.room.height]),
         type: 'vec2<f32>',
       },
+      // The world frame (0–239) for the sea's waves; never wall-clock time.
+      uTime: { value: 0, type: 'f32' },
     });
     const mesh = (mode: number) =>
       new Mesh({
@@ -542,6 +599,7 @@ export class Engine {
   }
   private update() {
     if (!this.manifest) return;
+    (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
     for (const s of this.statics) {
       if (s.sortable.animation)
         this.texture(

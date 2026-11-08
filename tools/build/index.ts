@@ -45,10 +45,9 @@ import { stripTempo } from '../../packages/shared/motion';
 import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
-  PLANET,
-  planetToTile,
-  wildAt,
-  type Vec3,
+  WILD,
+  wildPlantings,
+  type Planting,
 } from '../../packages/shared/planet';
 import type { ObjectArt } from '../placeholder/objects';
 const out = 'public-build';
@@ -508,69 +507,86 @@ async function build() {
         });
       }
     }
-  // Trees and planters across the rest of the planet, on a Fibonacci lattice.
-  const wild = [
-    'm-tree',
-    'palm',
-    'cypress',
-    'detail-olive',
-    'm-tree',
-    'm-tree',
-  ];
-  const wildFrames = new Map<string, string>();
-  for (const type of wild) {
-    const art = objectArt[type];
-    wildFrames.set(
-      type,
-      register(await image(`art/${art.file}`), art.anchor as [number, number]),
+  // The rest of the planet: forests, meadows, beaches, rocky hills with
+  // waterfalls and ships at sea (packages/shared/planet.ts, wildPlantings).
+  if (room.width !== WILD.map[0] || room.height !== WILD.map[1])
+    throw Error(
+      `WILD.map (${WILD.map}) must match the room (${room.width}×${room.height})`,
     );
-  }
-  const count = 900,
-    golden = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < count; i++) {
-    const y = 1 - ((i + 0.5) / count) * 2,
-      r = Math.sqrt(1 - y * y),
-      a = golden * i;
-    // Seeded jitter breaks up the lattice rows (build time only).
-    const j1 = Math.sin(i * 12.9898) * 43758.5453,
-      j2 = Math.sin(i * 78.233) * 12345.6789,
-      jx = (j1 - Math.floor(j1) - 0.5) * 0.09,
-      jy = (j2 - Math.floor(j2) - 0.5) * 0.09;
-    const q: Vec3 = [Math.cos(a) * r + jx, y + jy, Math.sin(a) * r - jx * 0.5],
-      ql = Math.hypot(...q),
-      p: Vec3 = [q[0] / ql, q[1] / ql, q[2] / ql];
-    // Keep clear of the mapped rooms (out to the far corners, plus a margin).
-    const reach =
-      Math.hypot(
-        Math.max(PLANET.centre[0], room.width - PLANET.centre[0]),
-        Math.max(PLANET.centre[1], room.height - PLANET.centre[1]),
-      ) * 0.86;
-    if (Math.acos(p[2]) * PLANET.radiusTiles < reach) continue;
-    if (wildAt(p) !== 'grass' || Math.abs(p[1]) > 0.93) continue;
-    const tile = planetToTile(p),
-      inside =
-        tile[0] > -3 &&
-        tile[1] > -3 &&
-        tile[0] < room.width + 3 &&
-        tile[1] < room.height + 3;
-    if (inside || (i * 7919) % 5 === 0) continue;
-    const type = wild[(i * 31 + 7) % wild.length],
-      frame = wildFrames.get(type)!,
-      m = metas[frame];
-    const [wx, wy] = worldFromTile(...tile);
+  // Art per planting kind, in order of preference; ids missing from the
+  // object index fall back to the next, so the build never fails.
+  const wildArt: Record<Planting['kind'], string[][]> = {
+    'forest-tree': [
+      ['m-pine', 'm-oak', 'm-pine', 'm-birch', 'm-oak', 'm-tree'],
+      ['cypress', 'm-tree', 'cypress', 'detail-olive', 'm-tree', 'm-tree'],
+    ],
+    'meadow-tree': [
+      ['m-oak', 'm-cherry', 'm-tree', 'm-birch'],
+      ['m-tree', 'detail-olive', 'm-tree', 'cypress'],
+    ],
+    bush: [['m-bush'], []],
+    palm: [['m-palm'], ['palm']],
+    'beach-rock': [['m-beach-rocks', 'm-rock'], ['palm']],
+    boulder: [['m-rock'], ['cypress']],
+    waterfall: [['m-waterfall'], []],
+    ship: [['m-ship'], []],
+  };
+  const wildFrames = new Map<
+    string,
+    { names: string[]; period?: number } | null
+  >();
+  const wildFrame = async (type: string) => {
+    if (wildFrames.has(type)) return wildFrames.get(type)!;
+    const art = objectArt[type];
+    let entry: { names: string[]; period?: number } | null = null;
+    if (art && !bakedIntoFloor(type, art)) {
+      const files = art.frames ?? [art.file],
+        names: string[] = [];
+      for (const f of files)
+        names.push(
+          register(await image(`art/${f}`), art.anchor as [number, number]),
+        );
+      entry = { names, ...(art.period ? { period: art.period } : {}) };
+    }
+    wildFrames.set(type, entry);
+    return entry;
+  };
+  const wildCounts: Record<string, number> = {};
+  for (const [i, w] of wildPlantings().entries()) {
+    let chosen: { names: string[]; period?: number } | null = null;
+    for (const options of wildArt[w.kind]) {
+      if (!options.length) continue;
+      chosen = await wildFrame(
+        options[Math.floor(w.pick * options.length) % options.length],
+      );
+      if (!chosen)
+        for (const o of options) if ((chosen = await wildFrame(o))) break;
+      if (chosen) break;
+    }
+    if (!chosen) continue;
+    wildCounts[w.kind] = (wildCounts[w.kind] ?? 0) + 1;
+    const frame = chosen.names[0],
+      m = metas[frame],
+      [wx, wy] = worldFromTile(...w.tile);
     sortables.push({
       frame,
       x: wx,
       y: wy,
-      depth: depth(...tile),
+      depth: depth(...w.tile),
       objectId: -1 - i,
-      tile,
+      tile: w.tile,
       footprint: [1, 1],
-      ground: tile,
+      ground: w.tile,
       pivot: [m.anchor[0], m.anchor[1]],
       lift: 0,
+      ...(chosen.names.length > 1 ? { animation: chosen.names } : {}),
+      ...(chosen.names.length > 1 && chosen.period
+        ? { period: chosen.period }
+        : {}),
     });
   }
+  if (process.env.DAR_WILD_LOG)
+    console.log('Wild plantings:', JSON.stringify(wildCounts));
   // Pixel art packs into sharp (nearest-filtered) atlases; the detailed,
   // high-density frames (sharp heads, supplied sprites) into smooth ones that
   // the engine filters linearly with mipmaps, so they never look crunchy.

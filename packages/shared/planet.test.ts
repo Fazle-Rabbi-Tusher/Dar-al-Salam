@@ -11,6 +11,12 @@ import {
   tileToPlanet,
   unproject,
   worldFromFocus,
+  WILD,
+  WILD_GLSL,
+  landField,
+  mapDistance,
+  wildAt,
+  wildPlantings,
   type View,
 } from './planet';
 import { worldFromTile } from './iso';
@@ -101,5 +107,62 @@ describe('planet projection', () => {
     expect(back[0]).toBeCloseTo(x, 4);
     expect(back[1]).toBeCloseTo(y, 4);
     expect(RADIUS_PX).toBeGreaterThan(900);
+  });
+});
+
+describe('wild landscape', () => {
+  const lattice = (n: number) =>
+    Array.from({ length: n }, (_, i) => {
+      const y = 1 - ((i + 0.5) / n) * 2,
+        r = Math.sqrt(1 - y * y),
+        a = Math.PI * (3 - Math.sqrt(5)) * i;
+      return [Math.cos(a) * r, y, Math.sin(a) * r] as [number, number, number];
+    });
+  it('is a deterministic function of the planet point', () => {
+    for (const p of lattice(500)) {
+      expect(wildAt(p)).toBe(wildAt([...p]));
+      expect(landField(p)).toBe(landField([...p]));
+    }
+    expect(wildPlantings()).toEqual(wildPlantings());
+  });
+  it('has sea, beaches, meadows, forests and rocky hills', () => {
+    const seen = new Set(lattice(20000).map((p) => wildAt(p)));
+    for (const b of ['sea', 'shallows', 'beach', 'meadow', 'forest', 'rock'])
+      expect(seen.has(b as never), b).toBe(true);
+  });
+  it('keeps the sea at least ten tiles from the mapped quarter', () => {
+    for (const p of lattice(40000)) {
+      const t = planetToTile(p),
+        d = mapDistance(t);
+      if (d === 0) continue;
+      const b = wildAt(p, t);
+      if (b === 'sea' || b === 'shallows') expect(d).toBeGreaterThan(10);
+    }
+    expect(WILD.coast.minimum).toBeGreaterThanOrEqual(10);
+  });
+  it('plants nothing in the water except ships, and nothing on the map', () => {
+    const plantings = wildPlantings();
+    expect(plantings.length).toBeGreaterThan(1500);
+    expect(plantings.length).toBeLessThan(2500);
+    for (const w of plantings) {
+      expect(mapDistance(w.tile)).toBeGreaterThan(1.5);
+      const b = wildAt(w.p, w.tile);
+      if (w.kind === 'ship') expect(b).toBe('sea');
+      else expect(['sea', 'shallows']).not.toContain(b);
+      if (w.kind === 'palm' || w.kind === 'beach-rock') expect(b).toBe('beach');
+    }
+    const kinds = new Set(plantings.map((w) => w.kind));
+    for (const k of ['forest-tree', 'palm', 'boulder', 'waterfall', 'ship'])
+      expect(kinds.has(k as never), k).toBe(true);
+  });
+  it('compiles the same fields for the shader', () => {
+    for (const fn of [
+      'coveField',
+      'islandField',
+      'forestField',
+      'rockField',
+      'landField',
+    ])
+      expect(WILD_GLSL).toContain(`float ${fn}(`);
   });
 });

@@ -191,33 +191,254 @@ export function worldFromFocus(lat: number, lon: number): Point {
 }
 
 /*
- * The rest of the planet, beyond the mapped quarter: grass, lakes and a ring
- * road. Shared by the ground shader and the build (which plants trees), so
- * decorations never stand in water or on the road.
+ * The rest of the planet, beyond the mapped quarter: a peaceful landscape of
+ * meadows, forests and rocky hills, sandy beaches and the open sea, with a
+ * few islands on the far side and the old ring road where it crosses land.
+ * Everything is a deterministic function of the planet point (sums of sine
+ * waves), shared by the ground shader (WILD_GLSL, compiled from the same
+ * constants) and the build, which plants trees, rocks, waterfalls and ships
+ * only where the biome allows, so nothing ever stands in the water.
  */
+type Wave = [number, number, number, number, number, number];
+const wave = (
+  ax: number,
+  ay: number,
+  az: number,
+  freq: number,
+  phase: number,
+  amp = 1,
+): Wave => {
+  const l = Math.hypot(ax, ay, az);
+  return [ax / l, ay / l, az / l, freq, phase, amp];
+};
 export const WILD = {
-  /** Lakes as (latitude, longitude, angular radius), in radians. */
-  lakes: [
-    [0.35, 2.4, 0.22],
-    [-0.55, -2.2, 0.28],
-    [0.95, -1.6, 0.18],
-    [-0.2, 3.05, 0.16],
-  ] as [number, number, number][],
+  /** The mapped quarter's size in tiles (must match the room). */
+  map: [96, 124] as Point,
   /** The ring road is the great circle 90° from the quarter's centre. */
   roadHalfWidth: 0.022,
+  coast: {
+    /** Shore distance (tiles beyond the map's edge) on the near, seaward side. */
+    near: 15,
+    /** …and across the mainland (forests and hills), opposite it. */
+    far: 60,
+    /** The sea never comes closer than this to the map (tiles). */
+    minimum: 12,
+    /**
+     * Azimuth (radians, east = 0, north = π/2) of the mainland's middle.
+     * The camera looks north, so the forests rise on the northern horizon
+     * and the sea opens out to the south and the sides, where it is seen.
+     */
+    mainland: 1.57,
+    /** How far coves and headlands push the shore in or out (tiles). */
+    coves: 7,
+  },
+  /** Land field bands (tiles): sand up to `beach`, turquoise to `shallows`. */
+  beach: 2.6,
+  shallows: 4.5,
+  waves: {
+    coves: [
+      wave(0.3, 0.9, 0.2, 13, 0.4),
+      wave(-0.8, 0.4, 0.4, 19, 1.9, 0.6),
+      wave(0.5, -0.6, 0.6, 29, 4.1, 0.4),
+      wave(-0.2, -0.3, 0.9, 41, 2.6, 0.25),
+    ],
+    islands: [
+      wave(0.6, 0.2, -0.8, 5.3, 0.9),
+      wave(-0.4, 0.7, -0.6, 8.9, 2.2, 0.7),
+      wave(0.2, -0.9, -0.4, 13.7, 5.0, 0.45),
+      wave(-0.7, -0.2, 0.7, 21.1, 3.3, 0.3),
+    ],
+    forest: [
+      wave(0.7, 0.6, 0.4, 9.7, 1.1),
+      wave(-0.5, 0.2, 0.8, 15.3, 3.7, 0.7),
+      wave(0.1, -0.8, 0.6, 23.9, 0.2, 0.45),
+      wave(0.9, -0.3, -0.3, 37.1, 4.4, 0.3),
+    ],
+    rock: [
+      wave(-0.6, -0.7, 0.4, 7.1, 2.9),
+      wave(0.8, -0.1, 0.6, 12.9, 0.7, 0.6),
+      wave(0.2, 0.9, -0.4, 19.7, 5.3, 0.4),
+      wave(-0.3, 0.4, 0.9, 31.3, 1.4, 0.25),
+    ],
+  },
+  /** Inland biome thresholds on the forest and rock fields ([-1, 1]). */
+  forestAbove: -0.12,
+  rockAbove: 0.32,
+  /** Islands rise where the island field exceeds this, far from the coast. */
+  islandAbove: 0.52,
 };
+export type Biome =
+  'sea' | 'shallows' | 'beach' | 'meadow' | 'forest' | 'rock' | 'road';
+/** A smooth field in [-1, 1]: a weighted sum of sine waves over the sphere. */
+export function waveField(p: Vec3, waves: Wave[]) {
+  let sum = 0,
+    weight = 0;
+  for (const [ax, ay, az, f, ph, amp] of waves) {
+    sum += amp * Math.sin((p[0] * ax + p[1] * ay + p[2] * az) * f + ph);
+    weight += amp;
+  }
+  return sum / weight;
+}
+/** Distance in tiles from a tile point to the mapped rectangle (0 inside). */
+export function mapDistance(tile: Point) {
+  const [w, h] = WILD.map,
+    dx = Math.max(0, -tile[0], tile[0] - w),
+    dy = Math.max(0, -tile[1], tile[1] - h);
+  return Math.hypot(dx, dy);
+}
+const smoothstep = (a: number, b: number, x: number) => {
+  const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+/** Shore distance (tiles beyond the map) in the direction of p. */
+export function shoreDistance(p: Vec3) {
+  const c = WILD.coast,
+    toward = 0.5 + 0.5 * Math.cos(Math.atan2(p[1], p[0]) - c.mainland),
+    r = c.near + (c.far - c.near) * smoothstep(0.15, 0.85, toward);
+  return Math.max(c.minimum, r + c.coves * waveField(p, WILD.waves.coves));
+}
+/**
+ * Signed land field in tiles: positive inland (how far from the water),
+ * negative offshore (how far out to sea).
+ */
+export function landField(p: Vec3, tile: Point = planetToTile(p)) {
+  const d = mapDistance(tile),
+    coast = shoreDistance(p) - d,
+    island =
+      d > shoreDistance(p) + 12
+        ? (waveField(p, WILD.waves.islands) - WILD.islandAbove) * 70
+        : -Infinity;
+  return Math.max(coast, island);
+}
+export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
+  const land = landField(p, tile);
+  if (land < -WILD.shallows) return 'sea';
+  if (land < 0) return 'shallows';
+  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5) return 'road';
+  if (land < WILD.beach) return 'beach';
+  const d = mapDistance(tile);
+  if (land > 10 && d > 6 && waveField(p, WILD.waves.rock) > WILD.rockAbove)
+    return 'rock';
+  if (d > 4 && waveField(p, WILD.waves.forest) > WILD.forestAbove)
+    return 'forest';
+  return 'meadow';
+}
 /** Angular distance (radians) between two unit vectors. */
 export function arc(a: Vec3, b: Vec3) {
   return Math.acos(
     Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])),
   );
 }
-export function wildAt(p: Vec3): 'lake' | 'shore' | 'road' | 'grass' {
-  if (Math.abs(p[2]) < WILD.roadHalfWidth) return 'road';
-  for (const [lat, lon, r] of WILD.lakes) {
-    const d = arc(p, fromLatLon(lat, lon));
-    if (d < r) return 'lake';
-    if (d < r + 0.035) return 'shore';
+
+/* GLSL twins of the fields above, compiled from the same constants. */
+const g = (n: number) => n.toFixed(6);
+const glslField = (name: string, waves: Wave[]) => {
+  const weight = waves.reduce((n, w) => n + w[5], 0);
+  return `float ${name}(vec3 p) {
+  return (${waves
+    .map(
+      ([ax, ay, az, f, ph, amp]) =>
+        `${g(amp)} * sin(dot(p, vec3(${g(ax)}, ${g(ay)}, ${g(az)})) * ${g(f)} + ${g(ph)})`,
+    )
+    .join(' +\n    ')}) / ${g(weight)};
+}`;
+};
+export const WILD_GLSL = `
+${glslField('coveField', WILD.waves.coves)}
+${glslField('islandField', WILD.waves.islands)}
+${glslField('forestField', WILD.waves.forest)}
+${glslField('rockField', WILD.waves.rock)}
+float mapDistance(vec2 tile) {
+  vec2 o = max(vec2(0.0), max(-tile, tile - vec2(${g(WILD.map[0])}, ${g(WILD.map[1])})));
+  return length(o);
+}
+float shoreDistance(vec3 p) {
+  float toward = 0.5 + 0.5 * cos(atan(p.y, p.x) - (${g(WILD.coast.mainland)}));
+  float r = ${g(WILD.coast.near)} + ${g(WILD.coast.far - WILD.coast.near)} * smoothstep(0.15, 0.85, toward);
+  return max(${g(WILD.coast.minimum)}, r + ${g(WILD.coast.coves)} * coveField(p));
+}
+float landField(vec3 p, vec2 tile) {
+  float d = mapDistance(tile), shore = shoreDistance(p);
+  float land = shore - d;
+  if (d > shore + 12.0) land = max(land, (islandField(p) - ${g(WILD.islandAbove)}) * 70.0);
+  return land;
+}`;
+
+/** A planted decoration on the wild planet (the build chooses the art). */
+export type Planting = {
+  kind:
+    | 'forest-tree'
+    | 'meadow-tree'
+    | 'bush'
+    | 'palm'
+    | 'beach-rock'
+    | 'boulder'
+    | 'waterfall'
+    | 'ship';
+  p: Vec3;
+  tile: Point;
+  /** Deterministic per-planting value in [0, 1) for choosing art. */
+  pick: number;
+};
+const fract = (x: number) => x - Math.floor(x);
+const hash1 = (i: number, k: number) =>
+  fract(Math.sin(i * 12.9898 + k * 78.233) * 43758.5453);
+/**
+ * Where to plant trees, rocks, waterfalls and ships: a dense Fibonacci
+ * lattice over the sphere, thinned per biome. Pure and deterministic.
+ */
+export function wildPlantings(count = 16000): Planting[] {
+  const out: Planting[] = [],
+    golden = Math.PI * (3 - Math.sqrt(5));
+  const rockSpots: Planting[] = [],
+    seaSpots: Planting[] = [];
+  for (let i = 0; i < count; i++) {
+    const y = 1 - ((i + 0.5) / count) * 2,
+      r = Math.sqrt(1 - y * y),
+      a = golden * i,
+      j = 0.6 / Math.sqrt(count);
+    const q: Vec3 = [
+        Math.cos(a) * r + (hash1(i, 1) - 0.5) * j,
+        y + (hash1(i, 2) - 0.5) * j,
+        Math.sin(a) * r + (hash1(i, 3) - 0.5) * j,
+      ],
+      ql = Math.hypot(...q),
+      p: Vec3 = [q[0] / ql, q[1] / ql, q[2] / ql];
+    // The poles pinch the camera; keep them clear.
+    if (Math.abs(p[1]) > 0.93) continue;
+    const tile = planetToTile(p),
+      d = mapDistance(tile);
+    if (d < 2) continue;
+    const land = landField(p, tile),
+      biome = wildAt(p, tile),
+      roll = hash1(i, 4),
+      pick = hash1(i, 5),
+      at = (kind: Planting['kind']) => out.push({ kind, p, tile, pick });
+    if (biome === 'forest' && land > 3.4) {
+      if (roll < 0.86) at('forest-tree');
+      else if (roll < 0.94) at('bush');
+    } else if (biome === 'meadow' && land > 3.4) {
+      if (roll < 0.1) at('meadow-tree');
+      else if (roll < 0.17) at('bush');
+    } else if (biome === 'beach') {
+      if (land > 0.8 && land < 2.3 && roll < 0.45) at('palm');
+      else if (land > 0.25 && land < 1.4 && roll > 0.9) at('beach-rock');
+    } else if (biome === 'rock' && land > 11) {
+      if (roll < 0.28) at('boulder');
+      else if (roll > 0.95)
+        rockSpots.push({ kind: 'waterfall', p, tile, pick });
+    } else if (biome === 'sea' && land < -7 && land > -13 && roll > 0.97)
+      seaSpots.push({ kind: 'ship', p, tile, pick });
   }
-  return 'grass';
+  // A few waterfalls and ships, spread apart, nearest to the quarter first.
+  const spread = (spots: Planting[], n: number, gap: number) => {
+    spots.sort((a, b) => mapDistance(a.tile) - mapDistance(b.tile));
+    const chosen: Planting[] = [];
+    for (const s of spots)
+      if (chosen.length < n && chosen.every((c) => arc(c.p, s.p) > gap))
+        chosen.push(s);
+    return chosen;
+  };
+  out.push(...spread(rockSpots, 4, 0.3), ...spread(seaSpots, 3, 0.45));
+  return out;
 }

@@ -13,6 +13,7 @@ import {
   type DetailOptions,
   type IsoCanvas,
   type Material,
+  type P3,
 } from './iso-draw';
 
 /** Every colour this module paints. Keys are descriptive; values are the palette. */
@@ -142,9 +143,98 @@ const C = {
   flagRed: '#C93A3A',
 } as const;
 /** Colours for the nature pass (trees, water, rocks): add here, not to C. */
-const NC = {} as Record<string, string>;
+const NC = {
+  // Broadleaf foliage, light to dark.
+  leaf0: '#B5DA6A',
+  leaf1: '#86C14F',
+  leaf2: '#5FA23F',
+  leaf3: '#3F8036',
+  leaf4: '#2B5E33',
+  leaf5: '#1C3F2C',
+  // Oak: warmer, olive greens.
+  oak0: '#A9C95B',
+  oak1: '#7EAE47',
+  oak2: '#5A8E3C',
+  oak3: '#3E6E34',
+  oak4: '#2A4F2D',
+  oak5: '#1A3424',
+  // Pine: cool blue-greens.
+  pine0: '#8FBF7A',
+  pine1: '#5E9A66',
+  pine2: '#3F7A57',
+  pine3: '#2B5C47',
+  pine4: '#1C4236',
+  pine5: '#122D27',
+  // Cherry blossom.
+  blossom0: '#FCE8EE',
+  blossom1: '#F6C9D6',
+  blossom2: '#EBA3BA',
+  blossom3: '#D07F9C',
+  blossom4: '#A85F80',
+  blossom5: '#764563',
+  // Birch: light yellow-greens.
+  birch0: '#D8E98A',
+  birch1: '#B4D46A',
+  birch2: '#8DBA52',
+  birch3: '#6A9A44',
+  birch4: '#4A7536',
+  // Bark.
+  bark0: '#A4805A',
+  bark1: '#7E5C3E',
+  bark2: '#5A402C',
+  bark3: '#3A2A1F',
+  birchBark0: '#F2EFE6',
+  birchBark1: '#D4CFC2',
+  birchMark: '#3A3530',
+  palm0: '#B89565',
+  palm1: '#957347',
+  palm2: '#6F5434',
+  coconut: '#6E4A2C',
+  // Blue-grey rock and moss.
+  rock0: '#B9C3CE',
+  rock1: '#8F9BAA',
+  rock2: '#6B7787',
+  rock3: '#4D5868',
+  rock4: '#353E4C',
+  rock5: '#232A35',
+  moss0: '#7FA04A',
+  moss1: '#5C8040',
+  moss2: '#3F6436',
+  // Falling water and foam, bright to deep.
+  water0: '#F4FCFF',
+  water1: '#CFEFFA',
+  water2: '#9DD7EE',
+  water3: '#62AFD6',
+  water4: '#3D86B5',
+  water5: '#2A628C',
+  water6: '#1D4566',
+  // Sea.
+  sea0: '#E9F6FB',
+  sea1: '#9CCDE6',
+  sea2: '#5E9DC9',
+  sea3: '#3B76A8',
+  sea4: '#285887',
+  sea5: '#1B3F66',
+  // Ship: sailcloth and hull.
+  sail0: '#F7F4EA',
+  sail1: '#E2DCCB',
+  sail2: '#C4BCA7',
+  sail3: '#9E957F',
+  hull0: '#B07A4A',
+  hull1: '#6B4426',
+  hull2: '#4A2E1A',
+} as const;
 /** Colours for the city pass (towers, lights, street furniture). */
-const CC = {} as Record<string, string>;
+const CC: Record<string, string> = {
+  nightGlass: '#2A3552',
+  duskGlass: '#36557A',
+  skyGlass: '#46709F',
+  skyGlassLight: '#53789F',
+  amberLit: '#F7A653',
+  blossomLight: '#F8D3DD',
+  blossom: '#D07A8D',
+  blossomDeep: '#A4536A',
+};
 export const MODERN_COLOURS: string[] = [
   ...new Set([...Object.values(C), ...Object.values(NC), ...Object.values(CC)]),
 ];
@@ -2987,55 +3077,25 @@ const nyc: Record<string, Spec> = {
     footprint: [3, 3],
     h: 246,
     draw(c) {
-      c.box(0, 0, 3, 3, 14, M.dark);
-      // Lobby: glass doors under a steel canopy.
-      c.faceX(0.25, 3.002, 2.5, 2, 10, C.glassLight);
-      for (let u = 0.25; u < 2.8; u += 0.5)
-        c.faceX(u, 3.003, 0.05, 2, 10, C.steelDark);
-      c.faceX(1.2, 3.003, 0.6, 2, 9, C.glassDark);
-      c.box(0.9, 3.0, 1.2, 0.25, 2, M.steel, 12);
-      c.box(0.2, 0.2, 2.6, 2.6, 216, NM.glass, 14);
-      // Sky reflection: light dither toward the top of the lit face.
-      ditherFront(c, 0.2, 2.8, 2.801, 150, 230, C.glassLight, 0.5);
-      // Mullion grid with floor slabs.
-      for (let u = 0.2; u <= 2.81; u += 0.325) {
-        c.edge([u, 2.802, 14], [u, 2.802, 230], C.glassDeep);
-        c.edge([2.802, u, 14], [2.802, u, 230], C.glassDeep);
-      }
-      for (let z = 22; z < 230; z += 9) {
-        c.edge([0.2, 2.803, z], [2.8, 2.803, z], C.glassLight);
-        c.edge([0.2, 2.803, z - 1], [2.8, 2.803, z - 1], C.glassDark);
-        c.edge([2.803, 0.2, z], [2.803, 2.8, z], C.glass);
-      }
-      // A few bays with blinds drawn.
-      for (let k = 0; k < 12; k++) {
-        const u = 0.2 + ((k * 5) % 8) * 0.325,
-          z = 23 + ((k * 7) % 22) * 9;
-        c.faceX(u + 0.02, 2.804, 0.29, z + 4, 4, C.glassDark);
-        c.faceY(2.804, u + 0.02, 0.29, z + 4, 4, C.glassDeep);
-      }
-      for (let k = 0; k < 5; k++) {
-        const z = 40 + k * 38;
-        c.edge([0.3, 2.805, z], [1.2, 2.805, z + 26], C.white);
-        c.edge([0.5, 2.805, z], [1.4, 2.805, z + 26], C.glassLight);
-        c.edge([2.805, 1.3, z + 10], [2.805, 2.2, z + 34], C.glassLight);
-      }
+      // Night glass tower: lit window grid in deep blue glass.
+      const top = nightTower(c, 0.2, 2.6, 216, 5);
       // Window-cleaning cradle hanging on two cables.
       const [g0x, g0y] = c.at(1.7, 2.9, 168),
-        [t0x, t0y] = c.at(1.7, 2.9, 230);
+        [t0x, t0y] = c.at(1.7, 2.9, top);
       c.line([g0x, g0y], [t0x, t0y], C.steelDark);
       c.line([g0x + 14, g0y + 7], [t0x + 14, t0y + 7], C.steelDark);
       c.box(1.65, 2.82, 0.95, 0.12, 4, M.steel, 162);
       c.edge([1.65, 2.94, 168], [2.6, 2.94, 168], C.steelLight);
-      // Rooftop plant room, vents and a mast.
-      c.box(0.9, 0.9, 1.2, 1.2, 10, M.steel, 230);
+      // Rooftop plant room with a lit doorway, vents and a mast.
+      c.box(0.9, 0.9, 1.2, 1.2, 10, M.steel, top);
       for (let u = 1.0; u < 2.05; u += 0.15)
-        c.edge([u, 2.102, 232], [u, 2.102, 238], C.slate);
-      c.box(0.35, 0.35, 0.3, 0.3, 4, M.steel, 230);
-      c.box(2.3, 0.4, 0.3, 0.4, 3, M.steel, 230);
-      const [ax, ay] = c.at(1.5, 1.5, 240);
+        c.edge([u, 2.102, top + 2], [u, 2.102, top + 8], C.slate);
+      c.faceY(2.102, 1.2, 0.25, top, 6, CN.warm);
+      c.box(0.35, 0.35, 0.3, 0.3, 4, M.steel, top);
+      c.box(2.3, 0.4, 0.3, 0.4, 3, M.steel, top);
+      const [ax, ay] = c.at(1.5, 1.5, top + 10);
       c.p.rect(ax, ay - 6, 1, 6, C.charcoal);
-      c.p.pixel(ax, ay - 7, C.red);
+      aircraftLight(c, 1.5, 1.5, top + 17);
     },
   },
   'm-brownstone': {
@@ -4721,14 +4781,1433 @@ Object.assign(objects, cricketScenes);
 
 /* ════════ Nature pass: trees, plants, rocks, waterfall, ship ════════ */
 // Objects defined here may replace earlier ones with the same id (m-tree).
+/* ───────────── Nature pass helpers ───────────── */
+/*
+ * Painterly foliage, bark, rock and water in the owner's reference style:
+ * canopies built from many leaf clumps, each lit from the top left over a
+ * darker underside; blocky lit rocks; bright falling water over dark stone.
+ * Everything is deterministic (seeded hashes), so frames and builds repeat.
+ */
+type Tones = readonly string[];
+const FOLIAGE: Tones = [NC.leaf0, NC.leaf1, NC.leaf2, NC.leaf3, NC.leaf4, NC.leaf5];
+const OAK: Tones = [NC.oak0, NC.oak1, NC.oak2, NC.oak3, NC.oak4, NC.oak5];
+const PINE: Tones = [NC.pine0, NC.pine1, NC.pine2, NC.pine3, NC.pine4, NC.pine5];
+const BLOSSOM: Tones = [
+  NC.blossom0,
+  NC.blossom1,
+  NC.blossom2,
+  NC.blossom3,
+  NC.blossom4,
+  NC.blossom5,
+];
+const BIRCH_LEAF: Tones = [NC.birch0, NC.birch1, NC.birch2, NC.birch3, NC.birch4, NC.leaf4];
+const BARK: Tones = [NC.bark0, NC.bark1, NC.bark2, NC.bark3];
+const ROCK: Tones = [NC.rock0, NC.rock1, NC.rock2, NC.rock3, NC.rock4, NC.rock5];
+const MOSS: Tones = [NC.moss0, NC.moss1, NC.moss2];
+const FALL: Tones = [NC.water0, NC.water1, NC.water2, NC.water3, NC.water4, NC.water5, NC.water6];
+const SEA: Tones = [NC.sea0, NC.sea1, NC.sea2, NC.sea3, NC.sea4, NC.sea5];
+/** 0..1 hash of integer coordinates and a seed. */
+function nhash(x: number, y: number, s = 0) {
+  let h = Math.imul(
+    (Math.floor(x) * 374761393) ^ (Math.floor(y) * 668265263) ^ (s * 2246822519),
+    1274126177,
+  );
+  h ^= h >>> 13;
+  h = Math.imul(h, 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+const tone = (t: Tones, v: number, steps: readonly number[]) => {
+  for (let i = 0; i < steps.length; i++) if (v > steps[i]) return t[i];
+  return t[Math.min(steps.length, t.length - 1)];
+};
+type Clump = { x: number; y: number; r: number };
+/** Leaf clumps filling an ellipse (screen px), sorted back (top) to front. */
+function clumpsIn(
+  seed: number,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  n: number,
+  rMin: number,
+  rMax: number,
+): Clump[] {
+  const out: Clump[] = [];
+  for (let i = 0; i < n; i++) {
+    const a = i * 2.39996 + nhash(i, seed) * 0.6,
+      k = Math.sqrt((i + 0.5) / n),
+      r = rMin + (rMax - rMin) * nhash(i, seed, 7);
+    out.push({
+      x: cx + Math.cos(a) * (rx - r * 0.7) * k,
+      y: cy + Math.sin(a) * (ry - r * 0.7) * k,
+      r,
+    });
+  }
+  return out.sort((p, q) => p.y - q.y);
+}
+/**
+ * Paint leaf clumps: each clump is lit on its top-left and darkens toward a
+ * shadowed lower-right rim; the whole canopy is lighter on top and darker
+ * underneath. Leaf tips break the outline; a few sparkles catch the light.
+ */
+function paintClumps(
+  c: IsoCanvas,
+  clumps: Clump[],
+  t: Tones,
+  box: { cx: number; cy: number; rx: number; ry: number },
+  seed = 0,
+  extra = 0,
+) {
+  for (const [k, q] of clumps.entries()) {
+    const lim = q.r + 2;
+    for (let py = Math.floor(q.y - lim); py <= q.y + lim; py++)
+      for (let px = Math.floor(q.x - lim); px <= q.x + lim; px++) {
+        const dx = (px + 0.5 - q.x) / q.r,
+          dy = (py + 0.5 - q.y) / q.r,
+          d = Math.hypot(dx, dy),
+          tip = nhash(px, py, seed + k) < 0.3 && dy < 0.4 ? 0.22 : 0;
+        if (d > 1 + tip) continue;
+        const local = -(dx * 0.55 + dy * 0.85),
+          glob = -(
+            ((q.x - box.cx) / box.rx) * 0.4 +
+            ((q.y - box.cy) / box.ry) * 0.85
+          );
+        let v =
+          local * 0.78 + glob * 0.55 + (nhash(px, py, seed) - 0.5) * 0.22 + extra;
+        // A bright cap on the lit side, a dark rim on the shaded side, so
+        // each clump reads on its own.
+        if (d < 0.55 && dx + dy < -0.15) v += 0.2;
+        if (d > 0.76 && dx + dy > 0.1) v -= 0.5;
+        if (d > 1) v -= 0.2;
+        c.p.pixel(px, py, tone(t, v, [0.78, 0.42, 0.08, -0.26, -0.6]));
+      }
+  }
+}
+/** A canopy: a dark back layer for depth, then lit clumps on top. */
+function canopy(
+  c: IsoCanvas,
+  seed: number,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  t: Tones,
+  n = 26,
+  rMin = 6,
+  rMax = 9.5,
+) {
+  const box = { cx, cy, rx, ry };
+  paintClumps(c, clumpsIn(seed + 50, cx + 2, cy + 3, rx * 0.92, ry * 0.85, Math.round(n * 0.5), rMin, rMax), t, box, seed + 3, -0.45);
+  paintClumps(c, clumpsIn(seed, cx, cy, rx, ry, n, rMin, rMax), t, box, seed);
+}
+/** Tapered trunk with lit left side, bark streaks and root flares. */
+function trunk(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  h: number,
+  wBase: number,
+  wTop: number,
+  t: Tones = BARK,
+  roots = true,
+) {
+  for (let j = 0; j <= h; j++) {
+    const k = j / h,
+      half = (wBase + (wTop - wBase) * k) / 2,
+      flare = roots && j < 4 ? (4 - j) * 0.9 : 0;
+    for (let i = Math.floor(x - half - flare); i <= x + half + flare; i++) {
+      const u = (i + 0.5 - x) / (half + flare + 0.01);
+      let v = -u * 0.8 + (nhash(i, Math.floor((y - j) / 3), 11) - 0.5) * 0.5;
+      if (nhash(i, y - j, 12) < 0.06) v -= 0.6;
+      c.p.pixel(i, y - j, tone(t, v, [0.45, -0.05, -0.55]));
+    }
+  }
+}
+/** A branch: a tapering stroke from (x0,y0) to (x1,y1). */
+function branch(
+  c: IsoCanvas,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  w: number,
+  t: Tones = BARK,
+) {
+  const n = Math.ceil(Math.hypot(x1 - x0, y1 - y0));
+  for (let i = 0; i <= n; i++) {
+    const k = i / n,
+      r = Math.max(0.5, w * (1 - k * 0.6)),
+      px = x0 + (x1 - x0) * k,
+      py = y0 + (y1 - y0) * k;
+    for (let dx = -r; dx <= r; dx++)
+      c.p.pixel(px + dx, py, dx < 0 ? t[1] : t[2]);
+  }
+}
+/** Grass tufts and tiny flowers on the ground around a point. */
+function tufts(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  rx: number,
+  seed: number,
+  flowers: string[] = [],
+) {
+  for (let i = 0; i < 14; i++) {
+    const a = nhash(i, seed) * Math.PI * 2,
+      r = Math.sqrt(nhash(i, seed, 1)) * rx,
+      px = Math.round(x + Math.cos(a) * r),
+      py = Math.round(y + Math.sin(a) * r * 0.5);
+    c.p.pixel(px, py, FOLIAGE[3]);
+    c.p.pixel(px, py - 1, FOLIAGE[2]);
+    if (nhash(i, seed, 2) < 0.5) c.p.pixel(px + 1, py - 2, FOLIAGE[1]);
+    if (flowers.length && nhash(i, seed, 3) < 0.4)
+      c.p.pixel(px, py - 2, flowers[i % flowers.length]);
+  }
+}
+/**
+ * Blocky lit rock on a marker-filled area: Voronoi cells become stones, each
+ * lit on its top-left with a dark crack around it. `face` biases the tone
+ * (0 top, 1 front, 2 side).
+ */
+function rockShade(
+  px: number,
+  py: number,
+  face: number,
+  seed: number,
+  cell = 9,
+  t: Tones = ROCK,
+) {
+  const gx = Math.floor(px / cell),
+    gy = Math.floor(py / (cell * 0.75));
+  let d1 = 1e9,
+    d2 = 1e9,
+    bx = 0,
+    by = 0;
+  for (let j = -1; j <= 1; j++)
+    for (let i = -1; i <= 1; i++) {
+      const cxp = (gx + i + 0.15 + nhash(gx + i, gy + j, seed) * 0.7) * cell,
+        cyp =
+          (gy + j + 0.15 + nhash(gx + i, gy + j, seed + 1) * 0.7) *
+          cell *
+          0.75;
+      const d = Math.hypot(px - cxp, (py - cyp) * 1.25);
+      if (d < d1) {
+        d2 = d1;
+        d1 = d;
+        bx = cxp;
+        by = cyp;
+      } else if (d < d2) d2 = d;
+    }
+  const base = [0.45, 0.05, -0.4][face],
+    local = -((px - bx) * 0.6 + (py - by) * 0.9) / cell;
+  let v = base + local * 0.55 + (nhash(px, py, seed + 2) - 0.5) * 0.16;
+  if (d2 - d1 < 1.3) v -= 0.75;
+  return tone(t, v, [0.62, 0.3, 0.0, -0.3, -0.62]);
+}
+/** Fill pixels of marker colour `m` with `shade(x, y)`. */
+function recolour(c: IsoCanvas, m: string, shade: (x: number, y: number) => string) {
+  const { p } = c,
+    w = p.width,
+    h = Math.floor(p.data.length / (4 * w)),
+    [mr, mg, mb] = [parseInt(m.slice(1, 3), 16), parseInt(m.slice(3, 5), 16), parseInt(m.slice(5, 7), 16)];
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      if (
+        p.data[i + 3] &&
+        p.data[i] === mr &&
+        p.data[i + 1] === mg &&
+        p.data[i + 2] === mb
+      )
+        p.pixel(x, y, shade(x, y));
+    }
+}
+/** Irregular rounded boulder (screen-space blob) shaded as rock with moss on top. */
+function boulder(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  seed: number,
+  t: Tones = ROCK,
+  moss = true,
+) {
+  for (let py = Math.floor(cy - ry - 2); py <= cy + ry + 1; py++)
+    for (let px = Math.floor(cx - rx - 2); px <= cx + rx + 2; px++) {
+      const a = Math.atan2(py - cy, px - cx),
+        wob = 1 + (nhash(Math.round(a * 4), seed) - 0.5) * 0.25,
+        dx = (px + 0.5 - cx) / (rx * wob),
+        dy = (py + 0.5 - cy) / (ry * wob);
+      const d = Math.hypot(dx, dy);
+      if (d > 1) continue;
+      let v = -(dx * 0.6 + dy * 0.8) * 0.7 + (nhash(px, py, seed) - 0.5) * 0.2;
+      if (dy > 0.55) v -= 0.35;
+      const facet = nhash(Math.floor(px / 5), Math.floor(py / 4), seed + 3);
+      if (facet < 0.18) v -= 0.25;
+      let col = tone(t, v, [0.6, 0.3, 0.0, -0.32, -0.62]);
+      if (moss && dy < -0.25 && nhash(px, py, seed + 5) < 0.75 - dy * 0.2)
+        col = tone(MOSS, v + 0.2, [0.55, 0.05]);
+      c.p.pixel(px, py, col);
+    }
+}
+/** Sea water in a screen-space ellipse with foam crests (frame shifts them). */
+function seaPatch(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  f: number,
+  seed: number,
+) {
+  for (let py = Math.floor(cy - ry); py <= cy + ry; py++)
+    for (let px = Math.floor(cx - rx); px <= cx + rx; px++) {
+      const dx = (px + 0.5 - cx) / rx,
+        dy = (py + 0.5 - cy) / ry,
+        d = Math.hypot(dx, dy);
+      const edge = 1 - (nhash(px, py, seed) * 0.12);
+      if (d > edge) continue;
+      const wave = Math.sin(px * 0.45 + py * 1.3 + f * Math.PI) * 0.5 + 0.5;
+      let v = 0.15 - dy * 0.35 + (wave - 0.5) * 0.35 - d * 0.25;
+      let col = tone(SEA, v, [0.62, 0.32, 0.05, -0.2, -0.45]);
+      if (wave > 0.86 && nhash(px >> 1, py, seed + f) < 0.55) col = SEA[0];
+      if (d > edge - 0.12 && nhash(px, py, seed + 9 + f) < 0.6) col = SEA[0];
+      c.p.pixel(px, py, col);
+    }
+}
+
 const nature: Record<string, Spec> = {
   // NATURE-OBJECTS
+  'm-tree': {
+    // A lush broadleaf: clustered canopy over a tapered trunk with roots.
+    footprint: [1, 1],
+    h: 92,
+    pad: 30,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      tufts(c, x, y + 1, 15, 3, [C.pink, C.white, C.yellow]);
+      trunk(c, x, y, 40, 8, 4);
+      branch(c, x - 1, y - 24, x - 13, y - 42, 1.6);
+      branch(c, x + 1, y - 22, x + 14, y - 40, 1.6);
+      canopy(c, 11, x, y - 56, 28, 25, FOLIAGE, 30, 6.5, 10);
+    },
+  },
+  'm-oak': {
+    // A broad old oak: wide three-lobed canopy, thick trunk, spreading roots.
+    footprint: [1, 1],
+    h: 98,
+    pad: 38,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      tufts(c, x, y + 2, 20, 5, [C.white, C.yellow]);
+      for (const [dx, dy] of [
+        [-11, 2],
+        [10, 3],
+        [-6, 4],
+        [6, 4],
+      ])
+        branch(c, x + dx * 0.3, y - 1, x + dx, y + dy, 2.2);
+      trunk(c, x, y, 40, 13, 8);
+      branch(c, x - 3, y - 30, x - 22, y - 50, 2.6);
+      branch(c, x + 3, y - 28, x + 22, y - 48, 2.6);
+      branch(c, x, y - 36, x - 2, y - 60, 2.2);
+      canopy(c, 21, x - 15, y - 56, 20, 17, OAK, 18, 6.5, 10);
+      canopy(c, 22, x + 15, y - 55, 20, 17, OAK, 18, 6.5, 10);
+      canopy(c, 23, x, y - 68, 24, 20, OAK, 24, 7, 11);
+    },
+  },
+  'm-pine': {
+    // A tall conifer in drooping tiers, darker blue-green, lit from the left.
+    footprint: [1, 1],
+    h: 106,
+    pad: 26,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      tufts(c, x, y + 1, 12, 9);
+      trunk(c, x, y, 22, 6, 4, BARK, false);
+      const box = { cx: x, cy: y - 56, rx: 22, ry: 48 };
+      for (let t = 0; t < 7; t++) {
+        const cy = y - 18 - t * 11.5,
+          half = 21 - t * 2.9,
+          tierBox = { ...box };
+        // Dark skirt under each tier so needles never show gaps.
+        c.p.poly(
+          [
+            [x - half, cy + 3],
+            [x + half, cy + 3],
+            [x, cy - 13],
+          ],
+          PINE[4],
+        );
+        const m = Math.round(half / 3) + 2,
+          clumps: Clump[] = [];
+        for (let i = 0; i <= m; i++) {
+          const u = -1 + (2 * i) / m;
+          clumps.push({
+            x: x + u * half * 0.92,
+            y: cy + u * u * 4 + nhash(i, t, 4) * 1.5,
+            r: 4.6 - t * 0.25,
+          });
+          if (i % 2 === 0 && Math.abs(u) < 0.7)
+            clumps.push({ x: x + u * half * 0.55, y: cy - 6, r: 4.2 - t * 0.2 });
+        }
+        paintClumps(c, clumps.sort((p, q) => p.y - q.y), PINE, tierBox, 30 + t);
+      }
+      paintClumps(c, [{ x, y: y - 100, r: 3.2 }], PINE, box, 40);
+    },
+  },
+  'm-cherry': {
+    // Cherry blossom: soft pink clusters with dark branches showing through.
+    footprint: [1, 1],
+    h: 90,
+    pad: 32,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      // Fallen petals on the grass.
+      for (let i = 0; i < 26; i++) {
+        const a = nhash(i, 81) * Math.PI * 2,
+          r = Math.sqrt(nhash(i, 82)) * 18;
+        c.p.pixel(
+          x + Math.cos(a) * r,
+          y + 1 + Math.sin(a) * r * 0.5,
+          i % 3 ? BLOSSOM[1] : BLOSSOM[2],
+        );
+      }
+      const bark = [NC.bark1, NC.bark2, NC.bark3, NC.bark3] as const;
+      trunk(c, x, y, 38, 7, 4, bark);
+      const box = { cx: x, cy: y - 60, rx: 28, ry: 21 };
+      paintClumps(c, clumpsIn(61, x + 2, y - 58, 26, 18, 14, 6, 9), BLOSSOM, box, 62, -0.5);
+      branch(c, x - 1, y - 32, x - 20, y - 54, 1.8, bark);
+      branch(c, x + 1, y - 30, x + 21, y - 52, 1.8, bark);
+      branch(c, x, y - 36, x + 3, y - 70, 1.6, bark);
+      branch(c, x - 10, y - 44, x - 15, y - 66, 1.1, bark);
+      paintClumps(c, clumpsIn(63, x, y - 62, 28, 21, 22, 5.5, 8.5), BLOSSOM, box, 64);
+    },
+  },
+  'm-palm': {
+    // Coconut palm: ringed, curving trunk and drooping fronds.
+    footprint: [1, 1],
+    h: 106,
+    pad: 36,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      const top: [number, number] = [x + 10, y - 82],
+        ctrl: [number, number] = [x - 6, y - 40],
+        palmBark = [NC.palm0, NC.palm1, NC.palm2] as const;
+      for (let j = 0; j <= 84; j++) {
+        const s = j / 84,
+          bx = (1 - s) * (1 - s) * x + 2 * (1 - s) * s * ctrl[0] + s * s * top[0],
+          by = (1 - s) * (1 - s) * y + 2 * (1 - s) * s * ctrl[1] + s * s * top[1],
+          half = 3.6 - s * 1.4,
+          ring = Math.floor(j / 3.5) % 2;
+        for (let i = Math.floor(bx - half); i <= bx + half; i++) {
+          const u = (i + 0.5 - bx) / half;
+          c.p.pixel(i, by, palmBark[u < -0.3 ? 0 : u > 0.45 ? 2 : ring ? 1 : 0]);
+        }
+      }
+      const fronds = [-172, -146, -122, -100, -78, -54, -30, -8];
+      for (const [k, deg] of fronds.entries()) {
+        const a = (deg * Math.PI) / 180,
+          L = 30 + nhash(k, 90) * 6,
+          droop = 16 + nhash(k, 91) * 6;
+        for (let i = 0; i <= 30; i++) {
+          const s = i / 30,
+            fx = top[0] + Math.cos(a) * L * s,
+            fy = top[1] + Math.sin(a) * L * s * 0.55 + droop * s * s,
+            lit = Math.cos(a) < 0;
+          c.p.pixel(fx, fy, FOLIAGE[lit ? 2 : 3]);
+          c.p.pixel(fx, fy + 1, FOLIAGE[4]);
+          if (i % 2 === 0 && s > 0.12) {
+            const len = 6 * (1 - s * 0.55);
+            for (let q = 1; q <= len; q++) {
+              c.p.pixel(fx - q * 0.35, fy + q * 0.9, FOLIAGE[lit ? 1 : 3]);
+              c.p.pixel(fx + q * 0.35, fy + q * 0.9, FOLIAGE[lit ? 2 : 4]);
+            }
+          }
+        }
+      }
+      for (const [dx, dy] of [
+        [-2, 4],
+        [2, 5],
+        [5, 3],
+      ]) {
+        c.p.ellipse(top[0] + dx, top[1] + dy, 2.2, 2.2, NC.coconut);
+        c.p.pixel(top[0] + dx - 1, top[1] + dy - 1, NC.palm0);
+      }
+    },
+  },
+  'm-birch': {
+    // Slim birch: white bark with dark marks under a light, airy canopy.
+    footprint: [1, 1],
+    h: 94,
+    pad: 28,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      tufts(c, x, y + 1, 12, 7, [C.yellow, C.white]);
+      const birch = [NC.birchBark0, NC.birchBark1, NC.birchBark1, NC.birchMark] as const;
+      trunk(c, x, y, 56, 5, 3, birch, false);
+      for (let j = 4; j < 54; j += 5)
+        if (nhash(j, 33) < 0.7) c.p.rect(x - 2 + (j % 3), y - j, 2 + (j % 2), 1, NC.birchMark);
+      branch(c, x, y - 42, x - 11, y - 60, 1, birch);
+      branch(c, x, y - 46, x + 10, y - 66, 1, birch);
+      canopy(c, 41, x + 1, y - 68, 20, 22, BIRCH_LEAF, 24, 4.5, 7.5);
+    },
+  },
+  'm-bush': {
+    // Flowering shrub.
+    footprint: [1, 1],
+    h: 30,
+    pad: 20,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      tufts(c, x, y + 2, 14, 51);
+      canopy(c, 61, x, y - 9, 15, 10, FOLIAGE, 16, 4.5, 6.5);
+      const petals = [C.pink, C.white, BLOSSOM[1], C.white];
+      for (let i = 0; i < 14; i++) {
+        const a = nhash(i, 52) * Math.PI * 2,
+          r = Math.sqrt(nhash(i, 53)) * 11,
+          px = Math.round(x + Math.cos(a) * r),
+          py = Math.round(y - 10 + Math.sin(a) * r * 0.7);
+        if (py > y - 4) continue;
+        c.p.pixel(px, py, petals[i % petals.length]);
+        c.p.pixel(px + 1, py, petals[i % petals.length]);
+        c.p.pixel(px, py - 1, NC.blossom0);
+      }
+    },
+  },
+  'm-flowers': {
+    // A walkable flower patch, baked into the ground.
+    footprint: [1, 1],
+    h: 6,
+    pad: 6,
+    floor: true,
+    draw(c) {
+      const colours = [C.pink, C.white, C.yellow, C.purple, BLOSSOM[1]];
+      for (let i = 0; i < 22; i++) {
+        const [px, py] = c.at(0.12 + nhash(i, 71) * 0.76, 0.12 + nhash(i, 72) * 0.76, 0);
+        c.p.pixel(px, py, FOLIAGE[3]);
+        c.p.pixel(px, py - 1, FOLIAGE[2]);
+        if (i % 2) {
+          const col = colours[i % colours.length];
+          c.p.pixel(px - 1, py - 2, col);
+          c.p.pixel(px + 1, py - 2, col);
+          c.p.pixel(px, py - 3, col);
+          c.p.pixel(px, py - 2, C.yellow);
+        } else c.p.pixel(px + 1, py - 1, FOLIAGE[1]);
+      }
+    },
+  },
+  'm-rock': {
+    // Mossy boulder with a smaller stone and grass at its foot.
+    footprint: [1, 1],
+    h: 26,
+    pad: 18,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      tufts(c, x, y + 3, 15, 73, [C.yellow]);
+      boulder(c, x - 1, y - 8, 12, 9.5, 71);
+      boulder(c, x + 11, y - 2, 5, 4, 72, ROCK, false);
+    },
+  },
+  'm-rocks-small': {
+    // Pebbles in the grass (walkable).
+    footprint: [1, 1],
+    h: 6,
+    pad: 6,
+    floor: true,
+    draw(c) {
+      for (let i = 0; i < 6; i++) {
+        const [px, py] = c.at(0.15 + nhash(i, 75) * 0.7, 0.15 + nhash(i, 76) * 0.7, 0);
+        boulder(c, px, py - 1, 2 + nhash(i, 77) * 1.8, 1.4 + nhash(i, 78), 79 + i, ROCK, false);
+      }
+    },
+  },
+  'm-waterfall': {
+    // A mossy cliff with a waterfall falling into a misty, foaming pool.
+    footprint: [5, 4],
+    h: 156,
+    pad: 22,
+    frames: 4,
+    period: 12,
+    detail: { grain: 0 },
+    draw(c, f) {
+      const FY = 2.3,
+        ridge = (x: number) =>
+          118 + Math.sin(x * 1.7 + 0.5) * 9 + (nhash(Math.round(x * 3), 7) - 0.5) * 10,
+        back = (x: number) => ridge(x) + 16 + Math.sin(x * 2.3) * 5;
+      // Silhouette with marker colours: top, front, side.
+      const MT = '#010203',
+        MF = '#010204',
+        MS = '#010205';
+      const xs: number[] = [];
+      for (let x = 0; x <= 5.0001; x += 0.25) xs.push(Math.min(5, x));
+      c.poly(
+        [
+          ...xs.map((x) => [x, FY, ridge(x)] as P3),
+          ...[...xs].reverse().map((x) => [x, 0, back(x)] as P3),
+        ],
+        MT,
+      );
+      c.poly(
+        [
+          [0, FY, 0],
+          [5, FY, 0],
+          ...[...xs].reverse().map((x) => [x, FY, ridge(x)] as P3),
+        ],
+        MF,
+      );
+      const ys: number[] = [];
+      for (let y = 0; y <= FY + 0.0001; y += 0.23) ys.push(Math.min(FY, y));
+      c.poly(
+        [
+          [5, FY, 0],
+          [5, 0, 0],
+          ...ys.map((y) => [5, y, ridge(5) + ((FY - y) / FY) * (back(5) - ridge(5))] as P3),
+        ],
+        MS,
+      );
+      const ridgeY = new Map<number, number>();
+      for (let x = 0; x <= 5; x += 1 / 16) {
+        const [px, py] = c.at(x, FY, ridge(x));
+        ridgeY.set(Math.round(px), py);
+      }
+      recolour(c, MT, (px, py) => {
+        const v = nhash(px >> 1, py >> 1, 5);
+        return v < 0.7 ? tone(MOSS, 0.4 - (v - 0.35), [0.55, 0.1]) : rockShade(px, py, 0, 3);
+      });
+      recolour(c, MF, (px, py) => {
+        const top = ridgeY.get(px) ?? py,
+          below = py - top;
+        if (below < 10 && nhash(px, py, 6) < 0.85 - below * 0.07)
+          return tone(MOSS, 0.2 - below * 0.04, [0.55, 0.05]);
+        return rockShade(px, py, 1, 3, 10);
+      });
+      recolour(c, MS, (px, py) => rockShade(px, py, 2, 4, 10));
+      // Ferns and bushes along the ridge, two small trees behind.
+      canopy(c, 101, ...c.at(0.7, 0.5, back(0.7) + 14), 13, 12, PINE, 12, 4, 6);
+      canopy(c, 102, ...c.at(4.4, 0.4, back(4.4) + 16), 14, 13, FOLIAGE, 12, 4.5, 6.5);
+      for (const x of [0.4, 1.3, 3.5, 4.3]) {
+        const [px, py] = c.at(x, FY, ridge(x));
+        canopy(c, 110 + Math.round(x * 10), px, py - 2, 9, 5, FOLIAGE, 8, 3, 4.5);
+        // Fronds hanging over the edge.
+        for (let i = 0; i < 4; i++)
+          branch(c, px - 6 + i * 4, py + 1, px - 7 + i * 4, py + 7 + (i % 2) * 3, 0.6, [FOLIAGE[2], FOLIAGE[2], FOLIAGE[3], FOLIAGE[3]]);
+      }
+      // The pool in front of the cliff.
+      const PZ = 3,
+        impact = c.at(2.5, FY + 0.35, PZ);
+      const MW = '#010206';
+      c.poly(
+        [
+          [0.5, FY, PZ],
+          [4.6, FY, PZ],
+          [4.7, 3.85, PZ],
+          [0.45, 3.85, PZ],
+        ],
+        MW,
+      );
+      recolour(c, MW, (px, py) => {
+        const dx = px - impact[0],
+          dy = (py - impact[1]) * 2,
+          rr = Math.hypot(dx, dy);
+        if (rr < 12 && nhash(px, py, 20 + f) < 0.75 - rr * 0.04) return FALL[0];
+        const ring = (((rr - f * 2.5) % 10) + 10) % 10;
+        let v = 0.05 - rr * 0.012 + (py - impact[1]) * 0.01;
+        if (ring < 1.4) v += 0.45;
+        return tone(FALL, v, [0.75, 0.45, 0.2, -0.05, -0.3, -0.6]);
+      });
+      // The falling water: bright streaks that flow down; edges thinner, darker.
+      for (let px = Math.ceil(c.at(1.95, FY, 0)[0]); px <= c.at(3.05, FY, 0)[0]; px++) {
+        const x = (px - c.at(0, FY, 0)[0]) / 16,
+          u = (x - 1.95) / 1.1,
+          col = Math.floor(u * 9),
+          off = nhash(col, 31) * 22,
+          zTop = ridge(x) + 2;
+        for (let z = PZ; z <= zTop; z++) {
+          const py = c.at(x, FY, z)[1] + 1,
+            phase = (((z + f * 5.5 + off) % 22) + 22) % 22 / 22;
+          let v = 0.35 - Math.abs(u - 0.5) * 1.1 + (phase < 0.4 ? 0.35 : phase < 0.55 ? 0.1 : -0.15);
+          if (zTop - z < 4) v += 0.5;
+          if (z < PZ + 14 && nhash(px, py, 40 + f) < 0.6 - (z - PZ) * 0.04) v = 1;
+          c.p.pixel(px, py, tone(FALL, v, [0.72, 0.42, 0.15, -0.1, -0.35, -0.6]));
+        }
+      }
+      // Thin trickles elsewhere on the face.
+      for (const tx of [0.9, 4.1]) {
+        const [px] = c.at(tx, FY, 0);
+        for (let z = 20; z < ridge(tx) - 4; z++) {
+          const py = c.at(tx, FY, z)[1];
+          if ((z + f * 3) % 7 < 5) c.p.pixel(px, py, FALL[(z + f) % 3 === 0 ? 1 : 3]);
+        }
+      }
+      // Spray and mist above the impact.
+      for (let i = 0; i < 70; i++) {
+        const a = nhash(i, 50 + f) * Math.PI,
+          r = 4 + nhash(i, 51 + f) * 24;
+        c.p.pixel(
+          impact[0] + Math.cos(a) * r * 1.1 * (nhash(i, 52) < 0.5 ? -1 : 1),
+          impact[1] - Math.sin(a) * r * 0.45 - 2,
+          i % 3 ? FALL[0] : FALL[1],
+        );
+      }
+      // Stones around the pool and grass at the edges.
+      for (let x = 0.55; x < 4.7; x += 0.42) {
+        const [px, py] = c.at(x, 3.93, PZ - 1);
+        boulder(c, px, py, 3.5 + nhash(Math.round(x * 10), 91) * 2.5, 2.8 + nhash(Math.round(x * 10), 92) * 1.5, 93 + Math.round(x * 10));
+      }
+      for (const y of [2.6, 3.2]) {
+        boulder(c, ...c.at(0.4, y, PZ), 4, 3, 95 + Math.round(y * 10));
+        boulder(c, ...c.at(4.75, y, PZ), 4, 3, 96 + Math.round(y * 10));
+      }
+      tufts(c, ...c.at(0.3, 3.95, 0), 14, 97, [C.white, C.yellow]);
+      tufts(c, ...c.at(4.8, 3.9, 0), 14, 98, [C.pink]);
+    },
+  },
+  'm-ship': {
+    // A wooden sailing ship on a patch of sea; sails and waves bob gently.
+    footprint: [3, 2],
+    h: 110,
+    pad: 26,
+    frames: 2,
+    period: 48,
+    detail: { grain: 0 },
+    draw(c, f) {
+      const [gx, gy] = c.at(1.5, 1, 0);
+      seaPatch(c, gx, gy, 58, 24, f, 3);
+      const zb = f ? 1 : 0,
+        HULL = 22 + zb;
+      const MH = '#010301',
+        MD = '#010302';
+      // Hull (front side faces +y), deck on top.
+      c.poly(
+        [
+          [0.3, 1.34, HULL],
+          [2.2, 1.38, HULL],
+          [2.98, 1.0, HULL + 3],
+          [2.82, 1.0, 5 + zb],
+          [2.2, 1.24, 3 + zb],
+          [0.4, 1.22, 5 + zb],
+        ],
+        MH,
+      );
+      c.poly(
+        [
+          [0.3, 0.66, HULL],
+          [2.2, 0.62, HULL],
+          [2.98, 1.0, HULL + 3],
+          [2.2, 1.38, HULL],
+          [0.3, 1.34, HULL],
+        ],
+        MD,
+      );
+      recolour(c, MH, (_px, py) => {
+        const band = (py >> 2) % 2;
+        return [NC.hull0, NC.hull1, NC.hull2][band ? 1 : (py >> 1) % 3 === 0 ? 2 : 0];
+      });
+      recolour(c, MD, (px) => (px % 4 === 0 ? NC.hull1 : C.woodLight));
+      // Dark wale and stern castle.
+      c.edge([0.32, 1.33, HULL - 4], [2.25, 1.37, HULL - 4], NC.hull2);
+      c.box(0.28, 0.66, 0.55, 0.68, 12, { top: C.woodLight, front: NC.hull0, side: NC.hull1, edge: NC.hull2 }, HULL);
+      for (const x of [0.35, 0.55])
+        c.faceX(x, 1.341, 0.1, HULL + 4, 4, NC.hull2);
+      // Masts, yards and square sails (bellied), a jib at the bow.
+      const masts: [number, number][] = [
+        [0.95, 92],
+        [1.6, 104],
+        [2.25, 90],
+      ];
+      for (const [mx, mh] of masts) {
+        const [px, py] = c.at(mx, 1, HULL);
+        c.p.rect(px - 1, py - (mh - HULL), 2, mh - HULL, NC.hull2);
+        for (const [z0, z1] of [
+          [HULL + 12, HULL + (mh - HULL) * 0.52],
+          [HULL + (mh - HULL) * 0.56, mh - 6],
+        ]) {
+          const MS = '#010303';
+          const belly = 0.06 + (f ? 0.02 : 0);
+          c.poly(
+            [
+              [mx, 0.48, z0],
+              [mx + belly, 1.0, z0 - 1],
+              [mx, 1.52, z0],
+              [mx, 1.5, z1],
+              [mx + belly, 1.0, z1],
+              [mx, 0.5, z1],
+            ],
+            MS,
+          );
+          const [cx, cy] = c.at(mx, 1, (z0 + z1) / 2);
+          recolour(c, MS, (px2, py2) => {
+            const dx = (px2 - cx) / 14,
+              dy = (py2 - cy) / ((z1 - z0) / 2);
+            const v = 0.5 - Math.abs(dx) * 0.5 - dy * 0.25 + (f ? 0.05 : 0);
+            return tone([NC.sail0, NC.sail1, NC.sail2, NC.sail3], v, [0.42, 0.15, -0.1]);
+          });
+          c.edge([mx, 0.46, z1 + 1], [mx, 1.54, z1 + 1], NC.hull2);
+        }
+      }
+      c.poly(
+        [
+          [2.25, 1, 84],
+          [3.05, 1, HULL + 6],
+          [2.3, 1, HULL + 8],
+        ],
+        NC.sail1,
+      );
+      c.edge([2.25, 1, 84], [3.05, 1, HULL + 6], NC.sail2);
+      // Rigging.
+      for (const [mx, mh] of masts) {
+        c.edge([mx, 1, mh], [0.3, 1, HULL + 12], NC.hull2);
+        c.edge([mx, 1, mh], [Math.min(2.98, mx + 0.75), 1, HULL + 2], NC.hull2);
+      }
+      // Bow wave and wake.
+      for (let i = 0; i < 18; i++) {
+        const [px, py] = c.at(2.95 + nhash(i, 60 + f) * 0.25, 1.05 + (nhash(i, 61) - 0.5) * 0.6, 0);
+        c.p.pixel(px, py, SEA[0]);
+      }
+      for (let i = 0; i < 24; i++) {
+        const [px, py] = c.at(0.25 - nhash(i, 62 + f) * 0.6, 1.0 + (nhash(i, 63) - 0.5) * 0.7, 0);
+        c.p.pixel(px, py, i % 2 ? SEA[0] : SEA[1]);
+      }
+    },
+  },
+  'm-beach-rocks': {
+    // Wet rocks in the shallows with white surf around them.
+    footprint: [2, 1],
+    h: 28,
+    pad: 18,
+    frames: 2,
+    period: 24,
+    detail: { grain: 0 },
+    draw(c, f) {
+      const [gx, gy] = c.at(1, 0.5, 0);
+      seaPatch(c, gx, gy + 1, 36, 13, f, 11);
+      const wet = [NC.rock2, NC.rock3, NC.rock4, NC.rock5, NC.rock5, NC.rock5] as const;
+      boulder(c, gx - 10, gy - 6, 9, 7.5, 121, wet, false);
+      boulder(c, gx + 8, gy - 3, 7, 5.5, 122, wet, false);
+      boulder(c, gx + 1, gy + 2, 4, 3, 123, wet, false);
+      // Glints and foam at the rocks' feet.
+      for (let i = 0; i < 40; i++) {
+        const a = nhash(i, 124 + f) * Math.PI * 2,
+          r = 8 + nhash(i, 125 + f) * 10;
+        c.p.pixel(gx - 2 + Math.cos(a) * r * 1.6, gy + 1 + Math.sin(a) * r * 0.45, SEA[0]);
+      }
+      c.p.pixel(gx - 13, gy - 11, NC.water0);
+      c.p.pixel(gx + 6, gy - 6, NC.water0);
+    },
+  },
 };
 Object.assign(objects, nature);
 
 /* ════════ City pass: skyline, lit windows, street furniture ════════ */
+// Blue-hour city: deep blue glass, warm and cool lit windows, glowing street
+// life. Signs and panels are plain colour only (no text, logos or symbols).
+const CN = {
+  // Night glass, deep to light.
+  glass0: C.screen,
+  glass1: C.navy,
+  glass2: CC.nightGlass,
+  glass3: CC.duskGlass,
+  glass4: CC.skyGlass,
+  glass5: CC.skyGlassLight,
+  glass6: C.glassDark,
+  // Window light.
+  warm: C.windowLit,
+  amber: CC.amberLit,
+  hot: C.lampGlow,
+  cool: C.glassLight,
+  coolDim: C.glass,
+  // Dimmer versions for the shaded (+x) face.
+  warmSide: C.gold,
+  amberSide: C.orangeDark,
+  coolSide: C.glassDark,
+  // Concrete for poles and the broadcast tower.
+  conc0: C.concrete,
+  conc1: C.silver,
+  conc2: C.grey,
+  conc3: C.slate,
+  // Cherry blossom.
+  petal0: CC.blossomLight,
+  petal1: C.rose,
+  petal2: CC.blossom,
+  petal3: CC.blossomDeep,
+  bark: C.brownstoneDark,
+  barkLight: C.trunk,
+  aircraft: C.red,
+};
+/** Deterministic 0..1 hash for window patterns. */
+const cityHash = (i: number, j: number, s = 0) => {
+  let h = Math.imul(i * 374761393 + j * 668265263 + s * 2147483647, 1274126177);
+  h ^= h >>> 13;
+  return ((Math.imul(h, 1274126177) >>> 0) % 10000) / 10000;
+};
+/**
+ * Window state for floor j, column i: whole floors light up in bands (as in
+ * an office tower at dusk), with single windows varying inside them.
+ */
+function windowState(i: number, j: number, seed: number) {
+  const floor = cityHash(0, j, seed),
+    w = cityHash(i, j, seed + 1);
+  if (floor < 0.42) return w < 0.82 ? 'warm' : w < 0.92 ? 'amber' : 'dark';
+  if (floor < 0.62) return w < 0.7 ? 'cool' : 'dark';
+  return w < 0.14 ? 'warm' : w < 0.2 ? 'cool' : 'dark';
+}
+type WindowShades = { warm: string; amber: string; cool: string; dark: string };
+const FRONT_LIGHTS: WindowShades = {
+  warm: CN.warm,
+  amber: CN.amber,
+  cool: CN.cool,
+  dark: CN.glass2,
+};
+const SIDE_LIGHTS: WindowShades = {
+  warm: CN.warmSide,
+  amber: CN.amberSide,
+  cool: CN.coolSide,
+  dark: CN.glass1,
+};
+/** Lit-window grid on a front (+y) face. */
+function nightWindowsFront(
+  c: IsoCanvas,
+  x0: number,
+  x1: number,
+  y: number,
+  z0: number,
+  z1: number,
+  step: number,
+  row: number,
+  w: number,
+  h: number,
+  seed: number,
+  shades: WindowShades = FRONT_LIGHTS,
+) {
+  let i = 0;
+  for (let u = x0; u + w <= x1 + 1e-6; u += step, i++) {
+    let j = 0;
+    for (let z = z0; z + h <= z1; z += row, j++) {
+      const s = windowState(i, j, seed);
+      c.faceX(u, y, w, z, h, shades[s]);
+      // A soft top shade inside lit windows (blinds, ceiling).
+      if (s !== 'dark' && h >= 3)
+        c.faceX(u, y + 0.001, w, z + h - 1, 1, darker(shades[s]));
+    }
+  }
+}
+/** Lit-window grid on a side (+x) face. */
+function nightWindowsSide(
+  c: IsoCanvas,
+  x: number,
+  y0: number,
+  y1: number,
+  z0: number,
+  z1: number,
+  step: number,
+  row: number,
+  w: number,
+  h: number,
+  seed: number,
+  shades: WindowShades = SIDE_LIGHTS,
+) {
+  let i = 0;
+  for (let v = y0; v + w <= y1 + 1e-6; v += step, i++) {
+    let j = 0;
+    for (let z = z0; z + h <= z1; z += row, j++)
+      c.faceY(x, v, w, z, h, shades[windowState(i + 7, j, seed)]);
+  }
+}
+/** Checkerboard a colour over part of a side (+x) face. */
+function ditherSide(
+  c: IsoCanvas,
+  x: number,
+  y0: number,
+  y1: number,
+  z0: number,
+  z1: number,
+  col: string,
+) {
+  const [sx0] = c.at(x, y0, 0),
+    [sx1] = c.at(x, y1, 0);
+  for (let px = Math.ceil(Math.min(sx0, sx1)); px < Math.max(sx0, sx1); px++) {
+    const v = y0 + (sx0 - px) / 16,
+      [, top] = c.at(x, v, z1),
+      [, bottom] = c.at(x, v, z0);
+    for (let py = Math.ceil(top); py < bottom; py++)
+      if ((px + py) % 2 === 0 && c.p.data[(py * c.p.width + px) * 4 + 3])
+        c.p.pixel(px, py, col);
+  }
+}
+/** A blinking-free aircraft light: a red pixel with a soft halo. */
+function aircraftLight(c: IsoCanvas, x: number, y: number, z: number) {
+  const [px, py] = c.at(x, y, z);
+  c.p.pixel(px - 1, py, C.redDark);
+  c.p.pixel(px + 1, py, C.redDark);
+  c.p.pixel(px, py - 1, C.redDark);
+  c.p.pixel(px, py, CN.aircraft);
+}
+/** 4×4 ordered-dither thresholds, for soft light falling off on the ground. */
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+/**
+ * A soft pool of light on the ground at tile point (x, y): dense near the
+ * centre, thinning out to the rim (rx, ry in screen pixels).
+ */
+function lightPool(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  rx: number,
+  ry: number,
+  strength = 0.55,
+  inner: string = C.lamp,
+  outer: string = CN.warm,
+) {
+  const [gx, gy] = c.at(x, y, 0);
+  for (let j = Math.floor(-ry); j <= ry; j++)
+    for (let i = Math.floor(-rx); i <= rx; i++) {
+      const k = Math.sqrt((i / rx) ** 2 + (j / ry) ** 2);
+      if (k > 1) continue;
+      const px = Math.round(gx + i),
+        py = Math.round(gy + j),
+        t = BAYER[(py & 3) * 4 + (px & 3)] / 16;
+      if (t < strength * (1 - k) ** 1.4)
+        c.p.pixel(px, py, k < 0.4 ? inner : outer);
+    }
+}
+/**
+ * A night glass tower: a podium with a glowing lobby, a shaft of deep blue
+ * glass with a lit window grid, sky reflection toward the top and floor
+ * lines, and a crown.
+ */
+function nightTower(
+  c: IsoCanvas,
+  o: number,
+  size: number,
+  shaftH: number,
+  seed: number,
+  base = 3,
+) {
+  // Podium and warm lobby.
+  const b = base;
+  c.box(0, 0, b, b, 16, {
+    top: C.slate,
+    front: C.charcoal,
+    side: C.ink,
+    edge: C.ink,
+  });
+  c.faceX(0.25, b + 0.002, b - 0.5, 2, 11, CN.hot);
+  c.faceX(0.25, b + 0.003, b - 0.5, 10, 3, CN.amber);
+  for (let u = 0.25; u < b - 0.2; u += 0.42)
+    c.faceX(u, b + 0.004, 0.05, 2, 11, C.charcoal);
+  c.faceY(b + 0.002, 0.3, b - 0.6, 2, 11, CN.warmSide);
+  c.faceY(b + 0.003, 0.3, b - 0.6, 10, 3, CN.amberSide);
+  for (let v = 0.3; v < b - 0.25; v += 0.42)
+    c.faceY(b + 0.004, v, 0.05, 2, 11, C.ink);
+  c.box(b / 2 - 0.65, b, 1.3, 0.25, 2, M.steel, 13);
+  const z0 = 16,
+    z1 = z0 + shaftH,
+    e = o + size;
+  c.box(o, o, size, size, shaftH, {
+    top: CN.glass4,
+    front: CN.glass3,
+    side: CN.glass1,
+    edge: CN.glass0,
+  }, z0);
+  // Sky reflected on the upper glass; the base sits in the dusk shadow.
+  ditherFront(c, o, e, e + 0.001, z1 - shaftH * 0.34, z1, CN.glass4, 0.5);
+  ditherFront(c, o, e, e + 0.001, z1 - shaftH * 0.12, z1, CN.glass5, 0.5);
+  ditherSide(c, e + 0.001, o, e, z1 - shaftH * 0.3, z1, CN.glass2);
+  nightWindowsFront(c, o + 0.06, e - 0.04, e + 0.002, z0 + 4, z1 - 4, 0.205, 6, 0.13, 3, seed);
+  nightWindowsSide(c, e + 0.002, o + 0.06, e - 0.04, z0 + 4, z1 - 4, 0.205, 6, 0.13, 3, seed);
+  // Vertical fins catch a thin rim of light on the lit corner.
+  c.edge([o, e + 0.003, z0], [o, e + 0.003, z1], CN.glass6);
+  c.edge([e + 0.003, e + 0.003, z0], [e + 0.003, e + 0.003, z1], CN.glass0);
+  for (let u = o + 0.615; u < e - 0.1; u += 0.615)
+    c.edge([u, e + 0.003, z0 + 2], [u, e + 0.003, z1 - 2], CN.glass2);
+  // Long diagonal reflections, very sparse.
+  for (let k = 0; k < 3; k++) {
+    const z = z0 + 30 + k * (shaftH / 3.2);
+    c.edge([o + 0.1, e + 0.004, z], [o + 0.7, e + 0.004, z + 22], CN.glass5);
+  }
+  // Parapet light line.
+  c.edge([o, e + 0.004, z1 - 1], [e, e + 0.004, z1 - 1], CN.glass6);
+  c.edge([e + 0.004, o, z1 - 1], [e + 0.004, e, z1 - 1], CN.glass4);
+  return z1;
+}
+/**
+ * A concrete utility pole with two cross-arms. Wires run along x toward the
+ * next pole (6 tiles away) in each direction in `dirs`, sagging to meet that
+ * pole's wires at the midpoint: z(s) = z0 + 1 - 8 s (6 - s) / 9. A pole that
+ * ends a run is held by a guy wire. The -side variant runs along y.
+ */
+function utilityPole(dirs: number[]): Spec {
+  return {
+    footprint: [1, 1],
+    h: 98,
+    pad: 58,
+    side: true,
+    detail: { outline: true, rim: false, grain: 0, contact: true },
+    shadow: false,
+    draw(c) {
+      const [px, py] = c.at(0.5, 0.5, 0);
+      // Concrete pole with a footing, joint rings and climbing steps.
+      c.p.rect(px - 2, py - 92, 4, 92, CN.conc1);
+      c.p.rect(px - 2, py - 92, 1, 92, CN.conc0);
+      c.p.rect(px + 1, py - 92, 1, 92, CN.conc2);
+      c.p.rect(px - 3, py - 4, 6, 4, CN.conc2);
+      for (let z = 20; z < 88; z += 17) c.p.rect(px - 2, py - z, 4, 1, CN.conc2);
+      for (let z = 30; z < 70; z += 6) c.p.pixel(px + (z % 12 ? 2 : -3), py - z, C.steelDark);
+      // Transformer drum, a junction box and a small plain plate.
+      c.cylinder(0.62, 0.5, 52, 4, 11, [CN.conc1, CN.conc2, CN.conc3]);
+      c.p.rect(px + 1, py - 66, 6, 1, C.steelDark);
+      c.p.rect(px + 2, py - 40, 3, 6, C.slate);
+      c.p.rect(px + 2, py - 40, 1, 6, C.grey);
+      c.p.rect(px - 2, py - 28, 4, 3, C.yellow);
+      // Cross-arms run across the street (along y); wires run along x.
+      const arms = [86, 76],
+        lanes = [0.12, 0.5, 0.88];
+      for (const z of arms) {
+        c.thick(c.at(0.5, 0.05, z), c.at(0.5, 0.95, z), 0.6, CN.conc2);
+        c.line(c.at(0.5, 0.05, z + 1), c.at(0.5, 0.95, z + 1), CN.conc1);
+        for (const v of lanes) {
+          const [ix, iy] = c.at(0.5, v, z + 1);
+          c.p.rect(ix, iy - 2, 1, 2, C.offwhite);
+        }
+      }
+      for (const z0 of arms)
+        for (const v of lanes)
+          for (const dir of dirs) {
+            let last = c.at(0.5, v, z0 + 1);
+            for (let k = 1; k <= 30; k++) {
+              const s = (k / 30) * 3,
+                z = z0 + 1 - (8 * s * (6 - s)) / 9,
+                next = c.at(0.5 + dir * s, v, z);
+              c.line(last, next, C.ink);
+              last = next;
+            }
+          }
+      // A thinner telecom cable lower down, and a guy wire at a run's end.
+      for (const dir of dirs) {
+        let last = c.at(0.5, 0.5, 62);
+        for (let k = 1; k <= 30; k++) {
+          const s = (k / 30) * 3,
+            next = c.at(0.5 + dir * s, 0.5, 62 - (10 * s * (6 - s)) / 9);
+          c.line(last, next, C.charcoal);
+          last = next;
+        }
+      }
+      if (dirs.length === 1) {
+        const back = -dirs[0];
+        c.line(c.at(0.5, 0.5, 80), c.at(0.5 + back * 0.45, 0.5, 0), C.charcoal);
+        c.p.rect(...c.at(0.5 + back * 0.45, 0.5, 0), 2, 1, C.slate);
+      }
+    },
+  };
+}
 const city: Record<string, Spec> = {
   // CITY-OBJECTS
+  'm-tower-tall': {
+    footprint: [3, 3],
+    h: 336,
+    draw(c) {
+      const top = nightTower(c, 0.25, 2.5, 272, 11);
+      // Stepped crown with glowing bands, then a lit spire.
+      c.box(0.55, 0.55, 1.9, 1.9, 16, {
+        top: CN.glass4,
+        front: CN.glass3,
+        side: CN.glass1,
+        edge: CN.glass0,
+      }, top);
+      for (const z of [top + 4, top + 9, top + 14]) {
+        c.faceX(0.55, 2.451, 1.9, z, 1, CN.hot);
+        c.faceY(2.451, 0.55, 1.9, z, 1, CN.warmSide);
+      }
+      c.box(0.95, 0.95, 1.1, 1.1, 14, {
+        top: CN.glass5,
+        front: CN.glass4,
+        side: CN.glass2,
+        edge: CN.glass0,
+      }, top + 16);
+      c.faceX(0.95, 2.051, 1.1, top + 22, 3, CN.cool);
+      c.faceY(2.051, 0.95, 1.1, top + 22, 3, CN.coolSide);
+      const [sx, sy] = c.at(1.5, 1.5, top + 30);
+      c.p.rect(sx - 1, sy - 26, 3, 26, C.silver);
+      c.p.rect(sx + 1, sy - 26, 1, 26, C.steelDark);
+      c.p.rect(sx, sy - 34, 1, 8, C.silver);
+      aircraftLight(c, 1.5, 1.5, top + 64);
+      aircraftLight(c, 0.6, 0.6, top + 17);
+      aircraftLight(c, 2.4, 2.4, top + 17);
+    },
+  },
+  'm-broadcast-tower': {
+    footprint: [2, 2],
+    h: 262,
+    pad: 12,
+    draw(c) {
+      // Podium with a glowing entrance hall.
+      c.box(0.1, 0.1, 1.8, 1.8, 12, M.concrete);
+      c.faceX(0.35, 1.901, 1.3, 2, 8, CN.hot);
+      c.faceX(0.35, 1.902, 1.3, 8, 2, CN.amber);
+      for (let u = 0.35; u < 1.7; u += 0.32)
+        c.faceX(u, 1.903, 0.04, 2, 8, C.charcoal);
+      c.faceY(1.901, 0.4, 1.2, 2, 8, CN.amberSide);
+      // Tapering shaft in sections, with a strip of warm lights up the lit side.
+      const ramp: Ramp = [CN.conc0, CN.conc1, CN.conc2];
+      const sections: [number, number, number][] = [
+        [12, 7, 40],
+        [52, 6, 40],
+        [92, 5, 40],
+        [132, 4.5, 20],
+      ];
+      for (const [z, rx, h] of sections) c.cylinder(1, 1, z, rx, h, ramp);
+      const [bx, by] = c.at(1, 1, 0);
+      for (let z = 16; z < 150; z += 4) c.p.pixel(bx - 3, by - z, CN.hot);
+      for (let z = 18; z < 150; z += 8) c.p.pixel(bx + 3, by - z, CN.warmSide);
+      // Main observation pod: dark band, a ring of lit windows, a glowing rim.
+      c.cylinder(1, 1, 150, 18, 4, [CN.conc1, CN.conc2, CN.conc3]);
+      c.cylinder(1, 1, 154, 17, 9, [CN.glass4, CN.glass3, CN.glass1]);
+      const [pcx, pcy] = c.at(1, 1, 158);
+      for (let a = 0; a < Math.PI; a += 0.09) {
+        const wx = pcx + Math.cos(a) * 16,
+          wy = pcy + Math.sin(a) * 8;
+        const k = Math.floor(a / 0.09);
+        c.p.rect(wx, wy - 2, 1, 3, k % 5 === 4 ? CN.glass2 : k % 3 ? CN.warm : CN.hot);
+      }
+      c.cylinder(1, 1, 163, 18, 3, [CN.conc0, CN.conc1, CN.conc2]);
+      const [rx0, ry0] = c.at(1, 1, 166);
+      for (let a = 0; a < Math.PI; a += 0.12)
+        c.p.pixel(rx0 + Math.cos(a) * 17, ry0 + Math.sin(a) * 8.5, CN.hot);
+      c.cylinder(1, 1, 166, 11, 10, ramp, CN.conc0);
+      // Upper shaft and a smaller pod.
+      c.cylinder(1, 1, 176, 3.5, 30, ramp);
+      c.cylinder(1, 1, 206, 8, 7, [CN.glass4, CN.glass3, CN.glass1]);
+      const [ucx, ucy] = c.at(1, 1, 209);
+      for (let a = 0.2; a < Math.PI - 0.2; a += 0.22)
+        c.p.pixel(ucx + Math.cos(a) * 7, ucy + Math.sin(a) * 3.5, CN.cool);
+      c.cylinder(1, 1, 213, 8.5, 2, [CN.conc0, CN.conc1, CN.conc2]);
+      // Antenna mast with white and red bands and aircraft lights.
+      const [mx, my] = c.at(1, 1, 215);
+      for (let z = 0; z < 44; z++)
+        c.p.rect(mx - (z < 20 ? 1 : 0), my - z, z < 20 ? 3 : 2, 1,
+          Math.floor(z / 6) % 2 ? C.redDark : C.offwhite);
+      c.p.rect(mx, my - 52, 1, 8, C.silver);
+      aircraftLight(c, 1, 1, 236);
+      aircraftLight(c, 1, 1, 268);
+      aircraftLight(c, 1, 1, 169);
+    },
+  },
+  // Poles stand 6 tiles apart along a kerb; -start and -end close a run.
+  'm-utility-pole': utilityPole([1, -1]),
+  'm-utility-pole-start': utilityPole([1]),
+  'm-utility-pole-end': utilityPole([-1]),
+  'm-street-cherry': {
+    footprint: [1, 1],
+    h: 86,
+    pad: 18,
+    draw(c) {
+      const [bx, by] = c.at(0.5, 0.5, 0);
+      // Petals already fallen on the pavement around the tree pit.
+      for (let k = 0; k < 46; k++) {
+        const a = cityHash(k, 1) * Math.PI * 2,
+          r = 4 + cityHash(k, 2) * 22;
+        c.p.pixel(bx + Math.cos(a) * r, by + Math.sin(a) * r * 0.5,
+          k % 3 ? CN.petal1 : CN.petal0);
+      }
+      c.top(0.32, 0.32, 0.36, 0.36, 0, C.soil);
+      // Trunk and branches reaching up into the canopy.
+      c.thick([bx, by], [bx + 1, by - 26], 1.6, CN.bark);
+      c.thick([bx - 1, by - 2], [bx, by - 24], 0.6, CN.barkLight);
+      const branches: [number, number, number, number][] = [
+        [1, -26, -14, -44],
+        [1, -26, 15, -42],
+        [1, -30, 2, -52],
+        [-6, -36, -20, -50],
+        [9, -36, 22, -52],
+      ];
+      for (const [x0, y0, x1, y1] of branches)
+        c.thick([bx + x0, by + y0], [bx + x1, by + y1], 0.8, CN.bark);
+      // Blossom: soft clusters, light upper-left, deep pink lower-right.
+      const clusters: [number, number, number][] = [
+        [-16, -50, 11],
+        [16, -50, 11],
+        [0, -60, 12],
+        [-8, -42, 9],
+        [10, -40, 9],
+        [-22, -42, 7],
+        [23, -44, 7],
+        [3, -48, 12],
+      ];
+      for (const [dx, dy, r] of clusters) {
+        c.p.ellipse(bx + dx + 1, by + dy + 1, r, r * 0.78, CN.petal3);
+        c.p.ellipse(bx + dx, by + dy, r * 0.94, r * 0.72, CN.petal2);
+        c.p.ellipse(bx + dx - r * 0.18, by + dy - r * 0.16, r * 0.72, r * 0.54, CN.petal1);
+        c.p.ellipse(bx + dx - r * 0.34, by + dy - r * 0.3, r * 0.38, r * 0.28, CN.petal0);
+      }
+      // Blossom texture and a few dark twigs showing through.
+      for (let k = 0; k < 90; k++) {
+        const x = bx - 30 + Math.floor(cityHash(k, 5) * 60),
+          y = by - 70 + Math.floor(cityHash(k, 6) * 36),
+          i = (y * c.p.width + x) * 4;
+        if (!c.p.data[i + 3]) continue;
+        c.p.pixel(x, y, k % 4 === 0 ? CN.petal3 : k % 3 ? CN.petal0 : CN.petal2);
+      }
+      for (const [x0, y0, x1, y1] of [
+        [-9, -46, -13, -51],
+        [12, -47, 15, -50],
+        [2, -55, 1, -59],
+      ])
+        c.line([bx + x0, by + y0], [bx + x1, by + y1], CN.bark);
+      // Petals drifting down.
+      for (const [dx, dy] of [
+        [-25, -28],
+        [20, -22],
+        [-12, -16],
+        [27, -34],
+        [6, -12],
+      ])
+        c.p.pixel(bx + dx, by + dy, CN.petal0);
+    },
+  },
+  'm-vending': {
+    footprint: [1, 1],
+    h: 46,
+    pad: 10,
+    draw(c) {
+      // Light spilling onto the pavement in front.
+      lightPool(c, 0.55, 1.15, 20, 7, 0.6);
+      const machine = (x: number, body: Material, panel: string) => {
+        c.box(x, 0.3, 0.42, 0.5, 40, body);
+        // Glowing display window with rows of plain coloured bottles.
+        c.faceX(x + 0.04, 0.801, 0.34, 18, 19, panel);
+        for (let row = 0; row < 3; row++)
+          for (let k = 0; k < 5; k++) {
+            const col = accents[(k * 3 + row * 2 + (x > 0.5 ? 1 : 0)) % accents.length];
+            c.faceX(x + 0.06 + k * 0.064, 0.802, 0.04, 21 + row * 6, 3, col);
+          }
+        c.faceX(x + 0.04, 0.802, 0.34, 36, 1, C.white);
+        // Button strip and the dispenser slot.
+        c.faceX(x + 0.06, 0.802, 0.3, 14, 2, C.charcoal);
+        for (let k = 0; k < 5; k++)
+          c.faceX(x + 0.08 + k * 0.06, 0.803, 0.02, 14, 1, CN.cool);
+        c.faceX(x + 0.08, 0.802, 0.26, 4, 6, C.ink);
+        c.faceX(x + 0.1, 0.803, 0.22, 5, 1, C.charcoal);
+      };
+      machine(0.04, {
+        top: C.red,
+        front: C.redDark,
+        side: C.carpet,
+        edge: C.carpetDark,
+      }, CN.hot);
+      machine(0.52, {
+        top: C.white,
+        front: C.offwhite,
+        side: C.pale,
+        edge: C.silver,
+      }, C.lamp);
+      // A small recycling bin beside them.
+      c.cylinder(1.02, 0.6, 0, 2.5, 9, [C.blue, C.blueDark, C.navy]);
+    },
+  },
+  'm-awning-shop': {
+    footprint: [2, 1],
+    h: 82,
+    pad: 8,
+    draw(c) {
+      // Two-storey shop house in warm plaster with a flat roof.
+      c.box(0, 0, 2, 0.8, 66, {
+        top: C.warmGreyLight,
+        front: C.creamShade,
+        side: C.warmGrey,
+        edge: C.warmGreyDark,
+      });
+      c.box(0, 0, 2, 0.84, 3, {
+        top: C.warmGrey,
+        front: C.warmGreyDark,
+        side: C.warmGreyDark,
+      }, 66);
+      // Shop window: warm interior with shelf silhouettes.
+      c.faceX(0.12, 0.801, 1.3, 3, 22, CN.hot);
+      c.faceX(0.12, 0.802, 1.3, 19, 6, CN.amber);
+      for (const z of [8, 14, 20])
+        c.faceX(0.16, 0.803, 1.22, z, 1, C.woodDark);
+      for (let k = 0; k < 9; k++)
+        c.faceX(0.2 + k * 0.13, 0.803, 0.06, 9 + (k % 3) * 6, 3,
+          accents[(k * 4) % accents.length]);
+      c.faceX(0.12, 0.803, 1.3, 3, 1, C.woodDark);
+      // Door with a lit glass pane.
+      c.faceX(1.55, 0.801, 0.34, 0, 24, C.woodDark);
+      c.faceX(1.6, 0.802, 0.24, 8, 13, CN.warm);
+      c.p.pixel(...c.at(1.82, 0.803, 12), C.gold);
+      // Awning: a sloped canopy with a scalloped valance (plain colour).
+      c.poly([
+        [0.02, 0.8, 34],
+        [1.98, 0.8, 34],
+        [1.98, 1.14, 27],
+        [0.02, 1.14, 27],
+      ], C.tealDark);
+      for (let u = 0.02; u < 1.98; u += 0.28)
+        c.poly([
+          [u, 0.8, 34],
+          [u + 0.14, 0.8, 34],
+          [u + 0.14, 1.14, 27],
+          [u, 1.14, 27],
+        ], C.teal);
+      for (let u = 0.02; u < 1.96; u += 0.14) {
+        c.faceX(u, 1.141, 0.14, 24, 3, (Math.round(u / 0.14) % 2) ? C.teal : C.tealDark);
+        c.faceX(u + 0.04, 1.142, 0.06, 23, 1, C.deepTeal);
+      }
+      // A plain sign panel above the awning (no text) and a paper lantern.
+      c.faceX(0.3, 0.801, 1.2, 37, 7, C.redDark);
+      c.faceX(0.34, 0.802, 1.12, 38, 5, C.red);
+      const [lx, ly] = c.at(1.9, 0.95, 40);
+      c.p.ellipse(lx, ly, 3, 4, CN.amber);
+      c.p.ellipse(lx - 1, ly - 1, 1.5, 2, CN.hot);
+      c.p.pixel(lx, ly - 5, C.ink);
+      // Upper floor: one warm window, one dark, an AC unit on the wall.
+      c.faceX(0.2, 0.801, 0.5, 46, 12, C.warmGreyDark);
+      c.faceX(0.24, 0.802, 0.42, 47, 10, CN.warm);
+      c.faceX(0.24, 0.803, 0.42, 55, 2, CN.amber);
+      c.faceX(1.2, 0.801, 0.5, 46, 12, C.warmGreyDark);
+      c.faceX(1.24, 0.802, 0.42, 47, 10, CN.glass3);
+      c.box(0.85, 0.8, 0.28, 0.14, 7, M.steel, 44);
+      c.faceX(0.88, 0.941, 0.22, 45, 5, C.steelDark);
+      for (let k = 0; k < 3; k++)
+        c.faceX(0.9 + k * 0.07, 0.942, 0.04, 45, 5, C.steel);
+      c.faceY(2.001, 0.1, 0.6, 46, 12, CN.amberSide);
+      // Potted plants by the door and light spilling onto the pavement.
+      c.pot(1.46, 1.0, 0, 3, 5, R.terracotta, C.soil);
+      c.greenery(1.46, 1.0, 9, 5, R.leaf);
+      lightPool(c, 0.8, 1.2, 24, 6, 0.5);
+    },
+  },
+  'm-city-lamp': {
+    footprint: [1, 1],
+    h: 70,
+    pad: 14,
+    shadow: false,
+    draw(c) {
+      // A warm pool of light on the pavement.
+      const [gx, gy] = c.at(0.5, 0.5, 0);
+      lightPool(c, 0.5, 0.5, 26, 13, 0.7);
+      // Dark cast-iron post with a curved arm and a glowing lantern.
+      c.p.rect(gx - 1, gy - 60, 3, 60, C.ink);
+      c.p.rect(gx - 1, gy - 60, 1, 60, C.charcoal);
+      c.p.rect(gx - 3, gy - 6, 7, 6, C.charcoal);
+      c.p.rect(gx - 2, gy - 7, 5, 1, C.slate);
+      c.line([gx, gy - 60], [gx + 6, gy - 64], C.ink);
+      c.line([gx + 6, gy - 64], [gx + 10, gy - 61], C.ink);
+      c.p.rect(gx + 7, gy - 61, 7, 2, C.ink);
+      c.p.rect(gx + 8, gy - 59, 5, 4, C.lamp);
+      c.p.rect(gx + 9, gy - 59, 3, 3, C.white);
+      c.p.rect(gx + 7, gy - 55, 7, 1, CN.hot);
+    },
+  },
 };
 Object.assign(objects, city);
 
