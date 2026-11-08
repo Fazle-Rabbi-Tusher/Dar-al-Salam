@@ -22,6 +22,8 @@ import {
   CRICKET_OBJECTS,
   cricketAmbient,
 } from './scenes/cricket';
+import { NATURE_OBJECTS } from './scenes/nature';
+import { CITY_OBJECTS } from './scenes/city';
 import { detailFootprints, type DetailType } from './details';
 
 /*
@@ -1345,6 +1347,9 @@ export function modernQuarter() {
   for (const [type, x, y] of STADIUM_OBJECTS) obj(type, x, y);
   ambient.push(...stadiumAmbient(), ...stadiumAmbient1b());
   for (const [type, x, y, z] of CRICKET_OBJECTS) obj(type, x, y, false, z);
+  // Nature and city passes (scenes/nature.ts, scenes/city.ts).
+  for (const [type, x, y, z] of [...NATURE_OBJECTS, ...CITY_OBJECTS])
+    obj(type, x, y, false, z ?? 0);
   ambient.push(...cricketAmbient());
 
   /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */

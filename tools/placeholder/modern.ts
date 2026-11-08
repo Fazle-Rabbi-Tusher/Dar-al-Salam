@@ -141,7 +141,13 @@ const C = {
   clay: '#B08A6E',
   flagRed: '#C93A3A',
 } as const;
-export const MODERN_COLOURS: string[] = [...new Set(Object.values(C))];
+/** Colours for the nature pass (trees, water, rocks): add here, not to C. */
+const NC = {} as Record<string, string>;
+/** Colours for the city pass (towers, lights, street furniture). */
+const CC = {} as Record<string, string>;
+export const MODERN_COLOURS: string[] = [
+  ...new Set([...Object.values(C), ...Object.values(NC), ...Object.values(CC)]),
+];
 
 type Ramp = [string, string, string];
 const M = {
@@ -4712,6 +4718,19 @@ const cricketScenes: Record<string, Spec> = {
   },
 };
 Object.assign(objects, cricketScenes);
+
+/* ════════ Nature pass: trees, plants, rocks, waterfall, ship ════════ */
+// Objects defined here may replace earlier ones with the same id (m-tree).
+const nature: Record<string, Spec> = {
+  // NATURE-OBJECTS
+};
+Object.assign(objects, nature);
+
+/* ════════ City pass: skyline, lit windows, street furniture ════════ */
+const city: Record<string, Spec> = {
+  // CITY-OBJECTS
+};
+Object.assign(objects, city);
 
 export const MODERN_OBJECTS: Record<
   string,

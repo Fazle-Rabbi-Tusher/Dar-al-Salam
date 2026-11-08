@@ -42,6 +42,7 @@ import {
 } from '../../packages/shared/script';
 import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripTempo } from '../../packages/shared/motion';
+import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
   PLANET,
@@ -711,6 +712,8 @@ async function build() {
     width: gw,
     height: gh,
   };
+  // The painted sky behind the planet (tools/build/sky.ts).
+  await generateSky(`${out}/sky.webp`);
   await fs.mkdir(`${out}/i18n`, { recursive: true });
   const i18n: Record<string, string> = {};
   for (const f of await files('content/i18n', '.json')) {
