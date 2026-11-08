@@ -1,14 +1,21 @@
 # Full-body character sprites
 
-A file here named `<character id>.png` replaces that named character's
-front-facing frames in the world (see DECISIONS.md, decision 41). The first one
-is `mufti-ismail-menk.png`. Make the others in the same style and save each
-with the file name in the list below.
+Each named character's look in the world comes from `art/sprites/<character id>.png`: a full-body **isometric** sprite, three-quarter view **facing down-left (SW)**, on a flat dark background (cut out automatically) or transparent. The build mirrors it for the right-facing views and the engine animates it (breathing, walking bob, hops, lunges) without redrawing it (DECISIONS.md, decision 47). Seated, kneeling, prayer and prop-in-hand moments still use the drawn character.
+
+## Back views (optional, recommended)
+
+Add `art/sprites/<character id>-back.png` to show the back when the camera sees someone walking away. Prompt (attach the front sprite):
+
+> Same character, same art style, same outfit and proportions as the attached isometric pixel-art sprite, seen from **behind**, three-quarter view **facing up-left (away from the viewer)**, full body head to shoes, standing, arms relaxed. Same canvas size (1024 × 1536) and scale, feet at the same spot. Plain dark background #14131B. No text, logos, numbers or religious symbols.
+
+## Still missing a sprite
+
+Habib Umar bin Hafiz, Frédéric Kanouté, Hakim Ziyech, Yassine Bounou, Sofiane Boufal, Usman Khawaja and Hashim Amla use the drawn character until their sprite is added.
 
 ## Prompt (paste into an image generator with a photo of the person)
 
-> Detailed pixel-art full-body character sprite of **[NAME]**, matching the
-> attached photo's face exactly. Standing, facing the viewer, full body from
+> Detailed isometric pixel-art full-body character sprite of **[NAME]**, matching the
+> attached photo's face exactly. Standing, three-quarter view facing down-left, full body from
 > head to shoes, arms relaxed at the sides. Wearing **[OUTFIT]**. Modest dress:
 > arms covered to the elbow or more and knees covered. Realistic face (real
 > eyes, brows, nose, mouth). Soft top-left lighting, clean pixel shading.

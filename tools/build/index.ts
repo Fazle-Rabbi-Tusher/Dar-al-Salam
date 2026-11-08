@@ -89,6 +89,7 @@ async function build() {
     anchor: [number, number],
     density = 1,
     anyColour = false,
+    still = false,
   ) {
     const t = trimFrame(img, anchor),
       key =
@@ -96,7 +97,9 @@ async function build() {
         hash(
           Buffer.concat([
             Buffer.from(t.image.data),
-            Buffer.from(JSON.stringify([t.image.width, t.anchor, density])),
+            Buffer.from(
+              JSON.stringify([t.image.width, t.anchor, density, still]),
+            ),
           ]),
         ).slice(0, 24);
     if (!images.has(key)) {
@@ -116,37 +119,38 @@ async function build() {
         },
         hitMask: Buffer.from(t.mask).toString('base64'),
         ...(density > 1 ? { density } : {}),
+        ...(still ? { still } : {}),
       };
     }
     return key;
   }
   /*
-   * A supplied full-body sprite (art/sprites/<id>.png, front view on a
-   * transparent background) replaces a named character's front-facing frames.
-   * It is drawn at four sprite pixels per world pixel, scaled to adult height,
-   * standing on the foot anchor with the usual outline and floor shadow.
+   * Supplied character art (art/sprites/<id>.png): a full-body isometric
+   * sprite facing down-left (SW) on a transparent background, plus an
+   * optional back view (art/sprites/<id>-back.png, facing up-left, NW). Each
+   * is drawn at four sprite pixels per world pixel, scaled to adult height,
+   * with the usual outline. The floor shadow is a separate sprite, so the
+   * engine can animate the still (packages/shared/motion.ts) without
+   * touching the design. Mirrors give the right-facing views.
    */
   const SPRITE_DENSITY = 4;
-  /** Calm standing poses where the still sprite stands in for the drawing. */
-  const SPRITE_ACTIONS = new Set([
-    'idle',
-    'talk',
-    'speech',
-    'wave',
-    'belt-pose',
-    'hand-on-heart',
-    'cross-arms',
-    'pour',
+  /** Poses a standing still cannot show: the drawn character plays these. */
+  const DRAWN_ACTIONS = new Set([
+    'sujood',
+    'pray',
+    'sit',
+    'read',
+    'write',
+    'teach',
+    'lie',
+    'dive',
+    'slide',
+    'ride',
   ]);
-  async function fullBodySprite(id: string) {
-    try {
-      await fs.access(`art/sprites/${id}.png`);
-    } catch {
-      return null;
-    }
+  async function spriteImage(file: string) {
     const D = SPRITE_DENSITY,
       spec = { width: 56 * D, height: 84 * D, foot: [28 * D, 80 * D] },
-      { data, info } = await sharp(`art/sprites/${id}.png`)
+      { data, info } = await sharp(file)
         .trim()
         .resize({ height: 66 * D, kernel: 'lanczos3' })
         .ensureAlpha()
@@ -157,13 +161,6 @@ async function build() {
     const out = new Pixels(spec.width, spec.height),
       x0 = Math.round(spec.foot[0] - info.width / 2),
       y0 = spec.foot[1] - info.height;
-    out.ellipse(
-      spec.foot[0],
-      spec.foot[1] - D,
-      8 * D,
-      2.5 * D,
-      [73, 60, 53, 89],
-    );
     // A two-pixel outline around the figure, like the drawn characters.
     const solid = (x: number, y: number) =>
       x >= 0 &&
@@ -190,6 +187,40 @@ async function build() {
     blit(out, body, x0, y0);
     return { image: out, anchor: spec.foot as [number, number] };
   }
+  const mirrored = (img: PixelImage, anchor: [number, number]) => {
+    const m = new Pixels(img.width, img.height);
+    blit(m, img, 0, 0, true);
+    return {
+      image: m,
+      anchor: [img.width - anchor[0], anchor[1]] as [number, number],
+    };
+  };
+  async function characterSprite(id: string) {
+    const exists = async (f: string) =>
+      fs.access(f).then(
+        () => true,
+        () => false,
+      );
+    if (!(await exists(`art/sprites/${id}.png`))) return null;
+    const front = await spriteImage(`art/sprites/${id}.png`),
+      back = (await exists(`art/sprites/${id}-back.png`))
+        ? await spriteImage(`art/sprites/${id}-back.png`)
+        : null;
+    // Without a back view the camera always sees the front, turned the way
+    // the character is heading (left or right).
+    const views: Record<
+      Facing,
+      { image: PixelImage; anchor: [number, number] }
+    > = {
+      SW: front,
+      SE: mirrored(front.image, front.anchor),
+      NW: back ?? front,
+      NE: back
+        ? mirrored(back.image, back.anchor)
+        : mirrored(front.image, front.anchor),
+    };
+    return views;
+  }
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
   for (const c of characters) {
@@ -198,14 +229,21 @@ async function build() {
       c.script.some((s) =>
         Array.isArray(s.z) ? s.z.some((z) => z !== 0) : Boolean(s.z),
       );
+    const sprite = await characterSprite(c.id);
+    // Sprite characters (and anyone lifted off the floor) get a separate
+    // floor shadow; their drawn frames are baked without one.
+    const unshadowed = lifted || Boolean(sprite);
     let shadowFrame: string | undefined;
-    if (lifted) {
+    if (sprite) {
+      const shadow = new Pixels(20, 8);
+      shadow.ellipse(10, 4, 8, 2.5, [73, 60, 53, 89]);
+      shadowFrame = register(shadow, [10, 4]);
+    } else if (lifted) {
       const shadow = new Pixels(16, 8);
       shadow.ellipse(8, 4, 6, 2, [73, 60, 53, 89]);
       shadowFrame = register(shadow, [8, 4]);
     }
     const frames: Record<string, string[]> = {};
-    const sprite = await fullBodySprite(c.id);
     for (const s of c.script) {
       // On the planet the camera decides which side of a character is seen,
       // so every facing is baked (back-only characters get NE/NW only).
@@ -217,26 +255,9 @@ async function build() {
           look = s.prop ? { ...c.look, prop: s.prop } : c.look;
         if (frames[key]) continue;
         frames[key] = [];
-        if (
-          sprite &&
-          !s.path &&
-          !s.prop &&
-          SPRITE_ACTIONS.has(s.action) &&
-          (facing === 'SE' || facing === 'SW')
-        ) {
-          const img =
-            facing === 'SE'
-              ? sprite.image
-              : (() => {
-                  const m = new Pixels(sprite.image.width, sprite.image.height);
-                  blit(m, sprite.image, 0, 0, true);
-                  return m;
-                })();
-          const anchor: [number, number] =
-            facing === 'SE'
-              ? sprite.anchor
-              : [sprite.image.width - sprite.anchor[0], sprite.anchor[1]];
-          const name = register(img, anchor, SPRITE_DENSITY, true);
+        if (sprite && !s.prop && !DRAWN_ACTIONS.has(s.action)) {
+          const v = sprite[facing],
+            name = register(v.image, v.anchor, SPRITE_DENSITY, true, true);
           for (let f = 0; f < ACTIONS[s.action]; f++) frames[key].push(name);
           bakedCount += ACTIONS[s.action];
           continue;
@@ -259,7 +280,7 @@ async function build() {
               parts,
               pal,
               head,
-              !lifted,
+              !unshadowed,
             );
             if (overhang)
               throw Error(
@@ -275,7 +296,7 @@ async function build() {
           } else
             frames[key].push(
               register(
-                compose(look, s.action, facing, f, parts, pal, !lifted),
+                compose(look, s.action, facing, f, parts, pal, !unshadowed),
                 anchor,
               ),
             );
@@ -351,6 +372,7 @@ async function build() {
       break;
     }
     if (!illustration && sprite) {
+      // (Uses the supplied front view.)
       // Head-and-shoulders card portrait cropped from the supplied sprite.
       const src = `art/sprites/${c.id}.png`,
         meta = await sharp(src).trim().toBuffer({ resolveWithObject: true });
@@ -669,14 +691,19 @@ async function build() {
           "'": '&#39;',
         })[c]!,
     );
-  const sections = [];
+  const sections = [],
+    reviewed = new Set<string>();
   for (const c of baked) {
     const figures = [];
     for (const [action, names] of Object.entries(c.frames)) {
       const frames = [];
       for (let i = 0; i < names.length; i++) {
-        const url = `${c.id}-${action}-${i}.png`;
-        await png(`${out}/review/${url}`, images.get(names[i])!);
+        // One file per unique frame (sprites repeat the same still).
+        const url = `${names[i]}.png`;
+        if (!reviewed.has(url)) {
+          reviewed.add(url);
+          await png(`${out}/review/${url}`, images.get(names[i])!);
+        }
         frames.push(`<img src="${url}" alt="${escape(action)} frame ${i}">`);
       }
       figures.push(
