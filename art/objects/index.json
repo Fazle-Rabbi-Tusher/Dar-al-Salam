@@ -781,10 +781,10 @@
     "file": "objects/m-tree.png",
     "anchor": [
       32,
-      90
+      75
     ],
-    "width": 80,
-    "height": 112
+    "width": 64,
+    "height": 97
   },
   "m-planter-box": {
     "file": "objects/m-planter-box.png",
@@ -1090,19 +1090,19 @@
     "file": "objects/m-skyscraper-deco.png",
     "anchor": [
       64,
-      268
+      269
     ],
     "width": 128,
-    "height": 322
+    "height": 323
   },
   "m-skyscraper-glass": {
     "file": "objects/m-skyscraper-glass.png",
     "anchor": [
       64,
-      229
+      231
     ],
     "width": 128,
-    "height": 283
+    "height": 285
   },
   "m-brownstone": {
     "file": "objects/m-brownstone.png",
@@ -1125,10 +1125,10 @@
   "m-bodega": {
     "file": "objects/m-bodega.png",
     "anchor": [
-      32,
+      48,
       62
     ],
-    "width": 96,
+    "width": 112,
     "height": 100
   },
   "m-halal-cart": {
@@ -1515,5 +1515,285 @@
     ],
     "width": 112,
     "height": 92
+  },
+  "m-oak": {
+    "file": "objects/m-oak.png",
+    "anchor": [
+      48,
+      82
+    ],
+    "width": 96,
+    "height": 104
+  },
+  "m-pine": {
+    "file": "objects/m-pine.png",
+    "anchor": [
+      32,
+      96
+    ],
+    "width": 64,
+    "height": 118
+  },
+  "m-cherry": {
+    "file": "objects/m-cherry.png",
+    "anchor": [
+      32,
+      77
+    ],
+    "width": 64,
+    "height": 99
+  },
+  "m-palm": {
+    "file": "objects/m-palm.png",
+    "anchor": [
+      32,
+      81
+    ],
+    "width": 80,
+    "height": 103
+  },
+  "m-birch": {
+    "file": "objects/m-birch.png",
+    "anchor": [
+      32,
+      82
+    ],
+    "width": 64,
+    "height": 104
+  },
+  "m-bush": {
+    "file": "objects/m-bush.png",
+    "anchor": [
+      32,
+      13
+    ],
+    "width": 64,
+    "height": 35
+  },
+  "m-flowers": {
+    "file": "objects/m-flowers.png",
+    "anchor": [
+      16,
+      1
+    ],
+    "width": 32,
+    "height": 15,
+    "floor": true
+  },
+  "m-rock": {
+    "file": "objects/m-rock.png",
+    "anchor": [
+      32,
+      10
+    ],
+    "width": 64,
+    "height": 32
+  },
+  "m-rocks-small": {
+    "file": "objects/m-rocks-small.png",
+    "anchor": [
+      16,
+      1
+    ],
+    "width": 32,
+    "height": 13,
+    "floor": true
+  },
+  "m-waterfall": {
+    "file": "objects/m-waterfall.png",
+    "anchor": [
+      80,
+      115
+    ],
+    "width": 176,
+    "height": 193,
+    "period": 12,
+    "frames": [
+      "objects/m-waterfall-0.png",
+      "objects/m-waterfall-1.png",
+      "objects/m-waterfall-2.png",
+      "objects/m-waterfall-3.png"
+    ]
+  },
+  "m-ship": {
+    "file": "objects/m-ship.png",
+    "anchor": [
+      48,
+      85
+    ],
+    "width": 96,
+    "height": 122,
+    "period": 48,
+    "frames": [
+      "objects/m-ship-0.png",
+      "objects/m-ship-1.png"
+    ]
+  },
+  "m-beach-rocks": {
+    "file": "objects/m-beach-rocks.png",
+    "anchor": [
+      32,
+      1
+    ],
+    "width": 80,
+    "height": 23,
+    "period": 24,
+    "frames": [
+      "objects/m-beach-rocks-0.png",
+      "objects/m-beach-rocks-1.png"
+    ]
+  },
+  "m-tower-tall": {
+    "file": "objects/m-tower-tall.png",
+    "anchor": [
+      64,
+      329
+    ],
+    "width": 128,
+    "height": 383
+  },
+  "m-tower-slim": {
+    "file": "objects/m-tower-slim.png",
+    "anchor": [
+      48,
+      246
+    ],
+    "width": 96,
+    "height": 284
+  },
+  "m-tower-slim-b": {
+    "file": "objects/m-tower-slim-b.png",
+    "anchor": [
+      48,
+      212
+    ],
+    "width": 96,
+    "height": 250
+  },
+  "m-broadcast-tower": {
+    "file": "objects/m-broadcast-tower.png",
+    "anchor": [
+      48,
+      253
+    ],
+    "width": 96,
+    "height": 291
+  },
+  "m-utility-pole": {
+    "file": "objects/m-utility-pole.png",
+    "anchor": [
+      64,
+      98
+    ],
+    "width": 128,
+    "height": 107
+  },
+  "m-utility-pole-side": {
+    "file": "objects/m-utility-pole-side.png",
+    "anchor": [
+      64,
+      98
+    ],
+    "width": 128,
+    "height": 107
+  },
+  "m-utility-pole-start": {
+    "file": "objects/m-utility-pole-start.png",
+    "anchor": [
+      16,
+      85
+    ],
+    "width": 80,
+    "height": 94
+  },
+  "m-utility-pole-start-side": {
+    "file": "objects/m-utility-pole-start-side.png",
+    "anchor": [
+      64,
+      85
+    ],
+    "width": 80,
+    "height": 94
+  },
+  "m-utility-pole-end": {
+    "file": "objects/m-utility-pole-end.png",
+    "anchor": [
+      64,
+      98
+    ],
+    "width": 80,
+    "height": 111
+  },
+  "m-utility-pole-end-side": {
+    "file": "objects/m-utility-pole-end-side.png",
+    "anchor": [
+      16,
+      98
+    ],
+    "width": 80,
+    "height": 111
+  },
+  "m-street-cherry": {
+    "file": "objects/m-street-cherry.png",
+    "anchor": [
+      32,
+      62
+    ],
+    "width": 80,
+    "height": 84
+  },
+  "m-vending": {
+    "file": "objects/m-vending.png",
+    "anchor": [
+      32,
+      37
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-vending-side": {
+    "file": "objects/m-vending-side.png",
+    "anchor": [
+      32,
+      37
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-awning-shop": {
+    "file": "objects/m-awning-shop.png",
+    "anchor": [
+      32,
+      72
+    ],
+    "width": 80,
+    "height": 102
+  },
+  "m-awning-shop-b": {
+    "file": "objects/m-awning-shop-b.png",
+    "anchor": [
+      32,
+      72
+    ],
+    "width": 80,
+    "height": 102
+  },
+  "m-awning-shop-c": {
+    "file": "objects/m-awning-shop-c.png",
+    "anchor": [
+      32,
+      72
+    ],
+    "width": 80,
+    "height": 102
+  },
+  "m-city-lamp": {
+    "file": "objects/m-city-lamp.png",
+    "anchor": [
+      32,
+      56
+    ],
+    "width": 64,
+    "height": 77
   }
 }
