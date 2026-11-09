@@ -23,38 +23,38 @@
     "script": [
       {
         "from": 0,
-        "to": 96,
+        "to": 72,
         "action": "animal_walk",
         "path": [
-          [55.0, 139.4],
-          [63.0, 139.4]
+          [61.0, 135.8],
+          [66.0, 135.8]
         ]
       },
       {
-        "from": 96,
+        "from": 72,
         "to": 120,
         "action": "animal_idle",
-        "at": [63.0, 139.4],
+        "at": [66.0, 135.8],
         "facing": "SE"
       },
       {
         "from": 120,
-        "to": 216,
+        "to": 192,
         "action": "animal_walk",
         "path": [
-          [63.0, 139.4],
-          [55.0, 139.4]
+          [66.0, 135.8],
+          [61.0, 135.8]
         ]
       },
       {
-        "from": 216,
+        "from": 192,
         "to": 240,
         "action": "animal_graze",
-        "at": [55.0, 139.4],
+        "at": [61.0, 135.8],
         "facing": "NW"
       }
     ],
-    "role": "A camel in a caravan along the shore"
+    "role": "A camel walking past the tents"
   },
   {
     "id": "amb-msw-camel-1",
@@ -80,38 +80,38 @@
     "script": [
       {
         "from": 0,
-        "to": 96,
+        "to": 72,
         "action": "animal_walk",
         "path": [
-          [53.0, 139.4],
-          [61.0, 139.4]
+          [59.0, 135.8],
+          [64.0, 135.8]
         ]
       },
       {
-        "from": 96,
+        "from": 72,
         "to": 120,
         "action": "animal_idle",
-        "at": [61.0, 139.4],
+        "at": [64.0, 135.8],
         "facing": "SE"
       },
       {
         "from": 120,
-        "to": 216,
+        "to": 192,
         "action": "animal_walk",
         "path": [
-          [61.0, 139.4],
-          [53.0, 139.4]
+          [64.0, 135.8],
+          [59.0, 135.8]
         ]
       },
       {
-        "from": 216,
+        "from": 192,
         "to": 240,
         "action": "animal_graze",
-        "at": [53.0, 139.4],
+        "at": [59.0, 135.8],
         "facing": "NW"
       }
     ],
-    "role": "A camel in a caravan along the shore"
+    "role": "A camel walking past the tents"
   },
   {
     "id": "amb-msw-camel-2",
@@ -139,82 +139,18 @@
         "from": 0,
         "to": 120,
         "action": "animal_idle",
-        "at": [49.6, 132.6],
-        "facing": "SE"
+        "at": [70.6, 131.0],
+        "facing": "SW"
       },
       {
         "from": 120,
         "to": 240,
         "action": "animal_graze",
-        "at": [49.6, 132.6],
-        "facing": "SE"
-      }
-    ],
-    "role": "A camel resting on the sand"
-  },
-  {
-    "id": "amb-msw-donkey",
-    "kind": "animal",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "donkey",
-      "garment": "none",
-      "headwear": "none",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-black",
-        "garmentPrimary": "graphite",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 72,
-        "action": "animal_idle",
-        "at": [66.0, 134.8],
-        "facing": "NE"
-      },
-      {
-        "from": 72,
-        "to": 96,
-        "action": "animal_walk",
-        "path": [
-          [66.0, 134.8],
-          [65.2, 133.4]
-        ]
-      },
-      {
-        "from": 96,
-        "to": 192,
-        "action": "animal_graze",
-        "at": [65.2, 133.4],
+        "at": [70.6, 131.0],
         "facing": "SW"
-      },
-      {
-        "from": 192,
-        "to": 216,
-        "action": "animal_walk",
-        "path": [
-          [65.2, 133.4],
-          [66.0, 134.8]
-        ]
-      },
-      {
-        "from": 216,
-        "to": 240,
-        "action": "animal_idle",
-        "at": [66.0, 134.8],
-        "facing": "NE"
       }
     ],
-    "role": "A donkey waiting at the well"
+    "role": "A camel resting by the tents"
   },
   {
     "id": "amb-msw-goat-0",
@@ -242,7 +178,7 @@
         "from": 0,
         "to": 40,
         "action": "animal_graze",
-        "at": [45.6, 129.2],
+        "at": [60.2, 130.6],
         "facing": "SE"
       },
       {
@@ -250,15 +186,15 @@
         "to": 64,
         "action": "animal_walk",
         "path": [
-          [45.6, 129.2],
-          [46.8, 128.2]
+          [60.2, 130.6],
+          [61.4, 129.2]
         ]
       },
       {
         "from": 64,
         "to": 160,
         "action": "animal_graze",
-        "at": [46.8, 128.2],
+        "at": [61.4, 129.2],
         "facing": "NW"
       },
       {
@@ -266,15 +202,15 @@
         "to": 184,
         "action": "animal_walk",
         "path": [
-          [46.8, 128.2],
-          [45.6, 129.2]
+          [61.4, 129.2],
+          [60.2, 130.6]
         ]
       },
       {
         "from": 184,
         "to": 240,
         "action": "animal_idle",
-        "at": [45.6, 129.2],
+        "at": [60.2, 130.6],
         "facing": "SW"
       }
     ],
@@ -306,7 +242,7 @@
         "from": 0,
         "to": 60,
         "action": "animal_graze",
-        "at": [46.4, 133.8],
+        "at": [58.6, 132.4],
         "facing": "SE"
       },
       {
@@ -314,15 +250,15 @@
         "to": 84,
         "action": "animal_walk",
         "path": [
-          [46.4, 133.8],
-          [45.2, 134.6]
+          [58.6, 132.4],
+          [57.4, 131.6]
         ]
       },
       {
         "from": 84,
         "to": 180,
         "action": "animal_graze",
-        "at": [45.2, 134.6],
+        "at": [57.4, 131.6],
         "facing": "NW"
       },
       {
@@ -330,15 +266,15 @@
         "to": 204,
         "action": "animal_walk",
         "path": [
-          [45.2, 134.6],
-          [46.4, 133.8]
+          [57.4, 131.6],
+          [58.6, 132.4]
         ]
       },
       {
         "from": 204,
         "to": 240,
         "action": "animal_idle",
-        "at": [46.4, 133.8],
+        "at": [58.6, 132.4],
         "facing": "SW"
       }
     ],
@@ -370,7 +306,7 @@
         "from": 0,
         "to": 80,
         "action": "animal_graze",
-        "at": [44.6, 131.4],
+        "at": [62.0, 127.6],
         "facing": "SE"
       },
       {
@@ -378,15 +314,15 @@
         "to": 104,
         "action": "animal_walk",
         "path": [
-          [44.6, 131.4],
-          [44.8, 129.8]
+          [62.0, 127.6],
+          [60.6, 127.2]
         ]
       },
       {
         "from": 104,
         "to": 200,
         "action": "animal_graze",
-        "at": [44.8, 129.8],
+        "at": [60.6, 127.2],
         "facing": "NW"
       },
       {
@@ -394,19 +330,83 @@
         "to": 224,
         "action": "animal_walk",
         "path": [
-          [44.8, 129.8],
-          [44.6, 131.4]
+          [60.6, 127.2],
+          [62.0, 127.6]
         ]
       },
       {
         "from": 224,
         "to": 240,
         "action": "animal_idle",
-        "at": [44.6, 131.4],
+        "at": [62.0, 127.6],
         "facing": "SW"
       }
     ],
     "role": "A goat browsing the scrub"
+  },
+  {
+    "id": "amb-msw-donkey",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "donkey",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 72,
+        "action": "animal_idle",
+        "at": [79.4, 154.6],
+        "facing": "SW"
+      },
+      {
+        "from": 72,
+        "to": 96,
+        "action": "animal_walk",
+        "path": [
+          [79.4, 154.6],
+          [79.6, 156.6]
+        ]
+      },
+      {
+        "from": 96,
+        "to": 192,
+        "action": "animal_graze",
+        "at": [79.6, 156.6],
+        "facing": "NE"
+      },
+      {
+        "from": 192,
+        "to": 216,
+        "action": "animal_walk",
+        "path": [
+          [79.6, 156.6],
+          [79.4, 154.6]
+        ]
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [79.4, 154.6],
+        "facing": "SW"
+      }
+    ],
+    "role": "A donkey waiting at the well"
   },
   {
     "id": "amb-msw-gazelle-0",
@@ -434,7 +434,7 @@
         "from": 0,
         "to": 30,
         "action": "animal_idle",
-        "at": [57.0, 140.6],
+        "at": [52.0, 134.6],
         "facing": "SE"
       },
       {
@@ -442,15 +442,15 @@
         "to": 60,
         "action": "animal_walk",
         "path": [
-          [57.0, 140.6],
-          [59.4, 140.8]
+          [52.0, 134.6],
+          [54.4, 135.0]
         ]
       },
       {
         "from": 60,
         "to": 150,
         "action": "animal_graze",
-        "at": [59.4, 140.8],
+        "at": [54.4, 135.0],
         "facing": "SE"
       },
       {
@@ -458,19 +458,19 @@
         "to": 180,
         "action": "animal_walk",
         "path": [
-          [59.4, 140.8],
-          [57.0, 140.6]
+          [54.4, 135.0],
+          [52.0, 134.6]
         ]
       },
       {
         "from": 180,
         "to": 240,
         "action": "animal_graze",
-        "at": [57.0, 140.6],
+        "at": [52.0, 134.6],
         "facing": "NW"
       }
     ],
-    "role": "A gazelle on the coastal sand"
+    "role": "A gazelle on the open desert"
   },
   {
     "id": "amb-msw-gazelle-1",
@@ -498,7 +498,7 @@
         "from": 0,
         "to": 66,
         "action": "animal_idle",
-        "at": [60.6, 140.2],
+        "at": [50.4, 136.2],
         "facing": "SE"
       },
       {
@@ -506,15 +506,15 @@
         "to": 96,
         "action": "animal_walk",
         "path": [
-          [60.6, 140.2],
-          [62.2, 140.6]
+          [50.4, 136.2],
+          [52.2, 136.6]
         ]
       },
       {
         "from": 96,
         "to": 186,
         "action": "animal_graze",
-        "at": [62.2, 140.6],
+        "at": [52.2, 136.6],
         "facing": "SE"
       },
       {
@@ -522,19 +522,19 @@
         "to": 216,
         "action": "animal_walk",
         "path": [
-          [62.2, 140.6],
-          [60.6, 140.2]
+          [52.2, 136.6],
+          [50.4, 136.2]
         ]
       },
       {
         "from": 216,
         "to": 240,
         "action": "animal_graze",
-        "at": [60.6, 140.2],
+        "at": [50.4, 136.2],
         "facing": "NW"
       }
     ],
-    "role": "A gazelle on the coastal sand"
+    "role": "A gazelle on the open desert"
   },
   {
     "id": "amb-msw-pelican-0",
@@ -562,18 +562,18 @@
         "from": 0,
         "to": 120,
         "action": "animal_idle",
-        "at": [67.6, 137.2],
+        "at": [82.6, 151.0],
         "facing": "SW"
       },
       {
         "from": 120,
         "to": 240,
         "action": "animal_graze",
-        "at": [67.6, 137.2],
+        "at": [82.6, 151.0],
         "facing": "SW"
       }
     ],
-    "role": "A pelican preening on the shore"
+    "role": "A pelican on the shore"
   },
   {
     "id": "amb-msw-pelican-1",
@@ -599,20 +599,20 @@
     "script": [
       {
         "from": 0,
-        "to": 60,
+        "to": 120,
         "action": "animal_graze",
-        "at": [68.6, 136.6],
+        "at": [60.5, 155.4],
         "facing": "SE"
       },
       {
-        "from": 60,
+        "from": 120,
         "to": 240,
         "action": "animal_idle",
-        "at": [68.6, 136.6],
+        "at": [60.5, 155.4],
         "facing": "SE"
       }
     ],
-    "role": "A pelican preening on the shore"
+    "role": "A pelican on the shore"
   },
   {
     "id": "amb-msw-pelican-2",
@@ -639,18 +639,18 @@
       {
         "from": 0,
         "to": 120,
-        "action": "animal_graze",
-        "at": [64.4, 158.6],
+        "action": "animal_idle",
+        "at": [69.6, 141.0],
         "facing": "SW"
       },
       {
         "from": 120,
         "to": 240,
-        "action": "animal_idle",
-        "at": [64.4, 158.6],
+        "action": "animal_graze",
+        "at": [69.6, 141.0],
         "facing": "SW"
       }
     ],
-    "role": "A pelican preening on the shore"
+    "role": "A pelican on the shore"
   }
 ]

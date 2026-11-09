@@ -7319,7 +7319,10 @@ function dhowHull(
   const xm = x0 + (x1 - x0) * 0.45,
     near = (x: number) => {
       const t = (x - x0) / (x1 - x0);
-      return yc + (beam / 2) * Math.sin(Math.PI * Math.min(1, 0.08 + t * 0.92)) ** 0.7;
+      return (
+        yc +
+        (beam / 2) * Math.sin(Math.PI * Math.min(1, 0.08 + t * 0.92)) ** 0.7
+      );
     },
     rise = (x: number) => {
       const t = (x - x0) / (x1 - x0);
@@ -7339,7 +7342,11 @@ function dhowHull(
     const X = (px + 0.5 - ox) / 16,
       S = (py + 0.5 - oy) / 8,
       tx = (S + X) / 2,
-      far = c.at(tx, 2 * yc - near(Math.min(x1, Math.max(x0, tx))), rise(Math.min(x1, Math.max(x0, tx))))[1],
+      far = c.at(
+        tx,
+        2 * yc - near(Math.min(x1, Math.max(x0, tx))),
+        rise(Math.min(x1, Math.max(x0, tx))),
+      )[1],
       dz = py - far;
     if (Math.floor(px) % 5 === 0 && dz > 2) return MC.wood1;
     if (dz < 4) return Math.floor(dz) % 2 ? MC.wood1 : MC.wood0;
@@ -7350,14 +7357,24 @@ function dhowHull(
   for (let i = 24; i >= 0; i--) {
     const x = x0 + 0.15 + ((x1 - x0 - 0.35) * i) / 24,
       t = (x - x0) / (x1 - x0);
-    keelLine.push([x, yc + (near(x) - yc) * 0.35, keel + 5 * (1 - t) ** 4 + 6 * t ** 6]);
+    keelLine.push([
+      x,
+      yc + (near(x) - yc) * 0.35,
+      keel + 5 * (1 - t) ** 4 + 6 * t ** 6,
+    ]);
   }
   c.poly([...gunNear, ...keelLine], MK.hull);
   const [hax, hay] = c.at(0, yc + beam / 2, 0);
   recolour(c, MK.hull, (px, py) => {
     const z = hay + (px - hax) / 2 - py,
       u = (px - hax) / 16;
-    if (stripped && u > xm - 0.2 && u < xm + 0.45 && z > keel + 4 && z < sheer - 3)
+    if (
+      stripped &&
+      u > xm - 0.2 &&
+      u < xm + 0.45 &&
+      z > keel + 4 &&
+      z < sheer - 3
+    )
       return Math.floor(px) % 3 === 0 ? MC.wood1 : MC.wood3;
     if (z < keel + 3) return MC.wood3;
     if (Math.floor(z) % 3 === 0) return MC.wood2;
@@ -7484,7 +7501,14 @@ function townBlock(
     wallShade(px, py, 1, ay + (px - ax) / 2 + 16 * (y + d) - py, seed, look),
   );
   recolour(c, MK.side, (px, py) =>
-    wallShade(px, py, 2, ay + 16 * (x + w) - (px - ax) / 2 - py, seed + 1, look),
+    wallShade(
+      px,
+      py,
+      2,
+      ay + 16 * (x + w) - (px - ax) / 2 - py,
+      seed + 1,
+      look,
+    ),
   );
   c.top(x, y + d - t, w, t, z + h, rim);
   c.top(x + w - t, y, t, d, z + h, lit);
@@ -7507,7 +7531,14 @@ function beamEndsSide(
   }
 }
 /** A window with a wooden grille on the side face. */
-function grille(c: IsoCanvas, x: number, y: number, z: number, s = 0.26, h = 7) {
+function grille(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  z: number,
+  s = 0.26,
+  h = 7,
+) {
   c.faceY(x + 0.002, y - 0.03, s + 0.06, z - 1, h + 2, MC.wood2);
   c.faceY(x + 0.003, y, s, z, h, MC.wood3);
   for (let k = 1; k < 4; k++) {
@@ -7526,18 +7557,35 @@ function crate(
   fill: Tones,
   seed: number,
 ) {
-  c.box(x, y, w, d, 3, { top: MC.wood1, front: MC.wood0, side: MC.wood1, edge: MC.wood2 }, z);
+  c.box(
+    x,
+    y,
+    w,
+    d,
+    3,
+    { top: MC.wood1, front: MC.wood0, side: MC.wood1, edge: MC.wood2 },
+    z,
+  );
   const y0 = c.at(x, y, z + 3)[1],
     y1 = c.at(x + w, y + d, z + 3)[1];
   for (let py = Math.min(y0, y1) - 3; py <= Math.max(y0, y1) + 1; py++)
-    for (let px = Math.floor(c.at(x, y + d, 0)[0]); px <= c.at(x + w, y, 0)[0]; px++) {
+    for (
+      let px = Math.floor(c.at(x, y + d, 0)[0]);
+      px <= c.at(x + w, y, 0)[0];
+      px++
+    ) {
       // Inside the crate's top diamond, heaped toward the middle.
       const [ox, oy] = c.at(0, 0, z + 3),
         X = (px + 0.5 - ox) / 16,
         S = (py + 2 - oy) / 8,
         tx = (S + X) / 2,
         ty = (S - X) / 2;
-      if (tx < x + 0.05 || tx > x + w - 0.05 || ty < y + 0.05 || ty > y + d - 0.05)
+      if (
+        tx < x + 0.05 ||
+        tx > x + w - 0.05 ||
+        ty < y + 0.05 ||
+        ty > y + d - 0.05
+      )
         continue;
       const ball = nhash(px >> 1, py >> 1, seed);
       const v = 0.3 - ((px & 1) + (py & 1)) * 0.25 + (ball - 0.5) * 0.4;
@@ -7545,28 +7593,51 @@ function crate(
     }
 }
 /** A banded wooden barrel. */
-function barrel(c: IsoCanvas, x: number, y: number, z: number, r: number, h: number) {
+function barrel(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  z: number,
+  r: number,
+  h: number,
+) {
   c.cylinder(x, y, z, r, h, [MC.wood0, MC.wood1, MC.wood2], MC.wood2);
   for (const k of [0.2, 0.8]) {
     const [bx, by] = c.at(x, y, z + h * k);
     for (let i = -r; i <= r; i++) {
       const u = i / r;
-      c.p.pixel(bx + i, by + (r / 2) * Math.sqrt(Math.max(0, 1 - u * u)) - 0.5, MC.wood3);
+      c.p.pixel(
+        bx + i,
+        by + (r / 2) * Math.sqrt(Math.max(0, 1 - u * u)) - 0.5,
+        MC.wood3,
+      );
     }
   }
   const [tx, ty] = c.at(x, y, z + h);
   c.p.ellipse(tx, ty, r - 1, r / 2 - 0.5, MC.wood1);
 }
 /** A tied burlap sack. */
-function sack(c: IsoCanvas, x: number, y: number, r: number, h: number, seed: number) {
+function sack(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  r: number,
+  h: number,
+  seed: number,
+) {
   const [sx, sy] = c.at(x, y, 0);
   for (let py = Math.floor(sy - h - 2); py <= sy + 1; py++)
     for (let px = Math.floor(sx - r - 1); px <= sx + r + 1; px++) {
       const t = (sy - py) / h,
-        half = r * (t < 0.75 ? 1 - (0.75 - t) ** 2 * 0.6 : 1 - (t - 0.75) * 2.6);
+        half =
+          r * (t < 0.75 ? 1 - (0.75 - t) ** 2 * 0.6 : 1 - (t - 0.75) * 2.6);
       const u = (px + 0.5 - sx) / Math.max(0.6, half);
       if (Math.abs(u) > 1 || t < -0.15 || t > 1) continue;
-      let v = 0.35 - u * 0.6 - (t < 0.1 ? 0.4 : 0) + (nhash(px, py, seed) - 0.5) * 0.15;
+      let v =
+        0.35 -
+        u * 0.6 -
+        (t < 0.1 ? 0.4 : 0) +
+        (nhash(px, py, seed) - 0.5) * 0.15;
       if (t > 0.78 && t < 0.86) v -= 0.6;
       c.p.pixel(px, py, tone(SACK, v, [0.3, -0.1, -0.5]));
     }
@@ -7591,7 +7662,11 @@ function datePalm(
         k = i - Math.round(bx) + 8,
         scar = (k + j) % 4 === 0 || (k - j + 400) % 4 === 0;
       const v = -u * 0.7 + (scar ? -0.45 : 0.12);
-      c.p.pixel(i, by, tone([NC.palm0, NC.palm1, NC.palm2, NC.bark2], v, [0.35, -0.1, -0.5]));
+      c.p.pixel(
+        i,
+        by,
+        tone([NC.palm0, NC.palm1, NC.palm2, NC.bark2], v, [0.35, -0.1, -0.5]),
+      );
     }
   }
   // Fronds pointing away first, darker.
@@ -7641,7 +7716,8 @@ function datePalm(
         ny = -ny;
       }
       // Stiff, narrow leaflets: a rib with a comb of tips below it.
-      const w = 0.8 + 3.6 * Math.sin(Math.PI * (0.1 + 0.85 * s)) * (1 - 0.35 * s),
+      const w =
+          0.8 + 3.6 * Math.sin(Math.PI * (0.1 + 0.85 * s)) * (1 - 0.35 * s),
         tip = i % 2 === 0 ? 1.4 : 0;
       for (let q = -w * 0.3; q <= w * 0.7 + tip; q += 0.5) {
         const t = q < -0.4 ? 1 : q < 0.5 ? 2 : q > w * 0.7 ? 4 : 3;
@@ -7867,7 +7943,11 @@ const massawa: Record<string, Spec> = {
       const [hx, hy] = c.at(1.0, 1.0, 27);
       c.line([hx, hy], [hx, hy + 4], MC.wood2);
       for (let i = 0; i < 9; i++)
-        c.p.pixel(hx - 1 + (i % 3), hy + 4 + Math.floor(i / 3), i % 2 ? MC.date0 : MC.date1);
+        c.p.pixel(
+          hx - 1 + (i % 3),
+          hy + 4 + Math.floor(i / 3),
+          i % 2 ? MC.date0 : MC.date1,
+        );
     },
   },
   'msw-goods': {
@@ -7893,12 +7973,20 @@ const massawa: Record<string, Spec> = {
         [s2x, s2y] = c.at(1.3, 0.75, 9),
         [s3x, s3y] = c.at(2.1, 0.8, 0);
       c.line([s0x, s0y], [s1x, s1y], MC.wood2);
-      c.box(0.1, 0.15, 1.25, 0.75, 4, {
-        top: MC.wood0,
-        front: MC.wood1,
-        side: MC.wood2,
-        edge: MC.wood3,
-      }, 8);
+      c.box(
+        0.1,
+        0.15,
+        1.25,
+        0.75,
+        4,
+        {
+          top: MC.wood0,
+          front: MC.wood1,
+          side: MC.wood2,
+          edge: MC.wood3,
+        },
+        8,
+      );
       c.faceX(0.1, 0.15, 1.25, 12, 3, MC.wood1);
       sack(c, 0.45, 0.45, 3.4, 7, 91);
       sack(c, 0.85, 0.5, 3.2, 6, 92);
@@ -7911,7 +7999,11 @@ const massawa: Record<string, Spec> = {
       c.p.ellipse(wx, wy, 3.5, 5, MC.stone1);
       for (let k = 0; k < 6; k++) {
         const a = (k * Math.PI) / 3;
-        c.line([wx, wy], [wx + Math.cos(a) * 4, wy + Math.sin(a) * 5.2], MC.wood2);
+        c.line(
+          [wx, wy],
+          [wx + Math.cos(a) * 4, wy + Math.sin(a) * 5.2],
+          MC.wood2,
+        );
       }
       c.p.rect(wx - 1, wy - 1, 2, 2, MC.wood3);
     },
@@ -7925,17 +8017,23 @@ const massawa: Record<string, Spec> = {
     side: true,
     draw(c) {
       const zr = (x: number) =>
-          26 + 5 * Math.max(0, 1 - Math.abs(x - 0.8) / 0.6) + 5 * Math.max(0, 1 - Math.abs(x - 2.2) / 0.6),
+          26 +
+          5 * Math.max(0, 1 - Math.abs(x - 0.8) / 0.6) +
+          5 * Math.max(0, 1 - Math.abs(x - 2.2) / 0.6),
         Y0 = 0.1,
         YR = 0.95,
         Y1 = 1.85,
         EAVE = 4;
-      const cloth = (lift: number, seed: number) => (px: number, py: number) => {
-        const k = Math.floor((py - px * 0.5) / 5);
-        let v = lift + (nhash(k, 0, seed) - 0.5) * 0.25 + (nhash(px, py, seed + 1) - 0.5) * 0.12;
-        if (((py - px * 0.5) % 5 + 5) % 5 < 0.8) v -= 0.25;
-        return tone(TENT, v, [0.3, -0.1, -0.45]);
-      };
+      const cloth =
+        (lift: number, seed: number) => (px: number, py: number) => {
+          const k = Math.floor((py - px * 0.5) / 5);
+          let v =
+            lift +
+            (nhash(k, 0, seed) - 0.5) * 0.25 +
+            (nhash(px, py, seed + 1) - 0.5) * 0.12;
+          if ((((py - px * 0.5) % 5) + 5) % 5 < 0.8) v -= 0.25;
+          return tone(TENT, v, [0.3, -0.1, -0.45]);
+        };
       // The near end (facing +x): a gable of cloth with an open doorway.
       const ridgeEnd = zr(2.9);
       c.poly(
@@ -7987,10 +8085,22 @@ const massawa: Record<string, Spec> = {
         c.p.rect(px, py - 3, 1, 3, MC.wood1);
       }
       for (const [a, b] of [
-        [[0.1, YR, zr(0.1)], [-0.45, YR, 0]],
-        [[2.9, YR, zr(2.9)], [3.45, YR, 0]],
-        [[0.8, Y1, EAVE], [0.8, 2.25, 0]],
-        [[2.2, Y1, EAVE], [2.2, 2.25, 0]],
+        [
+          [0.1, YR, zr(0.1)],
+          [-0.45, YR, 0],
+        ],
+        [
+          [2.9, YR, zr(2.9)],
+          [3.45, YR, 0],
+        ],
+        [
+          [0.8, Y1, EAVE],
+          [0.8, 2.25, 0],
+        ],
+        [
+          [2.2, Y1, EAVE],
+          [2.2, 2.25, 0],
+        ],
       ] as [[number, number, number], [number, number, number]][]) {
         c.edge(a, b, MC.sack2);
         const [px, py] = c.at(...b);
@@ -8004,7 +8114,12 @@ const massawa: Record<string, Spec> = {
     h: 10,
     shadow: false,
     draw(c) {
-      c.box(0.1, 0.1, 1.8, 1.8, 2, { top: MC.soil1, front: MC.stone3, side: MC.stone4, edge: MC.stone5 });
+      c.box(0.1, 0.1, 1.8, 1.8, 2, {
+        top: MC.soil1,
+        front: MC.stone3,
+        side: MC.stone4,
+        edge: MC.stone5,
+      });
       c.top(0.2, 0.2, 1.6, 1.6, 2, MC.soil0);
       for (let row = 0; row < 5; row++) {
         const v = 0.35 + row * 0.3;
@@ -8415,8 +8530,21 @@ const massawa: Record<string, Spec> = {
     h: 48,
     side: true,
     draw(c) {
-      c.box(0.4, 0.05, 1.6, 0.22, 3, { top: MC.wood0, front: MC.wood1, side: MC.wood2, edge: MC.wood3 });
-      c.box(0.5, 0.05, 1.4, 0.22, 2, { top: MC.wood0, front: MC.wood1, side: MC.wood2 }, 3);
+      c.box(0.4, 0.05, 1.6, 0.22, 3, {
+        top: MC.wood0,
+        front: MC.wood1,
+        side: MC.wood2,
+        edge: MC.wood3,
+      });
+      c.box(
+        0.5,
+        0.05,
+        1.4,
+        0.22,
+        2,
+        { top: MC.wood0, front: MC.wood1, side: MC.wood2 },
+        3,
+      );
       for (const u of [0.6, 1.4, 2.2]) {
         const [ax, ay] = c.at(u, 1.45, 0),
           [bx, by] = c.at(u, 1.15, 7);
@@ -8432,7 +8560,15 @@ const massawa: Record<string, Spec> = {
         c.line([px - 2, py], [px, py - 6], MC.wood2);
         c.line([px + 2, py], [px, py - 6], MC.wood2);
       }
-      c.box(0.55, 1.72, 1.1, 0.14, 1, { top: MC.wood0, front: MC.wood1, side: MC.wood2 }, 6);
+      c.box(
+        0.55,
+        1.72,
+        1.1,
+        0.14,
+        1,
+        { top: MC.wood0, front: MC.wood1, side: MC.wood2 },
+        6,
+      );
       for (const [u, v, k] of [
         [2.3, 1.75, 0],
         [2.65, 1.55, 1],
