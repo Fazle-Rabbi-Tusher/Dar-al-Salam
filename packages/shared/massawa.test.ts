@@ -12,7 +12,8 @@ const SHORELINE = new Set(['msw-jetty']);
 
 describe('Massawa', () => {
   it('stands the Mosque of the Companions on the island', () => {
-    expect(biome(MOSQUE_TILE)).toBe('desert');
+    // On its flagstone plaza, well inside the island.
+    expect(biome(MOSQUE_TILE)).toBe('plaza');
     expect(massawaIsland(MOSQUE_TILE)).toBeLessThan(MASSAWA.island.radius - 3);
     const card = JSON.parse(
       fs.readFileSync(

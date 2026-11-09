@@ -538,6 +538,9 @@ async function build() {
     boulder: [['m-rock'], ['cypress']],
     waterfall: [['m-waterfall'], []],
     ship: [['m-ship'], []],
+    // Massawa's dry coast: never a lush tree in the desert.
+    acacia: [['msw-acacia'], []],
+    'doum-palm': [['msw-palm'], ['m-palm']],
   };
   const wildFrames = new Map<
     string,

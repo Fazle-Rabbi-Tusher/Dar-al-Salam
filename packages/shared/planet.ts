@@ -281,8 +281,13 @@ export const MASSAWA = {
     halfWidth: 0.75,
   },
   salt: { x0: 50, y0: 129, x1: 63, y1: 137 },
-  /** Sandy mainland flats around the salt pans and the causeway's landing. */
-  flats: { x0: 46, y0: 127, x1: 76, y1: 141 },
+  /**
+   * The dry Red Sea coast: sand desert in the middle, thorn scrub round it,
+   * fading back to meadow before the mapped quarter.
+   */
+  arid: { centre: [66, 140] as Point, radius: 34, desert: 14, fromMap: 2 },
+  /** Limestone flagstones round the Mosque of the Companions on the island. */
+  plaza: { centre: [75.5, 157] as Point, radius: 3.6 },
   /** The ring road is not drawn within this disc (tiles). */
   calm: { centre: [70, 150] as Point, radius: 17 },
 };
@@ -310,11 +315,27 @@ export const inSaltPans = (tile: Point) =>
   tile[0] <= MASSAWA.salt.x1 &&
   tile[1] >= MASSAWA.salt.y0 &&
   tile[1] <= MASSAWA.salt.y1;
-export const inFlats = (tile: Point) =>
-  tile[0] >= MASSAWA.flats.x0 &&
-  tile[0] <= MASSAWA.flats.x1 &&
-  tile[1] >= MASSAWA.flats.y0 &&
-  tile[1] <= MASSAWA.flats.y1;
+/**
+ * How deep into Massawa's dry coast a point is (tiles): above
+ * `arid.desert` is sand desert, above 0 thorn scrub, below 0 green land.
+ */
+export const massawaAridness = (p: Vec3, tile: Point) => {
+  const a = MASSAWA.arid;
+  return (
+    Math.min(
+      a.radius - Math.hypot(tile[0] - a.centre[0], tile[1] - a.centre[1]),
+      (mapDistance(tile) - a.fromMap) * 2,
+    ) +
+    waveField(p, WILD.waves.coves) * 3
+  );
+};
+export const inFlats = (p: Vec3, tile: Point) =>
+  massawaAridness(p, tile) > MASSAWA.arid.desert;
+export const inPlaza = (tile: Point) =>
+  Math.hypot(
+    tile[0] - MASSAWA.plaza.centre[0],
+    tile[1] - MASSAWA.plaza.centre[1],
+  ) < MASSAWA.plaza.radius;
 const inCalm = (tile: Point) =>
   Math.hypot(
     tile[0] - MASSAWA.calm.centre[0],
@@ -329,6 +350,8 @@ export type Biome =
   | 'rock'
   | 'road'
   | 'desert'
+  | 'scrub'
+  | 'plaza'
   | 'salt'
   | 'causeway';
 /** A smooth field in [-1, 1]: a weighted sum of sine waves over the sphere. */
@@ -389,14 +412,19 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
     massawaIsland(tile) > MASSAWA.island.radius - 1.5
   )
     return 'causeway';
-  if (massawaIsland(tile) < MASSAWA.island.radius + 1.2 || inFlats(tile))
-    return land < 1 ? 'beach' : 'desert';
+  if (massawaIsland(tile) < MASSAWA.island.radius + 1.2) {
+    if (land < 1) return 'beach';
+    return inPlaza(tile) ? 'plaza' : 'desert';
+  }
+  const arid = massawaAridness(p, tile);
+  if (arid > MASSAWA.arid.desert && land >= WILD.beach) return 'desert';
   if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5 && !inCalm(tile))
     return 'road';
   if (land < WILD.beach) return 'beach';
   const d = mapDistance(tile);
   if (land > 10 && d > 6 && waveField(p, WILD.waves.rock) > WILD.rockAbove)
     return 'rock';
+  if (arid > 0) return 'scrub';
   if (d > 4 && waveField(p, WILD.waves.forest) > WILD.forestAbove)
     return 'forest';
   return 'meadow';
@@ -449,10 +477,17 @@ bool inSaltPans(vec2 tile) {
   return tile.x >= ${g(MASSAWA.salt.x0)} && tile.x <= ${g(MASSAWA.salt.x1)} &&
     tile.y >= ${g(MASSAWA.salt.y0)} && tile.y <= ${g(MASSAWA.salt.y1)};
 }
-bool inFlats(vec2 tile) {
-  return tile.x >= ${g(MASSAWA.flats.x0)} && tile.x <= ${g(MASSAWA.flats.x1)} &&
-    tile.y >= ${g(MASSAWA.flats.y0)} && tile.y <= ${g(MASSAWA.flats.y1)};
+const vec2 ARID_CENTRE = vec2(${g(MASSAWA.arid.centre[0])}, ${g(MASSAWA.arid.centre[1])});
+const vec2 PLAZA_CENTRE = vec2(${g(MASSAWA.plaza.centre[0])}, ${g(MASSAWA.plaza.centre[1])});
+float massawaAridness(vec3 p, vec2 tile) {
+  return min(${g(MASSAWA.arid.radius)} - length(tile - ARID_CENTRE),
+      (mapDistance(tile) - ${g(MASSAWA.arid.fromMap)}) * 2.0) +
+    coveField(p) * 3.0;
 }
+bool inFlats(vec3 p, vec2 tile) {
+  return massawaAridness(p, tile) > ${g(MASSAWA.arid.desert)};
+}
+bool inPlaza(vec2 tile) { return length(tile - PLAZA_CENTRE) < ${g(MASSAWA.plaza.radius)}; }
 bool inCalm(vec2 tile) { return length(tile - CALM) < ${g(MASSAWA.calm.radius)}; }
 float landField(vec3 p, vec2 tile) {
   float d = mapDistance(tile), shore = shoreDistance(p);
@@ -474,7 +509,9 @@ export type Planting = {
     | 'beach-rock'
     | 'boulder'
     | 'waterfall'
-    | 'ship';
+    | 'ship'
+    | 'acacia'
+    | 'doum-palm';
   p: Vec3;
   tile: Point;
   /** Deterministic per-planting value in [0, 1) for choosing art. */
@@ -527,6 +564,10 @@ export function wildPlantings(count = 16000): Planting[] {
       if (roll < 0.28) at('boulder');
       else if (roll > 0.95)
         rockSpots.push({ kind: 'waterfall', p, tile, pick });
+    } else if (biome === 'scrub') {
+      // Thorn scrub: a few flat-topped acacias and doum palms.
+      if (roll < 0.13) at('acacia');
+      else if (roll < 0.19) at('doum-palm');
     } else if (biome === 'sea' && land < -7 && land > -13 && roll > 0.97)
       seaSpots.push({ kind: 'ship', p, tile, pick });
   }

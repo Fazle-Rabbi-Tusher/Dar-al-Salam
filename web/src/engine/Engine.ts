@@ -129,11 +129,20 @@ const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
 const vec3 DESERT = vec3(0.890, 0.788, 0.612);
 const vec3 DESERT_LIGHT = vec3(0.945, 0.871, 0.722);
 const vec3 DESERT_DARK = vec3(0.808, 0.690, 0.506);
-const vec3 SALT = vec3(0.953, 0.961, 0.949);
-const vec3 SALT_SHADE = vec3(0.855, 0.890, 0.902);
-const vec3 BRINE = vec3(0.722, 0.835, 0.851);
-const vec3 SALT_BANK = vec3(0.706, 0.643, 0.533);
-const vec3 SALT_BANK_LIGHT = vec3(0.796, 0.737, 0.627);
+const vec3 SALT = vec3(0.957, 0.953, 0.937);
+const vec3 SALT_SHADE = vec3(0.886, 0.875, 0.851);
+const vec3 BRINE = vec3(0.592, 0.784, 0.769);
+const vec3 BRINE_PINK = vec3(0.871, 0.741, 0.725);
+const vec3 SALT_BANK = vec3(0.612, 0.518, 0.388);
+const vec3 SALT_BANK_LIGHT = vec3(0.710, 0.612, 0.471);
+const vec3 SCRUB = vec3(0.796, 0.706, 0.529);
+const vec3 SCRUB_DARK = vec3(0.690, 0.596, 0.431);
+const vec3 DRY_GRASS = vec3(0.706, 0.667, 0.384);
+const vec3 DRY_GRASS_DARK = vec3(0.561, 0.541, 0.298);
+const vec3 PLAZA = vec3(0.851, 0.788, 0.667);
+const vec3 PLAZA_LIGHT = vec3(0.886, 0.831, 0.718);
+const vec3 PLAZA_DARK = vec3(0.796, 0.725, 0.596);
+const vec3 PLAZA_JOINT = vec3(0.733, 0.659, 0.533);
 const vec3 CORAL = vec3(0.863, 0.800, 0.663);
 const vec3 CORAL_LIGHT = vec3(0.925, 0.878, 0.769);
 const vec3 CORAL_DARK = vec3(0.663, 0.584, 0.463);
@@ -147,6 +156,14 @@ vec3 flower(float h) {
     : k < 0.55 ? vec3(0.961, 0.933, 0.859)
     : k < 0.8 ? vec3(0.961, 0.784, 0.259)
     : vec3(0.659, 0.518, 0.690);
+}
+// Desert sand: long soft dunes, dithered so they never band into stripes.
+vec3 desertSand(vec3 p, vec2 tile, float h, float h2) {
+  float dune = sin(tile.x * 0.55 + tile.y * 0.35 + coveField(p) * 6.0);
+  if (h2 > 0.986) return DESERT_DARK;
+  if (h < (dune - 0.3) * 0.55) return DESERT_LIGHT;
+  if (h > 1.0 - (-dune - 0.35) * 0.45) return DESERT_DARK;
+  return h > 0.975 ? DESERT_LIGHT : DESERT;
 }
 // Banded, dithered colour steps (pixel-art painting), lit by the planet shade.
 vec3 wild(vec3 p, vec2 tile) {
@@ -174,14 +191,22 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  // Old Massawa: salt pans, the coral-stone causeway, desert sand.
+  // Old Massawa: salt pans, the coral-stone causeway, the mosque's plaza,
+  // desert sand and thorn scrub on the dry coast.
   if (inSaltPans(tile)) {
-    vec2 q = tile - vec2(${f(MASSAWA.salt.x0)}, ${f(MASSAWA.salt.y0)});
-    vec2 cellq = fract(q / vec2(2.6, 2.0));
-    if (cellq.x < 0.09 || cellq.y < 0.11) return h > 0.6 ? SALT_BANK_LIGHT : SALT_BANK;
-    float pan = hash(vec3(floor(q / vec2(2.6, 2.0)), 3.0));
-    if (pan < 0.2) return h > 0.85 ? SALT : BRINE;
-    return h > 0.82 ? SALT_SHADE : h < 0.12 ? SALT_SHADE : SALT;
+    // Salt works: small pans in earth banks. Sea water is let in at the
+    // west end and dries eastward, from teal brine to pink to white crust.
+    vec2 size = vec2(1.6, 1.25);
+    vec2 q = (tile - vec2(${f(MASSAWA.salt.x0)}, ${f(MASSAWA.salt.y0)})) / size;
+    vec2 cq = fract(q);
+    float pan = hash(vec3(floor(q), 3.0));
+    float rim = min(min(cq.x, 1.0 - cq.x) * size.x, min(cq.y, 1.0 - cq.y) * size.y);
+    if (rim < 0.13) return h > 0.6 ? SALT_BANK_LIGHT : SALT_BANK;
+    float dry = floor(q.x) * size.x / ${f(MASSAWA.salt.x1 - MASSAWA.salt.x0)} + (pan - 0.5) * 0.3;
+    if (dry > 0.62) return h > 0.86 ? SALT_SHADE : SALT;
+    if (rim < 0.24 && h > 0.45) return SALT;
+    if (dry > 0.34) return h > 0.93 ? SALT : BRINE_PINK;
+    return h > 0.96 ? SALT : BRINE;
   }
   if (causewayDistance(tile) <= ${f(MASSAWA.causeway.halfWidth)} &&
       massawaIsland(tile) > ${f(MASSAWA.island.radius - 1.5)}) {
@@ -189,13 +214,27 @@ vec3 wild(vec3 p, vec2 tile) {
     if (across > ${f(MASSAWA.causeway.halfWidth - 0.14)}) return CORAL_DARK;
     return along < 0.08 ? CORAL_DARK : h > 0.8 ? CORAL_LIGHT : CORAL;
   }
-  if (massawaIsland(tile) < ${f(MASSAWA.island.radius + 1.2)} || inFlats(tile)) {
-    if (land < 1.0) return h > 0.9 ? SAND_LIGHT : WET_SAND;
-    // Dune ripples and wind-blown specks in the dry sand.
-    float ripple = sin(tile.x * 2.3 + tile.y * 4.1 + coveField(p) * 5.0);
-    if (ripple > 0.86 && h > 0.3) return DESERT_DARK;
-    return h > 0.93 ? DESERT_LIGHT : h < 0.06 ? DESERT_DARK : DESERT;
+  if (massawaIsland(tile) < ${f(MASSAWA.island.radius + 1.2)}) {
+    // The shore: wet sand with dark coral rock.
+    if (land < 1.0) return h2 > 0.93 ? CORAL_DARK : h > 0.9 ? SAND_LIGHT : WET_SAND;
+    float r = length(tile - PLAZA_CENTRE);
+    if (r < ${f(MASSAWA.plaza.radius)} - 0.5 + (h - 0.5) * 0.9) {
+      // Sun-worn limestone flagstones in offset rows, half buried in sand.
+      vec2 sq = tile * 1.5;
+      float row = floor(sq.y), col = floor(sq.x + row * 0.5);
+      vec2 fq = vec2(fract(sq.x + row * 0.5), fract(sq.y));
+      float stone = hash(vec3(col, row, 9.0));
+      if (stone < 0.12) return desertSand(p, tile, h, h2);
+      if ((fq.x < 0.05 || fq.y < 0.07) && h > 0.25) return PLAZA_JOINT;
+      if (h > 0.95) return PLAZA_LIGHT;
+      if (h < 0.04) return PLAZA_DARK;
+      return stone > 0.8 ? PLAZA_LIGHT : stone < 0.3 ? PLAZA_DARK : PLAZA;
+    }
+    return desertSand(p, tile, h, h2);
   }
+  float arid = massawaAridness(p, tile);
+  if (arid + (h - 0.5) * 1.6 > ${f(MASSAWA.arid.desert)} && land >= ${f(WILD.beach)})
+    return desertSand(p, tile, h, h2);
   if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5 && !inCalm(tile)) {
     float along = atan(p.y, p.x) * 140.0;
     float across = p.z / ${f(WILD.roadHalfWidth)};
@@ -215,6 +254,13 @@ vec3 wild(vec3 p, vec2 tile) {
     if (rock < ${f(WILD.rockAbove + 0.03)} || h > 0.88) return MOSS;
     if (h < 0.05) return ROCK_DARK;
     return clump > 0.66 ? ROCK_LIGHT : clump < 0.22 ? ROCK_DARK : ROCK;
+  }
+  if (arid + (h - 0.5) * 2.0 > 0.0) {
+    // Thorn scrub: dry earth with tufts of sun-bleached grass.
+    float tuft = hash(floor(p * ${f(PLANET.radiusTiles * 5)}));
+    if (tuft > 0.82 && h > 0.25) return h > 0.7 ? DRY_GRASS : DRY_GRASS_DARK;
+    if (h2 > 0.985) return DESERT_DARK;
+    return tuft < 0.25 ? SCRUB_DARK : h > 0.94 ? DESERT_LIGHT : SCRUB;
   }
   float patchy = forestField(p) * 0.5 + coveField(p) * 0.25 + (h - 0.5) * 0.35;
   if (d > 4.0 && forestField(p) + dither > ${f(WILD.forestAbove)}) {
