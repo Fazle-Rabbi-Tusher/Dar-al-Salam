@@ -572,23 +572,38 @@ export function modernQuarter() {
   /*
    * ════════ Mathematics research laboratory (x 7–21, y 41–55) ════════
    * The old library, replaced at the owner's request with a doctoral-level
-   * maths lab: chalkboards of working on the back wall, a case of
-   * mathematical models, a seminar table, a rolling whiteboard, research
-   * workstations, a 3D printer for models, a compute cluster and two shelves
-   * of journals. Al-Khwarizmi, Ibn Rushd and Ibn Khaldun keep their places.
+   * maths lab laid out after the owner's reference photos, in zones:
+   * chalkboards and a projector screen on the back wall; a freestanding
+   * board partition; the central geometric repository (a table of models);
+   * a data-science hub (a desk of monitors and a two-rack compute cluster);
+   * a quantum topology wing (a display wall, cryogenic dewars and a knot
+   * sculpture) behind a second partition; round study tables; a front
+   * bench of workstations; a book cart and plants. Al-Khwarizmi, Ibn Rushd
+   * and Ibn Khaldun stand in the lab (their cards place them).
    */
   obj('m-whitewall-side', 6.65, 39);
   obj('m-whitewall-side', 6.65, 47);
   obj('m-chalkboard-side', 7.0, 41.5);
   obj('m-chalkboard-side', 7.0, 45);
-  obj('m-model-case-side', 7.05, 48.4);
-  obj('m-bookshelf', 10, 52.4);
-  obj('m-seminar-table', 11, 42.6);
-  obj('m-whiteboard', 11.3, 47.6);
-  obj('m-workstation', 16, 41.5);
-  obj('m-workstation', 16, 48.6);
-  obj('m-3d-printer', 9.2, 46.2);
-  obj('m-desk-plant', 20.3, 42);
+  obj('m-projector-screen-side', 7.0, 48.6);
+  obj('m-board-partition', 9.5, 42.3);
+  obj('m-hub-desk', 14.3, 41.2);
+  obj('m-server-rack', 18.4, 41.2);
+  obj('m-server-rack', 19.5, 41.2);
+  obj('m-desk-plant', 20.7, 41.4);
+  obj('m-screen-array', 17.6, 44.4);
+  obj('m-dewar', 20.0, 45.4);
+  obj('m-dewar', 20.0, 46.3);
+  obj('m-knot-sculpture', 18.2, 47.2);
+  obj('m-board-partition-side', 15.6, 45.2);
+  obj('m-geo-table', 9.4, 46.0);
+  obj('m-round-table', 17.0, 50.6);
+  obj('m-round-table', 19.3, 52.4);
+  obj('m-hub-desk', 7.6, 53.0);
+  obj('m-hub-desk', 10.8, 53.0);
+  obj('m-book-cart', 14.0, 51.4);
+  obj('m-desk-plant', 14.4, 53.9);
+  obj('m-desk-plant', 8.0, 50.8);
   for (const [i, [x, y, f]] of (
     [
       [11.2, 42.4, 'SE'],
@@ -699,10 +714,7 @@ export function modernQuarter() {
     'amb-bench-pair-1';
 
   /* ════════ Density pass: more everyday life in the lower rooms ════════ */
-  // Maths lab: journals, the compute cluster, water.
-  obj('m-bookshelf', 13.5, 52.4);
-  obj('m-server-rack', 17.4, 52.4);
-  obj('m-server-rack', 18.5, 52.4);
+  // Maths lab: water.
   obj('m-water-cooler', 20.6, 54.3);
   person(
     'reader-lib-1',
@@ -3136,7 +3148,7 @@ export function namedCards(): Character[] {
           prop: 'madder-red',
         },
       },
-      script: two('write', 'teach', [18, 45], 'SE', 'SW'),
+      script: two('write', 'teach', [8.3, 44.0], 'SE', 'SW'),
     }),
     card({
       id: 'ibn-sina',
@@ -3348,7 +3360,7 @@ function scholars(): (Partial<Character> &
         garmentSecondary: 'cocoa',
       }),
       // Reading and explaining in the library's reading corner.
-      script: two('read', 'teach', [10.6, 54.2], 'SE', 'SW'),
+      script: two('read', 'teach', [16.4, 49.7], 'SE', 'SW'),
     },
     {
       id: 'ibn-rushd',
@@ -3364,7 +3376,7 @@ function scholars(): (Partial<Character> &
         garmentSecondary: 'wool-cream',
         headwear: 'wool-cream',
       }),
-      script: two('teach', 'read', [9.2, 51.6], 'SE', 'SW'),
+      script: two('teach', 'read', [12.6, 49.6], 'SE', 'SW'),
     },
     {
       id: 'mufti-ismail-menk',

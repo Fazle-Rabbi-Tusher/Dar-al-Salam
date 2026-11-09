@@ -31,14 +31,14 @@
       "from": 0,
       "to": 60,
       "action": "idle",
-      "at": [18, 45],
+      "at": [8.3, 44.0],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "talk",
-      "at": [18, 45],
+      "at": [8.3, 44.0],
       "facing": "SW"
     }
   ],
