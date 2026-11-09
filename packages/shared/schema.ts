@@ -44,6 +44,8 @@ export const ACTIONS = {
   animal_walk: 6,
   animal_graze: 4,
   animal_rest: 4,
+  vehicle_sail: 2,
+  vehicle_stop: 2,
 } as const;
 export type Action = keyof typeof ACTIONS;
 export const facingSchema = z.enum(['SE', 'SW', 'NE', 'NW']);
@@ -99,6 +101,8 @@ export const characterSchema = z.object({
   loop: z.union([z.literal(60), z.literal(120), z.literal(240)]),
   script: z.array(stepSchema).min(1),
   pairWith: z.string().optional(),
+  /** Id of a figure this one leads on a rope (a guide leading a camel). */
+  leads: z.string().optional(),
   bio: z.record(z.string()).optional(),
   story: z.record(z.string()).optional(),
   sources: z.array(z.string()).optional(),
@@ -203,10 +207,11 @@ export const bakedCharacterSchema = characterSchema.extend({
   /** Smooth illustrated portrait for the story card, when one is drawn. */
   illustration: z.string().optional(),
   /**
-   * Eight turnaround views (S, SE, E, NE, N, NW, W, SW on screen): the engine
-   * shows the one matching the way the figure heads, animating the still.
+   * Eight turnaround views (S, SE, E, NE, N, NW, W, SW on screen) per action
+   * ('*' for the rest), each a list of frames: the engine shows the view
+   * matching the way the figure heads and steps through its frames.
    */
-  dir8: z.array(z.string()).length(8).optional(),
+  dir8: z.record(z.array(z.array(z.string()).min(1)).length(8)).optional(),
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({

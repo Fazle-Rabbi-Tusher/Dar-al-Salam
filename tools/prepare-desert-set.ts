@@ -308,8 +308,8 @@ for (const p of PIECES)
       {
         frame: [FW, FH],
         foot,
-        // A camel stands about 62 world px tall (people are about 56).
-        density: +(height / 62).toFixed(3),
+        // A camel stands about 76 world px tall at the head (people are about 56).
+        density: +(height / 76).toFixed(3),
         views: ['S', 'SE', 'E', 'NE', 'N', 'NW', 'W', 'SW'],
       },
       null,

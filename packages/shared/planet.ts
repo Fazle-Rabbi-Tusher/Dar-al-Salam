@@ -324,6 +324,31 @@ export const MASSAWA = {
     farAway: 30,
   },
 };
+/** Distance (tiles) from a point to the segment a–b. */
+function segmentDistance(t: Point, a: Point, b: Point) {
+  const vx = b[0] - a[0],
+    vy = b[1] - a[1],
+    k = Math.max(
+      0,
+      Math.min(
+        1,
+        ((t[0] - a[0]) * vx + (t[1] - a[1]) * vy) / (vx * vx + vy * vy),
+      ),
+    );
+  return Math.hypot(t[0] - a[0] - vx * k, t[1] - a[1] - vy * k);
+}
+/**
+ * The railway: a straight line through the meadow north of the quarter,
+ * with a station at each end (packages/shared/world-life.ts). Tile
+ * coordinates; the bed is `halfWidth` tiles to either side of the line.
+ */
+export const RAIL = {
+  from: [6, -9] as Point,
+  to: [78, -9] as Point,
+  halfWidth: 1.1,
+};
+export const railDistance = (tile: Point) =>
+  segmentDistance(tile, RAIL.from, RAIL.to);
 /** Distance (tiles) from the town's centre. */
 export const massawaTown = (tile: Point) =>
   Math.hypot(
@@ -375,7 +400,8 @@ export type Biome =
   | 'road'
   | 'desert'
   | 'scrub'
-  | 'plaza';
+  | 'plaza'
+  | 'rail';
 /** A smooth field in [-1, 1]: a weighted sum of sine waves over the sphere. */
 export function waveField(p: Vec3, waves: Wave[]) {
   let sum = 0,
@@ -421,6 +447,7 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
+  if (land > 0.5 && railDistance(tile) <= RAIL.halfWidth) return 'rail';
   // Massawa's sand and scrub fringe; the ring road stops at the
   // desert's edge (owner's request) and runs on everywhere else.
   const dry = massawaDryness(p, tile);
@@ -484,6 +511,13 @@ float shoreDistance(vec3 p, float cove) {
   float r = ${g(WILD.coast.near)} + ${g(WILD.coast.far - WILD.coast.near)} * smoothstep(0.15, 0.85, toward);
   return max(${g(WILD.coast.minimum)}, r + ${g(WILD.coast.coves)} * cove);
 }
+const vec2 RAIL_A = vec2(${g(RAIL.from[0])}, ${g(RAIL.from[1])});
+const vec2 RAIL_B = vec2(${g(RAIL.to[0])}, ${g(RAIL.to[1])});
+float railDistance(vec2 tile) {
+  vec2 v = RAIL_B - RAIL_A;
+  float k = clamp(dot(tile - RAIL_A, v) / dot(v, v), 0.0, 1.0);
+  return length(tile - RAIL_A - v * k);
+}
 const vec2 TOWN_CENTRE = vec2(${g(MASSAWA.town.centre[0])}, ${g(MASSAWA.town.centre[1])});
 const vec2 PLAZA_CENTRE = vec2(${g(MASSAWA.plaza.centre[0])}, ${g(MASSAWA.plaza.centre[1])});
 float massawaTown(vec2 tile) { return length(tile - TOWN_CENTRE); }
@@ -536,8 +570,7 @@ const hash1 = (i: number, k: number) =>
 export function wildPlantings(count = 16000): Planting[] {
   const out: Planting[] = [],
     golden = Math.PI * (3 - Math.sqrt(5));
-  const rockSpots: Planting[] = [],
-    seaSpots: Planting[] = [];
+  const rockSpots: Planting[] = [];
   for (let i = 0; i < count; i++) {
     const y = 1 - ((i + 0.5) / count) * 2,
       r = Math.sqrt(1 - y * y),
@@ -555,6 +588,8 @@ export function wildPlantings(count = 16000): Planting[] {
     const tile = planetToTile(p),
       d = mapDistance(tile);
     if (d < 2) continue;
+    // Keep the railway's corridor clear, so the train is never hidden.
+    if (railDistance(tile) < 6) continue;
     const land = landField(p, tile),
       biome = wildAt(p, tile),
       roll = hash1(i, 4),
@@ -581,10 +616,6 @@ export function wildPlantings(count = 16000): Planting[] {
       else if (land > 0.25 && land < 1.4 && roll > 0.9) at('beach-rock');
     } else if (biome === 'rock' && land > 11) {
       if (roll < 0.28) at('boulder');
-      // No waterfalls anywhere near Massawa's desert (owner's request):
-      // only beyond its reach (massawaDryness returns -99 there).
-      else if (roll > 0.95 && dry < -90)
-        rockSpots.push({ kind: 'waterfall', p, tile, pick });
     } else if (biome === 'desert') {
       // Open desert: dunes, sandstone outcrops, shrubs and a rare acacia.
       if (roll < 0.035) at('dune');
@@ -595,8 +626,25 @@ export function wildPlantings(count = 16000): Planting[] {
       // Thorn scrub: a few flat-topped acacias and doum palms.
       if (roll < 0.13) at('acacia');
       else if (roll < 0.19) at('doum-palm');
-    } else if (biome === 'sea' && land < -7 && land > -13 && roll > 0.97)
-      seaSpots.push({ kind: 'ship', p, tile, pick });
+    }
+    // Waterfalls only where water can go: a cliff just behind the shore,
+    // high ground behind it and the sea in front (to the south, which is
+    // toward the viewer under a north-up camera), so the falls' pool spills
+    // into the sea. Never near Massawa's desert (owner's request).
+    if (
+      (biome === 'forest' || biome === 'meadow') &&
+      land > 2.8 &&
+      land < 4.5 &&
+      dry < -90 &&
+      roll > 0.6
+    ) {
+      const { lat, lon } = latLon(p),
+        step = 3 / PLANET.radiusTiles,
+        south = fromLatLon(lat - step, lon),
+        north = fromLatLon(lat + step * 2, lon);
+      if (landField(south) < -1.5 && landField(north) > 7)
+        rockSpots.push({ kind: 'waterfall', p, tile, pick });
+    }
   }
   // A few waterfalls and ships, spread apart, nearest to the quarter first.
   const spread = (spots: Planting[], n: number, gap: number) => {
@@ -607,6 +655,7 @@ export function wildPlantings(count = 16000): Planting[] {
         chosen.push(s);
     return chosen;
   };
-  out.push(...spread(rockSpots, 4, 0.3), ...spread(seaSpots, 3, 0.45));
+  // Ships are no longer planted: they sail (content/ambient/world-life.json).
+  out.push(...spread(rockSpots, 4, 0.3));
   return out;
 }

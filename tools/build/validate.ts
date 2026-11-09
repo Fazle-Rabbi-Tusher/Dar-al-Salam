@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { z } from 'zod';
 import { variantLook } from './variants';
 import {
@@ -72,7 +73,11 @@ export function validateCharacter(
       c.look.headwear,
       c.look.prop,
     ])
-      if (id !== 'none') {
+      // Figures with an eight-view sheet (art/sprites/dir8) need no parts.
+      if (
+        id !== 'none' &&
+        !(id === c.look.base && fs.existsSync(`art/sprites/dir8/${id}.json`))
+      ) {
         if (!parts[id]) {
           errors.push(`Unknown part ${id}`);
           continue;
@@ -164,6 +169,9 @@ export async function loadContent() {
   for (const c of characters)
     if (c.pairWith && !ids.has(c.pairWith))
       throw Error(`${c.id}: missing pair ${c.pairWith}`);
+  for (const c of characters)
+    if (c.leads && !ids.has(c.leads))
+      throw Error(`${c.id}: leads a missing figure ${c.leads}`);
   for (const p of await files('content/i18n', '.json'))
     z.record(z.string()).parse(await readJson(p));
   const landmarks: Landmark[] = [];

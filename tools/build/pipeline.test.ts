@@ -710,8 +710,11 @@ describe('scene bible: cricket ground', () => {
 
 describe('main characters only, with supplied animation strips', () => {
   it('keeps no background people: only named characters, balls, vehicles and animals', () => {
+    // The owner asked for one exception (2026-11): Massawa's caravan guide.
+    const allowed = new Set(['amb-msw-guide']);
     for (const c of content.characters)
-      if (!c.name) expect(c.kind, c.id).not.toBe('person');
+      if (!c.name && !allowed.has(c.id))
+        expect(c.kind, c.id).not.toBe('person');
     const ids = new Set(content.characters.map((c) => c.id));
     for (const c of content.characters)
       if (c.pairWith) expect(ids.has(c.pairWith), c.id).toBe(true);

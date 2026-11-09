@@ -27,6 +27,7 @@ import {
   WILD,
   WILD_GLSL,
   MASSAWA,
+  RAIL,
   fitZoom,
   focusFromWorld,
   frame as planetFrame,
@@ -135,6 +136,13 @@ const vec3 SCRUB = vec3(0.800, 0.635, 0.420);
 const vec3 SCRUB_DARK = vec3(0.698, 0.541, 0.345);
 const vec3 DRY_GRASS = vec3(0.690, 0.616, 0.333);
 const vec3 DRY_GRASS_DARK = vec3(0.553, 0.494, 0.259);
+const vec3 BALLAST = vec3(0.553, 0.537, 0.510);
+const vec3 BALLAST_LIGHT = vec3(0.663, 0.647, 0.616);
+const vec3 BALLAST_DARK = vec3(0.427, 0.412, 0.392);
+const vec3 SLEEPER = vec3(0.373, 0.278, 0.204);
+const vec3 SLEEPER_LIGHT = vec3(0.471, 0.361, 0.267);
+const vec3 RAIL_STEEL = vec3(0.459, 0.490, 0.522);
+const vec3 RAIL_LIGHT = vec3(0.788, 0.812, 0.831);
 const vec3 PLAZA = vec3(0.851, 0.788, 0.667);
 const vec3 PLAZA_LIGHT = vec3(0.886, 0.831, 0.718);
 const vec3 PLAZA_DARK = vec3(0.796, 0.725, 0.596);
@@ -192,6 +200,15 @@ vec3 wild(vec3 p, vec2 tile) {
     // Sparkles on the open water.
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
+  }
+  // The railway: grey ballast, timber sleepers across, two steel rails.
+  float rail = railDistance(tile);
+  if (land > 0.5 && rail < ${f(RAIL.halfWidth)}) {
+    float along = fract(tile.x * 1.8);
+    float gauge = abs(rail - 0.42);
+    if (gauge < 0.07) return h > 0.5 ? RAIL_LIGHT : RAIL_STEEL;
+    if (rail < 0.62 && along < 0.34) return h > 0.8 ? SLEEPER_LIGHT : SLEEPER;
+    return h > 0.85 ? BALLAST_LIGHT : h < 0.15 ? BALLAST_DARK : BALLAST;
   }
   // Massawa's dryness, once per pixel (cheap far from the desert).
   float forest = forestField(p);
@@ -800,14 +817,14 @@ export class Engine {
           ? screenDirection8(this.proj, state.tile, direction, probe.rotation)
           : -1,
         tempo = this.metadata.get(frames[0])?.tempo,
-        name =
-          view >= 0
-            ? c.dir8![view]
-            : tempo
-              ? frames[
-                  Math.floor((this.frame % (frames.length * tempo)) / tempo)
-                ]
-              : frames[state.index % frames.length];
+        steps =
+          view >= 0 ? (c.dir8![state.action] ?? c.dir8!['*'])[view] : null,
+        // Generated walking steps advance every three ticks (a stride a second).
+        name = steps
+          ? steps[Math.floor(this.frame / 3) % steps.length]
+          : tempo
+            ? frames[Math.floor((this.frame % (frames.length * tempo)) / tempo)]
+            : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
@@ -854,6 +871,7 @@ export class Engine {
       );
     }
     this.visibleCount = visible;
+    this.drawRopes();
     if (this.inspector) this.drawInspector();
   }
   /** Gold outline on hover; a slow pulse while selected. */
@@ -872,6 +890,55 @@ export class Engine {
     } else if (sprite.filters?.length) sprite.filters = [];
   }
   private visibleCount = 0;
+  private ropes = new Graphics();
+  /**
+   * Lead ropes: from the leader's hand to the led figure's head, sagging
+   * a little in the middle. Hand and head heights are fractions of each
+   * sprite's drawn height, so the rope follows them as they turn and step.
+   */
+  private drawRopes() {
+    const g = this.ropes;
+    if (!g.parent) this.front.addChild(g);
+    g.clear();
+    if (!this.manifest) return;
+    let depth = -Infinity;
+    for (const c of this.manifest.characters) {
+      if (!c.leads) continue;
+      const a = this.live.get(c.id),
+        b = this.live.get(c.leads);
+      if (!a || !b || !a.sprite.visible || !b.sprite.visible) continue;
+      const ha = a.sprite.getBounds(),
+        hb = b.sprite.getBounds();
+      // The guide's hand (about half his height); the camel's head (the
+      // top fifth of its sprite, on the side nearer the guide).
+      const hand = { x: ha.x + ha.width / 2, y: ha.y + ha.height * 0.48 },
+        cx = hb.x + hb.width / 2,
+        head = {
+          x:
+            Math.abs(cx - hand.x) < hb.width * 0.25
+              ? cx
+              : hand.x < cx
+                ? hb.x + hb.width * 0.25
+                : hb.x + hb.width * 0.75,
+          y: hb.y + hb.height * 0.22,
+        };
+      const mid = {
+        x: (hand.x + head.x) / 2,
+        y:
+          Math.max(hand.y, head.y) +
+          Math.hypot(hand.x - head.x, hand.y - head.y) * 0.12,
+      };
+      const local = (q: { x: number; y: number }) => this.front.toLocal(q);
+      const p0 = local(hand),
+        p1 = local(mid),
+        p2 = local(head);
+      g.moveTo(p0.x, p0.y)
+        .quadraticCurveTo(p1.x, p1.y, p2.x, p2.y)
+        .stroke({ width: Math.max(1, this.view.zoom * 0.9), color: 0x6b4a2e });
+      depth = Math.max(depth, a.depth, b.depth);
+    }
+    g.zIndex = depth + 1e-5;
+  }
   private tick(dt: number) {
     if (!this.ready || this.destroyed) return;
     this.lastDrawCalls = this.drawCalls;

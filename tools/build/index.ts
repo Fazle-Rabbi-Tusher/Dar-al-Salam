@@ -52,6 +52,7 @@ import {
   type Planting,
 } from '../../packages/shared/planet';
 import { MASSAWA_OBJECTS } from '../../packages/shared/massawa';
+import { WORLD_OBJECTS } from '../../packages/shared/world-life';
 import type { ObjectArt } from '../placeholder/objects';
 const out = 'public-build';
 /** Flat walkable art (carpets, rugs) is baked into chunk backgrounds. */
@@ -274,46 +275,132 @@ async function build() {
     'wool-cream': { brightness: 1.15, saturation: 0.6 },
     'hair-brown': { brightness: 0.85, saturation: 1 },
   };
-  const dir8Cache = new Map<string, string[] | null>();
-  async function dir8Views(base: string, coat: string) {
-    const key = `${base}/${coat}`;
+  type Dir8Meta = {
+    frame: [number, number];
+    foot: [number, number];
+    density: number;
+    /** Floor shadow size in world px, or false (ships sit on the water). */
+    shadow?: [number, number] | false;
+    /** Other strips for particular actions (the tram's open doors). */
+    actions?: Record<string, string>;
+  };
+  /** Walking actions get generated steps (legs and hems move). */
+  const STEPPING = new Set(['animal_walk', 'walk']);
+  /*
+   * A step of a walk, made from a still view without redrawing it: the
+   * legs (or a robe's hem) below the body swing about the hips. Seen from
+   * the side or three-quarter, the front and back legs scissor; seen from
+   * the front or back, one side's foot lifts, then the other's.
+   */
+  function stepped(
+    img: PixelImage,
+    view: number,
+    phase: number,
+    legs: number,
+  ): PixelImage {
+    let top = img.height,
+      bottom = 0,
+      left = img.width,
+      right = 0;
+    for (let y = 0; y < img.height; y++)
+      for (let x = 0; x < img.width; x++)
+        if (img.data[(y * img.width + x) * 4 + 3] > 40) {
+          top = Math.min(top, y);
+          bottom = Math.max(bottom, y);
+          left = Math.min(left, x);
+          right = Math.max(right, x);
+        }
+    const out = new Pixels(img.width, img.height);
+    out.data.set(img.data);
+    const hip = Math.round(bottom - (bottom - top) * legs),
+      mid = (left + right) / 2,
+      s = Math.sin(phase * Math.PI * 2),
+      endOn = view === 0 || view === 4,
+      swing = Math.max(2, (right - left) * (endOn ? 0.035 : 0.07)),
+      lift = Math.max(2, (bottom - top) * 0.025);
+    for (let y = hip; y <= bottom; y++)
+      for (let x = 0; x < img.width; x++)
+        out.data[(y * img.width + x) * 4 + 3] = 0;
+    // Back group first, so the front legs are drawn over them.
+    for (const front of [false, true])
+      for (let y = hip; y <= bottom; y++) {
+        const t = (y - hip) / Math.max(1, bottom - hip);
+        for (let x = left; x <= right; x++) {
+          const i = (y * img.width + x) * 4;
+          if (img.data[i + 3] <= 40) continue;
+          if (x >= mid !== front) continue;
+          const sign = front ? 1 : -1;
+          let tx = x,
+            ty = y;
+          if (endOn) ty = y - Math.round(lift * t * Math.max(0, sign * s));
+          else tx = x + Math.round(swing * t * s * sign);
+          if (tx < 0 || tx >= img.width || ty < 0) continue;
+          out.data.set(img.data.subarray(i, i + 4), (ty * img.width + tx) * 4);
+        }
+      }
+    return out;
+  }
+  const dir8Cache = new Map<string, Record<string, string[][]> | null>();
+  const dir8Meta = new Map<string, Dir8Meta | null>();
+  async function dir8MetaFor(base: string) {
+    if (!dir8Meta.has(base))
+      dir8Meta.set(
+        base,
+        await readJson(`art/sprites/dir8/${base}.json`).catch(() => null),
+      );
+    return dir8Meta.get(base)!;
+  }
+  /**
+   * The eight views of a figure for each action it uses ('*' covers the
+   * rest): stills for standing, generated steps for walking, the strip an
+   * action names (the tram's open doors). Views run S, SE, E, NE, N, NW, W, SW.
+   */
+  async function dir8Views(base: string, coat: string, actions: string[]) {
+    const key = `${base}/${coat}/${[...new Set(actions)].sort()}`;
     if (dir8Cache.has(key)) return dir8Cache.get(key)!;
-    const file = `art/sprites/dir8/${base}`;
-    const meta: {
-      frame: [number, number];
-      foot: [number, number];
-      density: number;
-    } | null = await readJson(`${file}.json`).catch(() => null);
-    let names: string[] | null = null;
+    const meta = await dir8MetaFor(base);
+    let sets: Record<string, string[][]> | null = null;
     if (meta) {
-      const tint = COATS[coat];
-      let img = sharp(`${file}.png`);
-      if (tint) img = img.modulate(tint);
-      const { data, info } = await img
-        .ensureAlpha()
-        .raw()
-        .toBuffer({ resolveWithObject: true });
-      const strip: PixelImage = {
-        width: info.width,
-        height: info.height,
-        data: new Uint8Array(data),
-      };
-      names = [];
-      for (let v = 0; v < 8; v++)
-        names.push(
-          register(
-            outlined(
-              crop(strip, v * meta.frame[0], 0, meta.frame[0], strip.height),
-            ),
-            meta.foot,
-            meta.density,
-            true,
-            true,
-          ),
+      sets = {};
+      const tint = base === 'camel' ? COATS[coat] : undefined;
+      const stripOf = async (file: string) => {
+        let img = sharp(`art/sprites/dir8/${file}.png`);
+        if (tint) img = img.modulate(tint);
+        const { data, info } = await img
+          .ensureAlpha()
+          .raw()
+          .toBuffer({ resolveWithObject: true });
+        const strip: PixelImage = {
+          width: info.width,
+          height: info.height,
+          data: new Uint8Array(data),
+        };
+        return [...Array(8).keys()].map((v) =>
+          crop(strip, v * meta.frame[0], 0, meta.frame[0], strip.height),
         );
+      };
+      const views = await stripOf(base);
+      const reg = (img: PixelImage) =>
+        register(outlined(img), meta.foot, meta.density, true, true);
+      sets['*'] = views.map((v) => [reg(v)]);
+      for (const action of new Set(actions)) {
+        if (meta.actions?.[action]) {
+          const other = await stripOf(meta.actions[action]);
+          sets[action] = other.map((v) => [reg(v)]);
+        } else if (
+          STEPPING.has(action) &&
+          (base === 'camel' || base === 'guide')
+        )
+          // Camels' legs are long (the lower 45%); a robe moves at the hem.
+          sets[action] = views.map((v, i) =>
+            [0, 1, 2, 3].map((f) =>
+              reg(stepped(v, i, f / 4, base === 'camel' ? 0.45 : 0.16)),
+            ),
+          );
+      }
     }
-    dir8Cache.set(key, names);
-    return names;
+    dir8Cache.set(key, sets);
+    return sets;
   }
   /** The same two-pixel outline as the sprites and drawn characters. */
   function outlined(img: PixelImage) {
@@ -352,18 +439,25 @@ async function build() {
         Array.isArray(s.z) ? s.z.some((z) => z !== 0) : Boolean(s.z),
       );
     const sprite = await characterSprite(c.id),
-      d8 =
-        c.kind === 'animal'
-          ? await dir8Views(c.look.base, c.look.colours.garmentPrimary)
-          : null;
+      d8 = await dir8Views(
+        c.look.base,
+        c.look.colours.garmentPrimary,
+        c.script.map((s) => s.action),
+      ),
+      d8meta = d8 ? await dir8MetaFor(c.look.base) : null;
     // Sprite characters (and anyone lifted off the floor) get a separate
     // floor shadow; their drawn frames are baked without one.
     const unshadowed = lifted || Boolean(sprite);
     let shadowFrame: string | undefined;
     if (d8) {
-      const shadow = new Pixels(36, 10);
-      shadow.ellipse(18, 5, 15, 3.5, [73, 60, 53, 89]);
-      shadowFrame = register(shadow, [18, 5]);
+      // Each eight-view figure's own floor shadow (none for ships at sea).
+      const size = d8meta?.shadow ?? [36, 10];
+      if (size) {
+        const [w, h] = size.map((v) => Math.max(4, Math.round(v)));
+        const shadow = new Pixels(w + 2, h + 2);
+        shadow.ellipse(w / 2 + 1, h / 2 + 1, w / 2, h / 2, [73, 60, 53, 89]);
+        shadowFrame = register(shadow, [w / 2 + 1, h / 2 + 1]);
+      }
     } else if (sprite) {
       const shadow = new Pixels(20, 8);
       shadow.ellipse(10, 4, 8, 2.5, [73, 60, 53, 89]);
@@ -388,7 +482,9 @@ async function build() {
         frames[key] = [];
         if (d8) {
           // The engine picks among the eight views; these are fallbacks.
-          const v = d8[{ SE: 1, NE: 3, NW: 5, SW: 7 }[facing]];
+          const v = (d8[s.action] ?? d8['*'])[
+            { SE: 1, NE: 3, NW: 5, SW: 7 }[facing]
+          ][0];
           for (let f = 0; f < ACTIONS[s.action]; f++) frames[key].push(v);
           bakedCount += ACTIONS[s.action];
           continue;
@@ -557,6 +653,25 @@ async function build() {
   const objectArt: Record<string, ObjectArt> = await readJson(
     'art/objects/index.json',
   );
+  // Pieces cut from the owner's packs (art/supplied): detailed art drawn at
+  // its own density, optionally animated, optionally replacing an object.
+  const suppliedArt: Record<
+    string,
+    {
+      file: string;
+      anchor: [number, number];
+      density: number;
+      frames?: string[];
+      period?: number;
+      replaces?: string;
+    }
+  > = await readJson('art/supplied/index.json');
+  const replacing = new Map(
+    Object.entries(suppliedArt)
+      .filter(([, a]) => a.replaces)
+      .map(([id, a]) => [a.replaces!, id]),
+  );
+  const replaced: [string, number, number][] = [];
   const sortables: Sortable[] = [];
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
@@ -564,6 +679,16 @@ async function build() {
       const art = objectArt[o.type];
       if (!art) throw Error(`Unknown room object ${o.type}`);
       if (o.walkable && bakedIntoFloor(o.type, art)) continue;
+      // Supplied art that replaces this object (art/supplied `replaces`)
+      // stands on the footprint's centre instead (planted below).
+      if (replacing.has(o.type)) {
+        replaced.push([
+          replacing.get(o.type)!,
+          o.x + o.footprint[0] / 2,
+          o.y + o.footprint[1] / 2,
+        ]);
+        continue;
+      }
       const frames = await Promise.all(
         (art.frames ?? [art.file]).map((f) => image(`art/${f}`)),
       );
@@ -607,19 +732,39 @@ async function build() {
   // Art per planting kind, in order of preference; ids missing from the
   // object index fall back to the next, so the build never fails.
   const wildArt: Record<Planting['kind'], string[][]> = {
+    // Painted, volumetric trees from the owner's pack (land-*) mixed with
+    // the drawn ones, so woods vary in age and kind.
     'forest-tree': [
-      ['m-pine', 'm-oak', 'm-pine', 'm-birch', 'm-oak', 'm-tree'],
+      [
+        'land-pine',
+        'm-oak',
+        'land-oak',
+        'm-pine',
+        'land-forest-stand',
+        'land-pine-young',
+        'm-birch',
+        'land-oak-young',
+        'land-pine',
+        'land-snag',
+      ],
       ['cypress', 'm-tree', 'cypress', 'detail-olive', 'm-tree', 'm-tree'],
     ],
     'meadow-tree': [
-      ['m-oak', 'm-cherry', 'm-tree', 'm-birch'],
+      [
+        'land-oak-young',
+        'm-cherry',
+        'land-cherry-young',
+        'm-oak',
+        'land-cherry',
+      ],
       ['m-tree', 'detail-olive', 'm-tree', 'cypress'],
     ],
     bush: [['m-bush'], []],
     palm: [['m-palm'], ['palm']],
     'beach-rock': [['m-beach-rocks', 'm-rock'], ['palm']],
     boulder: [['m-rock'], ['cypress']],
-    waterfall: [['m-waterfall'], []],
+    // A cliff with the falls and the pool at its foot (owner's pack).
+    waterfall: [['land-waterfall'], ['m-waterfall']],
     ship: [['m-ship'], []],
     // Massawa's dry coast: never a lush tree in the desert.
     acacia: [['msw-acacia'], []],
@@ -648,20 +793,22 @@ async function build() {
     string,
     { names: string[]; period?: number } | null
   >();
-  // Pieces cut from the owner's desert and camel sheets (art/supplied) are
-  // detailed art drawn at their own density, like the landmarks.
-  const suppliedArt: Record<
-    string,
-    { file: string; anchor: [number, number]; density: number }
-  > = await readJson('art/supplied/index.json');
   const wildFrame = async (type: string) => {
     if (wildFrames.has(type)) return wildFrames.get(type)!;
     const art = objectArt[type],
       sup = suppliedArt[type];
     let entry: { names: string[]; period?: number } | null = null;
-    if (sup) {
+    if (sup && sup.frames) {
+      // Animated supplied art (the waterfall's falling water).
+      const names: string[] = [];
+      for (const f of sup.frames)
+        names.push(
+          register(await image(`art/${f}`), sup.anchor, sup.density, true),
+        );
+      entry = { names, period: sup.period ?? 24 };
+    } else if (sup) {
       const img = await image(`art/${sup.file}`);
-      // Date palms sway in the wind: the crown leans, the base stays put.
+      // Palms sway in the wind: the crown leans, the base stays put.
       const sway = /datepalm/.test(type) ? 6 : 1;
       const names: string[] = [];
       for (let f = 0; f < sway; f++)
@@ -756,7 +903,11 @@ async function build() {
     console.log('Wild plantings:', JSON.stringify(wildCounts));
   // Massawa's town, boats and palms, outside the mapped quarter: sorted like
   // wild plantings (one ground point each, no collision, not in the floor).
-  for (const [i, [type, x, y]] of MASSAWA_OBJECTS.entries()) {
+  for (const [i, [type, x, y]] of [
+    ...MASSAWA_OBJECTS,
+    ...WORLD_OBJECTS,
+    ...replaced,
+  ].entries()) {
     const chosen = await wildFrame(type);
     if (!chosen) throw Error(`Massawa: unknown object ${type}`);
     const frame = chosen.names[0],
