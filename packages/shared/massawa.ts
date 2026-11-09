@@ -15,51 +15,41 @@ export const MOSQUE_TILE: Point = [-10, 117];
 
 /**
  * Town pieces outside the mapped quarter: [art id, tile x, tile y], each
- * standing on its art's anchor (the back corner of its footprint). With the
- * camera on Massawa the grid turns on screen: −y runs right, +x runs down
- * toward the viewer. The mosque rises toward −x from MOSQUE_TILE; its
- * forecourt (centre 74,156) stays open, ringed by the market.
+ * standing on its art's anchor (the back corner of its footprint). Here
+ * the grid sits as in the quarter: +x runs right-down, +y left-down. The
+ * mosque's façade faces +x+y (screen-down) from MOSQUE_TILE; its forecourt
+ * stays open, ringed by the market, with rooftops and palms behind it and
+ * a Bedouin camp on the scrub toward the ring road.
  */
 export const MASSAWA_OBJECTS: [string, number, number][] = [
-  /* ── The market round the forecourt, the well below it ── */
-  ['msw-stall', 73.6, 150.6],
-  ['msw-stall-b-side', 73.4, 160.4],
-  ['msw-stall-side', 77.0, 151.2],
-  ['msw-stall-b', 77.2, 159.6],
-  ['msw-well', 78.2, 155.6],
-  ['msw-goods', 78.6, 153.0],
-  ['msw-goods', 78.8, 158.4],
-  /* ── Houses beside and behind the mosque ── */
-  ['msw-house-b', 63.4, 147.6],
-  ['msw-house-pink-side', 66.0, 145.6],
-  ['msw-house-a', 63.6, 151.6],
-  ['msw-house-d-side', 62.6, 162.4],
-  ['msw-house-a-side', 66.4, 162.6],
-  ['msw-house-pink', 69.6, 163.4],
-  ['msw-palm', 61.8, 150.4],
-  ['msw-palms', 61.0, 158.6],
-  /* ── Lanes toward the shore: more houses, gardens and palms ── */
-  ['msw-house-c', 72.2, 146.4],
-  ['msw-house-d', 80.0, 148.4],
-  ['msw-house-b-side', 73.6, 164.0],
-  ['msw-house-a', 79.6, 162.0],
-  ['msw-garden', 80.8, 157.6],
-  ['msw-palm', 77.6, 146.6],
-  ['msw-palms', 77.8, 164.2],
-  /* ── Beaches: a dhow under repair, nets, a jetty and boats ── */
-  ['msw-dhow-repair', 82.2, 154.0],
-  ['msw-nets-side', 61.6, 154.6],
-  ['msw-jetty', 82.6, 160.6],
-  ['msw-dhow', 85.4, 149.0],
-  ['msw-dhow', 60.5, 145.5],
-  ['msw-dhow', 55.0, 156.0],
-  ['msw-fish-jump', 66.0, 167.6],
-  /* ── The mainland across the causeway: a Bedouin camp at the desert edge ── */
-  ['msw-tent', 63.0, 133.2],
-  ['msw-tent-side', 72.6, 133.0],
-  ['msw-tent', 66.4, 129.6],
-  ['msw-acacia', 60.0, 136.4],
-  ['msw-acacia', 76.6, 136.6],
-  ['msw-palm', 67.6, 137.2],
-  ['msw-cart', 67.6, 134.6],
+  /* ── The market round the forecourt, the well before it ── */
+  ['msw-stall', -13.25, 123.25],
+  ['msw-stall-side', -3.75, 113.75],
+  ['msw-stall-b', -8.5, 125.5],
+  ['msw-stall-b-side', -1.5, 118.5],
+  ['msw-well', -4.25, 122.75],
+  ['msw-goods', -5.25, 126.25],
+  ['msw-goods', -0.75, 122.25],
+  /* ── Houses beside the mosque, palms at its flanks ── */
+  ['msw-house-b', -20.25, 121.25],
+  ['msw-house-pink', -14.5, 127.5],
+  ['msw-house-a-side', -6.0, 106.0],
+  ['msw-house-pink-side', -2.5, 106.5],
+  ['msw-palm', -15.75, 119.75],
+  ['msw-palm', -7.0, 111.5],
+  /* ── Rooftops behind the mosque ── */
+  ['msw-house-a', -18.5, 103.5],
+  ['msw-house-b-side', -11.0, 103.0],
+  ['msw-house-d-side', -6.5, 99.5],
+  ['msw-palms', -23.5, 109.5],
+  /* ── The front of the town: a garden, a palm and two houses ── */
+  ['msw-garden', -11.5, 132.5],
+  ['msw-palm', -14.25, 132.25],
+  ['msw-house-a', 0.75, 126.75],
+  ['msw-house-b-side', -4.0, 133.0],
+  /* ── The Bedouin camp on the scrub toward the road ── */
+  ['msw-tent', -26.0, 114.0],
+  ['msw-tent-side', -26.5, 120.5],
+  ['msw-cart', -27.5, 110.5],
+  ['msw-acacia', -20.0, 100.0],
 ];
