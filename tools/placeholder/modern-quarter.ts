@@ -572,7 +572,7 @@ export function modernQuarter() {
   /*
    * ════════ Mathematics research laboratory (x 7–21, y 41–55) ════════
    * The old library, replaced at the owner's request with a doctoral-level
-   * maths lab: a chalkboard and a projector screen on the back wall, and
+   * maths lab, open to the lawn behind it: a freestanding chalkboard and
    * the history of calculation on plinths and stands, in order: tally
    * sticks, a counting board, an abacus, the Antikythera mechanism,
    * Napier's bones, a slide rule, Pascal's calculator, Leibniz's stepped
@@ -584,10 +584,8 @@ export function modernQuarter() {
    * Al-Khwarizmi, Ibn Rushd and Ibn Khaldun stand in the lab
    * (their cards place them).
    */
-  obj('m-whitewall-side', 6.65, 39);
-  obj('m-whitewall-side', 6.65, 47);
-  obj('m-chalkboard-side', 7.0, 41.5);
-  obj('m-projector-screen-side', 7.0, 45.0);
+  // No back wall (owner's request): the lab is open to the lawn.
+  obj('m-board-partition-side', 7.0, 41.5);
   obj('m-model-case-side', 7.05, 48.4);
   obj('m-whiteboard', 15.0, 45.6);
   obj('m-seminar-table', 9.5, 50.6);

@@ -91,3 +91,4 @@
     - a mainframe with tape reels, lamps and a green-screen terminal.
 
     The list's slide rule was already in the lab, so it is not repeated. With the first list and the furniture, the lab holds 25 distinct pieces. As before, no numerals or lettering are drawn, and the list's brand names (Curta, Marchant, Friden, MATLAB, Fortran, Mathematica) appear nowhere.
+58. The maths lab's back wall is removed (owner's request), so the lab opens onto the lawn behind it. The wall-hung chalkboard became a freestanding board (with its own chalkboard), and the projector screen, which had nothing to hang on, was removed.
