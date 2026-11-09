@@ -443,5 +443,221 @@
       }
     ],
     "role": "A gazelle on the far scrub"
+  },
+  {
+    "id": "amb-msw-camel-well",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 90,
+        "action": "animal_graze",
+        "at": [-4.2, 129.2],
+        "facing": "SW"
+      },
+      {
+        "from": 90,
+        "to": 150,
+        "action": "animal_idle",
+        "at": [-4.2, 129.2],
+        "facing": "SW"
+      },
+      {
+        "from": 150,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [-4.2, 129.2],
+        "facing": "SW"
+      }
+    ],
+    "role": "A camel drinking at the well"
+  },
+  {
+    "id": "amb-msw-camel-camp",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "animal_idle",
+        "at": [-28.5, 115.5],
+        "facing": "SE"
+      },
+      {
+        "from": 120,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [-28.5, 115.5],
+        "facing": "SE"
+      }
+    ],
+    "role": "A camel resting by the tents"
+  },
+  {
+    "id": "amb-msw-camel-camp-dark",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "cocoa",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 80,
+        "action": "animal_graze",
+        "at": [-26, 111.5],
+        "facing": "NW"
+      },
+      {
+        "from": 80,
+        "to": 160,
+        "action": "animal_idle",
+        "at": [-26, 111.5],
+        "facing": "NW"
+      },
+      {
+        "from": 160,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [-26, 111.5],
+        "facing": "NW"
+      }
+    ],
+    "role": "A camel grazing by the camp"
+  },
+  {
+    "id": "amb-msw-camel-oasis",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "animal_graze",
+        "at": [-19.5, 104],
+        "facing": "SW"
+      },
+      {
+        "from": 120,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [-19.5, 104],
+        "facing": "SW"
+      }
+    ],
+    "role": "A camel at the oasis"
+  },
+  {
+    "id": "amb-msw-camel-loop",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "hair-brown",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 200,
+        "action": "animal_walk",
+        "path": [
+          [-26.5, 108.5],
+          [-24.5, 107],
+          [-23, 109.5],
+          [-24.5, 112.5],
+          [-27, 113.5],
+          [-28, 111],
+          [-26.5, 108.5]
+        ]
+      },
+      {
+        "from": 200,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [-26.5, 108.5],
+        "facing": "NE"
+      }
+    ],
+    "role": "A camel walking round the camp"
   }
 ]

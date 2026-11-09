@@ -202,6 +202,11 @@ export const bakedCharacterSchema = characterSchema.extend({
   portrait: z.string().optional(),
   /** Smooth illustrated portrait for the story card, when one is drawn. */
   illustration: z.string().optional(),
+  /**
+   * Eight turnaround views (S, SE, E, NE, N, NW, W, SW on screen): the engine
+   * shows the one matching the way the figure heads, animating the still.
+   */
+  dir8: z.array(z.string()).length(8).optional(),
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({

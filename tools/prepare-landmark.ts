@@ -59,8 +59,9 @@ while (stack.length) {
   if (y < H - 1) stack.push(k + W);
 }
 // Backdrop enclosed by the art (between legs, under a belly) goes too, when
-// it is a sizeable patch rather than a dark detail of the drawing.
-{
+// it is a sizeable patch rather than a dark detail of the drawing; the
+// `keepholes` edit keeps such patches (dark doorways and arches).
+if (!edits.includes('keepholes')) {
   const seen = new Uint8Array(W * H);
   for (let k = 0; k < W * H; k++) {
     if (clear[k] || seen[k] || !nearBg(k * 4, 20)) continue;
@@ -112,6 +113,50 @@ let flip = false,
 for (const e of edits) {
   const [name, args = ''] = e.split('='),
     n = args.split(',').map(Number);
+  if (name === 'keepholes') continue;
+  if (name === 'wall') {
+    // Terrain tiles are blocks: drop the lowest n opaque pixels of each
+    // column (the block's vertical side), leaving the top surface.
+    for (let x = 0; x < W; x++) {
+      let left = n[0];
+      for (let y = H - 1; y >= 0 && left > 0; y--)
+        if (data[at(x, y) + 3]) {
+          data[at(x, y) + 3] = 0;
+          left--;
+        }
+    }
+    continue;
+  }
+  if (name === 'fade') {
+    // Dissolve the outline over n pixels with an ordered dither, so a cut
+    // patch of sand melts into the ground instead of ending in a hard edge.
+    const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    const dist = new Float32Array(W * H).fill(1e9);
+    for (let k = 0; k < W * H; k++) if (!data[k * 4 + 3]) dist[k] = 0;
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++) {
+        const k = y * W + x;
+        if (x === 0 || y === 0 || x === W - 1 || y === H - 1)
+          dist[k] = Math.min(dist[k], 1);
+        if (x > 0) dist[k] = Math.min(dist[k], dist[k - 1] + 1);
+        if (y > 0) dist[k] = Math.min(dist[k], dist[k - W] + 1);
+      }
+    for (let y = H - 1; y >= 0; y--)
+      for (let x = W - 1; x >= 0; x--) {
+        const k = y * W + x;
+        if (x < W - 1) dist[k] = Math.min(dist[k], dist[k + 1] + 1);
+        if (y < H - 1) dist[k] = Math.min(dist[k], dist[k + W] + 1);
+      }
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++) {
+        const k = y * W + x;
+        if (!data[k * 4 + 3] || dist[k] > n[0]) continue;
+        const keep = dist[k] / n[0],
+          threshold = (BAYER[(y % 4) * 4 + (x % 4)] + 0.5) / 16;
+        if (keep < threshold) data[k * 4 + 3] = 0;
+      }
+    continue;
+  }
   if (name === 'flip') {
     flip = true;
     continue;

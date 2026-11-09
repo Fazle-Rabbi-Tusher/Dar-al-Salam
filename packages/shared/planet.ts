@@ -182,6 +182,30 @@ export function screenFacing(
   return front ? (right > 0 ? 'SE' : 'SW') : right > 0 ? 'NE' : 'NW';
 }
 
+/** Screen headings of eight-view art, in sheet order (S = toward the viewer). */
+export const DIR8 = ['S', 'SE', 'E', 'NE', 'N', 'NW', 'W', 'SW'] as const;
+/**
+ * Which of eight views (index into DIR8) shows a figure heading `direction`
+ * (tile space) at `tile`: the heading's angle around the viewer, measured in
+ * the ground plane, so a figure walking toward the camera shows its front.
+ */
+export function screenDirection8(
+  f: Frame,
+  tile: Point,
+  direction: Point,
+  rotation: number,
+): number {
+  const p = tileToPlanet(...tile),
+    len = Math.hypot(...direction) || 1,
+    e = 0.05 / len,
+    q = tileToPlanet(tile[0] + direction[0] * e, tile[1] + direction[1] * e);
+  const t = apply(f.matrix, [q[0] - p[0], q[1] - p[1], q[2] - p[2]]);
+  const right = t[0] * Math.cos(rotation) - t[1] * Math.sin(rotation),
+    up = t[0] * Math.sin(rotation) + t[1] * Math.cos(rotation),
+    toward = Math.sign(t[2] || 1) * Math.hypot(up, t[2]);
+  const a = Math.atan2(right, toward);
+  return (((Math.round(a / (Math.PI / 4)) % 8) + 8) % 8) as number;
+}
 /** Camera focus in iso world px (URL / minimap form) ↔ latitude and longitude. */
 export function focusFromWorld(x: number, y: number) {
   return latLon(tileToPlanet(...tileFromWorld(x, y)));
@@ -277,14 +301,12 @@ export const WILD = {
 export const MASSAWA = {
   /**
    * The town's sandy ground (`radius`), open desert round it (dunes, rocks
-   * and the oasis) for `fringe` more tiles, the last `scrub` of them thorn
+   * and mesas) for `fringe` more tiles, the last `scrub` of them thorn
    * scrub fading into the woods.
    */
   town: { centre: [-10, 116] as Point, radius: 19, fringe: 8, scrub: 3 },
   /** Limestone flagstones: the forecourt before the mosque. */
   plaza: { centre: [-10.5, 119.5] as Point, radius: 3.2 },
-  /** An oasis pool ringed by date palms on the north-west sand. */
-  oasis: { centre: [-24, 103] as Point, radius: 2.6 },
   /**
    * The wide desert (owner's request: less greenery): it spreads north and
    * west of the town, over the ring road to the coast, and stops `fromMap`
@@ -338,11 +360,6 @@ export const massawaDryness = (p: Vec3, tile: Point) => {
 };
 export const inTown = (p: Vec3, tile: Point) =>
   massawaTownDryness(p, tile) > MASSAWA.town.fringe;
-export const massawaOasis = (tile: Point) =>
-  Math.hypot(
-    tile[0] - MASSAWA.oasis.centre[0],
-    tile[1] - MASSAWA.oasis.centre[1],
-  );
 export const inPlaza = (tile: Point) =>
   Math.hypot(
     tile[0] - MASSAWA.plaza.centre[0],
@@ -358,8 +375,7 @@ export type Biome =
   | 'road'
   | 'desert'
   | 'scrub'
-  | 'plaza'
-  | 'oasis';
+  | 'plaza';
 /** A smooth field in [-1, 1]: a weighted sum of sine waves over the sphere. */
 export function waveField(p: Vec3, waves: Wave[]) {
   let sum = 0,
@@ -405,9 +421,8 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
-  // Massawa's oasis, sand and scrub fringe; the ring road stops at the
+  // Massawa's sand and scrub fringe; the ring road stops at the
   // desert's edge (owner's request) and runs on everywhere else.
-  if (massawaOasis(tile) < MASSAWA.oasis.radius) return 'oasis';
   const dry = massawaDryness(p, tile);
   if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5 && dry <= 0)
     return 'road';
@@ -472,8 +487,6 @@ float shoreDistance(vec3 p, float cove) {
 const vec2 TOWN_CENTRE = vec2(${g(MASSAWA.town.centre[0])}, ${g(MASSAWA.town.centre[1])});
 const vec2 PLAZA_CENTRE = vec2(${g(MASSAWA.plaza.centre[0])}, ${g(MASSAWA.plaza.centre[1])});
 float massawaTown(vec2 tile) { return length(tile - TOWN_CENTRE); }
-const vec2 OASIS_CENTRE = vec2(${g(MASSAWA.oasis.centre[0])}, ${g(MASSAWA.oasis.centre[1])});
-float massawaOasis(vec2 tile) { return length(tile - OASIS_CENTRE); }
 const vec2 DESERT_CENTRE = vec2(${g(MASSAWA.desert.centre[0])}, ${g(MASSAWA.desert.centre[1])});
 float massawaTownDryness(vec2 tile, float cove) {
   return ${g(MASSAWA.town.radius + MASSAWA.town.fringe)} - massawaTown(tile) + cove * 2.0;

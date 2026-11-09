@@ -264,6 +264,57 @@ async function build() {
       density: meta.density,
     };
   }
+  /*
+   * Eight-view animals: art/sprites/dir8/<base>.png holds one turnaround
+   * (views S, SE, E, NE, N, NW, W, SW) with a sidecar JSON (frame size, foot
+   * point, density). Coats vary by the look's garmentPrimary colour.
+   */
+  const COATS: Record<string, { brightness: number; saturation: number }> = {
+    cocoa: { brightness: 0.72, saturation: 0.85 },
+    'wool-cream': { brightness: 1.15, saturation: 0.6 },
+    'hair-brown': { brightness: 0.85, saturation: 1 },
+  };
+  const dir8Cache = new Map<string, string[] | null>();
+  async function dir8Views(base: string, coat: string) {
+    const key = `${base}/${coat}`;
+    if (dir8Cache.has(key)) return dir8Cache.get(key)!;
+    const file = `art/sprites/dir8/${base}`;
+    const meta: {
+      frame: [number, number];
+      foot: [number, number];
+      density: number;
+    } | null = await readJson(`${file}.json`).catch(() => null);
+    let names: string[] | null = null;
+    if (meta) {
+      const tint = COATS[coat];
+      let img = sharp(`${file}.png`);
+      if (tint) img = img.modulate(tint);
+      const { data, info } = await img
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      const strip: PixelImage = {
+        width: info.width,
+        height: info.height,
+        data: new Uint8Array(data),
+      };
+      names = [];
+      for (let v = 0; v < 8; v++)
+        names.push(
+          register(
+            outlined(
+              crop(strip, v * meta.frame[0], 0, meta.frame[0], strip.height),
+            ),
+            meta.foot,
+            meta.density,
+            true,
+            true,
+          ),
+        );
+    }
+    dir8Cache.set(key, names);
+    return names;
+  }
   /** The same two-pixel outline as the sprites and drawn characters. */
   function outlined(img: PixelImage) {
     const out = new Pixels(img.width, img.height),
@@ -300,12 +351,20 @@ async function build() {
       c.script.some((s) =>
         Array.isArray(s.z) ? s.z.some((z) => z !== 0) : Boolean(s.z),
       );
-    const sprite = await characterSprite(c.id);
+    const sprite = await characterSprite(c.id),
+      d8 =
+        c.kind === 'animal'
+          ? await dir8Views(c.look.base, c.look.colours.garmentPrimary)
+          : null;
     // Sprite characters (and anyone lifted off the floor) get a separate
     // floor shadow; their drawn frames are baked without one.
     const unshadowed = lifted || Boolean(sprite);
     let shadowFrame: string | undefined;
-    if (sprite) {
+    if (d8) {
+      const shadow = new Pixels(36, 10);
+      shadow.ellipse(18, 5, 15, 3.5, [73, 60, 53, 89]);
+      shadowFrame = register(shadow, [18, 5]);
+    } else if (sprite) {
       const shadow = new Pixels(20, 8);
       shadow.ellipse(10, 4, 8, 2.5, [73, 60, 53, 89]);
       shadowFrame = register(shadow, [10, 4]);
@@ -327,6 +386,13 @@ async function build() {
           look = s.prop ? { ...c.look, prop: s.prop } : c.look;
         if (frames[key]) continue;
         frames[key] = [];
+        if (d8) {
+          // The engine picks among the eight views; these are fallbacks.
+          const v = d8[{ SE: 1, NE: 3, NW: 5, SW: 7 }[facing]];
+          for (let f = 0; f < ACTIONS[s.action]; f++) frames[key].push(v);
+          bakedCount += ACTIONS[s.action];
+          continue;
+        }
         const strip = await stripFrames(
           c.id,
           `${s.action}${s.prop ? '@' + s.prop : ''}`,
@@ -477,6 +543,7 @@ async function build() {
       ...c,
       frames,
       ...(mirror.length ? { mirror } : {}),
+      ...(d8 ? { dir8: d8 } : {}),
       shadowFrame,
       ...(illustration ? { illustration } : {}),
       ...(portrait ? { portrait } : {}),
@@ -556,19 +623,11 @@ async function build() {
     ship: [['m-ship'], []],
     // Massawa's dry coast: never a lush tree in the desert.
     acacia: [['msw-acacia'], []],
-    'doum-palm': [['msw-palm'], ['m-palm']],
+    'doum-palm': [['sup-datepalm', 'sup-datepalms'], ['m-palm']],
     // Pieces cut from the owner's desert sheet (art/supplied).
-    dune: [['sup-dune-a', 'sup-dune-b', 'sup-dune-c', 'sup-dune-d'], []],
+    dune: [['sup-dunes-0', 'sup-dunes-1', 'sup-dunes-2', 'sup-dunes-3'], []],
     'desert-rock': [
-      [
-        'sup-rocks-a',
-        'sup-rocks-b',
-        'sup-rocks-c',
-        'sup-rocks-d',
-        'sup-rocks-e',
-        'sup-rocks-f',
-        'sup-spire',
-      ],
+      ['sup-rocks2', 'sup-mesa-0', 'sup-rocks2', 'sup-mesa-2', 'sup-rocks2'],
       [],
     ],
     'desert-shrub': [
@@ -580,7 +639,7 @@ async function build() {
         'sup-tuft-b',
         'sup-shrub-b',
         'sup-tuft-a',
-        'sup-deadtree',
+        'sup-deadtree2',
       ],
       [],
     ],
@@ -600,18 +659,22 @@ async function build() {
     const art = objectArt[type],
       sup = suppliedArt[type];
     let entry: { names: string[]; period?: number } | null = null;
-    if (sup)
-      entry = {
-        names: [
+    if (sup) {
+      const img = await image(`art/${sup.file}`);
+      // Date palms sway in the wind: the crown leans, the base stays put.
+      const sway = /datepalm/.test(type) ? 6 : 1;
+      const names: string[] = [];
+      for (let f = 0; f < sway; f++)
+        names.push(
           register(
-            await image(`art/${sup.file}`),
+            sway > 1 ? swayed(img, sup.anchor[1], f / sway, sup.density) : img,
             sup.anchor,
             sup.density,
             true,
           ),
-        ],
-      };
-    else if (art && !bakedIntoFloor(type, art)) {
+        );
+      entry = { names, ...(sway > 1 ? { period: 48 } : {}) };
+    } else if (art && !bakedIntoFloor(type, art)) {
       const files = art.frames ?? [art.file],
         names: string[] = [];
       for (const f of files)
@@ -623,6 +686,29 @@ async function build() {
     wildFrames.set(type, entry);
     return entry;
   };
+  /** A frame of a gentle sway: rows shift more the higher they are. */
+  function swayed(
+    img: PixelImage,
+    groundRow: number,
+    t: number,
+    density: number,
+  ): PixelImage {
+    const out = new Pixels(img.width, img.height),
+      reach = 2.2 * density,
+      s = Math.sin(t * Math.PI * 2);
+    for (let y = 0; y < img.height; y++) {
+      const h = Math.max(0, (groundRow - y) / groundRow),
+        dx = Math.round(s * reach * h * h);
+      for (let x = 0; x < img.width; x++) {
+        const sx = x - dx;
+        if (sx < 0 || sx >= img.width) continue;
+        const i = (y * img.width + sx) * 4,
+          o = (y * img.width + x) * 4;
+        out.data.set(img.data.subarray(i, i + 4), o);
+      }
+    }
+    return out;
+  }
   const wildCounts: Record<string, number> = {};
   for (const [i, w] of wildPlantings().entries()) {
     // Massawa's town is laid out by hand (packages/shared/massawa.ts), and

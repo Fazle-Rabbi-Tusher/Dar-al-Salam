@@ -23,14 +23,14 @@ export const MOSQUE_TILE: Point = [-12.5, 117.5];
  */
 export const MASSAWA_OBJECTS: [string, number, number][] = [
   /* ── The mosque: date palms at its flanks, a low compound wall either side ── */
-  ['msw-palm', -17.75, 123.75],
-  ['msw-palm', -6.25, 112.25],
+  ['sup-datepalm', -17.75, 123.75],
+  ['sup-datepalms', -6.25, 112.25],
   /* ── The market on the square's outer edge, the well before it ── */
-  ['msw-stall', -15.0, 128.0],
-  ['msw-stall-side', -2.25, 115.25],
-  ['msw-stall-b', -8.5, 128.5],
-  ['msw-stall-b-side', -1.5, 121.5],
-  ['sup-well', -4.25, 125.75],
+  ['sup-stall2-0', -15.0, 128.0],
+  ['sup-stall2-1', -2.25, 115.25],
+  ['sup-stall2-2', -8.5, 128.5],
+  ['sup-stall2-3', -1.5, 121.5],
+  ['sup-well2-1', -4.25, 125.75],
   ['msw-goods', -11.5, 130.5],
   ['msw-goods', -0.25, 126.25],
   /* ── Houses set back round the square, every design different ── */
@@ -50,39 +50,32 @@ export const MASSAWA_OBJECTS: [string, number, number][] = [
   ['msw-house-terrace', 1.0, 136.0],
   /* ── A garden plot at the front of the town ── */
   ['msw-garden', 1.0, 140.0],
-  /* ── Two tents and a cart on the west scrub (dunes and an oasis go behind the mosque) ── */
-  ['sup-tent', -31, 112],
-  ['sup-tent', -32.5, 107],
+  /* ── The Bedouin camp on the west sand: tents, a cart, crates and jars ── */
+  ['sup-tent2-0', -31, 112],
+  ['sup-tent2-3', -32.5, 107],
   ['msw-cart', -30.5, 103.5],
-
-  /* ── Desert landscape (cut from the owner's desert and camel sheets) ── */
-  // North: dunes, rocks and a dead tree beyond the caravan's track.
-  ['sup-dune-c', -15, 92.5],
-  ['sup-dune-a', -3.5, 92],
-  ['sup-rocks-a', -24.5, 94.5],
-  ['sup-rocks-f', -9, 93.5],
-  ['sup-deadtree', -28.5, 98.5],
-  ['sup-tuft-b', -19.5, 94.5],
-  // The oasis pool (MASSAWA.oasis): palms behind, low shrubs in front.
-  ['sup-palm-c', -26.5, 100.5],
-  ['sup-palm-a', -21.5, 100.3],
-  ['sup-palm-b', -24, 99.6],
-  ['sup-palm-d', -26.8, 105.5],
-  ['sup-shrub-b', -21, 105.8],
-  ['sup-tuft-a', -20.5, 99],
-  ['sup-shrub-a', -27.6, 103],
-  ['sup-camel-front-pale', -19.5, 104],
-  // The camp: crates, jars and resting camels by the tents.
   ['sup-crates', -29, 110.5],
   ['sup-jars', -30, 114.5],
-  ['sup-camel-side', -28.5, 115.5],
-  ['sup-camel-back', -29.5, 104.5],
-  ['sup-camel-side-dark', -26, 111.5],
+
+  /*
+   * ── Desert landscape (the owner's multi-angle desert set) ──
+   * Three-quarter pieces with real volume: dune and rock-mesa tiles with
+   * their sides cut away, the oasis, a fortress on the outskirts. Each
+   * multi-view piece shows a different side where it appears twice.
+   */
+  // North: dunes and mesas beyond the caravan's track, a dead tree.
+  ['sup-dunes-0', -15, 91.5],
+  ['sup-dunes-2', -4, 91],
+  ['sup-mesa-1', -25, 93.5],
+  ['sup-rocks2', -9.5, 94.5],
+  ['sup-deadtree2', -29, 98.5],
+  // The oasis: a pool ringed by date palms (MASSAWA.oasis).
+  ['sup-oasis-1', -24, 103],
+  // A fortress on the far north-west sand.
+  ['sup-fort-0', -36, 97],
   // South: rocks and shrubs between the houses and the road.
-  ['sup-rocks-d', -16.5, 134.5],
+  ['sup-rocks2', -16.5, 134.5],
   ['sup-shrub-c', -7, 140.5],
   ['sup-tuft-b', -13.5, 137.5],
-  ['sup-rocks-c', -1.5, 139.5],
-  // A camel by the town well.
-  ['sup-camel-front', -4.2, 129.2],
+  ['sup-mesa-3', -2, 141],
 ];
