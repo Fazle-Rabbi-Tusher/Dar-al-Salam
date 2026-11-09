@@ -557,16 +557,61 @@ async function build() {
     // Massawa's dry coast: never a lush tree in the desert.
     acacia: [['msw-acacia'], []],
     'doum-palm': [['msw-palm'], ['m-palm']],
+    // Pieces cut from the owner's desert sheet (art/supplied).
+    dune: [['sup-dune-a', 'sup-dune-b', 'sup-dune-c', 'sup-dune-d'], []],
+    'desert-rock': [
+      [
+        'sup-rocks-a',
+        'sup-rocks-b',
+        'sup-rocks-c',
+        'sup-rocks-d',
+        'sup-rocks-e',
+        'sup-rocks-f',
+        'sup-spire',
+      ],
+      [],
+    ],
+    'desert-shrub': [
+      [
+        'sup-shrub-a',
+        'sup-shrub-b',
+        'sup-shrub-c',
+        'sup-tuft-a',
+        'sup-tuft-b',
+        'sup-shrub-b',
+        'sup-tuft-a',
+        'sup-deadtree',
+      ],
+      [],
+    ],
   };
   const wildFrames = new Map<
     string,
     { names: string[]; period?: number } | null
   >();
+  // Pieces cut from the owner's desert and camel sheets (art/supplied) are
+  // detailed art drawn at their own density, like the landmarks.
+  const suppliedArt: Record<
+    string,
+    { file: string; anchor: [number, number]; density: number }
+  > = await readJson('art/supplied/index.json');
   const wildFrame = async (type: string) => {
     if (wildFrames.has(type)) return wildFrames.get(type)!;
-    const art = objectArt[type];
+    const art = objectArt[type],
+      sup = suppliedArt[type];
     let entry: { names: string[]; period?: number } | null = null;
-    if (art && !bakedIntoFloor(type, art)) {
+    if (sup)
+      entry = {
+        names: [
+          register(
+            await image(`art/${sup.file}`),
+            sup.anchor,
+            sup.density,
+            true,
+          ),
+        ],
+      };
+    else if (art && !bakedIntoFloor(type, art)) {
       const files = art.frames ?? [art.file],
         names: string[] = [];
       for (const f of files)
@@ -580,8 +625,15 @@ async function build() {
   };
   const wildCounts: Record<string, number> = {};
   for (const [i, w] of wildPlantings().entries()) {
-    // Massawa's town is laid out by hand (packages/shared/massawa.ts).
+    // Massawa's town is laid out by hand (packages/shared/massawa.ts), and
+    // nothing wild lands on a hand-placed piece round it.
     if (massawaTown(w.tile) < MASSAWA.town.radius + 1) continue;
+    if (
+      MASSAWA_OBJECTS.some(
+        ([, x, y]) => Math.hypot(w.tile[0] - x, w.tile[1] - y) < 3,
+      )
+    )
+      continue;
     let chosen: { names: string[]; period?: number } | null = null;
     for (const options of wildArt[w.kind]) {
       if (!options.length) continue;
@@ -618,27 +670,8 @@ async function build() {
     console.log('Wild plantings:', JSON.stringify(wildCounts));
   // Massawa's town, boats and palms, outside the mapped quarter: sorted like
   // wild plantings (one ground point each, no collision, not in the floor).
-  // Pieces cut from the owner's desert and camel sheets (art/supplied) are
-  // detailed art drawn at their own density, like the landmarks.
-  const suppliedArt: Record<
-    string,
-    { file: string; anchor: [number, number]; density: number }
-  > = await readJson('art/supplied/index.json');
-  const supplied = new Map<string, { names: string[]; period?: number }>();
   for (const [i, [type, x, y]] of MASSAWA_OBJECTS.entries()) {
-    const sup = suppliedArt[type];
-    if (sup && !supplied.has(type))
-      supplied.set(type, {
-        names: [
-          register(
-            await image(`art/${sup.file}`),
-            sup.anchor,
-            sup.density,
-            true,
-          ),
-        ],
-      });
-    const chosen = supplied.get(type) ?? (await wildFrame(type));
+    const chosen = await wildFrame(type);
     if (!chosen) throw Error(`Massawa: unknown object ${type}`);
     const frame = chosen.names[0],
       tile: [number, number] = [x, y],

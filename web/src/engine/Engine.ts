@@ -209,7 +209,8 @@ vec3 wild(vec3 p, vec2 tile) {
   // Massawa: the town's trodden sand and the mosque's forecourt, ringed by
   // dry thorn scrub that blends back into the woods.
   float dry = massawaDryness(p, tile) + (h - 0.5) * 1.6;
-  if (dry > ${f(MASSAWA.town.fringe)} && land >= ${f(WILD.beach)}) {
+  float townDry = massawaTownDryness(p, tile) + (h - 0.5) * 1.6;
+  if (townDry > ${f(MASSAWA.town.fringe)} && land >= ${f(WILD.beach)}) {
     float r = length(tile - PLAZA_CENTRE);
     if (r < ${f(MASSAWA.plaza.radius)} - 0.3 + (h - 0.5) * 0.9) {
       // Sun-worn limestone flagstones in offset rows, half buried in sand.

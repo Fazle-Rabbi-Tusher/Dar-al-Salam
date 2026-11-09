@@ -285,6 +285,12 @@ export const MASSAWA = {
   plaza: { centre: [-10.5, 119.5] as Point, radius: 3.2 },
   /** An oasis pool ringed by date palms on the north-west sand. */
   oasis: { centre: [-24, 103] as Point, radius: 2.6 },
+  /**
+   * The wide desert (owner's request: less greenery): it spreads north and
+   * west of the town, over the ring road to the coast, and stops `fromMap`
+   * tiles short of the quarter.
+   */
+  desert: { centre: [-28, 104] as Point, radius: 39, fromMap: 1.5 },
 };
 /** Distance (tiles) from the town's centre. */
 export const massawaTown = (tile: Point) =>
@@ -297,13 +303,23 @@ export const massawaTown = (tile: Point) =>
  * `town.fringe` is the town's sand, above `town.scrub` open desert, above 0
  * thorn scrub, below 0 the woods.
  */
-export const massawaDryness = (p: Vec3, tile: Point) =>
+export const massawaTownDryness = (p: Vec3, tile: Point) =>
   MASSAWA.town.radius +
   MASSAWA.town.fringe -
   massawaTown(tile) +
   waveField(p, WILD.waves.coves) * 2;
+export const massawaDryness = (p: Vec3, tile: Point) => {
+  const d = MASSAWA.desert,
+    wide =
+      Math.min(
+        d.radius - Math.hypot(tile[0] - d.centre[0], tile[1] - d.centre[1]),
+        (mapDistance(tile) - d.fromMap) * 2,
+      ) +
+      waveField(p, WILD.waves.coves) * 3;
+  return Math.max(massawaTownDryness(p, tile), wide);
+};
 export const inTown = (p: Vec3, tile: Point) =>
-  massawaDryness(p, tile) > MASSAWA.town.fringe;
+  massawaTownDryness(p, tile) > MASSAWA.town.fringe;
 export const massawaOasis = (tile: Point) =>
   Math.hypot(
     tile[0] - MASSAWA.oasis.centre[0],
@@ -425,8 +441,14 @@ const vec2 PLAZA_CENTRE = vec2(${g(MASSAWA.plaza.centre[0])}, ${g(MASSAWA.plaza.
 float massawaTown(vec2 tile) { return length(tile - TOWN_CENTRE); }
 const vec2 OASIS_CENTRE = vec2(${g(MASSAWA.oasis.centre[0])}, ${g(MASSAWA.oasis.centre[1])});
 float massawaOasis(vec2 tile) { return length(tile - OASIS_CENTRE); }
-float massawaDryness(vec3 p, vec2 tile) {
+const vec2 DESERT_CENTRE = vec2(${g(MASSAWA.desert.centre[0])}, ${g(MASSAWA.desert.centre[1])});
+float massawaTownDryness(vec3 p, vec2 tile) {
   return ${g(MASSAWA.town.radius + MASSAWA.town.fringe)} - massawaTown(tile) + coveField(p) * 2.0;
+}
+float massawaDryness(vec3 p, vec2 tile) {
+  float wide = min(${g(MASSAWA.desert.radius)} - length(tile - DESERT_CENTRE),
+      (mapDistance(tile) - ${g(MASSAWA.desert.fromMap)}) * 2.0) + coveField(p) * 3.0;
+  return max(massawaTownDryness(p, tile), wide);
 }
 bool inPlaza(vec2 tile) { return length(tile - PLAZA_CENTRE) < ${g(MASSAWA.plaza.radius)}; }
 float landField(vec3 p, vec2 tile) {
@@ -448,7 +470,10 @@ export type Planting = {
     | 'waterfall'
     | 'ship'
     | 'acacia'
-    | 'doum-palm';
+    | 'doum-palm'
+    | 'dune'
+    | 'desert-rock'
+    | 'desert-shrub';
   p: Vec3;
   tile: Point;
   /** Deterministic per-planting value in [0, 1) for choosing art. */
@@ -501,6 +526,15 @@ export function wildPlantings(count = 16000): Planting[] {
       if (roll < 0.28) at('boulder');
       else if (roll > 0.95)
         rockSpots.push({ kind: 'waterfall', p, tile, pick });
+    } else if (biome === 'desert') {
+      // Open desert: dunes, sandstone outcrops, shrubs and a rare acacia.
+      // Wide dunes and rocks keep clear of the ring road (tiles to its edge).
+      const fromRoad =
+        (Math.abs(p[2]) - WILD.roadHalfWidth) * PLANET.radiusTiles;
+      if (roll < 0.035 && fromRoad > 4.5) at('dune');
+      else if (roll < 0.075 && fromRoad > 2) at('desert-rock');
+      else if (roll < 0.15) at('desert-shrub');
+      else if (roll < 0.165) at('acacia');
     } else if (biome === 'scrub') {
       // Thorn scrub: a few flat-topped acacias and doum palms.
       if (roll < 0.13) at('acacia');
