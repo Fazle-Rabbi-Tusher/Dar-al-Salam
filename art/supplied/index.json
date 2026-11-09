@@ -662,5 +662,23 @@
     ],
     "density": 2,
     "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "sup-astrolabe": {
+    "file": "supplied/sup-astrolabe.png",
+    "anchor": [
+      0,
+      103
+    ],
+    "density": 2.6,
+    "source": "Owner-supplied Al-Khwārizmī character sheet (2026-11), cut by tools/prepare-khwarizmi.ts"
+  },
+  "sup-globe": {
+    "file": "supplied/sup-globe.png",
+    "anchor": [
+      35,
+      101
+    ],
+    "density": 2.684,
+    "source": "Owner-supplied Al-Khwārizmī character sheet (2026-11), cut by tools/prepare-khwarizmi.ts"
   }
 }

@@ -97,3 +97,8 @@
     - **In the world:** his sprite and strips are the sheet's standing figure, cut by `tools/prepare-khwarizmi.ts` with a slow breathing motion. He is seen from behind at the board, holding a scroll, so his depiction is `back` (NW).
     - **Story card:** the picture is the head and shoulders from the sheet's first panel, with the eight-panel "At work" gallery below it.
     - **Cutting tool:** the landmark cutter gained `tol` and `nofringe`, for dark art on a dark backdrop.
+60. Al-Khwārizmī from the owner's full character sheet (cut by `tools/prepare-khwarizmi.ts`):
+    - **In the lab:** he is the full-body front view, holding his book, and turns to the pointing pose while he talks. Seen from behind (NE/NW), he shows the sheet's back view, so his depiction is `full` again.
+    - **Instruments:** his astrolabe and celestial globe stand beside him; supplied art can now be placed in the room.
+    - **Story card:** the picture is the sheet's close-up portrait, and the desk and kneeling scenes join his gallery, which now has 14 pictures.
+    - **Left out:** the telescope is not used, because it was invented about 750 years after him; so are the walking strip (too small) and the compass and ruler (the drafting set already has them).
