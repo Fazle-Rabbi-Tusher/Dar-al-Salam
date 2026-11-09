@@ -1922,24 +1922,6 @@
     "width": 64,
     "height": 30
   },
-  "msw-salt": {
-    "file": "objects/msw-salt.png",
-    "anchor": [
-      32,
-      6
-    ],
-    "width": 80,
-    "height": 36
-  },
-  "msw-salt-side": {
-    "file": "objects/msw-salt-side.png",
-    "anchor": [
-      48,
-      6
-    ],
-    "width": 80,
-    "height": 36
-  },
   "msw-nets": {
     "file": "objects/msw-nets.png",
     "anchor": [
@@ -1958,8 +1940,8 @@
     "width": 80,
     "height": 57
   },
-  "msw-doum": {
-    "file": "objects/msw-doum.png",
+  "msw-palm": {
+    "file": "objects/msw-palm.png",
     "anchor": [
       48,
       87

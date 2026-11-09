@@ -237,50 +237,45 @@ const CC: Record<string, string> = {
 /** Colours for the Massawa pass (coral-stone town on the Red Sea, c. 615 CE). */
 const MC = {
   // Coral-rag stone, light to dark (matches the supplied mosque art).
-  stone0: '#F3E6C4',
-  stone1: '#E8D5A8',
-  stone2: '#D4BC8A',
-  stone3: '#B89A68',
-  stone4: '#957650',
-  stone5: '#6E5438',
+  stone0: '#F7E5C1',
+  stone1: '#E6C499',
+  stone2: '#D5AA79',
+  stone3: '#BF9160',
+  stone4: '#A4774D',
+  stone5: '#6A4A2E',
   // Old whitewash and lime plaster.
-  plaster0: '#FAF5E8',
-  plaster1: '#EDE4CF',
-  plaster2: '#D9CDB2',
+  plaster0: '#FAEDD0',
+  plaster1: '#EFDCB6',
+  plaster2: '#DEC498',
   // Weathered wood (doors, shutters, beams, hulls).
-  wood0: '#B98B5A',
-  wood1: '#8F6640',
-  wood2: '#674629',
-  wood3: '#46301D',
+  wood0: '#B4834F',
+  wood1: '#8A613C',
+  wood2: '#62442B',
+  wood3: '#432D1D',
   // Reeds and palm fronds (huts, mats, baskets).
-  reed0: '#E2CB8E',
-  reed1: '#C9AA67',
-  reed2: '#A28449',
-  reed3: '#76602F',
+  reed0: '#E8CD92',
+  reed1: '#CBA96A',
+  reed2: '#A3824B',
+  reed3: '#735831',
   // Terracotta jars.
   clay0: '#E3A577',
   clay1: '#C47E52',
   clay2: '#9C5D3A',
   clay3: '#6E3F27',
-  // Salt heaps.
-  salt0: '#FBFAF4',
-  salt1: '#EEF0EA',
-  salt2: '#D5DCDD',
-  salt3: '#B4C0C6',
   // Doum palm fans, grey-green.
-  doum0: '#CBD1A8',
-  doum1: '#A4B084',
-  doum2: '#7C8B63',
-  doum3: '#576748',
-  doum4: '#3B4834',
+  doum0: '#CFCB98',
+  doum1: '#A9A874',
+  doum2: '#828356',
+  doum3: '#5D603F',
+  doum4: '#3F422D',
   dead0: '#B79A63',
   dead1: '#8A6E43',
   // Acacia: dry olive leaves.
-  acacia0: '#AFB86E',
-  acacia1: '#879551',
-  acacia2: '#62733D',
-  acacia3: '#43522D',
-  acacia4: '#2C3820',
+  acacia0: '#BDB679',
+  acacia1: '#979356',
+  acacia2: '#71703C',
+  acacia3: '#4E4F2B',
+  acacia4: '#33341E',
   // Nets, floats and dates.
   net: '#7C6A4E',
   netLight: '#A89570',
@@ -7032,7 +7027,7 @@ Object.assign(objects, city);
 /* ════════ Massawa pass: a coral-stone town on the Red Sea, c. 615 CE ════════ */
 /*
  * Flat-roofed coral-rag houses with worn whitewash, palm-frond huts, a
- * market stall, a well, jars and baskets, salt heaps, drying nets, doum
+ * market stall, a well, jars and baskets, drying nets, doum
  * palms and acacias, lateen-rigged dhows, a jetty and a jumping fish. No
  * people, text, flags or symbols. Placed outside the mapped quarter by
  * packages/shared/massawa.ts.
@@ -7049,7 +7044,6 @@ const PLASTER: Tones = [MC.plaster0, MC.plaster1, MC.plaster2, MC.stone2];
 const MWOOD: Tones = [MC.wood0, MC.wood1, MC.wood2, MC.wood3];
 const REED: Tones = [MC.reed0, MC.reed1, MC.reed2, MC.reed3];
 const CLAY: Tones = [MC.clay0, MC.clay1, MC.clay2, MC.clay3];
-const SALT: Tones = [MC.salt0, MC.salt1, MC.salt2, MC.salt3];
 const DOUM: Tones = [MC.doum0, MC.doum1, MC.doum2, MC.doum3, MC.doum4];
 const ACACIA: Tones = [
   MC.acacia0,
@@ -7095,7 +7089,7 @@ function coralShade(
   py: number,
   face: 0 | 1 | 2,
   seed: number,
-  plaster = 0.52,
+  plaster = 0.58,
   lift = 0,
 ) {
   const base = [0.42, 0.12, -0.34][face] + lift,
@@ -7166,7 +7160,7 @@ function coralBlock(
   d: number,
   h: number,
   seed: number,
-  plaster = 0.52,
+  plaster = 0.58,
   z = 0,
 ) {
   c.top(x, y, w, d, z + h, MK.top);
@@ -7200,7 +7194,11 @@ function frontDoor(
   open = false,
 ) {
   c.faceX(x - 0.06, y + 0.002, w + 0.12, h, 3, MC.wood1);
-  c.edge([x - 0.06, y + 0.003, h + 3], [x + w + 0.06, y + 0.003, h + 3], MC.wood0);
+  c.edge(
+    [x - 0.06, y + 0.003, h + 3],
+    [x + w + 0.06, y + 0.003, h + 3],
+    MC.wood0,
+  );
   c.faceX(x, y + 0.002, w, 0, h, MK.hull);
   recolour(c, MK.hull, (px, py) => plankShade(px, py, 'v', seed, 0.05));
   if (open) {
@@ -7261,7 +7259,14 @@ function spout(c: IsoCanvas, x: number, y: number, z: number) {
     if (nhash(sx, sy + k, 5) < 0.7) c.p.pixel(sx + 1, sy + k, MC.plaster2);
 }
 /** Clay jar: a round belly, a narrow neck and a lip. */
-function jar(c: IsoCanvas, x: number, y: number, z: number, r: number, seed: number) {
+function jar(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  z: number,
+  r: number,
+  seed: number,
+) {
   const [jx, jy] = c.at(x, y, z),
     bh = r * 2.1;
   for (let py = Math.floor(jy - bh - 1); py <= jy; py++)
@@ -7305,36 +7310,15 @@ function basket(
     for (let px = Math.floor(bx - r + 1); px <= bx + r - 1; px++) {
       const u = (px + 0.5 - bx) / (r - 1),
         top = by - h - 2 * Math.sqrt(Math.max(0, 1 - u * u)),
-        e = ((px + 0.5 - bx) / (r - 1)) ** 2 + ((py + 0.5 - (by - h)) / (r / 2 - 0.5)) ** 2;
+        e =
+          ((px + 0.5 - bx) / (r - 1)) ** 2 +
+          ((py + 0.5 - (by - h)) / (r / 2 - 0.5)) ** 2;
       if (e > 1 && py > by - h) continue;
       if (py < top) continue;
       if (Math.abs(u) > 1) continue;
-      const v = -u * 0.5 - (py - top) * 0.15 + (nhash(px, py, seed + 7) - 0.5) * 0.6;
+      const v =
+        -u * 0.5 - (py - top) * 0.15 + (nhash(px, py, seed + 7) - 0.5) * 0.6;
       c.p.pixel(px, py, tone(fill, v, [0.35, -0.1, -0.5]));
-    }
-}
-/** A conical heap of salt, lit from the left, with sparkles. */
-function saltHeap(
-  c: IsoCanvas,
-  x: number,
-  y: number,
-  r: number,
-  h: number,
-  seed: number,
-) {
-  const [hx, hy] = c.at(x, y, 0);
-  for (let py = Math.floor(hy - h - 1); py <= hy + r * 0.5; py++)
-    for (let px = Math.floor(hx - r - 1); px <= hx + r + 1; px++) {
-      const u = (px + 0.5 - hx) / r,
-        base = hy + (r / 2) * Math.sqrt(Math.max(0, 1 - u * u)),
-        wob = (nhash(Math.round(px / 2), seed) - 0.5) * 1.6,
-        top = hy - h * (1 - Math.abs(u) ** 1.3) + 1.5 * u * u + wob * Math.abs(u);
-      if (Math.abs(u) > 1 || py < top || py > base) continue;
-      let v = 0.15 - u * 0.65 + (nhash(px, py, seed) - 0.5) * 0.2;
-      if (py > base - 1) v -= 0.4;
-      let col = tone(SALT, v, [0.38, 0.0, -0.36]);
-      if (nhash(px, py, seed + 2) < 0.04 && u < 0.3) col = C.white;
-      c.p.pixel(px, py, col);
     }
 }
 /** A rough wooden pole. */
@@ -7345,7 +7329,15 @@ function pole(c: IsoCanvas, x: number, y: number, z: number, h: number) {
   c.p.pixel(px - 1, py - h, MC.wood0);
 }
 /** Dark water hugging a hull or post, with a pale foam rim. */
-function waterRing(c: IsoCanvas, cx: number, cy: number, rx: number, ry: number, f: number, seed: number) {
+function waterRing(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  f: number,
+  seed: number,
+) {
   for (let py = Math.floor(cy - ry - 2); py <= cy + ry + 2; py++)
     for (let px = Math.floor(cx - rx - 3); px <= cx + rx + 3; px++) {
       const e = Math.hypot((px + 0.5 - cx) / rx, (py + 0.5 - cy) / ry);
@@ -7385,7 +7377,10 @@ function doumFan(
       const u = ((rel + half) / (2 * half)) * n,
         seg = Math.floor(u),
         pleat = u - seg,
-        len = R * (0.7 + 0.3 * Math.cos(rel * 1.1)) * (0.88 + nhash(seg, seed) * 0.24);
+        len =
+          R *
+          (0.7 + 0.3 * Math.cos(rel * 1.1)) *
+          (0.88 + nhash(seg, seed) * 0.24);
       if (r > len) continue;
       if (r > len * 0.72 && pleat > 0.38 && pleat < 0.62) continue;
       let v =
@@ -7505,12 +7500,20 @@ const massawa: Record<string, Spec> = {
       coralBlock(c, 0.15, 2.6, 0.95, 0.25, 14, 25, 0.6);
       coralBlock(c, 1.75, 2.6, 0.9, 0.25, 14, 26, 0.6);
       // Wooden lintel over the gateway gap.
-      c.box(1.05, 2.62, 0.75, 0.2, 2, {
-        top: MC.wood0,
-        front: MC.wood1,
-        side: MC.wood2,
-        edge: MC.wood3,
-      }, 14);
+      c.box(
+        1.05,
+        2.62,
+        0.75,
+        0.2,
+        2,
+        {
+          top: MC.wood0,
+          front: MC.wood1,
+          side: MC.wood2,
+          edge: MC.wood3,
+        },
+        14,
+      );
     },
   },
   'msw-wall': {
@@ -7563,16 +7566,24 @@ const massawa: Record<string, Spec> = {
         // Thatch rows run along the ridge; streaks run down the slope.
         const row = Math.floor((py - ry - (px - rx) * 0.5) / 4);
         let v = 0.25 - row * 0.05 + (nhash(px, row, 54) - 0.5) * 0.5;
-        if (((py - ry - (px - rx) * 0.5) % 4 + 4) % 4 < 1) v -= 0.45;
+        if ((((py - ry - (px - rx) * 0.5) % 4) + 4) % 4 < 1) v -= 0.45;
         return tone(REED, v, [0.32, -0.05, -0.42]);
       });
       // Ragged frond ends along the eave, the ridge bound with rope.
       for (let i = 0; i <= 40; i++) {
-        const [ex, ey] = c.at(x - 0.1 + ((w + 0.2) * i) / 40, y + d + 0.2, h - 2);
+        const [ex, ey] = c.at(
+          x - 0.1 + ((w + 0.2) * i) / 40,
+          y + d + 0.2,
+          h - 2,
+        );
         if (nhash(i, 55) < 0.6) c.p.pixel(ex, ey + 1, MC.reed2);
         if (nhash(i, 56) < 0.3) c.p.pixel(ex, ey + 2, MC.reed3);
       }
-      c.edge([x - 0.12, y + d / 2, h + rh], [x + w + 0.12, y + d / 2, h + rh], MC.reed3);
+      c.edge(
+        [x - 0.12, y + d / 2, h + rh],
+        [x + w + 0.12, y + d / 2, h + rh],
+        MC.reed3,
+      );
       // Doorway: a dark opening with a hanging mat half rolled up.
       c.faceX(x + 0.55, y + d + 0.003, 0.4, 0, 15, MC.wood3);
       c.faceX(x + 0.55, y + d + 0.004, 0.4, 12, 3, MC.reed1);
@@ -7593,8 +7604,17 @@ const massawa: Record<string, Spec> = {
         edge: MC.wood3,
       });
       basket(c, 0.45, 0.55, 9, 5, 3, [MC.dateLight, MC.date, MC.wood3], 61);
-      basket(c, 0.95, 0.55, 9, 5, 3, SALT, 62);
-      basket(c, 1.45, 0.55, 9, 5, 3, [MC.fish0, MC.fish1, MC.fish2, MC.fish3], 63);
+      basket(c, 0.95, 0.55, 9, 5, 3, REED, 62);
+      basket(
+        c,
+        1.45,
+        0.55,
+        9,
+        5,
+        3,
+        [MC.fish0, MC.fish1, MC.fish2, MC.fish3],
+        63,
+      );
       jar(c, 1.95, 0.75, 0, 3.5, 64);
       basket(c, 0.3, 0.95, 0, 4, 4, [MC.clay1, MC.clay2, MC.clay3], 65);
       pole(c, 0.1, 0.9, 0, 27);
@@ -7632,7 +7652,10 @@ const massawa: Record<string, Spec> = {
           const ring = Math.floor((cy + half - j) / 3),
             joint = Math.floor((u + 1) * 4 + (ring % 2) * 0.5);
           let v = -u * 0.6 + (nhash(joint, ring, 71) - 0.5) * 0.3;
-          if ((cy + half - j) % 3 < 1 || ((u + 1) * 4 + (ring % 2) * 0.5) % 1 < 0.12)
+          if (
+            (cy + half - j) % 3 < 1 ||
+            ((u + 1) * 4 + (ring % 2) * 0.5) % 1 < 0.12
+          )
             v -= 0.6;
           c.p.pixel(i, j, tone(CORAL, v, [0.55, 0.2, -0.1, -0.4, -0.7]));
         }
@@ -7673,23 +7696,16 @@ const massawa: Record<string, Spec> = {
       jar(c, 0.65, 0.25, 0, 3.4, 82);
       basket(c, 0.25, 0.75, 0, 5, 4, [MC.dateLight, MC.date, MC.wood3], 83);
       jar(c, 0.7, 0.7, 0, 3.6, 84);
-      basket(c, 0.95, 0.95, 0, 3.5, 3, [MC.fish0, MC.fish1, MC.fish2, MC.fish3], 85);
-    },
-  },
-  'msw-salt': {
-    // Heaps of raked salt drying beside the pans.
-    footprint: [2, 1],
-    h: 22,
-    side: true,
-    draw(c) {
-      saltHeap(c, 0.45, 0.4, 9, 13, 91);
-      saltHeap(c, 1.4, 0.35, 11, 16, 92);
-      saltHeap(c, 1.0, 0.85, 8, 10, 93);
-      // A wooden rake leaning on the big heap.
-      const [ax, ay] = c.at(1.85, 0.75, 0),
-        [bx, by] = c.at(1.55, 0.5, 15);
-      c.line([ax, ay], [bx, by], MC.wood1);
-      c.line([bx - 2, by + 1], [bx + 2, by - 1], MC.wood2);
+      basket(
+        c,
+        0.95,
+        0.95,
+        0,
+        3.5,
+        3,
+        [MC.fish0, MC.fish1, MC.fish2, MC.fish3],
+        85,
+      );
     },
   },
   'msw-nets': {
@@ -7730,7 +7746,7 @@ const massawa: Record<string, Spec> = {
       c.p.rect(hx + 3, hy - 1, 2, 2, MC.float);
     },
   },
-  'msw-doum': {
+  'msw-palm': {
     // Doum palm: a trunk that forks into branches, each crowned with
     // grey-green fan leaves over a skirt of dry hanging leaves.
     footprint: [1, 1],
@@ -7865,19 +7881,29 @@ const massawa: Record<string, Spec> = {
         const z = hay + (px - hax) / 2 - py;
         if (z < 4 + zb) return MC.wood3;
         if (Math.floor(z) % 3 === 0) return MC.wood2;
-        return nhash(px >> 2, Math.floor(z / 3), 152) < 0.3 ? MC.wood1 : MC.wood0;
+        return nhash(px >> 2, Math.floor(z / 3), 152) < 0.3
+          ? MC.wood1
+          : MC.wood0;
       });
       recolour(c, MK.deck, (px, py) => plankShade(px, py, 'x', 153, 0.25));
       c.edge([0.15, 0.75, HULL + 6], [1.2, 0.8, HULL], MC.wood3);
       c.edge([1.2, 0.8, HULL], [2.4, 0.78, HULL + 1], MC.wood3);
       c.edge([2.4, 0.78, HULL + 1], [3.0, 0.55, HULL + 6], MC.wood3);
       // Stern platform and a rolled mat.
-      c.box(0.2, 0.4, 0.35, 0.3, 3, {
-        top: MC.wood0,
-        front: MC.wood1,
-        side: MC.wood2,
-        edge: MC.wood3,
-      }, HULL + 4);
+      c.box(
+        0.2,
+        0.4,
+        0.35,
+        0.3,
+        3,
+        {
+          top: MC.wood0,
+          front: MC.wood1,
+          side: MC.wood2,
+          edge: MC.wood3,
+        },
+        HULL + 4,
+      );
       basket(c, 1.0, 0.55, HULL, 3, 2, REED, 154);
       // Mast raked toward the bow, and the long yard.
       const [mx, my] = c.at(1.75, 0.55, HULL),
@@ -7961,7 +7987,9 @@ const massawa: Record<string, Spec> = {
         const z = hay + (px - hax) / 2 - py;
         if (z < 3) return MC.wood3;
         if (Math.floor(z) % 3 === 0) return MC.wood2;
-        return nhash(px >> 2, Math.floor(z / 3), 161) < 0.3 ? MC.wood1 : MC.wood0;
+        return nhash(px >> 2, Math.floor(z / 3), 161) < 0.3
+          ? MC.wood1
+          : MC.wood0;
       });
       recolour(c, MK.deck, (px, py) => plankShade(px, py, 'x', 162, 0.25));
       c.edge([0.15, 0.75, HULL + 6], [1.2, 0.8, HULL], MC.wood3);
@@ -8002,7 +8030,8 @@ const massawa: Record<string, Spec> = {
       for (const u of [0.25, 1.15, 2.05, 2.85])
         for (const v of [0.18, 0.82]) {
           const [px, py] = c.at(u, v, 0);
-          if (u > 1) waterRing(c, px, py + 1, 4, 2, 0, 171 + Math.round(u * 10));
+          if (u > 1)
+            waterRing(c, px, py + 1, 4, 2, 0, 171 + Math.round(u * 10));
           c.p.rect(px - 1, py - 8, 2, 10, MC.wood2);
           c.p.pixel(px - 1, py - 8, MC.wood0);
         }
@@ -8019,75 +8048,79 @@ const massawa: Record<string, Spec> = {
   },
   // A fish leaps now and then (12 frames over 5 s: calm, leap, splash).
   'msw-fish-jump': {
-        footprint: [1, 1],
-        h: 22,
-        frames: 12,
-        period: 60,
-        detail: false,
-        shadow: false,
-        draw(c: IsoCanvas, f: number) {
-          const k = f,
-            [x, y] = c.at(0.5, 0.5, 0);
-          const ring = (r: number, col: string, gap = 0.4) => {
-            for (let i = 0; i < 28; i++) {
-              const a = (i / 28) * Math.PI * 2;
-              if (nhash(i, Math.round(r * 10), 181) < gap) continue;
-              c.p.pixel(x + Math.cos(a) * r, y + Math.sin(a) * r * 0.5, col);
-            }
-          };
-          if (k <= 8) {
-            // Rings spreading after the last leap, then calm water.
-            if (k < 4) ring(3 + k * 2, k < 2 ? SEA[0] : SEA[1], 0.35 + k * 0.1);
-            c.p.pixel(x - 1, y, SEA[1]);
-            c.p.pixel(x + 1, y, SEA[1]);
-            return;
-          }
-          if (k === 9) {
-            // Breaking the surface: head up, a crown of droplets.
-            ring(3, SEA[0], 0.3);
-            c.p.rect(x - 1, y - 6, 3, 5, MC.fish1);
-            c.p.rect(x - 1, y - 6, 1, 4, MC.fish0);
-            c.p.rect(x + 1, y - 5, 1, 4, MC.fish3);
-            for (const [dx, dy] of [
-              [-4, -3],
-              [4, -2],
-              [-3, -6],
-              [3, -7],
-            ])
-              c.p.pixel(x + dx, y + dy, SEA[0]);
-            return;
-          }
-          if (k === 10) {
-            // Mid-leap: an arched silver body over the ripples.
-            ring(4, SEA[1], 0.45);
-            const pts: [number, number][] = [];
-            for (let i = 0; i <= 8; i++)
-              pts.push([x - 4 + i, y - 10 - Math.sin((i / 8) * Math.PI) * 3]);
-            for (const [i, [px, py]] of pts.entries()) {
-              const w = i < 2 || i > 6 ? 1 : 2;
-              c.p.rect(px, py, 1, w + 1, MC.fish1);
-              c.p.pixel(px, py, i > 6 ? MC.fish2 : MC.fish3);
-              c.p.pixel(px, py + w, MC.fish0);
-            }
-            c.p.pixel(x - 5, y - 11, MC.fish2);
-            c.p.pixel(x - 5, y - 9, MC.fish2);
-            c.p.pixel(x + 4, y - 10, C.ink);
-            for (const [dx, dy] of [
-              [-6, -6],
-              [-3, -4],
-              [6, -5],
-            ])
-              c.p.pixel(x + dx, y + dy, SEA[0]);
-            return;
-          }
-          // Splash: a burst of white water.
-          for (let i = 0; i < 18; i++) {
-            const a = Math.PI * (0.1 + (i / 17) * 0.8),
-              r = 2 + nhash(i, 182) * 5;
-            c.p.pixel(x + Math.cos(a) * r * 1.4, y - Math.sin(a) * r, i % 3 ? SEA[0] : C.white);
-          }
-          ring(4, SEA[0], 0.2);
-        },
+    footprint: [1, 1],
+    h: 22,
+    frames: 12,
+    period: 60,
+    detail: false,
+    shadow: false,
+    draw(c: IsoCanvas, f: number) {
+      const k = f,
+        [x, y] = c.at(0.5, 0.5, 0);
+      const ring = (r: number, col: string, gap = 0.4) => {
+        for (let i = 0; i < 28; i++) {
+          const a = (i / 28) * Math.PI * 2;
+          if (nhash(i, Math.round(r * 10), 181) < gap) continue;
+          c.p.pixel(x + Math.cos(a) * r, y + Math.sin(a) * r * 0.5, col);
+        }
+      };
+      if (k <= 8) {
+        // Rings spreading after the last leap, then calm water.
+        if (k < 4) ring(3 + k * 2, k < 2 ? SEA[0] : SEA[1], 0.35 + k * 0.1);
+        c.p.pixel(x - 1, y, SEA[1]);
+        c.p.pixel(x + 1, y, SEA[1]);
+        return;
+      }
+      if (k === 9) {
+        // Breaking the surface: head up, a crown of droplets.
+        ring(3, SEA[0], 0.3);
+        c.p.rect(x - 1, y - 6, 3, 5, MC.fish1);
+        c.p.rect(x - 1, y - 6, 1, 4, MC.fish0);
+        c.p.rect(x + 1, y - 5, 1, 4, MC.fish3);
+        for (const [dx, dy] of [
+          [-4, -3],
+          [4, -2],
+          [-3, -6],
+          [3, -7],
+        ])
+          c.p.pixel(x + dx, y + dy, SEA[0]);
+        return;
+      }
+      if (k === 10) {
+        // Mid-leap: an arched silver body over the ripples.
+        ring(4, SEA[1], 0.45);
+        const pts: [number, number][] = [];
+        for (let i = 0; i <= 8; i++)
+          pts.push([x - 4 + i, y - 10 - Math.sin((i / 8) * Math.PI) * 3]);
+        for (const [i, [px, py]] of pts.entries()) {
+          const w = i < 2 || i > 6 ? 1 : 2;
+          c.p.rect(px, py, 1, w + 1, MC.fish1);
+          c.p.pixel(px, py, i > 6 ? MC.fish2 : MC.fish3);
+          c.p.pixel(px, py + w, MC.fish0);
+        }
+        c.p.pixel(x - 5, y - 11, MC.fish2);
+        c.p.pixel(x - 5, y - 9, MC.fish2);
+        c.p.pixel(x + 4, y - 10, C.ink);
+        for (const [dx, dy] of [
+          [-6, -6],
+          [-3, -4],
+          [6, -5],
+        ])
+          c.p.pixel(x + dx, y + dy, SEA[0]);
+        return;
+      }
+      // Splash: a burst of white water.
+      for (let i = 0; i < 18; i++) {
+        const a = Math.PI * (0.1 + (i / 17) * 0.8),
+          r = 2 + nhash(i, 182) * 5;
+        c.p.pixel(
+          x + Math.cos(a) * r * 1.4,
+          y - Math.sin(a) * r,
+          i % 3 ? SEA[0] : C.white,
+        );
+      }
+      ring(4, SEA[0], 0.2);
+    },
   },
 };
 Object.assign(objects, massawa);

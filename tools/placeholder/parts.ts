@@ -4858,7 +4858,13 @@ function legFoot(l: Leg, action: Action, f: number, stride: number) {
         lift: Math.sin((Math.PI * (s - 0.6)) / 0.4) * 2.5,
       };
 }
-function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number) {
+function drawBeast(
+  p: Pixels,
+  b: Beast,
+  action: Action,
+  face: string,
+  f: number,
+) {
   const C = K.cloth,
     S = K.sash,
     H = K.hair,
@@ -4883,7 +4889,8 @@ function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number)
     const m = mk(p)
       .capsule(top, knee, b.legR[0], (b.legR[0] + b.legR[1]) / 2)
       .capsule(knee, foot, (b.legR[0] + b.legR[1]) / 2 - 0.2, b.legR[1]);
-    if (!l.front) m.ellipse(l.x + 0.5, b.top + bob, b.legR[0] + 2, b.legR[0] + 2.5);
+    if (!l.front)
+      m.ellipse(l.x + 0.5, b.top + bob, b.legR[0] + 2, b.legR[0] + 2.5);
     if (l.near) coat(m, 1.4);
     else {
       shade(p, m, [C[1], C[2], C[2]], { r: 1.2 });
@@ -4904,7 +4911,9 @@ function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number)
   );
   shade(p, tail, [C[1], C[2], H[1]], { r: 1 });
   p.rect(t1[0] - sway * 0.6 - 1, t1[1] + bob, 2, 2, H[1]);
-  const at = (q: [number, number, number, number]): [number, number, number, number] => [
+  const at = (
+    q: [number, number, number, number],
+  ): [number, number, number, number] => [
     q[0],
     q[1] + bob,
     q[2],
@@ -4933,7 +4942,8 @@ function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number)
       pts[i],
       pts[i + 1],
       b.neckR[0] + (b.neckR[1] - b.neckR[0]) * t,
-      b.neckR[0] + (b.neckR[1] - b.neckR[0]) * Math.min(1, t + 1 / (pts.length - 1)),
+      b.neckR[0] +
+        (b.neckR[1] - b.neckR[0]) * Math.min(1, t + 1 / (pts.length - 1)),
     );
   }
   coat(neck, 2);
@@ -4956,7 +4966,12 @@ function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number)
     mx = hx + (mx0 - hx0) * (down ? 0.6 : 1),
     my = hy + (my0 - hy0) + down * 2.5;
   const ear = (dx: number, len: number) =>
-    mk(p).capsule([hx + dx, hy - hry + 0.5], [hx + dx - len * 0.35, hy - hry - len], 0.9, 0.6);
+    mk(p).capsule(
+      [hx + dx, hy - hry + 0.5],
+      [hx + dx - len * 0.35, hy - hry - len],
+      0.9,
+      0.6,
+    );
   const flick = action === 'animal_idle' && f === 3 ? 1 : 0;
   if (b.ears === 'long') {
     shade(p, ear(-1, 6), [C[1], C[2], H[1]], { r: 1 });
@@ -4971,7 +4986,12 @@ function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number)
       horn
         .capsule([hx - 0.5, hy - hry], [hx - 2.5, hy - hry - 3], 0.9, 0.7)
         .capsule([hx - 2.5, hy - hry - 3], [hx - 3.5, hy - hry - 6], 0.7, 0.55)
-        .capsule([hx - 3.5, hy - hry - 6], [hx - 2.6, hy - hry - 7.8], 0.55, 0.4);
+        .capsule(
+          [hx - 3.5, hy - hry - 6],
+          [hx - 2.6, hy - hry - 7.8],
+          0.55,
+          0.4,
+        );
     shade(p, horn, [H[0], H[1], H[2]], { r: 1 });
     // Rings on gazelle horns.
     if (b.horns === 'gazelle')
@@ -4998,14 +5018,22 @@ function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number)
     const len = b.ears === 'short' ? 3 : 2;
     const e = mk(p).capsule(
       [hx - hrx * 0.4, hy - hry + 0.5],
-      [hx - hrx * 0.4 - len - flick, hy - hry - (b.ears === 'short' ? 1.5 : 0.5) + flick],
+      [
+        hx - hrx * 0.4 - len - flick,
+        hy - hry - (b.ears === 'short' ? 1.5 : 0.5) + flick,
+      ],
       0.9,
       0.6,
     );
     shade(p, e, [C[0], C[1], C[2]], { r: 1 });
   }
   if (b.beard) {
-    const beard = mk(p).capsule([mx - 1, my + mry], [mx - 1.5, my + mry + 3], 0.8, 0.5);
+    const beard = mk(p).capsule(
+      [mx - 1, my + mry],
+      [mx - 1.5, my + mry + 3],
+      0.8,
+      0.5,
+    );
     shade(p, beard, [H[0], H[1], H[2]], { r: 1 });
   }
   for (const l of b.legs.filter((l) => l.near)) leg(l);
@@ -5188,14 +5216,17 @@ function drawPelican(p: Pixels, action: Action, face: string, f: number) {
     [4.5 + sway, 20 + bob],
   ]);
   shade(p, wing, [C[1], C[1], C[2]], { r: 1 });
-  for (let x = 4; x <= 9; x++) p.pixel(x + sway, 19.5 + bob - (x - 4) * 0.15, H[1]);
+  for (let x = 4; x <= 9; x++)
+    p.pixel(x + sway, 19.5 + bob - (x - 4) * 0.15, H[1]);
   for (let x = 4; x <= 7; x++) p.pixel(x + sway, 20.5 + bob, H[2]);
   // Neck and head; preening turns the head back over the wing.
   const neck = mk(p),
     hx = preen ? 10 + [0, 0.5, 1, 0.5][f] : 20,
     hy = preen ? 12 + bob : 8 + bob;
   if (preen)
-    neck.capsule([18 + sway, 17 + bob], [19, 12 + bob], 2, 1.6).capsule([19, 12 + bob], [hx + 1, hy], 1.6, 1.4);
+    neck
+      .capsule([18 + sway, 17 + bob], [19, 12 + bob], 2, 1.6)
+      .capsule([19, 12 + bob], [hx + 1, hy], 1.6, 1.4);
   else
     neck
       .capsule([18 + sway, 17 + bob], [17.5, 13 + bob], 2.2, 1.6)

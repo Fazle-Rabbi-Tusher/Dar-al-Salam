@@ -160,18 +160,11 @@ export function Lab() {
     <label>
       {t(key)}
       <select
-        disabled={
-          NON_PEOPLE.includes(look.base)
-            ? key !== 'base'
-            : false
-        }
+        disabled={NON_PEOPLE.includes(look.base) ? key !== 'base' : false}
         value={look[key]}
         onChange={(e) => {
           const val = e.target.value;
-          if (
-            key === 'base' &&
-            NON_PEOPLE.includes(val)
-          ) {
+          if (key === 'base' && NON_PEOPLE.includes(val)) {
             setLook({
               ...look,
               base: val,
@@ -186,15 +179,11 @@ export function Lab() {
             );
           } else {
             setLook(
-              key === 'base' &&
-                NON_PEOPLE.includes(look.base)
+              key === 'base' && NON_PEOPLE.includes(look.base)
                 ? { ...initial, base: val, colours: look.colours }
                 : { ...look, [key]: val },
             );
-            if (
-              key === 'base' &&
-              NON_PEOPLE.includes(look.base)
-            )
+            if (key === 'base' && NON_PEOPLE.includes(look.base))
               setAction('idle');
           }
         }}

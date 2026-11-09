@@ -1,0 +1,656 @@
+[
+  {
+    "id": "amb-msw-camel-0",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "animal_walk",
+        "path": [
+          [55.0, 139.4],
+          [63.0, 139.4]
+        ]
+      },
+      {
+        "from": 96,
+        "to": 120,
+        "action": "animal_idle",
+        "at": [63.0, 139.4],
+        "facing": "SE"
+      },
+      {
+        "from": 120,
+        "to": 216,
+        "action": "animal_walk",
+        "path": [
+          [63.0, 139.4],
+          [55.0, 139.4]
+        ]
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [55.0, 139.4],
+        "facing": "NW"
+      }
+    ],
+    "role": "A camel in a caravan along the shore"
+  },
+  {
+    "id": "amb-msw-camel-1",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "wool-cream",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 96,
+        "action": "animal_walk",
+        "path": [
+          [53.0, 139.4],
+          [61.0, 139.4]
+        ]
+      },
+      {
+        "from": 96,
+        "to": 120,
+        "action": "animal_idle",
+        "at": [61.0, 139.4],
+        "facing": "SE"
+      },
+      {
+        "from": 120,
+        "to": 216,
+        "action": "animal_walk",
+        "path": [
+          [61.0, 139.4],
+          [53.0, 139.4]
+        ]
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [53.0, 139.4],
+        "facing": "NW"
+      }
+    ],
+    "role": "A camel in a caravan along the shore"
+  },
+  {
+    "id": "amb-msw-camel-2",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "camel",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "khaki",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "animal_idle",
+        "at": [49.6, 132.6],
+        "facing": "SE"
+      },
+      {
+        "from": 120,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [49.6, 132.6],
+        "facing": "SE"
+      }
+    ],
+    "role": "A camel resting on the sand"
+  },
+  {
+    "id": "amb-msw-donkey",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "donkey",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "graphite",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 72,
+        "action": "animal_idle",
+        "at": [66.0, 134.8],
+        "facing": "NE"
+      },
+      {
+        "from": 72,
+        "to": 96,
+        "action": "animal_walk",
+        "path": [
+          [66.0, 134.8],
+          [65.2, 133.4]
+        ]
+      },
+      {
+        "from": 96,
+        "to": 192,
+        "action": "animal_graze",
+        "at": [65.2, 133.4],
+        "facing": "SW"
+      },
+      {
+        "from": 192,
+        "to": 216,
+        "action": "animal_walk",
+        "path": [
+          [65.2, 133.4],
+          [66.0, 134.8]
+        ]
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [66.0, 134.8],
+        "facing": "NE"
+      }
+    ],
+    "role": "A donkey waiting at the well"
+  },
+  {
+    "id": "amb-msw-goat-0",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "goat",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "cocoa",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 40,
+        "action": "animal_graze",
+        "at": [45.6, 129.2],
+        "facing": "SE"
+      },
+      {
+        "from": 40,
+        "to": 64,
+        "action": "animal_walk",
+        "path": [
+          [45.6, 129.2],
+          [46.8, 128.2]
+        ]
+      },
+      {
+        "from": 64,
+        "to": 160,
+        "action": "animal_graze",
+        "at": [46.8, 128.2],
+        "facing": "NW"
+      },
+      {
+        "from": 160,
+        "to": 184,
+        "action": "animal_walk",
+        "path": [
+          [46.8, 128.2],
+          [45.6, 129.2]
+        ]
+      },
+      {
+        "from": 184,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [45.6, 129.2],
+        "facing": "SW"
+      }
+    ],
+    "role": "A goat browsing the scrub"
+  },
+  {
+    "id": "amb-msw-goat-1",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "goat",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "hair-black",
+        "garmentSecondary": "charcoal",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "animal_graze",
+        "at": [46.4, 133.8],
+        "facing": "SE"
+      },
+      {
+        "from": 60,
+        "to": 84,
+        "action": "animal_walk",
+        "path": [
+          [46.4, 133.8],
+          [45.2, 134.6]
+        ]
+      },
+      {
+        "from": 84,
+        "to": 180,
+        "action": "animal_graze",
+        "at": [45.2, 134.6],
+        "facing": "NW"
+      },
+      {
+        "from": 180,
+        "to": 204,
+        "action": "animal_walk",
+        "path": [
+          [45.2, 134.6],
+          [46.4, 133.8]
+        ]
+      },
+      {
+        "from": 204,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [46.4, 133.8],
+        "facing": "SW"
+      }
+    ],
+    "role": "A goat browsing the scrub"
+  },
+  {
+    "id": "amb-msw-goat-2",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "goat",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "wool-cream",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 80,
+        "action": "animal_graze",
+        "at": [44.6, 131.4],
+        "facing": "SE"
+      },
+      {
+        "from": 80,
+        "to": 104,
+        "action": "animal_walk",
+        "path": [
+          [44.6, 131.4],
+          [44.8, 129.8]
+        ]
+      },
+      {
+        "from": 104,
+        "to": 200,
+        "action": "animal_graze",
+        "at": [44.8, 129.8],
+        "facing": "NW"
+      },
+      {
+        "from": 200,
+        "to": 224,
+        "action": "animal_walk",
+        "path": [
+          [44.8, 129.8],
+          [44.6, 131.4]
+        ]
+      },
+      {
+        "from": 224,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [44.6, 131.4],
+        "facing": "SW"
+      }
+    ],
+    "role": "A goat browsing the scrub"
+  },
+  {
+    "id": "amb-msw-gazelle-0",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "gazelle",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "skin-3",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 30,
+        "action": "animal_idle",
+        "at": [57.0, 140.6],
+        "facing": "SE"
+      },
+      {
+        "from": 30,
+        "to": 60,
+        "action": "animal_walk",
+        "path": [
+          [57.0, 140.6],
+          [59.4, 140.8]
+        ]
+      },
+      {
+        "from": 60,
+        "to": 150,
+        "action": "animal_graze",
+        "at": [59.4, 140.8],
+        "facing": "SE"
+      },
+      {
+        "from": 150,
+        "to": 180,
+        "action": "animal_walk",
+        "path": [
+          [59.4, 140.8],
+          [57.0, 140.6]
+        ]
+      },
+      {
+        "from": 180,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [57.0, 140.6],
+        "facing": "NW"
+      }
+    ],
+    "role": "A gazelle on the coastal sand"
+  },
+  {
+    "id": "amb-msw-gazelle-1",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "gazelle",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-brown",
+        "garmentPrimary": "skin-3",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "madder-red"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 66,
+        "action": "animal_idle",
+        "at": [60.6, 140.2],
+        "facing": "SE"
+      },
+      {
+        "from": 66,
+        "to": 96,
+        "action": "animal_walk",
+        "path": [
+          [60.6, 140.2],
+          [62.2, 140.6]
+        ]
+      },
+      {
+        "from": 96,
+        "to": 186,
+        "action": "animal_graze",
+        "at": [62.2, 140.6],
+        "facing": "SE"
+      },
+      {
+        "from": 186,
+        "to": 216,
+        "action": "animal_walk",
+        "path": [
+          [62.2, 140.6],
+          [60.6, 140.2]
+        ]
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [60.6, 140.2],
+        "facing": "NW"
+      }
+    ],
+    "role": "A gazelle on the coastal sand"
+  },
+  {
+    "id": "amb-msw-pelican-0",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "pelican",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "charcoal",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "rose",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "animal_idle",
+        "at": [67.6, 137.2],
+        "facing": "SW"
+      },
+      {
+        "from": 120,
+        "to": 240,
+        "action": "animal_graze",
+        "at": [67.6, 137.2],
+        "facing": "SW"
+      }
+    ],
+    "role": "A pelican preening on the shore"
+  },
+  {
+    "id": "amb-msw-pelican-1",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "pelican",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "charcoal",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "rose",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "animal_graze",
+        "at": [68.6, 136.6],
+        "facing": "SE"
+      },
+      {
+        "from": 60,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [68.6, 136.6],
+        "facing": "SE"
+      }
+    ],
+    "role": "A pelican preening on the shore"
+  },
+  {
+    "id": "amb-msw-pelican-2",
+    "kind": "animal",
+    "aliases": [],
+    "district": "mosque-garden",
+    "depiction": "full",
+    "look": {
+      "base": "pelican",
+      "garment": "none",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "charcoal",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "rose",
+        "headwear": "white-linen",
+        "prop": "mustard"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 120,
+        "action": "animal_graze",
+        "at": [64.4, 158.6],
+        "facing": "SW"
+      },
+      {
+        "from": 120,
+        "to": 240,
+        "action": "animal_idle",
+        "at": [64.4, 158.6],
+        "facing": "SW"
+      }
+    ],
+    "role": "A pelican preening on the shore"
+  }
+]
