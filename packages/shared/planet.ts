@@ -568,7 +568,9 @@ export function wildPlantings(count = 16000): Planting[] {
       else if (land > 0.25 && land < 1.4 && roll > 0.9) at('beach-rock');
     } else if (biome === 'rock' && land > 11) {
       if (roll < 0.28) at('boulder');
-      else if (roll > 0.95)
+      // No waterfalls anywhere near Massawa's desert (owner's request):
+      // only beyond its reach (massawaDryness returns -99 there).
+      else if (roll > 0.95 && dry < -90)
         rockSpots.push({ kind: 'waterfall', p, tile, pick });
     } else if (biome === 'desert') {
       // Open desert: dunes, sandstone outcrops, shrubs and a rare acacia.
