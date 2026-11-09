@@ -39,6 +39,11 @@ export const ACTIONS = {
   ball_roll: 4,
   ball_still: 1,
   vehicle_drive: 2,
+  /** Animals (camel, donkey, goat, gazelle, fish): stand, walk or swim, graze. */
+  animal_idle: 4,
+  animal_walk: 6,
+  animal_graze: 4,
+  animal_rest: 4,
 } as const;
 export type Action = keyof typeof ACTIONS;
 export const facingSchema = z.enum(['SE', 'SW', 'NE', 'NW']);
@@ -71,9 +76,19 @@ export const stepSchema = z
     'Use at + facing OR a path',
   );
 export type Step = z.infer<typeof stepSchema>;
+const linksSchema = z
+  .array(
+    z.object({
+      label: z.string(),
+      url: z.string().url().startsWith('https://'),
+    }),
+  )
+  .optional();
 export const characterSchema = z.object({
   id: z.string().min(1),
-  kind: z.enum(['person', 'cat', 'bird', 'ball', 'vehicle']).default('person'),
+  kind: z
+    .enum(['person', 'cat', 'bird', 'ball', 'vehicle', 'animal'])
+    .default('person'),
   name: z.record(z.string()).optional(),
   aliases: z.array(z.string()).default([]),
   years: z.string().optional(),
@@ -90,20 +105,34 @@ export const characterSchema = z.object({
   /** Short, unreviewed quick facts shown on the card until research is done. */
   summary: z.record(z.string()).optional(),
   /** Further reading opened in a new tab (never fetched by the app). */
-  links: z
-    .array(
-      z.object({
-        label: z.string(),
-        url: z.string().url().startsWith('https://'),
-      }),
-    )
-    .optional(),
+  links: linksSchema,
   panelApproved: z.boolean().optional(),
   variant: z.object({ fromTemplate: z.string(), seed: z.number() }).optional(),
   /** Short description of what an ambient person is doing (hover label). */
   role: z.string().optional(),
 });
 export type Character = z.infer<typeof characterSchema>;
+/**
+ * A clickable building with its own story card (supplied art under
+ * art/landmarks). It may stand anywhere on the planet, outside the quarter.
+ */
+export const landmarkSchema = z.object({
+  id: z.string().min(1),
+  name: z.record(z.string()),
+  years: z.string().optional(),
+  place: z.string().optional(),
+  /** Ground point in planet tile coordinates (front centre of the base). */
+  tile: pointSchema,
+  /** Key in art/landmarks/index.json. */
+  art: z.string(),
+  bio: z.record(z.string()).optional(),
+  story: z.record(z.string()).optional(),
+  sources: z.array(z.string()).optional(),
+  summary: z.record(z.string()).optional(),
+  links: linksSchema,
+  panelApproved: z.boolean().optional(),
+});
+export type Landmark = z.infer<typeof landmarkSchema>;
 export const objectSchema = z.object({
   id: z.number(),
   type: z.string(),
@@ -192,6 +221,8 @@ export const sortableSchema = z.object({
   pivot: pointSchema,
   /** Height above the ground in world px (raised platforms). */
   lift: z.number().default(0),
+  /** Landmark id: clicking this sprite opens that landmark's card. */
+  landmark: z.string().optional(),
 });
 export type Sortable = z.infer<typeof sortableSchema>;
 export const manifestSchema = z.object({
@@ -207,6 +238,14 @@ export const manifestSchema = z.object({
   atlases: z.array(z.string()),
   sortables: z.array(sortableSchema),
   characters: z.array(bakedCharacterSchema),
+  landmarks: z
+    .array(
+      landmarkSchema.extend({
+        /** Smaller copy of the art for the card header. */
+        illustration: z.string().optional(),
+      }),
+    )
+    .default([]),
   i18n: z.record(z.string()),
   buildHash: z.string(),
   room: roomSchema,

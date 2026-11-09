@@ -26,6 +26,7 @@ import {
   RADIUS_PX,
   WILD,
   WILD_GLSL,
+  MASSAWA,
   fitZoom,
   focusFromWorld,
   frame as planetFrame,
@@ -70,6 +71,9 @@ type Static = {
   sortable: Sortable;
   point: Vec3;
   size: number;
+  /** Sprite pixels per world pixel (detailed supplied art is drawn finer). */
+  density: number;
+  depth: number;
 };
 type ViewState = { lat: number; lon: number; zoom: number };
 const MAX_ZOOM = 4,
@@ -122,6 +126,26 @@ const vec3 ROCK_DARK = vec3(0.373, 0.420, 0.459);
 const vec3 MOSS = vec3(0.431, 0.549, 0.306);
 const vec3 STONE = vec3(0.843, 0.863, 0.824);
 const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
+// Massawa's golden desert sand (after the owner's desert sheet).
+const vec3 DESERT = vec3(0.886, 0.643, 0.333);
+const vec3 DESERT_LIGHT = vec3(0.945, 0.737, 0.427);
+const vec3 DESERT_DARK = vec3(0.776, 0.522, 0.255);
+const vec3 SCRUB = vec3(0.800, 0.635, 0.420);
+const vec3 SCRUB_DARK = vec3(0.698, 0.541, 0.345);
+const vec3 DRY_GRASS = vec3(0.690, 0.616, 0.333);
+const vec3 DRY_GRASS_DARK = vec3(0.553, 0.494, 0.259);
+const vec3 OASIS_DEEP = vec3(0.157, 0.420, 0.502);
+const vec3 OASIS = vec3(0.251, 0.588, 0.616);
+const vec3 OASIS_EDGE = vec3(0.459, 0.749, 0.722);
+const vec3 REED = vec3(0.420, 0.557, 0.243);
+const vec3 REED_DARK = vec3(0.290, 0.420, 0.180);
+const vec3 PLAZA = vec3(0.851, 0.788, 0.667);
+const vec3 PLAZA_LIGHT = vec3(0.886, 0.831, 0.718);
+const vec3 PLAZA_DARK = vec3(0.796, 0.725, 0.596);
+const vec3 PLAZA_JOINT = vec3(0.733, 0.659, 0.533);
+const vec3 CORAL = vec3(0.863, 0.800, 0.663);
+const vec3 CORAL_LIGHT = vec3(0.925, 0.878, 0.769);
+const vec3 CORAL_DARK = vec3(0.663, 0.584, 0.463);
 float hash(vec3 q) {
   return fract(sin(dot(q, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
 }
@@ -133,6 +157,19 @@ vec3 flower(float h) {
     : k < 0.8 ? vec3(0.961, 0.784, 0.259)
     : vec3(0.659, 0.518, 0.690);
 }
+// Low-frequency patches (about 3 tiles across) for ragged edges.
+float patchSand(vec3 p) {
+  vec3 q = p * ${f(PLANET.radiusTiles / 3)};
+  return sin(q.x * 1.7 + sin(q.y * 1.3)) * 0.5 + sin(q.y * 1.9 - q.z * 1.1 + sin(q.x)) * 0.5;
+}
+// Desert sand: long soft dunes, dithered so they never band into stripes.
+vec3 desertSand(vec2 tile, float h, float h2, float cove) {
+  float dune = sin(tile.x * 0.55 + tile.y * 0.35 + cove * 6.0);
+  if (h2 > 0.986) return DESERT_DARK;
+  if (h < (dune - 0.3) * 0.55) return DESERT_LIGHT;
+  if (h > 1.0 - (-dune - 0.35) * 0.45) return DESERT_DARK;
+  return h > 0.975 ? DESERT_LIGHT : DESERT;
+}
 // Banded, dithered colour steps (pixel-art painting), lit by the planet shade.
 vec3 wild(vec3 p, vec2 tile) {
   // Texels at the quarter's own floor density (16 per tile).
@@ -140,18 +177,19 @@ vec3 wild(vec3 p, vec2 tile) {
   float h = hash(cell), h2 = hash(cell + 17.0);
   // The world clock (12 fps frames, 0–239): every motion loops every 240.
   float t = uTime * 6.2831853 / 240.0;
-  float land = landField(p, tile);
+  float cove = coveField(p);
+  float land = landField(p, tile, cove);
   if (land < 0.0) {
     float depth = -land + (h - 0.5) * 1.2;
     vec3 col = depth > 9.0 ? DEEP : depth > ${f(WILD.shallows)} ? SEA
       : depth > 2.2 ? SHALLOW : SHALLOW_LIGHT;
     // Long light dashes drifting across the open water.
-    float stripe = sin(p.y * 620.0 + coveField(p) * 6.0 + t * 3.0);
+    float stripe = sin(p.y * 620.0 + cove * 6.0 + t * 3.0);
     float dash = sin(p.x * 260.0 - p.z * 210.0 + h * 1.5);
     if (depth > 2.0 && stripe > 0.94 && dash > 0.1)
       col = depth > ${f(WILD.shallows)} ? SEA_LIGHT : SHALLOW_LIGHT;
     // Surf: the foam line laps in and out, and a wave rolls in every 5 s.
-    float swash = 0.35 + 0.55 * (0.5 + 0.5 * sin(t * 4.0 + coveField(p) * 9.0));
+    float swash = 0.35 + 0.55 * (0.5 + 0.5 * sin(t * 4.0 + cove * 9.0));
     if (-land < swash && h > 0.15) col = FOAM;
     float roll = fract(uTime / 60.0), line = 3.8 * (1.0 - roll);
     if (abs(-land - line) < 0.2 && h > 0.25 + 0.5 * roll) col = mix(col, FOAM, 0.8);
@@ -159,28 +197,124 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5) {
+  // Massawa's dryness, once per pixel (cheap far from the desert).
+  float forest = forestField(p);
+  float dryBase = massawaDryness(tile, cove, forest), roadDry = dryBase;
+  // Shared by several Massawa branches below: each computed once per pixel
+  // (software renderers run every branch, so repeats cost real time).
+  vec3 sandy = desertSand(tile, h, h2, cove);
+  float patches = patchSand(p);
+  float tuft = hash(floor(p * ${f(PLANET.radiusTiles * 5)}));
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5 && roadDry <= 0.0) {
     float along = atan(p.y, p.x) * 140.0;
     float across = p.z / ${f(WILD.roadHalfWidth)};
-    float joint = step(0.92, fract(along)) + step(0.86, abs(across));
-    return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
+    if (roadDry <= ${f(MASSAWA.desert.grassland)}) {
+      float joint = step(0.92, fract(along)) + step(0.86, abs(across));
+      return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
+    }
+    // Toward Massawa's desert the paving gives way to a sandy track with
+    // two wheel ruts, fading out into the sand.
+    float fade = (roadDry - ${f(MASSAWA.desert.grassland)}) / ${f(-MASSAWA.desert.grassland)};
+    if (h > 1.0 - fade * 0.9 || abs(across) > 0.8 - fade * 0.35) {
+      // Fall through to the grassland round it.
+    } else {
+      float rut = abs(abs(across) - 0.4);
+      if (rut < 0.09 && h > fade * 0.7) return DESERT_DARK;
+      return h > 0.9 ? DESERT_LIGHT : h < 0.12 ? SCRUB_DARK : SCRUB;
+    }
+  }
+  // Massawa's oasis: a still pool, reeds at its edge, damp sand round it.
+  float pool = massawaOasis(tile) + (h - 0.5) * 0.25;
+  if (pool < ${f(MASSAWA.oasis.radius)}) {
+    if (pool > ${f(MASSAWA.oasis.radius - 0.35)}) return h2 > 0.5 ? REED : OASIS_EDGE;
+    if (h2 > 0.993 && sin(t * 6.0 + h * 30.0) > 0.7) return FOAM;
+    return pool < ${f(MASSAWA.oasis.radius - 1.3)} ? OASIS_DEEP : OASIS;
+  }
+  if (pool < ${f(MASSAWA.oasis.radius + 0.9)})
+    return h > 0.82 ? (h2 > 0.5 ? REED : REED_DARK) : DESERT_DARK;
+  // Massawa: the town's trodden sand and the mosque's forecourt, ringed by
+  // dry thorn scrub that blends back into the woods.
+  float dry = dryBase + (h - 0.5) * 1.6;
+  float townDry = dry > ${f(MASSAWA.town.fringe - 2)}
+    ? massawaTownDryness(tile, cove) + (h - 0.5) * 1.6
+    : -99.0;
+  if (townDry > ${f(MASSAWA.town.fringe)} && land >= ${f(WILD.beach)}) {
+    float r = length(tile - PLAZA_CENTRE);
+    if (r < ${f(MASSAWA.plaza.radius)} - 0.3 + (h - 0.5) * 0.9) {
+      // Sun-worn limestone flagstones in offset rows, half buried in sand.
+      vec2 sq = tile * 1.5;
+      float row = floor(sq.y), col = floor(sq.x + row * 0.5);
+      vec2 fq = vec2(fract(sq.x + row * 0.5), fract(sq.y));
+      float stone = hash(vec3(col, row, 9.0));
+      if (stone < 0.12) return sandy;
+      if ((fq.x < 0.05 || fq.y < 0.07) && h > 0.25) return PLAZA_JOINT;
+      if (h > 0.95) return PLAZA_LIGHT;
+      if (h < 0.04) return PLAZA_DARK;
+      return stone > 0.8 ? PLAZA_LIGHT : stone < 0.3 ? PLAZA_DARK : PLAZA;
+    }
+    // Trodden lanes: slightly darker, packed sand between the houses.
+    float lane = sin(tile.x * 0.9 + cove * 4.0) * sin(tile.y * 0.7 - cove * 3.0);
+    if (lane > 0.55 && h > 0.35) return h > 0.8 ? DESERT : DESERT_DARK;
+    return sandy;
+  }
+  // Open desert round the town: golden sand with fine wind ripples, and
+  // tufts of dry grass creeping in toward its edge.
+  if (dry > ${f(MASSAWA.town.scrub)} && land >= ${f(WILD.beach)}) {
+    if (dry < ${f(MASSAWA.town.scrub + 4)} &&
+        tuft > 0.9 + (dry - ${f(MASSAWA.town.scrub)}) * 0.025 && h > 0.3)
+      return h > 0.65 ? DRY_GRASS : DRY_GRASS_DARK;
+    float ripple = sin((tile.x - tile.y) * 3.1 + cove * 9.0);
+    if (ripple > 0.9 && h > 0.45) return DESERT_LIGHT;
+    if (ripple < -0.93 && h > 0.5) return DESERT_DARK;
+    return sandy;
   }
   float edge = land + (h - 0.5) * 0.8;
   if (edge < ${f(WILD.beach)}) {
     if (land < 0.55) return h > 0.93 ? SAND_LIGHT : WET_SAND;
+    // The desert runs down to the sea: its own golden sand, paling by the
+    // water, so there is no band of a different sand at the shore.
+    if (dry > 0.0)
+      return land < 1.2 ? (h > 0.6 ? SAND_LIGHT : DESERT_LIGHT)
+        : sandy;
     return h > 0.9 ? SAND_LIGHT : h < 0.07 ? WET_SAND : SAND;
+  }
+  if (dry > 0.0) {
+    // Thorn scrub: dry earth and drifts of sand with tufts of
+    // sun-bleached grass, the grass thickening away from the desert.
+    float grassy = 0.82 - (${f(MASSAWA.town.scrub)} - dry) * 0.07;
+    if (tuft > grassy && h > 0.25) return h > 0.7 ? DRY_GRASS : DRY_GRASS_DARK;
+    if (patches > 0.35 + (${f(MASSAWA.town.scrub)} - dry) * 0.12)
+      return sandy;
+    if (h2 > 0.985) return DESERT_DARK;
+    return tuft < 0.25 ? SCRUB_DARK : h > 0.94 ? DESERT_LIGHT : SCRUB;
   }
   float d = mapDistance(tile), dither = (h - 0.5) * 0.06;
   float rock = rockField(p);
-  if (land > 10.0 && d > 6.0 && rock + dither > ${f(WILD.rockAbove)}) {
+  if (land > 10.0 && d > 6.0 && dry <= ${f(MASSAWA.desert.grassland)} &&
+      rock + dither > ${f(WILD.rockAbove)}) {
     // Rocky hills: mottled stone in clumps, moss in the cracks.
     float clump = hash(floor(p * ${f(PLANET.radiusTiles * 4)}));
     if (rock < ${f(WILD.rockAbove + 0.03)} || h > 0.88) return MOSS;
     if (h < 0.05) return ROCK_DARK;
     return clump > 0.66 ? ROCK_LIGHT : clump < 0.22 ? ROCK_DARK : ROCK;
   }
-  float patchy = forestField(p) * 0.5 + coveField(p) * 0.25 + (h - 0.5) * 0.35;
-  if (d > 4.0 && forestField(p) + dither > ${f(WILD.forestAbove)}) {
+  float patchy = forest * 0.5 + cove * 0.25 + (h - 0.5) * 0.35;
+  if (dry > ${f(MASSAWA.desert.grassland)}) {
+    // Dry grassland between the desert and the woods: green giving way to
+    // straw-coloured grass in ragged patches, with the odd bare spot.
+    float t = (dry - ${f(MASSAWA.desert.grassland)}) / ${f(-MASSAWA.desert.grassland)};
+    float patch = patches * 0.5 + 0.5;
+    if (patch * 0.8 + (h - 0.5) * 0.3 < t * 1.1) {
+      // Straw grass, with bare sandy earth showing nearest the desert.
+      if (h2 > 1.0 - t * 0.12) return h > 0.5 ? SCRUB : SCRUB_DARK;
+      return patchy > 0.15 ? DRY_GRASS_DARK : DRY_GRASS;
+    }
+    // Green grass yellowing at the tips toward the desert.
+    if (h < t * 0.35) return DRY_GRASS;
+    if (h2 > 0.99) return flower(h2);
+    return patchy > 0.28 ? MEADOW_DARK : patchy < -0.28 ? MEADOW_LIGHT : MEADOW;
+  }
+  if (d > 4.0 && forest + dither > ${f(WILD.forestAbove)}) {
     if (h2 > 0.97) return MOSS;
     return patchy > 0.3 ? FOREST_DARK : patchy < -0.05 ? FOREST_LIGHT : FOREST;
   }
@@ -361,12 +495,15 @@ export class Engine {
     for (const s of manifest.sortables) {
       const sprite = new Sprite(this.textures.get(s.frame));
       sprite.pivot.set(...s.pivot);
-      const m = this.metadata.get(s.frame)!;
+      const m = this.metadata.get(s.frame)!,
+        density = m.density ?? 1;
       this.statics.push({
         sprite,
         sortable: s,
         point: tileToPlanet(...s.ground),
-        size: Math.max(m.frame.w, m.frame.h),
+        size: Math.max(m.frame.w, m.frame.h) / density,
+        density,
+        depth: 0,
       });
     }
     this.ready = true;
@@ -520,6 +657,14 @@ export class Engine {
     };
   }
   focusCharacter(id: string) {
+    const l = this.manifest?.landmarks.find((l) => l.id === id);
+    if (l) {
+      this.selected = id;
+      const [x, y] = worldFromTile(...l.tile);
+      // Centre the building, not its doorstep.
+      this.flyTo({ x, y: y - 48, zoom: Math.max(2, this.view.zoom) }, 700);
+      return;
+    }
     const c = this.manifest?.characters.find(
       (c) => c.id === id && c.interactive,
     );
@@ -613,7 +758,18 @@ export class Engine {
           ],
           s.sortable.pivot,
         );
-      this.place(s.sprite, s.point, s.size, s.sortable.lift);
+      const p = this.place(
+        s.sprite,
+        s.point,
+        s.size,
+        s.sortable.lift,
+        0,
+        s.density,
+      );
+      if (!p) continue;
+      s.depth = p.depth;
+      const id = s.sortable.landmark;
+      if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
     }
     let visible = 0;
     for (const c of this.manifest.characters) {
@@ -685,23 +841,29 @@ export class Engine {
       if (!p) continue;
       visible++;
       item.depth = p.depth;
-      const outlined = this.hover === c.id && c.interactive;
-      if (outlined || this.selected === c.id) {
-        let filter = item.sprite.filters?.[0] as OutlineFilter | undefined;
-        if (!filter) {
-          filter = new OutlineFilter({
-            thickness: Math.max(1, Math.round(this.view.zoom)),
-            color: 0xd8ad57,
-            quality: 0.1,
-          });
-          item.sprite.filters = [filter];
-        }
-        filter.alpha =
-          this.selected === c.id ? 0.65 + 0.35 * Math.sin(this.frame / 4) : 1;
-      } else if (item.sprite.filters?.length) item.sprite.filters = [];
+      this.outline(
+        item.sprite,
+        this.hover === c.id && c.interactive,
+        this.selected === c.id,
+      );
     }
     this.visibleCount = visible;
     if (this.inspector) this.drawInspector();
+  }
+  /** Gold outline on hover; a slow pulse while selected. */
+  private outline(sprite: Sprite, hovered: boolean, selected: boolean) {
+    if (hovered || selected) {
+      let filter = sprite.filters?.[0] as OutlineFilter | undefined;
+      if (!filter) {
+        filter = new OutlineFilter({
+          thickness: Math.max(1, Math.round(this.view.zoom)),
+          color: 0xd8ad57,
+          quality: 0.1,
+        });
+        sprite.filters = [filter];
+      }
+      filter.alpha = selected ? 0.65 + 0.35 * Math.sin(this.frame / 4) : 1;
+    } else if (sprite.filters?.length) sprite.filters = [];
   }
   private visibleCount = 0;
   private tick(dt: number) {
@@ -786,15 +948,39 @@ export class Engine {
     this.view.lat += dLat;
     return { lat: dLat, lon: dLon };
   }
+  /** Topmost character (or landmark) under a screen point. */
   private hit(p: { x: number; y: number }, interactiveOnly = true) {
-    const items = [...this.live.values()]
-      .filter(
-        (i) =>
-          i.sprite.visible &&
-          i.sprite.parent === this.front &&
-          (!interactiveOnly || i.character.interactive),
+    const items: {
+      id: string;
+      sprite: Sprite;
+      frame: string;
+      depth: number;
+    }[] = [];
+    for (const i of this.live.values())
+      if (
+        i.sprite.visible &&
+        i.sprite.parent === this.front &&
+        (!interactiveOnly || i.character.interactive)
       )
-      .sort((a, b) => b.depth - a.depth);
+        items.push({
+          id: i.character.id,
+          sprite: i.sprite,
+          frame: i.frame,
+          depth: i.depth,
+        });
+    for (const s of this.statics)
+      if (
+        s.sortable.landmark &&
+        s.sprite.visible &&
+        s.sprite.parent === this.front
+      )
+        items.push({
+          id: s.sortable.landmark,
+          sprite: s.sprite,
+          frame: s.sortable.frame,
+          depth: s.depth,
+        });
+    items.sort((a, b) => b.depth - a.depth);
     for (const item of items) {
       const m = this.metadata.get(item.frame)!;
       const local = item.sprite.toLocal(p);
@@ -807,18 +993,28 @@ export class Engine {
           local.y,
         )
       )
-        return item.character.id;
+        return item.id;
     }
     return null;
+  }
+  private clickable(id: string | null) {
+    return Boolean(
+      id &&
+      (this.live.get(id)?.character.interactive ||
+        this.manifest?.landmarks.some((l) => l.id === id)),
+    );
   }
   /** Development/test helper: tile coordinates of the ground under a screen point. */
   groundAt(x: number, y: number): Point | null {
     const p = unproject(this.proj, x, y);
     return p ? planetToTile(p) : null;
   }
-  /** Development/test helper: screen points over and beside a character. */
+  /** Development/test helper: screen points over and beside a character or landmark. */
   debugPoints(id: string) {
-    const item = this.live.get(id);
+    const landmark = this.statics.find((s) => s.sortable.landmark === id);
+    const item = landmark
+      ? { sprite: landmark.sprite, frame: landmark.sortable.frame }
+      : this.live.get(id);
     if (!item || !item.sprite.visible) return null;
     const m = this.metadata.get(item.frame)!,
       mask = this.masks.get(item.frame)!;
@@ -892,8 +1088,7 @@ export class Engine {
           if (hit !== this.hover) {
             this.hover = hit;
             this.dirty = true;
-            const c = hit && this.live.get(hit)?.character;
-            canvas.style.cursor = c && c.interactive ? 'pointer' : 'grab';
+            canvas.style.cursor = this.clickable(hit) ? 'pointer' : 'grab';
             this.emit('characterHover', hit);
           }
         }

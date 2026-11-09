@@ -66,9 +66,70 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
+test('the Massawa button flies to the town and the mosque opens its landmark card', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await ready(page);
+  await page.getByRole('button', { name: 'Massawa' }).click();
+  // Wait for the flight to land: the mosque stops moving on screen (a fixed
+  // wait is flaky where frames are slow, as in software rendering).
+  const where = () =>
+    page.evaluate(() =>
+      (
+        window as unknown as {
+          __darEngine: {
+            debugPoints(id: string): {
+              opaque: { x: number; y: number };
+              transparent: { x: number; y: number };
+            } | null;
+          };
+        }
+      ).__darEngine.debugPoints('mosque-of-the-companions'),
+    );
+  let points = await where();
+  await expect
+    .poll(
+      async () => {
+        const last = JSON.stringify(points);
+        await page.waitForTimeout(400);
+        points = await where();
+        return Boolean(points?.opaque) && JSON.stringify(points) === last;
+      },
+      { timeout: 20000 },
+    )
+    .toBe(true);
+  expect(points?.opaque).toBeTruthy();
+  const canvas = await page.locator('.world-host canvas').boundingBox();
+  await page.mouse.move(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  await expect(page.locator('.hover-label')).toContainText(
+    'Mosque of the Companions',
+  );
+  await page.mouse.click(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  const card = page.locator('.story-card');
+  await expect(card).toContainText('LANDMARK');
+  await expect(card).toContainText('Mosque of the Companions');
+  await expect(card).toContainText('DRAFT');
+  await expect(page).toHaveURL(/\/c\/mosque-of-the-companions/);
+  await page.reload();
+  await expect(page.locator('.story-card')).toContainText(
+    'Mosque of the Companions',
+  );
+  expect(errors).toEqual([]);
+});
 test('spin, zoom, whole-planet overview, inspector and minimap operate without runtime errors', async ({
   page,
 }) => {
+  // It renders the whole planet several times; software rendering (as in
+  // the sandbox) needs more than the default 45 s.
+  test.slow();
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await ready(page);

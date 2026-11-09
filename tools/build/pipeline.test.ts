@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { CANVAS } from '../../packages/shared/canvas';
 import sharp from 'sharp';
-import { loadContent, validateCharacter } from './validate';
+import { loadContent, validateCharacter, validateLandmark } from './validate';
 import { loadParts, loadHeads, image } from './io';
 import {
   compose,
@@ -36,10 +36,12 @@ const {
 describe('real content validation', () => {
   it('validates every example with every ambient scenario', async () => {
     const files = await fs.readdir('content/characters');
-    const ambient = JSON.parse(
-      await fs.readFile('content/ambient/mosque-garden.json', 'utf8'),
-    );
-    expect(content.characters).toHaveLength(files.length + ambient.length);
+    let ambient = 0;
+    for (const f of await fs.readdir('content/ambient'))
+      ambient += JSON.parse(
+        await fs.readFile(`content/ambient/${f}`, 'utf8'),
+      ).length;
+    expect(content.characters).toHaveLength(files.length + ambient);
     for (const c of content.characters)
       expect(
         validateCharacter(
@@ -735,6 +737,50 @@ describe('main characters only, with supplied animation strips', () => {
       expect(m.height).toBe(336);
       expect(m.width % 224).toBe(0);
       expect(m.hasAlpha).toBe(true);
+    }
+  });
+});
+
+describe('landmarks', () => {
+  it('loads the Mosque of the Companions as an unapproved draft card', () => {
+    const l = content.landmarks.find(
+      (l) => l.id === 'mosque-of-the-companions',
+    )!;
+    expect(l).toBeTruthy();
+    expect(l.panelApproved).toBe(false);
+    expect(l.links?.[0].url).toMatch(/^https:\/\/en\.wikipedia\.org\//);
+    // Story and sources stay placeholders until researched (AGENTS.md).
+    expect(l.story?.en).toMatch(/^PLACEHOLDER/);
+    expect(() => validateLandmark(l, content.rules, false)).not.toThrow();
+  });
+  it('refuses unapproved landmark cards in production', () => {
+    for (const l of content.landmarks)
+      expect(() => validateLandmark(l, content.rules, true)).toThrow(
+        /panelApproved/,
+      );
+  });
+  it('runs landmark names through the never-depict rules', () => {
+    const l = content.landmarks[0];
+    expect(() =>
+      validateLandmark(
+        { ...l, name: { ...l.name, en: 'Abu Bakr' } },
+        content.rules,
+        false,
+      ),
+    ).toThrow(/never-depict/);
+  });
+  it('has supplied art with an anchor inside the image', async () => {
+    const index = JSON.parse(
+      await fs.readFile('art/landmarks/index.json', 'utf8'),
+    );
+    for (const l of content.landmarks) {
+      const art = index[l.art];
+      expect(art).toBeTruthy();
+      const meta = await sharp(`art/${art.file}`).metadata();
+      expect(meta.hasAlpha).toBe(true);
+      expect(art.anchor[0]).toBeLessThan(meta.width!);
+      expect(art.anchor[1]).toBeLessThan(meta.height!);
+      expect(art.density).toBeGreaterThan(1);
     }
   });
 });

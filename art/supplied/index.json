@@ -1,0 +1,281 @@
+{
+  "sup-dune-a": {
+    "file": "supplied/sup-dune-a.png",
+    "anchor": [
+      81,
+      56
+    ],
+    "density": 1.45,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-dune-b": {
+    "file": "supplied/sup-dune-b.png",
+    "anchor": [
+      99,
+      60
+    ],
+    "density": 1.424,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-dune-c": {
+    "file": "supplied/sup-dune-c.png",
+    "anchor": [
+      117,
+      72
+    ],
+    "density": 1.487,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-dune-d": {
+    "file": "supplied/sup-dune-d.png",
+    "anchor": [
+      93,
+      55
+    ],
+    "density": 1.433,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-rocks-a": {
+    "file": "supplied/sup-rocks-a.png",
+    "anchor": [
+      70,
+      91
+    ],
+    "density": 1.655,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-rocks-b": {
+    "file": "supplied/sup-rocks-b.png",
+    "anchor": [
+      34,
+      53
+    ],
+    "density": 1.647,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-rocks-c": {
+    "file": "supplied/sup-rocks-c.png",
+    "anchor": [
+      53,
+      57
+    ],
+    "density": 1.667,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-rocks-d": {
+    "file": "supplied/sup-rocks-d.png",
+    "anchor": [
+      58,
+      80
+    ],
+    "density": 1.615,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-rocks-e": {
+    "file": "supplied/sup-rocks-e.png",
+    "anchor": [
+      28,
+      61
+    ],
+    "density": 1.548,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-rocks-f": {
+    "file": "supplied/sup-rocks-f.png",
+    "anchor": [
+      39,
+      42
+    ],
+    "density": 1.731,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-spire": {
+    "file": "supplied/sup-spire.png",
+    "anchor": [
+      13,
+      82
+    ],
+    "density": 1.593,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-palm-a": {
+    "file": "supplied/sup-palm-a.png",
+    "anchor": [
+      46,
+      142
+    ],
+    "density": 1.202,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-palm-b": {
+    "file": "supplied/sup-palm-b.png",
+    "anchor": [
+      20,
+      87
+    ],
+    "density": 0.958,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-palm-c": {
+    "file": "supplied/sup-palm-c.png",
+    "anchor": [
+      30,
+      112
+    ],
+    "density": 1.054,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-palm-d": {
+    "file": "supplied/sup-palm-d.png",
+    "anchor": [
+      25,
+      92
+    ],
+    "density": 1.054,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-shrub-a": {
+    "file": "supplied/sup-shrub-a.png",
+    "anchor": [
+      30,
+      51
+    ],
+    "density": 1.8,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-shrub-b": {
+    "file": "supplied/sup-shrub-b.png",
+    "anchor": [
+      42,
+      56
+    ],
+    "density": 1.844,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-shrub-c": {
+    "file": "supplied/sup-shrub-c.png",
+    "anchor": [
+      30,
+      48
+    ],
+    "density": 1.962,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-tuft-a": {
+    "file": "supplied/sup-tuft-a.png",
+    "anchor": [
+      23,
+      34
+    ],
+    "density": 2,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-tuft-b": {
+    "file": "supplied/sup-tuft-b.png",
+    "anchor": [
+      25,
+      28
+    ],
+    "density": 1.875,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-deadtree": {
+    "file": "supplied/sup-deadtree.png",
+    "anchor": [
+      47,
+      121
+    ],
+    "density": 1.512,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-tent": {
+    "file": "supplied/sup-tent.png",
+    "anchor": [
+      94,
+      126
+    ],
+    "density": 2.129,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-well": {
+    "file": "supplied/sup-well.png",
+    "anchor": [
+      71,
+      125
+    ],
+    "density": 2.259,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-canopy": {
+    "file": "supplied/sup-canopy.png",
+    "anchor": [
+      56,
+      110
+    ],
+    "density": 2.071,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-jars": {
+    "file": "supplied/sup-jars.png",
+    "anchor": [
+      45,
+      46
+    ],
+    "density": 3.063,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-crates": {
+    "file": "supplied/sup-crates.png",
+    "anchor": [
+      17,
+      38
+    ],
+    "density": 2.278,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-camel-front": {
+    "file": "supplied/sup-camel-front.png",
+    "anchor": [
+      191,
+      316
+    ],
+    "density": 5.5,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-camel-side": {
+    "file": "supplied/sup-camel-side.png",
+    "anchor": [
+      163,
+      298
+    ],
+    "density": 5.183,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-camel-back": {
+    "file": "supplied/sup-camel-back.png",
+    "anchor": [
+      52,
+      312
+    ],
+    "density": 5.433,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-camel-side-dark": {
+    "file": "supplied/sup-camel-side-dark.png",
+    "anchor": [
+      119,
+      298
+    ],
+    "density": 5.362,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-camel-front-pale": {
+    "file": "supplied/sup-camel-front-pale.png",
+    "anchor": [
+      123,
+      316
+    ],
+    "density": 5.789,
+    "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  }
+}

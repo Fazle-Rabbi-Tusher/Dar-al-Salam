@@ -152,6 +152,21 @@ function About() {
     </main>
   );
 }
+/** What a story card shows: a named person, or a landmark building. */
+type CardView = Pick<
+  BakedCharacter,
+  | 'id'
+  | 'name'
+  | 'illustration'
+  | 'portrait'
+  | 'years'
+  | 'place'
+  | 'summary'
+  | 'links'
+  | 'bio'
+  | 'story'
+  | 'sources'
+> & { landmark?: boolean };
 function List({ characters }: { characters: BakedCharacter[] }) {
   const t = useT(),
     lang = useStore((s) => s.lang);
@@ -227,21 +242,33 @@ function World({ manifest }: { manifest: Manifest | null }) {
     pointer = useRef({ x: 0, y: 0 }),
     label = useRef<HTMLDivElement>(null);
   const named = manifest?.characters.filter((c) => c.interactive) ?? [],
-    card = named.find((c) => c.id === selected);
+    landmarks = manifest?.landmarks ?? [],
+    landmark = landmarks.find((l) => l.id === selected),
+    card: CardView | undefined =
+      named.find((c) => c.id === selected) ??
+      (landmark && { ...landmark, landmark: true });
   // Hovering anyone shows what they are doing; named people invite a click.
   const hoverCharacter = hovered
     ? manifest?.characters.find((c) => c.id === hovered)
     : undefined;
-  const hoverLabel = hoverCharacter
-    ? hoverCharacter.name
-      ? {
-          title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
-          note: t('clickStory'),
-        }
-      : hoverCharacter.role
-        ? { title: hoverCharacter.role, note: '' }
-        : null
-    : null;
+  const hoverLandmark = hovered
+    ? landmarks.find((l) => l.id === hovered)
+    : undefined;
+  const hoverLabel = hoverLandmark
+    ? {
+        title: hoverLandmark.name[lang] ?? hoverLandmark.name.en,
+        note: t('clickPlace'),
+      }
+    : hoverCharacter
+      ? hoverCharacter.name
+        ? {
+            title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
+            note: t('clickStory'),
+          }
+        : hoverCharacter.role
+          ? { title: hoverCharacter.role, note: '' }
+          : null
+      : null;
   const open = useCallback(
     (id: string) => {
       select(id);
@@ -360,10 +387,10 @@ function World({ manifest }: { manifest: Manifest | null }) {
     engine.current?.clearSelection();
     history.replaceState(null, '', serialiseUrl(camera));
   };
-  const focusArea = (x: number, y: number) => {
+  const focusArea = (x: number, y: number, zoom = 2) => {
     const [wx, wy] = worldFromTile(x, y);
     setIntro(false);
-    engine.current?.flyTo({ x: wx, y: wy, zoom: 2 }, 600);
+    engine.current?.flyTo({ x: wx, y: wy, zoom }, 600);
   };
   return (
     <main className="world-page">
@@ -494,6 +521,11 @@ function World({ manifest }: { manifest: Manifest | null }) {
           <Icon name="people" size={15} />
           {t('community')}
         </button>
+        {/* Massawa, south-west of the quarter (packages/shared/massawa.ts). */}
+        <button onClick={() => focusArea(-12, 117, 1.2)}>
+          <Icon name="compass" size={15} />
+          {t('massawa')}
+        </button>
       </div>
       {card && (
         <aside className="story-card" aria-label={card.name?.[lang]}>
@@ -506,13 +538,25 @@ function World({ manifest }: { manifest: Manifest | null }) {
           </button>
           <div className="story-header">
             <span className="eyebrow">
-              {t('chapter')} ·{' '}
-              {String(named.indexOf(card) + 1).padStart(2, '0')}
+              {card.landmark ? (
+                t('landmark')
+              ) : (
+                <>
+                  {t('chapter')} ·{' '}
+                  {String(
+                    named.findIndex((c) => c.id === card.id) + 1,
+                  ).padStart(2, '0')}
+                </>
+              )}
             </span>
             <div className="portrait-decoration">
               {card.illustration ? (
                 <img
-                  className="portrait-illustration"
+                  className={
+                    card.landmark
+                      ? 'landmark-illustration'
+                      : 'portrait-illustration'
+                  }
                   src={'/world/' + card.illustration}
                   alt=""
                   draggable={false}
@@ -527,7 +571,8 @@ function World({ manifest }: { manifest: Manifest | null }) {
               ) : (
                 <Icon name="book" size={32} />
               )}
-              <span>{card.name?.ar}</span>
+              {/* Landmark art fills the width; the Arabic name sits under the title. */}
+              {!card.landmark && <span>{card.name?.ar}</span>}
             </div>
             <span className="draft-badge">{t('draft')}</span>
             <h2>{card.name?.[lang] ?? card.name?.en}</h2>

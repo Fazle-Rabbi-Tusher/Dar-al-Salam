@@ -82,6 +82,14 @@ export function resolveFrame(
   if (!frame) throw Error(`${part.id}: missing ${action}/${facing}/${index}`);
   return { frame, mirror: facing === 'SW' || facing === 'NW' };
 }
+/** Floor shadow half-widths for bases wider or narrower than a person. */
+const SHADOW_RX: Record<string, number> = {
+  cat: 7,
+  camel: 14,
+  donkey: 10,
+  goat: 6,
+  gazelle: 8,
+};
 export function compose(
   look: Look,
   action: Action,
@@ -156,9 +164,10 @@ export function compose(
     includeShadow &&
     look.base !== 'bird' &&
     look.base !== 'ball' &&
-    !VEHICLES.includes(look.base)
+    !VEHICLES.includes(look.base) &&
+    look.base !== 'pelican'
   )
-    result.ellipse(ax, ay - 1, look.base === 'cat' ? 7 : 8, 2.5, [
+    result.ellipse(ax, ay - 1, SHADOW_RX[look.base] ?? 8, 2.5, [
       ...rgb(palette.shadow).slice(0, 3),
       89,
     ]);

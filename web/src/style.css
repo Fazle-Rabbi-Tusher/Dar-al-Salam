@@ -706,6 +706,14 @@ html[lang='bn'] .brand strong {
   border-radius: 30px 30px 3px 3px;
   background: linear-gradient(#f4efe0, #e3e6d8);
 }
+.landmark-illustration {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border: 1px solid #b7c5a8;
+  border-radius: 3px;
+  background: linear-gradient(#cfe0ea, #f1e7cf);
+}
 .portrait-face {
   /* 2× the 52×60 close-up, so pixels stay square and crisp. */
   height: 120px;
