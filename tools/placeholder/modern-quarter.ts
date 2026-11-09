@@ -575,35 +575,30 @@ export function modernQuarter() {
    * maths lab laid out after the owner's reference photos, in zones:
    * chalkboards and a projector screen on the back wall; a freestanding
    * board partition; the central geometric repository (a table of models);
-   * a data-science hub (a desk of monitors and a two-rack compute cluster);
-   * a quantum topology wing (a display wall, cryogenic dewars and a knot
-   * sculpture) behind a second partition; round study tables; a front
-   * bench of workstations; a book cart and plants. Al-Khwarizmi, Ibn Rushd
-   * and Ibn Khaldun stand in the lab (their cards place them).
+   * a data-science hub (a desk of monitors and a compute rack); a topology
+   * corner (a display wall and a knot sculpture); a case of models, a 3D
+   * printer, a whiteboard, a seminar table, a study table, a workstation
+   * and a book cart. Owner's rule: only mathematical equipment, and no
+   * piece twice. Al-Khwarizmi, Ibn Rushd and Ibn Khaldun stand in the lab
+   * (their cards place them).
    */
   obj('m-whitewall-side', 6.65, 39);
   obj('m-whitewall-side', 6.65, 47);
   obj('m-chalkboard-side', 7.0, 41.5);
-  obj('m-chalkboard-side', 7.0, 45);
-  obj('m-projector-screen-side', 7.0, 48.6);
+  obj('m-projector-screen-side', 7.0, 45.0);
+  obj('m-model-case-side', 7.05, 48.4);
   obj('m-board-partition', 9.5, 42.3);
   obj('m-hub-desk', 14.3, 41.2);
   obj('m-server-rack', 18.4, 41.2);
-  obj('m-server-rack', 19.5, 41.2);
-  obj('m-desk-plant', 20.7, 41.4);
   obj('m-screen-array', 17.6, 44.4);
-  obj('m-dewar', 20.0, 45.4);
-  obj('m-dewar', 20.0, 46.3);
+  obj('m-3d-printer', 20.0, 45.6);
+  obj('m-whiteboard', 15.0, 45.6);
   obj('m-knot-sculpture', 18.2, 47.2);
-  obj('m-board-partition-side', 15.6, 45.2);
   obj('m-geo-table', 9.4, 46.0);
+  obj('m-seminar-table', 9.5, 50.6);
   obj('m-round-table', 17.0, 50.6);
-  obj('m-round-table', 19.3, 52.4);
-  obj('m-hub-desk', 7.6, 53.0);
-  obj('m-hub-desk', 10.8, 53.0);
   obj('m-book-cart', 14.0, 51.4);
-  obj('m-desk-plant', 14.4, 53.9);
-  obj('m-desk-plant', 8.0, 50.8);
+  obj('m-workstation', 8.0, 53.4);
   for (const [i, [x, y, f]] of (
     [
       [11.2, 42.4, 'SE'],
@@ -714,8 +709,6 @@ export function modernQuarter() {
     'amb-bench-pair-1';
 
   /* ════════ Density pass: more everyday life in the lower rooms ════════ */
-  // Maths lab: water.
-  obj('m-water-cooler', 20.6, 54.3);
   person(
     'reader-lib-1',
     [10.6, 54.2],
