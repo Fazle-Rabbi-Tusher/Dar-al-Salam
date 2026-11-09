@@ -2448,5 +2448,113 @@
     ],
     "width": 64,
     "height": 84
+  },
+  "m-tally-sticks": {
+    "file": "objects/m-tally-sticks.png",
+    "anchor": [
+      32,
+      33
+    ],
+    "width": 64,
+    "height": 55
+  },
+  "m-counting-board": {
+    "file": "objects/m-counting-board.png",
+    "anchor": [
+      32,
+      22
+    ],
+    "width": 80,
+    "height": 54
+  },
+  "m-abacus": {
+    "file": "objects/m-abacus.png",
+    "anchor": [
+      16,
+      49
+    ],
+    "width": 64,
+    "height": 71
+  },
+  "m-abacus-side": {
+    "file": "objects/m-abacus-side.png",
+    "anchor": [
+      48,
+      49
+    ],
+    "width": 64,
+    "height": 71
+  },
+  "m-antikythera": {
+    "file": "objects/m-antikythera.png",
+    "anchor": [
+      32,
+      32
+    ],
+    "width": 64,
+    "height": 54
+  },
+  "m-napiers-bones": {
+    "file": "objects/m-napiers-bones.png",
+    "anchor": [
+      32,
+      23
+    ],
+    "width": 64,
+    "height": 43
+  },
+  "m-slide-rule": {
+    "file": "objects/m-slide-rule.png",
+    "anchor": [
+      16,
+      48
+    ],
+    "width": 64,
+    "height": 72
+  },
+  "m-slide-rule-side": {
+    "file": "objects/m-slide-rule-side.png",
+    "anchor": [
+      48,
+      48
+    ],
+    "width": 64,
+    "height": 72
+  },
+  "m-pascaline": {
+    "file": "objects/m-pascaline.png",
+    "anchor": [
+      32,
+      23
+    ],
+    "width": 64,
+    "height": 43
+  },
+  "m-stepped-reckoner": {
+    "file": "objects/m-stepped-reckoner.png",
+    "anchor": [
+      32,
+      25
+    ],
+    "width": 80,
+    "height": 50
+  },
+  "m-difference-engine": {
+    "file": "objects/m-difference-engine.png",
+    "anchor": [
+      32,
+      63
+    ],
+    "width": 80,
+    "height": 93
+  },
+  "m-analytical-engine": {
+    "file": "objects/m-analytical-engine.png",
+    "anchor": [
+      32,
+      53
+    ],
+    "width": 96,
+    "height": 89
   }
 }

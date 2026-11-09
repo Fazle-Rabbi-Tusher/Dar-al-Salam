@@ -572,14 +572,14 @@ export function modernQuarter() {
   /*
    * ════════ Mathematics research laboratory (x 7–21, y 41–55) ════════
    * The old library, replaced at the owner's request with a doctoral-level
-   * maths lab laid out after the owner's reference photos, in zones:
-   * chalkboards and a projector screen on the back wall; a freestanding
-   * board partition; the central geometric repository (a table of models);
-   * a data-science hub (a desk of monitors and a compute rack); a topology
-   * corner (a display wall and a knot sculpture); a case of models, a 3D
-   * printer, a whiteboard, a seminar table, a study table, a workstation
-   * and a book cart. Owner's rule: only mathematical equipment, and no
-   * piece twice. Al-Khwarizmi, Ibn Rushd and Ibn Khaldun stand in the lab
+   * maths lab: a chalkboard and a projector screen on the back wall, and
+   * the history of calculation on plinths and stands, in order: tally
+   * sticks, a counting board, an abacus, the Antikythera mechanism,
+   * Napier's bones, a slide rule, Pascal's calculator, Leibniz's stepped
+   * reckoner, and Babbage's difference and analytical engines (owner's
+   * list); with a case of models, a whiteboard, a seminar table and a book
+   * cart. Owner's rule: only mathematical equipment, and no piece twice.
+   * Al-Khwarizmi, Ibn Rushd and Ibn Khaldun stand in the lab
    * (their cards place them).
    */
   obj('m-whitewall-side', 6.65, 39);
@@ -587,18 +587,19 @@ export function modernQuarter() {
   obj('m-chalkboard-side', 7.0, 41.5);
   obj('m-projector-screen-side', 7.0, 45.0);
   obj('m-model-case-side', 7.05, 48.4);
-  obj('m-board-partition', 9.5, 42.3);
-  obj('m-hub-desk', 14.3, 41.2);
-  obj('m-server-rack', 18.4, 41.2);
-  obj('m-screen-array', 17.6, 44.4);
-  obj('m-3d-printer', 20.0, 45.6);
   obj('m-whiteboard', 15.0, 45.6);
-  obj('m-knot-sculpture', 18.2, 47.2);
-  obj('m-geo-table', 9.4, 46.0);
   obj('m-seminar-table', 9.5, 50.6);
-  obj('m-round-table', 17.0, 50.6);
   obj('m-book-cart', 14.0, 51.4);
-  obj('m-workstation', 8.0, 53.4);
+  obj('m-tally-sticks', 9.4, 41.6);
+  obj('m-counting-board', 11.0, 41.6);
+  obj('m-abacus', 13.3, 42.0);
+  obj('m-antikythera', 15.8, 41.6);
+  obj('m-napiers-bones', 17.4, 41.6);
+  obj('m-slide-rule', 19.0, 41.6);
+  obj('m-pascaline', 10.0, 45.6);
+  obj('m-stepped-reckoner', 11.8, 45.6);
+  obj('m-difference-engine', 17.6, 44.8);
+  obj('m-analytical-engine', 17.4, 48.2);
   for (const [i, [x, y, f]] of (
     [
       [11.2, 42.4, 'SE'],

@@ -66,3 +66,16 @@
     The art is drawn in `tools/placeholder/modern.ts`. The layout is in `tools/placeholder/modern-quarter.ts`. The room file was edited directly to match it rather than regenerated, so other character cards are untouched, and a check confirmed the two agree. The references' text labels, portraits and screen text are not drawn (no generated text). Al-Khwarizmi (the founder of algebra) stands at the chalkboards, Ibn Rushd at the central table and Ibn Khaldun by the study tables.
 54. Story cards can show an "At work" gallery: owner-supplied pictures of a person at work (`art/gallery/<id>/<n>.png`). The build copies them and lists them on the baked character as `gallery`. They are full-colour supplied art, so they are exempt from the pixel-art palette check like the sprites and landmarks. First, Al-Khwārizmī: eight panels cut from the owner's sheet (writing at his desk, thinking, presenting a scroll of geometry, working with compasses, drawing at a chalkboard, reading, writing, holding a scroll). They appear on his card only; in the world he still stands at the maths lab's chalkboards (owner's choice). The panels are the owner's illustration and are shown as supplied. Some of the formulas drawn in them, such as the Gaussian integral and a differential equation, are later mathematics than his own algebra; the card's text does not claim otherwise.
 55. The maths lab holds only mathematical equipment, and no piece twice (owner's request). The cryogenic dewars (physics), the plants and the water cooler were removed, and duplicate chalkboards, racks, desks, study tables and partitions were cut to one each. The model case and the 3D printer return. The lab now has: a chalkboard, a projector screen, a case of mathematical models, a board partition, a data-science desk, a compute rack, a display wall of topology visualisations, a 3D printer for models, a whiteboard, a knot sculpture, the table of geometric models, a seminar table, a round study table, a book cart of mathematics books and a workstation. A check in the layout prevents repeats.
+56. The maths lab shows the history of calculation (owner's list). Each of these instruments stands on a white plinth or its own stand:
+    - tally sticks;
+    - a counting board with pebble counters;
+    - an abacus;
+    - the Antikythera mechanism (corroded bronze gears under glass);
+    - Napier's bones;
+    - a large demonstration slide rule with logarithmic tick marks and a cursor;
+    - Pascal's calculator (a brass box of dials);
+    - Leibniz's stepped reckoner (with its crank);
+    - Babbage's difference engine (columns of figure wheels in an iron frame);
+    - his analytical engine (the mill, the store and a chain of punched cards).
+
+    Digits are shown as dots and tick marks, never numerals or lettering, and the plinth plaques are plain. They replace the lab's modern computing pieces (the monitor desks, compute rack, screen wall, 3D printer and knot sculpture) and the table of geometric models, whose abacus would have repeated the new one. The chalkboard, projector screen, model case, whiteboard, seminar table and book cart stay. Every piece still appears once.

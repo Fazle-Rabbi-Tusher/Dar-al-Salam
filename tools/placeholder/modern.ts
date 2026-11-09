@@ -430,6 +430,11 @@ function screen(
     );
   }
 }
+/** A white museum plinth `w`×`d` tiles, `h` px tall, with a plain plaque. */
+function plinth(c: IsoCanvas, w: number, d: number, h: number) {
+  c.box(0.02, 0.02, w - 0.04, d - 0.04, h, M.white);
+  c.faceX(w * 0.3, d - 0.019, w * 0.4, h * 0.5, 3, C.gold);
+}
 function shoe(c: IsoCanvas, x: number, y: number, z: number, col: string) {
   const [px, py] = c.at(x, y, z);
   c.p.rect(px, py - 2, 4, 2, col);
@@ -1637,6 +1642,329 @@ const objects: Record<string, Spec> = {
       ]);
     },
     period: 24,
+  },
+  /*
+   * ── The history of calculation (owner's list): ten instruments, each on
+   * its own plinth or stand, from tally sticks to Babbage's engines. No
+   * numerals or lettering: digits are shown as dots and tick marks. ──
+   */
+  // Tally sticks: notched bone and wood sticks in a block, on a plinth.
+  'm-tally-sticks': {
+    footprint: [1, 1],
+    h: 44,
+    draw(c) {
+      plinth(c, 1, 1, 16);
+      c.box(0.25, 0.3, 0.5, 0.35, 4, M.wood, 16);
+      for (let k = 0; k < 4; k++) {
+        const u = 0.28 + k * 0.14,
+          h = 14 + ((k * 5) % 9),
+          col = k % 2 ? C.ivory : C.woodLight;
+        c.box(
+          u,
+          0.42,
+          0.06,
+          0.06,
+          h,
+          { top: col, front: col, side: C.woodDark, edge: C.woodDark },
+          20,
+        );
+        for (let n = 3; n < h - 1; n += 3) {
+          const [x, y] = c.at(u, 0.5, 20 + n);
+          c.p.pixel(x + 1, y, C.woodDark);
+        }
+      }
+    },
+  },
+  // A counting board: a table ruled into columns with pebble counters.
+  'm-counting-board': {
+    footprint: [2, 1.2],
+    h: 30,
+    draw(c) {
+      for (const [x, y] of [
+        [0.05, 0.05],
+        [1.85, 0.05],
+        [0.05, 1.05],
+        [1.85, 1.05],
+      ])
+        c.box(x, y, 0.1, 0.1, 20, M.wood);
+      c.box(0, 0, 2, 1.2, 2, M.wood, 20);
+      c.top(0.1, 0.1, 1.8, 1.0, 22.1, C.paper);
+      for (let k = 1; k < 6; k++)
+        c.edge(
+          [0.1 + k * 0.3, 0.1, 22.2],
+          [0.1 + k * 0.3, 1.1, 22.2],
+          C.woodDark,
+        );
+      c.edge([0.1, 0.6, 22.2], [1.9, 0.6, 22.2], C.woodDark);
+      for (let k = 0; k < 6; k++)
+        for (let n = 0; n < (k * 7) % 5; n++) {
+          const [x, y] = c.at(
+            0.22 + k * 0.3,
+            0.25 + n * 0.15 + (n > 1 ? 0.25 : 0),
+            22.3,
+          );
+          c.p.rect(x, y - 1, 2, 2, n % 2 ? C.charcoal : C.slate);
+        }
+    },
+  },
+  // A standing abacus: a wooden frame with rows of coloured beads.
+  'm-abacus': {
+    footprint: [1.6, 0.4],
+    h: 54,
+    side: true,
+    draw(c) {
+      for (const u of [0.05, 1.45]) c.box(u, 0.1, 0.1, 0.2, 50, M.wood);
+      c.box(0.05, 0.05, 1.5, 0.3, 3, M.wood, 2);
+      c.faceX(0.15, 0.2, 1.3, 46, 3, C.woodDark);
+      c.faceX(0.15, 0.2, 1.3, 18, 3, C.woodDark);
+      for (let r = 0; r < 6; r++) {
+        const z = 22 + r * 4;
+        c.edge([0.15, 0.2, z], [1.45, 0.2, z], C.steelDark);
+        // Some beads pushed to the left (counted), the rest to the right.
+        const n = 1 + ((r * 3) % 5);
+        for (let k = 0; k < 6; k++) {
+          const u = k < n ? 0.22 + k * 0.13 : 0.62 + k * 0.13;
+          const [x, y] = c.at(u, 0.2, z);
+          c.p.rect(x - 1, y - 1, 2, 3, r % 2 ? C.red : C.woodLight);
+          c.p.pixel(x - 1, y - 1, r % 2 ? C.pink : C.ivory);
+        }
+      }
+    },
+  },
+  // The Antikythera mechanism: corroded bronze gear fragments under glass.
+  'm-antikythera': {
+    footprint: [1, 1],
+    h: 40,
+    draw(c) {
+      plinth(c, 1, 1, 18);
+      c.top(0.15, 0.15, 0.7, 0.7, 18.1, C.navy);
+      const gear = (u: number, v: number, r: number, teeth: number) => {
+        const [x, y] = c.at(u, v, 19);
+        c.p.ellipse(x, y, r, r * 0.55, C.tealDark);
+        c.p.ellipse(x, y, r - 1, (r - 1) * 0.55, C.deepTeal);
+        for (let k = 0; k < teeth; k++) {
+          const t = (k / teeth) * Math.PI * 2;
+          c.p.pixel(
+            Math.round(x + Math.cos(t) * (r + 1)),
+            Math.round(y + Math.sin(t) * (r + 1) * 0.55),
+            C.terracottaDark,
+          );
+        }
+        c.p.pixel(x, y, C.yellowDark);
+        c.edge([u - 0.05, v, 19], [u + 0.08, v, 19], C.terracotta);
+      };
+      gear(0.45, 0.45, 9, 22);
+      gear(0.7, 0.62, 5, 12);
+      gear(0.3, 0.7, 3, 8);
+      // The glass case: frame edges and a glint.
+      for (const [x, y] of [
+        [0.12, 0.12],
+        [0.88, 0.12],
+        [0.12, 0.88],
+        [0.88, 0.88],
+      ])
+        c.edge([x, y, 18], [x, y, 34], C.glassLight);
+      c.top(0.12, 0.12, 0.76, 0.76, 34, C.glassLight);
+      c.edge([0.25, 0.88, 22], [0.4, 0.88, 32], C.white);
+    },
+    detail: { grain: 0 },
+  },
+  // Napier's bones: a wooden box and the ruled rods laid out on a table.
+  'm-napiers-bones': {
+    footprint: [1, 0.8],
+    h: 34,
+    draw(c) {
+      plinth(c, 1, 0.8, 18);
+      c.box(0.1, 0.1, 0.35, 0.55, 6, M.wood, 18);
+      c.top(0.13, 0.13, 0.29, 0.49, 24.1, C.woodDark);
+      for (let k = 0; k < 5; k++) {
+        const u = 0.52 + k * 0.08;
+        c.box(
+          u,
+          0.1,
+          0.06,
+          0.6,
+          1,
+          {
+            top: C.ivory,
+            front: C.stone,
+            side: C.stoneShade,
+            edge: C.stoneLine,
+          },
+          18,
+        );
+        for (let n = 0; n < 6; n++) {
+          const [x, y] = c.at(u + 0.03, 0.15 + n * 0.1, 19.2);
+          c.p.pixel(x, y, n % 2 ? C.charcoal : C.red);
+        }
+      }
+    },
+  },
+  // A giant demonstration slide rule on a stand: body, slide and cursor.
+  'm-slide-rule': {
+    footprint: [2, 0.3],
+    h: 52,
+    side: true,
+    draw(c) {
+      for (const u of [0.3, 1.7]) {
+        c.box(u - 0.04, 0.1, 0.08, 0.1, 40, M.steel);
+        c.box(u - 0.15, 0.0, 0.3, 0.3, 2, M.steel);
+      }
+      c.faceX(-0.05, 0.2, 2.1, 38, 12, C.ivory);
+      c.faceX(-0.05, 0.201, 2.1, 42, 4, C.woodLight);
+      for (let k = 0; k < 40; k++) {
+        const u = 2 * Math.log10(1 + (k / 40) * 9) * 0.98;
+        const long = k % 10 === 0;
+        c.edge([u, 0.202, 50], [u, 0.202, long ? 47 : 48.5], C.charcoal);
+        c.edge([u, 0.202, 38], [u, 0.202, long ? 41 : 39.5], C.charcoal);
+        c.edge([u, 0.202, 43], [u, 0.202, 44], C.redDark);
+      }
+      // The cursor: a clear window with a red hairline.
+      c.faceX(1.05, 0.21, 0.16, 37, 14, C.glassLight);
+      c.edge([1.13, 0.212, 37], [1.13, 0.212, 51], C.red);
+    },
+  },
+  // Pascal's calculator: a brass box with a row of dials, on a plinth.
+  'm-pascaline': {
+    footprint: [1, 0.8],
+    h: 36,
+    draw(c) {
+      plinth(c, 1, 0.8, 18);
+      c.box(
+        0.08,
+        0.2,
+        0.84,
+        0.4,
+        7,
+        {
+          top: C.gold,
+          front: C.yellowDark,
+          side: C.orangeDark,
+          edge: C.orangeDark,
+        },
+        18,
+      );
+      for (let k = 0; k < 6; k++) {
+        const [x, y] = c.at(0.18 + k * 0.13, 0.4, 25.1);
+        c.p.ellipse(x, y, 3, 2, C.yellowDark);
+        c.p.ellipse(x, y, 2, 1, C.ivory);
+        c.p.pixel(x, y, C.charcoal);
+      }
+      for (let k = 0; k < 6; k++) {
+        const [x, y] = c.at(0.18 + k * 0.13, 0.6, 21);
+        c.p.rect(x - 1, y - 1, 2, 2, C.ivory);
+      }
+    },
+  },
+  // Leibniz's stepped reckoner: a long brass machine with dials and a crank.
+  'm-stepped-reckoner': {
+    footprint: [1.6, 0.8],
+    h: 40,
+    draw(c) {
+      plinth(c, 1.6, 0.8, 18);
+      c.box(0.08, 0.15, 1.44, 0.5, 6, M.wood, 18);
+      c.box(
+        0.15,
+        0.25,
+        1.3,
+        0.3,
+        4,
+        {
+          top: C.gold,
+          front: C.yellowDark,
+          side: C.orangeDark,
+          edge: C.orangeDark,
+        },
+        24,
+      );
+      for (let k = 0; k < 8; k++) {
+        const [x, y] = c.at(0.25 + k * 0.15, 0.4, 28.1);
+        c.p.ellipse(x, y, 2, 1, C.ivory);
+        c.p.pixel(x, y, C.charcoal);
+      }
+      // Crank at the right end.
+      c.edge([1.45, 0.4, 28], [1.62, 0.4, 32], C.steelDark);
+      const [hx, hy] = c.at(1.62, 0.4, 32);
+      c.p.rect(hx, hy - 3, 2, 4, C.woodDark);
+    },
+  },
+  // Babbage's difference engine: columns of stacked figure wheels in a
+  // brass and iron frame, with a crank on top.
+  'm-difference-engine': {
+    footprint: [2, 1],
+    h: 72,
+    draw(c) {
+      c.box(0, 0, 2, 1, 6, M.dark);
+      for (const [x, y] of [
+        [0.05, 0.05],
+        [1.85, 0.05],
+        [0.05, 0.85],
+        [1.85, 0.85],
+      ])
+        c.box(x, y, 0.1, 0.1, 54, M.dark, 6);
+      c.box(0, 0, 2, 1, 3, M.dark, 60);
+      for (let col = 0; col < 5; col++) {
+        const u = 0.25 + col * 0.375;
+        c.edge([u, 0.5, 8], [u, 0.5, 58], C.ink);
+        for (let r = 0; r < 7; r++) {
+          const z = 11 + r * 7;
+          c.cylinder(u, 0.5, z, 3, 2, [C.gold, C.yellowDark, C.orangeDark]);
+          const [x, y] = c.at(u, 0.5, z + 1);
+          c.p.pixel(x, y + 2, C.ivory);
+        }
+      }
+      // Crank and gearing on top.
+      c.cylinder(1.0, 0.5, 63, 6, 2, [C.gold, C.yellowDark, C.orangeDark]);
+      c.edge([1.0, 0.5, 65], [1.0, 0.5, 70], C.steel);
+      c.edge([1.0, 0.5, 70], [1.25, 0.5, 70], C.steel);
+    },
+  },
+  // Babbage's analytical engine: the mill (a ring of wheel columns round a
+  // central drum), the store (rows of columns) and a chain of punched cards.
+  'm-analytical-engine': {
+    footprint: [2.6, 1.2],
+    h: 76,
+    draw(c) {
+      c.box(0, 0, 2.6, 1.2, 6, M.dark);
+      // The store: rows of columns along the back.
+      for (let col = 0; col < 5; col++) {
+        const u = 1.1 + col * 0.3;
+        c.edge([u, 0.3, 6], [u, 0.3, 54], C.ink);
+        for (let r = 0; r < 7; r++)
+          c.cylinder(u, 0.3, 9 + r * 6.5, 2, 2, [
+            C.steelLight,
+            C.steel,
+            C.steelDark,
+          ]);
+      }
+      c.box(1.0, 0.2, 1.5, 0.2, 2, M.dark, 54);
+      // The mill: a ring of brass columns round a central drum.
+      c.cylinder(0.5, 0.6, 6, 7, 52, [C.gold, C.yellowDark, C.orangeDark]);
+      for (let k = 0; k < 6; k++) {
+        const t = (k / 6) * Math.PI * 2;
+        const u = 0.5 + Math.cos(t) * 0.4,
+          v = 0.6 + Math.sin(t) * 0.4;
+        for (let r = 0; r < 7; r++)
+          c.cylinder(u, v, 9 + r * 6.5, 2, 2, [
+            C.gold,
+            C.yellowDark,
+            C.orangeDark,
+          ]);
+      }
+      // The punched-card chain feeding in at the front.
+      for (let k = 0; k < 9; k++) {
+        const u = 1.0 + k * 0.17;
+        c.faceX(u, 1.15, 0.15, 8 + (k % 2) * 2, 10, C.paper);
+        for (let n = 0; n < 4; n++) {
+          const [x, y] = c.at(
+            u + 0.03 + (n % 2) * 0.06,
+            1.151,
+            12 + n * 2 + (k % 2) * 2,
+          );
+          if ((k + n) % 3) c.p.pixel(x, y, C.charcoal);
+        }
+      }
+    },
   },
   /* ── Maths lab, after the owner's reference photos (zoned research lab) ── */
   // A stool with a coloured seat (green and teal, as in the references).
