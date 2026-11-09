@@ -186,6 +186,15 @@ export const sortableSchema = z.object({
   animation: z.array(z.string()).optional(),
   /** Frames per animation cycle (default 60), so a scene can sync to the loop. */
   period: z.number().int().positive().optional(),
+  /** Prepainted woodland depth layers. Shared cutout/pivot keeps atlas batching cheap. */
+  atmosphere: z.object({ middle: z.string(), far: z.string() }).optional(),
+  /** District life is evaluated from the same deterministic world frame. */
+  life: z
+    .object({
+      kind: z.enum(['tram', 'ship', 'taxi', 'foliage']),
+      views: z.record(z.string()).optional(),
+    })
+    .optional(),
   /** Tile point where this sprite touches the ground (front boundary for strips). */
   ground: pointSchema,
   /** Pixel in the frame that sits on the ground point. */

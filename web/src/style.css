@@ -269,6 +269,127 @@ html[lang='bn'] .brand strong {
   top: 0;
   z-index: 12;
 }
+.landscape-explorer {
+  position: absolute;
+  top: 76px;
+  inset-inline-start: 30px;
+  z-index: 11;
+  color: #244b43;
+}
+.landscape-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 39px;
+  padding: 9px 12px;
+  border: 1px solid #ffffffbf;
+  border-radius: 5px;
+  background: #faf8f1ed;
+  box-shadow: 0 3px 14px #163c3214;
+  font-size: 10px;
+}
+.landscape-trigger[aria-expanded='true'] > svg:last-child {
+  transform: rotate(180deg);
+}
+.landscape-trigger:focus-visible,
+.landscape-menu button:focus-visible {
+  outline: 2px solid #397c68;
+  outline-offset: 3px;
+}
+.landscape-menu {
+  width: 230px;
+  margin-top: 7px;
+  padding: 12px;
+  border: 1px solid #fff;
+  border-radius: 7px;
+  background: #faf8f1f7;
+  box-shadow: 0 10px 30px #163c3224;
+  max-height: min(570px, calc(100svh - 220px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #9aafa0 transparent;
+}
+.landscape-menu > p {
+  margin: 0 0 10px;
+  color: #6b7d65;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.landscape-menu button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  text-align: start;
+}
+.landscape-menu button:hover {
+  background: #e5ecdb;
+}
+.landscape-menu button small {
+  margin-inline-start: auto;
+  font-size: 8px;
+  color: #8e9b82;
+}
+.landscape-medallion {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid #bed2ad;
+  border-radius: 4px;
+  background: #dce8c7;
+  color: #396044;
+}
+.landscape-waterfall {
+  background: #d5eeea;
+  color: #287d83;
+  border-color: #b1d8ce;
+}
+.landscape-coast {
+  background: #f0e5c6;
+  color: #28758c;
+  border-color: #dccda7;
+}
+.landscape-village {
+  background: #eddcc5;
+  color: #a06140;
+  border-color: #dec2a6;
+}
+.landscape-night-city {
+  background: #142f4c;
+  color: #8ce4ee;
+  border-color: #365c7f;
+}
+.landscape-rain-street {
+  background: #315956;
+  color: #ffe09a;
+  border-color: #65877e;
+}
+.landscape-blossom {
+  background: #ecd4dc;
+  color: #9a526d;
+  border-color: #d6adb8;
+}
+@media (max-width: 600px) {
+  .landscape-explorer {
+    top: 65px;
+    inset-inline-start: 16px;
+  }
+  .landscape-trigger {
+    min-height: 34px;
+    padding: 8px 10px;
+    font-size: 9px;
+    gap: 7px;
+  }
+  .landscape-menu {
+    width: min(230px, calc(100vw - 32px));
+  }
+}
 .search-field {
   display: flex;
   align-items: center;
@@ -1584,4 +1705,175 @@ html[dir='rtl'] .portrait-decoration {
 .world-page a,
 .world-page input {
   touch-action: manipulation;
+}
+
+/* Woodland light follows the camera into the actual forest biome. */
+.world-host[data-biome='forest'] {
+  background:
+    url('/world/forest-sky.webp') center / cover no-repeat,
+    #bdceca;
+}
+.world-host[data-biome='forest'] ~ .scene-vignette {
+  background: radial-gradient(
+    ellipse at 52% 42%,
+    transparent 45%,
+    #0b353c20 100%
+  );
+}
+
+/* Each destination has its own painted atmosphere without covering the world. */
+.world-host[data-mood='night-city'] {
+  background:
+    url('/world/night-city-sky.webp') center / cover no-repeat,
+    #0d2442;
+}
+.world-host[data-mood='rain-street'] {
+  background:
+    url('/world/rain-street-sky.webp') center / cover no-repeat,
+    #648b80;
+}
+.world-host[data-mood='blossom'] {
+  background:
+    url('/world/blossom-sky.webp') center / cover no-repeat,
+    #a8798e;
+}
+.world-host[data-mood='coast'] {
+  background:
+    url('/world/coast-sky.webp') center / cover no-repeat,
+    #39abe2;
+}
+.world-host[data-mood='night-city'] ~ .scene-vignette {
+  background: radial-gradient(
+    ellipse at 52% 45%,
+    transparent 35%,
+    #03112855 100%
+  );
+}
+.world-host[data-mood='rain-street'] ~ .scene-vignette {
+  background: radial-gradient(
+    ellipse at 52% 45%,
+    transparent 35%,
+    #082f2c38 100%
+  );
+}
+.world-host[data-mood='blossom'] ~ .scene-vignette {
+  background: radial-gradient(
+    ellipse at 52% 45%,
+    transparent 40%,
+    #8e4c6724 100%
+  );
+}
+.world-host[data-mood='coast'] ~ .scene-vignette {
+  background: radial-gradient(
+    ellipse at 52% 45%,
+    transparent 60%,
+    #064e6314 100%
+  );
+}
+
+.living-world-panel {
+  position: absolute;
+  top: 124px;
+  inset-inline-start: 30px;
+  width: 252px;
+  z-index: 9;
+  border: 1px solid #ffffffc9;
+  border-radius: 6px;
+  background: #faf8f1ef;
+  box-shadow: 0 4px 18px #163c3214;
+  color: #244b43;
+  font-size: 10px;
+}
+.living-world-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px;
+}
+.living-world-heading button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  border-radius: 4px;
+}
+.living-world-heading button:focus-visible {
+  outline: 2px solid #397c68;
+  outline-offset: 3px;
+}
+.living-world-expand {
+  flex: 1;
+  padding: 4px;
+  text-align: start;
+}
+.living-world-expand[aria-expanded='true'] > svg:last-child {
+  transform: rotate(180deg);
+}
+.living-world-preview {
+  padding: 5px 7px;
+  border: 1px solid #c6d4be;
+  background: #e7eddc;
+  font-size: 9px;
+}
+.living-world-preview:hover {
+  background: #dbe7cc;
+}
+.living-world-body {
+  border-top: 1px solid #dce3d5;
+  padding: 10px 12px 12px;
+}
+.living-world-state {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 9px;
+  font-size: 8px;
+  color: #78856b;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+.living-world-panel dl {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+.living-world-panel dl > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}
+.living-world-panel dt {
+  color: #78856b;
+}
+.living-world-panel dd {
+  margin: 0;
+  text-align: end;
+  line-height: 1.4;
+}
+.living-world-scene {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+}
+.living-world-note {
+  margin: 4px 0 0;
+  color: #78856b;
+  font-size: 9px;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .living-world-panel {
+    top: 109px;
+    inset-inline-start: 16px;
+    width: min(252px, calc(100vw - 32px));
+  }
+  .living-world-heading {
+    padding: 5px;
+  }
+}
+@media (max-height: 500px) {
+  .living-world-panel {
+    top: auto;
+    bottom: 72px;
+  }
 }

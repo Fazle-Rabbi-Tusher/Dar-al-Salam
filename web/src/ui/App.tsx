@@ -12,6 +12,19 @@ import { tileFromWorld, worldFromTile } from '../../../packages/shared/iso';
 import { useStore, useT, type Language } from './store';
 import { Icon } from './Icon';
 import { Lab } from './Lab';
+import { LandscapeExplorer, landscapeLabel } from './LandscapeExplorer';
+import {
+  LivingWorldPanel,
+  activityAt,
+  type WorldActivity,
+} from './LivingWorldPanel';
+import { districtAt } from '../../../packages/shared/districts';
+import { inWoodlandVillage } from '../../../tools/landscape/scene';
+import {
+  mapDistance,
+  tileToPlanet,
+  wildAt,
+} from '../../../packages/shared/planet';
 export function App() {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -203,6 +216,16 @@ function World({ manifest }: { manifest: Manifest | null }) {
     motion = useStore((s) => s.motion),
     camera = useStore((s) => s.camera),
     setCamera = useStore((s) => s.setCamera);
+  const cameraTile = tileFromWorld(camera.x, camera.y),
+    activeDistrict = districtAt(cameraTile),
+    activeLandscape =
+      activeDistrict === 'day' && inWoodlandVillage(cameraTile)
+        ? 'village'
+        : activeDistrict === 'day' &&
+            mapDistance(cameraTile) > 8 &&
+            wildAt(tileToPlanet(...cameraTile), cameraTile) === 'forest'
+          ? 'forest'
+          : activeDistrict;
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<Engine | null>(null),
     search = useRef<HTMLInputElement>(null),
@@ -226,6 +249,8 @@ function World({ manifest }: { manifest: Manifest | null }) {
     // re-render the whole page while dragging (slow on phones).
     pointer = useRef({ x: 0, y: 0 }),
     label = useRef<HTMLDivElement>(null);
+  const activityKey = useRef('');
+  const [activity, setActivity] = useState<WorldActivity>(() => activityAt(0));
   const named = manifest?.characters.filter((c) => c.interactive) ?? [],
     card = named.find((c) => c.id === selected);
   // Hovering anyone shows what they are doing; named people invite a click.
@@ -273,6 +298,17 @@ function World({ manifest }: { manifest: Manifest | null }) {
     });
     world.on('cameraChange', (c) => {
       setCamera(c);
+      const tile = tileFromWorld(c.x, c.y);
+      const mood = districtAt(tile);
+      if (host.current) {
+        host.current.dataset.mood = mood;
+        host.current.dataset.biome =
+          mood === 'day' &&
+          mapDistance(tile) > 8 &&
+          wildAt(tileToPlanet(...tile), tile) === 'forest'
+            ? 'forest'
+            : 'day';
+      }
       if (initialising) return;
       clearTimeout(urlTimer.current);
       urlTimer.current = setTimeout(() => {
@@ -283,6 +319,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
             serialiseUrl(c, useStore.getState().selected ?? undefined),
           );
       }, 300);
+    });
+    world.on('worldFrame', (frame) => {
+      const next = activityAt(frame);
+      const key = `${next.tram}|${next.vehicle}|${next.pedestrian}`;
+      if (activityKey.current !== key) {
+        activityKey.current = key;
+        setActivity(next);
+      }
     });
     world.on('stats', setStats);
     world.on('characterHover', setHovered);
@@ -394,7 +438,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
       <div className="world-top">
         <div className="chapter-pill">
           <span>01</span>
-          {t('room')}
+          {landscapeLabel(activeLandscape, lang) ?? t('room')}
         </div>
         <div className="search-wrap">
           <div className="search-field">
@@ -495,6 +539,26 @@ function World({ manifest }: { manifest: Manifest | null }) {
           {t('community')}
         </button>
       </div>
+      <LandscapeExplorer
+        onVisit={([x, y], destinationZoom) => {
+          close();
+          setIntro(false);
+          setFocused(false);
+          const [wx, wy] = worldFromTile(x, y);
+          engine.current?.flyTo(
+            {
+              x: wx,
+              y: wy,
+              zoom:
+                window.innerWidth < PHONE_WIDTH
+                  ? Math.min(1.4, destinationZoom ?? 1)
+                  : (destinationZoom ?? 1.5),
+            },
+            900,
+          );
+        }}
+      />
+      <LivingWorldPanel activity={activity} landscape={activeLandscape} />
       {card && (
         <aside className="story-card" aria-label={card.name?.[lang]}>
           <button
