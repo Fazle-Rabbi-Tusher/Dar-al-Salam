@@ -66,7 +66,7 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
-test('the Massawa button flies to the island and the mosque opens its landmark card', async ({
+test('the Massawa button flies to the town and the mosque opens its landmark card', async ({
   page,
 }) => {
   const errors: string[] = [];
