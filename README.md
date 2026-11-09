@@ -9,3 +9,10 @@ Each ZIP opens independently. Extract both into the same folder.
 Together these contain all 124 unique files from the complete export: final artwork,
 seven source sheets, animation/integration code, restore patch, and recorded previews.
 This download branch leaves the app reverted on main.
+
+## New multi-angle desert pixel art
+
+[Download five new multi-angle PNG sheets (10.9 MB)](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/desert-multi-angle-pixel-art.zip)
+
+Includes the historic building, reciter, guide/camels, desert terrain and props.
+These are 2D sheets with three-dimensional shading; the app source is unchanged.
