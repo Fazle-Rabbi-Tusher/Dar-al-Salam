@@ -66,6 +66,50 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
+test('the Massawa button flies to the island and the mosque opens its landmark card', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await ready(page);
+  await page.getByRole('button', { name: 'Massawa' }).click();
+  await page.waitForTimeout(1500);
+  const points = await page.evaluate(() =>
+    (
+      window as unknown as {
+        __darEngine: {
+          debugPoints(id: string): {
+            opaque: { x: number; y: number };
+            transparent: { x: number; y: number };
+          } | null;
+        };
+      }
+    ).__darEngine.debugPoints('mosque-of-the-companions'),
+  );
+  expect(points?.opaque).toBeTruthy();
+  const canvas = await page.locator('.world-host canvas').boundingBox();
+  await page.mouse.move(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  await expect(page.locator('.hover-label')).toContainText(
+    'Mosque of the Companions',
+  );
+  await page.mouse.click(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  const card = page.locator('.story-card');
+  await expect(card).toContainText('LANDMARK');
+  await expect(card).toContainText('Mosque of the Companions');
+  await expect(card).toContainText('DRAFT');
+  await expect(page).toHaveURL(/\/c\/mosque-of-the-companions/);
+  await page.reload();
+  await expect(page.locator('.story-card')).toContainText(
+    'Mosque of the Companions',
+  );
+  expect(errors).toEqual([]);
+});
 test('spin, zoom, whole-planet overview, inspector and minimap operate without runtime errors', async ({
   page,
 }) => {

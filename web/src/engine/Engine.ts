@@ -71,6 +71,9 @@ type Static = {
   sortable: Sortable;
   point: Vec3;
   size: number;
+  /** Sprite pixels per world pixel (detailed supplied art is drawn finer). */
+  density: number;
+  depth: number;
 };
 type ViewState = { lat: number; lon: number; zoom: number };
 const MAX_ZOOM = 4,
@@ -395,12 +398,15 @@ export class Engine {
     for (const s of manifest.sortables) {
       const sprite = new Sprite(this.textures.get(s.frame));
       sprite.pivot.set(...s.pivot);
-      const m = this.metadata.get(s.frame)!;
+      const m = this.metadata.get(s.frame)!,
+        density = m.density ?? 1;
       this.statics.push({
         sprite,
         sortable: s,
         point: tileToPlanet(...s.ground),
-        size: Math.max(m.frame.w, m.frame.h),
+        size: Math.max(m.frame.w, m.frame.h) / density,
+        density,
+        depth: 0,
       });
     }
     this.ready = true;
@@ -554,6 +560,14 @@ export class Engine {
     };
   }
   focusCharacter(id: string) {
+    const l = this.manifest?.landmarks.find((l) => l.id === id);
+    if (l) {
+      this.selected = id;
+      const [x, y] = worldFromTile(...l.tile);
+      // Centre the building, not its doorstep.
+      this.flyTo({ x, y: y - 48, zoom: Math.max(2, this.view.zoom) }, 700);
+      return;
+    }
     const c = this.manifest?.characters.find(
       (c) => c.id === id && c.interactive,
     );
@@ -647,7 +661,18 @@ export class Engine {
           ],
           s.sortable.pivot,
         );
-      this.place(s.sprite, s.point, s.size, s.sortable.lift);
+      const p = this.place(
+        s.sprite,
+        s.point,
+        s.size,
+        s.sortable.lift,
+        0,
+        s.density,
+      );
+      if (!p) continue;
+      s.depth = p.depth;
+      const id = s.sortable.landmark;
+      if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
     }
     let visible = 0;
     for (const c of this.manifest.characters) {
@@ -719,23 +744,29 @@ export class Engine {
       if (!p) continue;
       visible++;
       item.depth = p.depth;
-      const outlined = this.hover === c.id && c.interactive;
-      if (outlined || this.selected === c.id) {
-        let filter = item.sprite.filters?.[0] as OutlineFilter | undefined;
-        if (!filter) {
-          filter = new OutlineFilter({
-            thickness: Math.max(1, Math.round(this.view.zoom)),
-            color: 0xd8ad57,
-            quality: 0.1,
-          });
-          item.sprite.filters = [filter];
-        }
-        filter.alpha =
-          this.selected === c.id ? 0.65 + 0.35 * Math.sin(this.frame / 4) : 1;
-      } else if (item.sprite.filters?.length) item.sprite.filters = [];
+      this.outline(
+        item.sprite,
+        this.hover === c.id && c.interactive,
+        this.selected === c.id,
+      );
     }
     this.visibleCount = visible;
     if (this.inspector) this.drawInspector();
+  }
+  /** Gold outline on hover; a slow pulse while selected. */
+  private outline(sprite: Sprite, hovered: boolean, selected: boolean) {
+    if (hovered || selected) {
+      let filter = sprite.filters?.[0] as OutlineFilter | undefined;
+      if (!filter) {
+        filter = new OutlineFilter({
+          thickness: Math.max(1, Math.round(this.view.zoom)),
+          color: 0xd8ad57,
+          quality: 0.1,
+        });
+        sprite.filters = [filter];
+      }
+      filter.alpha = selected ? 0.65 + 0.35 * Math.sin(this.frame / 4) : 1;
+    } else if (sprite.filters?.length) sprite.filters = [];
   }
   private visibleCount = 0;
   private tick(dt: number) {
@@ -820,15 +851,39 @@ export class Engine {
     this.view.lat += dLat;
     return { lat: dLat, lon: dLon };
   }
+  /** Topmost character (or landmark) under a screen point. */
   private hit(p: { x: number; y: number }, interactiveOnly = true) {
-    const items = [...this.live.values()]
-      .filter(
-        (i) =>
-          i.sprite.visible &&
-          i.sprite.parent === this.front &&
-          (!interactiveOnly || i.character.interactive),
+    const items: {
+      id: string;
+      sprite: Sprite;
+      frame: string;
+      depth: number;
+    }[] = [];
+    for (const i of this.live.values())
+      if (
+        i.sprite.visible &&
+        i.sprite.parent === this.front &&
+        (!interactiveOnly || i.character.interactive)
       )
-      .sort((a, b) => b.depth - a.depth);
+        items.push({
+          id: i.character.id,
+          sprite: i.sprite,
+          frame: i.frame,
+          depth: i.depth,
+        });
+    for (const s of this.statics)
+      if (
+        s.sortable.landmark &&
+        s.sprite.visible &&
+        s.sprite.parent === this.front
+      )
+        items.push({
+          id: s.sortable.landmark,
+          sprite: s.sprite,
+          frame: s.sortable.frame,
+          depth: s.depth,
+        });
+    items.sort((a, b) => b.depth - a.depth);
     for (const item of items) {
       const m = this.metadata.get(item.frame)!;
       const local = item.sprite.toLocal(p);
@@ -841,18 +896,28 @@ export class Engine {
           local.y,
         )
       )
-        return item.character.id;
+        return item.id;
     }
     return null;
+  }
+  private clickable(id: string | null) {
+    return Boolean(
+      id &&
+      (this.live.get(id)?.character.interactive ||
+        this.manifest?.landmarks.some((l) => l.id === id)),
+    );
   }
   /** Development/test helper: tile coordinates of the ground under a screen point. */
   groundAt(x: number, y: number): Point | null {
     const p = unproject(this.proj, x, y);
     return p ? planetToTile(p) : null;
   }
-  /** Development/test helper: screen points over and beside a character. */
+  /** Development/test helper: screen points over and beside a character or landmark. */
   debugPoints(id: string) {
-    const item = this.live.get(id);
+    const landmark = this.statics.find((s) => s.sortable.landmark === id);
+    const item = landmark
+      ? { sprite: landmark.sprite, frame: landmark.sortable.frame }
+      : this.live.get(id);
     if (!item || !item.sprite.visible) return null;
     const m = this.metadata.get(item.frame)!,
       mask = this.masks.get(item.frame)!;
@@ -926,8 +991,7 @@ export class Engine {
           if (hit !== this.hover) {
             this.hover = hit;
             this.dirty = true;
-            const c = hit && this.live.get(hit)?.character;
-            canvas.style.cursor = c && c.interactive ? 'pointer' : 'grab';
+            canvas.style.cursor = this.clickable(hit) ? 'pointer' : 'grab';
             this.emit('characterHover', hit);
           }
         }

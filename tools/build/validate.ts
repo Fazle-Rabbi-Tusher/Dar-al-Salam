@@ -2,8 +2,10 @@ import { z } from 'zod';
 import { variantLook } from './variants';
 import {
   characterSchema,
+  landmarkSchema,
   roomSchema,
   type Character,
+  type Landmark,
   type Room,
 } from '../../packages/shared/schema';
 import { forbiddenName, type Rules } from '../../packages/shared/rules';
@@ -15,6 +17,22 @@ export type Wardrobe = Record<
   string,
   { region: string; era: string; garments: string[]; headwear: string[] }
 >;
+/** Landmark cards follow the same card rules as named characters. */
+export function validateLandmark(l: Landmark, rules: Rules, prod: boolean) {
+  const errors: string[] = [];
+  // Buildings are not depictions, but their names still pass the denylist so
+  // a card can never be used to name a prohibited person.
+  for (const name of [l.id, ...Object.values(l.name)])
+    if (forbiddenName(name, rules))
+      errors.push(`never-depict rule rejects landmark name/id: ${name}`);
+  if ((l.sources?.length ?? 0) < 2)
+    errors.push('Landmark cards need at least two sources');
+  if (prod && l.panelApproved !== true)
+    errors.push(
+      'panelApproved must be true in production; advisory review is required',
+    );
+  if (errors.length) throw Error(`${l.id}: ${errors.join('; ')}`);
+}
 export function validateCharacter(
   c: Character,
   rules: Rules,
@@ -148,5 +166,12 @@ export async function loadContent() {
       throw Error(`${c.id}: missing pair ${c.pairWith}`);
   for (const p of await files('content/i18n', '.json'))
     z.record(z.string()).parse(await readJson(p));
-  return { keys, ramps, palette, rules, wardrobe, characters, room };
+  const landmarks: Landmark[] = [];
+  for (const p of await files('content/landmarks', '.json')) {
+    const l = landmarkSchema.parse(await readJson(p));
+    if (ids.has(l.id)) throw Error(`Duplicate id ${l.id}`);
+    ids.add(l.id);
+    landmarks.push(l);
+  }
+  return { keys, ramps, palette, rules, wardrobe, characters, room, landmarks };
 }

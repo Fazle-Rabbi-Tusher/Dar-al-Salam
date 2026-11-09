@@ -37,7 +37,7 @@ export function canvasFor(base: string): CanvasSpec {
         ? CANVAS.ball
         : VEHICLES.includes(base)
           ? CANVAS.vehicle
-          : ANIMALS.includes(base)
+          : (ANIMALS as readonly string[]).includes(base)
             ? CANVAS[base as (typeof ANIMALS)[number]]
             : CANVAS.person;
 }

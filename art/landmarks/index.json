@@ -1,0 +1,8 @@
+{
+  "mosque-of-the-companions": {
+    "file": "landmarks/mosque-of-the-companions.png",
+    "anchor": [254, 318],
+    "density": 2.5,
+    "source": "Owner-supplied sprite sheet (2026-11), top-left view; cut out with tools/prepare-landmark.ts and the dome's finial replaced with a plain knob"
+  }
+}

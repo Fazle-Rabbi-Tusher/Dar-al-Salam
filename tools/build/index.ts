@@ -3,7 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { MaxRectsPacker, Rectangle } from 'maxrects-packer';
-import { loadContent, validateCharacter } from './validate';
+import { loadContent, validateCharacter, validateLandmark } from './validate';
 import {
   readJson,
   writeJson,
@@ -46,9 +46,12 @@ import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
   WILD,
+  massawaIsland,
+  MASSAWA,
   wildPlantings,
   type Planting,
 } from '../../packages/shared/planet';
+import { MASSAWA_OBJECTS } from '../../packages/shared/massawa';
 import type { ObjectArt } from '../placeholder/objects';
 const out = 'public-build';
 /** Flat walkable art (carpets, rugs) is baked into chunk backgrounds. */
@@ -65,12 +68,17 @@ async function build() {
   const warnings = characters.flatMap((c) =>
     validateCharacter(c, content.rules, room, parts, content.wardrobe, prod),
   );
+  for (const l of content.landmarks) validateLandmark(l, content.rules, prod);
   const allowed = new Set(palette),
     sourceAllowed = new Set([...palette, ...Object.values(keys).flat()]);
   for (const p of await files('art', '.png')) {
     // Illustrated portraits and supplied full-body sprites are not limited
     // to the pixel-art palette.
-    if (p.startsWith('art/illustrations/') || p.startsWith('art/sprites/'))
+    if (
+      p.startsWith('art/illustrations/') ||
+      p.startsWith('art/sprites/') ||
+      p.startsWith('art/landmarks/')
+    )
       continue;
     const errors = paletteErrors(
       await image(p),
@@ -553,6 +561,8 @@ async function build() {
   };
   const wildCounts: Record<string, number> = {};
   for (const [i, w] of wildPlantings().entries()) {
+    // Massawa's island is laid out by hand (packages/shared/massawa.ts).
+    if (massawaIsland(w.tile) < MASSAWA.island.radius + 2) continue;
     let chosen: { names: string[]; period?: number } | null = null;
     for (const options of wildArt[w.kind]) {
       if (!options.length) continue;
@@ -587,6 +597,68 @@ async function build() {
   }
   if (process.env.DAR_WILD_LOG)
     console.log('Wild plantings:', JSON.stringify(wildCounts));
+  // Massawa's town, boats and palms, outside the mapped quarter: sorted like
+  // wild plantings (one ground point each, no collision, not in the floor).
+  for (const [i, [type, x, y]] of MASSAWA_OBJECTS.entries()) {
+    const chosen = await wildFrame(type);
+    if (!chosen) throw Error(`Massawa: unknown object ${type}`);
+    const frame = chosen.names[0],
+      tile: [number, number] = [x, y],
+      [wx, wy] = worldFromTile(x, y);
+    sortables.push({
+      frame,
+      x: wx,
+      y: wy,
+      depth: depth(x, y),
+      objectId: -500000 - i,
+      tile,
+      footprint: [1, 1],
+      ground: tile,
+      pivot: [...metas[frame].anchor],
+      lift: 0,
+      ...(chosen.names.length > 1 ? { animation: chosen.names } : {}),
+      ...(chosen.names.length > 1 && chosen.period
+        ? { period: chosen.period }
+        : {}),
+    });
+  }
+  // Landmarks: supplied, detailed building art (art/landmarks) with a card.
+  const landmarkArt: Record<
+    string,
+    { file: string; anchor: [number, number]; density: number }
+  > = await readJson('art/landmarks/index.json');
+  const landmarks: Manifest['landmarks'] = [];
+  for (const [i, l] of content.landmarks.entries()) {
+    const art = landmarkArt[l.art];
+    if (!art) throw Error(`${l.id}: unknown landmark art ${l.art}`);
+    const frame = register(
+        await image(`art/${art.file}`),
+        art.anchor,
+        art.density,
+        true,
+      ),
+      [wx, wy] = worldFromTile(...l.tile);
+    sortables.push({
+      frame,
+      x: wx,
+      y: wy,
+      depth: depth(...l.tile),
+      objectId: -900000 - i,
+      tile: l.tile,
+      footprint: [1, 1],
+      ground: l.tile,
+      pivot: [...metas[frame].anchor],
+      lift: 0,
+      landmark: l.id,
+    });
+    const illustration = `illustrations/landmark-${l.id}.png`;
+    await fs.mkdir(`${out}/illustrations`, { recursive: true });
+    await sharp(`art/${art.file}`)
+      .resize({ width: 280 })
+      .png({ palette: true, quality: 90 })
+      .toFile(`${out}/${illustration}`);
+    landmarks.push({ ...l, illustration });
+  }
   // Pixel art packs into sharp (nearest-filtered) atlases; the detailed,
   // high-density frames (sharp heads, supplied sprites) into smooth ones that
   // the engine filters linearly with mipmaps, so they never look crunchy.
@@ -743,11 +815,13 @@ async function build() {
     atlases: atlasUrls,
     sortables,
     characters: baked,
+    landmarks,
     i18n,
     room,
     buildHash: hash(
       JSON.stringify({
         baked,
+        landmarks,
         sortables,
         metas,
         palette,
