@@ -1,0 +1,18 @@
+{
+  "frame": [
+    231,
+    166
+  ],
+  "foot": [
+    115,
+    145
+  ],
+  "density": 1.6,
+  "shadow": [
+    75.0,
+    20.0
+  ],
+  "actions": {
+    "vehicle_stop": "tram-open"
+  }
+}

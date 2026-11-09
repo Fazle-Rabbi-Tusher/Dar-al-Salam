@@ -565,5 +565,102 @@
     ],
     "density": 2.198,
     "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "land-waterfall": {
+    "file": "supplied/waterfall-0.png",
+    "frames": [
+      "supplied/waterfall-0.png",
+      "supplied/waterfall-1.png",
+      "supplied/waterfall-2.png",
+      "supplied/waterfall-3.png"
+    ],
+    "period": 24,
+    "anchor": [
+      120,
+      234
+    ],
+    "density": 1.4,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-oak": {
+    "file": "supplied/oak.png",
+    "anchor": [
+      85,
+      178
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-pine": {
+    "file": "supplied/pine.png",
+    "anchor": [
+      67,
+      193
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-cherry": {
+    "file": "supplied/cherry.png",
+    "anchor": [
+      73,
+      129
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-oak-young": {
+    "file": "supplied/oak-young.png",
+    "anchor": [
+      47,
+      98
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-pine-young": {
+    "file": "supplied/pine-young.png",
+    "anchor": [
+      41,
+      117
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-cherry-young": {
+    "file": "supplied/cherry-young.png",
+    "anchor": [
+      53,
+      94
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-forest-stand": {
+    "file": "supplied/forest-stand.png",
+    "anchor": [
+      107,
+      193
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-snag": {
+    "file": "supplied/snag.png",
+    "anchor": [
+      79,
+      172
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "land-tram-platform": {
+    "file": "supplied/tram-platform.png",
+    "anchor": [
+      109,
+      206
+    ],
+    "density": 2,
+    "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
   }
 }

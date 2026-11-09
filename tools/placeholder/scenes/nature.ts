@@ -8,10 +8,9 @@
  * floor art (walkable, baked into the ground).
  */
 export const NATURE_OBJECTS: [string, number, number, number?][] = [
-  /* ── Bangladesh lawn (x 64–94, y 95–110): a waterfall glade ── */
-  // The waterfall stands at the back of the lawn, its pool facing south,
-  // with pines and an oak behind it and a flower meadow at its foot.
-  ['m-waterfall', 72, 96],
+  /* ── Bangladesh lawn (x 64–94, y 95–110): an open glade ── */
+  // Pines and an oak at the back of the lawn and a flower meadow in front
+  // (the waterfall that stood here was removed at the owner's request).
   ['m-oak', 69, 96],
   ['m-pine', 71, 95],
   ['m-birch', 78, 95],

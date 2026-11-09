@@ -152,7 +152,10 @@ describe('wild landscape', () => {
       if (w.kind === 'palm' || w.kind === 'beach-rock') expect(b).toBe('beach');
     }
     const kinds = new Set(plantings.map((w) => w.kind));
-    for (const k of ['forest-tree', 'palm', 'boulder', 'waterfall', 'ship'])
+    // Ships sail as characters now (content/ambient/world-life.json), and
+    // there are no waterfalls (no rivers or mountains for them to fall from).
+    expect(kinds.has('waterfall' as never)).toBe(false);
+    for (const k of ['forest-tree', 'palm', 'boulder'])
       expect(kinds.has(k as never), k).toBe(true);
   });
   it('compiles the same fields for the shader', () => {

@@ -23,6 +23,9 @@ const phase = (frame: number, period: number) =>
 const WALK = new Set<Action>(['walk', 'carry', 'sweep']);
 // Four-legged animals: a slow rolling pace, a grazing dip, a calm rest.
 const PACE = new Set<Action>(['animal_walk', 'cat_walk']);
+// Ships pitch and roll on the swell; cars hum along; parked, they rest.
+const SAIL = new Set<Action>(['vehicle_sail']);
+const DRIVE = new Set<Action>(['vehicle_drive']);
 const GRAZE = new Set<Action>(['animal_graze']);
 const HOP = new Set<Action>(['cheer', 'celebrate', 'arms-out', 'taunt']);
 const STRIKE = new Set<Action>(['kick', 'punch', 'bat']);
@@ -30,16 +33,33 @@ const TALK = new Set<Action>(['talk', 'speech', 'wave']);
 
 export function motionFor(action: Action, frame: number): Motion {
   if (PACE.has(action)) {
-    // A camel paces (both legs on one side together), so it rolls from
-    // side to side with a bob on every step.
-    const t = phase(frame, 16);
+    // The legs step (generated frames); the body rolls gently from side to
+    // side on each stride and stays on the ground.
+    const t = phase(frame, 12);
     return {
-      lift: Math.abs(Math.sin(t * TAU)) * 1.4,
-      sx: 1 + Math.sin(t * TAU) * 0.012,
-      sy: 1 - Math.abs(Math.sin(t * TAU)) * 0.01,
-      lean: Math.sin(t * TAU) * 0.035,
+      lift: 0,
+      sx: 1,
+      sy: 1 - Math.abs(Math.sin(t * TAU)) * 0.008,
+      lean: Math.sin(t * TAU) * 0.015,
     };
   }
+  if (SAIL.has(action)) {
+    // A long swell: the hull pitches and rolls on slightly different beats.
+    const a = phase(frame, 60),
+      b = phase(frame, 40);
+    return {
+      lift: Math.sin(a * TAU) * 1.2,
+      sx: 1,
+      sy: 1 + Math.sin(b * TAU) * 0.006,
+      lean: Math.sin(a * TAU) * 0.025,
+    };
+  }
+  if (DRIVE.has(action)) {
+    // Engine hum: a tiny vertical shiver.
+    const t = phase(frame, 4);
+    return { lift: t < 0.5 ? 0.3 : 0, sx: 1, sy: 1, lean: 0 };
+  }
+  if (action === 'vehicle_stop') return STILL;
   if (GRAZE.has(action)) {
     // Head down to the ground and back, every four seconds.
     const t = phase(frame, 48),

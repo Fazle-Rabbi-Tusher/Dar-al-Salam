@@ -88,8 +88,18 @@ export function scriptErrors(c: Character, room?: Room) {
         len / (s.to - s.from) > 0.25
       )
         errors.push(`step ${i}: speed exceeds 1 tile / 4 frames`);
+      // Figures that never enter the mapped room (Massawa, the open world)
+      // have no walls to respect there.
+      const outside =
+        room &&
+        c.script.every((st) =>
+          (st.path ?? [st.at!]).every(
+            ([x, y]) => x < 0 || y < 0 || x >= room.width || y >= room.height,
+          ),
+        );
       if (
         room &&
+        !outside &&
         collision?.type === 'tilelayer' &&
         c.kind !== 'bird' &&
         c.kind !== 'ball' &&
