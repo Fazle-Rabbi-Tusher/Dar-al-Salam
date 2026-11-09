@@ -185,6 +185,12 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5) {
+    float along = atan(p.y, p.x) * 140.0;
+    float across = p.z / ${f(WILD.roadHalfWidth)};
+    float joint = step(0.92, fract(along)) + step(0.86, abs(across));
+    return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
+  }
   // Massawa: the town's trodden sand and the mosque's forecourt, ringed by
   // dry thorn scrub that blends back into the woods.
   float dry = massawaDryness(p, tile) + (h - 0.5) * 1.6;
@@ -206,12 +212,6 @@ vec3 wild(vec3 p, vec2 tile) {
     float lane = sin(tile.x * 0.9 + coveField(p) * 4.0) * sin(tile.y * 0.7 - coveField(p) * 3.0);
     if (lane > 0.55 && h > 0.35) return h > 0.8 ? DESERT : DESERT_DARK;
     return desertSand(p, tile, h, h2);
-  }
-  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5) {
-    float along = atan(p.y, p.x) * 140.0;
-    float across = p.z / ${f(WILD.roadHalfWidth)};
-    float joint = step(0.92, fract(along)) + step(0.86, abs(across));
-    return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
   }
   float edge = land + (h - 0.5) * 0.8;
   if (edge < ${f(WILD.beach)}) {

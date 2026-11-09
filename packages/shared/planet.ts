@@ -276,7 +276,7 @@ export const WILD = {
  */
 export const MASSAWA = {
   /** The town's sandy ground; scrub fills `fringe` more tiles round it. */
-  town: { centre: [-10, 116] as Point, radius: 13, fringe: 5 },
+  town: { centre: [-10, 116] as Point, radius: 19, fringe: 4 },
   /** Limestone flagstones: the forecourt before the mosque. */
   plaza: { centre: [-8.5, 118.5] as Point, radius: 2.4 },
 };
@@ -358,11 +358,11 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
-  // Massawa: the town's sand, then its scrub fringe (the road still runs).
+  // The ring road runs on; then Massawa's sand and its scrub fringe.
+  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5) return 'road';
   const dry = massawaDryness(p, tile);
   if (dry > MASSAWA.town.fringe && land >= WILD.beach)
     return inPlaza(tile) ? 'plaza' : 'desert';
-  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5) return 'road';
   if (land < WILD.beach) return 'beach';
   if (dry > 0) return 'scrub';
   const d = mapDistance(tile);
