@@ -168,9 +168,7 @@ const SCENERY: Record<string, { density: number; replaces?: string }> = {
   'land-oak-young': { density: 2 },
   'land-pine-young': { density: 2 },
   'land-cherry-young': { density: 2 },
-  // A natural waterfall makes no sense in the Bangladesh park (it had no
-  // stream to come from or go to): a stand of trees takes its place.
-  'land-forest-stand': { density: 2, replaces: 'm-waterfall' },
+  'land-forest-stand': { density: 2 },
   'land-snag': { density: 2 },
   'land-tram-platform': { density: 2 },
 };
