@@ -387,55 +387,55 @@
     "file": "objects/m-glasswall.png",
     "anchor": [
       16,
-      99
+      103
     ],
     "width": 160,
-    "height": 172
+    "height": 176
   },
   "m-glasswall-side": {
     "file": "objects/m-glasswall-side.png",
     "anchor": [
       144,
-      99
+      103
     ],
     "width": 160,
-    "height": 172
+    "height": 176
   },
   "m-whitewall": {
     "file": "objects/m-whitewall.png",
     "anchor": [
       16,
-      97
+      103
     ],
     "width": 160,
-    "height": 170
+    "height": 176
   },
   "m-whitewall-side": {
     "file": "objects/m-whitewall-side.png",
     "anchor": [
       144,
-      97
+      103
     ],
     "width": 160,
-    "height": 170
+    "height": 176
   },
   "m-archwall": {
     "file": "objects/m-archwall.png",
     "anchor": [
       16,
-      112
+      117
     ],
     "width": 160,
-    "height": 185
+    "height": 190
   },
   "m-archwall-side": {
     "file": "objects/m-archwall-side.png",
     "anchor": [
       144,
-      112
+      117
     ],
     "width": 160,
-    "height": 185
+    "height": 190
   },
   "m-dome": {
     "file": "objects/m-dome.png",
@@ -1764,28 +1764,28 @@
     "file": "objects/m-awning-shop.png",
     "anchor": [
       32,
-      72
+      79
     ],
     "width": 80,
-    "height": 102
+    "height": 109
   },
   "m-awning-shop-b": {
     "file": "objects/m-awning-shop-b.png",
     "anchor": [
       32,
-      72
+      79
     ],
     "width": 80,
-    "height": 102
+    "height": 109
   },
   "m-awning-shop-c": {
     "file": "objects/m-awning-shop-c.png",
     "anchor": [
       32,
-      72
+      79
     ],
     "width": 80,
-    "height": 102
+    "height": 109
   },
   "m-city-lamp": {
     "file": "objects/m-city-lamp.png",
@@ -1795,5 +1795,41 @@
     ],
     "width": 64,
     "height": 77
+  },
+  "m-neon-shop": {
+    "file": "objects/m-neon-shop.png",
+    "anchor": [
+      32,
+      102
+    ],
+    "width": 96,
+    "height": 140
+  },
+  "m-neon-shop-side": {
+    "file": "objects/m-neon-shop-side.png",
+    "anchor": [
+      64,
+      102
+    ],
+    "width": 96,
+    "height": 140
+  },
+  "m-tram-stop": {
+    "file": "objects/m-tram-stop.png",
+    "anchor": [
+      48,
+      52
+    ],
+    "width": 112,
+    "height": 90
+  },
+  "m-tram-stop-side": {
+    "file": "objects/m-tram-stop-side.png",
+    "anchor": [
+      64,
+      52
+    ],
+    "width": 112,
+    "height": 90
   }
 }

@@ -289,3 +289,141 @@ test('initial asset loading preserves a character deep link before an immediate 
   await page.reload();
   await expect(page.locator('.story-card')).toContainText('Ibn Sina');
 });
+
+test('landscape destinations show forest, city, rainy street, blossom, coast and village', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await ready(page);
+  for (const name of [
+    'Ancient woods',
+    'Mossy falls',
+    'Night skyline',
+    'Rainy tram street',
+    'Blossom lane',
+    'Coastal harbor',
+    'Woodland village',
+  ]) {
+    const before = page.url();
+    await page.getByRole('button', { name: 'Explore landscapes' }).click();
+    await page.getByRole('button', { name: new RegExp(name) }).click();
+    await expect.poll(() => page.url()).not.toBe(before);
+    await expect(page.locator('.landscape-menu')).toHaveCount(0);
+    await expect(page.locator('.world-host canvas')).toBeVisible();
+    await expect(page.locator('.world-error')).toHaveCount(0);
+    const mood = (
+      {
+        'Night skyline': 'night-city',
+        'Rainy tram street': 'rain-street',
+        'Blossom lane': 'blossom',
+        'Coastal harbor': 'coast',
+      } as Record<string, string>
+    )[name];
+    if (mood)
+      await expect(page.locator('.world-host')).toHaveAttribute(
+        'data-mood',
+        mood,
+      );
+    await page.waitForTimeout(900);
+  }
+  const manifest = await (await page.request.get('/world/world.json')).json();
+  expect(
+    manifest.sortables.filter(
+      (s: { objectId: number }) => s.objectId <= -100000,
+    ).length,
+  ).toBeGreaterThan(50);
+  await page.screenshot({ path: '.playwright/woodland-village.png' });
+  expect(errors).toEqual([]);
+});
+
+test('living scenery moves, uses its vehicle poses and pauses with the shared controls', async ({
+  page,
+}) => {
+  type Snapshot = {
+    frame: number;
+    motion: boolean;
+    tram: { phase: string; doorsOpen: boolean; speed: number };
+    entities: {
+      kind: string;
+      tile: number[];
+      visible: boolean;
+      x: number;
+      y: number;
+      pose: string;
+    }[];
+  };
+  const state = () =>
+    page.evaluate(() =>
+      (
+        window as unknown as { __darEngine: { debugLife(): Snapshot } }
+      ).__darEngine.debugLife(),
+    );
+  await ready(page);
+  await page.getByRole('button', { name: 'Explore landscapes' }).click();
+  await page.getByRole('button', { name: 'Rainy tram street' }).click();
+  await expect
+    .poll(
+      async () =>
+        (await state()).entities.find((e) => e.kind === 'tram')?.visible,
+    )
+    .toBe(true);
+  const start = await state();
+  await page
+    .getByRole('button', { name: 'Preview animation', exact: true })
+    .click();
+  const initialTram = start.entities.find((e) => e.kind === 'tram')!;
+  await expect
+    .poll(
+      async () => {
+        const current = await state();
+        const body = current.entities.find((e) => e.kind === 'tram')!;
+        return (
+          current.tram.speed > 0 &&
+          Math.hypot(body.x - initialTram.x, body.y - initialTram.y) > 1
+        );
+      },
+      { timeout: 12000 },
+    )
+    .toBe(true);
+  const moving = await state();
+  expect(moving.tram.speed).toBeGreaterThan(0);
+  expect(moving.tram.doorsOpen).toBe(false);
+  expect(moving.entities.find((e) => e.kind === 'tram')!.tile).not.toEqual(
+    start.entities.find((e) => e.kind === 'tram')!.tile,
+  );
+  await page
+    .getByRole('button', { name: 'Pause preview', exact: true })
+    .click();
+  await expect.poll(async () => (await state()).motion).toBe(false);
+  const paused = await state();
+  await page.waitForTimeout(450);
+  expect((await state()).frame).toBe(paused.frame);
+  expect((await state()).entities).toEqual(paused.entities);
+  await page.getByRole('button', { name: 'Explore landscapes' }).click();
+  await page.getByRole('button', { name: 'Coastal harbor' }).click();
+  await expect
+    .poll(
+      async () =>
+        (await state()).entities.filter((e) => e.kind === 'ship' && e.visible)
+          .length,
+    )
+    .toBeGreaterThan(0);
+  const ship = (await state()).entities.find(
+    (e) => e.kind === 'ship' && e.visible,
+  )!;
+  await page.getByLabel('Resume animation').click();
+  await expect(
+    page.getByRole('button', { name: 'Pause preview', exact: true }),
+  ).toBeVisible();
+  await expect
+    .poll(
+      async () =>
+        (await state()).entities.find((e) => e.kind === 'ship' && e.visible)
+          ?.tile,
+    )
+    .not.toEqual(ship.tile);
+  await page
+    .getByRole('button', { name: 'Pause preview', exact: true })
+    .click();
+});

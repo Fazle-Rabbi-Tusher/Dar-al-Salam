@@ -95,6 +95,8 @@ export type View = {
   zoom: number;
   width: number;
   height: number;
+  /** Optional angle from the focus normal; the authored quarter stays isometric. */
+  pitch?: number;
 };
 const smooth = (a: number, b: number, x: number) => {
   const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
@@ -104,17 +106,26 @@ const smooth = (a: number, b: number, x: number) => {
 export function fitZoom(width: number, height: number) {
   return (0.86 * Math.min(width, height)) / (2 * RADIUS_PX);
 }
+/** Lower the view into the woodland gradually, while keeping the quarter and
+ * whole-planet overview at their original isometric angle. */
+export function landscapePitch(tile: Point, zoom: number) {
+  const inland = smooth(8, 24, mapDistance(tile)),
+    close = smooth(0.35, 1, zoom);
+  return PLANET.pitch + ((16 * Math.PI) / 180) * inland * close;
+}
 /** Screen geometry for a view: matrix, radius and planet centre in px. */
 export function frame(view: View) {
   const radius = RADIUS_PX * view.zoom,
     fit = fitZoom(view.width, view.height),
+    pitch = view.pitch ?? PLANET.pitch,
     // Zoomed out the whole disc is centred; zoomed in the focus point is.
     k = smooth(fit * 1.05, fit * 2.6, view.zoom);
   return {
-    matrix: cameraMatrix(view.lat, view.lon),
+    matrix: cameraMatrix(view.lat, view.lon, pitch),
+    pitch,
     radius,
     cx: view.width / 2,
-    cy: view.height / 2 + radius * Math.sin(PLANET.pitch) * k,
+    cy: view.height / 2 + radius * Math.sin(pitch) * k,
   };
 }
 export type Frame = ReturnType<typeof frame>;

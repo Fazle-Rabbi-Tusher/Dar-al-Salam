@@ -26,6 +26,11 @@ export type ObjectArt = {
   period?: number;
   /** Flat walkable art baked into the floor chunks instead of sorted. */
   floor?: boolean;
+  /** Alternate directional/door poses for deterministic district vehicles. */
+  life?: {
+    kind: 'tram' | 'ship' | 'taxi' | 'foliage';
+    views?: Record<string, string>;
+  };
 };
 function block(
   p: Pixels,

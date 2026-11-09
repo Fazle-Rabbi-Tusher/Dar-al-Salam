@@ -6,6 +6,29 @@ An explorable pixel-art **little planet** about knowledge, hospitality, mercy an
 
 The scene has 183 room objects across ten zones: a modern mosque with a prayer hall and Qur'an study circle, an architecture studio, a university science lab, a hospital, a central park with a fountain, a community kitchen, a library with a children's coding class, a street with a café and bus stop, and a solar garden, plus a football stadium east of the ring road (pitch, crowded stands, floodlights, dugouts). In the stadium Karim Benzema loops through a finger-to-the-sky celebration, arms-wide cheer and folded arms, Mohamed Salah holds his arms-out pose beside Sadio Mané (hand on heart) at the centre circle, N’Golo Kanté dribbles non-stop through midfield in Chelsea blue, each player in his club's kit colours, and Mesut Özil's chip-and-stop goal plays out every 20 seconds: the keeper rushes out, the chip, control on the bounce, two defenders sliding past, and the roll into the empty net. South of the quarter is a slice of New York City (brownstones, an Art Deco tower, glass towers, City Hall, a bodega, a halal cart, a subway entrance and yellow taxis) where Mayor Zohran Mamdani scoots round the City Hall block and waves, and a Michigan victory rally where Senator-elect Abdul El-Sayed speaks from a podium to a cheering crowd. South of the stadium a fight-night arena holds a cage octagon and a raised boxing ring. Khabib Nurmagomedov stands in the octagon in his papakha with the title belt while Islam Makhachev and Kamaru Usman trade jabs, Zabit Magomedsharipov kicks and Khamzat Chimaev shadowboxes ringside, and Muhammad Ali stands over a fallen opponent in the ring in his famous pose. The ball is its own animated object (`kind: "ball"`) with height for the chip, so its shadow stays on the grass. Characters are drawn on a 56×84 canvas (adults about 64 px tall). The world opens at 2× zoom, with the introduction available through the information button so the scene fills the screen.
 
+## Landscapes
+
+The rotatable planet includes ancient woodland, moss-covered animated falls,
+bright coastal water and a woodland village of timber-and-terracotta cottages.
+Use **Explore landscapes** to fly to each destination, including **Night skyline**, **Rainy tram street**, **Blossom lane** and **Coastal harbor**. The original characters,
+their activities and draft content remain intact; occupied buildings stay open
+as cutaways so people remain visible.
+
+Scenery assets live in `art/landscape/`, with dimensions and ground anchors in
+`index.json`. `tools/landscape/scene.ts` controls decorative replacements and
+village placement without changing character paths or room collision. New
+village scenery is restricted to dry meadow/forest outside the authored map.
+See [landscape art](art/landscape/README.md) for importing replacement artwork.
+
+## Watch the world
+
+The **Living world → Preview animation** control starts the same clock as the
+main play button. The tram travels between terminals and boards at its platform;
+the taxi waits for the city crossing; ships follow offshore courses with wakes.
+Wind moves foliage, birds and hearth smoke, while rain, petals and waterfalls
+continue on the same loop. **Pause** freezes the whole scene. Reduced-motion
+preferences start paused; pressing Preview is an explicit choice to play.
+
 ## Run
 
 Requires Node 24 and pnpm 11.25.0 (pinned for Vercel and local builds).
