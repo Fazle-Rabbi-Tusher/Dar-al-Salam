@@ -22,34 +22,49 @@ export const MOSQUE_TILE: Point = [-10, 117];
  * a Bedouin camp on the scrub toward the ring road.
  */
 export const MASSAWA_OBJECTS: [string, number, number][] = [
-  /* ── The market round the forecourt, the well before it ── */
-  ['msw-stall', -13.25, 123.25],
-  ['msw-stall-side', -3.75, 113.75],
-  ['msw-stall-b', -8.5, 125.5],
-  ['msw-stall-b-side', -1.5, 118.5],
-  ['msw-well', -4.25, 122.75],
-  ['msw-goods', -5.25, 126.25],
-  ['msw-goods', -0.75, 122.25],
-  /* ── Houses beside the mosque, palms at its flanks ── */
-  ['msw-house-b', -20.25, 121.25],
-  ['msw-house-pink', -14.5, 127.5],
-  ['msw-house-a-side', -6.0, 106.0],
-  ['msw-house-pink-side', -2.5, 106.5],
+  /* ── The market round the forecourt and along the lane west ── */
+  ['msw-stall', -15.5, 125.5],
+  ['msw-stall-side', -2.25, 112.25],
+  ['msw-stall-b', -9.5, 127.5],
+  ['msw-well', -3.0, 124.0],
+  ['msw-goods', -4.75, 128.25],
+  ['msw-stall-b-side', -19.5, 129.5],
+  ['msw-stall', -14.0, 133.0],
+  ['msw-goods', -17.0, 133.0],
+  /* ── Houses round the mosque, rooftops behind it ── */
+  ['msw-house-b', -22.5, 104.5],
+  ['msw-house-a', -16.0, 100.0],
+  ['msw-house-pink', -27.0, 111.0],
+  ['msw-house-c-side', -9.5, 96.5],
+  ['msw-house-a-side', -8.0, 104.0],
+  ['msw-house-d-side', -3.0, 99.0],
+  ['msw-house-pink-side', -3.0, 107.0],
+  ['msw-house-b', -24.0, 119.0],
+  ['msw-house-d', -18.0, 94.0],
+  ['msw-house-a-side', -25.0, 98.0],
+  ['msw-house-pink', -29.5, 103.5],
+  ['msw-house-c', -3.0, 93.0],
+  ['msw-house-a', -27.5, 90.5],
+  ['msw-house-b-side', -18.0, 88.0],
+  ['msw-house-d-side', -32.0, 96.0],
+  /* ── Houses toward the front, south of the market ── */
+  ['msw-house-a', -7.0, 134.0],
+  ['msw-house-b-side', 1.0, 132.0],
+  ['msw-house-pink-side', 4.0, 126.0],
+  /* ── Palms, gardens and a second well ── */
   ['msw-palm', -15.75, 119.75],
   ['msw-palm', -7.0, 111.5],
-  /* ── Rooftops behind the mosque ── */
-  ['msw-house-a', -18.5, 103.5],
-  ['msw-house-b-side', -11.0, 103.0],
-  ['msw-house-d-side', -6.5, 99.5],
-  ['msw-palms', -23.5, 109.5],
-  /* ── The front of the town: a garden, a palm and two houses ── */
+  ['msw-palms', -20.5, 110.5],
+  ['msw-palms', -12.5, 91.5],
+  ['msw-palms', -37.5, 99.5],
   ['msw-garden', -11.5, 132.5],
-  ['msw-palm', -14.25, 132.25],
-  ['msw-house-a', 0.75, 126.75],
-  ['msw-house-b-side', -4.0, 133.0],
-  /* ── The Bedouin camp on the scrub toward the road ── */
-  ['msw-tent', -26.0, 114.0],
-  ['msw-tent-side', -26.5, 120.5],
-  ['msw-cart', -27.5, 110.5],
-  ['msw-acacia', -20.0, 100.0],
+  ['msw-garden', -19.5, 120.5],
+  ['msw-well', -20.5, 124.5],
+  /* ── The Bedouin camp on the west scrub toward the road ── */
+  ['msw-tent', -31.0, 116.0],
+  ['msw-tent-side', -26.5, 122.0],
+  ['msw-tent', -31.5, 107.5],
+  ['msw-tent-side', -37.5, 103.5],
+  ['msw-cart', -34.5, 111.5],
+  ['msw-acacia', -13.0, 83.0],
 ];
