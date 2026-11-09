@@ -43,6 +43,7 @@ export const ACTIONS = {
   animal_idle: 4,
   animal_walk: 6,
   animal_graze: 4,
+  animal_rest: 4,
 } as const;
 export type Action = keyof typeof ACTIONS;
 export const facingSchema = z.enum(['SE', 'SW', 'NE', 'NW']);

@@ -278,7 +278,7 @@ export const MASSAWA = {
   /** The town's sandy ground; scrub fills `fringe` more tiles round it. */
   town: { centre: [-10, 116] as Point, radius: 19, fringe: 4 },
   /** Limestone flagstones: the forecourt before the mosque. */
-  plaza: { centre: [-8.5, 118.5] as Point, radius: 2.4 },
+  plaza: { centre: [-10.5, 119.5] as Point, radius: 3.2 },
 };
 /** Distance (tiles) from the town's centre. */
 export const massawaTown = (tile: Point) =>

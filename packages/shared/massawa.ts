@@ -11,7 +11,7 @@ import type { Point } from './iso';
  */
 
 /** Ground point of the mosque (front centre of its base), mid-town. */
-export const MOSQUE_TILE: Point = [-10, 117];
+export const MOSQUE_TILE: Point = [-12.5, 117.5];
 
 /**
  * Town pieces outside the mapped quarter: [art id, tile x, tile y], each
