@@ -268,20 +268,20 @@ export const WILD = {
   islandAbove: 0.52,
 };
 /*
- * Massawa in about 615 CE (the Mosque of the Companions): a coastal town
- * about 30 tiles south of the quarter, with a coral-block harbour mole
- * into the bay, on a dry coast of sand and thorn scrub. Tile coordinates,
- * outside the mapped rooms. Nothing here is a room: its art is planted by
- * the build (packages/shared/massawa.ts).
+ * Massawa in about 615 CE (the Mosque of the Companions): an island town in
+ * the bay about 30 tiles south of the quarter, joined to the mainland by a
+ * coral-block causeway, on a dry coast of sand and thorn scrub. Tile
+ * coordinates, outside the mapped rooms. Nothing here is a room: its art is
+ * planted by the build (packages/shared/massawa.ts).
  */
 export const MASSAWA = {
-  /** The town's sandy ground, with the mosque at its heart. */
-  town: { centre: [68, 132] as Point, radius: 9.5, fromMap: 1.5 },
-  /** A coral-block harbour mole from the beach out into the bay. */
+  /** The island town: sand all over, with the mosque at its heart. */
+  town: { centre: [72, 156] as Point, radius: 11.5 },
+  /** The coral-block causeway from the mainland to the island. */
   mole: {
-    from: [69.5, 136] as Point,
-    to: [69.5, 145] as Point,
-    halfWidth: 0.7,
+    from: [69.5, 137.5] as Point,
+    to: [69.5, 146] as Point,
+    halfWidth: 0.75,
   },
   /**
    * The dry Red Sea coast: sand desert in the middle, thorn scrub round it,
@@ -289,9 +289,9 @@ export const MASSAWA = {
    */
   arid: { centre: [66, 140] as Point, radius: 34, desert: 14, fromMap: 2 },
   /** Limestone flagstones: the forecourt before the mosque. */
-  plaza: { centre: [70, 132] as Point, radius: 2.6 },
+  plaza: { centre: [74, 156] as Point, radius: 2.6 },
   /** The ring road is not drawn within this disc (tiles). */
-  calm: { centre: [68, 136] as Point, radius: 17 },
+  calm: { centre: [70, 148] as Point, radius: 20 },
 };
 function segmentDistance(t: Point, a: Point, b: Point) {
   const vx = b[0] - a[0],
@@ -312,8 +312,7 @@ export const massawaTown = (tile: Point) =>
     tile[1] - MASSAWA.town.centre[1],
   );
 export const inTown = (tile: Point) =>
-  massawaTown(tile) < MASSAWA.town.radius &&
-  mapDistance(tile) > MASSAWA.town.fromMap;
+  massawaTown(tile) < MASSAWA.town.radius + 1.2;
 export const moleDistance = (tile: Point) =>
   segmentDistance(tile, MASSAWA.mole.from, MASSAWA.mole.to);
 /**
@@ -393,17 +392,27 @@ export function landField(p: Vec3, tile: Point = planetToTile(p)) {
       d > shoreDistance(p) + 12
         ? (waveField(p, WILD.waves.islands) - WILD.islandAbove) * 70
         : -Infinity;
-  // Massawa's harbour mole stands out of the water.
-  const mole = (MASSAWA.mole.halfWidth - moleDistance(tile)) * 2.4;
-  return Math.max(coast, island, mole);
+  // Massawa: the island town and its causeway stand out of the water.
+  const town =
+      MASSAWA.town.radius -
+      massawaTown(tile) +
+      waveField(p, WILD.waves.coves) * 1.2,
+    mole = (MASSAWA.mole.halfWidth - moleDistance(tile)) * 2.4;
+  return Math.max(coast, island, town, mole);
 }
 export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
-  if (moleDistance(tile) <= MASSAWA.mole.halfWidth) return 'mole';
-  if (land >= WILD.beach && inTown(tile))
+  if (
+    moleDistance(tile) <= MASSAWA.mole.halfWidth &&
+    massawaTown(tile) > MASSAWA.town.radius - 1.5
+  )
+    return 'mole';
+  if (inTown(tile)) {
+    if (land < 1) return 'beach';
     return inPlaza(tile) ? 'plaza' : 'desert';
+  }
   const arid = massawaAridness(p, tile);
   if (arid > MASSAWA.arid.desert && land >= WILD.beach) return 'desert';
   if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5 && !inCalm(tile))
@@ -477,6 +486,7 @@ float landField(vec3 p, vec2 tile) {
   float d = mapDistance(tile), shore = shoreDistance(p);
   float land = shore - d;
   if (d > shore + 12.0) land = max(land, (islandField(p) - ${g(WILD.islandAbove)}) * 70.0);
+  land = max(land, ${g(MASSAWA.town.radius)} - massawaTown(tile) + coveField(p) * 1.2);
   land = max(land, (${g(MASSAWA.mole.halfWidth)} - moleDistance(tile)) * 2.4);
   return land;
 }`;

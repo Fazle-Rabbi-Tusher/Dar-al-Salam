@@ -3,14 +3,15 @@ import type { Point } from './iso';
 /*
  * Massawa on the Red Sea coast in about 615 CE, about 30 tiles south of the
  * quarter (MASSAWA in planet.ts), following the owner's reference sheets: a
- * dense town of flat-roofed coral-stone and mud-brick houses round the
- * Mosque of the Companions, a market, palms and a well, a harbour mole with
- * dhows, and tents with camels at the desert edge. No people are shown: the
- * first Hijra is the story of the Sahaba, who are never depicted (AGENTS.md).
+ * dense island town of flat-roofed coral-stone and mud-brick houses round
+ * the Mosque of the Companions, with a market, palms, a well and dhows,
+ * joined by a causeway to the mainland, where tents and camels stand at the
+ * desert edge. No people are shown: the first Hijra is the story of the
+ * Sahaba, who are never depicted (AGENTS.md).
  */
 
 /** Ground point of the mosque (front centre of its base), mid-town. */
-export const MOSQUE_TILE: Point = [68, 132];
+export const MOSQUE_TILE: Point = [72, 156];
 
 /**
  * Town pieces outside the mapped quarter: [art id, tile x, tile y], each

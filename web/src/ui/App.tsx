@@ -522,7 +522,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
           {t('community')}
         </button>
         {/* Massawa, across the sea to the south (packages/shared/massawa.ts). */}
-        <button onClick={() => focusArea(70, 135, 1.5)}>
+        <button onClick={() => focusArea(71, 153, 1.5)}>
           <Icon name="compass" size={15} />
           {t('massawa')}
         </button>

@@ -185,10 +185,11 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  // Massawa: the coral-block harbour mole, the mosque's forecourt, the
-  // town's trodden sand, desert sand and thorn scrub on the dry coast.
+  // Massawa: the coral-block causeway, the island town's trodden sand and
+  // the mosque's forecourt, then desert sand and thorn scrub on the coast.
   float mole = moleDistance(tile);
-  if (mole <= ${f(MASSAWA.mole.halfWidth)}) {
+  if (mole <= ${f(MASSAWA.mole.halfWidth)} &&
+      massawaTown(tile) > ${f(MASSAWA.town.radius - 1.5)}) {
     // Squared coral blocks in staggered courses, with a darker kerb.
     if (mole > ${f(MASSAWA.mole.halfWidth - 0.13)}) return h > 0.5 ? CORAL_DARK : CORAL;
     float course = floor(tile.y * 1.7);
@@ -196,9 +197,9 @@ vec3 wild(vec3 p, vec2 tile) {
     if (fract(tile.y * 1.7) < 0.1 || block < 0.07) return CORAL_DARK;
     return h > 0.82 ? CORAL_LIGHT : h < 0.06 ? CORAL_DARK : CORAL;
   }
-  float town = massawaTown(tile) + (h - 0.5) * 1.2 + coveField(p) * 0.8;
-  if (land >= ${f(WILD.beach)} && town < ${f(MASSAWA.town.radius)} &&
-      mapDistance(tile) > ${f(MASSAWA.town.fromMap)}) {
+  if (massawaTown(tile) < ${f(MASSAWA.town.radius + 1.2)}) {
+    // The shore: wet sand with dark coral rock.
+    if (land < 1.0) return h2 > 0.93 ? CORAL_DARK : h > 0.9 ? SAND_LIGHT : WET_SAND;
     float r = length(tile - PLAZA_CENTRE);
     if (r < ${f(MASSAWA.plaza.radius)} - 0.3 + (h - 0.5) * 0.9) {
       // Sun-worn limestone flagstones in offset rows, half buried in sand.
