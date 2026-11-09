@@ -2252,5 +2252,84 @@
       "objects/msw-rowboat-0.png",
       "objects/msw-rowboat-1.png"
     ]
+  },
+  "m-chalkboard": {
+    "file": "objects/m-chalkboard.png",
+    "anchor": [
+      16,
+      71
+    ],
+    "width": 64,
+    "height": 76
+  },
+  "m-chalkboard-side": {
+    "file": "objects/m-chalkboard-side.png",
+    "anchor": [
+      48,
+      71
+    ],
+    "width": 64,
+    "height": 76
+  },
+  "m-workstation": {
+    "file": "objects/m-workstation.png",
+    "anchor": [
+      32,
+      46
+    ],
+    "width": 80,
+    "height": 76
+  },
+  "m-workstation-side": {
+    "file": "objects/m-workstation-side.png",
+    "anchor": [
+      48,
+      46
+    ],
+    "width": 80,
+    "height": 76
+  },
+  "m-seminar-table": {
+    "file": "objects/m-seminar-table.png",
+    "anchor": [
+      32,
+      26
+    ],
+    "width": 96,
+    "height": 67
+  },
+  "m-model-case": {
+    "file": "objects/m-model-case.png",
+    "anchor": [
+      16,
+      72
+    ],
+    "width": 64,
+    "height": 102
+  },
+  "m-model-case-side": {
+    "file": "objects/m-model-case-side.png",
+    "anchor": [
+      48,
+      72
+    ],
+    "width": 64,
+    "height": 102
+  },
+  "m-3d-printer": {
+    "file": "objects/m-3d-printer.png",
+    "anchor": [
+      32,
+      52
+    ],
+    "width": 64,
+    "height": 74,
+    "period": 24,
+    "frames": [
+      "objects/m-3d-printer-0.png",
+      "objects/m-3d-printer-1.png",
+      "objects/m-3d-printer-2.png",
+      "objects/m-3d-printer-3.png"
+    ]
   }
 }

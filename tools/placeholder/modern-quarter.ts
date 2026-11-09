@@ -30,7 +30,7 @@ import { detailFootprints, type DetailType } from './details';
  * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
  * contribution side by side — a modern mosque and study circle, a university
  * science lab, an architecture studio, a hospital, a community kitchen, a
- * library with a coding class, a street with a café, and a solar garden.
+ * mathematics research lab, a street with a café, and a solar garden.
  * Generated deterministically (seeded PRNG, build-time only).
  */
 type Pt = [number, number];
@@ -569,17 +569,25 @@ export function modernQuarter() {
     'carry',
   );
 
-  /* ════════ Library and coding class (x 7–21, y 41–55) ════════ */
+  /*
+   * ════════ Mathematics research laboratory (x 7–21, y 41–55) ════════
+   * The old library, replaced at the owner's request with a doctoral-level
+   * maths lab: chalkboards of working on the back wall, a case of
+   * mathematical models, a seminar table, a rolling whiteboard, research
+   * workstations, a 3D printer for models, a compute cluster and two shelves
+   * of journals. Al-Khwarizmi, Ibn Rushd and Ibn Khaldun keep their places.
+   */
   obj('m-whitewall-side', 6.65, 39);
   obj('m-whitewall-side', 6.65, 47);
-  obj('m-bookshelf-side', 7.05, 41.5);
-  obj('m-bookshelf-side', 7.05, 45);
-  obj('m-bookshelf-side', 7.05, 48.5);
+  obj('m-chalkboard-side', 7.0, 41.5);
+  obj('m-chalkboard-side', 7.0, 45);
+  obj('m-model-case-side', 7.05, 48.4);
   obj('m-bookshelf', 10, 52.4);
-  obj('m-kids-table', 11.5, 43);
-  obj('m-kids-table', 11.5, 47.5);
-  obj('m-computer-desk', 17, 45.5);
-  obj('m-computer-desk', 17, 49.5);
+  obj('m-seminar-table', 11, 42.6);
+  obj('m-whiteboard', 11.3, 47.6);
+  obj('m-workstation', 16, 41.5);
+  obj('m-workstation', 16, 48.6);
+  obj('m-3d-printer', 9.2, 46.2);
   obj('m-desk-plant', 20.3, 42);
   for (const [i, [x, y, f]] of (
     [
@@ -691,11 +699,10 @@ export function modernQuarter() {
     'amb-bench-pair-1';
 
   /* ════════ Density pass: more everyday life in the lower rooms ════════ */
-  // Library: reading corner and study desks.
+  // Maths lab: journals, the compute cluster, water.
   obj('m-bookshelf', 13.5, 52.4);
-  obj('m-bookshelf', 17, 52.4);
-  obj('m-computer-desk', 17, 41.5);
-  obj('m-desk-plant', 15.6, 53);
+  obj('m-server-rack', 17.4, 52.4);
+  obj('m-server-rack', 18.5, 52.4);
   obj('m-water-cooler', 20.6, 54.3);
   person(
     'reader-lib-1',
@@ -2007,7 +2014,17 @@ export function modernQuarter() {
         t = x <= 21 ? 11 : x <= 35 ? (inX(29, 31) || inY(30, 32) ? 8 : 4) : 13;
       else
         t =
-          x <= 21 ? 9 : x <= 35 ? (inY(48, 50) ? 12 : 7) : inY(46, 47) ? 8 : 4;
+          x <= 21
+            ? y >= 41
+              ? 10 // the maths lab's white floor
+              : 9
+            : x <= 35
+              ? inY(48, 50)
+                ? 12
+                : 7
+              : inY(46, 47)
+                ? 8
+                : 4;
       floor.push(t);
     }
   const collision: number[] = Array(W * H).fill(0);
