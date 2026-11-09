@@ -577,7 +577,9 @@ export function modernQuarter() {
    * sticks, a counting board, an abacus, the Antikythera mechanism,
    * Napier's bones, a slide rule, Pascal's calculator, Leibniz's stepped
    * reckoner, and Babbage's difference and analytical engines (owner's
-   * list); with a case of models, a whiteboard, a seminar table and a book
+   * list); then a Curta calculator, a planimeter, a nomogram, a graphing
+   * calculator, a drafting set, an integraph, a harmonic analyser, a
+   * differential analyser and a mainframe with its terminal; with a case of models, a whiteboard, a seminar table and a book
    * cart. Owner's rule: only mathematical equipment, and no piece twice.
    * Al-Khwarizmi, Ibn Rushd and Ibn Khaldun stand in the lab
    * (their cards place them).
@@ -600,6 +602,16 @@ export function modernQuarter() {
   obj('m-stepped-reckoner', 11.8, 45.6);
   obj('m-difference-engine', 17.6, 44.8);
   obj('m-analytical-engine', 17.4, 48.2);
+  // The 20th century (owner's second list; the slide rule is already here).
+  obj('m-curta', 9.4, 47.4);
+  obj('m-planimeter', 11.0, 47.4);
+  obj('m-nomogram', 13.6, 47.4);
+  obj('m-graphing-calculator', 15.3, 47.4);
+  obj('m-drafting-set', 7.6, 53.4);
+  obj('m-integraph', 10.0, 53.4);
+  obj('m-harmonic-analyzer', 12.0, 53.4);
+  obj('m-differential-analyzer', 17.2, 51.0);
+  obj('m-mainframe', 17.6, 53.6);
   for (const [i, [x, y, f]] of (
     [
       [11.2, 42.4, 'SE'],

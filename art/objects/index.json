@@ -2556,5 +2556,86 @@
     ],
     "width": 96,
     "height": 89
+  },
+  "m-curta": {
+    "file": "objects/m-curta.png",
+    "anchor": [
+      32,
+      31
+    ],
+    "width": 64,
+    "height": 53
+  },
+  "m-planimeter": {
+    "file": "objects/m-planimeter.png",
+    "anchor": [
+      32,
+      16
+    ],
+    "width": 64,
+    "height": 41
+  },
+  "m-harmonic-analyzer": {
+    "file": "objects/m-harmonic-analyzer.png",
+    "anchor": [
+      32,
+      34
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-integraph": {
+    "file": "objects/m-integraph.png",
+    "anchor": [
+      32,
+      30
+    ],
+    "width": 80,
+    "height": 57
+  },
+  "m-nomogram": {
+    "file": "objects/m-nomogram.png",
+    "anchor": [
+      32,
+      22
+    ],
+    "width": 64,
+    "height": 46
+  },
+  "m-graphing-calculator": {
+    "file": "objects/m-graphing-calculator.png",
+    "anchor": [
+      32,
+      37
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-mainframe": {
+    "file": "objects/m-mainframe.png",
+    "anchor": [
+      32,
+      66
+    ],
+    "width": 96,
+    "height": 104
+  },
+  "m-differential-analyzer": {
+    "file": "objects/m-differential-analyzer.png",
+    "anchor": [
+      32,
+      27
+    ],
+    "width": 96,
+    "height": 70
+  },
+  "m-drafting-set": {
+    "file": "objects/m-drafting-set.png",
+    "anchor": [
+      32,
+      22
+    ],
+    "width": 80,
+    "height": 49
   }
 }

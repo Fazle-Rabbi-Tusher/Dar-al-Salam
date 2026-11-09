@@ -1966,6 +1966,313 @@ const objects: Record<string, Spec> = {
       }
     },
   },
+  /* ── Calculation in the 20th century (owner's second list) ── */
+  // A Curta-style hand calculator: a black knurled cylinder with a crank.
+  'm-curta': {
+    footprint: [1, 1],
+    h: 42,
+    draw(c) {
+      plinth(c, 1, 1, 18);
+      c.cylinder(0.5, 0.5, 18, 5, 12, [C.slate, C.charcoal, C.ink]);
+      for (let z = 20; z < 29; z += 2) {
+        const [x, y] = c.at(0.5, 0.5, z);
+        c.p.pixel(x - 3, y + 2, C.silver);
+        c.p.pixel(x, y + 3, C.silver);
+        c.p.pixel(x + 3, y + 2, C.silver);
+      }
+      c.cylinder(0.5, 0.5, 30, 3, 2, [C.steelLight, C.steel, C.steelDark]);
+      c.edge([0.5, 0.5, 32], [0.5, 0.5, 36], C.steelDark);
+      c.edge([0.5, 0.5, 36], [0.72, 0.5, 36], C.steelDark);
+      const [hx, hy] = c.at(0.72, 0.5, 36);
+      c.p.rect(hx, hy - 3, 2, 3, C.charcoal);
+    },
+  },
+  // A planimeter tracing a shape on a round drawing table.
+  'm-planimeter': {
+    footprint: [1.2, 1.2],
+    h: 34,
+    draw(c) {
+      c.box(0.5, 0.5, 0.2, 0.2, 14, M.wood);
+      c.cylinder(0.6, 0.6, 14, 15, 3, [C.ivory, C.stone, C.stoneShade]);
+      // The traced shape.
+      const [cx, cy] = c.at(0.6, 0.6, 17);
+      for (let a = 0; a < 40; a++) {
+        const t = (a / 40) * Math.PI * 2,
+          r = 7 + Math.sin(3 * t) * 2;
+        c.p.pixel(
+          Math.round(cx + Math.cos(t) * r),
+          Math.round(cy + Math.sin(t) * r * 0.5),
+          C.blue,
+        );
+      }
+      // Pole arm, tracer arm, measuring wheel.
+      c.edge([0.2, 0.3, 18], [0.5, 0.75, 22], C.steelDark);
+      c.edge([0.5, 0.75, 22], [0.9, 0.55, 19], C.steelDark);
+      c.cylinder(0.2, 0.3, 17, 2, 2, [C.steelLight, C.steel, C.steelDark]);
+      const [wx, wy] = c.at(0.5, 0.75, 20);
+      c.p.ellipse(wx, wy, 2, 3, C.gold);
+      c.p.pixel(wx, wy, C.charcoal);
+    },
+  },
+  // A harmonic analyser: a wood and brass case of dials, with a paper
+  // trace scrolling out of the top.
+  'm-harmonic-analyzer': {
+    footprint: [1.4, 1],
+    h: 46,
+    draw(c) {
+      plinth(c, 1.4, 1, 14);
+      c.box(0.1, 0.15, 1.2, 0.7, 12, M.wood, 14);
+      c.faceX(0.15, 0.851, 1.1, 16, 8, C.yellowDark);
+      for (let r = 0; r < 2; r++)
+        for (let k = 0; k < 6; k++) {
+          const [x, y] = c.at(0.25 + k * 0.17, 0.852, 18 + r * 4);
+          c.p.rect(x - 1, y - 1, 3, 2, C.charcoal);
+          c.p.pixel(x, y - 1, C.silver);
+        }
+      // Paper roll and the wave trace.
+      c.cylinder(0.7, 0.4, 26, 6, 3, [C.paper, C.ivory, C.stone]);
+      c.faceX(0.35, 0.4, 0.7, 29, 12, C.paper);
+      let prev = c.at(0.38, 0.401, 35);
+      for (let k = 1; k <= 12; k++) {
+        const next = c.at(
+          0.38 + k * 0.053,
+          0.401,
+          35 + Math.round(Math.sin(k * 1.1) * 3 + Math.sin(k * 2.7)),
+        );
+        c.line(prev, next, C.blueDark);
+        prev = next;
+      }
+    },
+  },
+  // An integraph: a drum of graph paper turning under a pen carriage.
+  'm-integraph': {
+    footprint: [1.6, 1],
+    h: 44,
+    draw(c) {
+      c.box(0.05, 0.1, 1.5, 0.8, 4, M.dark);
+      for (const u of [0.15, 1.35]) c.box(u, 0.35, 0.1, 0.3, 20, M.steel, 4);
+      // The drum, papered, with grid lines.
+      for (let u = 0.25; u < 1.35; u += 0.1)
+        c.cylinder(u, 0.5, 18, 6, 1, [C.paper, C.ivory, C.stone]);
+      for (let u = 0.3; u < 1.3; u += 0.2) {
+        const [x, y] = c.at(u, 0.5, 18);
+        c.p.rect(x, y - 5, 1, 9, C.glassLight);
+      }
+      // Rail and pen carriage over the drum.
+      c.edge([0.15, 0.3, 34], [1.45, 0.3, 34], C.steelDark);
+      c.box(0.75, 0.25, 0.14, 0.14, 6, M.dark, 30);
+      c.edge([0.82, 0.32, 30], [0.82, 0.32, 24], C.red);
+      c.cylinder(1.45, 0.5, 18, 6, 2, [C.gold, C.yellowDark, C.orangeDark]);
+    },
+  },
+  // A nomogram on a drafting table: three parallel scales and a
+  // straightedge laid across them.
+  'm-nomogram': {
+    footprint: [1.2, 1],
+    h: 30,
+    draw(c) {
+      for (const [x, y] of [
+        [0.05, 0.05],
+        [1.05, 0.05],
+        [0.05, 0.85],
+        [1.05, 0.85],
+      ])
+        c.box(x, y, 0.08, 0.08, 20, M.steel);
+      c.box(0, 0, 1.2, 1, 2, M.wood, 20);
+      c.top(0.08, 0.08, 1.04, 0.84, 22.1, C.paper);
+      for (const u of [0.25, 0.6, 0.95]) {
+        c.edge([u, 0.15, 22.2], [u, 0.85, 22.2], C.navy);
+        for (let v = 0.2; v < 0.85; v += 0.08)
+          c.edge([u, v, 22.2], [u + 0.04, v, 22.2], C.navy);
+      }
+      c.edge([0.2, 0.25, 22.3], [1.0, 0.75, 22.3], C.red);
+      c.box(
+        0.15,
+        0.62,
+        0.9,
+        0.06,
+        1,
+        {
+          top: C.gold,
+          front: C.yellowDark,
+          side: C.orangeDark,
+          edge: C.orangeDark,
+        },
+        22.2,
+      );
+    },
+  },
+  // A graphing calculator on a display stand: a curve on its screen.
+  'm-graphing-calculator': {
+    footprint: [1, 1],
+    h: 46,
+    draw(c) {
+      plinth(c, 1, 1, 18);
+      c.box(0.35, 0.3, 0.3, 0.3, 2, M.dark, 18);
+      c.faceX(0.25, 0.5, 0.5, 20, 24, C.charcoal);
+      c.faceX(0.29, 0.501, 0.42, 34, 8, C.lime);
+      let prev = c.at(0.31, 0.502, 36);
+      for (let k = 1; k <= 8; k++) {
+        const next = c.at(
+          0.31 + k * 0.047,
+          0.502,
+          38 + Math.round(Math.sin(k * 0.9) * 2),
+        );
+        c.line(prev, next, C.greenDark);
+        prev = next;
+      }
+      for (let r = 0; r < 5; r++)
+        for (let k = 0; k < 4; k++) {
+          const [x, y] = c.at(0.3 + k * 0.11, 0.502, 22 + r * 2.4);
+          c.p.pixel(x, y, r === 4 ? C.blue : C.silver);
+        }
+    },
+  },
+  // A mainframe: cabinets with tape reels and blinking lamps, and a desk
+  // with a green-screen terminal and a chair.
+  'm-mainframe': {
+    footprint: [2.6, 1.4],
+    h: 74,
+    draw(c) {
+      for (const [u, w] of [
+        [0, 0.8],
+        [0.85, 0.8],
+        [1.7, 0.85],
+      ] as [number, number][]) {
+        c.box(u, 0, w, 0.6, 66, {
+          top: C.ivory,
+          front: C.stone,
+          side: C.stoneShade,
+          edge: C.stoneLine,
+        });
+        c.faceX(u + 0.08, 0.601, w - 0.16, 8, 12, C.slate);
+      }
+      // Tape reels on the first two cabinets.
+      for (const u of [0.4, 1.25])
+        for (const du of [-0.17, 0.17]) {
+          c.faceX(u + du - 0.12, 0.602, 0.24, 44, 14, C.slate);
+          const [x, y] = c.at(u + du, 0.603, 51);
+          c.p.ellipse(x, y, 2, 3, C.ink);
+          c.p.pixel(x, y, C.silver);
+        }
+      // Lamps on the third.
+      for (let r = 0; r < 6; r++)
+        for (let k = 0; k < 4; k++) {
+          const [x, y] = c.at(1.82 + k * 0.15, 0.602, 30 + r * 5);
+          c.p.pixel(x, y, (r + k) % 3 ? C.orange : C.yellow);
+        }
+      // Terminal desk in front.
+      c.box(0.6, 0.85, 1.2, 0.5, 2, M.stone, 20);
+      for (const [x, y] of [
+        [0.65, 0.9],
+        [1.7, 0.9],
+        [0.65, 1.25],
+        [1.7, 1.25],
+      ])
+        c.box(x, y, 0.06, 0.06, 20, M.steel);
+      c.box(
+        0.95,
+        0.9,
+        0.45,
+        0.35,
+        12,
+        {
+          top: C.stone,
+          front: C.stoneShade,
+          side: C.stoneLine,
+          edge: C.stoneLine,
+        },
+        22,
+      );
+      c.faceX(1.0, 1.251, 0.35, 25, 8, C.ink);
+      for (let r = 0; r < 3; r++)
+        c.edge(
+          [1.03, 1.252, 30 - r * 2],
+          [1.25 - r * 0.04, 1.252, 30 - r * 2],
+          C.lime,
+        );
+      c.top(0.95, 1.27, 0.45, 0.07, 22.1, C.stoneShade);
+    },
+  },
+  // Vannevar Bush's differential analyser: a long frame of shafts, gears
+  // and integrator wheels.
+  'm-differential-analyzer': {
+    footprint: [3, 1.6],
+    h: 46,
+    draw(c) {
+      c.box(0, 0.1, 3, 1.4, 6, M.dark);
+      for (const u of [0.1, 1.0, 2.0, 2.85])
+        for (const v of [0.25, 1.25]) c.box(u, v, 0.08, 0.08, 22, M.steel, 6);
+      // Long shafts running the length of the frame.
+      for (const v of [0.35, 0.75, 1.15])
+        c.edge([0.1, v, 26], [2.9, v, 26], C.steelDark);
+      c.edge([0.1, 0.55, 32], [2.9, 0.55, 32], C.steel);
+      // Gear wheels and integrator discs along the shafts.
+      for (let k = 0; k < 7; k++) {
+        const u = 0.3 + k * 0.38;
+        c.cylinder(u, 0.35 + (k % 3) * 0.4, 24, 3 + (k % 2), 3, [
+          C.gold,
+          C.yellowDark,
+          C.orangeDark,
+        ]);
+      }
+      for (const u of [0.8, 1.7, 2.5]) {
+        c.cylinder(u, 0.95, 6, 6, 2, [C.steelLight, C.steel, C.steelDark]);
+        c.edge([u, 0.95, 8], [u, 0.95, 26], C.steelDark);
+      }
+    },
+  },
+  // A drafting geometry set: a compass, protractor, set square and ruler
+  // on a small drawing table.
+  'm-drafting-set': {
+    footprint: [1.6, 1],
+    h: 34,
+    draw(c) {
+      for (const [x, y] of [
+        [0.05, 0.05],
+        [1.45, 0.05],
+        [0.05, 0.85],
+        [1.45, 0.85],
+      ])
+        c.box(x, y, 0.08, 0.08, 20, M.wood);
+      c.box(0, 0, 1.6, 1, 2, M.wood, 20);
+      c.top(0.06, 0.06, 1.48, 0.88, 22.1, C.paper);
+      // Protractor: a clear half disc with tick marks.
+      const [px, py] = c.at(0.45, 0.5, 22.2);
+      for (let a = 0; a <= 18; a++) {
+        const t = Math.PI + (a / 18) * Math.PI;
+        c.p.pixel(
+          Math.round(px + Math.cos(t) * 9),
+          Math.round(py + Math.sin(t) * 5),
+          C.blue,
+        );
+      }
+      c.line([px - 9, py], [px + 9, py], C.blue);
+      // Set square.
+      c.line(c.at(0.9, 0.2, 22.3), c.at(1.4, 0.2, 22.3), C.teal);
+      c.line(c.at(0.9, 0.2, 22.3), c.at(0.9, 0.6, 22.3), C.teal);
+      c.line(c.at(0.9, 0.6, 22.3), c.at(1.4, 0.2, 22.3), C.teal);
+      // Ruler and an open compass.
+      c.box(
+        0.2,
+        0.78,
+        1.2,
+        0.08,
+        1,
+        {
+          top: C.gold,
+          front: C.yellowDark,
+          side: C.orangeDark,
+          edge: C.orangeDark,
+        },
+        22.2,
+      );
+      c.edge([1.1, 0.55, 30], [1.0, 0.75, 22.3], C.steelDark);
+      c.edge([1.1, 0.55, 30], [1.3, 0.7, 22.3], C.steelDark);
+      const [cx, cy] = c.at(1.1, 0.55, 31);
+      c.p.rect(cx - 1, cy - 2, 2, 3, C.charcoal);
+    },
+  },
   /* ── Maths lab, after the owner's reference photos (zoned research lab) ── */
   // A stool with a coloured seat (green and teal, as in the references).
   // (Drawn by the furniture below; not an object of its own.)

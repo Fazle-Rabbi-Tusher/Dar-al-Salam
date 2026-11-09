@@ -79,3 +79,15 @@
     - his analytical engine (the mill, the store and a chain of punched cards).
 
     Digits are shown as dots and tick marks, never numerals or lettering, and the plinth plaques are plain. They replace the lab's modern computing pieces (the monitor desks, compute rack, screen wall, 3D printer and knot sculpture) and the table of geometric models, whose abacus would have repeated the new one. The chalkboard, projector screen, model case, whiteboard, seminar table and book cart stay. Every piece still appears once.
+57. The maths lab continues the history of calculation into the 20th century (owner's second list), each piece once:
+    - a Curta-style hand calculator;
+    - a planimeter tracing a shape;
+    - a harmonic analyser printing a wave;
+    - an integraph drawing on its drum;
+    - a nomogram with a straightedge;
+    - a graphing calculator;
+    - a drafting geometry set (compass, protractor, set square, ruler);
+    - Bush's differential analyser (shafts, gears and integrator discs);
+    - a mainframe with tape reels, lamps and a green-screen terminal.
+
+    The list's slide rule was already in the lab, so it is not repeated. With the first list and the furniture, the lab holds 25 distinct pieces. As before, no numerals or lettering are drawn, and the list's brand names (Curta, Marchant, Friden, MATLAB, Fortran, Mathematica) appear nowhere.
