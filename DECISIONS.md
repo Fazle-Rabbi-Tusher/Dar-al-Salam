@@ -64,6 +64,7 @@
     - round study tables, a front bench of workstations, a mobile book cart, plants and the water cooler.
 
     The art is drawn in `tools/placeholder/modern.ts`. The layout is in `tools/placeholder/modern-quarter.ts`. The room file was edited directly to match it rather than regenerated, so other character cards are untouched, and a check confirmed the two agree. The references' text labels, portraits and screen text are not drawn (no generated text). Al-Khwarizmi (the founder of algebra) stands at the chalkboards, Ibn Rushd at the central table and Ibn Khaldun by the study tables.
+
 54. Story cards can show an "At work" gallery: owner-supplied pictures of a person at work (`art/gallery/<id>/<n>.png`). The build copies them and lists them on the baked character as `gallery`. They are full-colour supplied art, so they are exempt from the pixel-art palette check like the sprites and landmarks. First, Al-Khwārizmī: eight panels cut from the owner's sheet (writing at his desk, thinking, presenting a scroll of geometry, working with compasses, drawing at a chalkboard, reading, writing, holding a scroll). They appear on his card only; in the world he still stands at the maths lab's chalkboards (owner's choice). The panels are the owner's illustration and are shown as supplied. Some of the formulas drawn in them, such as the Gaussian integral and a differential equation, are later mathematics than his own algebra; the card's text does not claim otherwise.
 55. The maths lab holds only mathematical equipment, and no piece twice (owner's request). The cryogenic dewars (physics), the plants and the water cooler were removed, and duplicate chalkboards, racks, desks, study tables and partitions were cut to one each. The model case and the 3D printer return. The lab now has: a chalkboard, a projector screen, a case of mathematical models, a board partition, a data-science desk, a compute rack, a display wall of topology visualisations, a 3D printer for models, a whiteboard, a knot sculpture, the table of geometric models, a seminar table, a round study table, a book cart of mathematics books and a workstation. A check in the layout prevents repeats.
 56. The maths lab shows the history of calculation (owner's list). Each of these instruments stands on a white plinth or its own stand:
@@ -79,6 +80,7 @@
     - his analytical engine (the mill, the store and a chain of punched cards).
 
     Digits are shown as dots and tick marks, never numerals or lettering, and the plinth plaques are plain. They replace the lab's modern computing pieces (the monitor desks, compute rack, screen wall, 3D printer and knot sculpture) and the table of geometric models, whose abacus would have repeated the new one. The chalkboard, projector screen, model case, whiteboard, seminar table and book cart stay. Every piece still appears once.
+
 57. The maths lab continues the history of calculation into the 20th century (owner's second list), each piece once:
     - a Curta-style hand calculator;
     - a planimeter tracing a shape;
@@ -91,6 +93,7 @@
     - a mainframe with tape reels, lamps and a green-screen terminal.
 
     The list's slide rule was already in the lab, so it is not repeated. With the first list and the furniture, the lab holds 25 distinct pieces. As before, no numerals or lettering are drawn, and the list's brand names (Curta, Marchant, Friden, MATLAB, Fortran, Mathematica) appear nowhere.
+
 58. The maths lab's back wall is removed (owner's request), so the lab opens onto the lawn behind it. The wall-hung chalkboard became a freestanding board (with its own chalkboard), and the projector screen, which had nothing to hang on, was removed.
 59. Al-Khwārizmī is now the only person in the maths lab, in the design of the owner's "at work" sheet (owner's request).
     - **Other scholars:** Ibn Rushd and Ibn Khaldun were removed from the world. Their cards moved to `content/retired/`, so they can return, and the layout script no longer makes them.
@@ -102,3 +105,16 @@
     - **Instruments:** his astrolabe and celestial globe stand beside him; supplied art can now be placed in the room.
     - **Story card:** the picture is the sheet's close-up portrait, and the desk and kneeling scenes join his gallery, which now has 14 pictures.
     - **Left out:** the telescope is not used, because it was invented about 750 years after him; so are the walking strip (too small) and the compass and ruler (the drafting set already has them).
+61. Al-Khwārizmī from the owner's large character sheet (the third sheet, cut by `tools/prepare-khwarizmi.ts`):
+    - **In the lab:** his 120-frame loop is three poses from the sheet: standing front with a scroll (`idle`), standing reading a book (`read`), then gesturing as he explains (`talk`). Seen from behind, every pose uses the sheet's back view. His sharp head was regenerated so that it covers `read` as well.
+    - **Instruments:** the astrolabe is the new sheet's, drawn a little smaller so it doesn't cover his robe. The celestial globe stays from the earlier sheet.
+    - **Story card:** the picture is the sheet's first close-up face. Seven scenes join his gallery, now 21 pictures:
+      - seated reading;
+      - compasses at a table;
+      - walking with scrolls;
+      - with a cane;
+      - holding the astrolabe;
+      - seated in thought;
+      - carrying books.
+    - **Gallery cuts:** each scene is squared on the sheet's dark ground, with small dark patches over pieces of the neighbouring figures.
+    - **Left out:** the telescope (too late for him, as before). The desk, presenting and kneeling scenes repeat ones the gallery already has.

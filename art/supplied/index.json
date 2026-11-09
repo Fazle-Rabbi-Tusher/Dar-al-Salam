@@ -666,11 +666,11 @@
   "sup-astrolabe": {
     "file": "supplied/sup-astrolabe.png",
     "anchor": [
-      0,
-      103
+      57,
+      106
     ],
-    "density": 2.6,
-    "source": "Owner-supplied Al-Khwārizmī character sheet (2026-11), cut by tools/prepare-khwarizmi.ts"
+    "density": 3.567,
+    "source": "Owner-supplied Al-Khwārizmī character sheet (2026-11, third sheet), cut by tools/prepare-khwarizmi.ts"
   },
   "sup-globe": {
     "file": "supplied/sup-globe.png",

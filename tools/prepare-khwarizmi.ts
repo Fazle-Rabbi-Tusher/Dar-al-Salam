@@ -3,12 +3,14 @@ import fs from 'node:fs';
 import sharp from 'sharp';
 
 /*
- * Al-Khwārizmī from the owner's character sheet (2026-11): full-body front
- * (holding his book), pointing and back views become his sprite and
- * animation strips (224×336 frames, feet at 112,320, a slow breath); his
- * astrolabe and celestial globe become lab pieces; the close-up portrait is
- * his card picture; and the desk and kneeling scenes join his gallery.
- * People-free props only; the telescope (invented c. 1608) is left out.
+ * Al-Khwārizmī from the owner's large character sheet (2026-11, the third
+ * sheet): the turnaround's front (holding a scroll) and back views, the
+ * standing reading pose and the gesturing pose become his sprite and
+ * animation strips (224×336 frames, feet at 112,320, a slow breath); the
+ * close-up face is his card picture; his astrolabe is a lab piece; and the
+ * scenes not yet in his gallery join it (gallery 14 onward). Gallery 0–13
+ * and the celestial globe came from the earlier sheets (git history). The
+ * telescope (invented c. 1608) is left out.
  *
  *   node --import tsx tools/prepare-khwarizmi.ts <character sheet.png>
  */
@@ -28,9 +30,10 @@ function cut(name: string, box: number[], edits: string[]) {
   return out;
 }
 const FIG = ['tol=10', 'nofringe', 'keepholes', 'largest'];
-const front = cut('front', [12, 518, 214, 342], FIG),
-  point = cut('point', [674, 518, 238, 342], ['erase=172,262,237,341', ...FIG]),
-  back = cut('back', [487, 518, 174, 342], FIG);
+const front = cut('front', [18, 10, 180, 352], FIG),
+  back = cut('back', [498, 10, 165, 352], FIG),
+  read = cut('read', [10, 362, 185, 330], FIG),
+  talk = cut('talk', [365, 695, 200, 310], FIG);
 const FW = 224,
   FH = 336,
   FOOT = 320,
@@ -86,43 +89,88 @@ fs.writeFileSync(
   await breathing(front),
 );
 fs.writeFileSync(
-  'art/sprites/anim/al-khwarizmi__talk_SE.png',
-  await breathing(point),
+  'art/sprites/anim/al-khwarizmi__read_SE.png',
+  await breathing(read),
 );
-fs.writeFileSync('art/sprites/anim/al-khwarizmi__idle_NE.png', backStrip);
-fs.writeFileSync('art/sprites/anim/al-khwarizmi__talk_NE.png', backStrip);
-// Card picture: the close-up portrait.
+fs.writeFileSync(
+  'art/sprites/anim/al-khwarizmi__talk_SE.png',
+  await breathing(talk),
+);
+for (const action of ['idle', 'read', 'talk'])
+  fs.writeFileSync(
+    `art/sprites/anim/al-khwarizmi__${action}_NE.png`,
+    backStrip,
+  );
+// Card picture: the first close-up face.
 await sharp(sheet)
-  .extract({ left: 10, top: 12, width: 198, height: 194 })
+  .extract({ left: 820, top: 20, width: 144, height: 154 })
   .resize({ width: 280 })
   .png()
   .toFile('art/illustrations/al-khwarizmi.png');
-// Gallery: the desk scenes and the kneeling scene, after the first eight.
+/*
+ * Gallery: scenes not yet in it — seated reading, compasses at the table,
+ * walking with scrolls, the cane, holding the astrolabe, seated in thought
+ * and carrying books — each squared on the sheet's dark ground.
+ */
+/** [left, top, width, height, ...patches]: patches (x, y, w, h within the
+ * box) cover bits of the neighbouring figures with the dark ground. */
 const scenes = [
-  [10, 222, 340, 282],
-  [356, 222, 328, 282],
-  [690, 222, 270, 282],
-  [966, 222, 272, 282],
-  [1244, 222, 282, 282],
-  [934, 518, 302, 342],
+  [195, 365, 200, 325, 180, 140, 20, 60],
+  [878, 365, 232, 325, 0, 0, 40, 170],
+  [10, 695, 182, 312],
+  [192, 695, 165, 312],
+  [562, 695, 168, 312, 150, 150, 18, 162],
+  [728, 695, 182, 312, 0, 0, 22, 120, 160, 200, 22, 112],
+  [1100, 695, 140, 312, 100, 0, 40, 60, 128, 120, 12, 192, 0, 250, 14, 62],
 ];
-let n = 8;
-for (const [l, t, w, h] of scenes)
-  await sharp(sheet)
-    .extract({ left: l, top: t, width: w, height: h })
+let n = 14;
+for (const [l, t, w, h, ...patches] of scenes) {
+  const side = Math.max(w, h),
+    covers = [];
+  for (let k = 0; k < patches.length; k += 4)
+    covers.push({
+      input: {
+        create: {
+          width: patches[k + 2],
+          height: patches[k + 3],
+          channels: 3 as const,
+          background: { r: 15, g: 17, b: 21 },
+        },
+      },
+      left: patches[k],
+      top: patches[k + 1],
+    });
+  const piece = await sharp(
+    await sharp(sheet)
+      .extract({ left: l, top: t, width: w, height: h })
+      .png()
+      .toBuffer(),
+  )
+    .composite(covers)
+    .png()
+    .toBuffer();
+  const square = await sharp({
+    create: {
+      width: side,
+      height: side,
+      channels: 3,
+      background: { r: 15, g: 17, b: 21 },
+    },
+  })
+    .composite([
+      { input: piece, left: Math.round((side - w) / 2), top: side - h },
+    ])
+    .png()
+    .toBuffer();
+  await sharp(square)
     .resize({ width: 300 })
     .png({ palette: true, quality: 92 })
     .toFile(`art/gallery/al-khwarizmi/${n++}.png`);
-// Instruments for the lab: the astrolabe and the celestial globe.
+}
+// The astrolabe for the lab (the globe stays from the earlier sheet).
 const index = JSON.parse(fs.readFileSync('art/supplied/index.json', 'utf8'));
 for (const [id, box, edits, height] of [
-  ['sup-astrolabe', [1205, 878, 72, 112], ['tol=12'], 40],
-  [
-    'sup-globe',
-    [1272, 888, 58, 116],
-    ['erase=56,0,57,115', 'tol=12', 'keepholes'],
-    38,
-  ],
+  ['sup-astrolabe', [1400, 695, 100, 120], ['tol=12', 'largest'], 30],
 ] as [string, number[], string[], number][]) {
   const file = `art/supplied/${id}.png`;
   fs.copyFileSync(cut(id, box, edits), file);
@@ -146,7 +194,7 @@ for (const [id, box, edits, height] of [
     anchor: [Math.round(sx / c), bottom],
     density: +(info.height / height).toFixed(3),
     source:
-      'Owner-supplied Al-Khwārizmī character sheet (2026-11), cut by tools/prepare-khwarizmi.ts',
+      'Owner-supplied Al-Khwārizmī character sheet (2026-11, third sheet), cut by tools/prepare-khwarizmi.ts',
   };
 }
 fs.writeFileSync(
