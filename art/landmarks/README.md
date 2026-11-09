@@ -29,6 +29,8 @@ Rules (AGENTS.md):
 - The Mosque of the Companions' dome finial in the owner's sheet was replaced
   with a plain knob.
 - No people are drawn in or around landmarks connected to the Sahaba.
+- The Mosque of the Companions stands mid-town in Massawa (`MOSQUE_TILE` in
+  `packages/shared/massawa.ts`); its card's `tile` must match.
 
 ## Mosque of the Companions
 

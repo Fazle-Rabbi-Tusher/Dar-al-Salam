@@ -46,7 +46,7 @@ import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
   WILD,
-  massawaIsland,
+  massawaTown,
   MASSAWA,
   wildPlantings,
   type Planting,
@@ -564,8 +564,8 @@ async function build() {
   };
   const wildCounts: Record<string, number> = {};
   for (const [i, w] of wildPlantings().entries()) {
-    // Massawa's island is laid out by hand (packages/shared/massawa.ts).
-    if (massawaIsland(w.tile) < MASSAWA.island.radius + 2) continue;
+    // Massawa's town is laid out by hand (packages/shared/massawa.ts).
+    if (massawaTown(w.tile) < MASSAWA.town.radius + 3) continue;
     let chosen: { names: string[]; period?: number } | null = null;
     for (const options of wildArt[w.kind]) {
       if (!options.length) continue;

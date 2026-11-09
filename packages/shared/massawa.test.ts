@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { MASSAWA_OBJECTS, MOSQUE_TILE } from './massawa';
-import { MASSAWA, massawaIsland, tileToPlanet, wildAt } from './planet';
+import { MASSAWA, inTown, tileToPlanet, wildAt } from './planet';
 import type { Point } from './iso';
 
 const biome = (t: Point) => wildAt(tileToPlanet(...t), t);
@@ -11,10 +11,10 @@ const AFLOAT = new Set(['msw-dhow', 'msw-fish-jump']);
 const SHORELINE = new Set(['msw-jetty']);
 
 describe('Massawa', () => {
-  it('stands the Mosque of the Companions on the island', () => {
-    // On its flagstone plaza, well inside the island.
+  it('stands the Mosque of the Companions in the heart of the town', () => {
+    // On the edge of its flagstone forecourt, mid-town.
     expect(biome(MOSQUE_TILE)).toBe('plaza');
-    expect(massawaIsland(MOSQUE_TILE)).toBeLessThan(MASSAWA.island.radius - 3);
+    expect(inTown(MOSQUE_TILE)).toBe(true);
     const card = JSON.parse(
       fs.readFileSync(
         'content/landmarks/mosque-of-the-companions.json',
@@ -31,15 +31,20 @@ describe('Massawa', () => {
       expect(water([x, y]), `${type} at ${x},${y}`).toBe(AFLOAT.has(type));
     }
   });
-  it('keeps the mosque front open and pieces from stacking', () => {
+  it('keeps the forecourt open, the mosque unhidden and pieces apart', () => {
     const seen = new Set<string>();
+    const [mx, my] = MOSQUE_TILE,
+      [px, py] = MASSAWA.plaza.centre;
     for (const [type, x, y] of MASSAWA_OBJECTS) {
-      // On screen the façade faces +x here; nothing stands before it.
-      const front =
-        x > MOSQUE_TILE[0] &&
-        x < MOSQUE_TILE[0] + 6 &&
-        Math.abs(y - MOSQUE_TILE[1]) < 4;
-      expect(front, `${type} at ${x},${y} blocks the mosque`).toBe(false);
+      const where = `${type} at ${x},${y}`;
+      // Nothing on the forecourt before the façade (+x is screen-down here).
+      expect(
+        Math.hypot(x - px, y - py),
+        `${where} is on the forecourt`,
+      ).toBeGreaterThan(MASSAWA.plaza.radius);
+      // Nothing inside the building's own footprint behind its base.
+      const under = x > mx - 4 && x <= mx && Math.abs(y - my) < 4;
+      expect(under, `${where} stands inside the mosque`).toBe(false);
       const key = `${Math.floor(x)},${Math.floor(y)}`;
       expect(seen.has(key), `two pieces on tile ${key}`).toBe(false);
       seen.add(key);

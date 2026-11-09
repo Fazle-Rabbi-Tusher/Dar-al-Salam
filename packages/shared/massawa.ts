@@ -1,15 +1,16 @@
 import type { Point } from './iso';
 
 /*
- * Massawa on the Red Sea coast, about 30 tiles south of the quarter
- * (MASSAWA in planet.ts). The Mosque of the Companions stands alone on the
- * small island; the town, market and animals are on the mainland across
- * the causeway. No people are shown here: the first Hijra is
- * the story of the Sahaba, who are never depicted (AGENTS.md).
+ * Massawa on the Red Sea coast in about 615 CE, about 30 tiles south of the
+ * quarter (MASSAWA in planet.ts), following the owner's reference sheets: a
+ * dense town of flat-roofed coral-stone and mud-brick houses round the
+ * Mosque of the Companions, a market, palms and a well, a harbour mole with
+ * dhows, and tents with camels at the desert edge. No people are shown: the
+ * first Hijra is the story of the Sahaba, who are never depicted (AGENTS.md).
  */
 
-/** Ground point of the mosque (front centre of its base), on the island. */
-export const MOSQUE_TILE: Point = [74, 157];
+/** Ground point of the mosque (front centre of its base), mid-town. */
+export const MOSQUE_TILE: Point = [68, 132];
 
 /**
  * Town pieces outside the mapped quarter: [art id, tile x, tile y], each

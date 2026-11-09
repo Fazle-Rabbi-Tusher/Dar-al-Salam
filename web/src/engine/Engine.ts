@@ -185,19 +185,22 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  // Old Massawa: the coral-stone causeway, the mosque's plaza,
-  // desert sand and thorn scrub on the dry coast.
-  if (causewayDistance(tile) <= ${f(MASSAWA.causeway.halfWidth)} &&
-      massawaIsland(tile) > ${f(MASSAWA.island.radius - 1.5)}) {
-    float along = fract(tile.y * 1.6), across = causewayDistance(tile);
-    if (across > ${f(MASSAWA.causeway.halfWidth - 0.14)}) return CORAL_DARK;
-    return along < 0.08 ? CORAL_DARK : h > 0.8 ? CORAL_LIGHT : CORAL;
+  // Massawa: the coral-block harbour mole, the mosque's forecourt, the
+  // town's trodden sand, desert sand and thorn scrub on the dry coast.
+  float mole = moleDistance(tile);
+  if (mole <= ${f(MASSAWA.mole.halfWidth)}) {
+    // Squared coral blocks in staggered courses, with a darker kerb.
+    if (mole > ${f(MASSAWA.mole.halfWidth - 0.13)}) return h > 0.5 ? CORAL_DARK : CORAL;
+    float course = floor(tile.y * 1.7);
+    float block = fract(tile.x * 1.3 + course * 0.5);
+    if (fract(tile.y * 1.7) < 0.1 || block < 0.07) return CORAL_DARK;
+    return h > 0.82 ? CORAL_LIGHT : h < 0.06 ? CORAL_DARK : CORAL;
   }
-  if (massawaIsland(tile) < ${f(MASSAWA.island.radius + 1.2)}) {
-    // The shore: wet sand with dark coral rock.
-    if (land < 1.0) return h2 > 0.93 ? CORAL_DARK : h > 0.9 ? SAND_LIGHT : WET_SAND;
+  float town = massawaTown(tile) + (h - 0.5) * 1.2 + coveField(p) * 0.8;
+  if (land >= ${f(WILD.beach)} && town < ${f(MASSAWA.town.radius)} &&
+      mapDistance(tile) > ${f(MASSAWA.town.fromMap)}) {
     float r = length(tile - PLAZA_CENTRE);
-    if (r < ${f(MASSAWA.plaza.radius)} - 0.5 + (h - 0.5) * 0.9) {
+    if (r < ${f(MASSAWA.plaza.radius)} - 0.3 + (h - 0.5) * 0.9) {
       // Sun-worn limestone flagstones in offset rows, half buried in sand.
       vec2 sq = tile * 1.5;
       float row = floor(sq.y), col = floor(sq.x + row * 0.5);
@@ -209,6 +212,9 @@ vec3 wild(vec3 p, vec2 tile) {
       if (h < 0.04) return PLAZA_DARK;
       return stone > 0.8 ? PLAZA_LIGHT : stone < 0.3 ? PLAZA_DARK : PLAZA;
     }
+    // Trodden lanes: slightly darker, packed sand between the houses.
+    float lane = sin(tile.x * 0.9 + coveField(p) * 4.0) * sin(tile.y * 0.7 - coveField(p) * 3.0);
+    if (lane > 0.55 && h > 0.35) return h > 0.8 ? DESERT : DESERT_DARK;
     return desertSand(p, tile, h, h2);
   }
   float arid = massawaAridness(p, tile);
