@@ -289,14 +289,6 @@ const MC = {
   sack2: '#A9946C',
   soil0: '#8A6A48',
   soil1: '#664B33',
-  // Doum palm fans, grey-green.
-  doum0: '#CFCB98',
-  doum1: '#A9A874',
-  doum2: '#828356',
-  doum3: '#5D603F',
-  doum4: '#3F422D',
-  dead0: '#B79A63',
-  dead1: '#8A6E43',
   // Acacia: dry olive leaves.
   acacia0: '#BDB679',
   acacia1: '#979356',
@@ -7051,12 +7043,14 @@ const city: Record<string, Spec> = {
 };
 Object.assign(objects, city);
 
-/* ════════ Massawa pass: a coral-stone town on the Red Sea, c. 615 CE ════════ */
+/* ════════ Massawa pass: an island town on the Red Sea, c. 615 CE ════════ */
 /*
- * Flat-roofed coral-rag houses with worn whitewash, palm-frond huts, a
- * market stall, a well, jars and baskets, drying nets, doum
- * palms and acacias, lateen-rigged dhows, a jetty and a jumping fish. No
- * people, text, flags or symbols. Placed outside the mapped quarter by
+ * After the owner's reference sheets: flat-roofed mud-brick houses (some in
+ * pink plaster) on red-brick footings with beam ends and low parapets,
+ * market stalls with produce, barrels and sacks, a well, garden plots, date
+ * palms and acacias, Bedouin tents, a cart, dhows under sail and under
+ * repair, rowing boats, nets, a jetty and a jumping fish. No people, text,
+ * flags or symbols. Placed outside the mapped quarter by
  * packages/shared/massawa.ts.
  */
 const CORAL: Tones = [
@@ -7071,7 +7065,6 @@ const PLASTER: Tones = [MC.plaster0, MC.plaster1, MC.plaster2, MC.stone2];
 const MWOOD: Tones = [MC.wood0, MC.wood1, MC.wood2, MC.wood3];
 const REED: Tones = [MC.reed0, MC.reed1, MC.reed2, MC.reed3];
 const CLAY: Tones = [MC.clay0, MC.clay1, MC.clay2, MC.clay3];
-const DOUM: Tones = [MC.doum0, MC.doum1, MC.doum2, MC.doum3, MC.doum4];
 const ACACIA: Tones = [
   MC.acacia0,
   MC.acacia1,
@@ -7104,41 +7097,6 @@ function vnoise(x: number, y: number, s: number) {
     nhash(xi, yi + 1, s) * (1 - u) * v +
     nhash(xi + 1, yi + 1, s) * u * v
   );
-}
-/**
- * Coral-rag masonry under patches of old whitewash. `face` 0 is a roof or
- * other top, 1 the lit front (constant y), 2 the shaded side (constant x).
- * Courses follow the face's slope; blocks are lit on their top left, with
- * dark mortar joints and coral pores. `plaster` is the share left bare.
- */
-function coralShade(
-  px: number,
-  py: number,
-  face: 0 | 1 | 2,
-  seed: number,
-  plaster = 0.58,
-  lift = 0,
-) {
-  const base = [0.42, 0.12, -0.34][face] + lift,
-    r = face === 1 ? py - px * 0.5 : face === 2 ? py + px * 0.5 : py;
-  const w = vnoise(px / 8, r / 6, seed + 9);
-  if (w > plaster) {
-    let v = base + 0.22 + (nhash(px, py, seed + 4) - 0.5) * 0.14;
-    if (w < plaster + 0.035) v -= 0.42; // worn plaster edge
-    if (nhash(px, py, seed + 6) < 0.018) v -= 0.5; // pits and hairline cracks
-    return tone(PLASTER, v, [0.6, 0.22, -0.16]);
-  }
-  const row = Math.floor(r / 4),
-    inRow = r / 4 - row,
-    wdt = 5 + Math.floor(nhash(row, 1, seed) * 3),
-    off = nhash(row, 2, seed) * wdt,
-    col = Math.floor((px + off) / wdt),
-    inCol = (px + off) / wdt - col;
-  let v = base + (nhash(col, row, seed) - 0.5) * 0.36;
-  if (inRow < 0.26 || inCol < 1 / wdt) v -= 0.68;
-  else if (inRow < 0.55 && inCol < 0.5) v += 0.16;
-  if (nhash(px, py, seed + 3) < 0.07) v -= 0.4;
-  return tone(CORAL, v, [0.6, 0.3, 0.02, -0.3, -0.62]);
 }
 /** A flat lime-plaster roof: mottled, a little darker toward the back. */
 function roofShade(px: number, py: number, seed: number) {
@@ -7177,38 +7135,6 @@ function reedShade(
   if ((j + (k % 3)) % 5 === 0) v -= 0.3;
   if (nhash(px, py, seed + 3) < 0.05) v += 0.3;
   return tone(REED, v, [0.32, -0.05, -0.42]);
-}
-/** A coral-stone block (house, wall) on markers, then textured. */
-function coralBlock(
-  c: IsoCanvas,
-  x: number,
-  y: number,
-  w: number,
-  d: number,
-  h: number,
-  seed: number,
-  plaster = 0.58,
-  z = 0,
-) {
-  c.top(x, y, w, d, z + h, MK.top);
-  c.faceX(x, y + d, w, z, h, MK.front);
-  c.faceY(x + w, y, d, z, h, MK.side);
-  recolour(c, MK.front, (px, py) => coralShade(px, py, 1, seed, plaster));
-  recolour(c, MK.side, (px, py) => coralShade(px, py, 2, seed + 1, plaster));
-  recolour(c, MK.top, (px, py) => roofShade(px, py, seed + 2));
-  // Parapet lip along the roof's front and side edges, its back edge shaded.
-  c.edge([x, y + d, z + h], [x + w, y + d, z + h], MC.plaster0);
-  c.edge([x + w, y + d, z + h], [x + w, y, z + h], MC.plaster1);
-  c.edge(
-    [x + 0.12, y + 0.12, z + h],
-    [x + w - 0.12, y + 0.12, z + h],
-    MC.plaster2,
-  );
-  c.edge(
-    [x + 0.12, y + 0.12, z + h],
-    [x + 0.12, y + d - 0.12, z + h],
-    MC.plaster2,
-  );
 }
 /** A plank door with a lintel beam on the front face (constant y). */
 function frontDoor(
@@ -7374,51 +7300,76 @@ function waterRing(
         c.p.pixel(px, py, (px + py + f) % 3 ? SEA[1] : SEA[0]);
     }
 }
-/** One fan of a doum palm: radiating leaf segments around a centre. */
-function doumFan(
+/**
+ * An open dhow hull lying along x from `x0` to `x1` (bow at x1): the inner
+ * planking and ribs show over the near gunwale, the near side is planked
+ * with a dark wale. `stripped` opens a run of missing planks amidships.
+ */
+function dhowHull(
   c: IsoCanvas,
-  cx: number,
-  cy: number,
-  deg: number,
-  R: number,
+  x0: number,
+  x1: number,
+  yc: number,
+  beam: number,
+  keel: number,
+  sheer: number,
   seed: number,
-  dark: number,
+  stripped = false,
 ) {
-  // One fan leaf: pleated segments radiating from the end of its stalk,
-  // split at the tips, lighter on top; seen a little from above.
-  const a0 = (deg * Math.PI) / 180,
-    fx = cx + Math.cos(a0) * R * 0.28,
-    fy = cy + Math.sin(a0) * R * 0.18,
-    half = 1.2,
-    n = 13;
-  c.line([cx, cy], [fx, fy], MC.doum3);
-  for (let py = Math.floor(fy - R - 2); py <= fy + R + 2; py++)
-    for (let px = Math.floor(fx - R - 2); px <= fx + R + 2; px++) {
-      const dx = px + 0.5 - fx,
-        dy = (py + 0.5 - fy) / 0.62,
-        r = Math.hypot(dx, dy);
-      if (r < 1) continue;
-      let rel = Math.atan2(dy, dx) - a0;
-      rel = Math.atan2(Math.sin(rel), Math.cos(rel));
-      if (Math.abs(rel) > half) continue;
-      const u = ((rel + half) / (2 * half)) * n,
-        seg = Math.floor(u),
-        pleat = u - seg,
-        len =
-          R *
-          (0.7 + 0.3 * Math.cos(rel * 1.1)) *
-          (0.88 + nhash(seg, seed) * 0.24);
-      if (r > len) continue;
-      if (r > len * 0.72 && pleat > 0.38 && pleat < 0.62) continue;
-      let v =
-        (pleat < 0.5 ? 0.22 : -0.12) -
-        (dy / R) * 0.35 -
-        dark -
-        (r / len) * 0.12 +
-        (nhash(px, py, seed + 1) - 0.5) * 0.12;
-      if (Math.abs(rel) > half - 0.12) v -= 0.3;
-      c.p.pixel(px, py, tone(DOUM, v, [0.42, 0.12, -0.2, -0.5]));
-    }
+  const xm = x0 + (x1 - x0) * 0.45,
+    near = (x: number) => {
+      const t = (x - x0) / (x1 - x0);
+      return yc + (beam / 2) * Math.sin(Math.PI * Math.min(1, 0.08 + t * 0.92)) ** 0.7;
+    },
+    rise = (x: number) => {
+      const t = (x - x0) / (x1 - x0);
+      return sheer + 7 * (1 - t) ** 3 + 8 * t ** 4;
+    };
+  const gunNear: [number, number, number][] = [],
+    gunFar: [number, number, number][] = [];
+  for (let i = 0; i <= 24; i++) {
+    const x = x0 + ((x1 - x0) * i) / 24;
+    gunNear.push([x, near(x), rise(x)]);
+    gunFar.push([x, 2 * yc - near(x), rise(x)]);
+  }
+  // Inside: the far side's inner planking (lit), then the dark bilge.
+  c.poly([...gunFar, ...[...gunNear].reverse()], MK.deck);
+  const [ox, oy] = c.at(0, 0, 0);
+  recolour(c, MK.deck, (px, py) => {
+    const X = (px + 0.5 - ox) / 16,
+      S = (py + 0.5 - oy) / 8,
+      tx = (S + X) / 2,
+      far = c.at(tx, 2 * yc - near(Math.min(x1, Math.max(x0, tx))), rise(Math.min(x1, Math.max(x0, tx))))[1],
+      dz = py - far;
+    if (Math.floor(px) % 5 === 0 && dz > 2) return MC.wood1;
+    if (dz < 4) return Math.floor(dz) % 2 ? MC.wood1 : MC.wood0;
+    return dz < 7 ? MC.wood2 : MC.wood3;
+  });
+  // Near side, from the gunwale down to the keel.
+  const keelLine: [number, number, number][] = [];
+  for (let i = 24; i >= 0; i--) {
+    const x = x0 + 0.15 + ((x1 - x0 - 0.35) * i) / 24,
+      t = (x - x0) / (x1 - x0);
+    keelLine.push([x, yc + (near(x) - yc) * 0.35, keel + 5 * (1 - t) ** 4 + 6 * t ** 6]);
+  }
+  c.poly([...gunNear, ...keelLine], MK.hull);
+  const [hax, hay] = c.at(0, yc + beam / 2, 0);
+  recolour(c, MK.hull, (px, py) => {
+    const z = hay + (px - hax) / 2 - py,
+      u = (px - hax) / 16;
+    if (stripped && u > xm - 0.2 && u < xm + 0.45 && z > keel + 4 && z < sheer - 3)
+      return Math.floor(px) % 3 === 0 ? MC.wood1 : MC.wood3;
+    if (z < keel + 3) return MC.wood3;
+    if (Math.floor(z) % 3 === 0) return MC.wood2;
+    return nhash(px >> 2, Math.floor(z / 3), seed) < 0.3 ? MC.wood1 : MC.wood0;
+  });
+  for (let i = 0; i < 24; i++) c.edge(gunNear[i], gunNear[i + 1], MC.wood0);
+  for (let i = 0; i < 24; i++)
+    c.edge(
+      [gunNear[i][0], gunNear[i][1], gunNear[i][2] - 3],
+      [gunNear[i + 1][0], gunNear[i + 1][1], gunNear[i + 1][2] - 3],
+      MC.wood3,
+    );
 }
 /** A flat, ragged umbrella canopy (acacia), lit on top, dark beneath. */
 function flatCanopy(
@@ -7576,8 +7527,8 @@ function crate(
   seed: number,
 ) {
   c.box(x, y, w, d, 3, { top: MC.wood1, front: MC.wood0, side: MC.wood1, edge: MC.wood2 }, z);
-  const [x0, y0] = c.at(x, y, z + 3),
-    [x1, y1] = c.at(x + w, y + d, z + 3);
+  const y0 = c.at(x, y, z + 3)[1],
+    y1 = c.at(x + w, y + d, z + 3)[1];
   for (let py = Math.min(y0, y1) - 3; py <= Math.max(y0, y1) + 1; py++)
     for (let px = Math.floor(c.at(x, y + d, 0)[0]); px <= c.at(x + w, y, 0)[0]; px++) {
       // Inside the crate's top diamond, heaped toward the middle.
@@ -7966,70 +7917,80 @@ const massawa: Record<string, Spec> = {
     },
   },
   'msw-tent': {
-    // A Bedouin tent of dark goat-hair strips: a ridge raised on poles,
-    // the front open on a shaded interior, ropes to pegs in the sand.
+    // A Bedouin tent of dark goat-hair cloth: a ridge on two poles sagging
+    // between them, the long side sloping almost to the sand, the end open
+    // on a shaded interior, ropes out to pegs.
     footprint: [3, 2],
-    h: 34,
+    h: 36,
     side: true,
     draw(c) {
       const zr = (x: number) =>
-        24 + 4 * Math.max(0, 1 - Math.abs(x - 0.9) / 0.5) + 4 * Math.max(0, 1 - Math.abs(x - 2.1) / 0.5);
-      // Back wall seen through the opening.
-      c.faceX(0.2, 0.9, 2.6, 0, 22, MC.tent3);
-      for (const u of [0.9, 2.1]) {
-        const [px, py] = c.at(u, 1.0, 0);
-        c.p.rect(px, py - zr(u), 1, zr(u), MC.wood1);
-      }
-      // Cushions and a rolled rug inside.
-      c.box(0.6, 1.1, 0.8, 0.35, 3, { top: MC.brick1, front: MC.brick2, side: MC.brick3 });
-      c.box(1.6, 1.1, 0.6, 0.3, 3, { top: MC.sack0, front: MC.sack1, side: MC.sack2 });
-      // Side wall and the closed end.
-      c.faceY(2.85, 0.9, 0.95, 0, 12, MK.side);
+          26 + 5 * Math.max(0, 1 - Math.abs(x - 0.8) / 0.6) + 5 * Math.max(0, 1 - Math.abs(x - 2.2) / 0.6),
+        Y0 = 0.1,
+        YR = 0.95,
+        Y1 = 1.85,
+        EAVE = 4;
+      const cloth = (lift: number, seed: number) => (px: number, py: number) => {
+        const k = Math.floor((py - px * 0.5) / 5);
+        let v = lift + (nhash(k, 0, seed) - 0.5) * 0.25 + (nhash(px, py, seed + 1) - 0.5) * 0.12;
+        if (((py - px * 0.5) % 5 + 5) % 5 < 0.8) v -= 0.25;
+        return tone(TENT, v, [0.3, -0.1, -0.45]);
+      };
+      // The near end (facing +x): a gable of cloth with an open doorway.
+      const ridgeEnd = zr(2.9);
       c.poly(
         [
-          [2.85, 0.9, 12],
-          [2.85, 1.85, 12],
-          [2.85, 1.0, zr(2.85)],
+          [2.9, Y0, EAVE],
+          [2.9, YR, ridgeEnd],
+          [2.9, Y1, EAVE],
+          [2.9, Y1, 0],
+          [2.9, Y0, 0],
         ],
         MK.side,
       );
-      recolour(c, MK.side, (px, py) =>
-        tone(TENT, -0.4 + ((py + px * 0.5) % 4 < 1 ? -0.4 : 0) + (nhash(px, py, 101) - 0.5) * 0.2, [0.3, -0.1, -0.5]),
+      recolour(c, MK.side, cloth(-0.45, 111));
+      c.poly(
+        [
+          [2.902, YR - 0.35, 0],
+          [2.902, YR, ridgeEnd - 6],
+          [2.902, YR + 0.35, 0],
+        ],
+        MC.tent3,
       );
-      // Front corners hang to the ground; the middle stays open.
-      c.faceX(0.15, 1.85, 0.55, 0, 12, MK.front);
-      c.faceX(2.3, 1.85, 0.55, 0, 12, MK.front);
-      recolour(c, MK.front, (px, py) =>
-        tone(TENT, 0.05 + ((py - px * 0.5) % 4 < 1 ? -0.4 : 0) + (nhash(px, py, 102) - 0.5) * 0.2, [0.3, -0.1, -0.5]),
+      c.poly(
+        [
+          [2.903, YR + 0.12, 0],
+          [2.903, YR, ridgeEnd - 8],
+          [2.903, YR + 0.08, 0],
+        ],
+        MC.wood3,
       );
-      // Roof: from the ridge down to the front eave, in long woven strips.
+      // A rolled rug and a cushion just inside.
+      const [ix, iy] = c.at(2.88, YR + 0.1, 1);
+      c.p.rect(ix - 2, iy - 2, 4, 2, MC.brick1);
+      c.p.rect(ix - 2, iy - 2, 4, 1, MC.brick0);
+      // The long front slope from the ridge down to the eave.
       const ridge: [number, number, number][] = [];
-      for (let i = 0; i <= 26; i++) {
-        const u = 0.1 + (2.8 * i) / 26;
-        ridge.push([u, 1.0, zr(u)]);
+      for (let i = 0; i <= 28; i++) {
+        const u = 0.1 + (2.8 * i) / 28;
+        ridge.push([u, YR, zr(u)]);
       }
-      c.poly([...ridge, [2.9, 1.95, 11], [0.1, 1.95, 11]], MK.roofA);
-      const [ox, oy] = c.at(0, 0, 0);
-      recolour(c, MK.roofA, (px, py) => {
-        const X = (px + 0.5 - ox) / 16,
-          strip = Math.floor((py - oy - X * 8) / 3);
-        let v = 0.25 + (nhash(strip, 0, 103) - 0.5) * 0.35 - (strip % 3 === 0 ? 0.3 : 0);
-        // Sagging between poles reads darker.
-        const tu = X + (py - oy) / 16;
-        if (Math.abs(tu / 2 - 1.5) < 0.2) v -= 0.15;
-        v += (nhash(px, py, 104) - 0.5) * 0.15;
-        return tone(TENT, v, [0.3, -0.1, -0.45]);
-      });
-      c.edge([0.1, 1.95, 11], [2.9, 1.95, 11], MC.tent3);
-      for (let i = 0; i < 30; i++) {
-        const [ex, ey] = c.at(0.1 + (2.8 * i) / 30, 1.95, 11);
-        if (nhash(i, 105) < 0.45) c.p.pixel(ex, ey + 1, MC.tent2);
+      c.poly([...ridge, [2.9, Y1, EAVE], [0.1, Y1, EAVE]], MK.roofA);
+      recolour(c, MK.roofA, cloth(0.05, 112));
+      for (let i = 0; i < 28; i++) c.edge(ridge[i], ridge[i + 1], MC.tent0);
+      c.edge([0.1, Y1, EAVE], [2.9, Y1, EAVE], MC.tent3);
+      // A short skirt hangs below the eave.
+      c.faceX(0.1, Y1, 2.8, 0, EAVE, MC.tent2);
+      // Pole tips above the ridge, guy ropes and pegs.
+      for (const u of [0.8, 2.2]) {
+        const [px, py] = c.at(u, YR, zr(u));
+        c.p.rect(px, py - 3, 1, 3, MC.wood1);
       }
-      // Guy ropes and pegs.
       for (const [a, b] of [
-        [[0.1, 1.95, 11], [-0.35, 2.4, 0]],
-        [[2.9, 1.95, 11], [3.35, 2.3, 0]],
-        [[1.5, 1.95, 11], [1.5, 2.55, 0]],
+        [[0.1, YR, zr(0.1)], [-0.45, YR, 0]],
+        [[2.9, YR, zr(2.9)], [3.45, YR, 0]],
+        [[0.8, Y1, EAVE], [0.8, 2.25, 0]],
+        [[2.2, Y1, EAVE], [2.2, 2.25, 0]],
       ] as [[number, number, number], [number, number, number]][]) {
         c.edge(a, b, MC.sack2);
         const [px, py] = c.at(...b);
@@ -8320,75 +8281,30 @@ const massawa: Record<string, Spec> = {
     },
   },
   'msw-dhow-beached': {
-    // A dhow drawn up on the sand, its yard lowered along the deck, propped
+    // A dhow drawn up on the sand, its yard lowered along the hull, propped
     // with timbers and tied to a stake.
     footprint: [3, 1],
-    h: 46,
+    h: 44,
     side: true,
     draw(c) {
-      const HULL = 12;
-      c.poly(
-        [
-          [0.15, 0.75, HULL + 6],
-          [1.2, 0.8, HULL],
-          [2.4, 0.78, HULL + 1],
-          [3.0, 0.55, HULL + 6],
-          [2.75, 0.55, 2],
-          [2.2, 0.72, 0],
-          [0.45, 0.72, 0],
-          [0.2, 0.74, 4],
-        ],
-        MK.hull,
-      );
-      c.poly(
-        [
-          [0.15, 0.35, HULL + 6],
-          [1.2, 0.3, HULL],
-          [2.4, 0.32, HULL + 1],
-          [3.0, 0.55, HULL + 6],
-          [2.4, 0.78, HULL + 1],
-          [1.2, 0.8, HULL],
-          [0.15, 0.75, HULL + 6],
-        ],
-        MK.deck,
-      );
-      const [hax, hay] = c.at(0, 0.75, 0);
-      recolour(c, MK.hull, (px, py) => {
-        const z = hay + (px - hax) / 2 - py;
-        if (z < 3) return MC.wood3;
-        if (Math.floor(z) % 3 === 0) return MC.wood2;
-        return nhash(px >> 2, Math.floor(z / 3), 161) < 0.3
-          ? MC.wood1
-          : MC.wood0;
-      });
-      recolour(c, MK.deck, (px, py) => plankShade(px, py, 'x', 162, 0.25));
-      c.edge([0.15, 0.75, HULL + 6], [1.2, 0.8, HULL], MC.wood3);
-      c.edge([1.2, 0.8, HULL], [2.4, 0.78, HULL + 1], MC.wood3);
-      c.edge([2.4, 0.78, HULL + 1], [3.0, 0.55, HULL + 6], MC.wood3);
-      // Props under the bilge.
       for (const u of [0.8, 1.9]) {
-        const [ax, ay] = c.at(u, 0.95, 0),
-          [bx, by] = c.at(u, 0.78, 6);
+        const [ax, ay] = c.at(u, 1.0, 0),
+          [bx, by] = c.at(u, 0.8, 6);
         c.line([ax, ay], [bx, by], MC.wood2);
       }
-      // Short mast; the yard and furled sail lie along the deck.
-      const [mx, my] = c.at(1.75, 0.55, HULL),
-        [tx, ty] = c.at(1.85, 0.55, 40);
+      dhowHull(c, 0.1, 3.0, 0.5, 0.75, 0, 13, 161);
+      const [mx, my] = c.at(1.75, 0.5, 6),
+        [tx, ty] = c.at(1.85, 0.5, 40);
       c.thick([mx, my], [tx, ty], 1, MC.wood2);
-      const [ax, ay] = c.at(0.3, 0.5, HULL + 9),
-        [bx, by] = c.at(2.8, 0.5, HULL + 5);
+      const [ax, ay] = c.at(0.4, 0.35, 21),
+        [bx, by] = c.at(2.8, 0.45, 17);
       c.thick([ax, ay], [bx, by], 1.5, NC.sail2);
       c.line([ax, ay - 2], [bx, by - 2], NC.sail0);
       c.line([ax, ay + 1], [bx, by + 1], MC.wood1);
-      for (let k = 1; k < 6; k++) {
-        const [rx, ry] = c.at(0.3 + k * 0.42, 0.5, HULL + 9 - k * 0.7);
-        c.p.rect(rx, ry - 2, 1, 4, MC.reed3);
-      }
-      // A stake and a rope.
       const [sx, sy] = c.at(3.3, 0.6, 0);
       c.p.rect(sx, sy - 5, 2, 5, MC.wood2);
-      const [bx2, by2] = c.at(2.95, 0.55, HULL + 4);
-      c.line([bx2, by2], [sx + 1, sy - 4], MC.reed2);
+      const [rx, ry] = c.at(2.95, 0.5, 18);
+      c.line([rx, ry], [sx + 1, sy - 4], MC.reed2);
     },
   },
   'msw-jetty': {
@@ -8493,78 +8409,34 @@ const massawa: Record<string, Spec> = {
     },
   },
   'msw-dhow-repair': {
-    // A dhow hauled up for repair: propped on timbers, planks stripped from
-    // its side, new boards on a trestle and offcuts in the sand.
+    // A dhow hauled up for repair: propped on timbers, a run of planks off
+    // its side, new boards on trestles and offcuts in the sand.
     footprint: [3, 2],
     h: 48,
     side: true,
     draw(c) {
-      const HULL = 14,
-        Y = 0.4;
-      // Stacked planks and a trestle behind the hull.
-      c.box(0.4, 0.05, 1.6, 0.25, 4, { top: MC.wood0, front: MC.wood1, side: MC.wood2, edge: MC.wood3 });
-      c.box(0.5, 0.05, 1.4, 0.25, 2, { top: MC.wood0, front: MC.wood1, side: MC.wood2 }, 4);
-      c.poly(
-        [
-          [0.15, Y + 0.75, HULL + 6],
-          [1.2, Y + 0.8, HULL],
-          [2.4, Y + 0.78, HULL + 1],
-          [3.0, Y + 0.55, HULL + 6],
-          [2.75, Y + 0.55, 4],
-          [2.2, Y + 0.72, 2],
-          [0.45, Y + 0.72, 2],
-          [0.2, Y + 0.74, 6],
-        ],
-        MK.hull,
-      );
-      c.poly(
-        [
-          [0.15, Y + 0.35, HULL + 6],
-          [1.2, Y + 0.3, HULL],
-          [2.4, Y + 0.32, HULL + 1],
-          [3.0, Y + 0.55, HULL + 6],
-          [2.4, Y + 0.78, HULL + 1],
-          [1.2, Y + 0.8, HULL],
-          [0.15, Y + 0.75, HULL + 6],
-        ],
-        MK.deck,
-      );
-      const [hax, hay] = c.at(0, Y + 0.75, 0);
-      recolour(c, MK.hull, (px, py) => {
-        const z = hay + (px - hax) / 2 - py;
-        // A run of planks taken off amidships shows the dark frames.
-        const u = (px - hax) / 16;
-        if (u > 1.0 && u < 1.6 && z > 6 && z < 11)
-          return Math.floor(px) % 3 === 0 ? MC.wood1 : MC.wood3;
-        if (z < 5) return MC.wood3;
-        if (Math.floor(z) % 3 === 0) return MC.wood2;
-        return nhash(px >> 2, Math.floor(z / 3), 191) < 0.3 ? MC.wood1 : MC.wood0;
-      });
-      recolour(c, MK.deck, (px, py) => plankShade(px, py, 'x', 192, 0.25));
-      c.edge([0.15, Y + 0.75, HULL + 6], [1.2, Y + 0.8, HULL], MC.wood3);
-      c.edge([1.2, Y + 0.8, HULL], [2.4, Y + 0.78, HULL + 1], MC.wood3);
-      c.edge([2.4, Y + 0.78, HULL + 1], [3.0, Y + 0.55, HULL + 6], MC.wood3);
-      // Bare mast.
-      const [mx, my] = c.at(1.75, Y + 0.55, HULL),
-        [tx, ty] = c.at(1.85, Y + 0.55, 44);
-      c.thick([mx, my], [tx, ty], 1, MC.wood2);
-      // Props under the bilge, a trestle with a board, offcuts.
+      c.box(0.4, 0.05, 1.6, 0.22, 3, { top: MC.wood0, front: MC.wood1, side: MC.wood2, edge: MC.wood3 });
+      c.box(0.5, 0.05, 1.4, 0.22, 2, { top: MC.wood0, front: MC.wood1, side: MC.wood2 }, 3);
       for (const u of [0.6, 1.4, 2.2]) {
-        const [ax, ay] = c.at(u, Y + 1.15, 0),
-          [bx, by] = c.at(u, Y + 0.8, 7);
+        const [ax, ay] = c.at(u, 1.45, 0),
+          [bx, by] = c.at(u, 1.15, 7);
         c.line([ax, ay], [bx, by], MC.wood2);
         c.line([ax + 1, ay], [bx + 1, by], MC.wood1);
       }
+      dhowHull(c, 0.1, 3.0, 0.85, 0.8, 2, 15, 191, true);
+      const [mx, my] = c.at(1.75, 0.85, 8),
+        [tx, ty] = c.at(1.85, 0.85, 42);
+      c.thick([mx, my], [tx, ty], 1, MC.wood2);
       for (const u of [0.7, 1.5]) {
-        const [px, py] = c.at(u, 1.75, 0);
+        const [px, py] = c.at(u, 1.8, 0);
         c.line([px - 2, py], [px, py - 6], MC.wood2);
         c.line([px + 2, py], [px, py - 6], MC.wood2);
       }
-      c.box(0.55, 1.65, 1.1, 0.15, 1, { top: MC.wood0, front: MC.wood1, side: MC.wood2 }, 6);
+      c.box(0.55, 1.72, 1.1, 0.14, 1, { top: MC.wood0, front: MC.wood1, side: MC.wood2 }, 6);
       for (const [u, v, k] of [
-        [2.3, 1.7, 0],
-        [2.6, 1.55, 1],
-        [0.3, 1.85, 2],
+        [2.3, 1.75, 0],
+        [2.65, 1.55, 1],
+        [0.25, 1.9, 2],
       ]) {
         const [px, py] = c.at(u, v, 0);
         c.p.rect(px - 3, py - 1, 7, 2, k % 2 ? MC.wood1 : MC.wood0);

@@ -17,36 +17,54 @@ export const MOSQUE_TILE: Point = [72, 156];
  * Town pieces outside the mapped quarter: [art id, tile x, tile y], each
  * standing on its art's anchor (the back corner of its footprint). With the
  * camera on Massawa the grid turns on screen: −y runs right, +x runs down
- * toward the viewer. The town sits on the sand by the causeway's landing;
- * wild acacias and doum palms on the scrub around it come from the build.
+ * toward the viewer. The mosque rises toward −x from MOSQUE_TILE; its
+ * forecourt (centre 74,156) stays open, ringed by the market.
  */
 export const MASSAWA_OBJECTS: [string, number, number][] = [
-  /* ── The town on the sand by the landing (x 63–72, y 129–138) ── */
-  ['msw-house-b', 63.6, 131.0],
-  ['msw-house-a', 63.6, 135.6],
-  ['msw-house-c-side', 67.4, 129.4],
-  ['msw-well', 67.6, 134.0],
-  ['msw-stall', 67.2, 136.4],
-  ['msw-house-a-side', 71.0, 131.0],
-  ['msw-jars', 70.6, 134.4],
-  ['msw-hut', 71.2, 136.2],
-  ['msw-palm', 62.8, 137.6],
-  ['msw-palm', 75.4, 137.6],
-  /* ── The beach where the causeway lands ── */
-  ['msw-nets', 65.6, 138.4],
-  ['msw-dhow-beached-side', 72.0, 138.6],
-  /* ── Open sand and scrub inland (x 47–62, y 129–137): one acacia ── */
-  ['msw-acacia', 54.0, 132.4],
-  /* ── The island: palms and a boat at its rim; the forecourt stays open ── */
-  ['msw-palm', 68.6, 163.2],
-  ['msw-palm', 66.8, 151.4],
-  ['msw-palm', 78.0, 162.2],
-  ['msw-dhow-beached-side', 78.4, 151.2],
-  ['msw-jetty', 80.2, 152.6],
-  /* ── Afloat: dhows under sail and leaping fish ── */
-  ['msw-dhow', 58.4, 150.4],
-  ['msw-dhow', 83.2, 146.2],
-  ['msw-dhow', 57.2, 160.6],
-  ['msw-fish-jump', 64.5, 146.5],
-  ['msw-fish-jump', 61.5, 157.5],
+  /* ── The market round the forecourt, the well below it ── */
+  ['msw-stall', 73.6, 150.6],
+  ['msw-stall-b-side', 73.4, 160.4],
+  ['msw-stall-side', 77.0, 151.2],
+  ['msw-stall-b', 77.2, 159.6],
+  ['msw-well', 78.2, 155.6],
+  ['msw-goods', 76.4, 153.4],
+  ['msw-goods', 76.6, 158.6],
+  /* ── Houses beside and behind the mosque ── */
+  ['msw-house-b', 63.4, 147.6],
+  ['msw-house-pink-side', 66.6, 146.6],
+  ['msw-house-a', 66.8, 149.8],
+  ['msw-house-d-side', 62.6, 162.4],
+  ['msw-house-a-side', 66.4, 162.6],
+  ['msw-house-pink', 69.6, 163.4],
+  ['msw-palm', 64.4, 151.0],
+  ['msw-palms', 64.6, 160.8],
+  /* ── Lanes toward the shore: more houses, gardens and palms ── */
+  ['msw-house-c', 72.2, 146.4],
+  ['msw-house-d', 80.0, 148.4],
+  ['msw-house-b-side', 73.6, 164.0],
+  ['msw-house-a', 79.6, 162.0],
+  ['msw-garden', 80.6, 152.2],
+  ['msw-garden', 80.8, 157.6],
+  ['msw-palm', 76.2, 147.6],
+  ['msw-palms', 77.8, 164.2],
+  ['msw-cart-side', 70.6, 149.6],
+  ['m-bush', 75.2, 162.4],
+  ['m-bush', 69.4, 151.2],
+  /* ── Beaches: a dhow under repair, nets, a jetty and boats ── */
+  ['msw-dhow-repair', 82.2, 154.0],
+  ['msw-nets-side', 61.6, 154.6],
+  ['msw-jetty', 82.6, 160.6],
+  ['msw-dhow', 85.4, 149.0],
+  ['msw-dhow', 63.2, 142.6],
+  ['msw-dhow', 59.0, 160.4],
+  ['msw-rowboat', 73.6, 143.0],
+  ['msw-rowboat', 85.0, 162.6],
+  ['msw-fish-jump', 66.0, 167.6],
+  /* ── The mainland across the causeway: a Bedouin camp at the desert edge ── */
+  ['msw-tent', 63.0, 133.2],
+  ['msw-tent-side', 72.6, 133.0],
+  ['msw-tent', 66.4, 129.6],
+  ['msw-acacia', 60.0, 136.4],
+  ['msw-acacia', 76.6, 136.6],
+  ['msw-palm', 67.6, 137.2],
 ];
