@@ -79,7 +79,8 @@ async function build() {
       p.startsWith('art/illustrations/') ||
       p.startsWith('art/sprites/') ||
       p.startsWith('art/landmarks/') ||
-      p.startsWith('art/supplied/')
+      p.startsWith('art/supplied/') ||
+      p.startsWith('art/gallery/')
     )
       continue;
     const errors = paletteErrors(
@@ -635,8 +636,20 @@ async function build() {
         .png({ palette: true, quality: 90 })
         .toFile(`${out}/${illustration}`);
     }
+    // Owner-supplied pictures of the person at work (art/gallery/<id>/).
+    const gallery = (
+      await fs.readdir(`art/gallery/${c.id}`).catch(() => [] as string[])
+    )
+      .filter((f) => f.endsWith('.png'))
+      .sort((a, b) => parseInt(a) - parseInt(b))
+      .map((f) => `gallery/${c.id}/${f}`);
+    if (gallery.length) {
+      await fs.mkdir(`${out}/gallery/${c.id}`, { recursive: true });
+      for (const g of gallery) await fs.copyFile(`art/${g}`, `${out}/${g}`);
+    }
     baked.push({
       ...c,
+      ...(gallery.length ? { gallery } : {}),
       frames,
       ...(mirror.length ? { mirror } : {}),
       ...(d8 ? { dir8: d8 } : {}),

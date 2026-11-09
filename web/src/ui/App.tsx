@@ -159,6 +159,7 @@ type CardView = Pick<
   | 'name'
   | 'illustration'
   | 'portrait'
+  | 'gallery'
   | 'years'
   | 'place'
   | 'summary'
@@ -608,6 +609,22 @@ function World({ manifest }: { manifest: Manifest | null }) {
                   </a>
                 ))}
               </div>
+            )}
+            {!!card.gallery?.length && (
+              <>
+                <h3>{t('atWork')}</h3>
+                <div className="work-gallery">
+                  {card.gallery.map((g) => (
+                    <img
+                      key={g}
+                      src={'/world/' + g}
+                      alt=""
+                      loading="lazy"
+                      draggable={false}
+                    />
+                  ))}
+                </div>
+              </>
             )}
             <p className="research-note">{t('research')}</p>
             <h3>{t('story')}</h3>
