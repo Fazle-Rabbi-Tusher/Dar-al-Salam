@@ -33,6 +33,7 @@ import {
   planetToTile,
   project,
   screenFacing,
+  screenDirection8,
   tileToPlanet,
   unproject,
   worldFromFocus,
@@ -134,11 +135,6 @@ const vec3 SCRUB = vec3(0.800, 0.635, 0.420);
 const vec3 SCRUB_DARK = vec3(0.698, 0.541, 0.345);
 const vec3 DRY_GRASS = vec3(0.690, 0.616, 0.333);
 const vec3 DRY_GRASS_DARK = vec3(0.553, 0.494, 0.259);
-const vec3 OASIS_DEEP = vec3(0.157, 0.420, 0.502);
-const vec3 OASIS = vec3(0.251, 0.588, 0.616);
-const vec3 OASIS_EDGE = vec3(0.459, 0.749, 0.722);
-const vec3 REED = vec3(0.420, 0.557, 0.243);
-const vec3 REED_DARK = vec3(0.290, 0.420, 0.180);
 const vec3 PLAZA = vec3(0.851, 0.788, 0.667);
 const vec3 PLAZA_LIGHT = vec3(0.886, 0.831, 0.718);
 const vec3 PLAZA_DARK = vec3(0.796, 0.725, 0.596);
@@ -223,15 +219,6 @@ vec3 wild(vec3 p, vec2 tile) {
       return h > 0.9 ? DESERT_LIGHT : h < 0.12 ? SCRUB_DARK : SCRUB;
     }
   }
-  // Massawa's oasis: a still pool, reeds at its edge, damp sand round it.
-  float pool = massawaOasis(tile) + (h - 0.5) * 0.25;
-  if (pool < ${f(MASSAWA.oasis.radius)}) {
-    if (pool > ${f(MASSAWA.oasis.radius - 0.35)}) return h2 > 0.5 ? REED : OASIS_EDGE;
-    if (h2 > 0.993 && sin(t * 6.0 + h * 30.0) > 0.7) return FOAM;
-    return pool < ${f(MASSAWA.oasis.radius - 1.3)} ? OASIS_DEEP : OASIS;
-  }
-  if (pool < ${f(MASSAWA.oasis.radius + 0.9)})
-    return h > 0.82 ? (h2 > 0.5 ? REED : REED_DARK) : DESERT_DARK;
   // Massawa: the town's trodden sand and the mosque's forecourt, ringed by
   // dry thorn scrub that blends back into the woods.
   float dry = dryBase + (h - 0.5) * 1.6;
@@ -807,11 +794,20 @@ export class Engine {
       if (!c.frames[key]) key = frameKey(state.action, step.prop, state.facing);
       const frames = c.frames[key],
         flip = Boolean(c.mirror?.includes(key));
-      // Supplied animation strips play at their own tempo on the world clock.
-      const tempo = this.metadata.get(frames[0])?.tempo,
-        name = tempo
-          ? frames[Math.floor((this.frame % (frames.length * tempo)) / tempo)]
-          : frames[state.index % frames.length];
+      // Eight-view figures turn to the way they head; strips play at their
+      // own tempo on the world clock.
+      const view = c.dir8
+          ? screenDirection8(this.proj, state.tile, direction, probe.rotation)
+          : -1,
+        tempo = this.metadata.get(frames[0])?.tempo,
+        name =
+          view >= 0
+            ? c.dir8![view]
+            : tempo
+              ? frames[
+                  Math.floor((this.frame % (frames.length * tempo)) / tempo)
+                ]
+              : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
@@ -826,16 +822,26 @@ export class Engine {
         density,
       );
       // Left/right views share frames; the engine flips them about the feet.
-      if (p && flip) item.sprite.scale.x *= -1;
+      if (p && flip && view < 0) item.sprite.scale.x *= -1;
       if (p && motion) {
-        // Animate the supplied still without redrawing it.
-        const toward = facing === 'SE' || facing === 'NE' ? 1 : -1;
+        // Animate the supplied still without redrawing it; it leans toward
+        // the side it faces (eight-view figures: east-ish views lean right).
+        const toward =
+          view >= 0
+            ? view >= 1 && view <= 3
+              ? 1
+              : view >= 5
+                ? -1
+                : 0
+            : facing === 'SE' || facing === 'NE'
+              ? 1
+              : -1;
         item.sprite.scale.x *= motion.sx;
         item.sprite.scale.y *= motion.sy;
         item.sprite.rotation += motion.lean * toward;
       }
       if (item.shadow) {
-        const sp = p && this.place(item.shadow, point, 16, 0, 1e-5);
+        const sp = p && this.place(item.shadow, point, 36, 0, 1e-5);
         if (!sp) item.shadow.visible = false;
       }
       if (!p) continue;

@@ -277,5 +277,293 @@
     ],
     "density": 5.789,
     "source": "Owner-supplied desert/camel sheets (2026-11), cut by tools/prepare-supplied.ts"
+  },
+  "sup-fort-0": {
+    "file": "supplied/sup-fort-0.png",
+    "anchor": [
+      165,
+      209
+    ],
+    "density": 1.858,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-fort-1": {
+    "file": "supplied/sup-fort-1.png",
+    "anchor": [
+      111,
+      210
+    ],
+    "density": 1.875,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-fort-2": {
+    "file": "supplied/sup-fort-2.png",
+    "anchor": [
+      121,
+      211
+    ],
+    "density": 1.883,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-fort-3": {
+    "file": "supplied/sup-fort-3.png",
+    "anchor": [
+      123,
+      209
+    ],
+    "density": 1.858,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-tent2-0": {
+    "file": "supplied/sup-tent2-0.png",
+    "anchor": [
+      205,
+      169
+    ],
+    "density": 2.891,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-tent2-1": {
+    "file": "supplied/sup-tent2-1.png",
+    "anchor": [
+      124,
+      173
+    ],
+    "density": 2.953,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-tent2-2": {
+    "file": "supplied/sup-tent2-2.png",
+    "anchor": [
+      168,
+      165
+    ],
+    "density": 2.813,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-tent2-3": {
+    "file": "supplied/sup-tent2-3.png",
+    "anchor": [
+      111,
+      166
+    ],
+    "density": 2.844,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-well2-0": {
+    "file": "supplied/sup-well2-0.png",
+    "anchor": [
+      123,
+      187
+    ],
+    "density": 4.08,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-well2-1": {
+    "file": "supplied/sup-well2-1.png",
+    "anchor": [
+      99,
+      184
+    ],
+    "density": 4.02,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-well2-2": {
+    "file": "supplied/sup-well2-2.png",
+    "anchor": [
+      109,
+      183
+    ],
+    "density": 4,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-well2-3": {
+    "file": "supplied/sup-well2-3.png",
+    "anchor": [
+      86,
+      188
+    ],
+    "density": 4.1,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-stall2-0": {
+    "file": "supplied/sup-stall2-0.png",
+    "anchor": [
+      171,
+      180
+    ],
+    "density": 3.574,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-stall2-1": {
+    "file": "supplied/sup-stall2-1.png",
+    "anchor": [
+      48,
+      181
+    ],
+    "density": 3.593,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-stall2-2": {
+    "file": "supplied/sup-stall2-2.png",
+    "anchor": [
+      150,
+      178
+    ],
+    "density": 3.519,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-stall2-3": {
+    "file": "supplied/sup-stall2-3.png",
+    "anchor": [
+      73,
+      181
+    ],
+    "density": 3.593,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-datepalm": {
+    "file": "supplied/sup-datepalm.png",
+    "anchor": [
+      115,
+      249
+    ],
+    "density": 2.429,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-datepalms": {
+    "file": "supplied/sup-datepalms.png",
+    "anchor": [
+      126,
+      205
+    ],
+    "density": 2.24,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-deadtree2": {
+    "file": "supplied/sup-deadtree2.png",
+    "anchor": [
+      128,
+      234
+    ],
+    "density": 3.036,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-rocks2": {
+    "file": "supplied/sup-rocks2.png",
+    "anchor": [
+      167,
+      182
+    ],
+    "density": 4.413,
+    "source": "Owner-supplied multi-angle desert set (2026-11), cut by tools/prepare-desert-set.ts"
+  },
+  "sup-dunes-0": {
+    "file": "supplied/sup-dunes-0.png",
+    "anchor": [
+      157,
+      134
+    ],
+    "density": 2.471,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-dunes-1": {
+    "file": "supplied/sup-dunes-1.png",
+    "anchor": [
+      154,
+      128
+    ],
+    "density": 2.357,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-dunes-2": {
+    "file": "supplied/sup-dunes-2.png",
+    "anchor": [
+      158,
+      128
+    ],
+    "density": 2.357,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-dunes-3": {
+    "file": "supplied/sup-dunes-3.png",
+    "anchor": [
+      157,
+      129
+    ],
+    "density": 2.386,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-oasis-0": {
+    "file": "supplied/sup-oasis-0.png",
+    "anchor": [
+      157,
+      171
+    ],
+    "density": 2.009,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-oasis-1": {
+    "file": "supplied/sup-oasis-1.png",
+    "anchor": [
+      159,
+      170
+    ],
+    "density": 1.991,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-oasis-2": {
+    "file": "supplied/sup-oasis-2.png",
+    "anchor": [
+      162,
+      167
+    ],
+    "density": 1.955,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-oasis-3": {
+    "file": "supplied/sup-oasis-3.png",
+    "anchor": [
+      163,
+      170
+    ],
+    "density": 1.991,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-mesa-0": {
+    "file": "supplied/sup-mesa-0.png",
+    "anchor": [
+      157,
+      151
+    ],
+    "density": 2.267,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-mesa-1": {
+    "file": "supplied/sup-mesa-1.png",
+    "anchor": [
+      157,
+      146
+    ],
+    "density": 2.198,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-mesa-2": {
+    "file": "supplied/sup-mesa-2.png",
+    "anchor": [
+      166,
+      143
+    ],
+    "density": 2.151,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
+  },
+  "sup-mesa-3": {
+    "file": "supplied/sup-mesa-3.png",
+    "anchor": [
+      162,
+      146
+    ],
+    "density": 2.198,
+    "source": "Owner-supplied multi-angle desert set (2026-11): terrain tile top without its block sides, cut by tools/prepare-desert-set.ts"
   }
 }

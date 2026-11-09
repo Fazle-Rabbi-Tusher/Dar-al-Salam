@@ -31,9 +31,6 @@ describe('Massawa', () => {
     };
     for (const [type, x, y] of MASSAWA_OBJECTS) {
       expect(index[type], type).toBeTruthy();
-      expect(biome([x, y]), `${type} at ${x},${y} is in the oasis`).not.toBe(
-        'oasis',
-      );
       if (SHORELINE.has(type)) continue;
       expect(water([x, y]), `${type} at ${x},${y}`).toBe(AFLOAT.has(type));
     }

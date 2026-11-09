@@ -21,11 +21,31 @@ const phase = (frame: number, period: number) =>
   (((frame % period) + period) % period) / period;
 
 const WALK = new Set<Action>(['walk', 'carry', 'sweep']);
+// Four-legged animals: a slow rolling pace, a grazing dip, a calm rest.
+const PACE = new Set<Action>(['animal_walk', 'cat_walk']);
+const GRAZE = new Set<Action>(['animal_graze']);
 const HOP = new Set<Action>(['cheer', 'celebrate', 'arms-out', 'taunt']);
 const STRIKE = new Set<Action>(['kick', 'punch', 'bat']);
 const TALK = new Set<Action>(['talk', 'speech', 'wave']);
 
 export function motionFor(action: Action, frame: number): Motion {
+  if (PACE.has(action)) {
+    // A camel paces (both legs on one side together), so it rolls from
+    // side to side with a bob on every step.
+    const t = phase(frame, 16);
+    return {
+      lift: Math.abs(Math.sin(t * TAU)) * 1.4,
+      sx: 1 + Math.sin(t * TAU) * 0.012,
+      sy: 1 - Math.abs(Math.sin(t * TAU)) * 0.01,
+      lean: Math.sin(t * TAU) * 0.035,
+    };
+  }
+  if (GRAZE.has(action)) {
+    // Head down to the ground and back, every four seconds.
+    const t = phase(frame, 48),
+      dip = Math.max(0, Math.sin(t * TAU));
+    return { lift: 0, sx: 1, sy: 1 - dip * 0.035, lean: dip * 0.06 };
+  }
   if (WALK.has(action)) {
     // Two steps a second: a bob on each step and a small side-to-side sway.
     const t = phase(frame, 12);
