@@ -191,7 +191,7 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5) {
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5 && massawaDryness(p, tile) <= 0.0) {
     float along = atan(p.y, p.x) * 140.0;
     float across = p.z / ${f(WILD.roadHalfWidth)};
     float joint = step(0.92, fract(along)) + step(0.86, abs(across));

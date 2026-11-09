@@ -387,10 +387,12 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
-  // The ring road runs on; then Massawa's oasis, sand and scrub fringe.
-  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5) return 'road';
+  // Massawa's oasis, sand and scrub fringe; the ring road stops at the
+  // desert's edge (owner's request) and runs on everywhere else.
   if (massawaOasis(tile) < MASSAWA.oasis.radius) return 'oasis';
   const dry = massawaDryness(p, tile);
+  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5 && dry <= 0)
+    return 'road';
   if (dry > MASSAWA.town.scrub && land >= WILD.beach)
     return inPlaza(tile) ? 'plaza' : 'desert';
   if (land < WILD.beach) return 'beach';
@@ -528,11 +530,8 @@ export function wildPlantings(count = 16000): Planting[] {
         rockSpots.push({ kind: 'waterfall', p, tile, pick });
     } else if (biome === 'desert') {
       // Open desert: dunes, sandstone outcrops, shrubs and a rare acacia.
-      // Wide dunes and rocks keep clear of the ring road (tiles to its edge).
-      const fromRoad =
-        (Math.abs(p[2]) - WILD.roadHalfWidth) * PLANET.radiusTiles;
-      if (roll < 0.035 && fromRoad > 4.5) at('dune');
-      else if (roll < 0.075 && fromRoad > 2) at('desert-rock');
+      if (roll < 0.035) at('dune');
+      else if (roll < 0.075) at('desert-rock');
       else if (roll < 0.15) at('desert-shrub');
       else if (roll < 0.165) at('acacia');
     } else if (biome === 'scrub') {
