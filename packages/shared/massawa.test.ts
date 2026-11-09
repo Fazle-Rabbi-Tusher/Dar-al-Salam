@@ -24,9 +24,16 @@ describe('Massawa', () => {
     expect(card.tile).toEqual(MOSQUE_TILE);
   });
   it('places only known art, afloat or ashore as fits', () => {
-    const index = JSON.parse(fs.readFileSync('art/objects/index.json', 'utf8'));
+    const index = {
+      ...JSON.parse(fs.readFileSync('art/objects/index.json', 'utf8')),
+      // Pieces cut from the owner's desert and camel sheets.
+      ...JSON.parse(fs.readFileSync('art/supplied/index.json', 'utf8')),
+    };
     for (const [type, x, y] of MASSAWA_OBJECTS) {
       expect(index[type], type).toBeTruthy();
+      expect(biome([x, y]), `${type} at ${x},${y} is in the oasis`).not.toBe(
+        'oasis',
+      );
       if (SHORELINE.has(type)) continue;
       expect(water([x, y]), `${type} at ${x},${y}`).toBe(AFLOAT.has(type));
     }

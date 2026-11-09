@@ -9,7 +9,11 @@ import sharp from 'sharp';
  *     <left> <top> <width> <height> [erase=x0,y0,x1,y1 ...] [knob=x,y,r]
  *
  * erase clears a box (crop coordinates), for example a finial; knob paints a
- * small plain cap in the colours just below it.
+ * small plain cap in the colours just below it. `largest` keeps only the
+ * biggest piece (when a neighbour pokes into the box), `flip` mirrors the
+ * result, `modulate=brightness,saturation,hue` recolours it (a coat
+ * variant), and `floor=y` clears everything below row y (crop coordinates),
+ * such as a painted ground strip.
  */
 const [src, out, ...rest] = process.argv.slice(2);
 const [left, top, width, height] = rest.slice(0, 4).map(Number);
@@ -22,7 +26,17 @@ const { data, info } = await sharp(src)
 const W = info.width,
   H = info.height,
   at = (x: number, y: number) => (y * W + x) * 4;
-const bg = [data[0], data[1], data[2]];
+// The backdrop: the average of the dark pixels round the crop's border
+// (a corner may sit on a neighbouring piece).
+const border: number[] = [];
+for (let x = 0; x < W; x++) border.push(at(x, 0), at(x, H - 1));
+for (let y = 0; y < H; y++) border.push(at(0, y), at(W - 1, y));
+const dark = border.filter((i) => data[i] + data[i + 1] + data[i + 2] < 120);
+const bg = [0, 1, 2].map((c) =>
+  dark.length
+    ? Math.round(dark.reduce((n, i) => n + data[i + c], 0) / dark.length)
+    : data[c],
+);
 const nearBg = (i: number, tol: number) =>
   Math.max(
     Math.abs(data[i] - bg[0]),
@@ -44,6 +58,39 @@ while (stack.length) {
   if (y > 0) stack.push(k - W);
   if (y < H - 1) stack.push(k + W);
 }
+// Backdrop enclosed by the art (between legs, under a belly) goes too, when
+// it is a sizeable patch rather than a dark detail of the drawing.
+{
+  const seen = new Uint8Array(W * H);
+  for (let k = 0; k < W * H; k++) {
+    if (clear[k] || seen[k] || !nearBg(k * 4, 20)) continue;
+    const region = [k],
+      st = [k];
+    seen[k] = 1;
+    while (st.length) {
+      const q = st.pop()!,
+        x = q % W,
+        y = (q - x) / W;
+      for (const [dx, dy] of [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+      ]) {
+        const nx = x + dx,
+          ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+        const nk = ny * W + nx;
+        if (!seen[nk] && !clear[nk] && nearBg(nk * 4, 20)) {
+          seen[nk] = 1;
+          region.push(nk);
+          st.push(nk);
+        }
+      }
+    }
+    if (region.length >= 40) for (const q of region) clear[q] = 1;
+  }
+}
 // Dark fringe pixels touching the cleared backdrop go too.
 for (let pass = 0; pass < 2; pass++) {
   const next = clear.slice();
@@ -60,9 +107,57 @@ for (let pass = 0; pass < 2; pass++) {
   clear.set(next);
 }
 for (let k = 0; k < W * H; k++) if (clear[k]) data[k * 4 + 3] = 0;
+let flip = false,
+  modulate: number[] | null = null;
 for (const e of edits) {
-  const [name, args] = e.split('='),
+  const [name, args = ''] = e.split('='),
     n = args.split(',').map(Number);
+  if (name === 'flip') {
+    flip = true;
+    continue;
+  }
+  if (name === 'modulate') {
+    modulate = n;
+    continue;
+  }
+  if (name === 'floor') {
+    for (let y = n[0]; y < H; y++)
+      for (let x = 0; x < W; x++) data[at(x, y) + 3] = 0;
+    continue;
+  }
+  if (name === 'largest') {
+    // Keep the biggest 8-connected piece of opaque pixels.
+    const label = new Int32Array(W * H).fill(-1),
+      sizes: number[] = [];
+    for (let k = 0; k < W * H; k++) {
+      if (data[k * 4 + 3] === 0 || label[k] >= 0) continue;
+      const id = sizes.length,
+        st = [k];
+      let n = 0;
+      label[k] = id;
+      while (st.length) {
+        const q = st.pop()!,
+          x = q % W,
+          y = (q - x) / W;
+        n++;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = x + dx,
+              ny = y + dy;
+            if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+            const nk = ny * W + nx;
+            if (data[nk * 4 + 3] && label[nk] < 0) {
+              label[nk] = id;
+              st.push(nk);
+            }
+          }
+      }
+      sizes.push(n);
+    }
+    const keep = sizes.indexOf(Math.max(...sizes));
+    for (let k = 0; k < W * H; k++) if (label[k] !== keep) data[k * 4 + 3] = 0;
+    continue;
+  }
   if (name === 'erase') {
     const [x0, y0, x1, y1] = n;
     for (let y = y0; y <= y1; y++)
@@ -85,8 +180,15 @@ for (const e of edits) {
       }
   } else throw Error(`Unknown edit ${e}`);
 }
-await sharp(data, { raw: { width: W, height: H, channels: 4 } })
-  .trim({ threshold: 0 })
-  .png()
-  .toFile(out);
+let img = sharp(data, { raw: { width: W, height: H, channels: 4 } }).trim({
+  threshold: 0,
+});
+if (flip) img = sharp(await img.png().toBuffer()).flop();
+if (modulate)
+  img = sharp(await img.png().toBuffer()).modulate({
+    brightness: modulate[0],
+    saturation: modulate[1] ?? 1,
+    hue: modulate[2] ?? 0,
+  });
+await img.png().toFile(out);
 console.log(`Wrote ${out}`);

@@ -126,13 +126,19 @@ const vec3 ROCK_DARK = vec3(0.373, 0.420, 0.459);
 const vec3 MOSS = vec3(0.431, 0.549, 0.306);
 const vec3 STONE = vec3(0.843, 0.863, 0.824);
 const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
-const vec3 DESERT = vec3(0.890, 0.788, 0.612);
-const vec3 DESERT_LIGHT = vec3(0.945, 0.871, 0.722);
-const vec3 DESERT_DARK = vec3(0.808, 0.690, 0.506);
-const vec3 SCRUB = vec3(0.796, 0.706, 0.529);
-const vec3 SCRUB_DARK = vec3(0.690, 0.596, 0.431);
-const vec3 DRY_GRASS = vec3(0.706, 0.667, 0.384);
-const vec3 DRY_GRASS_DARK = vec3(0.561, 0.541, 0.298);
+// Massawa's golden desert sand (after the owner's desert sheet).
+const vec3 DESERT = vec3(0.886, 0.643, 0.333);
+const vec3 DESERT_LIGHT = vec3(0.945, 0.737, 0.427);
+const vec3 DESERT_DARK = vec3(0.776, 0.522, 0.255);
+const vec3 SCRUB = vec3(0.800, 0.635, 0.420);
+const vec3 SCRUB_DARK = vec3(0.698, 0.541, 0.345);
+const vec3 DRY_GRASS = vec3(0.690, 0.616, 0.333);
+const vec3 DRY_GRASS_DARK = vec3(0.553, 0.494, 0.259);
+const vec3 OASIS_DEEP = vec3(0.157, 0.420, 0.502);
+const vec3 OASIS = vec3(0.251, 0.588, 0.616);
+const vec3 OASIS_EDGE = vec3(0.459, 0.749, 0.722);
+const vec3 REED = vec3(0.420, 0.557, 0.243);
+const vec3 REED_DARK = vec3(0.290, 0.420, 0.180);
 const vec3 PLAZA = vec3(0.851, 0.788, 0.667);
 const vec3 PLAZA_LIGHT = vec3(0.886, 0.831, 0.718);
 const vec3 PLAZA_DARK = vec3(0.796, 0.725, 0.596);
@@ -191,6 +197,15 @@ vec3 wild(vec3 p, vec2 tile) {
     float joint = step(0.92, fract(along)) + step(0.86, abs(across));
     return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
   }
+  // Massawa's oasis: a still pool, reeds at its edge, damp sand round it.
+  float pool = massawaOasis(tile) + (h - 0.5) * 0.25;
+  if (pool < ${f(MASSAWA.oasis.radius)}) {
+    if (pool > ${f(MASSAWA.oasis.radius - 0.35)}) return h2 > 0.5 ? REED : OASIS_EDGE;
+    if (h2 > 0.993 && sin(t * 6.0 + h * 30.0) > 0.7) return FOAM;
+    return pool < ${f(MASSAWA.oasis.radius - 1.3)} ? OASIS_DEEP : OASIS;
+  }
+  if (pool < ${f(MASSAWA.oasis.radius + 0.9)})
+    return h > 0.82 ? (h2 > 0.5 ? REED : REED_DARK) : DESERT_DARK;
   // Massawa: the town's trodden sand and the mosque's forecourt, ringed by
   // dry thorn scrub that blends back into the woods.
   float dry = massawaDryness(p, tile) + (h - 0.5) * 1.6;
@@ -211,6 +226,13 @@ vec3 wild(vec3 p, vec2 tile) {
     // Trodden lanes: slightly darker, packed sand between the houses.
     float lane = sin(tile.x * 0.9 + coveField(p) * 4.0) * sin(tile.y * 0.7 - coveField(p) * 3.0);
     if (lane > 0.55 && h > 0.35) return h > 0.8 ? DESERT : DESERT_DARK;
+    return desertSand(p, tile, h, h2);
+  }
+  // Open desert round the town: golden sand with fine wind ripples.
+  if (dry > ${f(MASSAWA.town.scrub)} && land >= ${f(WILD.beach)}) {
+    float ripple = sin((tile.x - tile.y) * 3.1 + coveField(p) * 9.0);
+    if (ripple > 0.9 && h > 0.45) return DESERT_LIGHT;
+    if (ripple < -0.93 && h > 0.5) return DESERT_DARK;
     return desertSand(p, tile, h, h2);
   }
   float edge = land + (h - 0.5) * 0.8;

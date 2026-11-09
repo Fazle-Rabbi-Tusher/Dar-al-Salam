@@ -271,6 +271,11 @@ const MC = {
   pink1: '#DEA88F',
   pink2: '#C88A73',
   pink3: '#A86C58',
+  // Ochre lime-wash.
+  ochre0: '#E9BE78',
+  ochre1: '#D3A05A',
+  ochre2: '#B37F40',
+  ochre3: '#8C5E2C',
   // Goat-hair tent cloth.
   tent0: '#7A604A',
   tent1: '#5F4836',
@@ -7417,8 +7422,16 @@ function flatCanopy(
 const BRICK: Tones = [MC.brick0, MC.brick1, MC.brick2, MC.brick3];
 const PINK: Tones = [MC.pink0, MC.pink1, MC.pink2, MC.pink3];
 const TENT: Tones = [MC.tent0, MC.tent1, MC.tent2, MC.tent3];
+const OCHRE: Tones = [MC.ochre0, MC.ochre1, MC.ochre2, MC.ochre3];
 const SACK: Tones = [MC.sack0, MC.sack1, MC.sack2, MC.wood2];
-type WallLook = { pink?: boolean; band?: number; plaster?: number };
+type WallLook = {
+  pink?: boolean;
+  band?: number;
+  /** Share of the wall left as bare brick (0 = all plaster, 1 = none). */
+  plaster?: number;
+  /** Plaster ramp, light to dark (default lime or pink). */
+  tones?: Tones;
+};
 /**
  * A town wall as in the owner's references: tan mud-brick courses with
  * worn lime plaster (or pink plaster), over a footing of fired red brick.
@@ -7452,9 +7465,11 @@ function wallShade(
     let v = base + 0.18 + (nhash(px, py, seed + 4) - 0.5) * 0.14;
     if (w < share + 0.035) v -= 0.42;
     if (nhash(px, py, seed + 6) < 0.015) v -= 0.5;
-    return look.pink
-      ? tone(PINK, v, [0.35, 0.0, -0.4])
-      : tone(PLASTER, v, [0.6, 0.22, -0.16]);
+    return look.tones
+      ? tone(look.tones, v, [0.35, 0.0, -0.4])
+      : look.pink
+        ? tone(PINK, v, [0.35, 0.0, -0.4])
+        : tone(PLASTER, v, [0.6, 0.22, -0.16]);
   }
   // Sun-dried bricks laid in courses, lit on their top left.
   const row = Math.floor(r / 3),
@@ -7486,9 +7501,9 @@ function townBlock(
 ) {
   const [ax, ay] = c.at(0, 0, 0),
     t = 0.13,
-    rim = look.pink ? MC.pink0 : MC.plaster0,
-    lit = look.pink ? MC.pink1 : MC.plaster1,
-    shadeC = look.pink ? MC.pink2 : MC.plaster2;
+    rim = look.tones?.[0] ?? (look.pink ? MC.pink0 : MC.plaster0),
+    lit = look.tones?.[1] ?? (look.pink ? MC.pink1 : MC.plaster1),
+    shadeC = look.tones?.[2] ?? (look.pink ? MC.pink2 : MC.plaster2);
   c.top(x, y, w, d, z + h - 2, MK.top);
   recolour(c, MK.top, (px, py) => roofShade(px, py, seed + 2));
   c.faceX(x + t, y + t, w - t, z + h - 2, 2, lit);
@@ -7727,7 +7742,223 @@ function datePalm(
   }
 }
 
+/** An arched doorway on the front face (constant y): dark, with a lit rim. */
+function archDoor(c: IsoCanvas, x: number, y: number, w: number, h: number) {
+  const arch = (inset: number): [number, number, number][] => {
+    const pts: [number, number, number][] = [[x + inset, y, 0]];
+    for (let i = 0; i <= 12; i++) {
+      const t = i / 12;
+      pts.push([
+        x + inset + (w - 2 * inset) * t,
+        y,
+        h - 4 + 4 * Math.sin(Math.PI * t) - inset * 8,
+      ]);
+    }
+    pts.push([x + w - inset, y, 0]);
+    return pts;
+  };
+  c.poly(
+    arch(0).map(([a, b, z]) => [a, b + 0.002, z]),
+    MC.plaster0,
+  );
+  c.poly(
+    arch(0.05).map(([a, b, z]) => [a, b + 0.003, z]),
+    MC.wood3,
+  );
+  c.poly(
+    arch(0.1).map(([a, b, z]) => [a, b + 0.004, Math.max(0, z - 1)]),
+    MC.wood2,
+  );
+}
+/** A wooden lattice balcony jutting from the front face at height z. */
+function latticeBalcony(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  z: number,
+  h = 10,
+) {
+  c.box(
+    x,
+    y,
+    w,
+    0.3,
+    h,
+    { top: MC.wood0, front: MC.wood1, side: MC.wood2, edge: MC.wood3 },
+    z,
+  );
+  const [x0, y0] = c.at(x, y + 0.3, z),
+    [x1] = c.at(x + w, y + 0.3, z);
+  for (let px = Math.ceil(x0) + 1; px < x1 - 1; px++)
+    for (let k = 2; k < h - 1; k++) {
+      const py = y0 + (px - x0) * 0.5 - k;
+      if ((px + k) % 3 === 0 || (px - k + 300) % 3 === 0)
+        c.p.pixel(px, py, MC.wood3);
+      else if ((px + k) % 3 === 1) c.p.pixel(px, py, MC.wood0);
+    }
+  // Brackets under it.
+  for (const u of [x + 0.08, x + w - 0.08]) {
+    const [bx, by] = c.at(u, y + 0.3, z);
+    c.line([bx, by], [bx - 1, by + 3], MC.wood2);
+  }
+}
+/** Steps up the side face (constant x), from the ground to height h. */
+function sideStair(c: IsoCanvas, x: number, y: number, len: number, h: number) {
+  const n = Math.round(h / 3);
+  for (let i = 0; i < n; i++)
+    c.box(
+      x,
+      y + (len * i) / n,
+      0.35,
+      len - (len * i) / n,
+      3,
+      {
+        top: MC.plaster1,
+        front: MC.stone2,
+        side: MC.stone3,
+        edge: MC.stone4,
+      },
+      i * 3,
+    );
+}
 const massawa: Record<string, Spec> = {
+  'msw-house-white': {
+    // Whitewashed all over, with a blue-green plank door and shutters.
+    footprint: [2, 2],
+    h: 40,
+    side: true,
+    draw(c) {
+      townBlock(c, 0.15, 0.15, 1.7, 1.6, 30, 61, { plaster: -1, band: 5 });
+      beamEnds(c, 0.15, 1.75, 1.7, 26, 5);
+      beamEndsSide(c, 1.85, 0.15, 1.6, 26, 4);
+      c.faceX(0.68, 1.752, 0.5, 17, 3, MC.wood1);
+      c.faceX(0.72, 1.753, 0.42, 0, 17, C.tealDark);
+      for (let k = 1; k < 4; k++)
+        c.faceX(0.72 + k * 0.105, 1.754, 0.012, 0, 17, C.deepTeal);
+      c.faceX(0.3, 1.752, 0.26, 14, 7, MC.wood3);
+      c.faceX(0.3, 1.753, 0.12, 14, 7, C.teal);
+      c.faceX(0.44, 1.753, 0.12, 14, 7, C.tealDark);
+      c.faceY(1.852, 0.5, 0.32, 14, 7, MC.wood3);
+      c.faceY(1.853, 0.5, 0.14, 14, 7, C.tealDark);
+      c.faceY(1.853, 0.68, 0.14, 14, 7, C.deepTeal);
+      jar(c, 1.45, 1.95, 0, 2.8, 62);
+    },
+  },
+  'msw-house-ochre': {
+    // An ochre-washed house of two storeys with a wooden lattice balcony.
+    footprint: [2, 2],
+    h: 64,
+    side: true,
+    draw(c) {
+      townBlock(c, 0.15, 0.15, 1.7, 1.55, 54, 71, {
+        plaster: 0.15,
+        tones: OCHRE,
+      });
+      beamEnds(c, 0.15, 1.7, 1.7, 50, 5);
+      beamEndsSide(c, 1.85, 0.15, 1.55, 50, 4);
+      beamEnds(c, 0.15, 1.7, 1.7, 27, 5);
+      frontDoor(c, 0.3, 1.7, 0.4, 17, 72);
+      shutter(c, 'x', 1.25, 1.7, 14, 0.26, 7);
+      latticeBalcony(c, 0.75, 1.7, 0.85, 30, 12);
+      grille(c, 1.85, 0.55, 36);
+      grille(c, 1.85, 0.55, 12);
+    },
+  },
+  'msw-house-long': {
+    // A long, low house with an arched doorway behind a courtyard wall.
+    footprint: [4, 3],
+    h: 36,
+    side: true,
+    draw(c) {
+      townBlock(c, 0.15, 0.15, 3.7, 1.3, 26, 81, { plaster: 0.45 });
+      beamEnds(c, 0.15, 1.45, 3.7, 22, 9);
+      beamEndsSide(c, 3.85, 0.15, 1.3, 22, 3);
+      archDoor(c, 1.6, 1.45, 0.55, 19);
+      shutter(c, 'x', 0.55, 1.45, 12, 0.24, 6);
+      shutter(c, 'x', 2.75, 1.45, 12, 0.24, 6);
+      shutter(c, 'x', 3.3, 1.45, 12, 0.24, 6);
+      // Swept courtyard and its low front wall with a gap at the door.
+      c.top(0.15, 1.45, 3.7, 1.35, 0, MC.stone1);
+      basket(c, 0.6, 2.0, 0, 4, 3, [MC.green0, MC.green1, MC.green2], 82);
+      jar(c, 3.3, 1.9, 0, 3, 83);
+      townBlock(c, 0.15, 2.6, 1.35, 0.25, 12, 84, { band: 4 });
+      townBlock(c, 2.35, 2.6, 1.5, 0.25, 12, 85, { band: 4 });
+      townBlock(c, 3.6, 1.45, 0.25, 1.15, 12, 86, { band: 4 });
+    },
+  },
+  'msw-house-terrace': {
+    // A house with an outside stair to a roof terrace under a frond shade.
+    footprint: [3, 2],
+    h: 48,
+    side: true,
+    draw(c) {
+      townBlock(c, 0.15, 0.15, 2.0, 1.6, 26, 91, { plaster: 0.55 });
+      beamEnds(c, 0.15, 1.75, 2.0, 22, 5);
+      frontDoor(c, 0.9, 1.75, 0.42, 17, 92, true);
+      shutter(c, 'x', 0.35, 1.75, 12, 0.24, 6);
+      sideStair(c, 2.15, 0.25, 1.4, 24);
+      for (const [u, v] of [
+        [0.3, 0.3],
+        [2.0, 0.3],
+        [0.3, 1.6],
+        [2.0, 1.6],
+      ])
+        pole(c, u, v, 26, 13);
+      c.poly(
+        [
+          [0.2, 0.2, 40],
+          [2.1, 0.2, 40],
+          [2.1, 1.7, 38],
+          [0.2, 1.7, 38],
+        ],
+        MK.roofA,
+      );
+      recolour(c, MK.roofA, (px, py) => reedShade(px, py, 93, 0.15, false));
+      c.edge([0.2, 1.7, 38], [2.1, 1.7, 38], MC.reed3);
+      for (let i = 0; i < 22; i++) {
+        const [ex, ey] = c.at(0.2 + (1.9 * i) / 22, 1.7, 38);
+        if (nhash(i, 94) < 0.5) c.p.pixel(ex, ey + 1, MC.reed2);
+      }
+    },
+  },
+  'msw-store': {
+    // A small storehouse of bare coral stone, sacks piled at its door.
+    footprint: [2, 2],
+    h: 32,
+    side: true,
+    draw(c) {
+      townBlock(c, 0.25, 0.2, 1.4, 1.3, 22, 101, { plaster: 2, band: 0 });
+      frontDoor(c, 0.65, 1.5, 0.45, 16, 102);
+      const [vx, vy] = c.at(1.652, 0.85, 16);
+      c.p.rect(vx, vy - 3, 2, 3, MC.wood3);
+      sack(c, 0.35, 1.75, 3.2, 7, 103);
+      sack(c, 0.6, 1.9, 3, 6, 104);
+      sack(c, 1.35, 1.8, 3.2, 7, 105);
+      barrel(c, 1.75, 1.6, 0, 3, 7);
+    },
+  },
+  'msw-tower-house': {
+    // A slim three-storey tower-house: small windows on each floor, beam
+    // ends at every level, a flat parapeted roof (no dome, no spire).
+    footprint: [2, 2],
+    h: 84,
+    side: true,
+    draw(c) {
+      townBlock(c, 0.3, 0.3, 1.4, 1.35, 74, 111, { plaster: 0.5 });
+      for (const z of [24, 48, 70]) {
+        beamEnds(c, 0.3, 1.65, 1.4, z, 4);
+        beamEndsSide(c, 1.7, 0.3, 1.35, z, 3);
+      }
+      frontDoor(c, 0.75, 1.65, 0.4, 17, 112);
+      shutter(c, 'x', 0.5, 1.65, 32, 0.22, 7);
+      shutter(c, 'x', 1.15, 1.65, 32, 0.22, 7);
+      shutter(c, 'x', 0.85, 1.65, 56, 0.24, 7);
+      grille(c, 1.7, 0.75, 36, 0.24, 7);
+      grille(c, 1.7, 0.75, 58, 0.24, 6);
+      spout(c, 1.4, 1.68, 73);
+    },
+  },
   'msw-house-a': {
     // One-room mud-brick house: a red-brick footing, a plank door, beam
     // ends under the parapet, a shuttered window and a grille.

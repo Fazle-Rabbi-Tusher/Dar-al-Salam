@@ -77,7 +77,8 @@ async function build() {
     if (
       p.startsWith('art/illustrations/') ||
       p.startsWith('art/sprites/') ||
-      p.startsWith('art/landmarks/')
+      p.startsWith('art/landmarks/') ||
+      p.startsWith('art/supplied/')
     )
       continue;
     const errors = paletteErrors(
@@ -227,26 +228,41 @@ async function build() {
    * Supplied animation strips: art/sprites/anim/<id>__<action>[@prop]_<SE|NE>.png,
    * frames of 224×336 at four sprite pixels per world pixel, feet at 112,320
    * (prepared from the owner's strips: background removed, feet pinned).
-   * SW and NW are mirrors of SE and NE.
+   * A sidecar <same name>.json may give another frame size, foot point and
+   * density (Massawa's camels). SW and NW are mirrors of SE and NE.
    */
   async function stripFrames(id: string, key: string, facing: Facing) {
     const view = facing === 'SE' || facing === 'SW' ? 'SE' : 'NE',
-      file = `art/sprites/anim/${id}__${key}_${view}.png`;
+      base = `art/sprites/anim/${id}__${key}_${view}`,
+      file = `${base}.png`;
     try {
       await fs.access(file);
     } catch {
       return null;
     }
+    const meta: {
+      frame: [number, number];
+      foot: [number, number];
+      density: number;
+    } = await readJson(`${base}.json`).catch(() => ({
+      frame: [224, 336],
+      foot: [112, 320],
+      density: SPRITE_DENSITY,
+    }));
     const strip = await image(file),
-      FW = 224,
+      FW = meta.frame[0],
       out: { image: PixelImage; anchor: [number, number] }[] = [];
     for (let x = 0; x + FW <= strip.width; x += FW)
       out.push({
         image: outlined(crop(strip, x, 0, FW, strip.height)),
-        anchor: [112, 320],
+        anchor: meta.foot,
       });
     // Left-facing views reuse these frames, flipped by the engine.
-    return { frames: out, flip: facing === 'SW' || facing === 'NW' };
+    return {
+      frames: out,
+      flip: facing === 'SW' || facing === 'NW',
+      density: meta.density,
+    };
   }
   /** The same two-pixel outline as the sprites and drawn characters. */
   function outlined(img: PixelImage) {
@@ -323,7 +339,7 @@ async function build() {
           for (let f = 0; f < n; f++) {
             const fr = strip.frames[Math.floor((f * strip.frames.length) / n)];
             frames[key].push(
-              register(fr.image, fr.anchor, SPRITE_DENSITY, true, false, tempo),
+              register(fr.image, fr.anchor, strip.density, true, false, tempo),
             );
           }
           bakedCount += n;
@@ -602,8 +618,27 @@ async function build() {
     console.log('Wild plantings:', JSON.stringify(wildCounts));
   // Massawa's town, boats and palms, outside the mapped quarter: sorted like
   // wild plantings (one ground point each, no collision, not in the floor).
+  // Pieces cut from the owner's desert and camel sheets (art/supplied) are
+  // detailed art drawn at their own density, like the landmarks.
+  const suppliedArt: Record<
+    string,
+    { file: string; anchor: [number, number]; density: number }
+  > = await readJson('art/supplied/index.json');
+  const supplied = new Map<string, { names: string[]; period?: number }>();
   for (const [i, [type, x, y]] of MASSAWA_OBJECTS.entries()) {
-    const chosen = await wildFrame(type);
+    const sup = suppliedArt[type];
+    if (sup && !supplied.has(type))
+      supplied.set(type, {
+        names: [
+          register(
+            await image(`art/${sup.file}`),
+            sup.anchor,
+            sup.density,
+            true,
+          ),
+        ],
+      });
+    const chosen = supplied.get(type) ?? (await wildFrame(type));
     if (!chosen) throw Error(`Massawa: unknown object ${type}`);
     const frame = chosen.names[0],
       tile: [number, number] = [x, y],

@@ -1796,6 +1796,114 @@
     "width": 64,
     "height": 77
   },
+  "msw-house-white": {
+    "file": "objects/msw-house-white.png",
+    "anchor": [
+      48,
+      28
+    ],
+    "width": 96,
+    "height": 66
+  },
+  "msw-house-white-side": {
+    "file": "objects/msw-house-white-side.png",
+    "anchor": [
+      48,
+      28
+    ],
+    "width": 96,
+    "height": 66
+  },
+  "msw-house-ochre": {
+    "file": "objects/msw-house-ochre.png",
+    "anchor": [
+      48,
+      52
+    ],
+    "width": 96,
+    "height": 90
+  },
+  "msw-house-ochre-side": {
+    "file": "objects/msw-house-ochre-side.png",
+    "anchor": [
+      48,
+      52
+    ],
+    "width": 96,
+    "height": 90
+  },
+  "msw-house-long": {
+    "file": "objects/msw-house-long.png",
+    "anchor": [
+      64,
+      24
+    ],
+    "width": 144,
+    "height": 86
+  },
+  "msw-house-long-side": {
+    "file": "objects/msw-house-long-side.png",
+    "anchor": [
+      80,
+      24
+    ],
+    "width": 144,
+    "height": 86
+  },
+  "msw-house-terrace": {
+    "file": "objects/msw-house-terrace.png",
+    "anchor": [
+      48,
+      37
+    ],
+    "width": 112,
+    "height": 83
+  },
+  "msw-house-terrace-side": {
+    "file": "objects/msw-house-terrace-side.png",
+    "anchor": [
+      64,
+      37
+    ],
+    "width": 112,
+    "height": 83
+  },
+  "msw-store": {
+    "file": "objects/msw-store.png",
+    "anchor": [
+      48,
+      18
+    ],
+    "width": 96,
+    "height": 56
+  },
+  "msw-store-side": {
+    "file": "objects/msw-store-side.png",
+    "anchor": [
+      48,
+      18
+    ],
+    "width": 96,
+    "height": 56
+  },
+  "msw-tower-house": {
+    "file": "objects/msw-tower-house.png",
+    "anchor": [
+      48,
+      69
+    ],
+    "width": 96,
+    "height": 107
+  },
+  "msw-tower-house-side": {
+    "file": "objects/msw-tower-house-side.png",
+    "anchor": [
+      48,
+      69
+    ],
+    "width": 96,
+    "height": 107
+  },
   "msw-house-a": {
     "file": "objects/msw-house-a.png",
     "anchor": [

@@ -275,10 +275,16 @@ export const WILD = {
  * room: its art is planted by the build (packages/shared/massawa.ts).
  */
 export const MASSAWA = {
-  /** The town's sandy ground; scrub fills `fringe` more tiles round it. */
-  town: { centre: [-10, 116] as Point, radius: 19, fringe: 4 },
+  /**
+   * The town's sandy ground (`radius`), open desert round it (dunes, rocks
+   * and the oasis) for `fringe` more tiles, the last `scrub` of them thorn
+   * scrub fading into the woods.
+   */
+  town: { centre: [-10, 116] as Point, radius: 19, fringe: 8, scrub: 3 },
   /** Limestone flagstones: the forecourt before the mosque. */
   plaza: { centre: [-10.5, 119.5] as Point, radius: 3.2 },
+  /** An oasis pool ringed by date palms on the north-west sand. */
+  oasis: { centre: [-24, 103] as Point, radius: 2.6 },
 };
 /** Distance (tiles) from the town's centre. */
 export const massawaTown = (tile: Point) =>
@@ -288,7 +294,8 @@ export const massawaTown = (tile: Point) =>
   );
 /**
  * How deep into Massawa's dry ground a point is (tiles): above
- * `town.fringe` is the town's sand, above 0 thorn scrub, below 0 the woods.
+ * `town.fringe` is the town's sand, above `town.scrub` open desert, above 0
+ * thorn scrub, below 0 the woods.
  */
 export const massawaDryness = (p: Vec3, tile: Point) =>
   MASSAWA.town.radius +
@@ -297,6 +304,11 @@ export const massawaDryness = (p: Vec3, tile: Point) =>
   waveField(p, WILD.waves.coves) * 2;
 export const inTown = (p: Vec3, tile: Point) =>
   massawaDryness(p, tile) > MASSAWA.town.fringe;
+export const massawaOasis = (tile: Point) =>
+  Math.hypot(
+    tile[0] - MASSAWA.oasis.centre[0],
+    tile[1] - MASSAWA.oasis.centre[1],
+  );
 export const inPlaza = (tile: Point) =>
   Math.hypot(
     tile[0] - MASSAWA.plaza.centre[0],
@@ -312,7 +324,8 @@ export type Biome =
   | 'road'
   | 'desert'
   | 'scrub'
-  | 'plaza';
+  | 'plaza'
+  | 'oasis';
 /** A smooth field in [-1, 1]: a weighted sum of sine waves over the sphere. */
 export function waveField(p: Vec3, waves: Wave[]) {
   let sum = 0,
@@ -358,10 +371,11 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
-  // The ring road runs on; then Massawa's sand and its scrub fringe.
+  // The ring road runs on; then Massawa's oasis, sand and scrub fringe.
   if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5) return 'road';
+  if (massawaOasis(tile) < MASSAWA.oasis.radius) return 'oasis';
   const dry = massawaDryness(p, tile);
-  if (dry > MASSAWA.town.fringe && land >= WILD.beach)
+  if (dry > MASSAWA.town.scrub && land >= WILD.beach)
     return inPlaza(tile) ? 'plaza' : 'desert';
   if (land < WILD.beach) return 'beach';
   if (dry > 0) return 'scrub';
@@ -409,6 +423,8 @@ float shoreDistance(vec3 p) {
 const vec2 TOWN_CENTRE = vec2(${g(MASSAWA.town.centre[0])}, ${g(MASSAWA.town.centre[1])});
 const vec2 PLAZA_CENTRE = vec2(${g(MASSAWA.plaza.centre[0])}, ${g(MASSAWA.plaza.centre[1])});
 float massawaTown(vec2 tile) { return length(tile - TOWN_CENTRE); }
+const vec2 OASIS_CENTRE = vec2(${g(MASSAWA.oasis.centre[0])}, ${g(MASSAWA.oasis.centre[1])});
+float massawaOasis(vec2 tile) { return length(tile - OASIS_CENTRE); }
 float massawaDryness(vec3 p, vec2 tile) {
   return ${g(MASSAWA.town.radius + MASSAWA.town.fringe)} - massawaTown(tile) + coveField(p) * 2.0;
 }

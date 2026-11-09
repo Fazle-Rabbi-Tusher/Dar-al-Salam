@@ -1,51 +1,5 @@
 [
   {
-    "id": "amb-msw-camel-well",
-    "kind": "animal",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "camel",
-      "garment": "none",
-      "headwear": "none",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-5",
-        "hair": "hair-brown",
-        "garmentPrimary": "wool-cream",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "madder-red"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 80,
-        "action": "animal_graze",
-        "at": [-4.5, 126.5],
-        "facing": "NE"
-      },
-      {
-        "from": 80,
-        "to": 140,
-        "action": "animal_idle",
-        "at": [-4.5, 126.5],
-        "facing": "NE"
-      },
-      {
-        "from": 140,
-        "to": 240,
-        "action": "animal_graze",
-        "at": [-4.5, 126.5],
-        "facing": "NE"
-      }
-    ],
-    "role": "A camel drinking at the well"
-  },
-  {
     "id": "amb-msw-camel-0",
     "kind": "animal",
     "aliases": [],
@@ -69,38 +23,40 @@
     "script": [
       {
         "from": 0,
-        "to": 72,
+        "to": 96,
         "action": "animal_walk",
         "path": [
-          [-33.0, 109.0],
-          [-33.0, 113.0]
+          [-3.0, 98.5],
+          [-10.0, 98.0],
+          [-18.0, 97.5]
         ]
       },
       {
-        "from": 72,
+        "from": 96,
         "to": 120,
         "action": "animal_idle",
-        "at": [-33.0, 113.0],
-        "facing": "SE"
+        "at": [-18.0, 97.5],
+        "facing": "NW"
       },
       {
         "from": 120,
-        "to": 192,
+        "to": 216,
         "action": "animal_walk",
         "path": [
-          [-33.0, 113.0],
-          [-33.0, 109.0]
+          [-18.0, 97.5],
+          [-10.0, 98.0],
+          [-3.0, 98.5]
         ]
       },
       {
-        "from": 192,
+        "from": 216,
         "to": 240,
-        "action": "animal_graze",
-        "at": [-33.0, 109.0],
-        "facing": "NW"
+        "action": "animal_idle",
+        "at": [-3.0, 98.5],
+        "facing": "SE"
       }
     ],
-    "role": "A camel walking by the tents"
+    "role": "A camel walking the caravan track"
   },
   {
     "id": "amb-msw-camel-1",
@@ -116,7 +72,7 @@
       "colours": {
         "skin": "skin-5",
         "hair": "hair-brown",
-        "garmentPrimary": "khaki",
+        "garmentPrimary": "cocoa",
         "garmentSecondary": "wool-cream",
         "headwear": "white-linen",
         "prop": "madder-red"
@@ -126,20 +82,47 @@
     "script": [
       {
         "from": 0,
-        "to": 120,
+        "to": 14,
         "action": "animal_idle",
-        "at": [-31.5, 114.6],
+        "at": [-3.0, 99.8],
         "facing": "SE"
       },
       {
-        "from": 120,
+        "from": 14,
+        "to": 110,
+        "action": "animal_walk",
+        "path": [
+          [-3.0, 99.8],
+          [-10.0, 99.3],
+          [-18.0, 98.8]
+        ]
+      },
+      {
+        "from": 110,
+        "to": 134,
+        "action": "animal_idle",
+        "at": [-18.0, 98.8],
+        "facing": "NW"
+      },
+      {
+        "from": 134,
+        "to": 230,
+        "action": "animal_walk",
+        "path": [
+          [-18.0, 98.8],
+          [-10.0, 99.3],
+          [-3.0, 99.8]
+        ]
+      },
+      {
+        "from": 230,
         "to": 240,
-        "action": "animal_graze",
-        "at": [-31.5, 114.6],
+        "action": "animal_idle",
+        "at": [-3.0, 99.8],
         "facing": "SE"
       }
     ],
-    "role": "A camel resting by the tents"
+    "role": "A camel following the caravan"
   },
   {
     "id": "amb-msw-goat-0",
@@ -167,7 +150,7 @@
         "from": 0,
         "to": 40,
         "action": "animal_graze",
-        "at": [-22.5, 94.0],
+        "at": [-3.0, 141.0],
         "facing": "SE"
       },
       {
@@ -175,15 +158,15 @@
         "to": 64,
         "action": "animal_walk",
         "path": [
-          [-22.5, 94.0],
-          [-21.5, 95.5]
+          [-3.0, 141.0],
+          [-2.0, 142.2]
         ]
       },
       {
         "from": 64,
         "to": 160,
         "action": "animal_graze",
-        "at": [-21.5, 95.5],
+        "at": [-2.0, 142.2],
         "facing": "NW"
       },
       {
@@ -191,15 +174,15 @@
         "to": 184,
         "action": "animal_walk",
         "path": [
-          [-21.5, 95.5],
-          [-22.5, 94.0]
+          [-2.0, 142.2],
+          [-3.0, 141.0]
         ]
       },
       {
         "from": 184,
         "to": 240,
         "action": "animal_idle",
-        "at": [-22.5, 94.0],
+        "at": [-3.0, 141.0],
         "facing": "SW"
       }
     ],
@@ -231,7 +214,7 @@
         "from": 0,
         "to": 60,
         "action": "animal_graze",
-        "at": [-20.5, 96.5],
+        "at": [-4.8, 142.4],
         "facing": "SE"
       },
       {
@@ -239,15 +222,15 @@
         "to": 84,
         "action": "animal_walk",
         "path": [
-          [-20.5, 96.5],
-          [-20.0, 97.6]
+          [-4.8, 142.4],
+          [-5.6, 143.4]
         ]
       },
       {
         "from": 84,
         "to": 180,
         "action": "animal_graze",
-        "at": [-20.0, 97.6],
+        "at": [-5.6, 143.4],
         "facing": "NW"
       },
       {
@@ -255,15 +238,15 @@
         "to": 204,
         "action": "animal_walk",
         "path": [
-          [-20.0, 97.6],
-          [-20.5, 96.5]
+          [-5.6, 143.4],
+          [-4.8, 142.4]
         ]
       },
       {
         "from": 204,
         "to": 240,
         "action": "animal_idle",
-        "at": [-20.5, 96.5],
+        "at": [-4.8, 142.4],
         "facing": "SW"
       }
     ],
@@ -295,7 +278,7 @@
         "from": 0,
         "to": 80,
         "action": "animal_graze",
-        "at": [-23.5, 89.0],
+        "at": [-1.2, 143.0],
         "facing": "SE"
       },
       {
@@ -303,15 +286,15 @@
         "to": 104,
         "action": "animal_walk",
         "path": [
-          [-23.5, 89.0],
-          [-23.0, 90.5]
+          [-1.2, 143.0],
+          [-0.4, 144.2]
         ]
       },
       {
         "from": 104,
         "to": 200,
         "action": "animal_graze",
-        "at": [-23.0, 90.5],
+        "at": [-0.4, 144.2],
         "facing": "NW"
       },
       {
@@ -319,15 +302,15 @@
         "to": 224,
         "action": "animal_walk",
         "path": [
-          [-23.0, 90.5],
-          [-23.5, 89.0]
+          [-0.4, 144.2],
+          [-1.2, 143.0]
         ]
       },
       {
         "from": 224,
         "to": 240,
         "action": "animal_idle",
-        "at": [-23.5, 89.0],
+        "at": [-1.2, 143.0],
         "facing": "SW"
       }
     ],
