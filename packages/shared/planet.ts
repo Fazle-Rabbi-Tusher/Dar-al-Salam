@@ -298,6 +298,8 @@ export const MASSAWA = {
     grassland: -9,
     /** Dryness down to which forest trees still thin out. */
     thinning: -16,
+    /** Beyond radius + farAway tiles nothing is affected (dryness < thinning). */
+    farAway: 30,
   },
 };
 /** Distance (tiles) from the town's centre. */
@@ -317,15 +319,21 @@ export const massawaTownDryness = (p: Vec3, tile: Point) =>
   massawaTown(tile) +
   waveField(p, WILD.waves.coves) * 2;
 export const massawaDryness = (p: Vec3, tile: Point) => {
-  const d = MASSAWA.desert,
-    wide =
-      Math.min(
-        d.radius - Math.hypot(tile[0] - d.centre[0], tile[1] - d.centre[1]),
-        (mapDistance(tile) - d.fromMap) * 2,
-      ) +
-      // A ragged, wind-blown outline rather than a circle.
-      waveField(p, WILD.waves.coves) * 3 +
-      waveField(p, WILD.waves.forest) * 5;
+  const d = MASSAWA.desert;
+  // Far from Massawa: skip the wave sums (they shift dryness by at most 10).
+  if (
+    Math.hypot(tile[0] - d.centre[0], tile[1] - d.centre[1]) >
+    d.radius + d.farAway
+  )
+    return -99;
+  const wide =
+    Math.min(
+      d.radius - Math.hypot(tile[0] - d.centre[0], tile[1] - d.centre[1]),
+      (mapDistance(tile) - d.fromMap) * 2,
+    ) +
+    // A ragged, wind-blown outline rather than a circle.
+    waveField(p, WILD.waves.coves) * 3 +
+    waveField(p, WILD.waves.forest) * 5;
   return Math.max(massawaTownDryness(p, tile), wide);
 };
 export const inTown = (p: Vec3, tile: Point) =>
@@ -454,10 +462,12 @@ float mapDistance(vec2 tile) {
   vec2 o = max(vec2(0.0), max(-tile, tile - vec2(${g(WILD.map[0])}, ${g(WILD.map[1])})));
   return length(o);
 }
-float shoreDistance(vec3 p) {
+// The wave fields are sums of sines, so the shader computes each once per
+// pixel and passes it in (cove = coveField(p), forest = forestField(p)).
+float shoreDistance(vec3 p, float cove) {
   float toward = 0.5 + 0.5 * cos(atan(p.y, p.x) - (${g(WILD.coast.mainland)}));
   float r = ${g(WILD.coast.near)} + ${g(WILD.coast.far - WILD.coast.near)} * smoothstep(0.15, 0.85, toward);
-  return max(${g(WILD.coast.minimum)}, r + ${g(WILD.coast.coves)} * coveField(p));
+  return max(${g(WILD.coast.minimum)}, r + ${g(WILD.coast.coves)} * cove);
 }
 const vec2 TOWN_CENTRE = vec2(${g(MASSAWA.town.centre[0])}, ${g(MASSAWA.town.centre[1])});
 const vec2 PLAZA_CENTRE = vec2(${g(MASSAWA.plaza.centre[0])}, ${g(MASSAWA.plaza.centre[1])});
@@ -465,18 +475,18 @@ float massawaTown(vec2 tile) { return length(tile - TOWN_CENTRE); }
 const vec2 OASIS_CENTRE = vec2(${g(MASSAWA.oasis.centre[0])}, ${g(MASSAWA.oasis.centre[1])});
 float massawaOasis(vec2 tile) { return length(tile - OASIS_CENTRE); }
 const vec2 DESERT_CENTRE = vec2(${g(MASSAWA.desert.centre[0])}, ${g(MASSAWA.desert.centre[1])});
-float massawaTownDryness(vec3 p, vec2 tile) {
-  return ${g(MASSAWA.town.radius + MASSAWA.town.fringe)} - massawaTown(tile) + coveField(p) * 2.0;
+float massawaTownDryness(vec2 tile, float cove) {
+  return ${g(MASSAWA.town.radius + MASSAWA.town.fringe)} - massawaTown(tile) + cove * 2.0;
 }
-float massawaDryness(vec3 p, vec2 tile) {
+float massawaDryness(vec2 tile, float cove, float forest) {
+  if (length(tile - DESERT_CENTRE) > ${g(MASSAWA.desert.radius + MASSAWA.desert.farAway)}) return -99.0;
   float wide = min(${g(MASSAWA.desert.radius)} - length(tile - DESERT_CENTRE),
-      (mapDistance(tile) - ${g(MASSAWA.desert.fromMap)}) * 2.0) + coveField(p) * 3.0 +
-    forestField(p) * 5.0;
-  return max(massawaTownDryness(p, tile), wide);
+      (mapDistance(tile) - ${g(MASSAWA.desert.fromMap)}) * 2.0) + cove * 3.0 + forest * 5.0;
+  return max(massawaTownDryness(tile, cove), wide);
 }
 bool inPlaza(vec2 tile) { return length(tile - PLAZA_CENTRE) < ${g(MASSAWA.plaza.radius)}; }
-float landField(vec3 p, vec2 tile) {
-  float d = mapDistance(tile), shore = shoreDistance(p);
+float landField(vec3 p, vec2 tile, float cove) {
+  float d = mapDistance(tile), shore = shoreDistance(p, cove);
   float land = shore - d;
   if (d > shore + 12.0) land = max(land, (islandField(p) - ${g(WILD.islandAbove)}) * 70.0);
   return land;

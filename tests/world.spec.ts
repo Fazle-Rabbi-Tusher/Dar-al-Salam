@@ -73,19 +73,33 @@ test('the Massawa button flies to the town and the mosque opens its landmark car
   page.on('pageerror', (e) => errors.push(e.message));
   await ready(page);
   await page.getByRole('button', { name: 'Massawa' }).click();
-  await page.waitForTimeout(1500);
-  const points = await page.evaluate(() =>
-    (
-      window as unknown as {
-        __darEngine: {
-          debugPoints(id: string): {
-            opaque: { x: number; y: number };
-            transparent: { x: number; y: number };
-          } | null;
-        };
-      }
-    ).__darEngine.debugPoints('mosque-of-the-companions'),
-  );
+  // Wait for the flight to land: the mosque stops moving on screen (a fixed
+  // wait is flaky where frames are slow, as in software rendering).
+  const where = () =>
+    page.evaluate(() =>
+      (
+        window as unknown as {
+          __darEngine: {
+            debugPoints(id: string): {
+              opaque: { x: number; y: number };
+              transparent: { x: number; y: number };
+            } | null;
+          };
+        }
+      ).__darEngine.debugPoints('mosque-of-the-companions'),
+    );
+  let points = await where();
+  await expect
+    .poll(
+      async () => {
+        const last = JSON.stringify(points);
+        await page.waitForTimeout(400);
+        points = await where();
+        return Boolean(points?.opaque) && JSON.stringify(points) === last;
+      },
+      { timeout: 20000 },
+    )
+    .toBe(true);
   expect(points?.opaque).toBeTruthy();
   const canvas = await page.locator('.world-host canvas').boundingBox();
   await page.mouse.move(
@@ -113,6 +127,9 @@ test('the Massawa button flies to the town and the mosque opens its landmark car
 test('spin, zoom, whole-planet overview, inspector and minimap operate without runtime errors', async ({
   page,
 }) => {
+  // It renders the whole planet several times; software rendering (as in
+  // the sandbox) needs more than the default 45 s.
+  test.slow();
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await ready(page);
