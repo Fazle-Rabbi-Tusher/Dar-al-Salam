@@ -225,10 +225,10 @@ const NC = {
 } as const;
 /** Colours for the city pass (towers, lights, street furniture). */
 const CC: Record<string, string> = {
-  nightGlass: '#1D2E55',
-  duskGlass: '#2A3552',
-  skyGlass: '#36557A',
-  skyGlassLight: '#46709F',
+  nightGlass: '#2A3552',
+  duskGlass: '#36557A',
+  skyGlass: '#46709F',
+  skyGlassLight: '#53789F',
   amberLit: '#F7A653',
   blossomLight: '#F8D3DD',
   blossom: '#D07A8D',
@@ -539,167 +539,36 @@ function arch(
   );
 }
 
-/** Warm village architecture shares the existing cutaway wall footprints. */
-function villageFlowerBox(
-  c: IsoCanvas,
-  x: number,
-  y: number,
-  z: number,
-  w: number,
-  seed = 0,
-) {
-  c.box(x, y, w, 0.23, 5, M.wood, z);
-  c.faceX(x + 0.02, y + 0.231, w - 0.04, z + 1, 1, C.woodDark);
-  c.edge([x, y + 0.232, z + 4], [x + w, y + 0.232, z + 4], C.woodLight);
-  for (let i = 0; i < Math.ceil(w * 17); i++) {
-    const u = x + 0.03 + (((i * 11 + seed * 3) % 31) / 31) * (w - 0.06);
-    const [px, py] = c.at(u, y + 0.12, z + 7 + (i % 3));
-    c.p.ellipse(px, py, 3, 2, i % 3 ? NC.leaf3 : NC.leaf1);
-    if (i % 2) {
-      const col = [C.terracottaLight, C.pink, C.ivory, C.yellow][
-        (i + seed) % 4
-      ];
-      c.p.rect(px, py - 2, 2, 2, col);
-      c.p.pixel(px + 1, py - 1, C.yellow);
-    }
-    if (i % 5 === 0)
-      c.edge(
-        [u, y + 0.24, z + 5],
-        [u + 0.05, y + 0.24, z - 3 - (i % 4)],
-        NC.leaf3,
-      );
-  }
-}
-
-/** A narrow tiled overhang, leaving every occupied room open to the viewer. */
-function villageEaves(c: IsoCanvas, w: number, z: number) {
-  const back = -0.2,
-    front = 0.66;
-  c.poly(
-    [
-      [-0.18, back, z + 7],
-      [w + 0.18, back, z + 7],
-      [w + 0.18, front, z],
-      [-0.18, front, z],
-    ],
-    C.terracotta,
-  );
-  for (let row = 0; row < 4; row++) {
-    const y = back + (row * (front - back)) / 4,
-      h = z + 7 - (row * 7) / 4;
-    c.edge(
-      [-0.18, y, h],
-      [w + 0.18, y, h],
-      row % 2 ? C.terracottaDark : C.terracottaLight,
-    );
-    for (let x = -0.18 + (row % 2) * 0.17; x < w + 0.18; x += 0.34) {
-      c.edge(
-        [x, y, h],
-        [x, y + (front - back) / 4, h - 7 / 4],
-        C.terracottaDark,
-      );
-      c.edge(
-        [x + 0.035, y, h],
-        [x + 0.035, y + 0.15, h - 1.2],
-        C.terracottaLight,
-      );
-    }
-  }
-  c.faceX(-0.19, front + 0.01, w + 0.38, z - 3, 3, C.woodDark);
-  c.edge(
-    [-0.19, front + 0.02, z],
-    [w + 0.19, front + 0.02, z],
-    C.terracottaLight,
-  );
-  for (let x = 0.1; x < w; x += 0.8)
-    c.edge([x, 0.37, z - 9], [x, front, z - 3], C.wood);
-}
-
-function villageWall(c: IsoCanvas, glazed = false) {
-  wallBase(c, 92, {
-    top: C.cream,
-    front: C.ivory,
-    side: C.creamShade,
-    edge: C.woodDark,
-  });
-  c.faceX(0, 0.351, 8, 0, 15, C.sandShade);
-  coursesFront(c, 0, 8, 0.352, 0, 15, 5, 0.52, C.clay, C.sand);
-  // Small hand-laid stones and worn lime plaster, all from the locked palette.
-  for (let i = 0; i < 92; i++) {
-    const x = ((i * 29) % 157) / 20,
-      z = 17 + ((i * 19) % 72);
-    c.faceX(
-      x,
-      0.352,
-      0.05 + (i % 3) * 0.03,
-      z,
-      1,
-      i % 3 ? C.paper : C.creamShade,
-    );
-  }
-  c.faceX(0, 0.353, 8, 15, 4, C.woodDark);
-  c.edge([0, 0.354, 19], [8, 0.354, 19], C.woodLight);
-  for (let x = 0; x <= 8; x += 2) {
-    c.faceX(Math.min(x, 7.88), 0.355, 0.12, 15, 77, C.woodDark);
-    c.edge(
-      [Math.min(x, 7.88) + 0.025, 0.356, 20],
-      [Math.min(x, 7.88) + 0.025, 0.356, 91],
-      C.wood,
-    );
-  }
-  for (let bay = 0; bay < 4; bay++) {
-    const x = bay * 2 + 0.48,
-      y = 0.357;
-    const w = glazed ? 1.2 : 1.02,
-      z = glazed ? 31 : 37,
-      h = glazed ? 43 : 34;
-    // Diagonal framing, carved sills and a recessed wooden sash.
-    c.edge([bay * 2 + 0.18, y, 20], [bay * 2 + 0.55, y, 36], C.woodDark);
-    c.edge([bay * 2 + 1.85, y, 20], [bay * 2 + 1.47, y, 36], C.woodDark);
-    sashFront(c, x, y + 0.001, w, z, h, {
-      frame: C.woodDark,
-      glass: C.glassDeep,
-      shade: C.navy,
-      glint: C.glassLight,
-      sill: C.woodLight,
-      bars: true,
-      inside: C.cream,
-    });
-    c.faceX(x + 0.07, y + 0.005, 0.12, z + 4, h - 7, C.paper);
-    c.faceX(x + w - 0.2, y + 0.005, 0.12, z + 4, h - 7, C.paper);
-    for (const u of [x - 0.22, x + w + 0.02]) {
-      c.faceX(u, y + 0.006, 0.17, z + 1, h - 2, C.deepTeal);
-      for (let j = 0; j < 4; j++)
-        c.edge(
-          [u + 0.02, y + 0.007, z + 5 + j * 7],
-          [u + 0.15, y + 0.007, z + 5 + j * 7],
-          C.turquoise,
-        );
-    }
-    villageFlowerBox(c, x - 0.08, y + 0.015, z - 5, w + 0.16, bay);
-    c.edge(
-      [bay * 2 + 0.18, y + 0.008, 88],
-      [bay * 2 + 0.54, y + 0.008, 77],
-      C.woodDark,
-    );
-    c.edge(
-      [bay * 2 + 1.85, y + 0.008, 88],
-      [bay * 2 + 1.5, y + 0.008, 77],
-      C.woodDark,
-    );
-  }
-  c.faceX(0, 0.37, 8, 87, 5, C.woodDark);
-  c.edge([0, 0.371, 88], [8, 0.371, 88], C.wood);
-  villageEaves(c, 8, 93);
-}
-
 const objects: Record<string, Spec> = {
   'm-glasswall': {
     footprint: [8, 0.35],
     h: 100,
     side: true,
     draw(c) {
-      villageWall(c, true);
+      wallBase(c, 98, M.white);
+      c.faceX(0.05, 0.351, 7.9, 8, 84, C.glass);
+      for (let u = 0; u < 8; u++) {
+        c.faceX(u + 0.06, 0.352, 0.88, 50, 40, C.glassLight);
+        c.faceX(u + 0.06, 0.352, 0.88, 8, 40, C.glass);
+        for (let k = 0; k < 2; k++) {
+          c.edge(
+            [u + 0.15 + k * 0.3, 0.353, 14],
+            [u + 0.45 + k * 0.3, 0.353, 44],
+            C.white,
+          );
+          c.edge(
+            [u + 0.2 + k * 0.3, 0.353, 56],
+            [u + 0.45 + k * 0.3, 0.353, 84],
+            C.white,
+          );
+        }
+        c.faceX(u - 0.04, 0.354, 0.1, 6, 88, C.white);
+        c.edge([u + 0.06, 0.355, 6], [u + 0.06, 0.355, 94], C.silver);
+      }
+      c.faceX(0, 0.354, 8, 48, 3, C.white);
+      c.faceX(0, 0.355, 8, 0, 8, C.steel);
+      c.edge([0, 0.356, 8], [8, 0.356, 8], C.slate);
+      c.box(-0.05, -0.05, 8.1, 0.45, 4, M.white, 94);
     },
   },
   'm-whitewall': {
@@ -707,7 +576,45 @@ const objects: Record<string, Spec> = {
     h: 100,
     side: true,
     draw(c) {
-      villageWall(c);
+      wallBase(c, 96, M.white);
+      c.faceX(0, 0.351, 8, 0, 6, C.pale);
+      c.edge([0, 0.352, 6], [8, 0.352, 6], C.silver);
+      c.faceX(0, 0.351, 8, 74, 10, C.mint);
+      for (let u = 0.1; u < 8; u += 0.25)
+        c.poly(
+          [
+            [u, 0.352, 79],
+            [u + 0.12, 0.352, 83],
+            [u + 0.24, 0.352, 79],
+            [u + 0.12, 0.352, 75],
+          ],
+          C.tealDark,
+        );
+      // Two abstract artworks.
+      c.faceX(1, 0.352, 1.6, 30, 30, C.woodDark);
+      c.faceX(1.08, 0.353, 1.44, 32, 26, C.cream);
+      c.faceX(1.2, 0.354, 0.5, 36, 16, C.orange);
+      c.faceX(1.6, 0.354, 0.8, 44, 10, C.blue);
+      c.faceX(1.9, 0.354, 0.4, 34, 8, C.yellow);
+      c.faceX(5.2, 0.352, 1.8, 28, 34, C.charcoal);
+      c.faceX(5.28, 0.353, 1.64, 30, 30, C.waterLight);
+      for (let i = 0; i < 5; i++)
+        c.faceX(
+          5.4 + i * 0.3,
+          0.354,
+          0.22,
+          32,
+          6 + ((i * 7) % 20),
+          accents[i + 2],
+        );
+      // Clock without numerals.
+      const [x, y] = c.at(3.8, 0.36, 60);
+      c.p.ellipse(x, y, 7, 7, C.charcoal);
+      c.p.ellipse(x, y, 6, 6, C.white);
+      c.line([x, y], [x, y - 5], C.ink);
+      c.line([x, y], [x + 3, y + 1], C.red);
+      c.p.pixel(x, y, C.ink);
+      c.box(-0.05, -0.05, 8.1, 0.45, 4, M.white, 92);
     },
   },
   'm-archwall': {
@@ -783,9 +690,6 @@ const objects: Record<string, Spec> = {
       c.faceX(0, 0.352, 8, 100, 4, C.teal);
       c.edge([0, 0.353, 103], [8, 0.353, 103], C.turquoise);
       c.box(-0.05, -0.05, 8.1, 0.45, 5, M.stone, 106);
-      villageEaves(c, 8, 107);
-      for (let i = 0; i < 4; i++)
-        villageFlowerBox(c, 0.6 + i * 2, 0.36, 9, 1.1, i);
     },
   },
   'm-dome': {
@@ -2938,22 +2842,22 @@ Object.assign(objects, arena);
 /* ───────────── New York City and the Michigan rally ───────────── */
 const NM = {
   limestone: {
-    top: CC.skyGlassLight,
-    front: CC.duskGlass,
-    side: CC.nightGlass,
-    edge: C.screen,
+    top: C.limestoneLight,
+    front: C.limestone,
+    side: C.limestoneDark,
+    edge: C.warmGreyDark,
   },
   brownstone: {
-    top: CC.skyGlass,
-    front: CC.duskGlass,
-    side: CC.nightGlass,
-    edge: C.screen,
+    top: C.brownstoneLight,
+    front: C.brownstone,
+    side: C.brownstoneDark,
+    edge: C.brownstoneDark,
   },
   brick: {
-    top: CC.skyGlass,
-    front: CC.duskGlass,
-    side: CC.nightGlass,
-    edge: C.screen,
+    top: C.brickLight,
+    front: C.brick,
+    side: C.brickDark,
+    edge: C.brickDark,
   },
   glass: {
     top: C.glassLight,
@@ -3054,34 +2958,34 @@ function decoTier(c: IsoCanvas, o: number, size: number, z: number, h: number) {
     c.edge(
       [u, o + size + 0.003, z + 3],
       [u, o + size + 0.003, z + h - 3],
-      CC.skyGlassLight,
+      C.limestoneLight,
     );
     c.edge(
       [o + size + 0.003, u, z + 3],
       [o + size + 0.003, u, z + h - 3],
-      CC.skyGlass,
+      C.limestone,
     );
   }
   for (let zz = z + 3; zz < z + h - 3; zz += 6) {
     c.edge(
       [o + 0.05, o + size + 0.003, zz],
       [o + size, o + size + 0.003, zz],
-      C.stageNavy,
+      C.limestoneDark,
     );
     c.edge(
       [o + size + 0.003, o + 0.05, zz],
       [o + size + 0.003, o + size, zz],
-      C.navy,
+      C.warmGreyDark,
     );
   }
   // Lit parapet and a soft shadow where the next tier sits on this roof.
-  c.edge([o, o + size, z + h], [o + size, o + size, z + h], CC.skyGlassLight);
+  c.edge([o, o + size, z + h], [o + size, o + size, z + h], C.limestoneLight);
   c.edge(
     [o, o + size, z + h - 1],
     [o + size, o + size, z + h - 1],
-    CC.skyGlassLight,
+    C.limestoneLight,
   );
-  c.faceX(o, o + size + 0.004, size, z + h - 3, 1, C.stageNavy);
+  c.faceX(o, o + size + 0.004, size, z + h - 3, 1, C.limestoneDark);
 }
 /** Checkerboard a colour over part of a front (+y) face: soft gradients. */
 function ditherFront(
@@ -3144,11 +3048,11 @@ const nyc: Record<string, Spec> = {
       c.faceX(0.3, 3.002, 2.4, 16, 4, CN.amber);
       c.faceY(3.002, 0.3, 2.4, 2, 20, CN.warmSide);
       for (let u = 0.45; u < 2.7; u += 0.45) {
-        c.faceX(u, 3.003, 0.06, 2, 20, CC.skyGlassLight);
-        c.faceY(3.003, u, 0.06, 2, 20, CC.skyGlass);
+        c.faceX(u, 3.003, 0.06, 2, 20, C.limestoneLight);
+        c.faceY(3.003, u, 0.06, 2, 20, C.limestone);
       }
-      c.faceX(0.3, 3.003, 2.4, 14, 1, CC.skyGlassLight);
-      c.faceY(3.003, 0.3, 2.4, 14, 1, CC.skyGlass);
+      c.faceX(0.3, 3.003, 2.4, 14, 1, C.limestoneLight);
+      c.faceY(3.003, 0.3, 2.4, 14, 1, C.limestone);
       c.edge([0.35, 3.004, 4], [0.7, 3.004, 18], C.lamp);
       c.faceX(0, 3.003, 3, 26, 3, C.gold);
       decoTier(c, 0.25, 2.5, 34, 104);
@@ -3161,9 +3065,9 @@ const nyc: Record<string, Spec> = {
         c.faceY(1.902, 1.12, 0.76, z, 2, C.yellow);
       }
       c.cylinder(1.5, 1.5, 254, 4, 14, [
-        CC.skyGlassLight,
-        CC.skyGlass,
-        C.stageNavy,
+        C.limestoneLight,
+        C.limestone,
+        C.limestoneDark,
       ]);
       const [mx, my] = c.at(1.5, 1.5, 268);
       c.p.rect(mx - 1, my - 22, 2, 22, C.silver);
@@ -3203,17 +3107,25 @@ const nyc: Record<string, Spec> = {
     draw(c) {
       c.box(0, 0, 4, 1.5, 90, NM.brownstone);
       // Dressed brownstone courses on both faces.
-      coursesFront(c, 0, 4, 1.501, 0, 88, 6, 0.5, C.navy, CC.skyGlassLight);
-      coursesSide(c, 4.001, 0, 1.5, 0, 88, 6, 0.5, C.navy);
+      coursesFront(
+        c,
+        0,
+        4,
+        1.501,
+        0,
+        88,
+        6,
+        0.5,
+        C.brownstoneDark,
+        C.brownstoneLight,
+      );
+      coursesSide(c, 4.001, 0, 1.5, 0, 88, 6, 0.5, C.brownstoneDark);
       // Bracketed cornice.
       c.box(0, 0, 4, 1.62, 6, NM.brownstone, 88);
-      c.faceX(0, 1.621, 4, 88, 2, CC.skyGlassLight);
+      c.faceX(0, 1.621, 4, 88, 2, C.limestoneLight);
       for (let u = 0.05; u < 4; u += 0.25)
-        c.faceX(u, 1.622, 0.1, 84, 4, C.navy);
-      c.edge([0, 1.622, 93], [4, 1.622, 93], CC.skyGlassLight);
-      // Street-level hanging light boxes and a slim roofline reflection.
-      c.edge([0.05, 1.625, 91], [3.95, 1.625, 91], C.teal);
-      neonPanelFront(c, 3.6, 1.626, 0.28, 38, 30, false);
+        c.faceX(u, 1.622, 0.1, 84, 4, C.brownstoneDark);
+      c.edge([0, 1.622, 93], [4, 1.622, 93], C.brownstoneLight);
       for (let k = 0; k < 3; k++) {
         const x = 0.15 + k * 1.3;
         // Two sash windows per floor with lintels, sills and curtains.
@@ -3222,19 +3134,19 @@ const nyc: Record<string, Spec> = {
             // Evening: about half the rooms are lit.
             const warm = cityHash(k * 2 + (dx > 0.5 ? 1 : 0), z, 3) < 0.5;
             sashFront(c, x + dx + 0.03, 1.502, 0.26, z + 1, 9, {
-              frame: CC.skyGlassLight,
-              glass: warm ? C.windowLit : CN.glass3,
-              shade: warm ? C.yellowDark : CN.glass1,
-              glint: warm ? undefined : CN.cool,
-              sill: CC.skyGlass,
+              frame: C.limestoneLight,
+              glass: warm ? C.windowLit : C.glassDark,
+              shade: warm ? C.yellowDark : C.glassDeep,
+              glint: warm ? undefined : C.glassLight,
+              sill: C.limestone,
               bars: true,
               inside: (k + z + dx * 4) % 3 === 0 ? C.cream : undefined,
             });
-            c.faceX(x + dx - 0.02, 1.503, 0.36, z + 12, 2, CC.skyGlass);
+            c.faceX(x + dx - 0.02, 1.503, 0.36, z + 12, 2, C.limestone);
             c.edge(
               [x + dx - 0.02, 1.504, z + 13],
               [x + dx + 0.34, 1.504, z + 13],
-              CC.skyGlassLight,
+              C.limestoneLight,
             );
           }
         // A window air-conditioner on an upper floor.
@@ -3265,11 +3177,11 @@ const nyc: Record<string, Spec> = {
           c.edge(
             [x + 0.12, 1.5 + 0.12 * (4 - s2), 4 + s2 * 3.5],
             [x + 0.54, 1.5 + 0.12 * (4 - s2), 4 + s2 * 3.5],
-            CC.skyGlassLight,
+            C.brownstoneLight,
           );
         }
         // Panelled door under a fanlight.
-        c.faceX(x + 0.16, 1.502, 0.34, 16, 22, CC.skyGlass);
+        c.faceX(x + 0.16, 1.502, 0.34, 16, 22, C.limestone);
         c.faceX(x + 0.18, 1.503, 0.3, 16, 18, C.woodDark);
         c.faceX(x + 0.21, 1.504, 0.1, 18, 6, C.wood);
         c.faceX(x + 0.21, 1.504, 0.1, 26, 6, C.wood);
@@ -3282,7 +3194,7 @@ const nyc: Record<string, Spec> = {
           post(c, rx, 1.98, 4, 8, C.ink);
         }
         // Garden-level window with bars, and a bin by the railings.
-        c.faceX(x + 0.72, 1.502, 0.36, 4, 9, k === 2 ? CN.amber : CN.glass1);
+        c.faceX(x + 0.72, 1.502, 0.36, 4, 9, k === 2 ? CN.amber : C.glassDeep);
         for (let i = 1; i < 4; i++)
           c.edge(
             [x + 0.72 + i * 0.09, 1.503, 4],
@@ -3294,7 +3206,7 @@ const nyc: Record<string, Spec> = {
       windowsSide(c, 4.002, 0.2, 1.4, 34, 84, 0.45, 20, 0.22, 11);
       for (let v = 0.2; v < 1.4; v += 0.45)
         for (let z = 34; z < 84; z += 20)
-          c.faceY(4.003, v - 0.02, 0.26, z - 2, 2, C.stageNavy);
+          c.faceY(4.003, v - 0.02, 0.26, z - 2, 2, C.limestoneDark);
     },
   },
   'm-bodega': {
@@ -3305,11 +3217,8 @@ const nyc: Record<string, Spec> = {
       lightPool(c, 1.2, 1.05, 40, 8, 0.6);
       c.box(0, 0, 3, 0.8, 62, NM.brick);
       // Plain colour sign band above the awning (no text).
-      c.faceX(0.1, 0.802, 2.8, 40, 7, C.navy);
-      c.edge([0.1, 0.803, 40], [2.9, 0.803, 40], C.glow);
-      c.edge([0.1, 0.803, 47], [2.9, 0.803, 47], C.glow);
-      for (let k = 0; k < 6; k++)
-        c.faceX(0.24 + k * 0.44, 0.804, 0.29, 42, 2, k % 2 ? C.pink : C.glow);
+      c.faceX(0.1, 0.802, 2.8, 40, 7, C.yellow);
+      c.faceX(0.1, 0.803, 2.8, 40, 1, C.yellowDark);
       windowsFront(c, 0.3, 2.8, 0.802, 50, 60, 0.6, 12, 0.3, 8);
       // Shopfront glass, lit warm, with shelves of goods behind.
       c.faceX(0.15, 0.802, 2.0, 4, 26, CN.hot);
@@ -3342,8 +3251,7 @@ const nyc: Record<string, Spec> = {
         );
         c.faceX(i * 0.3, 1.0, 0.3, 30, 3, i % 2 ? C.offwhite : C.redDark);
       }
-      c.faceY(3.002, 0, 0.8, 4, 56, CN.glass0);
-      neonPanelFront(c, 2.75, 0.805, 0.23, 19, 32, false);
+      c.faceY(3.002, 0, 0.8, 4, 56, C.brickDark);
       // Crates of fruit and flowers on the pavement.
       const crate = (x: number, fruit: string) => {
         c.box(x, 0.84, 0.34, 0.14, 6, M.wood);
@@ -6186,22 +6094,22 @@ Object.assign(objects, nature);
 const CN = {
   // Night glass, deep to light.
   glass0: C.screen,
-  glass1: C.stageNavy,
-  glass2: C.navy,
+  glass1: C.navy,
+  glass2: CC.nightGlass,
   glass3: CC.duskGlass,
   glass4: CC.skyGlass,
   glass5: CC.skyGlassLight,
-  glass6: C.glassDeep,
+  glass6: C.glassDark,
   // Window light.
   warm: C.windowLit,
   amber: CC.amberLit,
   hot: C.lampGlow,
-  cool: C.glow,
-  coolDim: C.teal,
+  cool: C.glassLight,
+  coolDim: C.glass,
   // Dimmer versions for the shaded (+x) face.
   warmSide: C.gold,
   amberSide: C.orangeDark,
-  coolSide: C.tealDark,
+  coolSide: C.glassDark,
   // Concrete for poles and the broadcast tower.
   conc0: C.concrete,
   conc1: C.silver,
@@ -6352,34 +6260,6 @@ function lightPool(
         c.p.pixel(px, py, k < 0.4 ? inner : outer);
     }
 }
-/** Geometric light panels: bright frame and coloured bars, never writing. */
-function neonPanelFront(
-  c: IsoCanvas,
-  x: number,
-  y: number,
-  w: number,
-  z: number,
-  h: number,
-  cool = true,
-) {
-  const rim = cool ? C.glow : C.pink;
-  c.faceX(x, y, w, z, h, C.screen);
-  c.edge([x, y + 0.001, z], [x + w, y + 0.001, z], rim);
-  c.edge([x, y + 0.001, z + h], [x + w, y + 0.001, z + h], rim);
-  c.edge([x, y + 0.001, z], [x, y + 0.001, z + h], rim);
-  c.edge([x + w, y + 0.001, z], [x + w, y + 0.001, z + h], rim);
-  for (let j = 0; j < 4; j++) {
-    const pad = w * (j % 2 ? 0.2 : 0.12);
-    c.faceX(
-      x + pad,
-      y + 0.002,
-      w - pad * 2,
-      z + 3 + (j * (h - 5)) / 4,
-      2,
-      j % 2 ? (cool ? C.glassLight : C.lampGlow) : rim,
-    );
-  }
-}
 /**
  * A night glass tower: a podium with a glowing lobby, a shaft of deep blue
  * glass with a lit window grid, sky reflection toward the top and floor
@@ -6428,26 +6308,8 @@ function nightTower(
     z0,
   );
   // Sky reflected on the upper glass; the base sits in the dusk shadow.
-  ditherFront(
-    c,
-    o + size * 0.04,
-    o + size * 0.19,
-    e + 0.001,
-    z1 - shaftH * 0.34,
-    z1,
-    CN.glass4,
-    0.25,
-  );
-  ditherFront(
-    c,
-    o + size * 0.53,
-    o + size * 0.69,
-    e + 0.001,
-    z1 - shaftH * 0.12,
-    z1,
-    CN.glass5,
-    0.25,
-  );
+  ditherFront(c, o, e, e + 0.001, z1 - shaftH * 0.34, z1, CN.glass4, 0.5);
+  ditherFront(c, o, e, e + 0.001, z1 - shaftH * 0.12, z1, CN.glass5, 0.5);
   ditherSide(c, e + 0.001, o, e, z1 - shaftH * 0.3, z1, CN.glass2);
   nightWindowsFront(
     c,
@@ -6486,36 +6348,8 @@ function nightTower(
     c.edge([o + 0.1, e + 0.004, z], [o + 0.7, e + 0.004, z + 22], CN.glass5);
   }
   // Parapet light line.
-  c.edge([o, e + 0.004, z1 - 1], [e, e + 0.004, z1 - 1], CN.cool);
+  c.edge([o, e + 0.004, z1 - 1], [e, e + 0.004, z1 - 1], CN.glass6);
   c.edge([e + 0.004, o, z1 - 1], [e + 0.004, e, z1 - 1], CN.glass4);
-  // A few brilliant accents sit against dark window grids, like the
-  // reference night skyline. Solid facades retain broad readable shapes.
-  const signZ = z0 + shaftH * (seed % 2 ? 0.22 : 0.39);
-  neonPanelFront(
-    c,
-    o + size * 0.08,
-    e + 0.006,
-    size * 0.3,
-    signZ,
-    25,
-    seed % 3 !== 0,
-  );
-  c.edge(
-    [e, e + 0.007, z0 + 6],
-    [e, e + 0.007, z1 - 10],
-    seed % 2 ? C.teal : C.pinkDark,
-  );
-  for (let floor = 3; floor < 12; floor += 4) {
-    const bandZ = z0 + (shaftH * floor) / 13;
-    c.faceX(
-      o + size * 0.49,
-      e + 0.008,
-      size * 0.47,
-      bandZ,
-      2,
-      seed % 2 ? CN.cool : C.pink,
-    );
-  }
   return z1;
 }
 /**
@@ -6535,16 +6369,16 @@ function utilityPole(dirs: number[]): Spec {
     draw(c) {
       const [px, py] = c.at(0.5, 0.5, 0);
       // Concrete pole with a footing, joint rings and climbing steps.
-      c.p.rect(px - 2, py - 92, 4, 92, CN.glass3);
-      c.p.rect(px - 2, py - 92, 1, 92, CN.glass5);
-      c.p.rect(px + 1, py - 92, 1, 92, CN.glass0);
-      c.p.rect(px - 3, py - 4, 6, 4, CN.glass0);
+      c.p.rect(px - 2, py - 92, 4, 92, CN.conc1);
+      c.p.rect(px - 2, py - 92, 1, 92, CN.conc0);
+      c.p.rect(px + 1, py - 92, 1, 92, CN.conc2);
+      c.p.rect(px - 3, py - 4, 6, 4, CN.conc2);
       for (let z = 20; z < 88; z += 17)
-        c.p.rect(px - 2, py - z, 4, 1, CN.glass0);
+        c.p.rect(px - 2, py - z, 4, 1, CN.conc2);
       for (let z = 30; z < 70; z += 6)
         c.p.pixel(px + (z % 12 ? 2 : -3), py - z, C.steelDark);
       // Transformer drum, a junction box and a small plain plate.
-      c.cylinder(0.62, 0.5, 52, 4, 11, [CN.glass3, CN.glass0, CN.glass0]);
+      c.cylinder(0.62, 0.5, 52, 4, 11, [CN.conc1, CN.conc2, CN.conc3]);
       c.p.rect(px + 1, py - 66, 6, 1, C.steelDark);
       c.p.rect(px + 2, py - 40, 3, 6, C.slate);
       c.p.rect(px + 2, py - 40, 1, 6, C.grey);
@@ -6556,8 +6390,8 @@ function utilityPole(dirs: number[]): Spec {
         [86, 0.05, 0.95],
         [76, 0.3, 0.7],
       ]) {
-        c.thick(c.at(0.5, v0, z), c.at(0.5, v1, z), 0.6, CN.glass0);
-        c.line(c.at(0.5, v0, z + 1), c.at(0.5, v1, z + 1), CN.glass3);
+        c.thick(c.at(0.5, v0, z), c.at(0.5, v1, z), 0.6, CN.conc2);
+        c.line(c.at(0.5, v0, z + 1), c.at(0.5, v1, z + 1), CN.conc1);
       }
       for (const v of lanes) {
         const [ix, iy] = c.at(0.5, v, 87);
@@ -6615,263 +6449,108 @@ type ShopLook = {
 function awningShop(o: ShopLook): Spec {
   return {
     footprint: [2, 1],
-    h: 92,
-    pad: 10,
+    h: 82,
+    pad: 8,
     draw(c) {
+      // Light from the shop spills onto the pavement in front.
       lightPool(c, 0.8, 1.2, 24, 6, 0.5);
-      c.box(0, 0, 2, 0.8, 64, {
-        top: C.cream,
-        front: C.ivory,
-        side: C.creamShade,
-        edge: C.woodDark,
-      });
-      c.faceX(0, 0.801, 2, 0, 7, C.sandShade);
-      coursesFront(c, 0, 2, 0.802, 0, 7, 3, 0.4, C.clay, C.sand);
-      // A timber-framed gable, with terracotta roof tiles rather than a flat roof.
-      c.poly(
-        [
-          [0, 0.8, 64],
-          [2, 0.8, 64],
-          [1, 0.8, 83],
-        ],
-        C.cream,
+      c.box(0, 0, 2, 0.8, 66, o.wall);
+      c.box(
+        0,
+        0,
+        2,
+        0.84,
+        3,
+        { top: o.wall.side, front: o.trim, side: o.trim },
+        66,
       );
-      for (const x of [0.02, 0.96, 1.92]) {
-        c.faceX(x, 0.803, 0.08, 7, x === 0.96 ? 73 : 57, C.woodDark);
-        c.edge([x + 0.02, 0.804, 8], [x + 0.02, 0.804, 62], C.wood);
-      }
-      for (const z of [30, 43, 63]) {
-        c.faceX(0, 0.805, 2, z, 3, C.woodDark);
-        c.edge([0, 0.806, z + 2], [2, 0.806, z + 2], C.woodLight);
-      }
-      c.edge([0.08, 0.807, 64], [0.95, 0.807, 80], C.woodDark);
-      c.edge([1.05, 0.807, 80], [1.93, 0.807, 64], C.woodDark);
-      c.edge([0.18, 0.807, 44], [0.55, 0.807, 61], C.woodDark);
-      c.edge([1.78, 0.807, 44], [1.4, 0.807, 61], C.woodDark);
-      // Warm shop window, shelves, and a planked door with a small glass light.
-      c.faceX(0.15, 0.809, 1.14, 8, 20, C.woodDark);
-      c.faceX(0.2, 0.81, 1.04, 10, 16, CN.warm);
-      for (const z of [15, 22]) c.faceX(0.2, 0.811, 1.04, z, 1, C.woodDark);
-      c.faceX(0.69, 0.812, 0.06, 10, 17, C.woodDark);
-      for (let i = 0; i < 8; i++) {
-        const x = 0.24 + i * 0.12;
+      // Rooftop clutter: a condenser unit and a small water tank.
+      c.box(0.2, 0.15, 0.36, 0.26, 6, M.steel, 69);
+      c.faceX(0.24, 0.411, 0.28, 70, 4, C.steelDark);
+      for (let g = 0; g < 4; g++)
+        c.faceX(0.26 + g * 0.065, 0.412, 0.03, 70, 4, C.steel);
+      c.cylinder(1.55, 0.4, 69, 4, 8, R.steel);
+      c.edge([1.2, 0.42, 69], [1.2, 0.42, 74], C.steelDark);
+      // Shop window: warm interior with shelf silhouettes.
+      c.faceX(0.12, 0.801, 1.3, 3, 22, CN.hot);
+      c.faceX(0.12, 0.802, 1.3, 19, 6, CN.amber);
+      for (const z of [8, 14, 20]) c.faceX(0.16, 0.803, 1.22, z, 1, C.woodDark);
+      for (let k = 0; k < 9; k++)
         c.faceX(
-          x,
-          0.812,
+          0.2 + k * 0.13,
+          0.803,
           0.06,
-          16 + (i % 2) * 7,
+          9 + (k % 3) * 6,
           3,
-          accents[(i * 3) % accents.length],
+          accents[(k * 4) % accents.length],
         );
-      }
-      c.faceX(1.43, 0.81, 0.43, 3, 26, C.woodDark);
-      c.faceX(1.47, 0.811, 0.35, 4, 24, C.wood);
-      for (let i = 0; i < 4; i++)
-        c.edge(
-          [1.49 + i * 0.08, 0.812, 4],
-          [1.49 + i * 0.08, 0.812, 27],
-          C.woodDark,
-        );
-      c.faceX(1.51, 0.813, 0.26, 17, 9, C.glassDeep);
-      c.edge([1.64, 0.814, 18], [1.64, 0.814, 25], C.woodLight);
-      c.p.pixel(...c.at(1.76, 0.815, 13), C.gold);
-      c.box(1.36, 0.8, 0.58, 0.23, 2, M.stone);
-      // Canvas porch awning and a small lantern, all signage remains blank.
+      c.faceX(0.12, 0.803, 1.3, 3, 1, C.woodDark);
+      // Door with a lit glass pane.
+      c.faceX(1.55, 0.801, 0.34, 0, 24, C.woodDark);
+      c.faceX(1.6, 0.802, 0.24, 8, 13, CN.warm);
+      c.p.pixel(...c.at(1.82, 0.803, 12), C.gold);
+      // Awning: a sloped striped canopy with a scalloped valance.
       const [aLight, aDark, aDeep] = o.awning;
       c.poly(
         [
-          [0.04, 0.8, 39],
-          [1.35, 0.8, 39],
-          [1.35, 1.12, 33],
-          [0.04, 1.12, 33],
+          [0.02, 0.8, 34],
+          [1.98, 0.8, 34],
+          [1.98, 1.14, 27],
+          [0.02, 1.14, 27],
         ],
         aDark,
       );
-      for (let x = 0.04; x < 1.32; x += 0.22)
+      for (let u = 0.02; u < 1.98; u += 0.28)
         c.poly(
           [
-            [x, 0.8, 39],
-            [x + 0.11, 0.8, 39],
-            [x + 0.11, 1.12, 33],
-            [x, 1.12, 33],
+            [u, 0.8, 34],
+            [u + 0.14, 0.8, 34],
+            [u + 0.14, 1.14, 27],
+            [u, 1.14, 27],
           ],
           aLight,
         );
-      c.faceX(0.04, 1.121, 1.31, 30, 3, aDark);
-      c.edge([0.04, 1.122, 30], [1.35, 1.122, 30], aDeep);
-      for (const x of [0.22, 1.2]) {
-        sashFront(c, x, 0.808, 0.53, 47, 12, {
-          frame: C.woodDark,
-          glass: C.glassDeep,
-          shade: C.navy,
-          glint: C.glassLight,
-          sill: C.woodLight,
-          bars: true,
-          inside: C.cream,
-        });
-        villageFlowerBox(c, x - 0.04, 0.82, 42, 0.61, x > 1 ? 2 : 0);
-      }
-      c.faceY(2.001, 0.12, 0.52, 45, 13, C.woodDark);
-      c.faceY(2.002, 0.18, 0.4, 47, 9, C.glassDeep);
-      // Two pitched planes with staggered individual clay shingles.
-      for (const side of [-1, 1]) {
-        const edge = side < 0 ? -0.16 : 2.16;
-        c.poly(
-          [
-            [1, -0.18, 84],
-            [1, 0.96, 84],
-            [edge, 0.96, 63],
-            [edge, -0.18, 63],
-          ],
-          side < 0 ? C.terracottaDark : C.terracotta,
+      for (let u = 0.02; u < 1.96; u += 0.14) {
+        c.faceX(
+          u,
+          1.141,
+          0.14,
+          24,
+          3,
+          Math.round(u / 0.14) % 2 ? aLight : aDark,
         );
-        for (let row = 0; row < 7; row++) {
-          const t = row / 7,
-            nt = (row + 1) / 7;
-          const x = 1 + (edge - 1) * t,
-            nx = 1 + (edge - 1) * nt;
-          const z = 84 - t * 21,
-            nz = 84 - nt * 21;
-          c.edge([x, -0.18, z], [x, 0.96, z], C.terracottaLight);
-          for (let y = -0.18 + (row % 2) * 0.1; y < 0.96; y += 0.21) {
-            c.edge([x, y, z], [nx, y, nz], C.terracottaDark);
-            c.edge([x, y + 0.03, z], [nx, y + 0.03, nz], C.terracottaLight);
-          }
-        }
-        c.edge([edge, -0.18, 63], [edge, 0.96, 63], C.woodDark);
-        c.edge([1, 0.97, 84], [edge, 0.97, 63], C.woodDark);
-        c.edge([1, 0.98, 85], [edge, 0.98, 64], C.terracottaLight);
+        c.faceX(u + 0.04, 1.142, 0.06, 23, 1, aDeep);
       }
-      c.edge([1, -0.2, 85], [1, 0.98, 85], C.terracottaLight);
-      // Moss, trailing plants, and a terracotta planter settle the cottage into the garden.
-      c.pot(1.99, 1.0, 0, 3, 5, R.terracotta, C.soil);
-      c.greenery(1.99, 1.0, 10, 5, R.leaf, C.pink);
-      const [lx, ly] = c.at(1.95, 0.95, 36);
-      c.p.rect(lx - 2, ly - 4, 5, 8, C.woodDark);
-      c.p.rect(lx - 1, ly - 3, 3, 5, C.lamp);
-      c.p.pixel(lx, ly - 3, C.white);
+      // A plain sign panel above the awning (no text) and a paper lantern.
+      c.faceX(0.3, 0.801, 1.2, 37, 7, o.sign[0]);
+      c.faceX(0.34, 0.802, 1.12, 38, 5, o.sign[1]);
+      const [lx, ly] = c.at(1.9, 0.95, 40);
+      c.p.ellipse(lx, ly, 3, 4, CN.amber);
+      c.p.ellipse(lx - 1, ly - 1, 1.5, 2, CN.hot);
+      c.p.pixel(lx, ly - 5, C.ink);
+      // Upper floor: two windows, an AC unit on the wall between them.
+      for (const [x, on] of [
+        [0.2, o.lit[0]],
+        [1.2, o.lit[1]],
+      ] as [number, boolean][]) {
+        c.faceX(x, 0.801, 0.5, 46, 12, o.trim);
+        c.faceX(x + 0.04, 0.802, 0.42, 47, 10, on ? CN.warm : CN.glass3);
+        c.faceX(x + 0.04, 0.803, 0.42, 55, 2, on ? CN.amber : CN.glass2);
+        if (!on) c.edge([x + 0.08, 0.804, 49], [x + 0.2, 0.804, 55], CN.glass5);
+      }
+      c.box(0.85, 0.8, 0.28, 0.14, 7, M.steel, 44);
+      c.faceX(0.88, 0.941, 0.22, 45, 5, C.steelDark);
+      for (let k = 0; k < 3; k++)
+        c.faceX(0.9 + k * 0.07, 0.942, 0.04, 45, 5, C.steel);
+      c.faceY(2.001, 0.1, 0.6, 46, 12, o.lit[1] ? CN.amberSide : CN.glass1);
+      // A potted plant by the door.
+      c.pot(1.46, 1.0, 0, 3, 5, R.terracotta, C.soil);
+      c.greenery(1.46, 1.0, 9, 5, R.leaf);
     },
   };
 }
 const city: Record<string, Spec> = {
   // CITY-OBJECTS
-  'm-neon-shop': {
-    footprint: [3, 1],
-    h: 108,
-    pad: 12,
-    side: true,
-    detail: { grain: 0, rim: false },
-    draw(c) {
-      lightPool(c, 1.5, 1.1, 40, 10, 0.85, C.glow, C.teal);
-      c.box(0, 0, 3, 0.9, 94, {
-        top: CN.glass4,
-        front: CN.glass2,
-        side: CN.glass0,
-        edge: CN.glass0,
-      });
-      // Cool shop light, warm upstairs rooms, and an external stair pipe.
-      c.faceX(0.12, 0.902, 2.72, 4, 26, CN.glass0);
-      c.faceX(0.18, 0.903, 1.65, 7, 20, C.glow);
-      c.faceX(0.2, 0.904, 1.61, 23, 3, C.glassLight);
-      for (let x = 0.22; x < 1.8; x += 0.28)
-        c.faceX(x, 0.905, 0.05, 7, 20, CN.glass2);
-      c.faceX(2.03, 0.903, 0.54, 4, 25, CN.warm);
-      c.faceX(2.09, 0.904, 0.42, 6, 20, CN.glass1);
-      c.faceX(2.44, 0.905, 0.04, 7, 18, C.pink);
-      c.p.pixel(...c.at(2.4, 0.906, 16), C.lamp);
-      for (const z of [45, 68])
-        for (let i = 0; i < 3; i++) {
-          const x = 0.23 + i * 0.88;
-          c.faceX(
-            x,
-            0.903,
-            0.54,
-            z,
-            13,
-            i === 1 && z === 45 ? CN.glass0 : CN.warm,
-          );
-          c.faceX(
-            x + 0.04,
-            0.904,
-            0.46,
-            z + 9,
-            3,
-            i === 1 ? CN.glass3 : CN.amber,
-          );
-          c.edge([x, 0.905, z - 2], [x + 0.54, 0.905, z - 2], CN.glass5);
-          c.edge([x + 0.26, 0.905, z], [x + 0.26, 0.905, z + 13], CN.glass2);
-        }
-      neonPanelFront(c, 0.07, 0.91, 2.82, 31, 8, true);
-      neonPanelFront(c, 2.7, 0.912, 0.27, 49, 38, false);
-      c.edge([0.03, 0.914, 92], [2.97, 0.914, 92], C.pink);
-      c.box(
-        0.08,
-        0.07,
-        0.72,
-        0.55,
-        9,
-        {
-          top: CN.glass5,
-          front: CN.glass3,
-          side: CN.glass1,
-          edge: CN.glass0,
-        },
-        94,
-      );
-      for (let i = 0; i < 5; i++)
-        c.faceX(0.14 + i * 0.12, 0.622, 0.04, 96, 4, CN.glass0);
-      for (const z of [11, 42, 64, 88])
-        c.edge([2.99, 0.05, z], [2.99, 0.85, z], CN.glass4);
-    },
-  },
-  'm-tram-stop': {
-    footprint: [3, 1],
-    h: 62,
-    pad: 16,
-    side: true,
-    detail: { grain: 0, rim: false },
-    draw(c) {
-      lightPool(c, 1.4, 1.15, 46, 10, 0.9, CN.hot, CN.amber);
-      // Thin iron canopy, glass weather screen, bench and illuminated board.
-      c.box(
-        0,
-        0,
-        3,
-        0.88,
-        3,
-        { top: CN.glass5, front: CN.glass2, side: CN.glass0 },
-        49,
-      );
-      c.edge([0, 0.89, 50], [3, 0.89, 50], CN.amber);
-      for (const x of [0.12, 2.86]) {
-        c.box(x, 0.12, 0.08, 0.7, 49, {
-          top: CN.glass4,
-          front: CN.glass0,
-          side: C.ink,
-        });
-        c.edge([x, 0.83, 0], [x, 0.83, 48], CN.glass5);
-      }
-      c.faceX(0.23, 0.16, 2.48, 7, 36, CN.glass3);
-      for (const x of [0.3, 1.13, 1.96]) {
-        c.faceX(x, 0.161, 0.65, 9, 31, CN.glass4);
-        c.edge([x + 0.02, 0.163, 13], [x + 0.4, 0.163, 36], CN.glass6);
-      }
-      c.box(
-        0.35,
-        0.32,
-        1.8,
-        0.28,
-        3,
-        { top: C.wood, front: C.woodDark, side: CN.glass0 },
-        13,
-      );
-      for (const x of [0.48, 1.88]) c.box(x, 0.35, 0.06, 0.2, 13, M.dark);
-      neonPanelFront(c, 2.24, 0.84, 0.5, 13, 29, false);
-      c.faceX(0.24, 0.9, 1.8, 43, 5, CN.glass0);
-      for (let i = 0; i < 8; i++)
-        c.faceX(0.34 + i * 0.2, 0.901, 0.1, 45, 1, CN.amber);
-    },
-  },
   'm-tower-tall': {
     footprint: [3, 3],
     h: 336,
@@ -7286,26 +6965,6 @@ const city: Record<string, Spec> = {
 };
 Object.assign(objects, city);
 
-/** Target only the urban pass when refreshing city art; never regenerate people. */
-export const NIGHT_CITY_ART_IDS = [
-  'm-skyscraper-deco',
-  'm-skyscraper-glass',
-  'm-brownstone',
-  'm-bodega',
-  'm-tower-tall',
-  'm-tower-slim',
-  'm-tower-slim-b',
-  'm-broadcast-tower',
-  'm-neon-shop',
-  'm-tram-stop',
-  'm-city-lamp',
-  'm-utility-pole',
-  'm-utility-pole-start',
-  'm-utility-pole-end',
-] as const;
-for (const id of NIGHT_CITY_ART_IDS)
-  objects[id].detail = { ...objects[id].detail, grain: 0, rim: false };
-
 export const MODERN_OBJECTS: Record<
   string,
   { footprint: [number, number]; floor?: boolean; side?: boolean }
@@ -7390,12 +7049,11 @@ export function renderModernObject(id: string) {
   return trim(frames, ax, ay);
 }
 
-export async function generateModernObjects(ids?: readonly string[]) {
+export async function generateModernObjects() {
   const meta: Record<string, ObjectArt> = await readJson(
     'art/objects/index.json',
   ).catch(() => ({}));
-  for (const id of ids ?? Object.keys(objects)) {
-    if (!objects[id]) throw Error(`Unknown modern object ${id}`);
+  for (const id of Object.keys(objects)) {
     const s = objects[id],
       { frames, anchor } = renderModernObject(id);
     for (const side of s.side ? [false, true] : [false]) {
@@ -7499,44 +7157,26 @@ function slab(
     return base;
   };
 }
-/** Hand-set courtyard cobbles: staggered sizes, chipped bevels and moss in the joints. */
-function villageCobbles(n: number): TileTexture {
-  return (u, v, x, y) => {
-    const row = Math.floor(v * 3),
-      rv = v * 3 - row;
-    const along = u * 2 + (row % 2) * 0.5;
-    const cell = Math.floor(along),
-      ru = along - cell;
-    const seed = tileHash(cell % 2, row, n);
-    const wobble = tileHash(cell, row + 7, n) * 0.045;
-    if (rv < 0.08 + wobble || ru < 0.06 + wobble)
-      return tileNoise(u, v, 4, n + 54) > 0.69 ? NC.moss2 : C.sandDark;
-    if (rv < 0.2 || ru < 0.15) return C.creamShade;
-    if (rv > 0.91 || ru > 0.91) return C.clay;
-    if (tileHash(x, y, n) < 0.025) return C.sandShade;
-    return seed < 0.25 ? C.warmGreyLight : seed > 0.75 ? C.sandShade : C.sand;
-  };
-}
 export function renderModernTile(n: number) {
   switch (n) {
     // 1–3: courtyard stone in three warm variants, 6: pale stone paving.
     case 1:
-      return texturedTile(n, villageCobbles(n));
+      return texturedTile(n, slab(C.ivory, n, 1, 0.01, C.paper));
     case 2:
-      return texturedTile(n, villageCobbles(n));
+      return texturedTile(n, slab(C.paper, n, 1, 0.012, C.ivory, 0.7));
     case 3:
-      return texturedTile(n, villageCobbles(n));
+      return texturedTile(n, slab(C.stone, n, 2, 0.01, C.offwhite, 0.88));
     case 6:
-      return texturedTile(n, villageCobbles(n));
+      return texturedTile(n, slab(C.stone, n, 1, 0.012));
     case 4: {
-      // Rich meadow greens with grouped blades and broad patches of clover.
+      // Garden grass: short upright blades (dark base, mid stem, light tip)
+      // over a soft two-tone lawn.
       return texturedTile(n, (u, v, x, y) => {
-        const blade = (yy: number) => tileHash(x, yy, n) < 0.055;
-        if (blade(y)) return NC.leaf3;
-        if (blade(y + 1)) return NC.leaf1;
-        if (blade(y + 2) && tileHash(x, y, n + 5) < 0.5) return NC.leaf0;
-        const patch = tileNoise(u, v, 3, 41);
-        return patch > 0.74 ? NC.leaf1 : patch < 0.32 ? NC.leaf3 : NC.leaf2;
+        const blade = (yy: number) => tileHash(x, yy, n) < 0.07;
+        if (blade(y)) return C.grassDark;
+        if (blade(y + 1)) return C.grassMid;
+        if (blade(y + 2) && tileHash(x, y, n + 5) < 0.5) return C.grassLight;
+        return tileNoise(u, v, 2, 41) > 0.68 ? C.grassMid : C.grass;
       });
     }
     case 5: {
@@ -7552,7 +7192,10 @@ export function renderModernTile(n: number) {
       });
     }
     case 7:
-      return texturedTile(n, villageCobbles(n));
+      return texturedTile(
+        n,
+        slab(C.concrete, n, 1, 0.02, C.concreteShade, 0.86),
+      );
     case 14:
       // Baitul Mukarram's white marble plaza: large slabs, thin dark grout,
       // soft grey veining.
@@ -7573,7 +7216,11 @@ export function renderModernTile(n: number) {
         return patch > 0.66 ? C.sandShade : patch < 0.2 ? C.paper : C.sand;
       });
     case 8:
-      return texturedTile(n, villageCobbles(n));
+      // Square pavers, four to a tile.
+      return texturedTile(
+        n,
+        slab(C.warmGrey, n, 2, 0.012, C.warmGreyLight, 0.74),
+      );
     case 9: {
       // Oak boards running along u, three per tile: long grain streaks,
       // staggered board ends, a lit upper edge and a dark seam.
@@ -7634,9 +7281,7 @@ export function renderModernTile(n: number) {
       throw Error(`No tile ${n}`);
   }
 }
-export async function generateModernTiles(
-  ids: readonly number[] = Array.from({ length: 15 }, (_, i) => i + 1),
-) {
-  for (const n of ids)
+export async function generateModernTiles() {
+  for (let n = 1; n <= 15; n++)
     await png(`art/tiles/tile-${n}.png`, renderModernTile(n));
 }

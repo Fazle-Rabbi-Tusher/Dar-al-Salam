@@ -44,32 +44,18 @@ import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripTempo } from '../../packages/shared/motion';
 import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
-import { WILD, type Planting } from '../../packages/shared/planet';
+import {
+  WILD,
+  wildPlantings,
+  type Planting,
+} from '../../packages/shared/planet';
 import type { ObjectArt } from '../placeholder/objects';
-import { forestHaze } from '../landscape/atmosphere';
-import {
-  districtDecorations,
-  inDistrictClearing,
-} from '../landscape/district-scene';
-import { DISTRICTS } from '../../packages/shared/districts';
-import { composeForest } from '../landscape/forest';
-import {
-  LANDSCAPE_REPLACEMENTS,
-  landscapeDecorations,
-  inWoodlandVillage,
-} from '../landscape/scene';
 const out = 'public-build';
 /** Flat walkable art (carpets, rugs) is baked into chunk backgrounds. */
 const bakedIntoFloor = (type: string, art: ObjectArt) =>
   Boolean(art.floor) || type === 'carpet' || type === 'detail-rug';
 const hash = (d: Uint8Array | string) =>
   createHash('sha256').update(d).digest('hex');
-const foliageLife = (type: string): ObjectArt['life'] =>
-  /^(land-(oak|pine|cherry|forest-stand)|m-(tree|oak|pine|birch|cherry|palm)|cypress|palm|detail-olive)/.test(
-    type,
-  )
-    ? { kind: 'foliage' }
-    : undefined;
 async function build() {
   const prod = process.argv.includes('--prod');
   const content = await loadContent(),
@@ -84,11 +70,7 @@ async function build() {
   for (const p of await files('art', '.png')) {
     // Illustrated portraits and supplied full-body sprites are not limited
     // to the pixel-art palette.
-    if (
-      p.startsWith('art/illustrations/') ||
-      p.startsWith('art/sprites/') ||
-      p.startsWith('art/landscape/')
-    )
+    if (p.startsWith('art/illustrations/') || p.startsWith('art/sprites/'))
       continue;
     const errors = paletteErrors(
       await image(p),
@@ -484,14 +466,6 @@ async function build() {
   const objectArt: Record<string, ObjectArt> = await readJson(
     'art/objects/index.json',
   );
-  // Imported landscape art has its own full-colour palette, like supplied
-  // character illustrations. Keep it independent of the character palette.
-  const landscapeArt: Record<string, ObjectArt> = await readJson(
-    'art/landscape/index.json',
-  );
-  Object.assign(objectArt, landscapeArt);
-  for (const [original, replacement] of Object.entries(LANDSCAPE_REPLACEMENTS))
-    objectArt[original] = landscapeArt[replacement];
   const sortables: Sortable[] = [];
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
@@ -509,12 +483,7 @@ async function build() {
         const slices = frames.map((f) => crop(f, x, 0, width, f.height));
         if (!slices[0].data.some((v, i) => i % 4 === 3 && v > 0)) continue;
         const names = slices.map((s) =>
-          register(
-            s,
-            [art.anchor[0] - x, art.anchor[1]],
-            1,
-            art.file.startsWith('landscape/'),
-          ),
+          register(s, [art.anchor[0] - x, art.anchor[1]]),
         );
         const column = x + width / 2 - art.anchor[0],
           ground = stripGround([o.x, o.y], o.footprint, column),
@@ -533,7 +502,6 @@ async function build() {
           // Frame pixel resting on the ground point, so strips follow the curve.
           pivot: [m.anchor[0] + at[0] - base[0], m.anchor[1] + at[1] - base[1]],
           lift: o.z,
-          ...(foliageLife(o.type) ? { life: foliageLife(o.type) } : {}),
           ...(names.length > 1 ? { animation: names } : {}),
           ...(names.length > 1 && art.period ? { period: art.period } : {}),
         });
@@ -549,18 +517,11 @@ async function build() {
   // object index fall back to the next, so the build never fails.
   const wildArt: Record<Planting['kind'], string[][]> = {
     'forest-tree': [
-      [
-        'land-pine',
-        'land-oak',
-        'land-pine',
-        'land-oak-young',
-        'land-oak',
-        'land-pine-young',
-      ],
+      ['m-pine', 'm-oak', 'm-pine', 'm-birch', 'm-oak', 'm-tree'],
       ['cypress', 'm-tree', 'cypress', 'detail-olive', 'm-tree', 'm-tree'],
     ],
     'meadow-tree': [
-      ['land-oak', 'land-cherry', 'land-oak-young', 'm-birch'],
+      ['m-oak', 'm-cherry', 'm-tree', 'm-birch'],
       ['m-tree', 'detail-olive', 'm-tree', 'cypress'],
     ],
     bush: [['m-bush'], []],
@@ -570,63 +531,30 @@ async function build() {
     waterfall: [['m-waterfall'], []],
     ship: [['m-ship'], []],
   };
-  type SceneryFrames = {
-    names: string[];
-    period?: number;
-    atmosphere?: { middle: string; far: string };
-    life?: Sortable['life'];
-  };
-  const wildFrames = new Map<string, SceneryFrames | null>();
+  const wildFrames = new Map<
+    string,
+    { names: string[]; period?: number } | null
+  >();
   const wildFrame = async (type: string) => {
     if (wildFrames.has(type)) return wildFrames.get(type)!;
     const art = objectArt[type];
-    let entry: SceneryFrames | null = null;
+    let entry: { names: string[]; period?: number } | null = null;
     if (art && !bakedIntoFloor(type, art)) {
       const files = art.frames ?? [art.file],
         names: string[] = [];
       for (const f of files)
         names.push(
-          register(
-            await image(`art/${f}`),
-            art.anchor as [number, number],
-            1,
-            art.file.startsWith('landscape/'),
-          ),
+          register(await image(`art/${f}`), art.anchor as [number, number]),
         );
       entry = { names, ...(art.period ? { period: art.period } : {}) };
-      const behavior = art.life ?? foliageLife(type);
-      if (behavior) {
-        const views: Record<string, string> = {};
-        for (const [key, file] of Object.entries(behavior.views ?? {}))
-          views[key] = register(
-            await image(`art/${file}`),
-            art.anchor,
-            1,
-            true,
-          );
-        entry.life = {
-          kind: behavior.kind,
-          ...(Object.keys(views).length ? { views } : {}),
-        };
-      }
-      if (/^land-(oak|pine|snag|forest-stand)/.test(type)) {
-        const source = await image(`art/${art.file}`);
-        entry.atmosphere = {
-          middle: register(forestHaze(source, 'middle'), art.anchor, 1, true),
-          far: register(forestHaze(source, 'far'), art.anchor, 1, true),
-        };
-      }
     }
     wildFrames.set(type, entry);
     return entry;
   };
   const wildCounts: Record<string, number> = {};
-  for (const [i, w] of composeForest().entries()) {
-    // The authored village has its own perimeter trees and flower banks.
-    if (inWoodlandVillage(w.tile)) continue;
-    if (inDistrictClearing(w.tile)) continue;
-    let chosen: SceneryFrames | null = w.art ? await wildFrame(w.art) : null;
-    for (const options of chosen ? [] : wildArt[w.kind]) {
+  for (const [i, w] of wildPlantings().entries()) {
+    let chosen: { names: string[]; period?: number } | null = null;
+    for (const options of wildArt[w.kind]) {
       if (!options.length) continue;
       chosen = await wildFrame(
         options[Math.floor(w.pick * options.length) % options.length],
@@ -651,8 +579,6 @@ async function build() {
       ground: w.tile,
       pivot: [m.anchor[0], m.anchor[1]],
       lift: 0,
-      ...(chosen.atmosphere ? { atmosphere: chosen.atmosphere } : {}),
-      ...(chosen.life ? { life: chosen.life } : {}),
       ...(chosen.names.length > 1 ? { animation: chosen.names } : {}),
       ...(chosen.names.length > 1 && chosen.period
         ? { period: chosen.period }
@@ -661,32 +587,6 @@ async function build() {
   }
   if (process.env.DAR_WILD_LOG)
     console.log('Wild plantings:', JSON.stringify(wildCounts));
-  for (const [i, decoration] of [
-    ...landscapeDecorations(),
-    ...districtDecorations(),
-    { art: 'land-taxi', tile: [18, 77.3] as [number, number] },
-  ].entries()) {
-    const entry = await wildFrame(decoration.art);
-    if (!entry) throw Error(`Missing landscape art: ${decoration.art}`);
-    const frame = entry.names[0],
-      m = metas[frame],
-      tile = decoration.tile;
-    const [x, y] = worldFromTile(...tile);
-    sortables.push({
-      frame,
-      x,
-      y,
-      depth: depth(...tile),
-      objectId: -100000 - i,
-      tile,
-      footprint: [1, 1],
-      ground: tile,
-      pivot: [m.anchor[0], m.anchor[1]],
-      lift: 0,
-      ...(entry.atmosphere ? { atmosphere: entry.atmosphere } : {}),
-      ...(entry.life ? { life: entry.life } : {}),
-    });
-  }
   // Pixel art packs into sharp (nearest-filtered) atlases; the detailed,
   // high-density frames (sharp heads, supplied sprites) into smooth ones that
   // the engine filters linearly with mipmaps, so they never look crunchy.
@@ -830,9 +730,6 @@ async function build() {
   };
   // The painted sky behind the planet (tools/build/sky.ts).
   await generateSky(`${out}/sky.webp`);
-  await generateSky(`${out}/forest-sky.webp`, 'forest');
-  for (const district of DISTRICTS)
-    await generateSky(`${out}/${district.id}-sky.webp`, district.id);
   await fs.mkdir(`${out}/i18n`, { recursive: true });
   const i18n: Record<string, string> = {};
   for (const f of await files('content/i18n', '.json')) {

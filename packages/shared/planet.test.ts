@@ -5,7 +5,6 @@ import {
   focusFromWorld,
   frame,
   latLon,
-  landscapePitch,
   planetToTile,
   projectTile,
   screenFacing,
@@ -53,34 +52,6 @@ describe('planet projection', () => {
     expect(p.x).toBeCloseTo(720, 3);
     expect(p.y).toBeCloseTo(500, 3);
     expect(p.rotation).toBe(0);
-  });
-  it('keeps a lower woodland camera centred and round-trips its ground points', () => {
-    const focus: [number, number] = [18, -35],
-      pitch = (76 * Math.PI) / 180,
-      f = frame({ ...view(focus, 1.5), pitch }),
-      centre = projectTile(f, focus);
-    expect(centre.x).toBeCloseTo(720, 3);
-    expect(centre.y).toBeCloseTo(500, 3);
-    expect(centre.depth).toBeCloseTo(Math.cos(pitch), 6);
-    for (const tile of [focus, [18.6, -34.7], [17.2, -36.1]] as [
-      number,
-      number,
-    ][]) {
-      const screen = projectTile(f, tile),
-        point = unproject(f, screen.x, screen.y);
-      expect(point).not.toBeNull();
-      const back = planetToTile(point!);
-      expect(back[0]).toBeCloseTo(tile[0], 6);
-      expect(back[1]).toBeCloseTo(tile[1], 6);
-    }
-  });
-  it('blends the lower camera into wilderness without changing the quarter or overview', () => {
-    expect(landscapePitch([28, 24], 2)).toBe(PLANET.pitch);
-    expect(landscapePitch([18, -35], 0.3)).toBe(PLANET.pitch);
-    expect(landscapePitch([18, -35], 1.5)).toBeCloseTo((76 * Math.PI) / 180, 6);
-    const transition = landscapePitch([28, -16], 0.675);
-    expect(transition).toBeGreaterThan(PLANET.pitch);
-    expect(transition).toBeLessThan((76 * Math.PI) / 180);
   });
   it('matches the isometric diamond at the focus and keeps north up', () => {
     // Exact at the projection centre; elsewhere the map stretches a little.
