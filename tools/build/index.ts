@@ -565,7 +565,7 @@ async function build() {
   const wildCounts: Record<string, number> = {};
   for (const [i, w] of wildPlantings().entries()) {
     // Massawa's town is laid out by hand (packages/shared/massawa.ts).
-    if (massawaTown(w.tile) < MASSAWA.town.radius + 3) continue;
+    if (massawaTown(w.tile) < MASSAWA.town.radius + 1) continue;
     let chosen: { names: string[]; period?: number } | null = null;
     for (const options of wildArt[w.kind]) {
       if (!options.length) continue;
