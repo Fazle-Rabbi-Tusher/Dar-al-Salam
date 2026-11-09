@@ -3352,36 +3352,8 @@ function scholars(): (Partial<Character> &
       // Taking a sighting with his astrolabe in the park.
       script: two('idle', 'talk', [30, 27.4], 'SE', 'SW'),
     },
-    {
-      id: 'ibn-khaldun',
-      name: { en: 'Ibn Khaldun', ar: 'ابن خلدون', bn: 'ইবনে খালদুন' },
-      years: '1332–1406',
-      place: 'Tunis · Cairo',
-      district: 'maghreb',
-      look: look('adult-man-beard', 'scholar-robe', 'imamah', 'book', {
-        skin: 'skin-3',
-        garmentPrimary: 'wool-cream',
-        garmentSecondary: 'cocoa',
-      }),
-      // Reading and explaining in the library's reading corner.
-      script: two('read', 'teach', [16.4, 49.7], 'SE', 'SW'),
-    },
-    {
-      id: 'ibn-rushd',
-      name: { en: 'Ibn Rushd', ar: 'ابن رشد', bn: 'ইবনে রুশদ' },
-      aliases: ['Averroes'],
-      years: '1126–1198',
-      place: 'Córdoba · Marrakesh',
-      district: 'maghreb',
-      look: look('elder', 'jubba', 'imamah', 'book', {
-        skin: 'skin-2',
-        hair: 'hair-grey',
-        garmentPrimary: 'black-cloth',
-        garmentSecondary: 'wool-cream',
-        headwear: 'wool-cream',
-      }),
-      script: two('teach', 'read', [12.6, 49.6], 'SE', 'SW'),
-    },
+    // Ibn Khaldun and Ibn Rushd were retired from the maths lab at the
+    // owner's request (2026-11); their cards are in content/retired/.
     {
       id: 'mufti-ismail-menk',
       name: {

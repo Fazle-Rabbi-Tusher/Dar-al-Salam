@@ -10,7 +10,7 @@
   "years": "c. 780–850",
   "place": "Baghdad",
   "district": "house-of-wisdom",
-  "depiction": "full",
+  "depiction": "back",
   "look": {
     "base": "adult-man",
     "garment": "scholar-robe",
@@ -30,16 +30,16 @@
     {
       "from": 0,
       "to": 60,
-      "action": "idle",
+      "action": "talk",
       "at": [8.3, 44.0],
-      "facing": "SE"
+      "facing": "NW"
     },
     {
       "from": 60,
       "to": 120,
-      "action": "talk",
+      "action": "idle",
       "at": [8.3, 44.0],
-      "facing": "SW"
+      "facing": "NW"
     }
   ],
   "bio": {

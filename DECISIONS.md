@@ -92,3 +92,8 @@
 
     The list's slide rule was already in the lab, so it is not repeated. With the first list and the furniture, the lab holds 25 distinct pieces. As before, no numerals or lettering are drawn, and the list's brand names (Curta, Marchant, Friden, MATLAB, Fortran, Mathematica) appear nowhere.
 58. The maths lab's back wall is removed (owner's request), so the lab opens onto the lawn behind it. The wall-hung chalkboard became a freestanding board (with its own chalkboard), and the projector screen, which had nothing to hang on, was removed.
+59. Al-Khwārizmī is now the only person in the maths lab, in the design of the owner's "at work" sheet (owner's request).
+    - **Other scholars:** Ibn Rushd and Ibn Khaldun were removed from the world. Their cards moved to `content/retired/`, so they can return, and the layout script no longer makes them.
+    - **In the world:** his sprite and strips are the sheet's standing figure, cut by `tools/prepare-khwarizmi.ts` with a slow breathing motion. He is seen from behind at the board, holding a scroll, so his depiction is `back` (NW).
+    - **Story card:** the picture is the head and shoulders from the sheet's first panel, with the eight-panel "At work" gallery below it.
+    - **Cutting tool:** the landmark cutter gained `tol` and `nofringe`, for dark art on a dark backdrop.
