@@ -15,18 +15,16 @@ export const CANVAS = {
   goat: { width: 36, height: 32, anchor: [18, 29] },
   gazelle: { width: 44, height: 44, anchor: [22, 40] },
   pelican: { width: 32, height: 32, anchor: [16, 29] },
-  fish: { width: 20, height: 12, anchor: [10, 9] },
 } satisfies Record<string, CanvasSpec>;
 /** Vehicle bases (drawn on the vehicle canvas). */
 export const VEHICLES = ['ambulance'];
-/** Animal bases (Massawa): each has its own canvas. Pelicans are birds. */
+/** Animal bases (Massawa): each has its own canvas. */
 export const ANIMALS = [
   'camel',
   'donkey',
   'goat',
   'gazelle',
   'pelican',
-  'fish',
 ] as const;
 export function canvasFor(base: string): CanvasSpec {
   return base === 'cat'

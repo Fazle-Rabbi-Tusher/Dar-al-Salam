@@ -13,10 +13,18 @@ import {
   type Palette,
 } from '../../../packages/shared/compositor';
 import type { PixelImage } from '../../../packages/shared/pixels';
-import { canvasFor } from '../../../packages/shared/canvas';
+import { ANIMALS, canvasFor } from '../../../packages/shared/canvas';
 import { useT } from './store';
 import { Icon } from './Icon';
 import wardrobe from '../../../content/wardrobe.json';
+/** Bases that are not people: no garments, and their own set of actions. */
+const NON_PEOPLE: string[] = ['cat', 'bird', 'ball', 'ambulance', ...ANIMALS];
+const actionPrefix = (base: string) =>
+  base === 'ambulance'
+    ? 'vehicle_'
+    : (ANIMALS as readonly string[]).includes(base)
+      ? 'animal_'
+      : base + '_';
 const initial: Look = {
   base: 'adult-woman',
   garment: 'lab-coat',
@@ -153,7 +161,7 @@ export function Lab() {
       {t(key)}
       <select
         disabled={
-          ['cat', 'bird', 'ball', 'ambulance'].includes(look.base)
+          NON_PEOPLE.includes(look.base)
             ? key !== 'base'
             : false
         }
@@ -162,7 +170,7 @@ export function Lab() {
           const val = e.target.value;
           if (
             key === 'base' &&
-            ['cat', 'bird', 'ball', 'ambulance'].includes(val)
+            NON_PEOPLE.includes(val)
           ) {
             setLook({
               ...look,
@@ -172,24 +180,20 @@ export function Lab() {
               prop: 'none',
             });
             setAction(
-              val === 'cat'
-                ? 'cat_idle'
-                : val === 'ball'
-                  ? 'ball_roll'
-                  : val === 'ambulance'
-                    ? 'vehicle_drive'
-                    : 'bird_fly',
+              Object.keys(ACTIONS).find((a) =>
+                a.startsWith(actionPrefix(val)),
+              ) as Action,
             );
           } else {
             setLook(
               key === 'base' &&
-                ['cat', 'bird', 'ball', 'ambulance'].includes(look.base)
+                NON_PEOPLE.includes(look.base)
                 ? { ...initial, base: val, colours: look.colours }
                 : { ...look, [key]: val },
             );
             if (
               key === 'base' &&
-              ['cat', 'bird', 'ball', 'ambulance'].includes(look.base)
+              NON_PEOPLE.includes(look.base)
             )
               setAction('idle');
           }
@@ -201,7 +205,7 @@ export function Lab() {
       </select>
     </label>
   );
-  const animal = ['cat', 'bird', 'ball', 'ambulance'].includes(look.base);
+  const animal = NON_PEOPLE.includes(look.base);
   return (
     <main className="document lab-page">
       <a className="back-link" href="/">
@@ -229,6 +233,7 @@ export function Lab() {
             'cat',
             'bird',
             'ball',
+            ...ANIMALS,
           ])}
           {field('garment', [
             'none',
@@ -308,8 +313,8 @@ export function Lab() {
                 {Object.keys(ACTIONS)
                   .filter((a) =>
                     animal
-                      ? a.startsWith(look.base + '_')
-                      : !/^(cat|bird|ball)_/.test(a),
+                      ? a.startsWith(actionPrefix(look.base))
+                      : !/^(cat|bird|ball|vehicle|animal)_/.test(a),
                   )
                   .map((a) => (
                     <option key={a}>{a}</option>

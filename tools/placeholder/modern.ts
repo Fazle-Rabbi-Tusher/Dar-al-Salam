@@ -234,8 +234,72 @@ const CC: Record<string, string> = {
   blossom: '#D07A8D',
   blossomDeep: '#A4536A',
 };
+/** Colours for the Massawa pass (coral-stone town on the Red Sea, c. 615 CE). */
+const MC = {
+  // Coral-rag stone, light to dark (matches the supplied mosque art).
+  stone0: '#F3E6C4',
+  stone1: '#E8D5A8',
+  stone2: '#D4BC8A',
+  stone3: '#B89A68',
+  stone4: '#957650',
+  stone5: '#6E5438',
+  // Old whitewash and lime plaster.
+  plaster0: '#FAF5E8',
+  plaster1: '#EDE4CF',
+  plaster2: '#D9CDB2',
+  // Weathered wood (doors, shutters, beams, hulls).
+  wood0: '#B98B5A',
+  wood1: '#8F6640',
+  wood2: '#674629',
+  wood3: '#46301D',
+  // Reeds and palm fronds (huts, mats, baskets).
+  reed0: '#E2CB8E',
+  reed1: '#C9AA67',
+  reed2: '#A28449',
+  reed3: '#76602F',
+  // Terracotta jars.
+  clay0: '#E3A577',
+  clay1: '#C47E52',
+  clay2: '#9C5D3A',
+  clay3: '#6E3F27',
+  // Salt heaps.
+  salt0: '#FBFAF4',
+  salt1: '#EEF0EA',
+  salt2: '#D5DCDD',
+  salt3: '#B4C0C6',
+  // Doum palm fans, grey-green.
+  doum0: '#CBD1A8',
+  doum1: '#A4B084',
+  doum2: '#7C8B63',
+  doum3: '#576748',
+  doum4: '#3B4834',
+  dead0: '#B79A63',
+  dead1: '#8A6E43',
+  // Acacia: dry olive leaves.
+  acacia0: '#AFB86E',
+  acacia1: '#879551',
+  acacia2: '#62733D',
+  acacia3: '#43522D',
+  acacia4: '#2C3820',
+  // Nets, floats and dates.
+  net: '#7C6A4E',
+  netLight: '#A89570',
+  float: '#D9B26A',
+  date: '#7A3B26',
+  dateLight: '#A2553A',
+  // Fish.
+  fish0: '#E4ECEF',
+  fish1: '#B5C6CE',
+  fish2: '#7F96A3',
+  fish3: '#4E6470',
+} as const;
 export const MODERN_COLOURS: string[] = [
-  ...new Set([...Object.values(C), ...Object.values(NC), ...Object.values(CC)]),
+  ...new Set([
+    ...Object.values(C),
+    ...Object.values(NC),
+    ...Object.values(CC),
+    ...Object.values(MC),
+  ]),
 ];
 
 type Ramp = [string, string, string];
@@ -6964,6 +7028,1069 @@ const city: Record<string, Spec> = {
   },
 };
 Object.assign(objects, city);
+
+/* ════════ Massawa pass: a coral-stone town on the Red Sea, c. 615 CE ════════ */
+/*
+ * Flat-roofed coral-rag houses with worn whitewash, palm-frond huts, a
+ * market stall, a well, jars and baskets, salt heaps, drying nets, doum
+ * palms and acacias, lateen-rigged dhows, a jetty and a jumping fish. No
+ * people, text, flags or symbols. Placed outside the mapped quarter by
+ * packages/shared/massawa.ts.
+ */
+const CORAL: Tones = [
+  MC.stone0,
+  MC.stone1,
+  MC.stone2,
+  MC.stone3,
+  MC.stone4,
+  MC.stone5,
+];
+const PLASTER: Tones = [MC.plaster0, MC.plaster1, MC.plaster2, MC.stone2];
+const MWOOD: Tones = [MC.wood0, MC.wood1, MC.wood2, MC.wood3];
+const REED: Tones = [MC.reed0, MC.reed1, MC.reed2, MC.reed3];
+const CLAY: Tones = [MC.clay0, MC.clay1, MC.clay2, MC.clay3];
+const SALT: Tones = [MC.salt0, MC.salt1, MC.salt2, MC.salt3];
+const DOUM: Tones = [MC.doum0, MC.doum1, MC.doum2, MC.doum3, MC.doum4];
+const ACACIA: Tones = [
+  MC.acacia0,
+  MC.acacia1,
+  MC.acacia2,
+  MC.acacia3,
+  MC.acacia4,
+];
+// Marker colours, replaced by textures (never left in the art).
+const MK = {
+  front: '#010501',
+  side: '#010502',
+  top: '#010503',
+  roofA: '#010504',
+  roofB: '#010505',
+  sail: '#010506',
+  hull: '#010507',
+  deck: '#010508',
+} as const;
+/** Smooth value noise in [0, 1). */
+function vnoise(x: number, y: number, s: number) {
+  const xi = Math.floor(x),
+    yi = Math.floor(y),
+    fx = x - xi,
+    fy = y - yi,
+    u = fx * fx * (3 - 2 * fx),
+    v = fy * fy * (3 - 2 * fy);
+  return (
+    nhash(xi, yi, s) * (1 - u) * (1 - v) +
+    nhash(xi + 1, yi, s) * u * (1 - v) +
+    nhash(xi, yi + 1, s) * (1 - u) * v +
+    nhash(xi + 1, yi + 1, s) * u * v
+  );
+}
+/**
+ * Coral-rag masonry under patches of old whitewash. `face` 0 is a roof or
+ * other top, 1 the lit front (constant y), 2 the shaded side (constant x).
+ * Courses follow the face's slope; blocks are lit on their top left, with
+ * dark mortar joints and coral pores. `plaster` is the share left bare.
+ */
+function coralShade(
+  px: number,
+  py: number,
+  face: 0 | 1 | 2,
+  seed: number,
+  plaster = 0.52,
+  lift = 0,
+) {
+  const base = [0.42, 0.12, -0.34][face] + lift,
+    r = face === 1 ? py - px * 0.5 : face === 2 ? py + px * 0.5 : py;
+  const w = vnoise(px / 8, r / 6, seed + 9);
+  if (w > plaster) {
+    let v = base + 0.22 + (nhash(px, py, seed + 4) - 0.5) * 0.14;
+    if (w < plaster + 0.035) v -= 0.42; // worn plaster edge
+    if (nhash(px, py, seed + 6) < 0.018) v -= 0.5; // pits and hairline cracks
+    return tone(PLASTER, v, [0.6, 0.22, -0.16]);
+  }
+  const row = Math.floor(r / 4),
+    inRow = r / 4 - row,
+    wdt = 5 + Math.floor(nhash(row, 1, seed) * 3),
+    off = nhash(row, 2, seed) * wdt,
+    col = Math.floor((px + off) / wdt),
+    inCol = (px + off) / wdt - col;
+  let v = base + (nhash(col, row, seed) - 0.5) * 0.36;
+  if (inRow < 0.26 || inCol < 1 / wdt) v -= 0.68;
+  else if (inRow < 0.55 && inCol < 0.5) v += 0.16;
+  if (nhash(px, py, seed + 3) < 0.07) v -= 0.4;
+  return tone(CORAL, v, [0.6, 0.3, 0.02, -0.3, -0.62]);
+}
+/** A flat lime-plaster roof: mottled, a little darker toward the back. */
+function roofShade(px: number, py: number, seed: number) {
+  let v = 0.3 + (vnoise(px / 5, py / 3, seed) - 0.5) * 0.5;
+  if (nhash(px, py, seed + 1) < 0.04) v -= 0.4;
+  return tone(PLASTER, v, [0.45, 0.05, -0.3]);
+}
+/** Planked wood: grain along the planks, dark seams every `seam` px. */
+function plankShade(
+  px: number,
+  py: number,
+  along: 'x' | 'y' | 'v',
+  seed: number,
+  lift = 0,
+  seam = 3,
+) {
+  const k = along === 'v' ? px : along === 'x' ? py - px * 0.5 : py + px * 0.5,
+    i = Math.floor(k / seam);
+  let v = lift + (nhash(i, 0, seed) - 0.5) * 0.4;
+  if (((k % seam) + seam) % seam < 1) v -= 0.6;
+  if (nhash(px >> 1, py, seed + 2) < 0.08) v -= 0.25;
+  return tone(MWOOD, v, [0.3, -0.05, -0.45]);
+}
+/** Woven palm-frond texture (huts, mats, baskets). */
+function reedShade(
+  px: number,
+  py: number,
+  seed: number,
+  lift = 0,
+  vertical = true,
+) {
+  const k = vertical ? px : py,
+    j = vertical ? py : px;
+  let v = lift + (nhash(k, 0, seed) - 0.5) * 0.5;
+  if (k % 2 === 0) v -= 0.25;
+  if ((j + (k % 3)) % 5 === 0) v -= 0.3;
+  if (nhash(px, py, seed + 3) < 0.05) v += 0.3;
+  return tone(REED, v, [0.32, -0.05, -0.42]);
+}
+/** A coral-stone block (house, wall) on markers, then textured. */
+function coralBlock(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  d: number,
+  h: number,
+  seed: number,
+  plaster = 0.52,
+  z = 0,
+) {
+  c.top(x, y, w, d, z + h, MK.top);
+  c.faceX(x, y + d, w, z, h, MK.front);
+  c.faceY(x + w, y, d, z, h, MK.side);
+  recolour(c, MK.front, (px, py) => coralShade(px, py, 1, seed, plaster));
+  recolour(c, MK.side, (px, py) => coralShade(px, py, 2, seed + 1, plaster));
+  recolour(c, MK.top, (px, py) => roofShade(px, py, seed + 2));
+  // Parapet lip along the roof's front and side edges, its back edge shaded.
+  c.edge([x, y + d, z + h], [x + w, y + d, z + h], MC.plaster0);
+  c.edge([x + w, y + d, z + h], [x + w, y, z + h], MC.plaster1);
+  c.edge(
+    [x + 0.12, y + 0.12, z + h],
+    [x + w - 0.12, y + 0.12, z + h],
+    MC.plaster2,
+  );
+  c.edge(
+    [x + 0.12, y + 0.12, z + h],
+    [x + 0.12, y + d - 0.12, z + h],
+    MC.plaster2,
+  );
+}
+/** A plank door with a lintel beam on the front face (constant y). */
+function frontDoor(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  seed: number,
+  open = false,
+) {
+  c.faceX(x - 0.06, y + 0.002, w + 0.12, h, 3, MC.wood1);
+  c.edge([x - 0.06, y + 0.003, h + 3], [x + w + 0.06, y + 0.003, h + 3], MC.wood0);
+  c.faceX(x, y + 0.002, w, 0, h, MK.hull);
+  recolour(c, MK.hull, (px, py) => plankShade(px, py, 'v', seed, 0.05));
+  if (open) {
+    c.faceX(x + w * 0.45, y + 0.003, w * 0.55, 0, h - 1, MC.wood3);
+    c.faceX(x + w * 0.45, y + 0.004, w * 0.08, 0, h - 1, MC.wood2);
+  }
+  // Iron-free wooden latch and a worn step.
+  const [lx, ly] = c.at(x + w * 0.25, y, h * 0.5);
+  c.p.pixel(lx, ly, MC.wood3);
+  c.top(x - 0.05, y, w + 0.1, 0.12, 1, MC.stone2);
+}
+/** A small window with one shutter ajar, on either face. */
+function shutter(
+  c: IsoCanvas,
+  face: 'x' | 'y',
+  x: number,
+  y: number,
+  z: number,
+  s = 0.22,
+  h = 7,
+) {
+  if (face === 'x') {
+    c.faceX(x - 0.03, y + 0.002, s + 0.06, z - 1, h + 2, MC.stone3);
+    c.faceX(x, y + 0.003, s, z, h, MC.wood3);
+    c.faceX(x, y + 0.004, s * 0.45, z, h, MC.wood1);
+    c.edge([x, y + 0.005, z + h], [x + s * 0.45, y + 0.005, z + h], MC.wood0);
+    c.faceX(x - 0.05, y + 0.005, s + 0.1, z - 1, 1, MC.wood2);
+  } else {
+    c.faceY(x + 0.002, y - 0.03, s + 0.06, z - 1, h + 2, MC.stone4);
+    c.faceY(x + 0.003, y, s, z, h, MC.wood3);
+    c.faceY(x + 0.004, y + s * 0.55, s * 0.45, z, h, MC.wood2);
+    c.faceY(x + 0.005, y - 0.05, s + 0.1, z - 1, 1, MC.wood2);
+  }
+}
+/** Palm-trunk roof beams poking out under the parapet on the front face. */
+function beamEnds(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  w: number,
+  z: number,
+  n: number,
+) {
+  for (let i = 0; i < n; i++) {
+    const [bx, by] = c.at(x + ((i + 0.5) * w) / n, y + 0.06, z);
+    c.p.rect(bx - 1, by - 1, 2, 2, MC.wood2);
+    c.p.pixel(bx - 1, by - 1, MC.wood0);
+    c.p.pixel(bx, by, MC.wood3);
+  }
+}
+/** A wooden rain spout sticking out of the parapet. */
+function spout(c: IsoCanvas, x: number, y: number, z: number) {
+  const [sx, sy] = c.at(x, y, z);
+  c.p.rect(sx, sy, 3, 1, MC.wood1);
+  c.p.pixel(sx + 3, sy + 1, MC.wood2);
+  // A pale stain running down the wall below it.
+  for (let k = 2; k < 9; k++)
+    if (nhash(sx, sy + k, 5) < 0.7) c.p.pixel(sx + 1, sy + k, MC.plaster2);
+}
+/** Clay jar: a round belly, a narrow neck and a lip. */
+function jar(c: IsoCanvas, x: number, y: number, z: number, r: number, seed: number) {
+  const [jx, jy] = c.at(x, y, z),
+    bh = r * 2.1;
+  for (let py = Math.floor(jy - bh - 1); py <= jy; py++)
+    for (let px = Math.floor(jx - r - 1); px <= jx + r + 1; px++) {
+      const t = (jy - py) / bh,
+        half = r * Math.sin(Math.PI * Math.min(1, 0.12 + t * 0.95)) * 1.02;
+      const u = (px + 0.5 - jx) / Math.max(0.5, half);
+      if (Math.abs(u) > 1 || t > 1) continue;
+      let v = -u * 0.7 + (t - 0.5) * 0.5 + (nhash(px, py, seed) - 0.5) * 0.15;
+      if (t < 0.12) v -= 0.4;
+      c.p.pixel(px, py, tone(CLAY, v, [0.38, -0.05, -0.5]));
+    }
+  const nw = Math.max(1, Math.round(r * 0.45));
+  c.p.rect(jx - nw, jy - bh - 2, nw * 2, 2, MC.clay1);
+  c.p.rect(jx - nw - 1, jy - bh - 3, nw * 2 + 2, 1, MC.clay0);
+  c.p.pixel(jx + nw, jy - bh - 3, MC.clay2);
+}
+/** Round woven basket with a heap of goods (`fill` tones) inside. */
+function basket(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  z: number,
+  r: number,
+  h: number,
+  fill: Tones,
+  seed: number,
+) {
+  const [bx, by] = c.at(x, y, z);
+  for (let py = Math.floor(by - h - r / 2); py <= by + r / 2; py++)
+    for (let px = Math.floor(bx - r); px <= bx + r; px++) {
+      const u = (px + 0.5 - bx) / r;
+      if (Math.abs(u) > 1) continue;
+      const lower = by + (r / 2) * Math.sqrt(1 - u * u);
+      if (py > lower || py < by - h) continue;
+      c.p.pixel(px, py, reedShade(px, py, seed, -u * 0.35, true));
+    }
+  // Rim and heaped contents.
+  c.p.ellipse(bx, by - h, r, r / 2, MC.reed2);
+  for (let py = Math.floor(by - h - r / 2 - 2); py <= by - h + r / 2; py++)
+    for (let px = Math.floor(bx - r + 1); px <= bx + r - 1; px++) {
+      const u = (px + 0.5 - bx) / (r - 1),
+        top = by - h - 2 * Math.sqrt(Math.max(0, 1 - u * u)),
+        e = ((px + 0.5 - bx) / (r - 1)) ** 2 + ((py + 0.5 - (by - h)) / (r / 2 - 0.5)) ** 2;
+      if (e > 1 && py > by - h) continue;
+      if (py < top) continue;
+      if (Math.abs(u) > 1) continue;
+      const v = -u * 0.5 - (py - top) * 0.15 + (nhash(px, py, seed + 7) - 0.5) * 0.6;
+      c.p.pixel(px, py, tone(fill, v, [0.35, -0.1, -0.5]));
+    }
+}
+/** A conical heap of salt, lit from the left, with sparkles. */
+function saltHeap(
+  c: IsoCanvas,
+  x: number,
+  y: number,
+  r: number,
+  h: number,
+  seed: number,
+) {
+  const [hx, hy] = c.at(x, y, 0);
+  for (let py = Math.floor(hy - h - 1); py <= hy + r * 0.5; py++)
+    for (let px = Math.floor(hx - r - 1); px <= hx + r + 1; px++) {
+      const u = (px + 0.5 - hx) / r,
+        base = hy + (r / 2) * Math.sqrt(Math.max(0, 1 - u * u)),
+        wob = (nhash(Math.round(px / 2), seed) - 0.5) * 1.6,
+        top = hy - h * (1 - Math.abs(u) ** 1.3) + 1.5 * u * u + wob * Math.abs(u);
+      if (Math.abs(u) > 1 || py < top || py > base) continue;
+      let v = 0.15 - u * 0.65 + (nhash(px, py, seed) - 0.5) * 0.2;
+      if (py > base - 1) v -= 0.4;
+      let col = tone(SALT, v, [0.38, 0.0, -0.36]);
+      if (nhash(px, py, seed + 2) < 0.04 && u < 0.3) col = C.white;
+      c.p.pixel(px, py, col);
+    }
+}
+/** A rough wooden pole. */
+function pole(c: IsoCanvas, x: number, y: number, z: number, h: number) {
+  const [px, py] = c.at(x, y, z);
+  c.p.rect(px - 1, py - h, 1, h, MC.wood1);
+  c.p.rect(px, py - h, 1, h, MC.wood2);
+  c.p.pixel(px - 1, py - h, MC.wood0);
+}
+/** Dark water hugging a hull or post, with a pale foam rim. */
+function waterRing(c: IsoCanvas, cx: number, cy: number, rx: number, ry: number, f: number, seed: number) {
+  for (let py = Math.floor(cy - ry - 2); py <= cy + ry + 2; py++)
+    for (let px = Math.floor(cx - rx - 3); px <= cx + rx + 3; px++) {
+      const e = Math.hypot((px + 0.5 - cx) / rx, (py + 0.5 - cy) / ry);
+      if (e < 0.95 && e > 0.55 && nhash(px >> 1, py, seed + f) < 0.5)
+        c.p.pixel(px, py, SEA[3]);
+      else if (e >= 0.95 && e < 1.12 && nhash(px, py, seed + 1 + f) < 0.55)
+        c.p.pixel(px, py, (px + py + f) % 3 ? SEA[1] : SEA[0]);
+    }
+}
+/** One fan of a doum palm: radiating leaf segments around a centre. */
+function doumFan(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  deg: number,
+  R: number,
+  seed: number,
+  dark: number,
+) {
+  // One fan leaf: pleated segments radiating from the end of its stalk,
+  // split at the tips, lighter on top; seen a little from above.
+  const a0 = (deg * Math.PI) / 180,
+    fx = cx + Math.cos(a0) * R * 0.28,
+    fy = cy + Math.sin(a0) * R * 0.18,
+    half = 1.2,
+    n = 13;
+  c.line([cx, cy], [fx, fy], MC.doum3);
+  for (let py = Math.floor(fy - R - 2); py <= fy + R + 2; py++)
+    for (let px = Math.floor(fx - R - 2); px <= fx + R + 2; px++) {
+      const dx = px + 0.5 - fx,
+        dy = (py + 0.5 - fy) / 0.62,
+        r = Math.hypot(dx, dy);
+      if (r < 1) continue;
+      let rel = Math.atan2(dy, dx) - a0;
+      rel = Math.atan2(Math.sin(rel), Math.cos(rel));
+      if (Math.abs(rel) > half) continue;
+      const u = ((rel + half) / (2 * half)) * n,
+        seg = Math.floor(u),
+        pleat = u - seg,
+        len = R * (0.7 + 0.3 * Math.cos(rel * 1.1)) * (0.88 + nhash(seg, seed) * 0.24);
+      if (r > len) continue;
+      if (r > len * 0.72 && pleat > 0.38 && pleat < 0.62) continue;
+      let v =
+        (pleat < 0.5 ? 0.22 : -0.12) -
+        (dy / R) * 0.35 -
+        dark -
+        (r / len) * 0.12 +
+        (nhash(px, py, seed + 1) - 0.5) * 0.12;
+      if (Math.abs(rel) > half - 0.12) v -= 0.3;
+      c.p.pixel(px, py, tone(DOUM, v, [0.42, 0.12, -0.2, -0.5]));
+    }
+}
+/** A flat, ragged umbrella canopy (acacia), lit on top, dark beneath. */
+function flatCanopy(
+  c: IsoCanvas,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  seed: number,
+  lift = 0,
+) {
+  for (let py = Math.floor(cy - ry - 3); py <= cy + ry + 3; py++)
+    for (let px = Math.floor(cx - rx - 3); px <= cx + rx + 3; px++) {
+      const X = (px + 0.5 - cx) / rx,
+        Y = (py + 0.5 - cy) / ry,
+        a = Math.atan2(Y, X),
+        edge = 1 + (vnoise(a * 4 + 20, 0, seed) - 0.5) * 0.4,
+        e = Math.hypot(X, Y);
+      if (e > edge) continue;
+      if (e > edge - 0.14 && nhash(px, py, seed) < 0.45) continue;
+      const leaf = vnoise(px / 2.2, py / 1.5, seed + 1);
+      let v = lift + 0.3 - Y * 0.75 - X * 0.15 + (leaf - 0.5) * 1.1;
+      if (Y > 0.55) v -= 0.35;
+      c.p.pixel(px, py, tone(ACACIA, v, [0.62, 0.26, -0.1, -0.45]));
+    }
+}
+
+const massawa: Record<string, Spec> = {
+  'msw-house-a': {
+    // One-room coral-stone house: worn whitewash, a plank door, beam ends
+    // under a flat parapeted roof, a shuttered window and a rain spout.
+    footprint: [2, 2],
+    h: 44,
+    side: true,
+    draw(c) {
+      coralBlock(c, 0.15, 0.15, 1.7, 1.6, 34, 3);
+      beamEnds(c, 0.15, 1.75, 1.7, 30, 5);
+      frontDoor(c, 0.75, 1.75, 0.42, 18, 41);
+      shutter(c, 'x', 0.3, 1.75, 17, 0.22, 7);
+      shutter(c, 'y', 1.85, 0.5, 19, 0.3, 7);
+      spout(c, 1.4, 1.78, 33);
+      // A low stone bench (mastaba) by the door.
+      c.box(1.25, 1.75, 0.5, 0.18, 5, {
+        top: MC.plaster1,
+        front: MC.stone2,
+        side: MC.stone3,
+        edge: MC.stone4,
+      });
+    },
+  },
+  'msw-house-b': {
+    // Two-storey house with a one-storey wing and a roof terrace.
+    footprint: [3, 2],
+    h: 60,
+    side: true,
+    draw(c) {
+      coralBlock(c, 0.1, 0.15, 1.35, 1.65, 52, 11, 0.48);
+      coralBlock(c, 1.45, 0.3, 1.45, 1.5, 30, 12, 0.56);
+      beamEnds(c, 0.1, 1.8, 1.35, 48, 4);
+      beamEnds(c, 1.45, 1.8, 1.45, 26, 4);
+      shutter(c, 'x', 0.35, 1.8, 34, 0.26, 8);
+      shutter(c, 'x', 0.85, 1.8, 34, 0.26, 8);
+      frontDoor(c, 0.5, 1.8, 0.42, 19, 43);
+      frontDoor(c, 2.1, 1.8, 0.38, 17, 44, true);
+      shutter(c, 'y', 2.9, 0.75, 14, 0.28, 7);
+      shutter(c, 'y', 1.45, 0.45, 38, 0.3, 8);
+      spout(c, 1.2, 1.83, 51);
+      spout(c, 2.6, 1.83, 29);
+      // Palm-frond shade on poles over the wing's roof terrace.
+      for (const [u, v] of [
+        [1.6, 0.45],
+        [2.75, 0.45],
+        [1.6, 1.6],
+        [2.75, 1.6],
+      ])
+        pole(c, u, v, 30, 12);
+      c.poly(
+        [
+          [1.5, 0.4, 43],
+          [2.85, 0.4, 43],
+          [2.85, 1.7, 41],
+          [1.5, 1.7, 41],
+        ],
+        MK.roofA,
+      );
+      recolour(c, MK.roofA, (px, py) => reedShade(px, py, 15, 0.15, false));
+      c.edge([1.5, 1.7, 41], [2.85, 1.7, 41], MC.reed3);
+    },
+  },
+  'msw-house-c': {
+    // A small house behind a low courtyard wall with a gateway.
+    footprint: [3, 3],
+    h: 40,
+    side: true,
+    draw(c) {
+      coralBlock(c, 0.15, 0.15, 1.6, 1.4, 32, 21);
+      beamEnds(c, 0.15, 1.55, 1.6, 28, 4);
+      frontDoor(c, 0.7, 1.55, 0.4, 17, 45, true);
+      shutter(c, 'y', 1.75, 0.45, 16, 0.26, 7);
+      // Courtyard: a swept floor, a jar and the enclosing walls.
+      c.top(0.15, 1.55, 2.7, 1.3, 0, MC.stone1);
+      jar(c, 1.4, 1.9, 0, 3.2, 3);
+      basket(c, 0.45, 1.95, 0, 4, 3, [MC.dateLight, MC.date, MC.wood3], 4);
+      coralBlock(c, 1.75, 0.2, 1.1, 0.25, 14, 23, 0.6);
+      coralBlock(c, 2.65, 0.45, 0.25, 2.4, 14, 24, 0.6);
+      coralBlock(c, 0.15, 2.6, 0.95, 0.25, 14, 25, 0.6);
+      coralBlock(c, 1.75, 2.6, 0.9, 0.25, 14, 26, 0.6);
+      // Wooden lintel over the gateway gap.
+      c.box(1.05, 2.62, 0.75, 0.2, 2, {
+        top: MC.wood0,
+        front: MC.wood1,
+        side: MC.wood2,
+        edge: MC.wood3,
+      }, 14);
+    },
+  },
+  'msw-wall': {
+    // A low coral-stone boundary wall with a rounded plaster coping.
+    footprint: [2, 1],
+    h: 18,
+    side: true,
+    draw(c) {
+      coralBlock(c, 0.05, 0.35, 1.9, 0.3, 14, 31, 0.6);
+      c.edge([0.05, 0.65, 15], [1.95, 0.65, 15], MC.plaster0);
+    },
+  },
+  'msw-hut': {
+    // An arish: palm-rib walls under a gabled frond-thatch roof.
+    footprint: [2, 2],
+    h: 40,
+    side: true,
+    draw(c) {
+      const x = 0.2,
+        y = 0.25,
+        w = 1.6,
+        d = 1.4,
+        h = 20,
+        rh = 14;
+      c.faceX(x, y + d, w, 0, h, MK.front);
+      c.faceY(x + w, y, d, 0, h, MK.side);
+      recolour(c, MK.front, (px, py) => reedShade(px, py, 51, 0.1));
+      recolour(c, MK.side, (px, py) => reedShade(px, py, 52, -0.4));
+      // Gable end (shaded) and the front slope of the roof (lit).
+      c.poly(
+        [
+          [x + w, y - 0.08, h],
+          [x + w, y + d + 0.08, h],
+          [x + w, y + d / 2, h + rh],
+        ],
+        MK.side,
+      );
+      recolour(c, MK.side, (px, py) => reedShade(px, py, 53, -0.5));
+      c.poly(
+        [
+          [x - 0.12, y + d / 2, h + rh],
+          [x + w + 0.12, y + d / 2, h + rh],
+          [x + w + 0.12, y + d + 0.2, h - 2],
+          [x - 0.12, y + d + 0.2, h - 2],
+        ],
+        MK.roofA,
+      );
+      const [rx, ry] = c.at(x, y + d / 2, h + rh);
+      recolour(c, MK.roofA, (px, py) => {
+        // Thatch rows run along the ridge; streaks run down the slope.
+        const row = Math.floor((py - ry - (px - rx) * 0.5) / 4);
+        let v = 0.25 - row * 0.05 + (nhash(px, row, 54) - 0.5) * 0.5;
+        if (((py - ry - (px - rx) * 0.5) % 4 + 4) % 4 < 1) v -= 0.45;
+        return tone(REED, v, [0.32, -0.05, -0.42]);
+      });
+      // Ragged frond ends along the eave, the ridge bound with rope.
+      for (let i = 0; i <= 40; i++) {
+        const [ex, ey] = c.at(x - 0.1 + ((w + 0.2) * i) / 40, y + d + 0.2, h - 2);
+        if (nhash(i, 55) < 0.6) c.p.pixel(ex, ey + 1, MC.reed2);
+        if (nhash(i, 56) < 0.3) c.p.pixel(ex, ey + 2, MC.reed3);
+      }
+      c.edge([x - 0.12, y + d / 2, h + rh], [x + w + 0.12, y + d / 2, h + rh], MC.reed3);
+      // Doorway: a dark opening with a hanging mat half rolled up.
+      c.faceX(x + 0.55, y + d + 0.003, 0.4, 0, 15, MC.wood3);
+      c.faceX(x + 0.55, y + d + 0.004, 0.4, 12, 3, MC.reed1);
+    },
+  },
+  'msw-stall': {
+    // Market stall: poles, a slanted frond mat and a bench of goods.
+    footprint: [2, 1],
+    h: 40,
+    side: true,
+    draw(c) {
+      pole(c, 0.1, 0.1, 0, 34);
+      pole(c, 1.9, 0.1, 0, 34);
+      c.box(0.2, 0.3, 1.6, 0.5, 9, {
+        top: MC.wood0,
+        front: MC.wood1,
+        side: MC.wood2,
+        edge: MC.wood3,
+      });
+      basket(c, 0.45, 0.55, 9, 5, 3, [MC.dateLight, MC.date, MC.wood3], 61);
+      basket(c, 0.95, 0.55, 9, 5, 3, SALT, 62);
+      basket(c, 1.45, 0.55, 9, 5, 3, [MC.fish0, MC.fish1, MC.fish2, MC.fish3], 63);
+      jar(c, 1.95, 0.75, 0, 3.5, 64);
+      basket(c, 0.3, 0.95, 0, 4, 4, [MC.clay1, MC.clay2, MC.clay3], 65);
+      pole(c, 0.1, 0.9, 0, 27);
+      pole(c, 1.9, 0.9, 0, 27);
+      c.poly(
+        [
+          [-0.05, 0.0, 36],
+          [2.05, 0.0, 36],
+          [2.05, 1.0, 28],
+          [-0.05, 1.0, 28],
+        ],
+        MK.roofA,
+      );
+      recolour(c, MK.roofA, (px, py) => reedShade(px, py, 66, 0.2, false));
+      c.edge([-0.05, 1.0, 28], [2.05, 1.0, 28], MC.reed3);
+      for (let i = 0; i < 24; i++) {
+        const [ex, ey] = c.at(-0.05 + (2.1 * i) / 24, 1.0, 28);
+        if (nhash(i, 67) < 0.5) c.p.pixel(ex, ey + 1, MC.reed2);
+      }
+    },
+  },
+  'msw-well': {
+    // Coral-stone well curb with a wooden frame, pulley, rope and bucket.
+    footprint: [1, 1],
+    h: 40,
+    draw(c) {
+      const [cx, cy] = c.at(0.5, 0.5, 0),
+        rx = 10,
+        h = 10;
+      for (let i = Math.floor(cx - rx); i <= cx + rx; i++) {
+        const u = (i + 0.5 - cx) / rx;
+        if (Math.abs(u) > 1) continue;
+        const half = (rx / 2) * Math.sqrt(1 - u * u);
+        for (let j = Math.floor(cy - h - half); j <= cy + half; j++) {
+          const ring = Math.floor((cy + half - j) / 3),
+            joint = Math.floor((u + 1) * 4 + (ring % 2) * 0.5);
+          let v = -u * 0.6 + (nhash(joint, ring, 71) - 0.5) * 0.3;
+          if ((cy + half - j) % 3 < 1 || ((u + 1) * 4 + (ring % 2) * 0.5) % 1 < 0.12)
+            v -= 0.6;
+          c.p.pixel(i, j, tone(CORAL, v, [0.55, 0.2, -0.1, -0.4, -0.7]));
+        }
+      }
+      c.p.ellipse(cx, cy - h, rx, rx / 2, MC.plaster1);
+      c.p.ellipse(cx, cy - h, rx - 2, rx / 2 - 1, MC.stone4);
+      c.p.ellipse(cx, cy - h + 0.5, rx - 3, rx / 2 - 1.5, NC.sea5);
+      c.p.ellipse(cx - 1, cy - h + 1, 3, 1, NC.sea4);
+      // Frame: two posts and a crossbar with a wooden pulley wheel.
+      pole(c, 0.12, 0.5, 8, 26);
+      pole(c, 0.88, 0.5, 8, 26);
+      const [ax, ay] = c.at(0.12, 0.5, 34),
+        [bx, by] = c.at(0.88, 0.5, 34);
+      c.thick([ax, ay], [bx, by], 1, MC.wood2);
+      c.line([ax, ay - 1], [bx, by - 1], MC.wood0);
+      const [px, py] = c.at(0.5, 0.5, 33);
+      c.p.ellipse(px, py, 2.5, 2.5, MC.wood1);
+      c.p.pixel(px, py, MC.wood3);
+      // Rope down to a leather bucket resting on the curb.
+      c.line([px + 2, py], [px + 3, cy - h - 3], MC.reed2);
+      c.p.rect(px + 1, cy - h - 4, 5, 4, MC.wood2);
+      c.p.rect(px + 1, cy - h - 4, 5, 1, MC.wood0);
+      // A stone trough beside it.
+      c.box(0.84, 0.45, 0.15, 0.5, 5, {
+        top: MC.stone4,
+        front: MC.stone2,
+        side: MC.stone3,
+        edge: MC.stone5,
+      });
+    },
+  },
+  'msw-jars': {
+    // Storage jars and baskets of dates and fish stacked together.
+    footprint: [1, 1],
+    h: 26,
+    draw(c) {
+      jar(c, 0.3, 0.3, 0, 4, 81);
+      jar(c, 0.65, 0.25, 0, 3.4, 82);
+      basket(c, 0.25, 0.75, 0, 5, 4, [MC.dateLight, MC.date, MC.wood3], 83);
+      jar(c, 0.7, 0.7, 0, 3.6, 84);
+      basket(c, 0.95, 0.95, 0, 3.5, 3, [MC.fish0, MC.fish1, MC.fish2, MC.fish3], 85);
+    },
+  },
+  'msw-salt': {
+    // Heaps of raked salt drying beside the pans.
+    footprint: [2, 1],
+    h: 22,
+    side: true,
+    draw(c) {
+      saltHeap(c, 0.45, 0.4, 9, 13, 91);
+      saltHeap(c, 1.4, 0.35, 11, 16, 92);
+      saltHeap(c, 1.0, 0.85, 8, 10, 93);
+      // A wooden rake leaning on the big heap.
+      const [ax, ay] = c.at(1.85, 0.75, 0),
+        [bx, by] = c.at(1.55, 0.5, 15);
+      c.line([ax, ay], [bx, by], MC.wood1);
+      c.line([bx - 2, by + 1], [bx + 2, by - 1], MC.wood2);
+    },
+  },
+  'msw-nets': {
+    // Fishing nets hung to dry between poles, with floats along the top.
+    footprint: [2, 1],
+    h: 34,
+    side: true,
+    draw(c) {
+      pole(c, 0.12, 0.5, 0, 30);
+      pole(c, 1.88, 0.5, 0, 30);
+      const [ax, ay] = c.at(0.12, 0.5, 28),
+        [bx, by] = c.at(1.88, 0.5, 28);
+      const sag = (t: number) => Math.sin(Math.PI * t) * 3;
+      const n = Math.ceil(bx - ax);
+      // The hanging net: a diamond mesh fading toward a ragged bottom.
+      for (let i = 0; i <= n; i++) {
+        const t = i / n,
+          x = ax + (bx - ax) * t,
+          yTop = ay + (by - ay) * t + sag(t),
+          drop = 16 + Math.sin(t * 7) * 2 + nhash(i, 101) * 2;
+        for (let k = 0; k < drop; k++) {
+          const m = (i + k) % 4 === 0 || (i - k + 400) % 4 === 0;
+          if (m) c.p.pixel(x, yTop + k, k > drop - 3 ? MC.netLight : MC.net);
+        }
+        if (i % 5 === 2) c.p.rect(x - 1, yTop - 1, 2, 2, MC.float);
+      }
+      c.line([ax, ay], [bx, by], MC.wood2);
+      // A heap of net on the ground with a few floats.
+      const [hx, hy] = c.at(1.1, 0.95, 0);
+      for (let py = hy - 4; py <= hy + 2; py++)
+        for (let px = hx - 9; px <= hx + 9; px++) {
+          const e = ((px - hx) / 9) ** 2 + ((py - hy + 1) / 3.5) ** 2;
+          if (e > 1) continue;
+          if ((px + py) % 2 === 0 || nhash(px, py, 102) < 0.3)
+            c.p.pixel(px, py, e < 0.5 ? MC.net : MC.netLight);
+        }
+      c.p.rect(hx - 4, hy - 2, 2, 2, MC.float);
+      c.p.rect(hx + 3, hy - 1, 2, 2, MC.float);
+    },
+  },
+  'msw-doum': {
+    // Doum palm: a trunk that forks into branches, each crowned with
+    // grey-green fan leaves over a skirt of dry hanging leaves.
+    footprint: [1, 1],
+    h: 92,
+    pad: 34,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      const bark = [NC.palm0, NC.palm1, NC.palm2, NC.bark2] as const;
+      trunk(c, x, y, 36, 6, 5, bark);
+      // Forked twice, the way doum palms grow.
+      const tips: [number, number][] = [
+        [x - 22, y - 68],
+        [x + 20, y - 78],
+        [x - 2, y - 84],
+      ];
+      branch(c, x - 1, y - 34, x - 10, y - 52, 2.6, bark);
+      branch(c, x - 10, y - 52, tips[0][0], tips[0][1], 2, bark);
+      branch(c, x - 10, y - 52, tips[2][0], tips[2][1], 2, bark);
+      branch(c, x + 1, y - 34, tips[1][0], tips[1][1], 2.4, bark);
+      for (const [k, [tx, ty]] of tips.entries()) {
+        // Dry leaves hanging in a skirt under the crown.
+        for (let i = 0; i < 11; i++) {
+          const ox = -6 + (i * 12) / 10,
+            L = 7 + nhash(i, 110 + k) * 6;
+          c.line(
+            [tx + ox * 0.6, ty + 1],
+            [tx + ox, ty + L],
+            i % 2 ? MC.dead1 : MC.dead0,
+          );
+        }
+        // Fans pointing away first (darker), the nearest last.
+        const fans = [-90, -130, -50, -165, -15, 165, 15, 130, 50];
+        for (const [i, deg] of fans.entries()) {
+          // The crown's dense heart sits between the far and near fans.
+          if (deg > 0 && fans[i - 1] < 0) {
+            c.p.ellipse(tx, ty, 5, 3.5, MC.doum3);
+            c.p.ellipse(tx - 1, ty - 1, 3, 2, MC.doum2);
+          }
+          doumFan(
+            c,
+            tx,
+            ty,
+            deg,
+            11 + nhash(i, 120 + k) * 3,
+            130 + k * 10 + i,
+            deg < 0 ? 0.25 : 0,
+          );
+        }
+      }
+    },
+  },
+  'msw-acacia': {
+    // Umbrella-thorn acacia: a thin forked trunk under a flat canopy.
+    footprint: [1, 1],
+    h: 66,
+    pad: 40,
+    detail: { grain: 0 },
+    draw(c) {
+      const [x, y] = c.at(0.5, 0.5, 0);
+      const bark = [NC.bark1, NC.bark2, NC.bark3, NC.bark3] as const;
+      trunk(c, x, y, 22, 4, 3, bark);
+      branch(c, x, y - 20, x - 24, y - 46, 1.6, bark);
+      branch(c, x, y - 20, x + 22, y - 48, 1.6, bark);
+      branch(c, x - 1, y - 22, x - 5, y - 50, 1.3, bark);
+      branch(c, x - 13, y - 33, x - 32, y - 45, 1, bark);
+      branch(c, x + 11, y - 35, x + 32, y - 46, 1, bark);
+      flatCanopy(c, x - 1, y - 50, 40, 7, 141, -0.1);
+      flatCanopy(c, x - 6, y - 56, 26, 5, 142, 0.15);
+      flatCanopy(c, x + 14, y - 54, 16, 4, 143, 0.1);
+    },
+  },
+  'msw-dhow': {
+    // A lateen-rigged dhow: a raked mast, a long yard and a triangular
+    // sail that fills between the frames; the hull bobs on its own shadow.
+    footprint: [3, 1],
+    h: 66,
+    pad: 26,
+    frames: 2,
+    period: 48,
+    detail: { grain: 0 },
+    shadow: false,
+    draw(c, f) {
+      const zb = f ? 1 : 0,
+        HULL = 12 + zb;
+      // Shadow and dark water along the hull, a wake behind the stern.
+      for (let py = 0; py < c.p.height; py++)
+        for (let px = 0; px < c.p.width; px++) {
+          const [ax, ay] = c.at(0, 0, 0),
+            X = (px + 0.5 - ax) / 16,
+            S = (py + 0.5 - ay) / 8,
+            x = (S + X) / 2,
+            y = (S - X) / 2,
+            e = Math.hypot((x - 1.55) / 1.45, (y - 0.55) / 0.3);
+          if (e < 1 - nhash(px >> 1, py, 150 + f) * 0.15)
+            c.p.pixel(px, py, e < 0.7 ? SEA[4] : SEA[3]);
+          else if (e < 1.18 && nhash(px, py, 151 + f) < 0.4)
+            c.p.pixel(px, py, (px + f) % 3 ? SEA[1] : SEA[0]);
+        }
+      for (let k = 0; k < 14; k++) {
+        const [wx, wy] = c.at(-0.15 - k * 0.09, 0.45 + ((k * 7) % 5) * 0.04, 0);
+        if ((k + f) % 2 === 0) c.p.pixel(wx, wy, SEA[0]);
+      }
+      // Hull: high stern (left), sweeping sheer to a raked bow (right).
+      c.poly(
+        [
+          [0.15, 0.75, HULL + 6],
+          [1.2, 0.8, HULL],
+          [2.4, 0.78, HULL + 1],
+          [3.0, 0.55, HULL + 6],
+          [2.75, 0.55, 2 + zb],
+          [2.2, 0.72, 1 + zb],
+          [0.45, 0.72, 2 + zb],
+          [0.2, 0.74, 5 + zb],
+        ],
+        MK.hull,
+      );
+      c.poly(
+        [
+          [0.15, 0.35, HULL + 6],
+          [1.2, 0.3, HULL],
+          [2.4, 0.32, HULL + 1],
+          [3.0, 0.55, HULL + 6],
+          [2.4, 0.78, HULL + 1],
+          [1.2, 0.8, HULL],
+          [0.15, 0.75, HULL + 6],
+        ],
+        MK.deck,
+      );
+      const [hax, hay] = c.at(0, 0.75, 0);
+      recolour(c, MK.hull, (px, py) => {
+        const z = hay + (px - hax) / 2 - py;
+        if (z < 4 + zb) return MC.wood3;
+        if (Math.floor(z) % 3 === 0) return MC.wood2;
+        return nhash(px >> 2, Math.floor(z / 3), 152) < 0.3 ? MC.wood1 : MC.wood0;
+      });
+      recolour(c, MK.deck, (px, py) => plankShade(px, py, 'x', 153, 0.25));
+      c.edge([0.15, 0.75, HULL + 6], [1.2, 0.8, HULL], MC.wood3);
+      c.edge([1.2, 0.8, HULL], [2.4, 0.78, HULL + 1], MC.wood3);
+      c.edge([2.4, 0.78, HULL + 1], [3.0, 0.55, HULL + 6], MC.wood3);
+      // Stern platform and a rolled mat.
+      c.box(0.2, 0.4, 0.35, 0.3, 3, {
+        top: MC.wood0,
+        front: MC.wood1,
+        side: MC.wood2,
+        edge: MC.wood3,
+      }, HULL + 4);
+      basket(c, 1.0, 0.55, HULL, 3, 2, REED, 154);
+      // Mast raked toward the bow, and the long yard.
+      const [mx, my] = c.at(1.75, 0.55, HULL),
+        [tx, ty] = c.at(1.9, 0.55, 38);
+      c.thick([mx, my], [tx, ty], 1, MC.wood2);
+      const tack: [number, number, number] = [3.05, 0.55, HULL + 8],
+        peak: [number, number, number] = [-0.3, 0.55, 62],
+        clew: [number, number, number] = [0.55, 0.62, HULL + 8],
+        belly = 0.22 + (f ? 0.06 : 0);
+      c.poly(
+        [
+          tack,
+          peak,
+          [0.05, 0.6 + belly * 0.7, 36],
+          clew,
+          [1.8, 0.6 + belly, HULL + 10],
+        ],
+        MK.sail,
+      );
+      const [kx, ky] = c.at(...tack),
+        [qx, qy] = c.at(...peak);
+      recolour(c, MK.sail, (px, py) => {
+        // Lighter toward the luff (yard), seams parallel to it.
+        const lx = qx - kx,
+          ly = qy - ky,
+          ll = Math.hypot(lx, ly),
+          d = ((px - kx) * ly - (py - ky) * lx) / ll;
+        let v = 0.55 - d * 0.03 + (f ? 0.04 : 0);
+        if (Math.floor(d) % 6 === 0 && d > 2) v -= 0.25;
+        return tone(
+          [NC.sail0, NC.sail1, NC.sail2, NC.sail3],
+          v,
+          [0.42, 0.15, -0.1],
+        );
+      });
+      c.thick([kx, ky], [qx, qy], 1, MC.wood1);
+      c.line([kx, ky - 1], [qx, qy - 1], MC.wood0);
+      // Sheet from the clew to the stern.
+      const [cx2, cy2] = c.at(...clew),
+        [sx, sy] = c.at(0.3, 0.6, HULL + 6);
+      c.line([cx2, cy2], [sx, sy], MC.wood2);
+      const [hx, hy] = c.at(1.9, 0.55, 38);
+      c.line([hx, hy], [sx, sy], MC.wood2);
+    },
+  },
+  'msw-dhow-beached': {
+    // A dhow drawn up on the sand, its yard lowered along the deck, propped
+    // with timbers and tied to a stake.
+    footprint: [3, 1],
+    h: 46,
+    side: true,
+    draw(c) {
+      const HULL = 12;
+      c.poly(
+        [
+          [0.15, 0.75, HULL + 6],
+          [1.2, 0.8, HULL],
+          [2.4, 0.78, HULL + 1],
+          [3.0, 0.55, HULL + 6],
+          [2.75, 0.55, 2],
+          [2.2, 0.72, 0],
+          [0.45, 0.72, 0],
+          [0.2, 0.74, 4],
+        ],
+        MK.hull,
+      );
+      c.poly(
+        [
+          [0.15, 0.35, HULL + 6],
+          [1.2, 0.3, HULL],
+          [2.4, 0.32, HULL + 1],
+          [3.0, 0.55, HULL + 6],
+          [2.4, 0.78, HULL + 1],
+          [1.2, 0.8, HULL],
+          [0.15, 0.75, HULL + 6],
+        ],
+        MK.deck,
+      );
+      const [hax, hay] = c.at(0, 0.75, 0);
+      recolour(c, MK.hull, (px, py) => {
+        const z = hay + (px - hax) / 2 - py;
+        if (z < 3) return MC.wood3;
+        if (Math.floor(z) % 3 === 0) return MC.wood2;
+        return nhash(px >> 2, Math.floor(z / 3), 161) < 0.3 ? MC.wood1 : MC.wood0;
+      });
+      recolour(c, MK.deck, (px, py) => plankShade(px, py, 'x', 162, 0.25));
+      c.edge([0.15, 0.75, HULL + 6], [1.2, 0.8, HULL], MC.wood3);
+      c.edge([1.2, 0.8, HULL], [2.4, 0.78, HULL + 1], MC.wood3);
+      c.edge([2.4, 0.78, HULL + 1], [3.0, 0.55, HULL + 6], MC.wood3);
+      // Props under the bilge.
+      for (const u of [0.8, 1.9]) {
+        const [ax, ay] = c.at(u, 0.95, 0),
+          [bx, by] = c.at(u, 0.78, 6);
+        c.line([ax, ay], [bx, by], MC.wood2);
+      }
+      // Short mast; the yard and furled sail lie along the deck.
+      const [mx, my] = c.at(1.75, 0.55, HULL),
+        [tx, ty] = c.at(1.85, 0.55, 40);
+      c.thick([mx, my], [tx, ty], 1, MC.wood2);
+      const [ax, ay] = c.at(0.3, 0.5, HULL + 9),
+        [bx, by] = c.at(2.8, 0.5, HULL + 5);
+      c.thick([ax, ay], [bx, by], 1.5, NC.sail2);
+      c.line([ax, ay - 2], [bx, by - 2], NC.sail0);
+      c.line([ax, ay + 1], [bx, by + 1], MC.wood1);
+      for (let k = 1; k < 6; k++) {
+        const [rx, ry] = c.at(0.3 + k * 0.42, 0.5, HULL + 9 - k * 0.7);
+        c.p.rect(rx, ry - 2, 1, 4, MC.reed3);
+      }
+      // A stake and a rope.
+      const [sx, sy] = c.at(3.3, 0.6, 0);
+      c.p.rect(sx, sy - 5, 2, 5, MC.wood2);
+      const [bx2, by2] = c.at(2.95, 0.55, HULL + 4);
+      c.line([bx2, by2], [sx + 1, sy - 4], MC.reed2);
+    },
+  },
+  'msw-jetty': {
+    // A small timber jetty on posts, its far end standing in the water.
+    footprint: [3, 1],
+    h: 16,
+    shadow: false,
+    draw(c) {
+      for (const u of [0.25, 1.15, 2.05, 2.85])
+        for (const v of [0.18, 0.82]) {
+          const [px, py] = c.at(u, v, 0);
+          if (u > 1) waterRing(c, px, py + 1, 4, 2, 0, 171 + Math.round(u * 10));
+          c.p.rect(px - 1, py - 8, 2, 10, MC.wood2);
+          c.p.pixel(px - 1, py - 8, MC.wood0);
+        }
+      c.top(0, 0.1, 3, 0.8, 6, MK.deck);
+      c.faceX(0, 0.9, 3, 5, 1, MC.wood2);
+      c.faceY(3, 0.1, 0.8, 5, 1, MC.wood3);
+      recolour(c, MK.deck, (px, py) => plankShade(px, py, 'y', 172, 0.2, 4));
+      // A coil of rope and a mooring post at the end.
+      const [rx, ry] = c.at(2.5, 0.5, 6);
+      c.p.ellipse(rx, ry, 3, 1.5, MC.reed2);
+      c.p.ellipse(rx, ry, 1.5, 0.7, MC.reed3);
+      pole(c, 2.9, 0.15, 6, 6);
+    },
+  },
+  // A fish leaps now and then (12 frames over 5 s: calm, leap, splash).
+  'msw-fish-jump': {
+        footprint: [1, 1],
+        h: 22,
+        frames: 12,
+        period: 60,
+        detail: false,
+        shadow: false,
+        draw(c: IsoCanvas, f: number) {
+          const k = f,
+            [x, y] = c.at(0.5, 0.5, 0);
+          const ring = (r: number, col: string, gap = 0.4) => {
+            for (let i = 0; i < 28; i++) {
+              const a = (i / 28) * Math.PI * 2;
+              if (nhash(i, Math.round(r * 10), 181) < gap) continue;
+              c.p.pixel(x + Math.cos(a) * r, y + Math.sin(a) * r * 0.5, col);
+            }
+          };
+          if (k <= 8) {
+            // Rings spreading after the last leap, then calm water.
+            if (k < 4) ring(3 + k * 2, k < 2 ? SEA[0] : SEA[1], 0.35 + k * 0.1);
+            c.p.pixel(x - 1, y, SEA[1]);
+            c.p.pixel(x + 1, y, SEA[1]);
+            return;
+          }
+          if (k === 9) {
+            // Breaking the surface: head up, a crown of droplets.
+            ring(3, SEA[0], 0.3);
+            c.p.rect(x - 1, y - 6, 3, 5, MC.fish1);
+            c.p.rect(x - 1, y - 6, 1, 4, MC.fish0);
+            c.p.rect(x + 1, y - 5, 1, 4, MC.fish3);
+            for (const [dx, dy] of [
+              [-4, -3],
+              [4, -2],
+              [-3, -6],
+              [3, -7],
+            ])
+              c.p.pixel(x + dx, y + dy, SEA[0]);
+            return;
+          }
+          if (k === 10) {
+            // Mid-leap: an arched silver body over the ripples.
+            ring(4, SEA[1], 0.45);
+            const pts: [number, number][] = [];
+            for (let i = 0; i <= 8; i++)
+              pts.push([x - 4 + i, y - 10 - Math.sin((i / 8) * Math.PI) * 3]);
+            for (const [i, [px, py]] of pts.entries()) {
+              const w = i < 2 || i > 6 ? 1 : 2;
+              c.p.rect(px, py, 1, w + 1, MC.fish1);
+              c.p.pixel(px, py, i > 6 ? MC.fish2 : MC.fish3);
+              c.p.pixel(px, py + w, MC.fish0);
+            }
+            c.p.pixel(x - 5, y - 11, MC.fish2);
+            c.p.pixel(x - 5, y - 9, MC.fish2);
+            c.p.pixel(x + 4, y - 10, C.ink);
+            for (const [dx, dy] of [
+              [-6, -6],
+              [-3, -4],
+              [6, -5],
+            ])
+              c.p.pixel(x + dx, y + dy, SEA[0]);
+            return;
+          }
+          // Splash: a burst of white water.
+          for (let i = 0; i < 18; i++) {
+            const a = Math.PI * (0.1 + (i / 17) * 0.8),
+              r = 2 + nhash(i, 182) * 5;
+            c.p.pixel(x + Math.cos(a) * r * 1.4, y - Math.sin(a) * r, i % 3 ? SEA[0] : C.white);
+          }
+          ring(4, SEA[0], 0.2);
+        },
+  },
+};
+Object.assign(objects, massawa);
 
 export const MODERN_OBJECTS: Record<
   string,

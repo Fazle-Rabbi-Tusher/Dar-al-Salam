@@ -35,6 +35,11 @@ export const bases = [
   'adult-woman-loose',
   'ball',
   'ambulance',
+  'camel',
+  'donkey',
+  'goat',
+  'gazelle',
+  'pelican',
 ];
 export const garments = [
   'thobe',
@@ -4811,6 +4816,412 @@ function drawBird(p: Pixels, action: Action, face: string, f: number) {
   }
 }
 
+/* ───────────── Massawa animals: camel, donkey, goat, gazelle, pelican ───────────── */
+/*
+ * Side views facing right (SE); NE frames turn the face away. Walks are a
+ * six-frame leg cycle (camels pace: legs on one side move together), grazing
+ * puts the head to the ground, idle breathes and flicks the tail and ears.
+ * Coat in the garment key, belly and muzzle in the sash key, mane, hooves,
+ * horns and markings in the hair key, the pelican's bill in the prop key.
+ */
+type Leg = { x: number; front: boolean; near: boolean; phase: number };
+type Beast = {
+  /** Ground row (feet) and hip/shoulder row. */
+  ground: number;
+  top: number;
+  legs: Leg[];
+  legR: [number, number];
+  stride: number;
+  body: [number, number, number, number];
+  chest: [number, number, number, number];
+  rump: [number, number, number, number];
+  hump?: [number, number, number, number];
+  /** Neck from the chest to the head, standing and grazing. */
+  neck: P[];
+  neckDown: P[];
+  neckR: [number, number];
+  head: [number, number, number, number];
+  muzzle: [number, number, number, number];
+  tail: [P, P];
+  ears: 'long' | 'short' | 'small';
+  horns?: 'goat' | 'gazelle';
+  beard?: boolean;
+  mane?: boolean;
+};
+function legFoot(l: Leg, action: Action, f: number, stride: number) {
+  if (action !== 'animal_walk') return { dx: 0, lift: 0 };
+  const s = (f / 6 + l.phase) % 1;
+  return s < 0.6
+    ? { dx: stride * (1 - (2 * s) / 0.6), lift: 0 }
+    : {
+        dx: stride * (-1 + (2 * (s - 0.6)) / 0.4),
+        lift: Math.sin((Math.PI * (s - 0.6)) / 0.4) * 2.5,
+      };
+}
+function drawBeast(p: Pixels, b: Beast, action: Action, face: string, f: number) {
+  const C = K.cloth,
+    S = K.sash,
+    H = K.hair,
+    away = face === 'NE',
+    walking = action === 'animal_walk',
+    grazing = action === 'animal_graze',
+    bob = walking ? [0, 0.5, 1, 0, 0.5, 1][f] : 0,
+    breathe = action === 'animal_idle' && f >= 2 ? 0.4 : 0;
+  const coat = (m: Mask, r = 2.4) => {
+    shade(p, m, C, { r, hi: 0.78, lo: 0.22 });
+    contour(p, m);
+  };
+  const leg = (l: Leg) => {
+    const { dx, lift } = legFoot(l, action, f, b.stride),
+      top: P = [l.x, b.top + bob],
+      foot: P = [l.x + dx, b.ground - 1 - lift],
+      bend = lift * (l.front ? 0.7 : -0.7) + (l.front ? 0 : -1.2),
+      knee: P = [
+        (top[0] + foot[0]) / 2 + bend,
+        top[1] + (foot[1] - top[1]) * 0.5,
+      ];
+    const m = mk(p)
+      .capsule(top, knee, b.legR[0], (b.legR[0] + b.legR[1]) / 2)
+      .capsule(knee, foot, (b.legR[0] + b.legR[1]) / 2 - 0.2, b.legR[1]);
+    if (!l.front) m.ellipse(l.x + 0.5, b.top + bob, b.legR[0] + 2, b.legR[0] + 2.5);
+    if (l.near) coat(m, 1.4);
+    else {
+      shade(p, m, [C[1], C[2], C[2]], { r: 1.2 });
+      contour(p, m);
+    }
+    // Hooves.
+    p.rect(foot[0] - b.legR[1], foot[1] - 0.5, b.legR[1] * 2 + 1, 1.5, H[2]);
+  };
+  for (const l of b.legs.filter((l) => !l.near)) leg(l);
+  // Tail behind the rump, swishing.
+  const sway = action === 'animal_idle' ? [0, 1, 2, 1][f] : walking ? f % 2 : 0;
+  const [t0, t1] = b.tail;
+  const tail = mk(p).capsule(
+    [t0[0], t0[1] + bob],
+    [t1[0] - sway * 0.6, t1[1] + bob],
+    1,
+    0.8,
+  );
+  shade(p, tail, [C[1], C[2], H[1]], { r: 1 });
+  p.rect(t1[0] - sway * 0.6 - 1, t1[1] + bob, 2, 2, H[1]);
+  const at = (q: [number, number, number, number]): [number, number, number, number] => [
+    q[0],
+    q[1] + bob,
+    q[2],
+    q[3] + breathe,
+  ];
+  const body = mk(p)
+    .ellipse(...at(b.body))
+    .ellipse(...at(b.chest))
+    .ellipse(...at(b.rump));
+  if (b.hump) body.ellipse(...at(b.hump));
+  coat(body, 3);
+  // Pale belly along the underside.
+  const [bx, by, brx, bry] = at(b.body);
+  for (let x = Math.ceil(bx - brx * 0.6); x <= bx + brx * 0.6; x++)
+    if (body.has(x, Math.floor(by + bry - 0.5)))
+      p.pixel(x, by + bry - 0.5, S[1]);
+  // Neck and head (grazing lowers them to the ground, chewing).
+  const chew = grazing ? [0, 0.5, 1, 0.5][f] : 0,
+    pts = (grazing ? b.neckDown : b.neck).map(
+      ([x, y]) => [x, y + bob + chew] as P,
+    );
+  const neck = mk(p);
+  for (let i = 0; i < pts.length - 1; i++) {
+    const t = i / Math.max(1, pts.length - 2);
+    neck.capsule(
+      pts[i],
+      pts[i + 1],
+      b.neckR[0] + (b.neckR[1] - b.neckR[0]) * t,
+      b.neckR[0] + (b.neckR[1] - b.neckR[0]) * Math.min(1, t + 1 / (pts.length - 1)),
+    );
+  }
+  coat(neck, 2);
+  if (b.mane)
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [a, c2] = [pts[i], pts[i + 1]];
+      for (let k = 0; k <= 4; k++) {
+        const x = a[0] + ((c2[0] - a[0]) * k) / 4 - 1,
+          y = a[1] + ((c2[1] - a[1]) * k) / 4 - b.neckR[0] - 0.5;
+        p.pixel(x, y, H[k % 2]);
+      }
+    }
+  const end = pts[pts.length - 1],
+    [hx0, hy0, hrx, hry] = b.head,
+    [mx0, my0, mrx, mry] = b.muzzle,
+    // The head hangs off the neck's end; muzzle forward (down when grazing).
+    hx = end[0] + (hx0 - b.neck[b.neck.length - 1][0]),
+    hy = end[1] + (hy0 - b.neck[b.neck.length - 1][1]),
+    down = grazing ? 1 : 0,
+    mx = hx + (mx0 - hx0) * (down ? 0.6 : 1),
+    my = hy + (my0 - hy0) + down * 2.5;
+  const ear = (dx: number, len: number) =>
+    mk(p).capsule([hx + dx, hy - hry + 0.5], [hx + dx - len * 0.35, hy - hry - len], 0.9, 0.6);
+  const flick = action === 'animal_idle' && f === 3 ? 1 : 0;
+  if (b.ears === 'long') {
+    shade(p, ear(-1, 6), [C[1], C[2], H[1]], { r: 1 });
+  }
+  if (b.horns) {
+    const horn = mk(p);
+    if (b.horns === 'goat')
+      horn
+        .capsule([hx - 0.5, hy - hry], [hx - 3, hy - hry - 3.5], 1, 0.8)
+        .capsule([hx - 3, hy - hry - 3.5], [hx - 5, hy - hry - 2.5], 0.8, 0.5);
+    else
+      horn
+        .capsule([hx - 0.5, hy - hry], [hx - 2.5, hy - hry - 3], 0.9, 0.7)
+        .capsule([hx - 2.5, hy - hry - 3], [hx - 3.5, hy - hry - 6], 0.7, 0.55)
+        .capsule([hx - 3.5, hy - hry - 6], [hx - 2.6, hy - hry - 7.8], 0.55, 0.4);
+    shade(p, horn, [H[0], H[1], H[2]], { r: 1 });
+    // Rings on gazelle horns.
+    if (b.horns === 'gazelle')
+      for (let k = 1; k < 6; k += 2)
+        p.pixel(hx - 1 - k * 0.45, hy - hry - k, H[2]);
+  }
+  const head = mk(p).ellipse(hx, hy, hrx, hry).ellipse(mx, my, mrx, mry);
+  coat(head, 1.8);
+  // Muzzle and jaw in the pale sash shade, a dark nostril.
+  if (!away) {
+    for (let y = Math.ceil(my - mry + 1); y <= my + mry; y++)
+      for (let x = Math.ceil(mx - mrx + 0.5); x <= mx + mrx; x++)
+        if (head.has(x, y) && (x - mx) * 0.4 + (y - my) > -0.5)
+          p.pixel(x, y, S[y > my ? 2 : 1]);
+    p.pixel(mx + mrx - 1, my - 0.5, H[2]);
+    // Eye with a lid line.
+    p.pixel(hx + hrx * 0.15, hy - hry * 0.25, H[2]);
+    p.pixel(hx + hrx * 0.15 - 1, hy - hry * 0.25 - 1, C[2]);
+  }
+  // Ears last so they read against the head.
+  if (b.ears === 'long')
+    shade(p, ear(1, 6 - flick), [C[0], C[1], H[1]], { r: 1 });
+  else {
+    const len = b.ears === 'short' ? 3 : 2;
+    const e = mk(p).capsule(
+      [hx - hrx * 0.4, hy - hry + 0.5],
+      [hx - hrx * 0.4 - len - flick, hy - hry - (b.ears === 'short' ? 1.5 : 0.5) + flick],
+      0.9,
+      0.6,
+    );
+    shade(p, e, [C[0], C[1], C[2]], { r: 1 });
+  }
+  if (b.beard) {
+    const beard = mk(p).capsule([mx - 1, my + mry], [mx - 1.5, my + mry + 3], 0.8, 0.5);
+    shade(p, beard, [H[0], H[1], H[2]], { r: 1 });
+  }
+  for (const l of b.legs.filter((l) => l.near)) leg(l);
+}
+const BEASTS: Record<string, Beast> = {
+  // Dromedary: long legs, one hump, a long neck that dips then rises.
+  camel: {
+    ground: 60,
+    top: 40,
+    legs: [
+      { x: 22, front: false, near: false, phase: 0 },
+      { x: 41, front: true, near: false, phase: 0 },
+      { x: 24, front: false, near: true, phase: 0.5 },
+      { x: 43, front: true, near: true, phase: 0.5 },
+    ],
+    legR: [1.9, 1.1],
+    stride: 3,
+    body: [32, 36.5, 13, 5.8],
+    chest: [41, 37.5, 5, 5],
+    rump: [22, 36.5, 5, 5.5],
+    hump: [30, 30.5, 8, 5.5],
+    neck: [
+      [43, 36],
+      [48, 37],
+      [51, 32],
+      [52, 26],
+    ],
+    neckDown: [
+      [43, 36],
+      [48, 39],
+      [51, 46],
+      [52, 53],
+    ],
+    neckR: [3.2, 2.2],
+    head: [54.5, 24, 3.6, 2.6],
+    muzzle: [58.2, 25, 2.2, 1.8],
+    tail: [
+      [17, 34],
+      [16, 43],
+    ],
+    ears: 'small',
+  },
+  // Donkey: stocky, big head, long ears, a short upright mane.
+  donkey: {
+    ground: 40,
+    top: 27,
+    legs: [
+      { x: 16, front: false, near: false, phase: 0 },
+      { x: 29, front: true, near: false, phase: 0.25 },
+      { x: 17.5, front: false, near: true, phase: 0.5 },
+      { x: 30.5, front: true, near: true, phase: 0.75 },
+    ],
+    legR: [1.7, 1.1],
+    stride: 2.2,
+    body: [23, 24.5, 9.5, 5],
+    chest: [29.5, 25, 4, 4.5],
+    rump: [16.5, 24, 4.5, 5],
+    neck: [
+      [30, 24],
+      [33, 20],
+      [35, 17],
+    ],
+    neckDown: [
+      [30, 24],
+      [33, 29],
+      [35, 33],
+    ],
+    neckR: [3.3, 2.6],
+    head: [37, 17.5, 3.6, 2.6],
+    muzzle: [40.2, 19.5, 2.3, 2],
+    tail: [
+      [12.5, 23],
+      [11.5, 31],
+    ],
+    ears: 'long',
+    mane: true,
+  },
+  // Goat: small, swept-back horns, a beard and a short upright tail.
+  goat: {
+    ground: 29,
+    top: 20,
+    legs: [
+      { x: 12, front: false, near: false, phase: 0 },
+      { x: 21, front: true, near: false, phase: 0.25 },
+      { x: 13, front: false, near: true, phase: 0.5 },
+      { x: 22, front: true, near: true, phase: 0.75 },
+    ],
+    legR: [1.2, 0.8],
+    stride: 1.6,
+    body: [17, 17.5, 6.5, 3.6],
+    chest: [21.5, 17.5, 3, 3.2],
+    rump: [12, 17, 3, 3.5],
+    neck: [
+      [22, 17],
+      [24, 14],
+      [25, 12],
+    ],
+    neckDown: [
+      [22, 17],
+      [24, 21],
+      [25.5, 24],
+    ],
+    neckR: [2, 1.6],
+    head: [26, 11.5, 2.5, 1.9],
+    muzzle: [28.5, 12.8, 1.6, 1.3],
+    tail: [
+      [10, 15],
+      [9, 12.5],
+    ],
+    ears: 'short',
+    horns: 'goat',
+    beard: true,
+  },
+  // Dorcas gazelle: slender legs, pale belly, ringed lyre horns.
+  gazelle: {
+    ground: 40,
+    top: 27,
+    legs: [
+      { x: 15, front: false, near: false, phase: 0 },
+      { x: 26, front: true, near: false, phase: 0.25 },
+      { x: 16, front: false, near: true, phase: 0.5 },
+      { x: 27, front: true, near: true, phase: 0.75 },
+    ],
+    legR: [1.2, 0.7],
+    stride: 2.4,
+    body: [21, 24, 8, 4],
+    chest: [26.5, 24, 3.2, 3.6],
+    rump: [15.5, 23.5, 3.5, 4],
+    neck: [
+      [27, 23],
+      [29, 18],
+      [30.5, 14.5],
+    ],
+    neckDown: [
+      [27, 23],
+      [30, 29],
+      [31.5, 34],
+    ],
+    neckR: [1.9, 1.5],
+    head: [31.5, 13, 2.6, 1.9],
+    muzzle: [34.2, 14, 1.6, 1.3],
+    tail: [
+      [12.5, 22],
+      [12, 26],
+    ],
+    ears: 'short',
+    horns: 'gazelle',
+  },
+};
+/** Great white pelican: white body, black flight feathers, yellow pouch. */
+function drawPelican(p: Pixels, action: Action, face: string, f: number) {
+  const C = K.cloth,
+    H = K.hair,
+    R = K.prop,
+    S = K.sash,
+    away = face === 'NE',
+    walking = action === 'animal_walk',
+    preen = action === 'animal_graze',
+    sway = walking ? [0, 1, 0, -1, 0, 1][f] * 0.6 : 0,
+    bob = walking ? f % 2 : 0;
+  // Pink legs and webbed feet.
+  const step = walking ? [0, 1, 2, 1, 0, -1][f] : 0;
+  for (const [x, k] of [
+    [12, 1],
+    [16, -1],
+  ] as [number, number][]) {
+    const fx = x + step * k * 0.6;
+    p.rect(fx, 24 + bob, 1, 4 - bob, S[1]);
+    p.rect(fx - 1, 28, 3, 1, S[2]);
+  }
+  const body = mk(p).ellipse(14 + sway, 19.5 + bob, 7.2, 4.8);
+  body.ellipse(9 + sway, 18 + bob, 3.5, 3);
+  shade(p, body, C, { r: 2.6, hi: 0.76, lo: 0.25 });
+  contour(p, body);
+  // Folded wing with black primaries at the tail end.
+  const wing = mk(p).poly([
+    [8 + sway, 16 + bob],
+    [17 + sway, 16.5 + bob],
+    [15 + sway, 21 + bob],
+    [4.5 + sway, 20 + bob],
+  ]);
+  shade(p, wing, [C[1], C[1], C[2]], { r: 1 });
+  for (let x = 4; x <= 9; x++) p.pixel(x + sway, 19.5 + bob - (x - 4) * 0.15, H[1]);
+  for (let x = 4; x <= 7; x++) p.pixel(x + sway, 20.5 + bob, H[2]);
+  // Neck and head; preening turns the head back over the wing.
+  const neck = mk(p),
+    hx = preen ? 10 + [0, 0.5, 1, 0.5][f] : 20,
+    hy = preen ? 12 + bob : 8 + bob;
+  if (preen)
+    neck.capsule([18 + sway, 17 + bob], [19, 12 + bob], 2, 1.6).capsule([19, 12 + bob], [hx + 1, hy], 1.6, 1.4);
+  else
+    neck
+      .capsule([18 + sway, 17 + bob], [17.5, 13 + bob], 2.2, 1.6)
+      .capsule([17.5, 13 + bob], [19.5, 9.5 + bob], 1.6, 1.4);
+  shade(p, neck, C, { r: 1.6, hi: 0.76, lo: 0.25 });
+  contour(p, neck);
+  const head = mk(p).ellipse(hx, hy, 2.6, 2.1);
+  shade(p, head, C, { r: 1.6, hi: 0.76, lo: 0.25 });
+  contour(p, head);
+  // Long bill with the pouch beneath (pointing back when preening).
+  const dir = preen ? -1 : 1,
+    tip = hx + dir * 10;
+  for (let k = 0; k <= 10; k++) {
+    const x = hx + dir * (1.5 + k * 0.85),
+      y = hy + k * 0.25;
+    p.pixel(x, y, R[0]);
+    if (k > 1 && k < 9) p.pixel(x, y + 1, R[1]);
+    if (k > 2 && k < 8 && !preen) p.pixel(x, y + 2, R[2]);
+  }
+  p.pixel(tip, hy + 2.5, R[2]);
+  if (!away) {
+    p.pixel(hx + dir * 0.5, hy - 0.5, F.ink);
+    p.pixel(hx + dir * 1, hy - 0.5, S[0]);
+  }
+}
+
 /** A white emergency van in iso; blue roof lights alternate between frames. */
 function drawAmbulance(p: Pixels, face: string, f: number) {
   const along = face === 'NE' ? 'y' : 'x',
@@ -4909,6 +5320,14 @@ export function drawPart(
     drawAmbulance(p, face, f);
     return p;
   }
+  if (id === 'pelican') {
+    drawPelican(p, action, face, f);
+    return p;
+  }
+  if (BEASTS[id]) {
+    drawBeast(p, BEASTS[id], action, face, f);
+    return p;
+  }
   if (face === 'SW') {
     // Explicit SW frames (pour/write): drawn from the SE pose, then mirrored here
     // in the source so the compositor's explicit-frame path is exercised.
@@ -4949,13 +5368,16 @@ export async function generateParts(overwrite = false) {
               ? ['ball_roll', 'ball_still']
               : id === 'ambulance'
                 ? ['vehicle_drive']
-                : Object.keys(ACTIONS).filter(
-                    (a) =>
-                      !a.startsWith('cat_') &&
-                      !a.startsWith('bird_') &&
-                      !a.startsWith('ball_') &&
-                      !a.startsWith('vehicle_'),
-                  )
+                : id === 'pelican' || BEASTS[id]
+                  ? ['animal_idle', 'animal_walk', 'animal_graze']
+                  : Object.keys(ACTIONS).filter(
+                      (a) =>
+                        !a.startsWith('cat_') &&
+                        !a.startsWith('bird_') &&
+                        !a.startsWith('ball_') &&
+                        !a.startsWith('vehicle_') &&
+                        !a.startsWith('animal_'),
+                    )
       ) as Action[];
       const frames: Aseprite['frames'] = [],
         tags: Aseprite['meta']['frameTags'] = [];

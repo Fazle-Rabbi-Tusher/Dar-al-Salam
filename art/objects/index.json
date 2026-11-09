@@ -1795,5 +1795,250 @@
     ],
     "width": 64,
     "height": 77
+  },
+  "msw-house-a": {
+    "file": "objects/msw-house-a.png",
+    "anchor": [
+      48,
+      32
+    ],
+    "width": 96,
+    "height": 70
+  },
+  "msw-house-a-side": {
+    "file": "objects/msw-house-a-side.png",
+    "anchor": [
+      48,
+      32
+    ],
+    "width": 96,
+    "height": 70
+  },
+  "msw-house-b": {
+    "file": "objects/msw-house-b.png",
+    "anchor": [
+      48,
+      50
+    ],
+    "width": 112,
+    "height": 96
+  },
+  "msw-house-b-side": {
+    "file": "objects/msw-house-b-side.png",
+    "anchor": [
+      64,
+      50
+    ],
+    "width": 112,
+    "height": 96
+  },
+  "msw-house-c": {
+    "file": "objects/msw-house-c.png",
+    "anchor": [
+      64,
+      30
+    ],
+    "width": 128,
+    "height": 84
+  },
+  "msw-house-c-side": {
+    "file": "objects/msw-house-c-side.png",
+    "anchor": [
+      64,
+      30
+    ],
+    "width": 128,
+    "height": 84
+  },
+  "msw-wall": {
+    "file": "objects/msw-wall.png",
+    "anchor": [
+      32,
+      11
+    ],
+    "width": 80,
+    "height": 41
+  },
+  "msw-wall-side": {
+    "file": "objects/msw-wall-side.png",
+    "anchor": [
+      48,
+      11
+    ],
+    "width": 80,
+    "height": 41
+  },
+  "msw-hut": {
+    "file": "objects/msw-hut.png",
+    "anchor": [
+      48,
+      26
+    ],
+    "width": 96,
+    "height": 64
+  },
+  "msw-hut-side": {
+    "file": "objects/msw-hut-side.png",
+    "anchor": [
+      48,
+      26
+    ],
+    "width": 96,
+    "height": 64
+  },
+  "msw-stall": {
+    "file": "objects/msw-stall.png",
+    "anchor": [
+      32,
+      36
+    ],
+    "width": 80,
+    "height": 66
+  },
+  "msw-stall-side": {
+    "file": "objects/msw-stall-side.png",
+    "anchor": [
+      48,
+      36
+    ],
+    "width": 80,
+    "height": 66
+  },
+  "msw-well": {
+    "file": "objects/msw-well.png",
+    "anchor": [
+      32,
+      31
+    ],
+    "width": 64,
+    "height": 53
+  },
+  "msw-jars": {
+    "file": "objects/msw-jars.png",
+    "anchor": [
+      32,
+      8
+    ],
+    "width": 64,
+    "height": 30
+  },
+  "msw-salt": {
+    "file": "objects/msw-salt.png",
+    "anchor": [
+      32,
+      6
+    ],
+    "width": 80,
+    "height": 36
+  },
+  "msw-salt-side": {
+    "file": "objects/msw-salt-side.png",
+    "anchor": [
+      48,
+      6
+    ],
+    "width": 80,
+    "height": 36
+  },
+  "msw-nets": {
+    "file": "objects/msw-nets.png",
+    "anchor": [
+      32,
+      27
+    ],
+    "width": 80,
+    "height": 57
+  },
+  "msw-nets-side": {
+    "file": "objects/msw-nets-side.png",
+    "anchor": [
+      48,
+      27
+    ],
+    "width": 80,
+    "height": 57
+  },
+  "msw-doum": {
+    "file": "objects/msw-doum.png",
+    "anchor": [
+      48,
+      87
+    ],
+    "width": 96,
+    "height": 109
+  },
+  "msw-acacia": {
+    "file": "objects/msw-acacia.png",
+    "anchor": [
+      48,
+      54
+    ],
+    "width": 96,
+    "height": 76
+  },
+  "msw-dhow": {
+    "file": "objects/msw-dhow.png",
+    "anchor": [
+      32,
+      61
+    ],
+    "width": 80,
+    "height": 92,
+    "period": 48,
+    "frames": [
+      "objects/msw-dhow-0.png",
+      "objects/msw-dhow-1.png"
+    ]
+  },
+  "msw-dhow-beached": {
+    "file": "objects/msw-dhow-beached.png",
+    "anchor": [
+      32,
+      21
+    ],
+    "width": 96,
+    "height": 59
+  },
+  "msw-dhow-beached-side": {
+    "file": "objects/msw-dhow-beached-side.png",
+    "anchor": [
+      64,
+      21
+    ],
+    "width": 96,
+    "height": 59
+  },
+  "msw-jetty": {
+    "file": "objects/msw-jetty.png",
+    "anchor": [
+      16,
+      6
+    ],
+    "width": 64,
+    "height": 39
+  },
+  "msw-fish-jump": {
+    "file": "objects/msw-fish-jump.png",
+    "anchor": [
+      16,
+      5
+    ],
+    "width": 32,
+    "height": 18,
+    "period": 60,
+    "frames": [
+      "objects/msw-fish-jump-0.png",
+      "objects/msw-fish-jump-1.png",
+      "objects/msw-fish-jump-2.png",
+      "objects/msw-fish-jump-3.png",
+      "objects/msw-fish-jump-4.png",
+      "objects/msw-fish-jump-5.png",
+      "objects/msw-fish-jump-6.png",
+      "objects/msw-fish-jump-7.png",
+      "objects/msw-fish-jump-8.png",
+      "objects/msw-fish-jump-9.png",
+      "objects/msw-fish-jump-10.png",
+      "objects/msw-fish-jump-11.png"
+    ]
   }
 }
