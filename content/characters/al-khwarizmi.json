@@ -29,17 +29,24 @@
   "script": [
     {
       "from": 0,
-      "to": 60,
+      "to": 40,
       "action": "idle",
-      "at": [18, 45],
+      "at": [8.3, 44.0],
       "facing": "SE"
     },
     {
-      "from": 60,
+      "from": 40,
+      "to": 80,
+      "action": "read",
+      "at": [8.3, 44.0],
+      "facing": "SE"
+    },
+    {
+      "from": 80,
       "to": 120,
       "action": "talk",
-      "at": [18, 45],
-      "facing": "SW"
+      "at": [8.3, 44.0],
+      "facing": "SE"
     }
   ],
   "bio": {

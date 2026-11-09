@@ -2252,5 +2252,390 @@
       "objects/msw-rowboat-0.png",
       "objects/msw-rowboat-1.png"
     ]
+  },
+  "m-chalkboard": {
+    "file": "objects/m-chalkboard.png",
+    "anchor": [
+      16,
+      71
+    ],
+    "width": 64,
+    "height": 76
+  },
+  "m-chalkboard-side": {
+    "file": "objects/m-chalkboard-side.png",
+    "anchor": [
+      48,
+      71
+    ],
+    "width": 64,
+    "height": 76
+  },
+  "m-workstation": {
+    "file": "objects/m-workstation.png",
+    "anchor": [
+      32,
+      46
+    ],
+    "width": 80,
+    "height": 76
+  },
+  "m-workstation-side": {
+    "file": "objects/m-workstation-side.png",
+    "anchor": [
+      48,
+      46
+    ],
+    "width": 80,
+    "height": 76
+  },
+  "m-seminar-table": {
+    "file": "objects/m-seminar-table.png",
+    "anchor": [
+      32,
+      26
+    ],
+    "width": 96,
+    "height": 67
+  },
+  "m-model-case": {
+    "file": "objects/m-model-case.png",
+    "anchor": [
+      16,
+      72
+    ],
+    "width": 64,
+    "height": 102
+  },
+  "m-model-case-side": {
+    "file": "objects/m-model-case-side.png",
+    "anchor": [
+      48,
+      72
+    ],
+    "width": 64,
+    "height": 102
+  },
+  "m-3d-printer": {
+    "file": "objects/m-3d-printer.png",
+    "anchor": [
+      32,
+      52
+    ],
+    "width": 64,
+    "height": 74,
+    "period": 24,
+    "frames": [
+      "objects/m-3d-printer-0.png",
+      "objects/m-3d-printer-1.png",
+      "objects/m-3d-printer-2.png",
+      "objects/m-3d-printer-3.png"
+    ]
+  },
+  "m-geo-table": {
+    "file": "objects/m-geo-table.png",
+    "anchor": [
+      48,
+      20
+    ],
+    "width": 128,
+    "height": 76
+  },
+  "m-board-partition": {
+    "file": "objects/m-board-partition.png",
+    "anchor": [
+      32,
+      84
+    ],
+    "width": 96,
+    "height": 120
+  },
+  "m-board-partition-side": {
+    "file": "objects/m-board-partition-side.png",
+    "anchor": [
+      64,
+      84
+    ],
+    "width": 96,
+    "height": 120
+  },
+  "m-hub-desk": {
+    "file": "objects/m-hub-desk.png",
+    "anchor": [
+      32,
+      42
+    ],
+    "width": 96,
+    "height": 85
+  },
+  "m-hub-desk-side": {
+    "file": "objects/m-hub-desk-side.png",
+    "anchor": [
+      64,
+      42
+    ],
+    "width": 96,
+    "height": 85
+  },
+  "m-screen-array": {
+    "file": "objects/m-screen-array.png",
+    "anchor": [
+      16,
+      78
+    ],
+    "width": 80,
+    "height": 110
+  },
+  "m-dewar": {
+    "file": "objects/m-dewar.png",
+    "anchor": [
+      16,
+      40
+    ],
+    "width": 48,
+    "height": 56
+  },
+  "m-knot-sculpture": {
+    "file": "objects/m-knot-sculpture.png",
+    "anchor": [
+      32,
+      32
+    ],
+    "width": 64,
+    "height": 57
+  },
+  "m-round-table": {
+    "file": "objects/m-round-table.png",
+    "anchor": [
+      32,
+      18
+    ],
+    "width": 80,
+    "height": 50
+  },
+  "m-book-cart": {
+    "file": "objects/m-book-cart.png",
+    "anchor": [
+      16,
+      30
+    ],
+    "width": 48,
+    "height": 48
+  },
+  "m-book-cart-side": {
+    "file": "objects/m-book-cart-side.png",
+    "anchor": [
+      32,
+      30
+    ],
+    "width": 48,
+    "height": 48
+  },
+  "m-projector-screen": {
+    "file": "objects/m-projector-screen.png",
+    "anchor": [
+      16,
+      83
+    ],
+    "width": 64,
+    "height": 84
+  },
+  "m-projector-screen-side": {
+    "file": "objects/m-projector-screen-side.png",
+    "anchor": [
+      48,
+      83
+    ],
+    "width": 64,
+    "height": 84
+  },
+  "m-tally-sticks": {
+    "file": "objects/m-tally-sticks.png",
+    "anchor": [
+      32,
+      33
+    ],
+    "width": 64,
+    "height": 55
+  },
+  "m-counting-board": {
+    "file": "objects/m-counting-board.png",
+    "anchor": [
+      32,
+      22
+    ],
+    "width": 80,
+    "height": 54
+  },
+  "m-abacus": {
+    "file": "objects/m-abacus.png",
+    "anchor": [
+      16,
+      49
+    ],
+    "width": 64,
+    "height": 71
+  },
+  "m-abacus-side": {
+    "file": "objects/m-abacus-side.png",
+    "anchor": [
+      48,
+      49
+    ],
+    "width": 64,
+    "height": 71
+  },
+  "m-antikythera": {
+    "file": "objects/m-antikythera.png",
+    "anchor": [
+      32,
+      32
+    ],
+    "width": 64,
+    "height": 54
+  },
+  "m-napiers-bones": {
+    "file": "objects/m-napiers-bones.png",
+    "anchor": [
+      32,
+      23
+    ],
+    "width": 64,
+    "height": 43
+  },
+  "m-slide-rule": {
+    "file": "objects/m-slide-rule.png",
+    "anchor": [
+      16,
+      48
+    ],
+    "width": 64,
+    "height": 72
+  },
+  "m-slide-rule-side": {
+    "file": "objects/m-slide-rule-side.png",
+    "anchor": [
+      48,
+      48
+    ],
+    "width": 64,
+    "height": 72
+  },
+  "m-pascaline": {
+    "file": "objects/m-pascaline.png",
+    "anchor": [
+      32,
+      23
+    ],
+    "width": 64,
+    "height": 43
+  },
+  "m-stepped-reckoner": {
+    "file": "objects/m-stepped-reckoner.png",
+    "anchor": [
+      32,
+      25
+    ],
+    "width": 80,
+    "height": 50
+  },
+  "m-difference-engine": {
+    "file": "objects/m-difference-engine.png",
+    "anchor": [
+      32,
+      63
+    ],
+    "width": 80,
+    "height": 93
+  },
+  "m-analytical-engine": {
+    "file": "objects/m-analytical-engine.png",
+    "anchor": [
+      32,
+      53
+    ],
+    "width": 96,
+    "height": 89
+  },
+  "m-curta": {
+    "file": "objects/m-curta.png",
+    "anchor": [
+      32,
+      31
+    ],
+    "width": 64,
+    "height": 53
+  },
+  "m-planimeter": {
+    "file": "objects/m-planimeter.png",
+    "anchor": [
+      32,
+      16
+    ],
+    "width": 64,
+    "height": 41
+  },
+  "m-harmonic-analyzer": {
+    "file": "objects/m-harmonic-analyzer.png",
+    "anchor": [
+      32,
+      34
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-integraph": {
+    "file": "objects/m-integraph.png",
+    "anchor": [
+      32,
+      30
+    ],
+    "width": 80,
+    "height": 57
+  },
+  "m-nomogram": {
+    "file": "objects/m-nomogram.png",
+    "anchor": [
+      32,
+      22
+    ],
+    "width": 64,
+    "height": 46
+  },
+  "m-graphing-calculator": {
+    "file": "objects/m-graphing-calculator.png",
+    "anchor": [
+      32,
+      37
+    ],
+    "width": 64,
+    "height": 59
+  },
+  "m-mainframe": {
+    "file": "objects/m-mainframe.png",
+    "anchor": [
+      32,
+      66
+    ],
+    "width": 96,
+    "height": 104
+  },
+  "m-differential-analyzer": {
+    "file": "objects/m-differential-analyzer.png",
+    "anchor": [
+      32,
+      27
+    ],
+    "width": 96,
+    "height": 70
+  },
+  "m-drafting-set": {
+    "file": "objects/m-drafting-set.png",
+    "anchor": [
+      32,
+      22
+    ],
+    "width": 80,
+    "height": 49
   }
 }

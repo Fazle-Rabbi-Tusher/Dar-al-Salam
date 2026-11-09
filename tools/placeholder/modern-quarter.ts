@@ -30,7 +30,7 @@ import { detailFootprints, type DetailType } from './details';
  * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
  * contribution side by side — a modern mosque and study circle, a university
  * science lab, an architecture studio, a hospital, a community kitchen, a
- * library with a coding class, a street with a café, and a solar garden.
+ * mathematics research lab, a street with a café, and a solar garden.
  * Generated deterministically (seeded PRNG, build-time only).
  */
 type Pt = [number, number];
@@ -62,7 +62,9 @@ function footprintOf(type: string): Pt {
     (id.startsWith('detail-')
       ? detailFootprints[id.slice(7) as DetailType]
       : undefined) ??
-    legacyFootprints[id];
+    legacyFootprints[id] ??
+    // Small supplied pieces (art/supplied) placed in the room.
+    (id.startsWith('sup-') ? ([0.6, 0.6] as Pt) : undefined);
   if (!f) throw Error(`Unknown object type ${type}`);
   return side ? [f[1], f[0]] : [f[0], f[1]];
 }
@@ -569,18 +571,48 @@ export function modernQuarter() {
     'carry',
   );
 
-  /* ════════ Library and coding class (x 7–21, y 41–55) ════════ */
-  obj('m-whitewall-side', 6.65, 39);
-  obj('m-whitewall-side', 6.65, 47);
-  obj('m-bookshelf-side', 7.05, 41.5);
-  obj('m-bookshelf-side', 7.05, 45);
-  obj('m-bookshelf-side', 7.05, 48.5);
-  obj('m-bookshelf', 10, 52.4);
-  obj('m-kids-table', 11.5, 43);
-  obj('m-kids-table', 11.5, 47.5);
-  obj('m-computer-desk', 17, 45.5);
-  obj('m-computer-desk', 17, 49.5);
-  obj('m-desk-plant', 20.3, 42);
+  /*
+   * ════════ Mathematics research laboratory (x 7–21, y 41–55) ════════
+   * The old library, replaced at the owner's request with a doctoral-level
+   * maths lab, open to the lawn behind it: a freestanding chalkboard and
+   * the history of calculation on plinths and stands, in order: tally
+   * sticks, a counting board, an abacus, the Antikythera mechanism,
+   * Napier's bones, a slide rule, Pascal's calculator, Leibniz's stepped
+   * reckoner, and Babbage's difference and analytical engines (owner's
+   * list); then a Curta calculator, a planimeter, a nomogram, a graphing
+   * calculator, a drafting set, an integraph, a harmonic analyser, a
+   * differential analyser and a mainframe with its terminal; with a case of models, a whiteboard, a seminar table and a book
+   * cart. Owner's rule: only mathematical equipment, and no piece twice.
+   * Al-Khwarizmi, Ibn Rushd and Ibn Khaldun stand in the lab
+   * (their cards place them).
+   */
+  // No back wall (owner's request): the lab is open to the lawn.
+  obj('m-board-partition-side', 7.0, 41.5);
+  // No astrolabe or globe beside Al-Khwārizmī (owner's request).
+  obj('m-model-case-side', 7.05, 48.4);
+  obj('m-whiteboard', 15.0, 45.6);
+  obj('m-seminar-table', 9.5, 50.6);
+  obj('m-book-cart', 14.0, 51.4);
+  obj('m-tally-sticks', 9.4, 41.6);
+  obj('m-counting-board', 11.0, 41.6);
+  obj('m-abacus', 13.3, 42.0);
+  obj('m-antikythera', 15.8, 41.6);
+  obj('m-napiers-bones', 17.4, 41.6);
+  obj('m-slide-rule', 19.0, 41.6);
+  obj('m-pascaline', 10.0, 45.6);
+  obj('m-stepped-reckoner', 11.8, 45.6);
+  obj('m-difference-engine', 17.6, 44.8);
+  obj('m-analytical-engine', 17.4, 48.2);
+  // The 20th century (owner's second list; the slide rule is already here).
+  obj('m-curta', 9.4, 47.4);
+  obj('m-planimeter', 11.0, 47.4);
+  obj('m-nomogram', 13.6, 47.4);
+  obj('m-graphing-calculator', 15.3, 47.4);
+  obj('m-drafting-set', 7.6, 53.4);
+  obj('m-integraph', 10.0, 53.4);
+  obj('m-harmonic-analyzer', 12.0, 53.4);
+  obj('m-differential-analyzer', 17.2, 51.0);
+  obj('m-mainframe', 17.6, 53.6);
   for (const [i, [x, y, f]] of (
     [
       [11.2, 42.4, 'SE'],
@@ -691,12 +723,6 @@ export function modernQuarter() {
     'amb-bench-pair-1';
 
   /* ════════ Density pass: more everyday life in the lower rooms ════════ */
-  // Library: reading corner and study desks.
-  obj('m-bookshelf', 13.5, 52.4);
-  obj('m-bookshelf', 17, 52.4);
-  obj('m-computer-desk', 17, 41.5);
-  obj('m-desk-plant', 15.6, 53);
-  obj('m-water-cooler', 20.6, 54.3);
   person(
     'reader-lib-1',
     [10.6, 54.2],
@@ -2007,7 +2033,17 @@ export function modernQuarter() {
         t = x <= 21 ? 11 : x <= 35 ? (inX(29, 31) || inY(30, 32) ? 8 : 4) : 13;
       else
         t =
-          x <= 21 ? 9 : x <= 35 ? (inY(48, 50) ? 12 : 7) : inY(46, 47) ? 8 : 4;
+          x <= 21
+            ? y >= 41
+              ? 10 // the maths lab's white floor
+              : 9
+            : x <= 35
+              ? inY(48, 50)
+                ? 12
+                : 7
+              : inY(46, 47)
+                ? 8
+                : 4;
       floor.push(t);
     }
   const collision: number[] = Array(W * H).fill(0);
@@ -3119,7 +3155,7 @@ export function namedCards(): Character[] {
           prop: 'madder-red',
         },
       },
-      script: two('write', 'teach', [18, 45], 'SE', 'SW'),
+      script: two('write', 'teach', [8.3, 44.0], 'SE', 'SW'),
     }),
     card({
       id: 'ibn-sina',
@@ -3319,36 +3355,8 @@ function scholars(): (Partial<Character> &
       // Taking a sighting with his astrolabe in the park.
       script: two('idle', 'talk', [30, 27.4], 'SE', 'SW'),
     },
-    {
-      id: 'ibn-khaldun',
-      name: { en: 'Ibn Khaldun', ar: 'ابن خلدون', bn: 'ইবনে খালদুন' },
-      years: '1332–1406',
-      place: 'Tunis · Cairo',
-      district: 'maghreb',
-      look: look('adult-man-beard', 'scholar-robe', 'imamah', 'book', {
-        skin: 'skin-3',
-        garmentPrimary: 'wool-cream',
-        garmentSecondary: 'cocoa',
-      }),
-      // Reading and explaining in the library's reading corner.
-      script: two('read', 'teach', [10.6, 54.2], 'SE', 'SW'),
-    },
-    {
-      id: 'ibn-rushd',
-      name: { en: 'Ibn Rushd', ar: 'ابن رشد', bn: 'ইবনে রুশদ' },
-      aliases: ['Averroes'],
-      years: '1126–1198',
-      place: 'Córdoba · Marrakesh',
-      district: 'maghreb',
-      look: look('elder', 'jubba', 'imamah', 'book', {
-        skin: 'skin-2',
-        hair: 'hair-grey',
-        garmentPrimary: 'black-cloth',
-        garmentSecondary: 'wool-cream',
-        headwear: 'wool-cream',
-      }),
-      script: two('teach', 'read', [9.2, 51.6], 'SE', 'SW'),
-    },
+    // Ibn Khaldun and Ibn Rushd were retired from the maths lab at the
+    // owner's request (2026-11); their cards are in content/retired/.
     {
       id: 'mufti-ismail-menk',
       name: {

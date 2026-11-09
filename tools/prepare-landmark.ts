@@ -43,13 +43,17 @@ const nearBg = (i: number, tol: number) =>
     Math.abs(data[i + 1] - bg[1]),
     Math.abs(data[i + 2] - bg[2]),
   ) <= tol;
+// `tol=N` sets how close to the backdrop a pixel must be to be cleared, and
+// `nofringe` keeps dark outline pixels (for dark art on a dark backdrop).
+const tolEdit = edits.find((e) => e.startsWith('tol='));
+const TOL = tolEdit ? Number(tolEdit.slice(4)) : 20;
 const clear = new Uint8Array(W * H),
   stack: number[] = [];
 for (let x = 0; x < W; x++) stack.push(x, (H - 1) * W + x);
 for (let y = 0; y < H; y++) stack.push(y * W, y * W + W - 1);
 while (stack.length) {
   const k = stack.pop()!;
-  if (clear[k] || !nearBg(k * 4, 20)) continue;
+  if (clear[k] || !nearBg(k * 4, TOL)) continue;
   clear[k] = 1;
   const x = k % W,
     y = (k - x) / W;
@@ -93,7 +97,7 @@ if (!edits.includes('keepholes')) {
   }
 }
 // Dark fringe pixels touching the cleared backdrop go too.
-for (let pass = 0; pass < 2; pass++) {
+for (let pass = 0; pass < (edits.includes('nofringe') ? 0 : 2); pass++) {
   const next = clear.slice();
   for (let y = 1; y < H - 1; y++)
     for (let x = 1; x < W - 1; x++) {
@@ -113,7 +117,7 @@ let flip = false,
 for (const e of edits) {
   const [name, args = ''] = e.split('='),
     n = args.split(',').map(Number);
-  if (name === 'keepholes') continue;
+  if (name === 'keepholes' || name === 'tol' || name === 'nofringe') continue;
   if (name === 'wall') {
     // Terrain tiles are blocks: drop the lowest n opaque pixels of each
     // column (the block's vertical side), leaving the top surface.

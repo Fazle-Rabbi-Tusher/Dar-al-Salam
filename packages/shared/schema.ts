@@ -206,6 +206,8 @@ export const bakedCharacterSchema = characterSchema.extend({
   portrait: z.string().optional(),
   /** Smooth illustrated portrait for the story card, when one is drawn. */
   illustration: z.string().optional(),
+  /** Owner-supplied pictures of the person at work, shown on the card. */
+  gallery: z.array(z.string()).optional(),
   /**
    * Eight turnaround views (S, SE, E, NE, N, NW, W, SW on screen) per action
    * ('*' for the rest), each a list of frames: the engine shows the view

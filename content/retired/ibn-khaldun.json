@@ -1,27 +1,27 @@
 {
-  "id": "ibn-rushd",
+  "id": "ibn-khaldun",
   "kind": "person",
   "name": {
-    "en": "Ibn Rushd",
-    "ar": "ابن رشد",
-    "bn": "ইবনে রুশদ"
+    "en": "Ibn Khaldun",
+    "ar": "ابن خلدون",
+    "bn": "ইবনে খালদুন"
   },
-  "aliases": ["Averroes"],
-  "years": "1126–1198",
-  "place": "Córdoba · Marrakesh",
+  "aliases": [],
+  "years": "1332–1406",
+  "place": "Tunis · Cairo",
   "district": "maghreb",
   "depiction": "full",
   "look": {
-    "base": "elder",
-    "garment": "jubba",
+    "base": "adult-man-beard",
+    "garment": "scholar-robe",
     "headwear": "imamah",
     "prop": "book",
     "colours": {
-      "skin": "skin-2",
-      "hair": "hair-grey",
-      "garmentPrimary": "black-cloth",
-      "garmentSecondary": "wool-cream",
-      "headwear": "wool-cream",
+      "skin": "skin-3",
+      "hair": "hair-black",
+      "garmentPrimary": "wool-cream",
+      "garmentSecondary": "cocoa",
+      "headwear": "white-linen",
       "prop": "cocoa"
     }
   },
@@ -30,15 +30,15 @@
     {
       "from": 0,
       "to": 60,
-      "action": "talk",
-      "at": [9.2, 51.6],
+      "action": "idle",
+      "at": [16.4, 49.7],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
-      "action": "idle",
-      "at": [9.2, 51.6],
+      "action": "talk",
+      "at": [16.4, 49.7],
       "facing": "SW"
     }
   ],
@@ -57,12 +57,12 @@
     "PLACEHOLDER source 2 — research pending"
   ],
   "summary": {
-    "en": "Philosopher, judge and physician of Córdoba, known in Europe as Averroes. His commentaries on Aristotle were studied in European universities for centuries."
+    "en": "Historian and thinker born in Tunis. His Muqaddimah (1377) set out how societies rise and decline and is seen as a founding work of sociology and the study of history."
   },
   "links": [
     {
       "label": "Wikipedia",
-      "url": "https://en.wikipedia.org/wiki/Averroes"
+      "url": "https://en.wikipedia.org/wiki/Ibn_Khaldun"
     }
   ],
   "panelApproved": false

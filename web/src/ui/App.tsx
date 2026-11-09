@@ -159,6 +159,7 @@ type CardView = Pick<
   | 'name'
   | 'illustration'
   | 'portrait'
+  | 'gallery'
   | 'years'
   | 'place'
   | 'summary'
@@ -560,6 +561,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
                   src={'/world/' + card.illustration}
                   alt=""
                   draggable={false}
+                  onLoad={(e) => {
+                    // A whole standing figure gets more height than a face.
+                    const img = e.currentTarget;
+                    img.classList.toggle(
+                      'full-figure',
+                      img.naturalHeight > img.naturalWidth * 1.4,
+                    );
+                  }}
                 />
               ) : card.portrait ? (
                 <img
@@ -608,6 +617,22 @@ function World({ manifest }: { manifest: Manifest | null }) {
                   </a>
                 ))}
               </div>
+            )}
+            {!!card.gallery?.length && (
+              <>
+                <h3>{t('atWork')}</h3>
+                <div className="work-gallery">
+                  {card.gallery.map((g) => (
+                    <img
+                      key={g}
+                      src={'/world/' + g}
+                      alt=""
+                      loading="lazy"
+                      draggable={false}
+                    />
+                  ))}
+                </div>
+              </>
             )}
             <p className="research-note">{t('research')}</p>
             <h3>{t('story')}</h3>

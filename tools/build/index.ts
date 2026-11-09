@@ -79,7 +79,8 @@ async function build() {
       p.startsWith('art/illustrations/') ||
       p.startsWith('art/sprites/') ||
       p.startsWith('art/landmarks/') ||
-      p.startsWith('art/supplied/')
+      p.startsWith('art/supplied/') ||
+      p.startsWith('art/gallery/')
     )
       continue;
     const errors = paletteErrors(
@@ -635,8 +636,20 @@ async function build() {
         .png({ palette: true, quality: 90 })
         .toFile(`${out}/${illustration}`);
     }
+    // Owner-supplied pictures of the person at work (art/gallery/<id>/).
+    const gallery = (
+      await fs.readdir(`art/gallery/${c.id}`).catch(() => [] as string[])
+    )
+      .filter((f) => f.endsWith('.png'))
+      .sort((a, b) => parseInt(a) - parseInt(b))
+      .map((f) => `gallery/${c.id}/${f}`);
+    if (gallery.length) {
+      await fs.mkdir(`${out}/gallery/${c.id}`, { recursive: true });
+      for (const g of gallery) await fs.copyFile(`art/${g}`, `${out}/${g}`);
+    }
     baked.push({
       ...c,
+      ...(gallery.length ? { gallery } : {}),
       frames,
       ...(mirror.length ? { mirror } : {}),
       ...(d8 ? { dir8: d8 } : {}),
@@ -676,6 +689,16 @@ async function build() {
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
+      // Supplied art placed in the room (art/supplied): planted like
+      // Massawa's pieces, standing on the footprint's centre.
+      if (!objectArt[o.type] && suppliedArt[o.type]) {
+        replaced.push([
+          o.type,
+          o.x + o.footprint[0] / 2,
+          o.y + o.footprint[1] / 2,
+        ]);
+        continue;
+      }
       const art = objectArt[o.type];
       if (!art) throw Error(`Unknown room object ${o.type}`);
       if (o.walkable && bakedIntoFloor(o.type, art)) continue;
@@ -1074,7 +1097,7 @@ async function build() {
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
       const art = objectArt[o.type];
-      if (!o.walkable || !bakedIntoFloor(o.type, art)) continue;
+      if (!art || !o.walkable || !bakedIntoFloor(o.type, art)) continue;
       const im = await image(`art/${art.file}`),
         p = worldFromTile(o.x, o.y, o.z);
       blit(

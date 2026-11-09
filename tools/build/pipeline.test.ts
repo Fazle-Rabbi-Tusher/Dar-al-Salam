@@ -510,8 +510,6 @@ describe('scholars and scene roles', () => {
     'al-zahrawi',
     'al-jazari',
     'al-biruni',
-    'ibn-khaldun',
-    'ibn-rushd',
     'mufti-ismail-menk',
     'hamza-yusuf',
     'omar-suleiman',
