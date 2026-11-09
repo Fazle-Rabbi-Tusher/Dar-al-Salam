@@ -129,12 +129,6 @@ const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
 const vec3 DESERT = vec3(0.890, 0.788, 0.612);
 const vec3 DESERT_LIGHT = vec3(0.945, 0.871, 0.722);
 const vec3 DESERT_DARK = vec3(0.808, 0.690, 0.506);
-const vec3 SALT = vec3(0.957, 0.953, 0.937);
-const vec3 SALT_SHADE = vec3(0.886, 0.875, 0.851);
-const vec3 BRINE = vec3(0.592, 0.784, 0.769);
-const vec3 BRINE_PINK = vec3(0.871, 0.741, 0.725);
-const vec3 SALT_BANK = vec3(0.612, 0.518, 0.388);
-const vec3 SALT_BANK_LIGHT = vec3(0.710, 0.612, 0.471);
 const vec3 SCRUB = vec3(0.796, 0.706, 0.529);
 const vec3 SCRUB_DARK = vec3(0.690, 0.596, 0.431);
 const vec3 DRY_GRASS = vec3(0.706, 0.667, 0.384);
@@ -191,23 +185,8 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  // Old Massawa: salt pans, the coral-stone causeway, the mosque's plaza,
+  // Old Massawa: the coral-stone causeway, the mosque's plaza,
   // desert sand and thorn scrub on the dry coast.
-  if (inSaltPans(tile)) {
-    // Salt works: small pans in earth banks. Sea water is let in at the
-    // west end and dries eastward, from teal brine to pink to white crust.
-    vec2 size = vec2(1.6, 1.25);
-    vec2 q = (tile - vec2(${f(MASSAWA.salt.x0)}, ${f(MASSAWA.salt.y0)})) / size;
-    vec2 cq = fract(q);
-    float pan = hash(vec3(floor(q), 3.0));
-    float rim = min(min(cq.x, 1.0 - cq.x) * size.x, min(cq.y, 1.0 - cq.y) * size.y);
-    if (rim < 0.13) return h > 0.6 ? SALT_BANK_LIGHT : SALT_BANK;
-    float dry = floor(q.x) * size.x / ${f(MASSAWA.salt.x1 - MASSAWA.salt.x0)} + (pan - 0.5) * 0.3;
-    if (dry > 0.62) return h > 0.86 ? SALT_SHADE : SALT;
-    if (rim < 0.24 && h > 0.45) return SALT;
-    if (dry > 0.34) return h > 0.93 ? SALT : BRINE_PINK;
-    return h > 0.96 ? SALT : BRINE;
-  }
   if (causewayDistance(tile) <= ${f(MASSAWA.causeway.halfWidth)} &&
       massawaIsland(tile) > ${f(MASSAWA.island.radius - 1.5)}) {
     float along = fract(tile.y * 1.6), across = causewayDistance(tile);
