@@ -30,10 +30,42 @@ function cut(name: string, box: number[], edits: string[]) {
   return out;
 }
 const FIG = ['tol=10', 'nofringe', 'keepholes', 'largest'];
-const front = cut('front', [18, 10, 180, 352], FIG),
-  back = cut('back', [498, 10, 165, 352], FIG),
-  read = cut('read', [10, 362, 185, 330], FIG),
-  talk = cut('talk', [365, 695, 200, 310], FIG);
+/**
+ * Clear the sheet's dark ground trapped between his feet, below the robe's
+ * hem: grey-black pixels (close to the backdrop, unsaturated) in the lowest
+ * sixth of the figure. `keepholes` keeps the robe's dark patterns, so the
+ * gap between his legs is cleared here instead.
+ */
+async function clearGround(file: string) {
+  const { data, info } = await sharp(file)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let top = info.height,
+    bottom = 0;
+  for (let y = 0; y < info.height; y++)
+    for (let x = 0; x < info.width; x++)
+      if (data[(y * info.width + x) * 4 + 3]) {
+        top = Math.min(top, y);
+        bottom = y;
+      }
+  for (let y = Math.floor(bottom - (bottom - top) / 6); y < info.height; y++)
+    for (let x = 0; x < info.width; x++) {
+      const i = (y * info.width + x) * 4,
+        [r, g, b] = [data[i], data[i + 1], data[i + 2]];
+      const near = Math.abs(r - 15) + Math.abs(g - 17) + Math.abs(b - 21),
+        sat = Math.max(r, g, b) - Math.min(r, g, b);
+      if (near < 45 && sat < 18) data[i + 3] = 0;
+    }
+  await sharp(data, { raw: info })
+    .png()
+    .toFile(file + '.clean.png');
+  return file + '.clean.png';
+}
+const front = await clearGround(cut('front', [18, 10, 180, 352], FIG)),
+  back = await clearGround(cut('back', [498, 10, 165, 352], FIG)),
+  read = await clearGround(cut('read', [10, 362, 185, 330], FIG)),
+  talk = await clearGround(cut('talk', [365, 695, 200, 310], FIG));
 const FW = 224,
   FH = 336,
   FOOT = 320,
@@ -101,10 +133,17 @@ for (const action of ['idle', 'read', 'talk'])
     `art/sprites/anim/al-khwarizmi__${action}_NE.png`,
     backStrip,
   );
-// Card picture: the first close-up face.
-await sharp(sheet)
-  .extract({ left: 820, top: 20, width: 144, height: 154 })
-  .resize({ width: 280 })
+// Card picture: his whole standing figure, turban to sandals (owner's
+// request: the close-up face showed only half of him).
+await sharp(front)
+  .trim({ threshold: 0 })
+  .extend({
+    top: 10,
+    bottom: 8,
+    left: 14,
+    right: 14,
+    background: { r: 0, g: 0, b: 0, alpha: 0 },
+  })
   .png()
   .toFile('art/illustrations/al-khwarizmi.png');
 /*

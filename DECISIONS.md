@@ -118,3 +118,6 @@
       - carrying books.
     - **Gallery cuts:** each scene is squared on the sheet's dark ground, with small dark patches over pieces of the neighbouring figures.
     - **Left out:** the telescope (too late for him, as before). The desk, presenting and kneeling scenes repeat ones the gallery already has.
+62. Al-Khwārizmī's whole body, following the owner's legs-and-sandals sheet ("only half of the body is there"):
+    - **Story card:** the picture is now his whole standing figure, turban to sandals, in place of the head-and-shoulders close-up. A tall full-figure picture gets more height (`.full-figure`). Unlike other card pictures, it also shows on phones.
+    - **In the lab:** the cut tool clears the sheet's dark ground left between his feet, below the robe's hem, so his legs and sandals stand clear. The astrolabe moved a step to the right, off his sandal.

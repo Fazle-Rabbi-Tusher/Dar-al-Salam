@@ -561,6 +561,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
                   src={'/world/' + card.illustration}
                   alt=""
                   draggable={false}
+                  onLoad={(e) => {
+                    // A whole standing figure gets more height than a face.
+                    const img = e.currentTarget;
+                    img.classList.toggle(
+                      'full-figure',
+                      img.naturalHeight > img.naturalWidth * 1.4,
+                    );
+                  }}
                 />
               ) : card.portrait ? (
                 <img

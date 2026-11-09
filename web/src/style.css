@@ -706,6 +706,9 @@ html[lang='bn'] .brand strong {
   border-radius: 30px 30px 3px 3px;
   background: linear-gradient(#f4efe0, #e3e6d8);
 }
+.portrait-illustration.full-figure {
+  height: 250px;
+}
 .work-gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1406,6 +1409,14 @@ html[dir='rtl'] .portrait-decoration {
   }
   .portrait-decoration {
     display: none;
+  }
+  /* A whole standing figure stays on phones, a little smaller. */
+  .portrait-decoration:has(.full-figure) {
+    display: flex;
+    min-height: 0;
+  }
+  .portrait-illustration.full-figure {
+    height: 190px;
   }
   .story-header h2 {
     font-size: 28px;
