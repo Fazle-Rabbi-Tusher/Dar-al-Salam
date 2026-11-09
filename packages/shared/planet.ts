@@ -290,7 +290,15 @@ export const MASSAWA = {
    * west of the town, over the ring road to the coast, and stops `fromMap`
    * tiles short of the quarter.
    */
-  desert: { centre: [-28, 104] as Point, radius: 39, fromMap: 1.5 },
+  desert: {
+    centre: [-28, 104] as Point,
+    radius: 39,
+    fromMap: 1.5,
+    /** Dryness down to which the land is dry grassland, not forest. */
+    grassland: -9,
+    /** Dryness down to which forest trees still thin out. */
+    thinning: -16,
+  },
 };
 /** Distance (tiles) from the town's centre. */
 export const massawaTown = (tile: Point) =>
@@ -315,7 +323,9 @@ export const massawaDryness = (p: Vec3, tile: Point) => {
         d.radius - Math.hypot(tile[0] - d.centre[0], tile[1] - d.centre[1]),
         (mapDistance(tile) - d.fromMap) * 2,
       ) +
-      waveField(p, WILD.waves.coves) * 3;
+      // A ragged, wind-blown outline rather than a circle.
+      waveField(p, WILD.waves.coves) * 3 +
+      waveField(p, WILD.waves.forest) * 5;
   return Math.max(massawaTownDryness(p, tile), wide);
 };
 export const inTown = (p: Vec3, tile: Point) =>
@@ -398,9 +408,20 @@ export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   if (land < WILD.beach) return 'beach';
   if (dry > 0) return 'scrub';
   const d = mapDistance(tile);
-  if (land > 10 && d > 6 && waveField(p, WILD.waves.rock) > WILD.rockAbove)
+  // No mossy rocky hills next to the desert: they start past the grassland.
+  if (
+    land > 10 &&
+    d > 6 &&
+    dry <= MASSAWA.desert.grassland &&
+    waveField(p, WILD.waves.rock) > WILD.rockAbove
+  )
     return 'rock';
-  if (d > 4 && waveField(p, WILD.waves.forest) > WILD.forestAbove)
+  // The forest thins out before the desert: dry grassland in between.
+  if (
+    d > 4 &&
+    dry <= MASSAWA.desert.grassland &&
+    waveField(p, WILD.waves.forest) > WILD.forestAbove
+  )
     return 'forest';
   return 'meadow';
 }
@@ -449,7 +470,8 @@ float massawaTownDryness(vec3 p, vec2 tile) {
 }
 float massawaDryness(vec3 p, vec2 tile) {
   float wide = min(${g(MASSAWA.desert.radius)} - length(tile - DESERT_CENTRE),
-      (mapDistance(tile) - ${g(MASSAWA.desert.fromMap)}) * 2.0) + coveField(p) * 3.0;
+      (mapDistance(tile) - ${g(MASSAWA.desert.fromMap)}) * 2.0) + coveField(p) * 3.0 +
+    forestField(p) * 5.0;
   return max(massawaTownDryness(p, tile), wide);
 }
 bool inPlaza(vec2 tile) { return length(tile - PLAZA_CENTRE) < ${g(MASSAWA.plaza.radius)}; }
@@ -515,14 +537,24 @@ export function wildPlantings(count = 16000): Planting[] {
       roll = hash1(i, 4),
       pick = hash1(i, 5),
       at = (kind: Planting['kind']) => out.push({ kind, p, tile, pick });
+    const dry = massawaDryness(p, tile),
+      M = MASSAWA.desert;
     if (biome === 'forest' && land > 3.4) {
-      if (roll < 0.86) at('forest-tree');
-      else if (roll < 0.94) at('bush');
+      // Near Massawa's desert the trees thin out toward the grassland.
+      const keep = Math.min(
+        1,
+        Math.max(0, (M.grassland - dry) / (M.grassland - M.thinning)),
+      );
+      if (roll < 0.86 * (0.25 + 0.75 * keep)) at('forest-tree');
+      else if (roll < 0.94) at(keep < 1 ? 'desert-shrub' : 'bush');
     } else if (biome === 'meadow' && land > 3.4) {
-      if (roll < 0.1) at('meadow-tree');
-      else if (roll < 0.17) at('bush');
+      // Dry grassland by the desert: flat-topped acacias, not leafy trees.
+      if (roll < 0.1) at(dry > M.grassland ? 'acacia' : 'meadow-tree');
+      else if (roll < 0.17) at(dry > M.grassland ? 'desert-shrub' : 'bush');
     } else if (biome === 'beach') {
-      if (land > 0.8 && land < 2.3 && roll < 0.45) at('palm');
+      // Date palms on the desert's shore, leafy palms elsewhere.
+      if (land > 0.8 && land < 2.3 && dry > 0 && roll < 0.2) at('doum-palm');
+      else if (land > 0.8 && land < 2.3 && dry <= 0 && roll < 0.45) at('palm');
       else if (land > 0.25 && land < 1.4 && roll > 0.9) at('beach-rock');
     } else if (biome === 'rock' && land > 11) {
       if (roll < 0.28) at('boulder');

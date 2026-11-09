@@ -157,6 +157,11 @@ vec3 flower(float h) {
     : k < 0.8 ? vec3(0.961, 0.784, 0.259)
     : vec3(0.659, 0.518, 0.690);
 }
+// Low-frequency patches (about 3 tiles across) for ragged edges.
+float patchSand(vec3 p) {
+  vec3 q = p * ${f(PLANET.radiusTiles / 3)};
+  return sin(q.x * 1.7 + sin(q.y * 1.3)) * 0.5 + sin(q.y * 1.9 - q.z * 1.1 + sin(q.x)) * 0.5;
+}
 // Desert sand: long soft dunes, dithered so they never band into stripes.
 vec3 desertSand(vec3 p, vec2 tile, float h, float h2) {
   float dune = sin(tile.x * 0.55 + tile.y * 0.35 + coveField(p) * 6.0);
@@ -191,11 +196,24 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5 && massawaDryness(p, tile) <= 0.0) {
+  float roadDry = massawaDryness(p, tile);
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5 && roadDry <= 0.0) {
     float along = atan(p.y, p.x) * 140.0;
     float across = p.z / ${f(WILD.roadHalfWidth)};
-    float joint = step(0.92, fract(along)) + step(0.86, abs(across));
-    return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
+    if (roadDry <= ${f(MASSAWA.desert.grassland)}) {
+      float joint = step(0.92, fract(along)) + step(0.86, abs(across));
+      return mix(STONE, STONE_DARK, clamp(joint, 0.0, 1.0));
+    }
+    // Toward Massawa's desert the paving gives way to a sandy track with
+    // two wheel ruts, fading out into the sand.
+    float fade = (roadDry - ${f(MASSAWA.desert.grassland)}) / ${f(-MASSAWA.desert.grassland)};
+    if (h > 1.0 - fade * 0.9 || abs(across) > 0.8 - fade * 0.35) {
+      // Fall through to the grassland round it.
+    } else {
+      float rut = abs(abs(across) - 0.4);
+      if (rut < 0.09 && h > fade * 0.7) return DESERT_DARK;
+      return h > 0.9 ? DESERT_LIGHT : h < 0.12 ? SCRUB_DARK : SCRUB;
+    }
   }
   // Massawa's oasis: a still pool, reeds at its edge, damp sand round it.
   float pool = massawaOasis(tile) + (h - 0.5) * 0.25;
@@ -229,8 +247,13 @@ vec3 wild(vec3 p, vec2 tile) {
     if (lane > 0.55 && h > 0.35) return h > 0.8 ? DESERT : DESERT_DARK;
     return desertSand(p, tile, h, h2);
   }
-  // Open desert round the town: golden sand with fine wind ripples.
+  // Open desert round the town: golden sand with fine wind ripples, and
+  // tufts of dry grass creeping in toward its edge.
   if (dry > ${f(MASSAWA.town.scrub)} && land >= ${f(WILD.beach)}) {
+    float tuftEdge = hash(floor(p * ${f(PLANET.radiusTiles * 5)}));
+    if (dry < ${f(MASSAWA.town.scrub + 4)} &&
+        tuftEdge > 0.9 + (dry - ${f(MASSAWA.town.scrub)}) * 0.025 && h > 0.3)
+      return h > 0.65 ? DRY_GRASS : DRY_GRASS_DARK;
     float ripple = sin((tile.x - tile.y) * 3.1 + coveField(p) * 9.0);
     if (ripple > 0.9 && h > 0.45) return DESERT_LIGHT;
     if (ripple < -0.93 && h > 0.5) return DESERT_DARK;
@@ -239,18 +262,28 @@ vec3 wild(vec3 p, vec2 tile) {
   float edge = land + (h - 0.5) * 0.8;
   if (edge < ${f(WILD.beach)}) {
     if (land < 0.55) return h > 0.93 ? SAND_LIGHT : WET_SAND;
+    // The desert runs down to the sea: its own golden sand, paling by the
+    // water, so there is no band of a different sand at the shore.
+    if (dry > 0.0)
+      return land < 1.2 ? (h > 0.6 ? SAND_LIGHT : DESERT_LIGHT)
+        : desertSand(p, tile, h, h2);
     return h > 0.9 ? SAND_LIGHT : h < 0.07 ? WET_SAND : SAND;
   }
   if (dry > 0.0) {
-    // Thorn scrub: dry earth with tufts of sun-bleached grass.
+    // Thorn scrub: dry earth and drifts of sand with tufts of
+    // sun-bleached grass, the grass thickening away from the desert.
     float tuft = hash(floor(p * ${f(PLANET.radiusTiles * 5)}));
-    if (tuft > 0.82 && h > 0.25) return h > 0.7 ? DRY_GRASS : DRY_GRASS_DARK;
+    float grassy = 0.82 - (${f(MASSAWA.town.scrub)} - dry) * 0.07;
+    if (tuft > grassy && h > 0.25) return h > 0.7 ? DRY_GRASS : DRY_GRASS_DARK;
+    if (patchSand(p) > 0.35 + (${f(MASSAWA.town.scrub)} - dry) * 0.12)
+      return desertSand(p, tile, h, h2);
     if (h2 > 0.985) return DESERT_DARK;
     return tuft < 0.25 ? SCRUB_DARK : h > 0.94 ? DESERT_LIGHT : SCRUB;
   }
   float d = mapDistance(tile), dither = (h - 0.5) * 0.06;
   float rock = rockField(p);
-  if (land > 10.0 && d > 6.0 && rock + dither > ${f(WILD.rockAbove)}) {
+  if (land > 10.0 && d > 6.0 && dry <= ${f(MASSAWA.desert.grassland)} &&
+      rock + dither > ${f(WILD.rockAbove)}) {
     // Rocky hills: mottled stone in clumps, moss in the cracks.
     float clump = hash(floor(p * ${f(PLANET.radiusTiles * 4)}));
     if (rock < ${f(WILD.rockAbove + 0.03)} || h > 0.88) return MOSS;
@@ -258,6 +291,21 @@ vec3 wild(vec3 p, vec2 tile) {
     return clump > 0.66 ? ROCK_LIGHT : clump < 0.22 ? ROCK_DARK : ROCK;
   }
   float patchy = forestField(p) * 0.5 + coveField(p) * 0.25 + (h - 0.5) * 0.35;
+  if (dry > ${f(MASSAWA.desert.grassland)}) {
+    // Dry grassland between the desert and the woods: green giving way to
+    // straw-coloured grass in ragged patches, with the odd bare spot.
+    float t = (dry - ${f(MASSAWA.desert.grassland)}) / ${f(-MASSAWA.desert.grassland)};
+    float patch = patchSand(p) * 0.5 + 0.5;
+    if (patch * 0.8 + (h - 0.5) * 0.3 < t * 1.1) {
+      // Straw grass, with bare sandy earth showing nearest the desert.
+      if (h2 > 1.0 - t * 0.12) return h > 0.5 ? SCRUB : SCRUB_DARK;
+      return patchy > 0.15 ? DRY_GRASS_DARK : DRY_GRASS;
+    }
+    // Green grass yellowing at the tips toward the desert.
+    if (h < t * 0.35) return DRY_GRASS;
+    if (h2 > 0.99) return flower(h2);
+    return patchy > 0.28 ? MEADOW_DARK : patchy < -0.28 ? MEADOW_LIGHT : MEADOW;
+  }
   if (d > 4.0 && forestField(p) + dither > ${f(WILD.forestAbove)}) {
     if (h2 > 0.97) return MOSS;
     return patchy > 0.3 ? FOREST_DARK : patchy < -0.05 ? FOREST_LIGHT : FOREST;
