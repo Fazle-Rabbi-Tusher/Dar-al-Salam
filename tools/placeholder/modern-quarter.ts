@@ -588,9 +588,7 @@ export function modernQuarter() {
    */
   // No back wall (owner's request): the lab is open to the lawn.
   obj('m-board-partition-side', 7.0, 41.5);
-  // Al-Khwārizmī's astrolabe and celestial globe (his character sheet).
-  obj('sup-astrolabe', 9.8, 43.6);
-  obj('sup-globe', 7.2, 45.2);
+  // No astrolabe or globe beside Al-Khwārizmī (owner's request).
   obj('m-model-case-side', 7.05, 48.4);
   obj('m-whiteboard', 15.0, 45.6);
   obj('m-seminar-table', 9.5, 50.6);

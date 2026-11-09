@@ -7,10 +7,9 @@ import sharp from 'sharp';
  * sheet): the turnaround's front (holding a scroll) and back views, the
  * standing reading pose and the gesturing pose become his sprite and
  * animation strips (224×336 frames, feet at 112,320, a slow breath); the
- * close-up face is his card picture; his astrolabe is a lab piece; and the
- * scenes not yet in his gallery join it (gallery 14 onward). Gallery 0–13
- * and the celestial globe came from the earlier sheets (git history). The
- * telescope (invented c. 1608) is left out.
+ * whole front figure is his card picture; and the scenes not yet in his
+ * gallery join it (gallery 14 onward). Gallery 0–13 came from the earlier
+ * sheets (git history). The telescope (invented c. 1608) is left out.
  *
  *   node --import tsx tools/prepare-khwarizmi.ts <character sheet.png>
  */
@@ -206,38 +205,4 @@ for (const [l, t, w, h, ...patches] of scenes) {
     .png({ palette: true, quality: 92 })
     .toFile(`art/gallery/al-khwarizmi/${n++}.png`);
 }
-// The astrolabe for the lab (the globe stays from the earlier sheet).
-const index = JSON.parse(fs.readFileSync('art/supplied/index.json', 'utf8'));
-for (const [id, box, edits, height] of [
-  ['sup-astrolabe', [1400, 695, 100, 120], ['tol=12', 'largest'], 30],
-] as [string, number[], string[], number][]) {
-  const file = `art/supplied/${id}.png`;
-  fs.copyFileSync(cut(id, box, edits), file);
-  const { data, info } = await sharp(file)
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  let bottom = 0,
-    sx = 0,
-    c = 0;
-  for (let y = 0; y < info.height; y++)
-    for (let x = 0; x < info.width; x++)
-      if (data[(y * info.width + x) * 4 + 3]) bottom = y;
-  for (let y = bottom - 4; y <= bottom; y++)
-    for (let x = 0; x < info.width; x++)
-      if (data[(y * info.width + x) * 4 + 3]) {
-        sx += x;
-        c++;
-      }
-  index[id] = {
-    file: `supplied/${id}.png`,
-    anchor: [Math.round(sx / c), bottom],
-    density: +(info.height / height).toFixed(3),
-    source:
-      'Owner-supplied Al-Khwārizmī character sheet (2026-11, third sheet), cut by tools/prepare-khwarizmi.ts',
-  };
-}
-fs.writeFileSync(
-  'art/supplied/index.json',
-  JSON.stringify(index, null, 2) + '\n',
-);
 console.log('done');
