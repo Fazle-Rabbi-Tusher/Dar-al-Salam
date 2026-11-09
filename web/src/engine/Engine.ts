@@ -26,6 +26,7 @@ import {
   RADIUS_PX,
   WILD,
   WILD_GLSL,
+  MASSAWA,
   fitZoom,
   focusFromWorld,
   frame as planetFrame,
@@ -122,6 +123,17 @@ const vec3 ROCK_DARK = vec3(0.373, 0.420, 0.459);
 const vec3 MOSS = vec3(0.431, 0.549, 0.306);
 const vec3 STONE = vec3(0.843, 0.863, 0.824);
 const vec3 STONE_DARK = vec3(0.710, 0.765, 0.729);
+const vec3 DESERT = vec3(0.890, 0.788, 0.612);
+const vec3 DESERT_LIGHT = vec3(0.945, 0.871, 0.722);
+const vec3 DESERT_DARK = vec3(0.808, 0.690, 0.506);
+const vec3 SALT = vec3(0.953, 0.961, 0.949);
+const vec3 SALT_SHADE = vec3(0.855, 0.890, 0.902);
+const vec3 BRINE = vec3(0.722, 0.835, 0.851);
+const vec3 SALT_BANK = vec3(0.706, 0.643, 0.533);
+const vec3 SALT_BANK_LIGHT = vec3(0.796, 0.737, 0.627);
+const vec3 CORAL = vec3(0.863, 0.800, 0.663);
+const vec3 CORAL_LIGHT = vec3(0.925, 0.878, 0.769);
+const vec3 CORAL_DARK = vec3(0.663, 0.584, 0.463);
 float hash(vec3 q) {
   return fract(sin(dot(q, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
 }
@@ -159,7 +171,29 @@ vec3 wild(vec3 p, vec2 tile) {
     if (depth > 3.0 && h2 > 0.996 && sin(t * 8.0 + h * 40.0) > 0.6) col = FOAM;
     return col;
   }
-  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5) {
+  // Old Massawa: salt pans, the coral-stone causeway, desert sand.
+  if (inSaltPans(tile)) {
+    vec2 q = tile - vec2(${f(MASSAWA.salt.x0)}, ${f(MASSAWA.salt.y0)});
+    vec2 cellq = fract(q / vec2(2.6, 2.0));
+    if (cellq.x < 0.09 || cellq.y < 0.11) return h > 0.6 ? SALT_BANK_LIGHT : SALT_BANK;
+    float pan = hash(vec3(floor(q / vec2(2.6, 2.0)), 3.0));
+    if (pan < 0.2) return h > 0.85 ? SALT : BRINE;
+    return h > 0.82 ? SALT_SHADE : h < 0.12 ? SALT_SHADE : SALT;
+  }
+  if (causewayDistance(tile) <= ${f(MASSAWA.causeway.halfWidth)} &&
+      massawaIsland(tile) > ${f(MASSAWA.island.radius - 1.5)}) {
+    float along = fract(tile.y * 1.6), across = causewayDistance(tile);
+    if (across > ${f(MASSAWA.causeway.halfWidth - 0.14)}) return CORAL_DARK;
+    return along < 0.08 ? CORAL_DARK : h > 0.8 ? CORAL_LIGHT : CORAL;
+  }
+  if (massawaIsland(tile) < ${f(MASSAWA.island.radius + 1.2)} || inFlats(tile)) {
+    if (land < 1.0) return h > 0.9 ? SAND_LIGHT : WET_SAND;
+    // Dune ripples and wind-blown specks in the dry sand.
+    float ripple = sin(tile.x * 2.3 + tile.y * 4.1 + coveField(p) * 5.0);
+    if (ripple > 0.86 && h > 0.3) return DESERT_DARK;
+    return h > 0.93 ? DESERT_LIGHT : h < 0.06 ? DESERT_DARK : DESERT;
+  }
+  if (abs(p.z) < ${f(WILD.roadHalfWidth)} && land > 0.5 && !inCalm(tile)) {
     float along = atan(p.y, p.x) * 140.0;
     float across = p.z / ${f(WILD.roadHalfWidth)};
     float joint = step(0.92, fract(along)) + step(0.86, abs(across));

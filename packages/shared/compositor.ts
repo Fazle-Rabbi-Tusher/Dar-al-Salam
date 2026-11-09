@@ -156,7 +156,9 @@ export function compose(
     includeShadow &&
     look.base !== 'bird' &&
     look.base !== 'ball' &&
-    !VEHICLES.includes(look.base)
+    !VEHICLES.includes(look.base) &&
+    look.base !== 'fish' &&
+    look.base !== 'pelican'
   )
     result.ellipse(ax, ay - 1, look.base === 'cat' ? 7 : 8, 2.5, [
       ...rgb(palette.shadow).slice(0, 3),

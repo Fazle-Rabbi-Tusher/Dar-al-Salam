@@ -84,7 +84,7 @@ export function scriptErrors(c: Character, room?: Room) {
     if (s.path) {
       const len = pathLength(s.path);
       if (
-        ['walk', 'carry', 'cat_walk'].includes(s.action) &&
+        ['walk', 'carry', 'cat_walk', 'animal_walk'].includes(s.action) &&
         len / (s.to - s.from) > 0.25
       )
         errors.push(`step ${i}: speed exceeds 1 tile / 4 frames`);
@@ -93,7 +93,9 @@ export function scriptErrors(c: Character, room?: Room) {
         collision?.type === 'tilelayer' &&
         c.kind !== 'bird' &&
         c.kind !== 'ball' &&
-        c.kind !== 'vehicle'
+        c.kind !== 'vehicle' &&
+        // Massawa's animals live outside the mapped rooms.
+        c.kind !== 'animal'
       ) {
         for (let j = 0; j <= Math.ceil(len * 16); j++) {
           const p = sampleStep(s, j / Math.max(1, Math.ceil(len * 16))).tile,

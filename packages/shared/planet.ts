@@ -267,8 +267,70 @@ export const WILD = {
   /** Islands rise where the island field exceeds this, far from the coast. */
   islandAbove: 0.52,
 };
+/*
+ * Old Massawa (Red Sea port, the Mosque of the Companions): an island town
+ * about 30 tiles south of the quarter, a coral-stone causeway to the
+ * mainland, and salt pans on the mainland flats. Tile coordinates, outside
+ * the mapped rooms. Nothing here is a room: its art is planted by the build.
+ */
+export const MASSAWA = {
+  island: { centre: [72, 157] as Point, radius: 8.5 },
+  causeway: {
+    from: [69.5, 150] as Point,
+    to: [69.5, 139] as Point,
+    halfWidth: 0.75,
+  },
+  salt: { x0: 50, y0: 129, x1: 63, y1: 137 },
+  /** Sandy mainland flats around the salt pans and the causeway's landing. */
+  flats: { x0: 46, y0: 127, x1: 76, y1: 141 },
+  /** The ring road is not drawn within this disc (tiles). */
+  calm: { centre: [70, 150] as Point, radius: 17 },
+};
+function segmentDistance(t: Point, a: Point, b: Point) {
+  const vx = b[0] - a[0],
+    vy = b[1] - a[1],
+    k = Math.max(
+      0,
+      Math.min(
+        1,
+        ((t[0] - a[0]) * vx + (t[1] - a[1]) * vy) / (vx * vx + vy * vy),
+      ),
+    );
+  return Math.hypot(t[0] - a[0] - vx * k, t[1] - a[1] - vy * k);
+}
+export const massawaIsland = (tile: Point) =>
+  Math.hypot(
+    tile[0] - MASSAWA.island.centre[0],
+    tile[1] - MASSAWA.island.centre[1],
+  );
+export const causewayDistance = (tile: Point) =>
+  segmentDistance(tile, MASSAWA.causeway.from, MASSAWA.causeway.to);
+export const inSaltPans = (tile: Point) =>
+  tile[0] >= MASSAWA.salt.x0 &&
+  tile[0] <= MASSAWA.salt.x1 &&
+  tile[1] >= MASSAWA.salt.y0 &&
+  tile[1] <= MASSAWA.salt.y1;
+export const inFlats = (tile: Point) =>
+  tile[0] >= MASSAWA.flats.x0 &&
+  tile[0] <= MASSAWA.flats.x1 &&
+  tile[1] >= MASSAWA.flats.y0 &&
+  tile[1] <= MASSAWA.flats.y1;
+const inCalm = (tile: Point) =>
+  Math.hypot(
+    tile[0] - MASSAWA.calm.centre[0],
+    tile[1] - MASSAWA.calm.centre[1],
+  ) < MASSAWA.calm.radius;
 export type Biome =
-  'sea' | 'shallows' | 'beach' | 'meadow' | 'forest' | 'rock' | 'road';
+  | 'sea'
+  | 'shallows'
+  | 'beach'
+  | 'meadow'
+  | 'forest'
+  | 'rock'
+  | 'road'
+  | 'desert'
+  | 'salt'
+  | 'causeway';
 /** A smooth field in [-1, 1]: a weighted sum of sine waves over the sphere. */
 export function waveField(p: Vec3, waves: Wave[]) {
   let sum = 0,
@@ -308,13 +370,29 @@ export function landField(p: Vec3, tile: Point = planetToTile(p)) {
       d > shoreDistance(p) + 12
         ? (waveField(p, WILD.waves.islands) - WILD.islandAbove) * 70
         : -Infinity;
-  return Math.max(coast, island);
+  // Massawa: the island town, its causeway and the flat salt pans.
+  const town =
+      MASSAWA.island.radius -
+      massawaIsland(tile) +
+      waveField(p, WILD.waves.coves) * 1.2,
+    causeway = (MASSAWA.causeway.halfWidth - causewayDistance(tile)) * 2.4,
+    salt = inSaltPans(tile) ? 3 : -Infinity;
+  return Math.max(coast, island, town, causeway, salt);
 }
 export function wildAt(p: Vec3, tile: Point = planetToTile(p)): Biome {
   const land = landField(p, tile);
   if (land < -WILD.shallows) return 'sea';
   if (land < 0) return 'shallows';
-  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5) return 'road';
+  if (inSaltPans(tile)) return 'salt';
+  if (
+    causewayDistance(tile) <= MASSAWA.causeway.halfWidth &&
+    massawaIsland(tile) > MASSAWA.island.radius - 1.5
+  )
+    return 'causeway';
+  if (massawaIsland(tile) < MASSAWA.island.radius + 1.2 || inFlats(tile))
+    return land < 1 ? 'beach' : 'desert';
+  if (Math.abs(p[2]) < WILD.roadHalfWidth && land > 0.5 && !inCalm(tile))
+    return 'road';
   if (land < WILD.beach) return 'beach';
   const d = mapDistance(tile);
   if (land > 10 && d > 6 && waveField(p, WILD.waves.rock) > WILD.rockAbove)
@@ -357,10 +435,32 @@ float shoreDistance(vec3 p) {
   float r = ${g(WILD.coast.near)} + ${g(WILD.coast.far - WILD.coast.near)} * smoothstep(0.15, 0.85, toward);
   return max(${g(WILD.coast.minimum)}, r + ${g(WILD.coast.coves)} * coveField(p));
 }
+const vec2 MASSAWA_ISLAND = vec2(${g(MASSAWA.island.centre[0])}, ${g(MASSAWA.island.centre[1])});
+const vec2 CAUSEWAY_A = vec2(${g(MASSAWA.causeway.from[0])}, ${g(MASSAWA.causeway.from[1])});
+const vec2 CAUSEWAY_B = vec2(${g(MASSAWA.causeway.to[0])}, ${g(MASSAWA.causeway.to[1])});
+const vec2 CALM = vec2(${g(MASSAWA.calm.centre[0])}, ${g(MASSAWA.calm.centre[1])});
+float massawaIsland(vec2 tile) { return length(tile - MASSAWA_ISLAND); }
+float causewayDistance(vec2 tile) {
+  vec2 v = CAUSEWAY_B - CAUSEWAY_A;
+  float k = clamp(dot(tile - CAUSEWAY_A, v) / dot(v, v), 0.0, 1.0);
+  return length(tile - CAUSEWAY_A - v * k);
+}
+bool inSaltPans(vec2 tile) {
+  return tile.x >= ${g(MASSAWA.salt.x0)} && tile.x <= ${g(MASSAWA.salt.x1)} &&
+    tile.y >= ${g(MASSAWA.salt.y0)} && tile.y <= ${g(MASSAWA.salt.y1)};
+}
+bool inFlats(vec2 tile) {
+  return tile.x >= ${g(MASSAWA.flats.x0)} && tile.x <= ${g(MASSAWA.flats.x1)} &&
+    tile.y >= ${g(MASSAWA.flats.y0)} && tile.y <= ${g(MASSAWA.flats.y1)};
+}
+bool inCalm(vec2 tile) { return length(tile - CALM) < ${g(MASSAWA.calm.radius)}; }
 float landField(vec3 p, vec2 tile) {
   float d = mapDistance(tile), shore = shoreDistance(p);
   float land = shore - d;
   if (d > shore + 12.0) land = max(land, (islandField(p) - ${g(WILD.islandAbove)}) * 70.0);
+  land = max(land, ${g(MASSAWA.island.radius)} - massawaIsland(tile) + coveField(p) * 1.2);
+  land = max(land, (${g(MASSAWA.causeway.halfWidth)} - causewayDistance(tile)) * 2.4);
+  if (inSaltPans(tile)) land = max(land, 3.0);
   return land;
 }`;
 
