@@ -220,7 +220,7 @@ export function worldFromFocus(lat: number, lon: number): Point {
  * few islands on the far side and the old ring road where it crosses land.
  * Everything is a deterministic function of the planet point (sums of sine
  * waves), shared by the ground shader (WILD_GLSL, compiled from the same
- * constants) and the build, which plants trees, rocks, waterfalls and ships
+ * constants) and the build, which plants trees, rocks and desert pieces
  * only where the biome allows, so nothing ever stands in the water.
  */
 type Wave = [number, number, number, number, number, number];
@@ -564,13 +564,12 @@ const fract = (x: number) => x - Math.floor(x);
 const hash1 = (i: number, k: number) =>
   fract(Math.sin(i * 12.9898 + k * 78.233) * 43758.5453);
 /**
- * Where to plant trees, rocks, waterfalls and ships: a dense Fibonacci
+ * Where to plant trees, rocks and desert pieces: a dense Fibonacci
  * lattice over the sphere, thinned per biome. Pure and deterministic.
  */
 export function wildPlantings(count = 16000): Planting[] {
   const out: Planting[] = [],
     golden = Math.PI * (3 - Math.sqrt(5));
-  const rockSpots: Planting[] = [];
   for (let i = 0; i < count; i++) {
     const y = 1 - ((i + 0.5) / count) * 2,
       r = Math.sqrt(1 - y * y),
@@ -627,35 +626,9 @@ export function wildPlantings(count = 16000): Planting[] {
       if (roll < 0.13) at('acacia');
       else if (roll < 0.19) at('doum-palm');
     }
-    // Waterfalls only where water can go: a cliff just behind the shore,
-    // high ground behind it and the sea in front (to the south, which is
-    // toward the viewer under a north-up camera), so the falls' pool spills
-    // into the sea. Never near Massawa's desert (owner's request).
-    if (
-      (biome === 'forest' || biome === 'meadow') &&
-      land > 2.8 &&
-      land < 4.5 &&
-      dry < -90 &&
-      roll > 0.6
-    ) {
-      const { lat, lon } = latLon(p),
-        step = 3 / PLANET.radiusTiles,
-        south = fromLatLon(lat - step, lon),
-        north = fromLatLon(lat + step * 2, lon);
-      if (landField(south) < -1.5 && landField(north) > 7)
-        rockSpots.push({ kind: 'waterfall', p, tile, pick });
-    }
   }
-  // A few waterfalls and ships, spread apart, nearest to the quarter first.
-  const spread = (spots: Planting[], n: number, gap: number) => {
-    spots.sort((a, b) => mapDistance(a.tile) - mapDistance(b.tile));
-    const chosen: Planting[] = [];
-    for (const s of spots)
-      if (chosen.length < n && chosen.every((c) => arc(c.p, s.p) > gap))
-        chosen.push(s);
-    return chosen;
-  };
-  // Ships are no longer planted: they sail (content/ambient/world-life.json).
-  out.push(...spread(rockSpots, 4, 0.3));
+  // No waterfalls (owner's request: the world has no rivers or mountains
+  // for them to fall from, so they looked random) and no planted ships
+  // (they sail: content/ambient/world-life.json).
   return out;
 }
