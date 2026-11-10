@@ -509,11 +509,13 @@ async function build() {
           facing,
         );
         if (strip) {
-          const n = ACTIONS[s.action],
+          // Every supplied pose plays, at the action's tempo (an eight-pose
+          // reading strip is not cut down to the four-pose default).
+          const n = strip.frames.length,
             tempo = stripTempo(s.action);
           if (strip.flip) mirror.push(key);
           for (let f = 0; f < n; f++) {
-            const fr = strip.frames[Math.floor((f * strip.frames.length) / n)];
+            const fr = strip.frames[f];
             frames[key].push(
               register(fr.image, fr.anchor, strip.density, true, false, tempo),
             );

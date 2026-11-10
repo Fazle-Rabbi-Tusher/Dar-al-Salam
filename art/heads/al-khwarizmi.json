@@ -321,7 +321,7 @@
       "duration": 83
     },
     {
-      "filename": "talk_SE_0",
+      "filename": "walk_SE_0",
       "frame": {
         "x": 0,
         "y": 0,
@@ -341,27 +341,7 @@
       "duration": 83
     },
     {
-      "filename": "talk_SE_1",
-      "frame": {
-        "x": 130,
-        "y": 0,
-        "w": 26,
-        "h": 32
-      },
-      "spriteSourceSize": {
-        "x": 46,
-        "y": 28,
-        "w": 26,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "talk_SE_2",
+      "filename": "walk_SE_1",
       "frame": {
         "x": 0,
         "y": 0,
@@ -369,7 +349,47 @@
         "h": 32
       },
       "spriteSourceSize": {
-        "x": 46,
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_3",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
         "y": 24,
         "w": 26,
         "h": 32
@@ -381,7 +401,167 @@
       "duration": 83
     },
     {
-      "filename": "talk_SE_3",
+      "filename": "walk_SE_4",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_SE_5",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 28,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_0",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 24,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_1",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_2",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_3",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 24,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_4",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "walk_NE_5",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 28,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "write_SE_0",
       "frame": {
         "x": 130,
         "y": 0,
@@ -390,7 +570,7 @@
       },
       "spriteSourceSize": {
         "x": 44,
-        "y": 28,
+        "y": 52,
         "w": 26,
         "h": 32
       },
@@ -401,7 +581,67 @@
       "duration": 83
     },
     {
-      "filename": "talk_NE_0",
+      "filename": "write_SE_1",
+      "frame": {
+        "x": 130,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 52,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "write_SE_2",
+      "frame": {
+        "x": 130,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 54,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "write_SE_3",
+      "frame": {
+        "x": 130,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 54,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "write_NE_0",
       "frame": {
         "x": 52,
         "y": 0,
@@ -410,7 +650,7 @@
       },
       "spriteSourceSize": {
         "x": 42,
-        "y": 24,
+        "y": 54,
         "w": 26,
         "h": 30
       },
@@ -421,47 +661,7 @@
       "duration": 83
     },
     {
-      "filename": "talk_NE_1",
-      "frame": {
-        "x": 52,
-        "y": 0,
-        "w": 26,
-        "h": 30
-      },
-      "spriteSourceSize": {
-        "x": 44,
-        "y": 28,
-        "w": 26,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "talk_NE_2",
-      "frame": {
-        "x": 52,
-        "y": 0,
-        "w": 26,
-        "h": 30
-      },
-      "spriteSourceSize": {
-        "x": 44,
-        "y": 24,
-        "w": 26,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 112,
-        "h": 168
-      },
-      "duration": 83
-    },
-    {
-      "filename": "talk_NE_3",
+      "filename": "write_NE_1",
       "frame": {
         "x": 52,
         "y": 0,
@@ -470,7 +670,207 @@
       },
       "spriteSourceSize": {
         "x": 42,
-        "y": 28,
+        "y": 54,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "write_NE_2",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 58,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "write_NE_3",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 58,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_SE_0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 76,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_SE_1",
+      "frame": {
+        "x": 156,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 78,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_SE_2",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 76,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_SE_3",
+      "frame": {
+        "x": 156,
+        "y": 0,
+        "w": 26,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 78,
+        "w": 26,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_NE_0",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 76,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_NE_1",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 78,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_NE_2",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 76,
+        "w": 26,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 168
+      },
+      "duration": 83
+    },
+    {
+      "filename": "teach_NE_3",
+      "frame": {
+        "x": 52,
+        "y": 0,
+        "w": 26,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 78,
         "w": 26,
         "h": 30
       },
@@ -484,7 +884,7 @@
   "meta": {
     "image": "al-khwarizmi.png",
     "size": {
-      "w": 156,
+      "w": 182,
       "h": 32
     },
     "density": 2,
@@ -510,14 +910,34 @@
         "to": 15
       },
       {
-        "name": "talk_se",
+        "name": "walk_se",
         "from": 16,
-        "to": 19
+        "to": 21
       },
       {
-        "name": "talk_ne",
-        "from": 20,
-        "to": 23
+        "name": "walk_ne",
+        "from": 22,
+        "to": 27
+      },
+      {
+        "name": "write_se",
+        "from": 28,
+        "to": 31
+      },
+      {
+        "name": "write_ne",
+        "from": 32,
+        "to": 35
+      },
+      {
+        "name": "teach_se",
+        "from": 36,
+        "to": 39
+      },
+      {
+        "name": "teach_ne",
+        "from": 40,
+        "to": 43
       }
     ],
     "slices": [

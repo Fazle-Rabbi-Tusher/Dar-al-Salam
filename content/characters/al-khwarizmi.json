@@ -18,35 +18,73 @@
     "prop": "book",
     "colours": {
       "skin": "skin-4",
-      "hair": "hair-black",
-      "garmentPrimary": "indigo",
-      "garmentSecondary": "white-linen",
+      "hair": "hair-grey",
+      "garmentPrimary": "cocoa",
+      "garmentSecondary": "brass",
       "headwear": "white-linen",
       "prop": "madder-red"
     }
   },
-  "loop": 120,
+  "loop": 240,
   "script": [
     {
       "from": 0,
-      "to": 40,
-      "action": "idle",
-      "at": [8.3, 44.0],
-      "facing": "SE"
-    },
-    {
-      "from": 40,
-      "to": 80,
+      "to": 48,
       "action": "read",
-      "at": [8.3, 44.0],
+      "at": [8.3, 44],
       "facing": "SE"
     },
     {
-      "from": 80,
-      "to": 120,
-      "action": "talk",
-      "at": [8.3, 44.0],
+      "from": 48,
+      "to": 64,
+      "action": "walk",
+      "path": [
+        [8.3, 44],
+        [8.4, 45.3]
+      ],
+      "easing": "smoothstep"
+    },
+    {
+      "from": 64,
+      "to": 112,
+      "action": "write",
+      "at": [8.4, 45.3],
+      "facing": "SW"
+    },
+    {
+      "from": 112,
+      "to": 144,
+      "action": "walk",
+      "path": [
+        [8.4, 45.3],
+        [8.6, 44.4],
+        [12.2, 44.4]
+      ],
+      "easing": "smoothstep"
+    },
+    {
+      "from": 144,
+      "to": 192,
+      "action": "teach",
+      "at": [12.2, 44.4],
+      "facing": "SW"
+    },
+    {
+      "from": 192,
+      "to": 208,
+      "action": "idle",
+      "at": [12.2, 44.4],
       "facing": "SE"
+    },
+    {
+      "from": 208,
+      "to": 240,
+      "action": "walk",
+      "path": [
+        [12.2, 44.4],
+        [8.3, 44]
+      ],
+      "easing": "smoothstep"
     }
   ],
   "bio": {
