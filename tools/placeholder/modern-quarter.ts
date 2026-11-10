@@ -264,15 +264,12 @@ export function modernQuarter() {
   obj('m-shoe-rack', 12, 19.6);
   obj('m-desk-plant', 7.3, 7.3);
   obj('m-bookshelf', 16.2, 7.05);
-  // A small gathering listening to Mufti Ismail Menk's talk (facing him).
-  for (let i = 0; i < 3; i++)
-    person(
-      `listener-${i}`,
-      [11.05 + i * 1.65, 13.4],
-      'read',
-      withProp(i === 1 ? woman() : man(), 'none'),
-      'NE',
-    );
+  // Mufti Ismail Menk's talk (the owner's speech-scene pack): his lectern
+  // and two recording cameras. The eight seated listeners are in
+  // content/ambient/menk-speech.json (tools/prepare-menk-speech.ts).
+  obj('sup-menk-lectern', 12.35, 11.05);
+  obj('sup-menk-camera', 11, 12.5);
+  obj('sup-menk-camera', 14.1, 12.6);
   // Study circle: Habib Umar bin Hafiz teaches; the students face him.
   (
     [

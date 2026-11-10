@@ -137,6 +137,25 @@ export const landmarkSchema = z.object({
   panelApproved: z.boolean().optional(),
 });
 export type Landmark = z.infer<typeof landmarkSchema>;
+/**
+ * A scene shown as one group, as on Floor796: hovering or clicking any of its
+ * people or props lights them all up together under one caption, and a click
+ * opens the lead's story card with the whole scene in view.
+ */
+export const sceneSchema = z.object({
+  id: z.string().min(1),
+  /** Caption over the highlighted group, per language. */
+  title: z.record(z.string()),
+  /** Named character whose card a click opens. */
+  lead: z.string(),
+  /** Every character in the scene, the lead included. */
+  members: z.array(z.string()).min(1),
+  /** Room object types that belong to the scene, inside `area`. */
+  props: z.array(z.string()).default([]),
+  /** Tile rectangle [[x0, y0], [x1, y1]] holding the scene's props. */
+  area: z.tuple([pointSchema, pointSchema]),
+});
+export type Scene = z.infer<typeof sceneSchema>;
 export const objectSchema = z.object({
   id: z.number(),
   type: z.string(),
@@ -214,6 +233,8 @@ export const bakedCharacterSchema = characterSchema.extend({
    * matching the way the figure heads and steps through its frames.
    */
   dir8: z.record(z.array(z.array(z.string()).min(1)).length(8)).optional(),
+  /** Scene this figure belongs to (content/scenes): highlighted together. */
+  scene: z.string().optional(),
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({
@@ -235,6 +256,8 @@ export const sortableSchema = z.object({
   lift: z.number().default(0),
   /** Landmark id: clicking this sprite opens that landmark's card. */
   landmark: z.string().optional(),
+  /** Scene this prop belongs to (content/scenes): highlighted with its people. */
+  scene: z.string().optional(),
 });
 export type Sortable = z.infer<typeof sortableSchema>;
 export const manifestSchema = z.object({
@@ -258,6 +281,7 @@ export const manifestSchema = z.object({
       }),
     )
     .default([]),
+  scenes: z.array(sceneSchema).default([]),
   i18n: z.record(z.string()),
   buildHash: z.string(),
   room: roomSchema,

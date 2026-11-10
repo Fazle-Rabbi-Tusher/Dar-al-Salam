@@ -662,5 +662,30 @@
     ],
     "density": 2,
     "source": "Owner-supplied world rework export (2026-11), art/landscape, copied by tools/prepare-world-life.ts"
+  },
+  "sup-menk-lectern": {
+    "file": "supplied/menk-lectern.png",
+    "anchor": [
+      106,
+      243
+    ],
+    "density": 4.8,
+    "source": "Owner-supplied Mufti Menk speech-scene pack (2026-11), copied by tools/prepare-menk-speech.ts"
+  },
+  "sup-menk-camera": {
+    "file": "supplied/menk-camera-0.png",
+    "frames": [
+      "supplied/menk-camera-0.png",
+      "supplied/menk-camera-1.png",
+      "supplied/menk-camera-2.png",
+      "supplied/menk-camera-3.png"
+    ],
+    "period": 120,
+    "anchor": [
+      80,
+      215
+    ],
+    "density": 4,
+    "source": "Owner-supplied Mufti Menk speech-scene pack (2026-11), copied by tools/prepare-menk-speech.ts"
   }
 }

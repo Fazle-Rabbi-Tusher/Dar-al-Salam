@@ -708,11 +708,25 @@ describe('scene bible: cricket ground', () => {
 
 describe('main characters only, with supplied animation strips', () => {
   it('keeps no background people: only named characters, balls, vehicles and animals', () => {
-    // The owner asked for one exception (2026-11): Massawa's caravan guide.
+    // The owner asked for exceptions (2026-11): Massawa's caravan guide and
+    // the eight seated listeners at Mufti Menk's talk.
     const allowed = new Set(['amb-msw-guide']);
     for (const c of content.characters)
-      if (!c.name && !allowed.has(c.id))
+      if (!c.name && !allowed.has(c.id) && !/^menk-speech-listener-/.test(c.id))
         expect(c.kind, c.id).not.toBe('person');
+    const listeners = content.characters.filter((c) =>
+      c.id.startsWith('menk-speech-listener-'),
+    );
+    expect(listeners).toHaveLength(8);
+    for (const c of listeners) {
+      // Seen from behind, seated, facing the speaker (back views: NE/NW only).
+      expect(c.depiction, c.id).toBe('back');
+      for (const s of c.script) {
+        expect(s.action, c.id).toBe('sit');
+        expect(s.path, c.id).toBeUndefined();
+        expect(['NE', 'NW'], c.id).toContain(s.facing);
+      }
+    }
     const ids = new Set(content.characters.map((c) => c.id));
     for (const c of content.characters)
       if (c.pairWith) expect(ids.has(c.pairWith), c.id).toBe(true);

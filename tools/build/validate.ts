@@ -5,9 +5,11 @@ import {
   characterSchema,
   landmarkSchema,
   roomSchema,
+  sceneSchema,
   type Character,
   type Landmark,
   type Room,
+  type Scene,
 } from '../../packages/shared/schema';
 import { forbiddenName, type Rules } from '../../packages/shared/rules';
 import { scriptErrors } from '../../packages/shared/script';
@@ -181,5 +183,29 @@ export async function loadContent() {
     ids.add(l.id);
     landmarks.push(l);
   }
-  return { keys, ramps, palette, rules, wardrobe, characters, room, landmarks };
+  // Scenes (Floor796-style groups): every member and the lead must exist,
+  // and the lead must be a named character with a card to open.
+  const scenes: Scene[] = [];
+  for (const p of await files('content/scenes', '.json').catch(() => [])) {
+    const sc = sceneSchema.parse(await readJson(p));
+    for (const m of [sc.lead, ...sc.members])
+      if (!characters.some((c) => c.id === m))
+        throw Error(`Scene ${sc.id}: unknown member ${m}`);
+    if (!characters.find((c) => c.id === sc.lead)?.name)
+      throw Error(`Scene ${sc.id}: lead ${sc.lead} has no card`);
+    if (!sc.members.includes(sc.lead))
+      throw Error(`Scene ${sc.id}: the lead must be a member`);
+    scenes.push(sc);
+  }
+  return {
+    keys,
+    ramps,
+    palette,
+    rules,
+    wardrobe,
+    characters,
+    room,
+    landmarks,
+    scenes,
+  };
 }

@@ -55,6 +55,8 @@ TextureStyle.defaultOptions.scaleMode = 'nearest';
 type EventMap = {
   characterClick: string;
   characterHover: string | null;
+  /** Screen box (CSS px) of the highlighted scene, or null when none. */
+  sceneBox: { id: string; x: number; y: number; w: number; h: number } | null;
   cameraChange: Camera;
   progress: number;
   stats: { fps: number; draws: number; frame: number; visible: number };
@@ -387,6 +389,10 @@ export class Engine {
   private zoomIdle = 0;
   private hover: string | null = null;
   private selected: string | null = null;
+  /** Scene lit up by the pointer (content/scenes), if any. */
+  private hoverScene: string | null = null;
+  private sceneGlow = new Graphics();
+  private lastSceneBox = '';
   private inspector = false;
   private flight: {
     from: ViewState;
@@ -673,14 +679,108 @@ export class Engine {
       (c) => c.id === id && c.interactive,
     );
     if (!c) return;
-    const s = characterState(c, this.frame);
     this.selected = id;
+    if (c.scene) {
+      this.frameScene(c.scene);
+      return;
+    }
+    const s = characterState(c, this.frame);
     const [x, y] = worldFromTile(...s.tile);
     this.flyTo({ x, y, zoom: Math.max(2, this.view.zoom) }, 700);
   }
   clearSelection() {
     this.selected = null;
     this.dirty = true;
+  }
+  /** The scene a character (or a scene prop's lead) belongs to. */
+  private sceneOf(id: string | null) {
+    return (id && this.live.get(id)?.character.scene) || null;
+  }
+  /** Fly to show a whole scene: every member and prop, heads included. */
+  private frameScene(id: string) {
+    const scene = this.manifest?.scenes.find((s) => s.id === id);
+    if (!scene || !this.manifest) return;
+    const points: [number, number][] = [];
+    for (const c of this.manifest.characters)
+      if (c.scene === id)
+        points.push(worldFromTile(...characterState(c, this.frame).tile));
+    for (const s of this.manifest.sortables)
+      if (s.scene === id) points.push(worldFromTile(...s.tile));
+    if (!points.length) return;
+    const xs = points.map((p) => p[0]),
+      ys = points.map((p) => p[1]);
+    // Figures stand up to ~80 world px above their feet.
+    const left = Math.min(...xs) - 30,
+      right = Math.max(...xs) + 30,
+      top = Math.min(...ys) - 80,
+      bottom = Math.max(...ys) + 10;
+    // On phones the story card is a bottom sheet (style.css, ≤700px), so
+    // the scene fits in the strip above it instead of the whole screen.
+    const w = this.host.clientWidth,
+      h = this.host.clientHeight,
+      phone = w <= 700,
+      fit = Math.min(
+        (w * (phone ? 0.92 : 0.8)) / (right - left),
+        (h * (phone ? 0.2 : 0.75)) / (bottom - top),
+      ),
+      zoom = Math.max(phone ? 0.8 : 1.2, Math.min(3, fit));
+    this.flyTo(
+      {
+        x: (left + right) / 2,
+        // Phones: the scene's middle a quarter of the way down, under the
+        // top buttons with room for its caption.
+        y: (top + bottom) / 2 + (phone ? (0.5 - 0.25) * (h / zoom) : 20),
+        zoom,
+      },
+      700,
+    );
+  }
+  /**
+   * Floor796-style group highlight: a soft light box over every member and
+   * prop of the hovered (or selected) scene; the page adds the caption.
+   */
+  private drawSceneGlow() {
+    const g = this.sceneGlow;
+    if (!g.parent) this.highlight.addChild(g);
+    g.clear();
+    const id = this.hoverScene ?? this.sceneOf(this.selected);
+    let box = '';
+    if (id) {
+      let x0 = Infinity,
+        y0 = Infinity,
+        x1 = -Infinity,
+        y1 = -Infinity;
+      const grow = (sprite: Sprite) => {
+        if (!sprite.visible || !sprite.parent) return;
+        const b = sprite.getBounds();
+        x0 = Math.min(x0, b.minX);
+        y0 = Math.min(y0, b.minY);
+        x1 = Math.max(x1, b.maxX);
+        y1 = Math.max(y1, b.maxY);
+      };
+      for (const i of this.live.values())
+        if (i.character.scene === id) grow(i.sprite);
+      for (const s of this.statics) if (s.sortable.scene === id) grow(s.sprite);
+      if (x1 > x0) {
+        const pad = 6,
+          a = this.highlight.toLocal({ x: x0 - pad, y: y0 - pad }),
+          b = this.highlight.toLocal({ x: x1 + pad, y: y1 + pad });
+        g.roundRect(a.x, a.y, b.x - a.x, b.y - a.y, 6)
+          .fill({ color: 0xffffff, alpha: 0.22 })
+          .stroke({ color: 0xffffff, alpha: 0.85, width: 1.5 });
+        box = JSON.stringify({
+          id,
+          x: Math.round(x0 - pad),
+          y: Math.round(y0 - pad),
+          w: Math.round(x1 - x0 + pad * 2),
+          h: Math.round(y1 - y0 + pad * 2),
+        });
+      }
+    }
+    if (box !== this.lastSceneBox) {
+      this.lastSceneBox = box;
+      this.emit('sceneBox', box ? JSON.parse(box) : null);
+    }
   }
   private applyCamera() {
     if (!this.ready) return;
@@ -872,6 +972,7 @@ export class Engine {
     }
     this.visibleCount = visible;
     this.drawRopes();
+    this.drawSceneGlow();
     if (this.inspector) this.drawInspector();
   }
   /** Gold outline on hover; a slow pulse while selected. */
@@ -1041,14 +1142,18 @@ export class Engine {
           frame: i.frame,
           depth: i.depth,
         });
+    const leads = new Map(
+      (this.manifest?.scenes ?? []).map((sc) => [sc.id, sc.lead]),
+    );
     for (const s of this.statics)
       if (
-        s.sortable.landmark &&
+        (s.sortable.landmark || s.sortable.scene) &&
         s.sprite.visible &&
         s.sprite.parent === this.front
       )
         items.push({
-          id: s.sortable.landmark,
+          // A scene's prop answers for the scene's lead (its card opens).
+          id: s.sortable.landmark ?? leads.get(s.sortable.scene!) ?? '',
           sprite: s.sprite,
           frame: s.sortable.frame,
           depth: s.depth,
@@ -1074,6 +1179,7 @@ export class Engine {
     return Boolean(
       id &&
       (this.live.get(id)?.character.interactive ||
+        this.sceneOf(id) ||
         this.manifest?.landmarks.some((l) => l.id === id)),
     );
   }
@@ -1160,6 +1266,7 @@ export class Engine {
           const hit = this.hit(p, false);
           if (hit !== this.hover) {
             this.hover = hit;
+            this.hoverScene = this.sceneOf(hit);
             this.dirty = true;
             canvas.style.cursor = this.clickable(hit) ? 'pointer' : 'grab';
             this.emit('characterHover', hit);
@@ -1173,10 +1280,18 @@ export class Engine {
       // Lifting one finger of a pinch must not fling the planet.
       if (this.pointers.size === 2) this.velocity = { lat: 0, lon: 0 };
       if (this.pointers.size === 1 && this.moved < 5) {
-        const hit = this.hit(this.point(e));
-        if (hit) {
+        const p = this.point(e),
+          any = this.hit(p, false),
+          scene = this.sceneOf(any);
+        // Anyone in a scene (a listener, a camera) opens the scene's lead;
+        // otherwise only named figures and landmarks answer a click.
+        const hit = scene
+          ? (this.manifest?.scenes.find((s) => s.id === scene)?.lead ?? null)
+          : this.hit(p);
+        if (hit && this.clickable(hit)) {
           this.selected = hit;
           this.emit('characterClick', hit);
+          if (scene) this.frameScene(scene);
           this.dirty = true;
         }
         this.velocity = { lat: 0, lon: 0 };
@@ -1197,6 +1312,7 @@ export class Engine {
       () => {
         if (this.hover) {
           this.hover = null;
+          this.hoverScene = null;
           this.dirty = true;
           this.emit('characterHover', null);
         }

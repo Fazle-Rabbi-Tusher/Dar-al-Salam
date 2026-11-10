@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Engine } from '../engine/Engine';
 import type { BakedCharacter, Manifest } from '../../../packages/shared/schema';
 import {
@@ -241,7 +247,13 @@ function World({ manifest }: { manifest: Manifest | null }) {
     // Kept out of React state: updating it on every pointer move would
     // re-render the whole page while dragging (slow on phones).
     pointer = useRef({ x: 0, y: 0 }),
-    label = useRef<HTMLDivElement>(null);
+    label = useRef<HTMLDivElement>(null),
+    // The lit scene's caption follows its box without re-rendering the page.
+    [sceneId, setSceneId] = useState<string | null>(null),
+    sceneBox = useRef<{ x: number; y: number; w: number; h: number } | null>(
+      null,
+    ),
+    caption = useRef<HTMLDivElement>(null);
   const named = manifest?.characters.filter((c) => c.interactive) ?? [],
     landmarks = manifest?.landmarks ?? [],
     landmark = landmarks.find((l) => l.id === selected),
@@ -255,21 +267,33 @@ function World({ manifest }: { manifest: Manifest | null }) {
   const hoverLandmark = hovered
     ? landmarks.find((l) => l.id === hovered)
     : undefined;
-  const hoverLabel = hoverLandmark
-    ? {
-        title: hoverLandmark.name[lang] ?? hoverLandmark.name.en,
-        note: t('clickPlace'),
-      }
-    : hoverCharacter
-      ? hoverCharacter.name
-        ? {
-            title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
-            note: t('clickStory'),
-          }
-        : hoverCharacter.role
-          ? { title: hoverCharacter.role, note: '' }
-          : null
-      : null;
+  const placeCaption = () => {
+    const el = caption.current,
+      b = sceneBox.current;
+    if (!el || !b) return;
+    el.style.left = b.x + b.w / 2 + 'px';
+    el.style.top = b.y + 'px';
+  };
+  useLayoutEffect(placeCaption, [sceneId]);
+  const litScene = manifest?.scenes.find((s) => s.id === sceneId);
+  // A scene's own caption replaces the single-figure label.
+  const hoverLabel = hoverCharacter?.scene
+    ? null
+    : hoverLandmark
+      ? {
+          title: hoverLandmark.name[lang] ?? hoverLandmark.name.en,
+          note: t('clickPlace'),
+        }
+      : hoverCharacter
+        ? hoverCharacter.name
+          ? {
+              title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
+              note: t('clickStory'),
+            }
+          : hoverCharacter.role
+            ? { title: hoverCharacter.role, note: '' }
+            : null
+        : null;
   const open = useCallback(
     (id: string) => {
       select(id);
@@ -314,6 +338,11 @@ function World({ manifest }: { manifest: Manifest | null }) {
     });
     world.on('stats', setStats);
     world.on('characterHover', setHovered);
+    world.on('sceneBox', (box) => {
+      sceneBox.current = box;
+      setSceneId(box?.id ?? null);
+      placeCaption();
+    });
     world.on('inspect', setInspect);
     world.on('error', setError);
     world
@@ -416,6 +445,11 @@ function World({ manifest }: { manifest: Manifest | null }) {
         >
           <strong>{hoverLabel.title}</strong>
           {hoverLabel.note && <span>{hoverLabel.note}</span>}
+        </div>
+      )}
+      {litScene && (
+        <div className="scene-caption" ref={caption} role="status">
+          {litScene.title[lang] ?? litScene.title.en}
         </div>
       )}
       <div className="scene-vignette" />

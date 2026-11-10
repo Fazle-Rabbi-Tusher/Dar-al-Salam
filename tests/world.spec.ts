@@ -66,6 +66,43 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
+test("hovering a listener lights up Mufti Menk's whole talk; a click opens his card", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  // Straight to the hall, over the talk (Floor796-style scene highlight).
+  await ready(page, '/?x=2048&y=1640&z=2');
+  const points = await page.evaluate(() =>
+    (
+      window as unknown as {
+        __darEngine: {
+          debugPoints(id: string): {
+            opaque: { x: number; y: number };
+          } | null;
+        };
+      }
+    ).__darEngine.debugPoints('menk-speech-listener-2'),
+  );
+  expect(points?.opaque).toBeTruthy();
+  const canvas = await page.locator('.world-host canvas').boundingBox();
+  await page.mouse.move(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  await expect(page.locator('.scene-caption')).toContainText(
+    'Mufti Ismail Menk',
+  );
+  // A listener has no card of their own: the click opens the speaker's.
+  await page.mouse.click(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  await expect(page.locator('.story-card h2')).toHaveText('Mufti Ismail Menk');
+  // The light stays on the whole talk while his card is open.
+  await expect(page.locator('.scene-caption')).toBeVisible();
+  expect(errors).toEqual([]);
+});
 test('the Massawa button flies to the town and the mosque opens its landmark card', async ({
   page,
 }) => {
