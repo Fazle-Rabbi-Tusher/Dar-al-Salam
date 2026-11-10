@@ -130,3 +130,4 @@
       - **Hover:** hovering any of them lights up the whole group in one soft white box, with the scene's caption above it.
       - **Click:** clicking any of them opens the lead's card, and the camera frames the whole scene. On phones it is framed above the bottom sheet.
       - **While the card is open:** the light stays on.
+65. Scenes light up only on a click (owner's request: "only show when we click, otherwise it will be normal"). Hovering a scene's people or props shows the usual single-figure label. Clicking any of them still opens the lead's card, frames the scene and draws the light box with its caption. Closing the card turns the light off.

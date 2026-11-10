@@ -66,7 +66,7 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
-test("hovering a listener lights up Mufti Menk's whole talk; a click opens his card", async ({
+test("clicking a listener lights up Mufti Menk's whole talk and opens his card; hovering stays normal", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -90,17 +90,21 @@ test("hovering a listener lights up Mufti Menk's whole talk; a click opens his c
     canvas!.x + points!.opaque.x,
     canvas!.y + points!.opaque.y,
   );
-  await expect(page.locator('.scene-caption')).toContainText(
-    'Mufti Ismail Menk',
-  );
+  // Hovering is as for anyone: their own label, no scene light.
+  await expect(page.locator('.hover-label')).toContainText('listener');
+  await expect(page.locator('.scene-caption')).toHaveCount(0);
   // A listener has no card of their own: the click opens the speaker's.
   await page.mouse.click(
     canvas!.x + points!.opaque.x,
     canvas!.y + points!.opaque.y,
   );
   await expect(page.locator('.story-card h2')).toHaveText('Mufti Ismail Menk');
-  // The light stays on the whole talk while his card is open.
-  await expect(page.locator('.scene-caption')).toBeVisible();
+  // The click lights up the whole talk under its caption, while the card is open.
+  await expect(page.locator('.scene-caption')).toContainText(
+    'Mufti Ismail Menk',
+  );
+  await page.locator('.card-close').click();
+  await expect(page.locator('.scene-caption')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 test('the Massawa button flies to the town and the mosque opens its landmark card', async ({

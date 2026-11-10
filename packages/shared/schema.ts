@@ -138,9 +138,9 @@ export const landmarkSchema = z.object({
 });
 export type Landmark = z.infer<typeof landmarkSchema>;
 /**
- * A scene shown as one group, as on Floor796: hovering or clicking any of its
- * people or props lights them all up together under one caption, and a click
- * opens the lead's story card with the whole scene in view.
+ * A scene shown as one group, as on Floor796: clicking any of its people or
+ * props opens the lead's story card with the whole scene in view, lit up
+ * together under one caption (hovering alone changes nothing).
  */
 export const sceneSchema = z.object({
   id: z.string().min(1),

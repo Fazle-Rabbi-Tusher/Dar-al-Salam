@@ -389,8 +389,6 @@ export class Engine {
   private zoomIdle = 0;
   private hover: string | null = null;
   private selected: string | null = null;
-  /** Scene lit up by the pointer (content/scenes), if any. */
-  private hoverScene: string | null = null;
   private sceneGlow = new Graphics();
   private lastSceneBox = '';
   private inspector = false;
@@ -737,13 +735,14 @@ export class Engine {
   }
   /**
    * Floor796-style group highlight: a soft light box over every member and
-   * prop of the hovered (or selected) scene; the page adds the caption.
+   * prop of the clicked (selected) scene; the page adds the caption.
+   * Hovering stays as for anyone else (owner's request).
    */
   private drawSceneGlow() {
     const g = this.sceneGlow;
     if (!g.parent) this.highlight.addChild(g);
     g.clear();
-    const id = this.hoverScene ?? this.sceneOf(this.selected);
+    const id = this.sceneOf(this.selected);
     let box = '';
     if (id) {
       let x0 = Infinity,
@@ -1266,7 +1265,6 @@ export class Engine {
           const hit = this.hit(p, false);
           if (hit !== this.hover) {
             this.hover = hit;
-            this.hoverScene = this.sceneOf(hit);
             this.dirty = true;
             canvas.style.cursor = this.clickable(hit) ? 'pointer' : 'grab';
             this.emit('characterHover', hit);
@@ -1312,7 +1310,6 @@ export class Engine {
       () => {
         if (this.hover) {
           this.hover = null;
-          this.hoverScene = null;
           this.dirty = true;
           this.emit('characterHover', null);
         }
