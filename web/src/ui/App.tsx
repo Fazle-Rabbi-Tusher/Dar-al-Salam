@@ -276,24 +276,21 @@ function World({ manifest }: { manifest: Manifest | null }) {
   };
   useLayoutEffect(placeCaption, [sceneId]);
   const litScene = manifest?.scenes.find((s) => s.id === sceneId);
-  // A scene's own caption replaces the single-figure label.
-  const hoverLabel = hoverCharacter?.scene
-    ? null
-    : hoverLandmark
-      ? {
-          title: hoverLandmark.name[lang] ?? hoverLandmark.name.en,
-          note: t('clickPlace'),
-        }
-      : hoverCharacter
-        ? hoverCharacter.name
-          ? {
-              title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
-              note: t('clickStory'),
-            }
-          : hoverCharacter.role
-            ? { title: hoverCharacter.role, note: '' }
-            : null
-        : null;
+  const hoverLabel = hoverLandmark
+    ? {
+        title: hoverLandmark.name[lang] ?? hoverLandmark.name.en,
+        note: t('clickPlace'),
+      }
+    : hoverCharacter
+      ? hoverCharacter.name
+        ? {
+            title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
+            note: t('clickStory'),
+          }
+        : hoverCharacter.role
+          ? { title: hoverCharacter.role, note: '' }
+          : null
+      : null;
   const open = useCallback(
     (id: string) => {
       select(id);
