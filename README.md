@@ -34,3 +34,14 @@ Includes 68 animation poses, eight turnaround views, reading/page-turn, writing,
 diagram study, thinking, eased walks, workshop props, original references, native
 runtime integration and interactive/video/GIF previews. Draft card status retained.
 102 repository tests, native fractional motion and pause checks passed.
+
+## Individual prayer character library and 3D component
+
+- [yasser-individual-character.zip](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/yasser-individual-character.zip) — 9.45 MB.
+- [prayer-men-characters.zip](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-men-characters.zip) — 11.75 MB.
+- [prayer-women-characters.zip](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-women-characters.zip) — 9.61 MB.
+- [prayer-children-characters.zip](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-children-characters.zip) — 6.93 MB.
+- [prayer-3d-component.zip](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-3d-component.zip) — 16.91 MB.
+- [prayer-library-preview.mp4](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-library-preview.mp4) — 8.77 MB.
+
+Includes Yasser, 24 fictional adult worshippers and five children, individually exported in 8 directions and 11 key poses (2,640 transparent PNGs), detailed generated artwork and individual crops, and a standalone editable Three.js component with an 84-second silent 24 fps preview. Detailed artwork is separate from the simpler voxel motion study. Every ZIP is below 30 MB. All remain drafts; no main-world deployment.
