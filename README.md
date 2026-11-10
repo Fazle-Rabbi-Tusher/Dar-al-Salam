@@ -25,3 +25,12 @@ Includes new speaker animations, eight fictional seated listeners (four men and
 four women), two recording cameras, lectern, original-animation references, native
 repo integration scripts, interactive preview and MP4/GIF. Shared deterministic
 12 fps, 240-frame loop. Named card remains an unapproved draft.
+
+## Al-Khwarizmi animated study routine
+
+[Download ZIP (18.3 MB)](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/al-khwarizmi-study-animation.zip) · [Watch the 20-second preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/al-khwarizmi-study-preview.mp4)
+
+Includes 68 animation poses, eight turnaround views, reading/page-turn, writing,
+diagram study, thinking, eased walks, workshop props, original references, native
+runtime integration and interactive/video/GIF previews. Draft card status retained.
+102 repository tests, native fractional motion and pause checks passed.
