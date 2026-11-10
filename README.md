@@ -45,3 +45,9 @@ runtime integration and interactive/video/GIF previews. Draft card status retain
 - [prayer-library-preview.mp4](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-library-preview.mp4) — 8.77 MB.
 
 Includes Yasser, 24 fictional adult worshippers and five children, individually exported in 8 directions and 11 key poses (2,640 transparent PNGs), detailed generated artwork and individual crops, and a standalone editable Three.js component with an 84-second silent 24 fps preview. Detailed artwork is separate from the simpler voxel motion study. Every ZIP is below 30 MB. All remain drafts; no main-world deployment.
+
+## All-in-one prayer library
+
+[Download everything in one ZIP — 27.9 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-library-all-in-one.zip)
+
+Combines all five character/component packs. Includes 30 individual characters, detailed artwork, eight-angle pose exports, editable 3D prayer component and the complete 84-second silent preview. Images use lossless WebP (decoded pixels verified against originals); the video uses a smaller H.264 encode. ZIP is below 30,000,000 bytes.
