@@ -246,6 +246,11 @@ async function build() {
       frame: [number, number];
       foot: [number, number];
       density: number;
+      /**
+       * Play order over the strip's unique poses (the prayer congregation):
+       * the strip holds each pose once, and this lists one per step.
+       */
+      sequence?: number[];
     } = await readJson(`${base}.json`).catch(() => ({
       frame: [224, 336],
       foot: [112, 320],
@@ -261,7 +266,7 @@ async function build() {
       });
     // Left-facing views reuse these frames, flipped by the engine.
     return {
-      frames: out,
+      frames: meta.sequence ? meta.sequence.map((i) => out[i]) : out,
       flip: facing === 'SW' || facing === 'NW',
       density: meta.density,
     };
@@ -284,6 +289,8 @@ async function build() {
     shadow?: [number, number] | false;
     /** Other strips for particular actions (the tram's open doors). */
     actions?: Record<string, string>;
+    /** Walking steps for this figure: the moving share of its height. */
+    steps?: number;
   };
   /** Walking actions get generated steps (legs and hems move). */
   const STEPPING = new Set(['animal_walk', 'walk']);
@@ -390,12 +397,19 @@ async function build() {
           sets[action] = other.map((v) => [reg(v)]);
         } else if (
           STEPPING.has(action) &&
-          (base === 'camel' || base === 'guide')
+          (base === 'camel' || base === 'guide' || meta.steps)
         )
           // Camels' legs are long (the lower 45%); a robe moves at the hem.
           sets[action] = views.map((v, i) =>
             [0, 1, 2, 3].map((f) =>
-              reg(stepped(v, i, f / 4, base === 'camel' ? 0.45 : 0.16)),
+              reg(
+                stepped(
+                  v,
+                  i,
+                  f / 4,
+                  meta.steps ?? (base === 'camel' ? 0.45 : 0.16),
+                ),
+              ),
             ),
           );
       }
