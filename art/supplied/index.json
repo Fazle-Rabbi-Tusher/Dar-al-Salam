@@ -687,5 +687,14 @@
     ],
     "density": 4,
     "source": "Owner-supplied Mufti Menk speech-scene pack (2026-11), copied by tools/prepare-menk-speech.ts"
+  },
+  "sup-khwarizmi-desk": {
+    "file": "supplied/khwarizmi-desk.png",
+    "anchor": [
+      120,
+      207
+    ],
+    "density": 4,
+    "source": "Owner-supplied Al-Khwārizmī study-animation pack (2026-11), copied by tools/prepare-khwarizmi-study.ts"
   }
 }

@@ -70,6 +70,8 @@ export const stepSchema = z
     z: z.union([z.number(), z.array(z.number())]).optional(),
     /** Prop held during this step only (e.g. a trophy or keys changing hands). */
     prop: z.string().optional(),
+    /** Paths only: smoothstep starts and stops a walk gently. */
+    easing: z.enum(['linear', 'smoothstep']).optional(),
   })
   .refine(
     (s) =>
