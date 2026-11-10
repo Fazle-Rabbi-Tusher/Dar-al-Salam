@@ -1,0 +1,258 @@
+[
+  {
+    "id": "menk-speech-listener-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [10, 14.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [11.9, 14.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [13.8, 14.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-8",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [15.7, 14.2],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [10, 16],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [11.9, 16],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-7",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [13.8, 16],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A listener at Mufti Menk’s talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [15.7, 16],
+        "facing": "NE"
+      }
+    ]
+  }
+]

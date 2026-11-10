@@ -431,6 +431,19 @@ async function build() {
     blit(out, img);
     return out;
   }
+  // Scenes (content/scenes): which figures and props light up together.
+  const sceneOfMember = new Map<string, string>();
+  for (const sc of content.scenes)
+    for (const m of sc.members) sceneOfMember.set(m, sc.id);
+  const sceneOfProp = (type: string, [x, y]: [number, number]) =>
+    content.scenes.find(
+      (sc) =>
+        sc.props.includes(type) &&
+        x >= sc.area[0][0] &&
+        x <= sc.area[1][0] &&
+        y >= sc.area[0][1] &&
+        y <= sc.area[1][1],
+    )?.id;
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
   for (const c of characters) {
@@ -657,6 +670,7 @@ async function build() {
       ...(illustration ? { illustration } : {}),
       ...(portrait ? { portrait } : {}),
       interactive: Boolean(c.name),
+      ...(sceneOfMember.has(c.id) ? { scene: sceneOfMember.get(c.id) } : {}),
       needsPanelReview: c.script.some(
         (s) => s.action === 'pray' || s.action === 'sujood',
       ),
@@ -936,6 +950,7 @@ async function build() {
     const frame = chosen.names[0],
       tile: [number, number] = [x, y],
       [wx, wy] = worldFromTile(x, y);
+    const scene = sceneOfProp(type, tile);
     sortables.push({
       frame,
       x: wx,
@@ -947,6 +962,7 @@ async function build() {
       ground: tile,
       pivot: [...metas[frame].anchor],
       lift: 0,
+      ...(scene ? { scene } : {}),
       ...(chosen.names.length > 1 ? { animation: chosen.names } : {}),
       ...(chosen.names.length > 1 && chosen.period
         ? { period: chosen.period }
@@ -1147,6 +1163,7 @@ async function build() {
     sortables,
     characters: baked,
     landmarks,
+    scenes: content.scenes,
     i18n,
     room,
     buildHash: hash(

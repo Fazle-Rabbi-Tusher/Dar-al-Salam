@@ -1,0 +1,25 @@
+{
+  "id": "menk-speech",
+  "title": {
+    "en": "A talk — Mufti Ismail Menk and his listeners",
+    "ar": "محاضرة — المفتي إسماعيل منك ومستمعوه",
+    "bn": "বক্তৃতা — মুফতি ইসমাইল মেংক ও শ্রোতারা"
+  },
+  "lead": "mufti-ismail-menk",
+  "members": [
+    "mufti-ismail-menk",
+    "menk-speech-listener-1",
+    "menk-speech-listener-2",
+    "menk-speech-listener-3",
+    "menk-speech-listener-4",
+    "menk-speech-listener-5",
+    "menk-speech-listener-6",
+    "menk-speech-listener-7",
+    "menk-speech-listener-8"
+  ],
+  "props": ["sup-menk-lectern", "sup-menk-camera"],
+  "area": [
+    [9.5, 10],
+    [16.5, 17]
+  ]
+}
