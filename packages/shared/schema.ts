@@ -156,6 +156,11 @@ export const sceneSchema = z.object({
   props: z.array(z.string()).default([]),
   /** Tile rectangle [[x0, y0], [x1, y1]] holding the scene's props. */
   area: z.tuple([pointSchema, pointSchema]),
+  /**
+   * How a click frames the scene: straight to the whole group, or 'reveal':
+   * a close-up of the lead first, then a slow pull back over everyone.
+   */
+  camera: z.enum(['frame', 'reveal']).default('frame'),
 });
 export type Scene = z.infer<typeof sceneSchema>;
 export const objectSchema = z.object({

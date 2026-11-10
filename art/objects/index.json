@@ -2637,5 +2637,56 @@
     ],
     "width": 80,
     "height": 49
+  },
+  "m-mashrabiya": {
+    "file": "objects/m-mashrabiya.png",
+    "anchor": [
+      16,
+      50
+    ],
+    "width": 144,
+    "height": 111
+  },
+  "m-mashrabiya-side": {
+    "file": "objects/m-mashrabiya-side.png",
+    "anchor": [
+      128,
+      50
+    ],
+    "width": 144,
+    "height": 111
+  },
+  "m-marble-pillar": {
+    "file": "objects/m-marble-pillar.png",
+    "anchor": [
+      32,
+      137
+    ],
+    "width": 64,
+    "height": 157
+  },
+  "m-imam-dais": {
+    "file": "objects/m-imam-dais.png",
+    "anchor": [
+      32,
+      3
+    ],
+    "width": 64,
+    "height": 26,
+    "floor": true
+  },
+  "m-brass-lantern": {
+    "file": "objects/m-brass-lantern.png",
+    "anchor": [
+      16,
+      65
+    ],
+    "width": 48,
+    "height": 81,
+    "period": 24,
+    "frames": [
+      "objects/m-brass-lantern-0.png",
+      "objects/m-brass-lantern-1.png"
+    ]
   }
 }

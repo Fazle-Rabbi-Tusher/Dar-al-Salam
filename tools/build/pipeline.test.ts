@@ -711,8 +711,31 @@ describe('main characters only, with supplied animation strips', () => {
     // The owner asked for exceptions (2026-11): Massawa's caravan guide and
     // the eight seated listeners at Mufti Menk's talk.
     const allowed = new Set(['amb-msw-guide']);
+    // And the congregation praying behind Yasser al-Dosari (2026-11): its
+    // ambient file holds only worshippers and the two children at tag.
+    const congregation = new Set(
+      content.characters
+        .filter((c) =>
+          content.scenes.some(
+            (s) => s.id === 'congregational-prayer' && s.members.includes(c.id),
+          ),
+        )
+        .map((c) => c.id),
+    );
+    expect(congregation.size).toBe(30);
+    for (const c of content.characters.filter((c) => congregation.has(c.id)))
+      for (const s of c.script)
+        if (s.action === 'pray')
+          // Everyone faces the qibla together (towards the viewer).
+          expect(s.facing, c.id).toBe('SE');
+        else expect([c.id, s.action]).toEqual([c.id, 'walk']);
     for (const c of content.characters)
-      if (!c.name && !allowed.has(c.id) && !/^menk-speech-listener-/.test(c.id))
+      if (
+        !c.name &&
+        !allowed.has(c.id) &&
+        !/^menk-speech-listener-/.test(c.id) &&
+        !congregation.has(c.id)
+      )
         expect(c.kind, c.id).not.toBe('person');
     const listeners = content.characters.filter((c) =>
       c.id.startsWith('menk-speech-listener-'),

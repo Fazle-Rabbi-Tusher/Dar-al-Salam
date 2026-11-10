@@ -1050,6 +1050,116 @@ const objects: Record<string, Spec> = {
       }
     },
   },
+  /*
+   * The congregational prayer hall on the Baitul Mukarram plaza (owner's
+   * prayer-library pack): a carved wooden mashrabiya screen between the men's
+   * and women's rows, a marble pillar, the imam's low dais and brass
+   * lanterns. Geometric patterns only: no writing, no symbols.
+   */
+  'm-mashrabiya': {
+    footprint: [6.6, 0.3],
+    h: 54,
+    side: true,
+    draw(c) {
+      const H = 46;
+      // Posts at the ends and every 2.2 tiles, a rail top and bottom.
+      for (let u = 0; u <= 6.6; u += 2.2)
+        c.box(Math.min(u, 6.4), 0, 0.2, 0.3, H + 4, M.oak);
+      c.box(0, 0.05, 6.6, 0.2, 6, M.wood);
+      c.box(0, 0.05, 6.6, 0.2, 4, M.oak, H - 4);
+      // The lattice: a star-and-cross grid of turned spindles, with gaps
+      // that let the light (and a glimpse of the rows) through.
+      for (let u = 0.25; u < 6.6; u += 0.33) {
+        if (Math.abs((u % 2.2) - 0.1) < 0.15) continue;
+        c.edge([u, 0.26, 6], [u, 0.26, H - 4], C.woodDark);
+        c.edge([u + 0.02, 0.27, 6], [u + 0.02, 0.27, H - 4], C.wood);
+      }
+      for (let z = 10; z < H - 4; z += 6) {
+        c.edge([0.2, 0.27, z], [6.4, 0.27, z], C.woodDark);
+        for (let u = 0.25; u < 6.4; u += 0.66) {
+          const [x, y] = c.at(u + 0.165, 0.28, z + 3);
+          c.p.pixel(x, y, C.woodLight);
+          c.p.pixel(x - 1, y, C.wood);
+          c.p.pixel(x + 1, y, C.wood);
+          c.p.pixel(x, y - 1, C.wood);
+          c.p.pixel(x, y + 1, C.wood);
+        }
+      }
+      // Carved crest along the top rail.
+      for (let u = 0.2; u < 6.4; u += 0.4) {
+        const [x, y] = c.at(u + 0.2, 0.3, H);
+        c.p.rect(x - 1, y - 2, 3, 2, C.oak);
+        c.p.pixel(x, y - 3, C.woodLight);
+      }
+    },
+  },
+  'm-marble-pillar': {
+    footprint: [0.9, 0.9],
+    h: 150,
+    draw(c) {
+      // Square base, a round marble shaft with soft veins, a carved capital.
+      c.box(0, 0, 0.9, 0.9, 10, M.stone);
+      c.box(0.05, 0.05, 0.8, 0.8, 4, M.white, 10);
+      c.cylinder(0.45, 0.45, 14, 9, 112, [C.white, C.offwhite, C.pale]);
+      for (const [dz, dx] of [
+        [30, -3],
+        [52, 2],
+        [77, -1],
+        [98, 4],
+      ]) {
+        const [x, y] = c.at(0.45, 0.45, 14 + dz);
+        c.p.pixel(x + dx, y, C.silver);
+        c.p.pixel(x + dx + 1, y - 1, C.silver);
+        c.p.pixel(x + dx + 2, y - 3, C.pale);
+      }
+      c.box(0.05, 0.05, 0.8, 0.8, 5, M.white, 126);
+      c.box(0, 0, 0.9, 0.9, 6, M.stone, 131);
+      const [gx, gy] = c.at(0.45, 0.9, 129);
+      c.p.rect(gx - 6, gy - 1, 12, 1, C.gold);
+    },
+  },
+  'm-imam-dais': {
+    footprint: [1.4, 1.4],
+    h: 8,
+    // Part of the floor, so it always draws under the imam's feet.
+    floor: true,
+    draw(c) {
+      // A low oak step, then a crimson-and-gold rug with a plain geometric
+      // border (a pointed-arch outline, no writing).
+      c.box(0, 0, 1.4, 1.4, 3, M.oak);
+      c.top(0.1, 0.1, 1.2, 1.2, 3, C.carpetGold);
+      c.top(0.16, 0.16, 1.08, 1.08, 3, C.carpetDark);
+      c.top(0.22, 0.22, 0.96, 0.96, 3, C.carpet);
+      for (let k = 0.3; k < 1.12; k += 0.2) {
+        c.top(k, 0.3, 0.06, 0.06, 3, C.carpetGold);
+        c.top(k, 1.06, 0.06, 0.06, 3, C.carpetGold);
+      }
+      c.top(0.62, 0.5, 0.16, 0.4, 3, C.carpetGreen);
+      c.top(0.66, 0.46, 0.08, 0.06, 3, C.carpetGreen);
+    },
+  },
+  'm-brass-lantern': {
+    footprint: [0.6, 0.6],
+    h: 70,
+    frames: 2,
+    period: 24,
+    draw(c, f) {
+      // A brass stand holding a pierced lantern; its glow breathes slowly.
+      c.box(0.15, 0.15, 0.3, 0.3, 4, M.oak);
+      const [x, y] = c.at(0.3, 0.3, 4);
+      c.p.rect(x - 1, y - 40, 2, 40, C.woodDark);
+      c.p.rect(x - 1, y - 40, 1, 40, C.gold);
+      c.p.rect(x - 6, y - 58, 12, 18, C.woodDark);
+      c.p.rect(x - 5, y - 57, 10, 16, f ? C.cream : C.yellow);
+      for (let i = 0; i < 4; i++)
+        c.p.rect(x - 4 + i * 3, y - 56, 1, 14, C.gold);
+      c.p.rect(x - 5, y - 51, 10, 1, C.gold);
+      c.p.rect(x - 7, y - 60, 14, 2, C.gold);
+      c.p.rect(x - 4, y - 63, 8, 3, C.gold);
+      c.p.pixel(x, y - 65, C.gold);
+      c.p.rect(x - 7, y - 40, 14, 2, C.gold);
+    },
+  },
   'm-hall-carpet': {
     footprint: [10, 6],
     h: 2,

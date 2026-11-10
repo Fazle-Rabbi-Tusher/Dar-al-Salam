@@ -16,8 +16,8 @@ import sharp from 'sharp';
  * Each person gets one 240-tick 'pray' strip (80 steps of 3 ticks): unique
  * poses stored once, with a `sequence` listing which pose plays at each
  * step. Adults follow the imam half a second late; children later, glancing
- * sideways before they copy. One rak'ah then tashahhud and taslim fits the
- * 20-second loop (as in Witr behind the imam on Ramadan nights).
+ * sideways before they copy. The prayer is time-compressed to one rak'ah,
+ * then the tashahhud and taslim, to fit the 20-second loop.
  *
  *   node --import tsx tools/prepare-prayer.ts <extracted prayer-library folder>
  */
@@ -285,7 +285,6 @@ type Person = {
 };
 
 async function stripFor(p: Person) {
-  const poses = new Map<string, Img>();
   const det: Partial<Record<Pose, Img>> = {};
   const standing = await detailed(p.art.stand, p.mirror);
   if (p.role === 'imam') {
@@ -391,10 +390,10 @@ async function stripFor(p: Person) {
 }
 
 /* ── Who prays where (tiles); everyone faces the qibla, SE ── */
-export const IMAM: [number, number] = [32.4, 113.0];
+export const IMAM: [number, number] = [35.6, 113.0];
 const ROW_Y = [110.5, 111.5, 112.5, 113.5, 114.5, 115.5];
-const MEN_X = [30.6, 29.2],
-  WOMEN_X = [26.4, 25.0];
+const MEN_X = [33.8, 32.4],
+  WOMEN_X = [30.0, 28.6];
 const pad = (n: number) => String(n).padStart(2, '0');
 const people: (Person & { at: [number, number]; label: string })[] = [
   {
@@ -481,7 +480,7 @@ for (const p of people) {
 }
 
 /* ── The two children playing tag round the back pillar (eight views) ── */
-export const PILLAR: [number, number] = [21.6, 107.6];
+export const PILLAR: [number, number] = [25.6, 109.6];
 const VIEWS = ['000', '045', '090', '135', '180', '225', '270', '315']; // S, SE, E, NE, N, NW, W, SW
 for (const id of ['aisle-child-a', 'aisle-child-b']) {
   const views = await Promise.all(VIEWS.map((d) => voxel(id, 'stand', d))),
@@ -508,9 +507,11 @@ const circle = (phase: number): [number, number][] =>
   [...Array(25).keys()].map((i) => {
     // Two quiet laps a loop, round the pillar.
     const a = phase + (i / 24) * Math.PI * 4;
+    // An oval round the pillar, clear of the walls (tiles x 21, y 108) and
+    // of the women's rows (x 28.6 and up).
     return [
-      +(PILLAR[0] + Math.cos(a) * 1.05).toFixed(3),
-      +(PILLAR[1] + Math.sin(a) * 1.05).toFixed(3),
+      +(PILLAR[0] + Math.cos(a) * 1.2).toFixed(3),
+      +(PILLAR[1] + 0.35 + Math.sin(a) * 0.75).toFixed(3),
     ];
   });
 

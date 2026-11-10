@@ -138,3 +138,35 @@
     - **Props:** the pack was made for the old library workstation. In the maths lab only its antique writing desk is added (4× art, seen from its closed front). Its armillary, geometry stand and bookcase are left out: the owner's rule is only mathematical equipment with no piece twice, and the astrolabe and globe were removed at the owner's request.
     - **Not taken from the pack:** its render-time path smoothing. That interpolates between ticks using wall-clock time, and every other walker moves on the fixed 12 fps clock.
     - **Other changes:** his sharp head was regenerated to cover the new actions. `tools/prepare-khwarizmi.ts` now cuts only the gallery scenes.
+67. Yasser al-Dosari leads a congregational prayer, from the owner's prayer-library pack and production prompt (`tools/prepare-prayer.ts <extracted pack>`):
+    - **Card:** a draft card for Yasser al-Dosari (b. 1980, Al-Kharj · Makkah). The summary holds dated facts only, with a Wikipedia link. Biography, story and sources stay placeholders, and `panelApproved` is false.
+      - **Name check:** the name, both aliases, the Arabic and Bangla spellings and the full name pass the never-depict check. "Hussain" in his full name is lineage.
+      - **Living person:** he is living, so the panel should confirm consent and the depiction policy before approval (as in item 18).
+      - **Art:** his card picture and an eight-picture gallery come from the pack's detailed prayer poses.
+    - **Where:** a new prayer hall on the Baitul Mukarram plaza (owner's choice), so the Peace Quarter mosque keeps Mufti Menk's talk, Habib Umar's circle and Omar Suleiman. The plaza's tea stall moved south.
+      - **Facing:** the qibla faces the viewer (owner's choice: faces show), so everyone faces SE, depiction `full`.
+      - **Walls:** only the two far walls stand. The near walls are cut away, as in the pack.
+    - **Layout, front to back:**
+      - Yasser on a low imam's dais, with a crimson-and-gold rug.
+      - Two men's rows of six.
+      - A chest-high carved wooden mashrabiya, geometric lattice only.
+      - Two women's rows of six.
+      - Brass lanterns that glow slowly. A marble pillar stands in the far corner.
+    - **Art (owner's hybrid choice):**
+      - Detailed pixel art whenever someone stands, for all of Yasser's poses and for the children's sujood.
+      - The pack's voxel key poses (rendered from its 3D component, three-quarter view) for the other positions.
+      - A cross-fade frame at each change of pose.
+      - Each person has one 240-tick `pray` strip. Unique poses are stored once, with a new `sequence` field listing the play order.
+    - **The prayer (240 ticks):** takbir; standing with the right hand over the left; ruku; standing up; two sujoods with the sitting between; tashahhud; salam to the right, then to the left; then standing to begin again. It is time-compressed to one rak'ah to fit the loop. Adults follow the imam half a second late.
+    - **The children:**
+      - The toddler beside his father follows 1.5 seconds late, glances across at each change, and tugs at his father's thawb as the rows rise from ruku.
+      - A boy in the men's rows and a girl beside her mother in the women's rows copy a moment late, glancing first.
+      - Two children tiptoe round the marble pillar in a quiet game of tag. They are eight-view figures, and any eight-view figure can now ask for generated steps.
+    - **Click:**
+      - **Hover:** hovering anyone in the prayer shows only their own label.
+      - **Click:** clicking anyone opens Yasser's card and lights the whole scene with its caption (scene `congregational-prayer`).
+      - **Camera:** a new `camera: reveal` mode starts with a close-up of the imam, then drifts slowly back and up over the hall.
+    - **Rules kept:** no sacred text, calligraphy or symbols, and no audio or recitation (the pack is silent too). The prayer poses are flagged for panel review like all prayer moves.
+    - **Not done from the prompt:**
+      - God rays and dust motes, hanging ceiling lanterns, and depth-of-field blur on the back rows.
+      - The father's glance and smile, the child's head-turn under his arm in sujood, and the elder turning round: the pack has no art for these poses.

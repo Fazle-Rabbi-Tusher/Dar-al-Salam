@@ -768,6 +768,9 @@ async function build() {
           tile: [o.x, o.y],
           footprint: o.footprint,
           ground,
+          ...(sceneOfProp(o.type, [o.x, o.y])
+            ? { scene: sceneOfProp(o.type, [o.x, o.y]) }
+            : {}),
           // Frame pixel resting on the ground point, so strips follow the curve.
           pivot: [m.anchor[0] + at[0] - base[0], m.anchor[1] + at[1] - base[1]],
           lift: o.z,
