@@ -51,3 +51,9 @@ Includes Yasser, 24 fictional adult worshippers and five children, individually 
 [Download everything in one ZIP — 27.9 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/prayer-library-all-in-one.zip)
 
 Combines all five character/component packs. Includes 30 individual characters, detailed artwork, eight-angle pose exports, editable 3D prayer component and the complete 84-second silent preview. Images use lossless WebP (decoded pixels verified against originals); the video uses a smaller H.264 encode. ZIP is below 30,000,000 bytes.
+
+## Rotatable 3D mosque model
+
+[Download model and component ZIP (27.7 MB)](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-3d-model-and-component.zip) · [Orbit preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-model-orbit.mp4) · [Angle sheet](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-model-angles.jpg)
+
+Includes complete and architecture-only GLB models, editable model source, embeddable web component, eleven camera presets, lossless rendered stills, original material textures and twelve-second 24 fps turntable. Pointed arches, coffered ceilings, hexagonal lanterns, teal patterned carpet, mihrab, walnut lattice and gold-planted greenery. Static standing imam plus 18 men and 12 women. Actual geometry tested by GLB roundtrip and Blender 4.3.2 import; DRAFT. No app deployment.
