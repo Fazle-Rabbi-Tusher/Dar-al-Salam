@@ -4,7 +4,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -26,8 +26,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [33.8, 110.5],
-        "facing": "SE"
+        "at": [27.475, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -36,7 +36,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -58,8 +58,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 110.5],
-        "facing": "SE"
+        "at": [27.475, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -68,7 +68,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -90,8 +90,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [33.8, 111.5],
-        "facing": "SE"
+        "at": [28.325, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -100,7 +100,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -122,8 +122,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 111.5],
-        "facing": "SE"
+        "at": [28.325, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -132,7 +132,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -154,8 +154,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [33.8, 112.5],
-        "facing": "SE"
+        "at": [29.175, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -164,7 +164,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -186,8 +186,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 112.5],
-        "facing": "SE"
+        "at": [29.175, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -196,7 +196,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -218,8 +218,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [33.8, 113.5],
-        "facing": "SE"
+        "at": [30.025, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -228,7 +228,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -250,8 +250,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 113.5],
-        "facing": "SE"
+        "at": [30.025, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -260,7 +260,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -282,8 +282,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [33.8, 114.5],
-        "facing": "SE"
+        "at": [30.875, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -292,7 +292,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -314,8 +314,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 114.5],
-        "facing": "SE"
+        "at": [30.875, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -324,7 +324,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -346,8 +346,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [33.8, 115.5],
-        "facing": "SE"
+        "at": [31.725, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -356,7 +356,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -378,8 +378,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 115.5],
-        "facing": "SE"
+        "at": [31.725, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -388,7 +388,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -410,8 +410,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 110.5],
-        "facing": "SE"
+        "at": [27.475, 111.8],
+        "facing": "NE"
       }
     ]
   },
@@ -420,7 +420,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -442,8 +442,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.6, 110.5],
-        "facing": "SE"
+        "at": [27.475, 115.3],
+        "facing": "NE"
       }
     ]
   },
@@ -452,7 +452,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -474,8 +474,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 111.5],
-        "facing": "SE"
+        "at": [28.325, 111.8],
+        "facing": "NE"
       }
     ]
   },
@@ -484,7 +484,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -506,8 +506,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.6, 111.5],
-        "facing": "SE"
+        "at": [28.325, 115.3],
+        "facing": "NE"
       }
     ]
   },
@@ -516,7 +516,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -538,8 +538,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 112.5],
-        "facing": "SE"
+        "at": [29.175, 111.8],
+        "facing": "NE"
       }
     ]
   },
@@ -548,7 +548,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -570,8 +570,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.6, 112.5],
-        "facing": "SE"
+        "at": [29.175, 115.3],
+        "facing": "NE"
       }
     ]
   },
@@ -580,7 +580,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -602,8 +602,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 113.5],
-        "facing": "SE"
+        "at": [30.025, 111.8],
+        "facing": "NE"
       }
     ]
   },
@@ -612,7 +612,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -634,8 +634,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.6, 113.5],
-        "facing": "SE"
+        "at": [30.025, 115.3],
+        "facing": "NE"
       }
     ]
   },
@@ -644,7 +644,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -666,8 +666,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 114.5],
-        "facing": "SE"
+        "at": [30.875, 111.8],
+        "facing": "NE"
       }
     ]
   },
@@ -676,7 +676,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -698,8 +698,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.6, 114.5],
-        "facing": "SE"
+        "at": [30.875, 115.3],
+        "facing": "NE"
       }
     ]
   },
@@ -708,7 +708,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the men’s rows",
     "look": {
       "base": "adult-man-beard",
@@ -730,8 +730,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 115.5],
-        "facing": "SE"
+        "at": [31.725, 111.8],
+        "facing": "NE"
       }
     ]
   },
@@ -740,7 +740,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A worshipper in the women’s rows",
     "look": {
       "base": "adult-woman",
@@ -762,8 +762,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.6, 115.5],
-        "facing": "SE"
+        "at": [31.725, 115.3],
+        "facing": "NE"
       }
     ]
   },
@@ -772,7 +772,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A toddler beside his father, tugging at his thawb",
     "look": {
       "base": "child",
@@ -794,8 +794,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 116.45],
-        "facing": "SE"
+        "at": [32.15, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -804,7 +804,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A boy copying the grown-ups, a moment late",
     "look": {
       "base": "child",
@@ -826,8 +826,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.4, 109.55],
-        "facing": "SE"
+        "at": [27.05, 110.9],
+        "facing": "NE"
       }
     ]
   },
@@ -836,7 +836,7 @@
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
-    "depiction": "full",
+    "depiction": "back",
     "role": "A girl praying beside her mother",
     "look": {
       "base": "child",
@@ -858,8 +858,8 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30, 109.55],
-        "facing": "SE"
+        "at": [27.05, 114.4],
+        "facing": "NE"
       }
     ]
   },
@@ -869,7 +869,7 @@
     "aliases": [],
     "district": "modern-quarter",
     "depiction": "full",
-    "role": "Two children tiptoeing round the pillar in a quiet game of tag",
+    "role": "Two children tiptoeing round a column in a quiet game of tag",
     "look": {
       "base": "aisle-child-a",
       "garment": "none",
@@ -891,31 +891,31 @@
         "to": 240,
         "action": "walk",
         "path": [
-          [26.8, 109.95],
-          [26.639, 110.325],
-          [26.2, 110.6],
-          [25.6, 110.7],
-          [25, 110.6],
-          [24.561, 110.325],
-          [24.4, 109.95],
-          [24.561, 109.575],
-          [25, 109.3],
-          [25.6, 109.2],
-          [26.2, 109.3],
-          [26.639, 109.575],
-          [26.8, 109.95],
-          [26.639, 110.325],
-          [26.2, 110.6],
-          [25.6, 110.7],
-          [25, 110.6],
-          [24.561, 110.325],
-          [24.4, 109.95],
-          [24.561, 109.575],
-          [25, 109.3],
-          [25.6, 109.2],
-          [26.2, 109.3],
-          [26.639, 109.575],
-          [26.8, 109.95]
+          [27.85, 117.15],
+          [27.729, 117.5],
+          [27.4, 117.756],
+          [26.95, 117.85],
+          [26.5, 117.756],
+          [26.171, 117.5],
+          [26.05, 117.15],
+          [26.171, 116.8],
+          [26.5, 116.544],
+          [26.95, 116.45],
+          [27.4, 116.544],
+          [27.729, 116.8],
+          [27.85, 117.15],
+          [27.729, 117.5],
+          [27.4, 117.756],
+          [26.95, 117.85],
+          [26.5, 117.756],
+          [26.171, 117.5],
+          [26.05, 117.15],
+          [26.171, 116.8],
+          [26.5, 116.544],
+          [26.95, 116.45],
+          [27.4, 116.544],
+          [27.729, 116.8],
+          [27.85, 117.15]
         ]
       }
     ]
@@ -926,7 +926,7 @@
     "aliases": [],
     "district": "modern-quarter",
     "depiction": "full",
-    "role": "Two children tiptoeing round the pillar in a quiet game of tag",
+    "role": "Two children tiptoeing round a column in a quiet game of tag",
     "look": {
       "base": "aisle-child-b",
       "garment": "none",
@@ -948,31 +948,31 @@
         "to": 240,
         "action": "walk",
         "path": [
-          [24.4, 109.95],
-          [24.561, 109.575],
-          [25, 109.3],
-          [25.6, 109.2],
-          [26.2, 109.3],
-          [26.639, 109.575],
-          [26.8, 109.95],
-          [26.639, 110.325],
-          [26.2, 110.6],
-          [25.6, 110.7],
-          [25, 110.6],
-          [24.561, 110.325],
-          [24.4, 109.95],
-          [24.561, 109.575],
-          [25, 109.3],
-          [25.6, 109.2],
-          [26.2, 109.3],
-          [26.639, 109.575],
-          [26.8, 109.95],
-          [26.639, 110.325],
-          [26.2, 110.6],
-          [25.6, 110.7],
-          [25, 110.6],
-          [24.561, 110.325],
-          [24.4, 109.95]
+          [26.05, 117.15],
+          [26.171, 116.8],
+          [26.5, 116.544],
+          [26.95, 116.45],
+          [27.4, 116.544],
+          [27.729, 116.8],
+          [27.85, 117.15],
+          [27.729, 117.5],
+          [27.4, 117.756],
+          [26.95, 117.85],
+          [26.5, 117.756],
+          [26.171, 117.5],
+          [26.05, 117.15],
+          [26.171, 116.8],
+          [26.5, 116.544],
+          [26.95, 116.45],
+          [27.4, 116.544],
+          [27.729, 116.8],
+          [27.85, 117.15],
+          [27.729, 117.5],
+          [27.4, 117.756],
+          [26.95, 117.85],
+          [26.5, 117.756],
+          [26.171, 117.5],
+          [26.05, 117.15]
         ]
       }
     ]

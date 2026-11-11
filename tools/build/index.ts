@@ -452,7 +452,10 @@ async function build() {
   const sceneOfProp = (type: string, [x, y]: [number, number]) =>
     content.scenes.find(
       (sc) =>
-        sc.props.includes(type) &&
+        // A prop type, or a family of them ('sup-ph-*': the mosque's pieces).
+        sc.props.some((p) =>
+          p.endsWith('*') ? type.startsWith(p.slice(0, -1)) : p === type,
+        ) &&
         x >= sc.area[0][0] &&
         x <= sc.area[1][0] &&
         y >= sc.area[0][1] &&
@@ -707,6 +710,8 @@ async function build() {
       frames?: string[];
       period?: number;
       replaces?: string;
+      /** Flat floor art: baked into the ground texture, under everything. */
+      floor?: boolean;
     }
   > = await readJson('art/supplied/index.json');
   const replacing = new Map(
@@ -722,6 +727,7 @@ async function build() {
       // Supplied art placed in the room (art/supplied): planted like
       // Massawa's pieces, standing on the footprint's centre.
       if (!objectArt[o.type] && suppliedArt[o.type]) {
+        if (suppliedArt[o.type].floor) continue; // baked into the ground below
         replaced.push([
           o.type,
           o.x + o.footprint[0] / 2,
@@ -1140,6 +1146,40 @@ async function build() {
         im,
         Math.round(p[0] - art.anchor[0]),
         Math.round(p[1] - art.anchor[1]),
+      );
+    }
+  // Supplied floor art (the prayer hall's carpet), brought to one sprite
+  // pixel per world pixel and baked in the same way, standing on the centre
+  // of its room object's footprint.
+  if (objectLayer?.type === 'objectgroup')
+    for (const o of objectLayer.objects) {
+      const sup = objectArt[o.type] ? undefined : suppliedArt[o.type];
+      if (!sup || !sup.floor) continue;
+      const { data, info } = await sharp(`art/${sup.file}`)
+        .resize({
+          width: Math.round(
+            ((await sharp(`art/${sup.file}`).metadata()).width ?? 1) /
+              sup.density,
+          ),
+          kernel: 'lanczos3',
+        })
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      const im: PixelImage = {
+          width: info.width,
+          height: info.height,
+          data: new Uint8Array(data),
+        },
+        p = worldFromTile(o.x + o.footprint[0] / 2, o.y + o.footprint[1] / 2);
+      // Keep only solid pixels (the resize softens the outline).
+      for (let i = 3; i < im.data.length; i += 4)
+        im.data[i] = im.data[i] > 127 ? 255 : 0;
+      blit(
+        floor,
+        im,
+        Math.round(p[0] - sup.anchor[0] / sup.density),
+        Math.round(p[1] - sup.anchor[1] / sup.density),
       );
     }
   // Top-down floor in tile space: each texel samples the isometric floor art

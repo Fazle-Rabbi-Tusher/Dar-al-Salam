@@ -1,0 +1,1034 @@
+[
+  {
+    "type": "sup-ph-floor",
+    "at": [
+      25.375,
+      107.675
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-0",
+    "at": [
+      25.45,
+      118.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-1",
+    "at": [
+      25.45,
+      118.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-2",
+    "at": [
+      25.45,
+      117.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-3",
+    "at": [
+      25.45,
+      117.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-4",
+    "at": [
+      25.45,
+      116.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-5",
+    "at": [
+      25.45,
+      116.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-6",
+    "at": [
+      25.45,
+      115.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-7",
+    "at": [
+      25.45,
+      115.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-8",
+    "at": [
+      25.45,
+      114.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-9",
+    "at": [
+      25.45,
+      114.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-10",
+    "at": [
+      25.45,
+      113.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-11",
+    "at": [
+      25.45,
+      113.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-12",
+    "at": [
+      25.45,
+      112.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-13",
+    "at": [
+      25.45,
+      112.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-14",
+    "at": [
+      25.45,
+      111.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-15",
+    "at": [
+      25.45,
+      111.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-16",
+    "at": [
+      25.45,
+      110.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-17",
+    "at": [
+      25.45,
+      110.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-18",
+    "at": [
+      25.45,
+      109.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-19",
+    "at": [
+      25.45,
+      109.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-20",
+    "at": [
+      25.45,
+      108.7
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-21",
+    "at": [
+      25.45,
+      108.2
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-22",
+    "at": [
+      25.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-23",
+    "at": [
+      26,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-24",
+    "at": [
+      26.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-25",
+    "at": [
+      27,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-26",
+    "at": [
+      27.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-27",
+    "at": [
+      28,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-28",
+    "at": [
+      28.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-29",
+    "at": [
+      29,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-30",
+    "at": [
+      29.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-31",
+    "at": [
+      30,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-32",
+    "at": [
+      30.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-33",
+    "at": [
+      31,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-34",
+    "at": [
+      31.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-35",
+    "at": [
+      32,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-36",
+    "at": [
+      32.5,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-37",
+    "at": [
+      33,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-38",
+    "at": [
+      33.453,
+      107.75
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-0",
+    "at": [
+      26.75,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-1",
+    "at": [
+      26.75,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-2",
+    "at": [
+      26.75,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-3",
+    "at": [
+      26.75,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-4",
+    "at": [
+      32.45,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-5",
+    "at": [
+      32.45,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-6",
+    "at": [
+      32.45,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-7",
+    "at": [
+      32.45,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-0-0",
+    "at": [
+      26.75,
+      111.5
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-0-1",
+    "at": [
+      26.75,
+      110.5
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-0-2",
+    "at": [
+      26.75,
+      109.844
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-1-0",
+    "at": [
+      26.75,
+      114
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-1-1",
+    "at": [
+      26.75,
+      113
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-1-2",
+    "at": [
+      26.75,
+      112.344
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-2-0",
+    "at": [
+      26.75,
+      116.5
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-2-1",
+    "at": [
+      26.75,
+      115.5
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-2-2",
+    "at": [
+      26.75,
+      114.844
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-3-0",
+    "at": [
+      32.45,
+      111.512
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-3-1",
+    "at": [
+      32.45,
+      110.512
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-3-2",
+    "at": [
+      32.45,
+      109.84
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-4-0",
+    "at": [
+      32.45,
+      114.012
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-4-1",
+    "at": [
+      32.45,
+      113.012
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-4-2",
+    "at": [
+      32.45,
+      112.34
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-5-0",
+    "at": [
+      32.45,
+      116.512
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-5-1",
+    "at": [
+      32.45,
+      115.512
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-arch-5-2",
+    "at": [
+      32.45,
+      114.84
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--75-0",
+    "at": [
+      27.275,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--75-1",
+    "at": [
+      28.275,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--75-2",
+    "at": [
+      29.275,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--75-3",
+    "at": [
+      30.275,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--75-4",
+    "at": [
+      31.275,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--75-5",
+    "at": [
+      32.041,
+      109.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--25-0",
+    "at": [
+      27.275,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--25-1",
+    "at": [
+      28.275,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--25-2",
+    "at": [
+      29.275,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--25-3",
+    "at": [
+      30.275,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--25-4",
+    "at": [
+      31.275,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib--25-5",
+    "at": [
+      32.041,
+      112.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-25-0",
+    "at": [
+      27.275,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-25-1",
+    "at": [
+      28.275,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-25-2",
+    "at": [
+      29.275,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-25-3",
+    "at": [
+      30.275,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-25-4",
+    "at": [
+      31.275,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-25-5",
+    "at": [
+      32.041,
+      114.65
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-75-0",
+    "at": [
+      27.275,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-75-1",
+    "at": [
+      28.275,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-75-2",
+    "at": [
+      29.275,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-75-3",
+    "at": [
+      30.275,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-75-4",
+    "at": [
+      31.275,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-75-5",
+    "at": [
+      32.041,
+      117.15
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-0",
+    "at": [
+      29.6,
+      110.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-1",
+    "at": [
+      29.6,
+      113.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-2",
+    "at": [
+      29.6,
+      116.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-0",
+    "at": [
+      27.3,
+      113.55
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-1",
+    "at": [
+      28.3,
+      113.55
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-2",
+    "at": [
+      29.3,
+      113.55
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-3",
+    "at": [
+      30.3,
+      113.55
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-4",
+    "at": [
+      31.3,
+      113.55
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-5",
+    "at": [
+      32.097,
+      113.55
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-0",
+    "at": [
+      26.15,
+      108.9
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-1",
+    "at": [
+      26.15,
+      111.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-2",
+    "at": [
+      26.15,
+      115.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-3",
+    "at": [
+      26.15,
+      117.9
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-4",
+    "at": [
+      33.05,
+      108.9
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-5",
+    "at": [
+      33.05,
+      111.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-6",
+    "at": [
+      33.05,
+      115.4
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-7",
+    "at": [
+      33.05,
+      117.9
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-0",
+    "at": [
+      25.777,
+      117.745
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-1",
+    "at": [
+      27.246,
+      118.714
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-2",
+    "at": [
+      28.121,
+      118.8
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-3",
+    "at": [
+      28.839,
+      118.8
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-4",
+    "at": [
+      29.089,
+      118.8
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-5",
+    "at": [
+      28.964,
+      118.433
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-6",
+    "at": [
+      29.214,
+      118.183
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-7",
+    "at": [
+      28.121,
+      116.589
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-8",
+    "at": [
+      28.839,
+      116.808
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-9",
+    "at": [
+      29.089,
+      116.558
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-10",
+    "at": [
+      28.964,
+      115.933
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-11",
+    "at": [
+      29.214,
+      115.683
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-12",
+    "at": [
+      28.121,
+      114.089
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-13",
+    "at": [
+      28.839,
+      114.308
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-14",
+    "at": [
+      29.089,
+      114.058
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-15",
+    "at": [
+      28.964,
+      113.433
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-16",
+    "at": [
+      29.214,
+      113.183
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-17",
+    "at": [
+      28.121,
+      111.589
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-18",
+    "at": [
+      28.839,
+      111.808
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-19",
+    "at": [
+      29.089,
+      111.558
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-20",
+    "at": [
+      28.964,
+      110.933
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-21",
+    "at": [
+      29.144,
+      110.753
+    ],
+    "blocks": false
+  }
+]

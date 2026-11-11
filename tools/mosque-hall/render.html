@@ -1,0 +1,152 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#0000">
+<canvas id="c"></canvas>
+<script type="module">
+import * as T from '../pack/vendor/three.module.min.js';
+import { RoomEnvironment } from '../pack/vendor/RoomEnvironment.js';
+import { createMosque } from '../pack/mosque.mjs';
+/*
+ * Renders the owner's mosque model in the world's isometric projection, one
+ * piece at a time with the full scene's lighting and shadows, so the build
+ * can depth-sort people between columns, arches and lanterns.
+ *   s: tiles per metre on the ground; kv: vertical stretch; D: sprite density.
+ */
+const P = new URLSearchParams(location.search);
+const s = +P.get('s'), kv = +P.get('kv'), D = +P.get('D'), screenZ = +P.get('screenZ');
+const PX = 22.627 * s * D; // pixels per metre along the ground axes
+const renderer = new T.WebGLRenderer({ canvas: c, antialias: false, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = T.PCFSoftShadowMap;
+renderer.toneMapping = T.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.45;
+renderer.setClearColor(0x000000, 0);
+const scene = new T.Scene();
+const pmrem = new T.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.3;
+const model = await createMosque();
+const g = model.groups;
+// A brighter teal-blue carpet, as the owner's brief asks.
+model.materials.teal.color.set('#4a96c4');
+model.materials.tealBorder.color.set('#2f6f96');
+// Cut-away view, as in the pack: no roof; the two walls nearest the viewer
+// (east and entrance) open; the people are ours, not the model's.
+for (const n of ['Congregation', 'Ceiling', 'East-wall', 'Entrance-wall']) model.root.remove(g[n]);
+g['Partition'].position.z += screenZ - 3.8;
+model.root.scale.set(1, kv, 1);
+scene.add(model.root);
+scene.add(new T.HemisphereLight('#ffe9c9', '#8fb2b0', 1.1));
+const sun = new T.DirectionalLight('#ffe0ab', 2.3);
+sun.position.set(-14, 20, -6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -20, right: 20, top: 20, bottom: -20, near: 0.5, far: 80 });
+sun.shadow.normalBias = 0.025;
+scene.add(sun);
+const fill = new T.DirectionalLight('#a3c7d2', 0.85);
+fill.position.set(10, 8, 12);
+scene.add(fill);
+model.root.updateMatrixWorld(true);
+
+// The world's 2:1 dimetric camera: 30° elevation, looking from +X +Z.
+const cam = new T.OrthographicCamera(-1, 1, 1, -1, -200, 200);
+cam.position.set(30, 30 * Math.SQRT2 * Math.tan(Math.PI / 6), 30);
+cam.lookAt(0, 0, 0);
+cam.updateMatrixWorld(true);
+// Frame the whole hall.
+const box = new T.Box3().setFromObject(model.root);
+let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+const v = new T.Vector3(), inv = cam.matrixWorldInverse;
+for (const X of [box.min.x, box.max.x]) for (const Y of [box.min.y, box.max.y]) for (const Z of [box.min.z, box.max.z]) {
+  v.set(X, Y, Z).applyMatrix4(inv);
+  x0 = Math.min(x0, v.x); x1 = Math.max(x1, v.x); y0 = Math.min(y0, v.y); y1 = Math.max(y1, v.y);
+}
+const W = Math.ceil((x1 - x0) * PX) + 8, H = Math.ceil((y1 - y0) * PX) + 8;
+Object.assign(cam, { left: x0 - 4 / PX, right: x0 - 4 / PX + W / PX, top: y1 + 4 / PX, bottom: y1 + 4 / PX - H / PX });
+cam.updateProjectionMatrix();
+renderer.setSize(W, H, false);
+const toPx = (X, Y, Z) => { v.set(X, Y * kv, Z).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+
+// Split every instanced mesh into pieces by where each instance stands.
+const COLUMNS = [], LANTERNS = [[0, -6], [0, 0], [0, 6]], PLANTS = [], ARCHES = [];
+for (const x of [-5.7, 5.7]) for (const z of [-7.5, -2.5, 2.5, 7.5]) COLUMNS.push([x, z]);
+for (const x of [-6.9, 6.9]) for (const z of [-9, -4, 4, 9]) PLANTS.push([x, z]);
+for (const x of [-5.7, 5.7]) for (const z of [-5, 0, 5]) ARCHES.push([x, z]);
+const near = (list, X, Z) => list.map((p, i) => [Math.hypot(p[0] - X, p[1] - Z), i]).sort((a, b) => a[0] - b[0])[0];
+function pieceOf(group, mesh, X, Y, Z) {
+  if (group === 'Floor' || group === 'Imam-rug') return 'floor';
+  if (['West-wall', 'Qibla-wall', 'Mihrab'].includes(group)) return 'walls';
+  if (group === 'Partition') return 'partition';
+  if (group === 'Plants') return 'plant-' + near(PLANTS, X, Z)[1];
+  if (group === 'Vaults') return 'rib-' + Math.round(Z * 10);
+  if (group === 'Lanterns') {
+    const [d, i] = near(LANTERNS, X, Z), [dc, ic] = near(COLUMNS, X, Z);
+    return d < dc ? 'lantern-' + i : 'column-' + ic;
+  }
+  if (group === 'Colonnades') {
+    // Arches are extruded shapes standing on the capitals between columns.
+    if (mesh.geometry.type === 'ExtrudeGeometry') return 'arch-' + near(ARCHES, X, Z)[1];
+    return 'column-' + near(COLUMNS, X, Z)[1];
+  }
+  return null;
+}
+const hidden = new T.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
+const parts = new Map(); // piece -> meshes
+const m4 = new T.Matrix4(), pos = new T.Vector3(), q = new T.Quaternion(), sc = new T.Vector3();
+for (const [gname, grp] of Object.entries(g)) {
+  if (!grp.parent) continue;
+  for (const mesh of [...grp.children]) {
+    if (!mesh.isInstancedMesh) continue;
+    const buckets = new Map();
+    for (let i = 0; i < mesh.count; i++) {
+      mesh.getMatrixAt(i, m4);
+      m4.decompose(pos, q, sc);
+      pos.applyMatrix4(grp.matrix);
+      const k = pieceOf(gname, mesh, pos.x, pos.y, pos.z);
+      if (!k) continue;
+      if (!buckets.has(k)) buckets.set(k, []);
+      buckets.get(k).push(i);
+    }
+    for (const [k, idx] of buckets) {
+      const sub = new T.InstancedMesh(mesh.geometry, mesh.material, idx.length);
+      idx.forEach((i, j) => { mesh.getMatrixAt(i, m4); sub.setMatrixAt(j, m4); if (mesh.instanceColor) { const col = new T.Color(); mesh.getColorAt(i, col); sub.setColorAt(j, col); } });
+      sub.castShadow = sub.receiveShadow = true;
+      sub.frustumCulled = false;
+      sub.userData.material = mesh.material;
+      grp.add(sub);
+      if (!parts.has(k)) parts.set(k, []);
+      parts.get(k).push(sub);
+    }
+    grp.remove(mesh);
+  }
+}
+// Light shafts from the west windows (as in the pack's viewer), soft gold.
+const shafts = new T.Group();
+const shaftMat = new T.ShaderMaterial({
+  transparent: true, depthWrite: false, side: T.DoubleSide,
+  vertexShader: 'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader: 'varying vec2 vUv;void main(){float edge=pow(max(0.,1.-abs(vUv.x-.5)*2.),2.);float fade=smoothstep(0.,.15,vUv.y)*(1.-smoothstep(.75,1.,vUv.y));gl_FragColor=vec4(1.,.8,.45,edge*fade*.5);}',
+});
+for (const z of [-7.5, -2.5, 2.5, 7.5]) {
+  const A = new T.Vector3(-7.7, 5.5 * kv, z), B = new T.Vector3(3, 0.05, z + 4), d = B.clone().sub(A);
+  const m = new T.Mesh(new T.PlaneGeometry(2.0, d.length()), shaftMat);
+  m.position.copy(A.add(B).multiplyScalar(0.5));
+  m.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), d.normalize());
+  shafts.add(m);
+}
+scene.add(shafts);
+
+function render(only) {
+  for (const [k, list] of parts) for (const m of list) m.material = k === only ? m.userData.material : hidden;
+  shafts.visible = only === 'shafts';
+  renderer.render(scene, cam);
+  return c.toDataURL('image/png');
+}
+window.RESULT = {
+  W, H, PX,
+  pieces: [...parts.keys(), 'shafts'],
+  render,
+  toPx,
+};
+window.READY = true;
+</script>

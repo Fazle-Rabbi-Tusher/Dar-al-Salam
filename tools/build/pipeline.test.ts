@@ -725,10 +725,12 @@ describe('main characters only, with supplied animation strips', () => {
     expect(congregation.size).toBe(30);
     for (const c of content.characters.filter((c) => congregation.has(c.id)))
       for (const s of c.script)
-        if (s.action === 'pray')
-          // Everyone faces the qibla together (towards the viewer).
-          expect(s.facing, c.id).toBe('SE');
-        else expect([c.id, s.action]).toEqual([c.id, 'walk']);
+        if (s.action === 'pray') {
+          // Everyone faces the qibla wall and mihrab together: the far NE
+          // wall, so all are seen from behind (owner's brief, 2026-11).
+          expect(s.facing, c.id).toBe('NE');
+          expect(c.depiction, c.id).toBe('back');
+        } else expect([c.id, s.action]).toEqual([c.id, 'walk']);
     for (const c of content.characters)
       if (
         !c.name &&

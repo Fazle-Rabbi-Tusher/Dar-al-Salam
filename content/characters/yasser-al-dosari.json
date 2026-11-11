@@ -10,7 +10,7 @@
   "years": "b. 1980",
   "place": "Al-Kharj · Makkah",
   "district": "modern-quarter",
-  "depiction": "full",
+  "depiction": "back",
   "look": {
     "base": "adult-man-beard",
     "garment": "thobe",
@@ -31,9 +31,8 @@
       "from": 0,
       "to": 240,
       "action": "pray",
-      "at": [35.6, 113.0],
-      "z": 3,
-      "facing": "SE"
+      "at": [29.6, 109.9],
+      "facing": "NE"
     }
   ],
   "bio": {

@@ -2,16 +2,17 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+import { S, tileOf } from './mosque-hall/layout';
 
 /*
  * The congregational prayer led by Yasser al-Dosari, from the owner's
- * prayer-library pack (2026-11), in a new prayer hall on the Baitul Mukarram
- * plaza. Owner's choices: the qibla faces the viewer (everyone faces SE, so
- * faces show), and a hybrid of the pack's two kinds of art:
- *   - detailed pixel art whenever someone stands, all of Yasser's poses,
- *     and the children's sujood;
- *   - the pack's voxel key poses (rendered from its 3D component) for the
- *     other positions, with a cross-fade frame at every change of pose.
+ * prayer-library pack (2026-11), inside the owner's 3D mosque on the Baitul
+ * Mukarram plaza (tools/prepare-mosque-hall.ts). Owner's brief: everyone,
+ * imam included, faces the qibla wall and its mihrab, which is the far NE
+ * wall, so all are seen from behind (depiction back, facing NE):
+ *   - the pack's voxel key poses (rendered from its 3D component), from the
+ *     back three-quarter view, with a cross-fade frame at every change;
+ *   - the imam's detailed back view (his turnaround) whenever he stands.
  *
  * Each person gets one 240-tick 'pray' strip (80 steps of 3 ticks): unique
  * poses stored once, with a `sequence` listing which pose plays at each
@@ -92,6 +93,8 @@ const CROP = { left: 64, top: 80, width: 176, height: 240 },
   FH = Math.round(CROP.height * UP),
   DENSITY = 4;
 const voxelCache = new Map<string, Img>();
+/** The pack's view of a figure facing up-right on screen (NE), from behind. */
+const BACK = '135';
 async function voxel(id: string, pose: string, dir = '045') {
   const key = `${id}/${pose}-${dir}`;
   if (!voxelCache.has(key))
@@ -275,9 +278,8 @@ type Person = {
   role: Role;
   /** Ticks behind the imam. */
   delay: number;
-  /** Detailed art: standing, and (children) sujood. */
-  art: { stand: string; sujood?: string };
-  mirror: boolean;
+  /** Detailed art from behind, for standing (the imam's turnaround). */
+  art: { back?: string };
   /** Children look sideways before copying each move. */
   glances?: boolean;
   /** The toddler: tugs at his father's thawb while the rows stand. */
@@ -286,44 +288,26 @@ type Person = {
 
 async function stripFor(p: Person) {
   const det: Partial<Record<Pose, Img>> = {};
-  const standing = await detailed(p.art.stand, p.mirror);
-  if (p.role === 'imam') {
-    const YP = (n: number) =>
-      detailed(`yasser-al-dosari/yasser-prayer-poses-0${n}.webp`, p.mirror);
-    const sheet: [Pose, number][] = [
-      ['qiyam', 0],
-      ['takbir', 1],
-      ['ruku', 2],
-      ['itidal', 3],
-      ['stand', 3],
-      ['sujood', 4],
-      ['jalsa', 5],
-      ['tashahhud', 6],
-    ];
-    for (const [pose, n] of sheet)
-      det[pose] = await fitted(
-        await YP(n),
-        await voxel(p.id, VOXEL_POSE[pose]),
-        UPRIGHT.has(pose),
-      );
-  } else {
+  // Everyone faces the qibla wall and mihrab (NE), seen from behind: the
+  // pack's voxel poses from the back three-quarter view. Only the imam has
+  // detailed art from behind (his turnaround), used whenever he stands.
+  if (p.art.back) {
+    const back = await detailed(p.art.back, false);
     for (const pose of ['qiyam', 'itidal', 'stand'] as Pose[])
-      det[pose] = await fitted(standing, await voxel(p.id, 'recitation'), true);
-    if (p.art.sujood)
-      det.sujood = await fitted(
-        await detailed(p.art.sujood, p.mirror),
-        await voxel(p.id, 'sujood'),
-        false,
+      det[pose] = await fitted(
+        back,
+        await voxel(p.id, 'recitation', BACK),
+        true,
       );
   }
   const frameOf = async (pose: Pose) =>
-    det[pose] ?? (await voxel(p.id, VOXEL_POSE[pose]));
+    det[pose] ?? (await voxel(p.id, VOXEL_POSE[pose], BACK));
   const qiyamBreath = det.qiyam ? await breath(det.qiyam) : null;
   // A glance: the standing body turned a little to look (voxel side view).
   const glance = await voxel(p.id, 'recitation', '090');
-  // The tug: bending toward his father's hem, reaching (voxel, facing NE).
-  const reach = await voxel(p.id, 'ruku', '135'),
-    pull = await voxel(p.id, 'recitation', '135');
+  // The tug: bending toward his father's hem, reaching (turned to the side).
+  const reach = await voxel(p.id, 'ruku', '090'),
+    pull = await voxel(p.id, 'recitation', '090');
 
   const steps: Img[] = [];
   let prev: Img | null = null,
@@ -362,7 +346,7 @@ async function stripFor(p: Person) {
     });
   const strip = blank(FW * unique.length, FH);
   unique.forEach((u, i) => paste(strip, u, i * FW, 0));
-  const base = `art/sprites/anim/${p.id}__pray_SE`;
+  const base = `art/sprites/anim/${p.id}__pray_NE`;
   await toSharp(strip)
     .png({ palette: true, colours: 256, dither: 0.4, effort: 8 })
     .toFile(`${base}.png`);
@@ -390,18 +374,22 @@ async function stripFor(p: Person) {
 }
 
 /* ── Who prays where (tiles); everyone faces the qibla, SE ── */
-export const IMAM: [number, number] = [35.6, 113.0];
-const ROW_Y = [110.5, 111.5, 112.5, 113.5, 114.5, 115.5];
-const MEN_X = [33.8, 32.4],
-  WOMEN_X = [30.0, 28.6];
+/*
+ * Inside the owner's mosque (tools/mosque-hall/layout.ts), in the model's
+ * metres: the qibla wall is the far NE wall (Z −11), so the rows run across
+ * the hall (along X) behind the imam, between the two colonnades (X ±5.7).
+ */
+export const IMAM = tileOf(0, -7); // on his own mat, before the mihrab
+const ROW_X = [-4.25, -2.55, -0.85, 0.85, 2.55, 4.25];
+const MEN_Z = [-5.0, -3.2], // the screen stands at Z 0.3
+  WOMEN_Z = [2.0, 3.8];
 const pad = (n: number) => String(n).padStart(2, '0');
 const people: (Person & { at: [number, number]; label: string })[] = [
   {
     id: 'yasser-al-dosari',
     role: 'imam',
     delay: 0,
-    art: { stand: 'yasser-al-dosari/yasser-prayer-poses-00.webp' },
-    mirror: true,
+    art: { back: 'yasser-al-dosari/yasser-turnaround-03.webp' },
     at: IMAM,
     label: '',
   },
@@ -413,63 +401,49 @@ for (let r = 0; r < 2; r++)
       id: `prayer-man-${pad(m)}`,
       role: 'adult',
       delay: 6,
-      art: { stand: `prayer-man-${pad(m)}/portrait.webp` },
-      mirror: true,
-      at: [MEN_X[r], ROW_Y[i]],
+      art: {},
+      at: tileOf(ROW_X[i], MEN_Z[r]),
       label: 'A worshipper in the men’s rows',
     });
     people.push({
       id: `prayer-woman-${pad(m)}`,
       role: 'adult',
       delay: 6,
-      art: { stand: `prayer-woman-${pad(m)}/portrait.webp` },
-      mirror: true,
-      at: [WOMEN_X[r], ROW_Y[i]],
+      art: {},
+      at: tileOf(ROW_X[i], WOMEN_Z[r]),
       label: 'A worshipper in the women’s rows',
     });
   }
 people.push(
   {
-    // Beside his father (prayer-man-12, men's row 2), on his right.
+    // At the end of the front row, beside his father.
     id: 'prayer-toddler',
     role: 'child',
     delay: 18,
-    art: {
-      stand: 'prayer-toddler/standing.webp',
-      sujood: 'prayer-toddler/sujood.webp',
-    },
-    mirror: true,
+    art: {},
     glances: true,
     tug: true,
-    at: [MEN_X[1], ROW_Y[5] + 0.95],
+    at: tileOf(5.1, MEN_Z[0]),
     label: 'A toddler beside his father, tugging at his thawb',
   },
   {
-    // Beside his father (prayer-man-07), copying a moment late.
+    // At the other end of the front row, copying a moment late.
     id: 'bead-child',
     role: 'child',
     delay: 12,
-    art: {
-      stand: 'bead-child/standing.webp',
-      sujood: 'bead-child/sujood.webp',
-    },
-    mirror: true,
+    art: {},
     glances: true,
-    at: [MEN_X[1], ROW_Y[0] - 0.95],
+    at: tileOf(-5.1, MEN_Z[0]),
     label: 'A boy copying the grown-ups, a moment late',
   },
   {
-    // Beside her mother (prayer-woman-01), near the partition.
+    // Beside her mother, just behind the screen.
     id: 'partition-girl',
     role: 'child',
     delay: 12,
-    art: {
-      stand: 'partition-girl/standing.webp',
-      sujood: 'partition-girl/sujood.webp',
-    },
-    mirror: true,
+    art: {},
     glances: true,
-    at: [WOMEN_X[0], ROW_Y[0] - 0.95],
+    at: tileOf(-5.1, WOMEN_Z[0]),
     label: 'A girl praying beside her mother',
   },
 );
@@ -480,7 +454,8 @@ for (const p of people) {
 }
 
 /* ── The two children playing tag round the back pillar (eight views) ── */
-export const PILLAR: [number, number] = [25.6, 109.6];
+/** The colonnade column by the entrance where two children play tag. */
+export const PILLAR = tileOf(-5.7, 7.5);
 const VIEWS = ['000', '045', '090', '135', '180', '225', '270', '315']; // S, SE, E, NE, N, NW, W, SW
 for (const id of ['aisle-child-a', 'aisle-child-b']) {
   const views = await Promise.all(VIEWS.map((d) => voxel(id, 'stand', d))),
@@ -507,11 +482,11 @@ const circle = (phase: number): [number, number][] =>
   [...Array(25).keys()].map((i) => {
     // Two quiet laps a loop, round the pillar.
     const a = phase + (i / 24) * Math.PI * 4;
-    // An oval round the pillar, clear of the walls (tiles x 21, y 108) and
-    // of the women's rows (x 28.6 and up).
+    // An oval round the column, clear of the west wall (x 24.4), the plant
+    // by the entrance and the women's rows.
     return [
-      +(PILLAR[0] + Math.cos(a) * 1.2).toFixed(3),
-      +(PILLAR[1] + 0.35 + Math.sin(a) * 0.75).toFixed(3),
+      +(PILLAR[0] + S * (0.4 + Math.cos(a) * 1.8)).toFixed(3),
+      +(PILLAR[1] + S * Math.sin(a) * 1.4).toFixed(3),
     ];
   });
 
@@ -541,11 +516,12 @@ const ambient: unknown[] = people
     kind: 'person',
     aliases: [],
     district: 'modern-quarter',
-    depiction: 'full',
+    // Seen from behind, facing the qibla wall (NE) like everyone else.
+    depiction: 'back',
     role: p.label,
     look: lookFor(p),
     loop: 240,
-    script: [{ from: 0, to: 240, action: 'pray', at: p.at, facing: 'SE' }],
+    script: [{ from: 0, to: 240, action: 'pray', at: p.at, facing: 'NE' }],
   }));
 for (const [i, id] of ['aisle-child-a', 'aisle-child-b'].entries())
   ambient.push({
@@ -554,7 +530,7 @@ for (const [i, id] of ['aisle-child-a', 'aisle-child-b'].entries())
     aliases: [],
     district: 'modern-quarter',
     depiction: 'full',
-    role: 'Two children tiptoeing round the pillar in a quiet game of tag',
+    role: 'Two children tiptoeing round a column in a quiet game of tag',
     look: {
       base: id,
       garment: 'none',

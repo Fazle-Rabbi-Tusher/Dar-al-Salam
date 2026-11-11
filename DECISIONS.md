@@ -170,3 +170,26 @@
     - **Not done from the prompt:**
       - God rays and dust motes, hanging ceiling lanterns, and depth-of-field blur on the back rows.
       - The father's glance and smile, the child's head-turn under his arm in sujood, and the elder turning round: the pack has no art for these poses.
+68. The prayer hall is now the owner's 3D mosque (`mosque-six-angle-final` on the `downloads/world-designs-and-animation` branch), and everyone faces its qibla wall and mihrab (owner's brief, replacing the viewer-facing layout in item 67):
+    - **Rendering:** `tools/prepare-mosque-hall.ts` renders the model's own three.js source in the world's 2:1 isometric projection, with its lighting and shadows, one piece at a time.
+      - **Where it stands:** the same spot on the plaza, set in `tools/mosque-hall/layout.ts`, shared with `tools/prepare-prayer.ts`.
+      - **Scale:** half a tile to the model's metre on the ground (8.4 × 11.4 tiles), with heights stretched 1.84× so the columns stand above our people.
+    - **What shows:**
+      - The limestone west wall with arched stained-glass windows, wall lanterns and foliage outside.
+      - The qibla wall with the glowing recessed mihrab.
+      - Faceted columns with pointed arches, vault ribs, three tiered brass chandeliers, ferns in brass pots and the walnut mashrabiya screen.
+      - The teal-blue carpet with gold-and-cream star rosettes, and the imam's own fringed mat.
+      - Soft golden sun shafts from the west windows.
+    - **Cut away for the view:** the roof and the two walls nearest the viewer, as in the pack's viewer. The screen moves forward so the men's and women's rows fit between the colonnades.
+    - **The curved planet:** the hall sits far from the map's centre, where the ground is stretched.
+      - The carpet is baked into the ground texture (supplied art can now be `floor: true`), so it follows the curve.
+      - Everything tall is cut into narrow, overlapping vertical strips, each standing on its own floor point. That keeps the joins invisible and sorts people correctly in front of or behind every column, arch and wall.
+      - The hall is 129 pieces.
+    - **Facing:** everyone faces the qibla wall (NE), seen from behind (`depiction: back`), from the pack's back three-quarter voxel poses. Yasser's detailed back view (his turnaround) shows whenever he stands. No detailed art exists from behind for the congregation, and the brief asks for voxel art.
+    - **People:**
+      - Yasser on his mat before the mihrab, then two men's rows of six, the screen, and two women's rows of six.
+      - The toddler and the boy at the ends of the front row, and the girl beside her mother.
+      - The two children play tag round the column by the entrance.
+    - **Clicking:** clicking any person or piece of the mosque opens Yasser's card and lights up the scene. Scene props can now name a family of types (`sup-ph-*`).
+    - **Removed:** the hall drawn for item 67 (walls, carpet, dais, lattice, pillar, lanterns), and the plaza lamp that stood where the qibla wall now is.
+    - **Not used from the pack:** its own congregation (static figures), the coffered ceiling and the two near walls (cut away to see in).

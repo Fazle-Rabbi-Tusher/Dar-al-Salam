@@ -25,6 +25,7 @@ import {
 import { NATURE_OBJECTS } from './scenes/nature';
 import { CITY_OBJECTS } from './scenes/city';
 import { detailFootprints, type DetailType } from './details';
+import PRAYER_HALL from '../../art/supplied/prayer-hall.json';
 
 /*
  * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
@@ -1853,26 +1854,25 @@ export function modernQuarter() {
   obj('m-bm-arcade', 25, 103.5);
   obj('m-bm-pavilion', 4.5, 108);
   obj('m-tea-stall', 35.4, 119.4);
-  obj('m-street-lamp', 34, 106.5);
   /*
-   * The congregational prayer hall (owner's prayer-library pack), with
-   * Yasser al-Dosari leading. The qibla faces the viewer (SE, +x), so the
-   * two near walls are cut away and only the far walls stand, as in the
-   * pack. Front to back: the imam's dais, two men's rows, the carved screen,
-   * two women's rows; a marble pillar in the far corner where two children
-   * play tag. People: content/ambient/prayer.json (tools/prepare-prayer.ts).
+   * The congregational prayer hall, led by Yasser al-Dosari: the owner's 3D
+   * mosque rendered in our projection (tools/prepare-mosque-hall.ts), in 86
+   * pieces so people stand between its columns and arches. The qibla wall
+   * and mihrab are the far NE wall; everyone faces it. The two near walls
+   * are cut away to see in. People: content/ambient/prayer.json.
    */
-  obj('m-hall-carpet', 27, 109.9, true);
-  obj('m-archwall', 22, 108);
-  obj('m-archwall', 30, 108);
-  obj('m-archwall-side', 21.6, 108);
-  obj('m-imam-dais', 34.9, 112.3);
-  obj('m-mashrabiya-side', 31.3, 109.8);
-  // Walkable: the children's game of tag circles it (it blocks no tiles).
-  obj('m-marble-pillar', 25.15, 109.15, true);
-  obj('m-brass-lantern', 36.6, 110.2);
-  obj('m-brass-lantern', 36.6, 115.6);
-  obj('m-brass-lantern', 22.4, 116.6);
+  for (const p of PRAYER_HALL as {
+    type: string;
+    at: [number, number];
+    blocks: boolean;
+  }[])
+    // Supplied pieces stand on their footprint's centre (0.6 tiles square).
+    obj(
+      p.type,
+      +(p.at[0] - 0.3).toFixed(3),
+      +(p.at[1] - 0.3).toFixed(3),
+      !p.blocks,
+    );
   for (const [x, y] of [
     [4, 120],
     [38, 96],

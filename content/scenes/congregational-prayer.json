@@ -38,10 +38,10 @@
     "aisle-child-a",
     "aisle-child-b"
   ],
-  "props": ["m-mashrabiya-side", "m-marble-pillar", "m-brass-lantern"],
+  "props": ["sup-ph-*"],
   "area": [
-    [21, 107.5],
-    [38, 118]
+    [25, 107],
+    [34.5, 120]
   ],
   "camera": "reveal"
 }

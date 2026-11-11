@@ -22130,7 +22130,7 @@
         0,
         0,
         0,
-        1,
+        0,
         0,
         0,
         0,
@@ -22309,29 +22309,29 @@
         0,
         0,
         0,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
+        0,
         0,
         0,
         0,
         0,
         0,
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         1,
         0,
         0,
@@ -22405,7 +22405,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22415,7 +22414,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22428,6 +22426,8 @@
         0,
         0,
         0,
+        0,
+        0,
         1,
         0,
         0,
@@ -22501,7 +22501,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22511,13 +22510,10 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
         0,
-        1,
-        1,
         0,
         0,
         0,
@@ -22597,7 +22593,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22607,7 +22602,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22693,7 +22687,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22703,7 +22696,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22789,7 +22781,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22799,7 +22790,7 @@
         0,
         0,
         0,
-        1,
+        0,
         0,
         0,
         0,
@@ -22814,6 +22805,15 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         1,
         1,
         0,
@@ -22885,7 +22885,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22895,7 +22894,7 @@
         0,
         0,
         0,
-        1,
+        0,
         0,
         0,
         0,
@@ -22910,6 +22909,7 @@
         0,
         0,
         0,
+        0,
         1,
         1,
         0,
@@ -22981,7 +22981,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -22991,13 +22990,10 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
         0,
-        1,
-        1,
         0,
         0,
         0,
@@ -23078,7 +23074,6 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
@@ -23087,13 +23082,10 @@
         0,
         0,
         0,
-        1,
         0,
         0,
         0,
         0,
-        1,
-        1,
         0,
         0,
         0,
@@ -23174,7 +23166,15 @@
         0,
         0,
         0,
-        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -28835,135 +28835,1551 @@
           "z": 0
         },
         {
-          "id": 389,
-          "type": "m-street-lamp",
-          "x": 34,
-          "y": 106.5,
+          "id": 576,
+          "type": "sup-ph-floor",
+          "x": 25.075,
+          "y": 107.375,
           "footprint": [
-            0.5,
-            0.5
+            0.6,
+            0.6
           ],
-          "walkable": false,
+          "walkable": true,
           "z": 0
         },
         {
-          "id": 440,
-          "type": "m-hall-carpet",
-          "x": 27,
+          "id": 674,
+          "type": "sup-ph-walls-0",
+          "x": 25.15,
+          "y": 118.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 675,
+          "type": "sup-ph-walls-1",
+          "x": 25.15,
+          "y": 117.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 676,
+          "type": "sup-ph-walls-2",
+          "x": 25.15,
+          "y": 117.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 677,
+          "type": "sup-ph-walls-3",
+          "x": 25.15,
+          "y": 116.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 678,
+          "type": "sup-ph-walls-4",
+          "x": 25.15,
+          "y": 116.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 679,
+          "type": "sup-ph-walls-5",
+          "x": 25.15,
+          "y": 115.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 680,
+          "type": "sup-ph-walls-6",
+          "x": 25.15,
+          "y": 115.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 681,
+          "type": "sup-ph-walls-7",
+          "x": 25.15,
+          "y": 114.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 682,
+          "type": "sup-ph-walls-8",
+          "x": 25.15,
+          "y": 114.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 683,
+          "type": "sup-ph-walls-9",
+          "x": 25.15,
+          "y": 113.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 684,
+          "type": "sup-ph-walls-10",
+          "x": 25.15,
+          "y": 113.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 685,
+          "type": "sup-ph-walls-11",
+          "x": 25.15,
+          "y": 112.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 686,
+          "type": "sup-ph-walls-12",
+          "x": 25.15,
+          "y": 112.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 687,
+          "type": "sup-ph-walls-13",
+          "x": 25.15,
+          "y": 111.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 688,
+          "type": "sup-ph-walls-14",
+          "x": 25.15,
+          "y": 111.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 689,
+          "type": "sup-ph-walls-15",
+          "x": 25.15,
+          "y": 110.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 690,
+          "type": "sup-ph-walls-16",
+          "x": 25.15,
+          "y": 110.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 691,
+          "type": "sup-ph-walls-17",
+          "x": 25.15,
           "y": 109.9,
           "footprint": [
-            10,
-            6
+            0.6,
+            0.6
           ],
           "walkable": true,
           "z": 0
         },
         {
-          "id": 441,
-          "type": "m-archwall",
-          "x": 22,
-          "y": 108,
-          "footprint": [
-            8,
-            0.35
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 442,
-          "type": "m-archwall",
-          "x": 30,
-          "y": 108,
-          "footprint": [
-            8,
-            0.35
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 443,
-          "type": "m-archwall-side",
-          "x": 21.6,
-          "y": 108,
-          "footprint": [
-            0.35,
-            8
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 444,
-          "type": "m-imam-dais",
-          "x": 34.9,
-          "y": 112.3,
-          "footprint": [
-            1.4,
-            1.4
-          ],
-          "walkable": true,
-          "z": 0
-        },
-        {
-          "id": 445,
-          "type": "m-mashrabiya-side",
-          "x": 31.3,
-          "y": 109.8,
-          "footprint": [
-            0.3,
-            6.6
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 446,
-          "type": "m-marble-pillar",
+          "id": 692,
+          "type": "sup-ph-walls-18",
           "x": 25.15,
-          "y": 109.15,
+          "y": 109.4,
           "footprint": [
-            0.9,
-            0.9
+            0.6,
+            0.6
           ],
           "walkable": true,
           "z": 0
         },
         {
-          "id": 447,
-          "type": "m-brass-lantern",
-          "x": 36.6,
+          "id": 693,
+          "type": "sup-ph-walls-19",
+          "x": 25.15,
+          "y": 108.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 694,
+          "type": "sup-ph-walls-20",
+          "x": 25.15,
+          "y": 108.4,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 695,
+          "type": "sup-ph-walls-21",
+          "x": 25.15,
+          "y": 107.9,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 696,
+          "type": "sup-ph-walls-22",
+          "x": 25.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 697,
+          "type": "sup-ph-walls-23",
+          "x": 25.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 698,
+          "type": "sup-ph-walls-24",
+          "x": 26.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 699,
+          "type": "sup-ph-walls-25",
+          "x": 26.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 700,
+          "type": "sup-ph-walls-26",
+          "x": 27.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 701,
+          "type": "sup-ph-walls-27",
+          "x": 27.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 702,
+          "type": "sup-ph-walls-28",
+          "x": 28.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 703,
+          "type": "sup-ph-walls-29",
+          "x": 28.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 704,
+          "type": "sup-ph-walls-30",
+          "x": 29.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 705,
+          "type": "sup-ph-walls-31",
+          "x": 29.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 706,
+          "type": "sup-ph-walls-32",
+          "x": 30.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 707,
+          "type": "sup-ph-walls-33",
+          "x": 30.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 708,
+          "type": "sup-ph-walls-34",
+          "x": 31.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 709,
+          "type": "sup-ph-walls-35",
+          "x": 31.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 710,
+          "type": "sup-ph-walls-36",
+          "x": 32.2,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 711,
+          "type": "sup-ph-walls-37",
+          "x": 32.7,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 712,
+          "type": "sup-ph-walls-38",
+          "x": 33.153,
+          "y": 107.45,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 597,
+          "type": "sup-ph-column-0",
+          "x": 26.45,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 598,
+          "type": "sup-ph-column-1",
+          "x": 26.45,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 599,
+          "type": "sup-ph-column-2",
+          "x": 26.45,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 600,
+          "type": "sup-ph-column-3",
+          "x": 26.45,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 601,
+          "type": "sup-ph-column-4",
+          "x": 32.15,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 602,
+          "type": "sup-ph-column-5",
+          "x": 32.15,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 603,
+          "type": "sup-ph-column-6",
+          "x": 32.15,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 604,
+          "type": "sup-ph-column-7",
+          "x": 32.15,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 605,
+          "type": "sup-ph-arch-0-0",
+          "x": 26.45,
+          "y": 111.2,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 606,
+          "type": "sup-ph-arch-0-1",
+          "x": 26.45,
           "y": 110.2,
           "footprint": [
             0.6,
             0.6
           ],
-          "walkable": false,
+          "walkable": true,
           "z": 0
         },
         {
-          "id": 448,
-          "type": "m-brass-lantern",
-          "x": 36.6,
-          "y": 115.6,
+          "id": 607,
+          "type": "sup-ph-arch-0-2",
+          "x": 26.45,
+          "y": 109.544,
           "footprint": [
             0.6,
             0.6
           ],
-          "walkable": false,
+          "walkable": true,
           "z": 0
         },
         {
-          "id": 449,
-          "type": "m-brass-lantern",
-          "x": 22.4,
-          "y": 116.6,
+          "id": 608,
+          "type": "sup-ph-arch-1-0",
+          "x": 26.45,
+          "y": 113.7,
           "footprint": [
             0.6,
             0.6
           ],
-          "walkable": false,
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 609,
+          "type": "sup-ph-arch-1-1",
+          "x": 26.45,
+          "y": 112.7,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 610,
+          "type": "sup-ph-arch-1-2",
+          "x": 26.45,
+          "y": 112.044,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 611,
+          "type": "sup-ph-arch-2-0",
+          "x": 26.45,
+          "y": 116.2,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 612,
+          "type": "sup-ph-arch-2-1",
+          "x": 26.45,
+          "y": 115.2,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 613,
+          "type": "sup-ph-arch-2-2",
+          "x": 26.45,
+          "y": 114.544,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 614,
+          "type": "sup-ph-arch-3-0",
+          "x": 32.15,
+          "y": 111.212,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 615,
+          "type": "sup-ph-arch-3-1",
+          "x": 32.15,
+          "y": 110.212,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 616,
+          "type": "sup-ph-arch-3-2",
+          "x": 32.15,
+          "y": 109.54,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 617,
+          "type": "sup-ph-arch-4-0",
+          "x": 32.15,
+          "y": 113.712,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 618,
+          "type": "sup-ph-arch-4-1",
+          "x": 32.15,
+          "y": 112.712,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 619,
+          "type": "sup-ph-arch-4-2",
+          "x": 32.15,
+          "y": 112.04,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 620,
+          "type": "sup-ph-arch-5-0",
+          "x": 32.15,
+          "y": 116.212,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 621,
+          "type": "sup-ph-arch-5-1",
+          "x": 32.15,
+          "y": 115.212,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 622,
+          "type": "sup-ph-arch-5-2",
+          "x": 32.15,
+          "y": 114.54,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 623,
+          "type": "sup-ph-rib--75-0",
+          "x": 26.975,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 624,
+          "type": "sup-ph-rib--75-1",
+          "x": 27.975,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 625,
+          "type": "sup-ph-rib--75-2",
+          "x": 28.975,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 626,
+          "type": "sup-ph-rib--75-3",
+          "x": 29.975,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 627,
+          "type": "sup-ph-rib--75-4",
+          "x": 30.975,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 628,
+          "type": "sup-ph-rib--75-5",
+          "x": 31.741,
+          "y": 109.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 629,
+          "type": "sup-ph-rib--25-0",
+          "x": 26.975,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 630,
+          "type": "sup-ph-rib--25-1",
+          "x": 27.975,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 631,
+          "type": "sup-ph-rib--25-2",
+          "x": 28.975,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 632,
+          "type": "sup-ph-rib--25-3",
+          "x": 29.975,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 633,
+          "type": "sup-ph-rib--25-4",
+          "x": 30.975,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 634,
+          "type": "sup-ph-rib--25-5",
+          "x": 31.741,
+          "y": 111.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 635,
+          "type": "sup-ph-rib-25-0",
+          "x": 26.975,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 636,
+          "type": "sup-ph-rib-25-1",
+          "x": 27.975,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 637,
+          "type": "sup-ph-rib-25-2",
+          "x": 28.975,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 638,
+          "type": "sup-ph-rib-25-3",
+          "x": 29.975,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 639,
+          "type": "sup-ph-rib-25-4",
+          "x": 30.975,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 640,
+          "type": "sup-ph-rib-25-5",
+          "x": 31.741,
+          "y": 114.35,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 641,
+          "type": "sup-ph-rib-75-0",
+          "x": 26.975,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 642,
+          "type": "sup-ph-rib-75-1",
+          "x": 27.975,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 643,
+          "type": "sup-ph-rib-75-2",
+          "x": 28.975,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 644,
+          "type": "sup-ph-rib-75-3",
+          "x": 29.975,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 645,
+          "type": "sup-ph-rib-75-4",
+          "x": 30.975,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 646,
+          "type": "sup-ph-rib-75-5",
+          "x": 31.741,
+          "y": 116.85,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 647,
+          "type": "sup-ph-lantern-0",
+          "x": 29.3,
+          "y": 110.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 517,
+          "type": "sup-ph-lantern-1",
+          "x": 29.3,
+          "y": 113.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 648,
+          "type": "sup-ph-lantern-2",
+          "x": 29.3,
+          "y": 116.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 649,
+          "type": "sup-ph-partition-0",
+          "x": 27,
+          "y": 113.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 650,
+          "type": "sup-ph-partition-1",
+          "x": 28,
+          "y": 113.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 651,
+          "type": "sup-ph-partition-2",
+          "x": 29,
+          "y": 113.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 652,
+          "type": "sup-ph-partition-3",
+          "x": 30,
+          "y": 113.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 653,
+          "type": "sup-ph-partition-4",
+          "x": 31,
+          "y": 113.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 654,
+          "type": "sup-ph-partition-5",
+          "x": 31.797,
+          "y": 113.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 655,
+          "type": "sup-ph-plant-0",
+          "x": 25.85,
+          "y": 108.6,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 656,
+          "type": "sup-ph-plant-1",
+          "x": 25.85,
+          "y": 111.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 657,
+          "type": "sup-ph-plant-2",
+          "x": 25.85,
+          "y": 115.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 658,
+          "type": "sup-ph-plant-3",
+          "x": 25.85,
+          "y": 117.6,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 659,
+          "type": "sup-ph-plant-4",
+          "x": 32.75,
+          "y": 108.6,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 660,
+          "type": "sup-ph-plant-5",
+          "x": 32.75,
+          "y": 111.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 661,
+          "type": "sup-ph-plant-6",
+          "x": 32.75,
+          "y": 115.1,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 662,
+          "type": "sup-ph-plant-7",
+          "x": 32.75,
+          "y": 117.6,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 713,
+          "type": "sup-ph-shafts-0",
+          "x": 25.477,
+          "y": 117.445,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 714,
+          "type": "sup-ph-shafts-1",
+          "x": 26.946,
+          "y": 118.414,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 715,
+          "type": "sup-ph-shafts-2",
+          "x": 27.821,
+          "y": 118.5,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 716,
+          "type": "sup-ph-shafts-3",
+          "x": 28.539,
+          "y": 118.5,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 717,
+          "type": "sup-ph-shafts-4",
+          "x": 28.789,
+          "y": 118.5,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 718,
+          "type": "sup-ph-shafts-5",
+          "x": 28.664,
+          "y": 118.133,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 719,
+          "type": "sup-ph-shafts-6",
+          "x": 28.914,
+          "y": 117.883,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 720,
+          "type": "sup-ph-shafts-7",
+          "x": 27.821,
+          "y": 116.289,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 721,
+          "type": "sup-ph-shafts-8",
+          "x": 28.539,
+          "y": 116.508,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 722,
+          "type": "sup-ph-shafts-9",
+          "x": 28.789,
+          "y": 116.258,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 723,
+          "type": "sup-ph-shafts-10",
+          "x": 28.664,
+          "y": 115.633,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 724,
+          "type": "sup-ph-shafts-11",
+          "x": 28.914,
+          "y": 115.383,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 725,
+          "type": "sup-ph-shafts-12",
+          "x": 27.821,
+          "y": 113.789,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 726,
+          "type": "sup-ph-shafts-13",
+          "x": 28.539,
+          "y": 114.008,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 727,
+          "type": "sup-ph-shafts-14",
+          "x": 28.789,
+          "y": 113.758,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 728,
+          "type": "sup-ph-shafts-15",
+          "x": 28.664,
+          "y": 113.133,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 729,
+          "type": "sup-ph-shafts-16",
+          "x": 28.914,
+          "y": 112.883,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 730,
+          "type": "sup-ph-shafts-17",
+          "x": 27.821,
+          "y": 111.289,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 731,
+          "type": "sup-ph-shafts-18",
+          "x": 28.539,
+          "y": 111.508,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 732,
+          "type": "sup-ph-shafts-19",
+          "x": 28.789,
+          "y": 111.258,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 733,
+          "type": "sup-ph-shafts-20",
+          "x": 28.664,
+          "y": 110.633,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 734,
+          "type": "sup-ph-shafts-21",
+          "x": 28.844,
+          "y": 110.453,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
           "z": 0
         },
         {

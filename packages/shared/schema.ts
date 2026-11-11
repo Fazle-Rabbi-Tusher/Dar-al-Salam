@@ -152,7 +152,7 @@ export const sceneSchema = z.object({
   lead: z.string(),
   /** Every character in the scene, the lead included. */
   members: z.array(z.string()).min(1),
-  /** Room object types that belong to the scene, inside `area`. */
+  /** Room object types that belong to the scene, inside `area` ('x-*': all starting 'x-'). */
   props: z.array(z.string()).default([]),
   /** Tile rectangle [[x0, y0], [x1, y1]] holding the scene's props. */
   area: z.tuple([pointSchema, pointSchema]),
