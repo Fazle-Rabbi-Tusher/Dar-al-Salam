@@ -26,39 +26,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [27.475, 110.9],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-01",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [27.475, 114.4],
+        "at": [18.875, 110.175],
         "facing": "NE"
       }
     ]
@@ -90,39 +58,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.325, 110.9],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-02",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [28.325, 114.4],
+        "at": [19.75, 110.175],
         "facing": "NE"
       }
     ]
@@ -154,39 +90,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [29.175, 110.9],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-03",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [29.175, 114.4],
+        "at": [20.625, 110.175],
         "facing": "NE"
       }
     ]
@@ -218,39 +122,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30.025, 110.9],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-04",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [30.025, 114.4],
+        "at": [21.5, 110.175],
         "facing": "NE"
       }
     ]
@@ -282,39 +154,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30.875, 110.9],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-05",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [30.875, 114.4],
+        "at": [23.25, 110.175],
         "facing": "NE"
       }
     ]
@@ -346,39 +186,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [31.725, 110.9],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-06",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [31.725, 114.4],
+        "at": [24.125, 110.175],
         "facing": "NE"
       }
     ]
@@ -410,39 +218,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [27.475, 111.8],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-07",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [27.475, 115.3],
+        "at": [25, 110.175],
         "facing": "NE"
       }
     ]
@@ -474,39 +250,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [28.325, 111.8],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-08",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [28.325, 115.3],
+        "at": [25.875, 110.175],
         "facing": "NE"
       }
     ]
@@ -538,39 +282,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [29.175, 111.8],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-09",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [29.175, 115.3],
+        "at": [26.75, 110.175],
         "facing": "NE"
       }
     ]
@@ -602,39 +314,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30.025, 111.8],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-10",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [30.025, 115.3],
+        "at": [27.625, 110.175],
         "facing": "NE"
       }
     ]
@@ -666,39 +346,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [30.875, 111.8],
-        "facing": "NE"
-      }
-    ]
-  },
-  {
-    "id": "prayer-woman-11",
-    "kind": "person",
-    "aliases": [],
-    "district": "modern-quarter",
-    "depiction": "back",
-    "role": "A worshipper in the women’s rows",
-    "look": {
-      "base": "adult-woman",
-      "garment": "abaya",
-      "headwear": "hijab",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "indigo",
-        "garmentSecondary": "white-linen",
-        "headwear": "indigo",
-        "prop": "cocoa"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 240,
-        "action": "pray",
-        "at": [30.875, 115.3],
+        "at": [28.5, 110.175],
         "facing": "NE"
       }
     ]
@@ -730,13 +378,112 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [31.725, 111.8],
+        "at": [30.25, 110.175],
         "facing": "NE"
       }
     ]
   },
   {
-    "id": "prayer-woman-12",
+    "id": "prayer-man-13",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-14",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-15",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-01",
     "kind": "person",
     "aliases": [],
     "district": "modern-quarter",
@@ -762,7 +509,4755 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [31.725, 115.3],
+        "at": [34.1, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-02",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-03",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-04",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-05",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 110.175],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-16",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-17",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-18",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-19",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-20",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-21",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-22",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-23",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-24",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-25",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-26",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-27",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-28",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-29",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-30",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-06",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-08",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-07",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-09",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-08",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-10",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-09",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-11",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-10",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-12",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 111.05],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-31",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-32",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-33",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-34",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-35",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-36",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-37",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-38",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-39",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-40",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-41",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-42",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-43",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-44",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-45",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-11",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-03",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-12",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-04",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-13",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-05",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-14",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-06",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-15",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-07",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 111.925],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-46",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-47",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-48",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-49",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-50",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-51",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-52",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-53",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-54",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-55",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-56",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-57",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-58",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-59",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-60",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-16",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-10",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-17",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-11",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-18",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-12",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-19",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-01",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-20",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-02",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 112.8],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-61",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-62",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-63",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-64",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-65",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-66",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-67",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-68",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-69",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-70",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-71",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-72",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-73",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-74",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-75",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-21",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-05",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-22",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-06",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-23",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-07",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-24",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-08",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-25",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-09",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 113.675],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-76",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-77",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-78",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-79",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-80",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-81",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-82",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-83",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-84",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-85",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-86",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-87",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-88",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-89",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-90",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-26",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-12",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-27",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-01",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-28",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-02",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-29",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-03",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-30",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-04",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 114.55],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-91",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-92",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-93",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-94",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-95",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-96",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-97",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-98",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-99",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-100",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-101",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-102",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-103",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-104",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-105",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-31",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-07",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-32",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-08",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-33",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-09",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-34",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-10",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-35",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-11",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 115.425],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-106",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [18.875, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-107",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [19.75, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-108",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [20.625, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-109",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-03",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [21.5, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-110",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-04",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [23.25, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-111",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-05",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [24.125, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-112",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-06",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-113",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-07",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [25.875, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-114",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-08",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [26.75, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-115",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-09",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [27.625, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-116",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-10",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [28.5, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-117",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-11",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [30.25, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-118",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-12",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [31.125, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-119",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-01",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-man-120",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the men’s rows",
+    "strip": "prayer-man-02",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "thobe",
+      "headwear": "kufi",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "white-linen",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [32.875, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-36",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-02",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.1, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-37",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-03",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [34.975, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-38",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-04",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [35.85, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-39",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-05",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [36.725, 116.3],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "prayer-woman-40",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "A worshipper in the women’s rows",
+    "strip": "prayer-woman-06",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "indigo",
+        "garmentSecondary": "white-linen",
+        "headwear": "indigo",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "pray",
+        "at": [37.6, 116.3],
         "facing": "NE"
       }
     ]
@@ -794,7 +5289,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [32.15, 110.9],
+        "at": [29.375, 110.175],
         "facing": "NE"
       }
     ]
@@ -826,7 +5321,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [27.05, 110.9],
+        "at": [22.375, 110.175],
         "facing": "NE"
       }
     ]
@@ -858,7 +5353,7 @@
         "from": 0,
         "to": 240,
         "action": "pray",
-        "at": [27.05, 114.4],
+        "at": [33.663, 110.175],
         "facing": "NE"
       }
     ]
@@ -891,31 +5386,31 @@
         "to": 240,
         "action": "walk",
         "path": [
-          [27.85, 117.15],
-          [27.729, 117.5],
-          [27.4, 117.756],
-          [26.95, 117.85],
-          [26.5, 117.756],
-          [26.171, 117.5],
-          [26.05, 117.15],
-          [26.171, 116.8],
-          [26.5, 116.544],
-          [26.95, 116.45],
-          [27.4, 116.544],
-          [27.729, 116.8],
-          [27.85, 117.15],
-          [27.729, 117.5],
-          [27.4, 117.756],
-          [26.95, 117.85],
-          [26.5, 117.756],
-          [26.171, 117.5],
-          [26.05, 117.15],
-          [26.171, 116.8],
-          [26.5, 116.544],
-          [26.95, 116.45],
-          [27.4, 116.544],
-          [27.729, 116.8],
-          [27.85, 117.15]
+          [23.04, 117.612],
+          [22.951, 117.822],
+          [22.707, 117.976],
+          [22.375, 118.032],
+          [22.043, 117.976],
+          [21.799, 117.822],
+          [21.71, 117.612],
+          [21.799, 117.402],
+          [22.043, 117.248],
+          [22.375, 117.192],
+          [22.707, 117.248],
+          [22.951, 117.402],
+          [23.04, 117.612],
+          [22.951, 117.822],
+          [22.707, 117.976],
+          [22.375, 118.032],
+          [22.043, 117.976],
+          [21.799, 117.822],
+          [21.71, 117.612],
+          [21.799, 117.402],
+          [22.043, 117.248],
+          [22.375, 117.192],
+          [22.707, 117.248],
+          [22.951, 117.402],
+          [23.04, 117.612]
         ]
       }
     ]
@@ -948,31 +5443,31 @@
         "to": 240,
         "action": "walk",
         "path": [
-          [26.05, 117.15],
-          [26.171, 116.8],
-          [26.5, 116.544],
-          [26.95, 116.45],
-          [27.4, 116.544],
-          [27.729, 116.8],
-          [27.85, 117.15],
-          [27.729, 117.5],
-          [27.4, 117.756],
-          [26.95, 117.85],
-          [26.5, 117.756],
-          [26.171, 117.5],
-          [26.05, 117.15],
-          [26.171, 116.8],
-          [26.5, 116.544],
-          [26.95, 116.45],
-          [27.4, 116.544],
-          [27.729, 116.8],
-          [27.85, 117.15],
-          [27.729, 117.5],
-          [27.4, 117.756],
-          [26.95, 117.85],
-          [26.5, 117.756],
-          [26.171, 117.5],
-          [26.05, 117.15]
+          [21.71, 117.612],
+          [21.799, 117.402],
+          [22.043, 117.248],
+          [22.375, 117.192],
+          [22.707, 117.248],
+          [22.951, 117.402],
+          [23.04, 117.612],
+          [22.951, 117.822],
+          [22.707, 117.976],
+          [22.375, 118.032],
+          [22.043, 117.976],
+          [21.799, 117.822],
+          [21.71, 117.612],
+          [21.799, 117.402],
+          [22.043, 117.248],
+          [22.375, 117.192],
+          [22.707, 117.248],
+          [22.951, 117.402],
+          [23.04, 117.612],
+          [22.951, 117.822],
+          [22.707, 117.976],
+          [22.375, 118.032],
+          [22.043, 117.976],
+          [21.799, 117.822],
+          [21.71, 117.612]
         ]
       }
     ]

@@ -375,16 +375,22 @@ async function stripFor(p: Person) {
 
 /* ── Who prays where (tiles); everyone faces the qibla, SE ── */
 /*
- * Inside the owner's mosque (tools/mosque-hall/layout.ts), in the model's
- * metres: the qibla wall is the far NE wall (Z −11), so the rows run across
- * the hall (along X) behind the imam, between the two colonnades (X ±5.7).
+ * Inside the grand mosque (tools/mosque-hall/grand-mosque.mjs and
+ * layout.ts), in the model's metres: the qibla wall is the far NE wall
+ * (Z −2.5) with the mihrab at X 0. The imam stands at X 0, Z 0. Behind him
+ * eight long rows of men, shoulder to shoulder from X −20 to +20 (every
+ * 2.5 m, leaving the twin pillar rows at X ±10 clear); beyond the walnut
+ * screen at X 21, the women's section, its rows level with the men's.
  */
-export const IMAM = tileOf(0, -7); // on his own mat, before the mihrab
-const ROW_X = [-4.25, -2.55, -0.85, 0.85, 2.55, 4.25];
-const MEN_Z = [-5.0, -3.2], // the screen stands at Z 0.3
-  WOMEN_Z = [2.0, 3.8];
+export const IMAM = tileOf(0, 0); // on his own mat, before the mihrab
+const ROWS_Z = [2, 4.5, 7, 9.5, 12, 14.5, 17, 19.5];
+const MEN_X = [...Array(17).keys()]
+    .map((k) => -20 + k * 2.5)
+    .filter((x) => Math.abs(Math.abs(x) - 10) > 1.3),
+  WOMEN_X = [23.5, 26, 28.5, 31, 33.5];
 const pad = (n: number) => String(n).padStart(2, '0');
-const people: (Person & { at: [number, number]; label: string })[] = [
+type Placed = Person & { at: [number, number]; label: string; strip?: string };
+const people: Placed[] = [
   {
     id: 'yasser-al-dosari',
     role: 'imam',
@@ -394,68 +400,94 @@ const people: (Person & { at: [number, number]; label: string })[] = [
     label: '',
   },
 ];
-for (let r = 0; r < 2; r++)
-  for (let i = 0; i < 6; i++) {
-    const m = r * 6 + i + 1;
+// A dozen men's and a dozen women's designs, each drawn once (its own
+// strip); the rows repeat them in a pattern that never puts two alike
+// side by side or one behind the other.
+let men = 0,
+  women = 0;
+ROWS_Z.forEach((z, r) => {
+  MEN_X.forEach((x, i) => {
+    const design = ((r * 5 + i) % 12) + 1,
+      n = ++men;
     people.push({
-      id: `prayer-man-${pad(m)}`,
+      id: `prayer-man-${pad(n)}`,
       role: 'adult',
       delay: 6,
       art: {},
-      at: tileOf(ROW_X[i], MEN_Z[r]),
+      at: tileOf(x, z),
       label: 'A worshipper in the men’s rows',
+      ...(n !== design ? { strip: `prayer-man-${pad(design)}` } : {}),
     });
+  });
+  WOMEN_X.forEach((x, i) => {
+    const design = ((r * 7 + i) % 12) + 1,
+      n = ++women;
     people.push({
-      id: `prayer-woman-${pad(m)}`,
+      id: `prayer-woman-${pad(n)}`,
       role: 'adult',
       delay: 6,
       art: {},
-      at: tileOf(ROW_X[i], WOMEN_Z[r]),
+      at: tileOf(x, z),
       label: 'A worshipper in the women’s rows',
+      ...(n !== design ? { strip: `prayer-woman-${pad(design)}` } : {}),
     });
-  }
+  });
+});
 people.push(
   {
-    // At the end of the front row, beside his father.
+    // In the front row, in the pillar gap, beside his father.
     id: 'prayer-toddler',
     role: 'child',
     delay: 18,
     art: {},
     glances: true,
     tug: true,
-    at: tileOf(5.1, MEN_Z[0]),
+    at: tileOf(10, ROWS_Z[0]),
     label: 'A toddler beside his father, tugging at his thawb',
   },
   {
-    // At the other end of the front row, copying a moment late.
+    // In the front row's other pillar gap, copying a moment late.
     id: 'bead-child',
     role: 'child',
     delay: 12,
     art: {},
     glances: true,
-    at: tileOf(-5.1, MEN_Z[0]),
+    at: tileOf(-10, ROWS_Z[0]),
     label: 'A boy copying the grown-ups, a moment late',
   },
   {
-    // Beside her mother, just behind the screen.
+    // Beside her mother, just past the screen.
     id: 'partition-girl',
     role: 'child',
     delay: 12,
     art: {},
     glances: true,
-    at: tileOf(-5.1, WOMEN_Z[0]),
+    at: tileOf(22.25, ROWS_Z[0]),
     label: 'A girl praying beside her mother',
   },
 );
 
-for (const p of people) {
+// Strips: the imam, the children and each of the 24 designs, once (the
+// rows play their design's strip).
+const designs: Person[] = [
+  ...people.filter((p) => p.role !== 'adult'),
+  ...['man', 'woman'].flatMap((k) =>
+    [...Array(12).keys()].map((i) => ({
+      id: `prayer-${k}-${pad(i + 1)}`,
+      role: 'adult' as Role,
+      delay: 6,
+      art: {},
+    })),
+  ),
+];
+for (const p of designs) {
   const n = await stripFor(p);
   console.log(`${p.id}: ${n} poses`);
 }
 
 /* ── The two children playing tag round the back pillar (eight views) ── */
-/** The colonnade column by the entrance where two children play tag. */
-export const PILLAR = tileOf(-5.7, 7.5);
+/** The back pillar, behind the last row, where two children play tag. */
+export const PILLAR = tileOf(-10, 23.25);
 const VIEWS = ['000', '045', '090', '135', '180', '225', '270', '315']; // S, SE, E, NE, N, NW, W, SW
 for (const id of ['aisle-child-a', 'aisle-child-b']) {
   const views = await Promise.all(VIEWS.map((d) => voxel(id, 'stand', d))),
@@ -482,11 +514,11 @@ const circle = (phase: number): [number, number][] =>
   [...Array(25).keys()].map((i) => {
     // Two quiet laps a loop, round the pillar.
     const a = phase + (i / 24) * Math.PI * 4;
-    // An oval round the column, clear of the west wall (x 24.4), the plant
-    // by the entrance and the women's rows.
+    // An oval round the back pillar, behind the last row and clear of the
+    // plant beside it.
     return [
-      +(PILLAR[0] + S * (0.4 + Math.cos(a) * 1.8)).toFixed(3),
-      +(PILLAR[1] + S * Math.sin(a) * 1.4).toFixed(3),
+      +(PILLAR[0] + S * Math.cos(a) * 1.9).toFixed(3),
+      +(PILLAR[1] + S * Math.sin(a) * 1.2).toFixed(3),
     ];
   });
 
@@ -519,6 +551,7 @@ const ambient: unknown[] = people
     // Seen from behind, facing the qibla wall (NE) like everyone else.
     depiction: 'back',
     role: p.label,
+    ...(p.strip ? { strip: p.strip } : {}),
     look: lookFor(p),
     loop: 240,
     script: [{ from: 0, to: 240, action: 'pray', at: p.at, facing: 'NE' }],
@@ -552,6 +585,14 @@ fs.writeFileSync(
   'content/ambient/prayer.json',
   JSON.stringify(ambient, null, 2) + '\n',
 );
+// The scene (click anyone: Yasser's card, the whole prayer lit up).
+const sceneFile = 'content/scenes/congregational-prayer.json',
+  scene = JSON.parse(fs.readFileSync(sceneFile, 'utf8'));
+scene.members = [
+  'yasser-al-dosari',
+  ...(ambient as { id: string }[]).map((a) => a.id),
+];
+fs.writeFileSync(sceneFile, JSON.stringify(scene, null, 2) + '\n');
 
 /* ── Yasser's story card: his standing figure, and his poses at prayer ── */
 const front = await detailed(

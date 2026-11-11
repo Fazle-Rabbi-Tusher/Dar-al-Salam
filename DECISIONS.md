@@ -193,3 +193,23 @@
     - **Clicking:** clicking any person or piece of the mosque opens Yasser's card and lights up the scene. Scene props can now name a family of types (`sup-ph-*`).
     - **Removed:** the hall drawn for item 67 (walls, carpet, dais, lattice, pillar, lanterns), and the plaza lamp that stood where the qibla wall now is.
     - **Not used from the pack:** its own congregation (static figures), the coffered ceiling and the two near walls (cut away to see in).
+69. The grand mosque (owner's double-size brief), replacing the 16 × 22 m hall of item 68:
+    - **The builder:** `tools/mosque-hall/grand-mosque.mjs` rebuilds the owner's model at the brief's size with the model's own parts, materials and textures.
+      - **The hall:** 59 × 28 m, 12 m high.
+      - **The men's section:** a central aisle at X 0, the men's rows running from X −20 to +20, and the twin rows of five massive pillars at X ±10.
+      - **Arches:** side arcades of pointed arches, and vault ribs spanning the hall.
+      - **Walls:** five tall stained-glass windows on the side wall and eight on the qibla wall, with sconces between them.
+      - **The mihrab:** a larger glowing mihrab at X 0.
+      - **Chandeliers:** ten tiered hexagonal brass chandeliers, in two rows across the hall.
+      - **The screen and the women's section:** a long walnut mashrabiya at X 21, running the depth of the hall, with the women's section beyond it to X 36.
+      - **Plants and carpet:** palms in brass planters, and the teal star-rosette carpet with the imam's fringed mat.
+      - **Its plan:** `LAYOUT` drives the render tool and the congregation tool.
+    - **In the world:** 0.35 tiles to the metre (about 21 × 10 tiles, the whole plaza), with heights stretched 2.37×. The pillars stand about 130 world px and the walls about 195. The near walls and the roof are cut away. Sun shafts come from the side windows.
+    - **The congregation (165 people):**
+      - Yasser on his mat at X 0, Z 0, facing the mihrab.
+      - Eight long rows of men (14 a row, leaving the pillars clear) and eight rows of women (5 a row), every 2.5 m back to Z 19.5.
+      - The toddler and the boy in the front row's pillar gaps; the girl by the screen; the tag game round the back pillar.
+      - Everyone faces the qibla wall (NE), seen from behind.
+    - **Shared strips:** a new `strip` field lets a figure play another's strips, so the rows repeat the pack's 12 men's and 12 women's designs. They are arranged so that no two alike stand side by side or one behind the other. Each strip is registered once (2,821 unique frames for 249 characters).
+    - **Performance:** a view of the hall renders at about the same frame rate as the rest of the world in software GL (3.0 against 3.3 fps).
+    - **Not done:** the coffered ceiling (cut away to see the rows), and the brief's own camera (the world keeps its isometric view; you look at the hall diagonally from the front three-quarter).

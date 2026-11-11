@@ -532,8 +532,12 @@ describe('scholars and scene roles', () => {
       expect(forbiddenName(n, content.rules)).toBe(true);
   });
   it('keeps only the ambient people that named scenes need', () => {
+    // The congregation in the grand mosque is counted on its own (above).
+    const congregation = new Set(
+      content.scenes.find((s) => s.id === 'congregational-prayer')?.members,
+    );
     const people = content.characters.filter(
-      (c) => !c.name && c.kind === 'person',
+      (c) => !c.name && c.kind === 'person' && !congregation.has(c.id),
     );
     // Only scene roles (named scenes' partners); the scene bible adds a few per scene.
     expect(people.length).toBeLessThanOrEqual(90);
@@ -722,7 +726,8 @@ describe('main characters only, with supplied animation strips', () => {
         )
         .map((c) => c.id),
     );
-    expect(congregation.size).toBe(30);
+    // Dozens of rows (owner's grand-mosque brief): well over a hundred.
+    expect(congregation.size).toBeGreaterThan(150);
     for (const c of content.characters.filter((c) => congregation.has(c.id)))
       for (const s of c.script)
         if (s.action === 'pray') {

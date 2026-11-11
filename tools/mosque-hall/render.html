@@ -4,7 +4,7 @@
   <script type="module">
     import * as T from '../pack/vendor/three.module.min.js';
     import { RoomEnvironment } from '../pack/vendor/RoomEnvironment.js';
-    import { createMosque } from '../pack/mosque.mjs';
+    import { createGrandMosque } from './grand-mosque.mjs';
     /*
      * Renders the owner's mosque model in the world's isometric projection, one
      * piece at a time with the full scene's lighting and shadows, so the build
@@ -14,8 +14,7 @@
     const P = new URLSearchParams(location.search);
     const s = +P.get('s'),
       kv = +P.get('kv'),
-      D = +P.get('D'),
-      screenZ = +P.get('screenZ');
+      D = +P.get('D');
     const PX = 22.627 * s * D; // pixels per metre along the ground axes
     const renderer = new T.WebGLRenderer({
       canvas: c,
@@ -33,30 +32,30 @@
     const pmrem = new T.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environmentIntensity = 0.3;
-    const model = await createMosque();
-    const g = model.groups;
+    const model = await createGrandMosque();
+    const g = model.groups,
+      L = model.layout;
     // A brighter teal-blue carpet, as the owner's brief asks.
     model.materials.teal.color.set('#4a96c4');
     model.materials.tealBorder.color.set('#2f6f96');
-    // Cut-away view, as in the pack: no roof; the two walls nearest the viewer
-    // (east and entrance) open; the people are ours, not the model's.
-    for (const n of ['Congregation', 'Ceiling', 'East-wall', 'Entrance-wall'])
-      model.root.remove(g[n]);
-    g['Partition'].position.z += screenZ - 3.8;
+    // Cut-away view, as in the pack's viewer: no roof, and only the two far
+    // walls (west and qibla) are built; the people are ours.
     model.root.scale.set(1, kv, 1);
     scene.add(model.root);
     scene.add(new T.HemisphereLight('#ffe9c9', '#8fb2b0', 1.1));
     const sun = new T.DirectionalLight('#ffe0ab', 2.3);
-    sun.position.set(-14, 20, -6);
+    sun.position.set(-14 + 7.5, 20, -6 + 11.5);
+    sun.target.position.set(7.5, 0, 11.5);
+    scene.add(sun.target);
     sun.castShadow = true;
     sun.shadow.mapSize.set(4096, 4096);
     Object.assign(sun.shadow.camera, {
-      left: -20,
-      right: 20,
-      top: 20,
-      bottom: -20,
+      left: -50,
+      right: 50,
+      top: 50,
+      bottom: -50,
       near: 0.5,
-      far: 80,
+      far: 160,
     });
     sun.shadow.normalBias = 0.025;
     scene.add(sun);
@@ -103,20 +102,10 @@
     };
 
     // Split every instanced mesh into pieces by where each instance stands.
-    const COLUMNS = [],
-      LANTERNS = [
-        [0, -6],
-        [0, 0],
-        [0, 6],
-      ],
-      PLANTS = [],
-      ARCHES = [];
-    for (const x of [-5.7, 5.7])
-      for (const z of [-7.5, -2.5, 2.5, 7.5]) COLUMNS.push([x, z]);
-    for (const x of [-6.9, 6.9])
-      for (const z of [-9, -4, 4, 9]) PLANTS.push([x, z]);
-    for (const x of [-5.7, 5.7])
-      for (const z of [-5, 0, 5]) ARCHES.push([x, z]);
+    const COLUMNS = L.columns,
+      LANTERNS = L.lanterns,
+      PLANTS = L.plants,
+      ARCHES = L.arches;
     const near = (list, X, Z) =>
       list
         .map((p, i) => [Math.hypot(p[0] - X, p[1] - Z), i])
@@ -188,33 +177,10 @@
         grp.remove(mesh);
       }
     }
-    // Light shafts from the west windows (as in the pack's viewer), soft gold.
-    const shafts = new T.Group();
-    const shaftMat = new T.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      side: T.DoubleSide,
-      vertexShader:
-        'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-      fragmentShader:
-        'varying vec2 vUv;void main(){float edge=pow(max(0.,1.-abs(vUv.x-.5)*2.),2.);float fade=smoothstep(0.,.15,vUv.y)*(1.-smoothstep(.75,1.,vUv.y));gl_FragColor=vec4(1.,.8,.45,edge*fade*.5);}',
-    });
-    for (const z of [-7.5, -2.5, 2.5, 7.5]) {
-      const A = new T.Vector3(-7.7, 5.5 * kv, z),
-        B = new T.Vector3(3, 0.05, z + 4),
-        d = B.clone().sub(A);
-      const m = new T.Mesh(new T.PlaneGeometry(2.0, d.length()), shaftMat);
-      m.position.copy(A.add(B).multiplyScalar(0.5));
-      m.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), d.normalize());
-      shafts.add(m);
-    }
-    scene.add(shafts);
-
     function render(only) {
       for (const [k, list] of parts)
         for (const m of list)
           m.material = k === only ? m.userData.material : hidden;
-      shafts.visible = only === 'shafts';
       renderer.render(scene, cam);
       return c.toDataURL('image/png');
     }
@@ -222,7 +188,8 @@
       W,
       H,
       PX,
-      pieces: [...parts.keys(), 'shafts'],
+      pieces: [...parts.keys()],
+      layout: L,
       render,
       toPx,
     };

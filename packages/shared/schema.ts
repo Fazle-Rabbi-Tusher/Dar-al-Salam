@@ -103,6 +103,8 @@ export const characterSchema = z.object({
   loop: z.union([z.literal(60), z.literal(120), z.literal(240)]),
   script: z.array(stepSchema).min(1),
   pairWith: z.string().optional(),
+  /** Id of another figure whose animation strips this one plays. */
+  strip: z.string().optional(),
   /** Id of a figure this one leads on a rope (a guide leading a camel). */
   leads: z.string().optional(),
   bio: z.record(z.string()).optional(),

@@ -700,8 +700,8 @@
   "sup-ph-floor": {
     "file": "supplied/prayer-hall/floor.png",
     "anchor": [
-      364,
-      -2
+      323,
+      -1
     ],
     "density": 2,
     "floor": true,
@@ -710,8 +710,8 @@
   "sup-ph-walls-0": {
     "file": "supplied/prayer-hall/walls-0.png",
     "anchor": [
-      11,
-      287
+      18,
+      388
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -720,7 +720,7 @@
     "file": "supplied/prayer-hall/walls-1.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -729,7 +729,7 @@
     "file": "supplied/prayer-hall/walls-2.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -738,7 +738,7 @@
     "file": "supplied/prayer-hall/walls-3.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -747,7 +747,7 @@
     "file": "supplied/prayer-hall/walls-4.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -756,7 +756,7 @@
     "file": "supplied/prayer-hall/walls-5.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -765,7 +765,7 @@
     "file": "supplied/prayer-hall/walls-6.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -774,7 +774,7 @@
     "file": "supplied/prayer-hall/walls-7.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -783,7 +783,7 @@
     "file": "supplied/prayer-hall/walls-8.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -792,7 +792,7 @@
     "file": "supplied/prayer-hall/walls-9.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -801,7 +801,7 @@
     "file": "supplied/prayer-hall/walls-10.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -810,7 +810,7 @@
     "file": "supplied/prayer-hall/walls-11.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -819,7 +819,7 @@
     "file": "supplied/prayer-hall/walls-12.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -828,7 +828,7 @@
     "file": "supplied/prayer-hall/walls-13.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -837,7 +837,7 @@
     "file": "supplied/prayer-hall/walls-14.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -846,7 +846,7 @@
     "file": "supplied/prayer-hall/walls-15.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -855,7 +855,7 @@
     "file": "supplied/prayer-hall/walls-16.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -864,7 +864,7 @@
     "file": "supplied/prayer-hall/walls-17.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -873,7 +873,7 @@
     "file": "supplied/prayer-hall/walls-18.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -882,7 +882,7 @@
     "file": "supplied/prayer-hall/walls-19.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -891,7 +891,7 @@
     "file": "supplied/prayer-hall/walls-20.png",
     "anchor": [
       11,
-      287
+      388
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -900,7 +900,7 @@
     "file": "supplied/prayer-hall/walls-21.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -909,7 +909,7 @@
     "file": "supplied/prayer-hall/walls-22.png",
     "anchor": [
       11,
-      281
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -918,7 +918,7 @@
     "file": "supplied/prayer-hall/walls-23.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -927,7 +927,7 @@
     "file": "supplied/prayer-hall/walls-24.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -936,7 +936,7 @@
     "file": "supplied/prayer-hall/walls-25.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -945,7 +945,7 @@
     "file": "supplied/prayer-hall/walls-26.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -954,7 +954,7 @@
     "file": "supplied/prayer-hall/walls-27.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -963,7 +963,7 @@
     "file": "supplied/prayer-hall/walls-28.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -972,7 +972,7 @@
     "file": "supplied/prayer-hall/walls-29.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -981,7 +981,7 @@
     "file": "supplied/prayer-hall/walls-30.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -990,7 +990,7 @@
     "file": "supplied/prayer-hall/walls-31.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -999,7 +999,7 @@
     "file": "supplied/prayer-hall/walls-32.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1008,7 +1008,7 @@
     "file": "supplied/prayer-hall/walls-33.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1017,7 +1017,7 @@
     "file": "supplied/prayer-hall/walls-34.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1026,7 +1026,7 @@
     "file": "supplied/prayer-hall/walls-35.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1035,7 +1035,7 @@
     "file": "supplied/prayer-hall/walls-36.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1044,7 +1044,7 @@
     "file": "supplied/prayer-hall/walls-37.png",
     "anchor": [
       11,
-      287
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1052,8 +1052,224 @@
   "sup-ph-walls-38": {
     "file": "supplied/prayer-hall/walls-38.png",
     "anchor": [
-      10,
-      286
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-39": {
+    "file": "supplied/prayer-hall/walls-39.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-40": {
+    "file": "supplied/prayer-hall/walls-40.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-41": {
+    "file": "supplied/prayer-hall/walls-41.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-42": {
+    "file": "supplied/prayer-hall/walls-42.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-43": {
+    "file": "supplied/prayer-hall/walls-43.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-44": {
+    "file": "supplied/prayer-hall/walls-44.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-45": {
+    "file": "supplied/prayer-hall/walls-45.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-46": {
+    "file": "supplied/prayer-hall/walls-46.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-47": {
+    "file": "supplied/prayer-hall/walls-47.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-48": {
+    "file": "supplied/prayer-hall/walls-48.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-49": {
+    "file": "supplied/prayer-hall/walls-49.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-50": {
+    "file": "supplied/prayer-hall/walls-50.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-51": {
+    "file": "supplied/prayer-hall/walls-51.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-52": {
+    "file": "supplied/prayer-hall/walls-52.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-53": {
+    "file": "supplied/prayer-hall/walls-53.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-54": {
+    "file": "supplied/prayer-hall/walls-54.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-55": {
+    "file": "supplied/prayer-hall/walls-55.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-56": {
+    "file": "supplied/prayer-hall/walls-56.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-57": {
+    "file": "supplied/prayer-hall/walls-57.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-58": {
+    "file": "supplied/prayer-hall/walls-58.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-59": {
+    "file": "supplied/prayer-hall/walls-59.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-60": {
+    "file": "supplied/prayer-hall/walls-60.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-61": {
+    "file": "supplied/prayer-hall/walls-61.png",
+    "anchor": [
+      11,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-walls-62": {
+    "file": "supplied/prayer-hall/walls-62.png",
+    "anchor": [
+      1,
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1061,8 +1277,8 @@
   "sup-ph-column-0": {
     "file": "supplied/prayer-hall/column-0.png",
     "anchor": [
-      16,
-      289
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1070,8 +1286,8 @@
   "sup-ph-column-1": {
     "file": "supplied/prayer-hall/column-1.png",
     "anchor": [
-      16,
-      289
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1079,8 +1295,8 @@
   "sup-ph-column-2": {
     "file": "supplied/prayer-hall/column-2.png",
     "anchor": [
-      16,
-      289
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1088,8 +1304,8 @@
   "sup-ph-column-3": {
     "file": "supplied/prayer-hall/column-3.png",
     "anchor": [
-      16,
-      289
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1097,8 +1313,8 @@
   "sup-ph-column-4": {
     "file": "supplied/prayer-hall/column-4.png",
     "anchor": [
-      16,
-      288
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1106,8 +1322,8 @@
   "sup-ph-column-5": {
     "file": "supplied/prayer-hall/column-5.png",
     "anchor": [
-      16,
-      288
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1115,8 +1331,8 @@
   "sup-ph-column-6": {
     "file": "supplied/prayer-hall/column-6.png",
     "anchor": [
-      16,
-      288
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1124,8 +1340,26 @@
   "sup-ph-column-7": {
     "file": "supplied/prayer-hall/column-7.png",
     "anchor": [
-      16,
-      288
+      17,
+      286
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-column-8": {
+    "file": "supplied/prayer-hall/column-8.png",
+    "anchor": [
+      17,
+      286
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-column-9": {
+    "file": "supplied/prayer-hall/column-9.png",
+    "anchor": [
+      17,
+      286
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1134,7 +1368,7 @@
     "file": "supplied/prayer-hall/arch-0-0.png",
     "anchor": [
       19,
-      277
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1142,17 +1376,8 @@
   "sup-ph-arch-0-1": {
     "file": "supplied/prayer-hall/arch-0-1.png",
     "anchor": [
-      19,
-      264
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-arch-0-2": {
-    "file": "supplied/prayer-hall/arch-0-2.png",
-    "anchor": [
-      8,
-      247
+      13,
+      359
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1161,7 +1386,7 @@
     "file": "supplied/prayer-hall/arch-1-0.png",
     "anchor": [
       19,
-      277
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1169,17 +1394,8 @@
   "sup-ph-arch-1-1": {
     "file": "supplied/prayer-hall/arch-1-1.png",
     "anchor": [
-      19,
-      264
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-arch-1-2": {
-    "file": "supplied/prayer-hall/arch-1-2.png",
-    "anchor": [
-      8,
-      247
+      13,
+      359
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1188,7 +1404,7 @@
     "file": "supplied/prayer-hall/arch-2-0.png",
     "anchor": [
       19,
-      277
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1196,17 +1412,8 @@
   "sup-ph-arch-2-1": {
     "file": "supplied/prayer-hall/arch-2-1.png",
     "anchor": [
-      19,
-      264
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-arch-2-2": {
-    "file": "supplied/prayer-hall/arch-2-2.png",
-    "anchor": [
-      8,
-      247
+      13,
+      359
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1215,7 +1422,7 @@
     "file": "supplied/prayer-hall/arch-3-0.png",
     "anchor": [
       19,
-      276
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1223,17 +1430,8 @@
   "sup-ph-arch-3-1": {
     "file": "supplied/prayer-hall/arch-3-1.png",
     "anchor": [
-      19,
-      264
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-arch-3-2": {
-    "file": "supplied/prayer-hall/arch-3-2.png",
-    "anchor": [
-      9,
-      247
+      13,
+      359
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1242,7 +1440,7 @@
     "file": "supplied/prayer-hall/arch-4-0.png",
     "anchor": [
       19,
-      276
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1250,17 +1448,8 @@
   "sup-ph-arch-4-1": {
     "file": "supplied/prayer-hall/arch-4-1.png",
     "anchor": [
-      19,
-      264
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-arch-4-2": {
-    "file": "supplied/prayer-hall/arch-4-2.png",
-    "anchor": [
-      9,
-      247
+      13,
+      359
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1269,7 +1458,7 @@
     "file": "supplied/prayer-hall/arch-5-0.png",
     "anchor": [
       19,
-      276
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1277,233 +1466,404 @@
   "sup-ph-arch-5-1": {
     "file": "supplied/prayer-hall/arch-5-1.png",
     "anchor": [
-      19,
-      264
+      13,
+      359
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-arch-5-2": {
-    "file": "supplied/prayer-hall/arch-5-2.png",
-    "anchor": [
-      9,
-      247
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-rib--75-0": {
-    "file": "supplied/prayer-hall/rib--75-0.png",
+  "sup-ph-arch-6-0": {
+    "file": "supplied/prayer-hall/arch-6-0.png",
     "anchor": [
       19,
-      260
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--75-1": {
-    "file": "supplied/prayer-hall/rib--75-1.png",
+  "sup-ph-arch-6-1": {
+    "file": "supplied/prayer-hall/arch-6-1.png",
+    "anchor": [
+      13,
+      359
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-arch-7-0": {
+    "file": "supplied/prayer-hall/arch-7-0.png",
     "anchor": [
       19,
-      276
+      374
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--75-2": {
-    "file": "supplied/prayer-hall/rib--75-2.png",
+  "sup-ph-arch-7-1": {
+    "file": "supplied/prayer-hall/arch-7-1.png",
+    "anchor": [
+      13,
+      359
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-33-0": {
+    "file": "supplied/prayer-hall/rib-33-0.png",
     "anchor": [
       19,
-      287
+      371
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--75-3": {
-    "file": "supplied/prayer-hall/rib--75-3.png",
+  "sup-ph-rib-33-1": {
+    "file": "supplied/prayer-hall/rib-33-1.png",
     "anchor": [
       19,
-      292
+      387
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--75-4": {
-    "file": "supplied/prayer-hall/rib--75-4.png",
+  "sup-ph-rib-33-2": {
+    "file": "supplied/prayer-hall/rib-33-2.png",
     "anchor": [
       19,
-      283
+      398
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--75-5": {
-    "file": "supplied/prayer-hall/rib--75-5.png",
-    "anchor": [
-      11,
-      266
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-rib--25-0": {
-    "file": "supplied/prayer-hall/rib--25-0.png",
+  "sup-ph-rib-33-3": {
+    "file": "supplied/prayer-hall/rib-33-3.png",
     "anchor": [
       19,
-      260
+      407
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--25-1": {
-    "file": "supplied/prayer-hall/rib--25-1.png",
+  "sup-ph-rib-33-4": {
+    "file": "supplied/prayer-hall/rib-33-4.png",
     "anchor": [
       19,
-      276
+      410
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--25-2": {
-    "file": "supplied/prayer-hall/rib--25-2.png",
+  "sup-ph-rib-33-5": {
+    "file": "supplied/prayer-hall/rib-33-5.png",
     "anchor": [
       19,
-      287
+      402
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--25-3": {
-    "file": "supplied/prayer-hall/rib--25-3.png",
+  "sup-ph-rib-33-6": {
+    "file": "supplied/prayer-hall/rib-33-6.png",
     "anchor": [
       19,
-      292
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--25-4": {
-    "file": "supplied/prayer-hall/rib--25-4.png",
+  "sup-ph-rib-33-7": {
+    "file": "supplied/prayer-hall/rib-33-7.png",
+    "anchor": [
+      8,
+      371
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-83-0": {
+    "file": "supplied/prayer-hall/rib-83-0.png",
     "anchor": [
       19,
-      283
+      371
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib--25-5": {
-    "file": "supplied/prayer-hall/rib--25-5.png",
-    "anchor": [
-      12,
-      266
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-rib-25-0": {
-    "file": "supplied/prayer-hall/rib-25-0.png",
+  "sup-ph-rib-83-1": {
+    "file": "supplied/prayer-hall/rib-83-1.png",
     "anchor": [
       19,
-      260
+      387
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-25-1": {
-    "file": "supplied/prayer-hall/rib-25-1.png",
+  "sup-ph-rib-83-2": {
+    "file": "supplied/prayer-hall/rib-83-2.png",
     "anchor": [
       19,
-      276
+      398
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-25-2": {
-    "file": "supplied/prayer-hall/rib-25-2.png",
+  "sup-ph-rib-83-3": {
+    "file": "supplied/prayer-hall/rib-83-3.png",
     "anchor": [
       19,
-      287
+      407
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-25-3": {
-    "file": "supplied/prayer-hall/rib-25-3.png",
+  "sup-ph-rib-83-4": {
+    "file": "supplied/prayer-hall/rib-83-4.png",
     "anchor": [
       19,
-      292
+      410
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-25-4": {
-    "file": "supplied/prayer-hall/rib-25-4.png",
+  "sup-ph-rib-83-5": {
+    "file": "supplied/prayer-hall/rib-83-5.png",
     "anchor": [
       19,
-      283
+      402
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-25-5": {
-    "file": "supplied/prayer-hall/rib-25-5.png",
-    "anchor": [
-      12,
-      266
-    ],
-    "density": 2,
-    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
-  },
-  "sup-ph-rib-75-0": {
-    "file": "supplied/prayer-hall/rib-75-0.png",
+  "sup-ph-rib-83-6": {
+    "file": "supplied/prayer-hall/rib-83-6.png",
     "anchor": [
       19,
-      260
+      392
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-75-1": {
-    "file": "supplied/prayer-hall/rib-75-1.png",
+  "sup-ph-rib-83-7": {
+    "file": "supplied/prayer-hall/rib-83-7.png",
+    "anchor": [
+      8,
+      371
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-133-0": {
+    "file": "supplied/prayer-hall/rib-133-0.png",
     "anchor": [
       19,
-      276
+      371
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-75-2": {
-    "file": "supplied/prayer-hall/rib-75-2.png",
+  "sup-ph-rib-133-1": {
+    "file": "supplied/prayer-hall/rib-133-1.png",
     "anchor": [
       19,
-      287
+      387
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-75-3": {
-    "file": "supplied/prayer-hall/rib-75-3.png",
+  "sup-ph-rib-133-2": {
+    "file": "supplied/prayer-hall/rib-133-2.png",
     "anchor": [
       19,
-      292
+      398
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-75-4": {
-    "file": "supplied/prayer-hall/rib-75-4.png",
+  "sup-ph-rib-133-3": {
+    "file": "supplied/prayer-hall/rib-133-3.png",
     "anchor": [
       19,
-      283
+      407
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
   },
-  "sup-ph-rib-75-5": {
-    "file": "supplied/prayer-hall/rib-75-5.png",
+  "sup-ph-rib-133-4": {
+    "file": "supplied/prayer-hall/rib-133-4.png",
     "anchor": [
-      12,
-      266
+      19,
+      410
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-133-5": {
+    "file": "supplied/prayer-hall/rib-133-5.png",
+    "anchor": [
+      19,
+      402
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-133-6": {
+    "file": "supplied/prayer-hall/rib-133-6.png",
+    "anchor": [
+      19,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-133-7": {
+    "file": "supplied/prayer-hall/rib-133-7.png",
+    "anchor": [
+      8,
+      371
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-0": {
+    "file": "supplied/prayer-hall/rib-183-0.png",
+    "anchor": [
+      19,
+      371
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-1": {
+    "file": "supplied/prayer-hall/rib-183-1.png",
+    "anchor": [
+      19,
+      387
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-2": {
+    "file": "supplied/prayer-hall/rib-183-2.png",
+    "anchor": [
+      19,
+      398
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-3": {
+    "file": "supplied/prayer-hall/rib-183-3.png",
+    "anchor": [
+      19,
+      407
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-4": {
+    "file": "supplied/prayer-hall/rib-183-4.png",
+    "anchor": [
+      19,
+      410
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-5": {
+    "file": "supplied/prayer-hall/rib-183-5.png",
+    "anchor": [
+      19,
+      402
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-6": {
+    "file": "supplied/prayer-hall/rib-183-6.png",
+    "anchor": [
+      19,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-183-7": {
+    "file": "supplied/prayer-hall/rib-183-7.png",
+    "anchor": [
+      8,
+      371
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-0": {
+    "file": "supplied/prayer-hall/rib-233-0.png",
+    "anchor": [
+      19,
+      371
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-1": {
+    "file": "supplied/prayer-hall/rib-233-1.png",
+    "anchor": [
+      19,
+      387
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-2": {
+    "file": "supplied/prayer-hall/rib-233-2.png",
+    "anchor": [
+      19,
+      398
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-3": {
+    "file": "supplied/prayer-hall/rib-233-3.png",
+    "anchor": [
+      19,
+      407
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-4": {
+    "file": "supplied/prayer-hall/rib-233-4.png",
+    "anchor": [
+      19,
+      410
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-5": {
+    "file": "supplied/prayer-hall/rib-233-5.png",
+    "anchor": [
+      19,
+      402
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-6": {
+    "file": "supplied/prayer-hall/rib-233-6.png",
+    "anchor": [
+      19,
+      392
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-rib-233-7": {
+    "file": "supplied/prayer-hall/rib-233-7.png",
+    "anchor": [
+      8,
+      371
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1511,8 +1871,8 @@
   "sup-ph-lantern-0": {
     "file": "supplied/prayer-hall/lantern-0.png",
     "anchor": [
-      16,
-      289
+      14,
+      269
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1520,8 +1880,8 @@
   "sup-ph-lantern-1": {
     "file": "supplied/prayer-hall/lantern-1.png",
     "anchor": [
-      24,
-      289
+      14,
+      269
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1529,8 +1889,71 @@
   "sup-ph-lantern-2": {
     "file": "supplied/prayer-hall/lantern-2.png",
     "anchor": [
-      16,
-      289
+      14,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-3": {
+    "file": "supplied/prayer-hall/lantern-3.png",
+    "anchor": [
+      14,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-4": {
+    "file": "supplied/prayer-hall/lantern-4.png",
+    "anchor": [
+      12,
+      390
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-5": {
+    "file": "supplied/prayer-hall/lantern-5.png",
+    "anchor": [
+      14,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-6": {
+    "file": "supplied/prayer-hall/lantern-6.png",
+    "anchor": [
+      14,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-7": {
+    "file": "supplied/prayer-hall/lantern-7.png",
+    "anchor": [
+      14,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-8": {
+    "file": "supplied/prayer-hall/lantern-8.png",
+    "anchor": [
+      14,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-lantern-9": {
+    "file": "supplied/prayer-hall/lantern-9.png",
+    "anchor": [
+      12,
+      390
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1539,7 +1962,7 @@
     "file": "supplied/prayer-hall/partition-0.png",
     "anchor": [
       19,
-      79
+      68
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1548,7 +1971,7 @@
     "file": "supplied/prayer-hall/partition-1.png",
     "anchor": [
       19,
-      74
+      67
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1557,7 +1980,7 @@
     "file": "supplied/prayer-hall/partition-2.png",
     "anchor": [
       19,
-      70
+      66
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1566,7 +1989,7 @@
     "file": "supplied/prayer-hall/partition-3.png",
     "anchor": [
       19,
-      70
+      65
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1575,7 +1998,7 @@
     "file": "supplied/prayer-hall/partition-4.png",
     "anchor": [
       19,
-      78
+      65
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1583,8 +2006,44 @@
   "sup-ph-partition-5": {
     "file": "supplied/prayer-hall/partition-5.png",
     "anchor": [
-      13,
-      70
+      19,
+      65
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-partition-6": {
+    "file": "supplied/prayer-hall/partition-6.png",
+    "anchor": [
+      19,
+      65
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-partition-7": {
+    "file": "supplied/prayer-hall/partition-7.png",
+    "anchor": [
+      19,
+      65
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-partition-8": {
+    "file": "supplied/prayer-hall/partition-8.png",
+    "anchor": [
+      19,
+      65
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-partition-9": {
+    "file": "supplied/prayer-hall/partition-9.png",
+    "anchor": [
+      7,
+      66
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1592,8 +2051,8 @@
   "sup-ph-plant-0": {
     "file": "supplied/prayer-hall/plant-0.png",
     "anchor": [
-      21,
-      88
+      15,
+      79
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1601,8 +2060,8 @@
   "sup-ph-plant-1": {
     "file": "supplied/prayer-hall/plant-1.png",
     "anchor": [
-      21,
-      88
+      15,
+      79
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1610,8 +2069,8 @@
   "sup-ph-plant-2": {
     "file": "supplied/prayer-hall/plant-2.png",
     "anchor": [
-      21,
-      88
+      15,
+      78
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1619,8 +2078,8 @@
   "sup-ph-plant-3": {
     "file": "supplied/prayer-hall/plant-3.png",
     "anchor": [
-      21,
-      88
+      15,
+      78
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1628,8 +2087,8 @@
   "sup-ph-plant-4": {
     "file": "supplied/prayer-hall/plant-4.png",
     "anchor": [
-      22,
-      89
+      15,
+      78
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1637,8 +2096,8 @@
   "sup-ph-plant-5": {
     "file": "supplied/prayer-hall/plant-5.png",
     "anchor": [
-      22,
-      89
+      15,
+      78
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1646,8 +2105,8 @@
   "sup-ph-plant-6": {
     "file": "supplied/prayer-hall/plant-6.png",
     "anchor": [
-      22,
-      89
+      15,
+      78
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1655,8 +2114,26 @@
   "sup-ph-plant-7": {
     "file": "supplied/prayer-hall/plant-7.png",
     "anchor": [
-      22,
-      89
+      15,
+      78
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-plant-8": {
+    "file": "supplied/prayer-hall/plant-8.png",
+    "anchor": [
+      15,
+      78
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-plant-9": {
+    "file": "supplied/prayer-hall/plant-9.png",
+    "anchor": [
+      15,
+      79
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1664,8 +2141,8 @@
   "sup-ph-shafts-0": {
     "file": "supplied/prayer-hall/shafts-0.png",
     "anchor": [
-      11,
-      202
+      17,
+      243
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1673,8 +2150,8 @@
   "sup-ph-shafts-1": {
     "file": "supplied/prayer-hall/shafts-1.png",
     "anchor": [
-      11,
-      247
+      26,
+      258
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1682,8 +2159,8 @@
   "sup-ph-shafts-2": {
     "file": "supplied/prayer-hall/shafts-2.png",
     "anchor": [
-      20,
-      262
+      23,
+      265
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1691,8 +2168,8 @@
   "sup-ph-shafts-3": {
     "file": "supplied/prayer-hall/shafts-3.png",
     "anchor": [
-      27,
-      252
+      55,
+      309
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1700,8 +2177,8 @@
   "sup-ph-shafts-4": {
     "file": "supplied/prayer-hall/shafts-4.png",
     "anchor": [
-      19,
-      188
+      66,
+      331
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1709,8 +2186,8 @@
   "sup-ph-shafts-5": {
     "file": "supplied/prayer-hall/shafts-5.png",
     "anchor": [
-      11,
-      304
+      58,
+      337
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1718,8 +2195,8 @@
   "sup-ph-shafts-6": {
     "file": "supplied/prayer-hall/shafts-6.png",
     "anchor": [
-      11,
-      310
+      45,
+      339
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1728,7 +2205,7 @@
     "file": "supplied/prayer-hall/shafts-7.png",
     "anchor": [
       11,
-      267
+      340
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1737,7 +2214,7 @@
     "file": "supplied/prayer-hall/shafts-8.png",
     "anchor": [
       11,
-      260
+      360
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1746,7 +2223,7 @@
     "file": "supplied/prayer-hall/shafts-9.png",
     "anchor": [
       11,
-      192
+      361
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1755,7 +2232,7 @@
     "file": "supplied/prayer-hall/shafts-10.png",
     "anchor": [
       11,
-      304
+      354
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1764,7 +2241,7 @@
     "file": "supplied/prayer-hall/shafts-11.png",
     "anchor": [
       11,
-      310
+      347
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1773,7 +2250,7 @@
     "file": "supplied/prayer-hall/shafts-12.png",
     "anchor": [
       11,
-      267
+      360
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1782,7 +2259,7 @@
     "file": "supplied/prayer-hall/shafts-13.png",
     "anchor": [
       11,
-      260
+      361
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1791,7 +2268,7 @@
     "file": "supplied/prayer-hall/shafts-14.png",
     "anchor": [
       11,
-      192
+      352
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1800,7 +2277,7 @@
     "file": "supplied/prayer-hall/shafts-15.png",
     "anchor": [
       11,
-      304
+      353
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1809,7 +2286,7 @@
     "file": "supplied/prayer-hall/shafts-16.png",
     "anchor": [
       11,
-      310
+      360
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1818,7 +2295,7 @@
     "file": "supplied/prayer-hall/shafts-17.png",
     "anchor": [
       11,
-      267
+      360
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1827,7 +2304,7 @@
     "file": "supplied/prayer-hall/shafts-18.png",
     "anchor": [
       11,
-      260
+      345
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1836,7 +2313,7 @@
     "file": "supplied/prayer-hall/shafts-19.png",
     "anchor": [
       11,
-      192
+      253
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1845,7 +2322,7 @@
     "file": "supplied/prayer-hall/shafts-20.png",
     "anchor": [
       11,
-      111
+      185
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
@@ -1853,8 +2330,17 @@
   "sup-ph-shafts-21": {
     "file": "supplied/prayer-hall/shafts-21.png",
     "anchor": [
-      7,
-      42
+      11,
+      115
+    ],
+    "density": 2,
+    "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-ph-shafts-22": {
+    "file": "supplied/prayer-hall/shafts-22.png",
+    "anchor": [
+      6,
+      38
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"

@@ -113,7 +113,7 @@ test('clicking any worshipper opens Yasser al-Dosari and lights up the whole pra
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   // The prayer hall on the Baitul Mukarram plaza.
-  await ready(page, '/?x=707&y=2575&z=2.5');
+  await ready(page, '/?x=688&y=2560&z=2');
   const points = await page.evaluate(() =>
     (
       window as unknown as {
@@ -121,7 +121,7 @@ test('clicking any worshipper opens Yasser al-Dosari and lights up the whole pra
           debugPoints(id: string): { opaque: { x: number; y: number } } | null;
         };
       }
-    ).__darEngine.debugPoints('prayer-man-03'),
+    ).__darEngine.debugPoints('prayer-woman-40'),
   );
   expect(points?.opaque).toBeTruthy();
   const canvas = await page.locator('.world-host canvas').boundingBox();

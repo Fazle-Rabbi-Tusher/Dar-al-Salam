@@ -2,1032 +2,1464 @@
   {
     "type": "sup-ph-floor",
     "at": [
-      25.375,
-      107.675
+      18.018,
+      108.442
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-0",
     "at": [
-      25.45,
-      118.7
+      18.175,
+      118.4
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-1",
     "at": [
-      25.45,
-      118.2
+      18.175,
+      118.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-2",
     "at": [
-      25.45,
-      117.7
+      18.175,
+      117.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-3",
     "at": [
-      25.45,
-      117.2
+      18.175,
+      117.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-4",
     "at": [
-      25.45,
-      116.7
+      18.175,
+      116.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-5",
     "at": [
-      25.45,
-      116.2
+      18.175,
+      116.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-6",
     "at": [
-      25.45,
-      115.7
+      18.175,
+      115.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-7",
     "at": [
-      25.45,
-      115.2
+      18.175,
+      115.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-8",
     "at": [
-      25.45,
-      114.7
+      18.175,
+      114.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-9",
     "at": [
-      25.45,
-      114.2
+      18.175,
+      114.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-10",
     "at": [
-      25.45,
-      113.7
+      18.175,
+      113.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-11",
     "at": [
-      25.45,
-      113.2
+      18.175,
+      113.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-12",
     "at": [
-      25.45,
-      112.7
+      18.175,
+      112.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-13",
     "at": [
-      25.45,
-      112.2
+      18.175,
+      112.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-14",
     "at": [
-      25.45,
-      111.7
+      18.175,
+      111.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-15",
     "at": [
-      25.45,
-      111.2
+      18.175,
+      111.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-16",
     "at": [
-      25.45,
-      110.7
+      18.175,
+      110.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-17",
     "at": [
-      25.45,
-      110.2
+      18.175,
+      110.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-18",
     "at": [
-      25.45,
-      109.7
+      18.175,
+      109.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-19",
     "at": [
-      25.45,
-      109.2
+      18.175,
+      109.132
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-20",
     "at": [
-      25.45,
-      108.7
+      18.175,
+      108.632
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-21",
     "at": [
-      25.45,
-      108.2
+      18.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-22",
     "at": [
-      25.5,
-      107.75
+      19.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-23",
     "at": [
-      26,
-      107.75
+      19.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-24",
     "at": [
-      26.5,
-      107.75
+      20.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-25",
     "at": [
-      27,
-      107.75
+      20.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-26",
     "at": [
-      27.5,
-      107.75
+      21.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-27",
     "at": [
-      28,
-      107.75
+      21.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-28",
     "at": [
-      28.5,
-      107.75
+      22.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-29",
     "at": [
-      29,
-      107.75
+      22.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-30",
     "at": [
-      29.5,
-      107.75
+      23.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-31",
     "at": [
-      30,
-      107.75
+      23.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-32",
     "at": [
-      30.5,
-      107.75
+      24.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-33",
     "at": [
-      31,
-      107.75
+      24.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-34",
     "at": [
-      31.5,
-      107.75
+      25.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-35",
     "at": [
-      32,
-      107.75
+      25.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-36",
     "at": [
-      32.5,
-      107.75
+      26.143,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-37",
     "at": [
-      33,
-      107.75
+      26.643,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-walls-38",
     "at": [
-      33.453,
-      107.75
+      27.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-39",
+    "at": [
+      27.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-40",
+    "at": [
+      28.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-41",
+    "at": [
+      28.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-42",
+    "at": [
+      29.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-43",
+    "at": [
+      29.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-44",
+    "at": [
+      30.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-45",
+    "at": [
+      30.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-46",
+    "at": [
+      31.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-47",
+    "at": [
+      31.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-48",
+    "at": [
+      32.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-49",
+    "at": [
+      32.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-50",
+    "at": [
+      33.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-51",
+    "at": [
+      33.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-52",
+    "at": [
+      34.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-53",
+    "at": [
+      34.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-54",
+    "at": [
+      35.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-55",
+    "at": [
+      35.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-56",
+    "at": [
+      36.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-57",
+    "at": [
+      36.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-58",
+    "at": [
+      37.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-59",
+    "at": [
+      37.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-60",
+    "at": [
+      38.143,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-61",
+    "at": [
+      38.643,
+      108.6
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-walls-62",
+    "at": [
+      38.825,
+      108.6
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-0",
     "at": [
-      26.75,
-      109.65
+      22.375,
+      110.612
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-1",
     "at": [
-      26.75,
-      112.15
+      22.375,
+      112.362
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-2",
     "at": [
-      26.75,
-      114.65
+      22.375,
+      114.112
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-3",
     "at": [
-      26.75,
-      117.15
+      22.375,
+      115.862
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-4",
     "at": [
-      32.45,
-      109.65
+      22.375,
+      117.612
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-5",
     "at": [
-      32.45,
-      112.15
+      29.375,
+      110.612
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-6",
     "at": [
-      32.45,
-      114.65
+      29.375,
+      112.362
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-column-7",
     "at": [
-      32.45,
-      117.15
+      29.375,
+      114.112
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-8",
+    "at": [
+      29.375,
+      115.862
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-column-9",
+    "at": [
+      29.375,
+      117.612
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-0-0",
     "at": [
-      26.75,
-      111.5
+      22.375,
+      111.739
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-0-1",
     "at": [
-      26.75,
-      110.5
-    ],
-    "blocks": false
-  },
-  {
-    "type": "sup-ph-arch-0-2",
-    "at": [
-      26.75,
-      109.844
+      22.375,
+      110.942
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-1-0",
     "at": [
-      26.75,
-      114
+      22.375,
+      113.489
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-1-1",
     "at": [
-      26.75,
-      113
-    ],
-    "blocks": false
-  },
-  {
-    "type": "sup-ph-arch-1-2",
-    "at": [
-      26.75,
-      112.344
+      22.375,
+      112.692
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-2-0",
     "at": [
-      26.75,
-      116.5
+      22.375,
+      115.239
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-2-1",
     "at": [
-      26.75,
-      115.5
-    ],
-    "blocks": false
-  },
-  {
-    "type": "sup-ph-arch-2-2",
-    "at": [
-      26.75,
-      114.844
+      22.375,
+      114.442
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-3-0",
     "at": [
-      32.45,
-      111.512
+      22.375,
+      116.989
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-3-1",
     "at": [
-      32.45,
-      110.512
-    ],
-    "blocks": false
-  },
-  {
-    "type": "sup-ph-arch-3-2",
-    "at": [
-      32.45,
-      109.84
+      22.375,
+      116.192
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-4-0",
     "at": [
-      32.45,
-      114.012
+      29.375,
+      111.738
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-4-1",
     "at": [
-      32.45,
-      113.012
-    ],
-    "blocks": false
-  },
-  {
-    "type": "sup-ph-arch-4-2",
-    "at": [
-      32.45,
-      112.34
+      29.375,
+      110.942
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-5-0",
     "at": [
-      32.45,
-      116.512
+      29.375,
+      113.488
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-arch-5-1",
     "at": [
-      32.45,
-      115.512
+      29.375,
+      112.692
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-arch-5-2",
+    "type": "sup-ph-arch-6-0",
     "at": [
-      32.45,
-      114.84
+      29.375,
+      115.238
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--75-0",
+    "type": "sup-ph-arch-6-1",
     "at": [
-      27.275,
-      109.65
+      29.375,
+      114.442
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--75-1",
+    "type": "sup-ph-arch-7-0",
     "at": [
-      28.275,
-      109.65
+      29.375,
+      116.989
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--75-2",
+    "type": "sup-ph-arch-7-1",
     "at": [
-      29.275,
-      109.65
+      29.375,
+      116.192
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--75-3",
+    "type": "sup-ph-rib-33-0",
     "at": [
-      30.275,
-      109.65
+      22.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--75-4",
+    "type": "sup-ph-rib-33-1",
     "at": [
-      31.275,
-      109.65
+      23.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--75-5",
+    "type": "sup-ph-rib-33-2",
     "at": [
-      32.041,
-      109.65
+      24.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--25-0",
+    "type": "sup-ph-rib-33-3",
     "at": [
-      27.275,
-      112.15
+      25.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--25-1",
+    "type": "sup-ph-rib-33-4",
     "at": [
-      28.275,
-      112.15
+      26.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--25-2",
+    "type": "sup-ph-rib-33-5",
     "at": [
-      29.275,
-      112.15
+      27.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--25-3",
+    "type": "sup-ph-rib-33-6",
     "at": [
-      30.275,
-      112.15
+      28.673,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--25-4",
+    "type": "sup-ph-rib-33-7",
     "at": [
-      31.275,
-      112.15
+      29.329,
+      110.63
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib--25-5",
+    "type": "sup-ph-rib-83-0",
     "at": [
-      32.041,
-      112.15
+      22.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-25-0",
+    "type": "sup-ph-rib-83-1",
     "at": [
-      27.275,
-      114.65
+      23.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-25-1",
+    "type": "sup-ph-rib-83-2",
     "at": [
-      28.275,
-      114.65
+      24.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-25-2",
+    "type": "sup-ph-rib-83-3",
     "at": [
-      29.275,
-      114.65
+      25.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-25-3",
+    "type": "sup-ph-rib-83-4",
     "at": [
-      30.275,
-      114.65
+      26.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-25-4",
+    "type": "sup-ph-rib-83-5",
     "at": [
-      31.275,
-      114.65
+      27.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-25-5",
+    "type": "sup-ph-rib-83-6",
     "at": [
-      32.041,
-      114.65
+      28.673,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-75-0",
+    "type": "sup-ph-rib-83-7",
     "at": [
-      27.275,
-      117.15
+      29.329,
+      112.38
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-75-1",
+    "type": "sup-ph-rib-133-0",
     "at": [
-      28.275,
-      117.15
+      22.673,
+      114.13
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-75-2",
+    "type": "sup-ph-rib-133-1",
     "at": [
-      29.275,
-      117.15
+      23.673,
+      114.13
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-75-3",
+    "type": "sup-ph-rib-133-2",
     "at": [
-      30.275,
-      117.15
+      24.673,
+      114.13
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-75-4",
+    "type": "sup-ph-rib-133-3",
     "at": [
-      31.275,
-      117.15
+      25.673,
+      114.13
     ],
     "blocks": false
   },
   {
-    "type": "sup-ph-rib-75-5",
+    "type": "sup-ph-rib-133-4",
     "at": [
-      32.041,
-      117.15
+      26.673,
+      114.13
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-133-5",
+    "at": [
+      27.673,
+      114.13
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-133-6",
+    "at": [
+      28.673,
+      114.13
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-133-7",
+    "at": [
+      29.329,
+      114.13
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-0",
+    "at": [
+      22.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-1",
+    "at": [
+      23.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-2",
+    "at": [
+      24.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-3",
+    "at": [
+      25.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-4",
+    "at": [
+      26.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-5",
+    "at": [
+      27.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-6",
+    "at": [
+      28.673,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-183-7",
+    "at": [
+      29.329,
+      115.88
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-0",
+    "at": [
+      22.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-1",
+    "at": [
+      23.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-2",
+    "at": [
+      24.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-3",
+    "at": [
+      25.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-4",
+    "at": [
+      26.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-5",
+    "at": [
+      27.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-6",
+    "at": [
+      28.673,
+      117.63
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-rib-233-7",
+    "at": [
+      29.329,
+      117.63
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-lantern-0",
     "at": [
-      29.6,
-      110.4
+      20.625,
+      111.487
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-lantern-1",
     "at": [
-      29.6,
-      113.4
+      24.125,
+      111.487
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-lantern-2",
     "at": [
-      29.6,
-      116.4
+      27.625,
+      111.487
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-3",
+    "at": [
+      31.125,
+      111.487
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-4",
+    "at": [
+      36.025,
+      111.487
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-5",
+    "at": [
+      20.625,
+      114.987
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-6",
+    "at": [
+      24.125,
+      114.987
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-7",
+    "at": [
+      27.625,
+      114.987
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-8",
+    "at": [
+      31.125,
+      114.987
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-lantern-9",
+    "at": [
+      36.025,
+      114.987
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-partition-0",
     "at": [
-      27.3,
-      113.55
+      33.225,
+      117.588
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-partition-1",
     "at": [
-      28.3,
-      113.55
+      33.225,
+      116.588
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-partition-2",
     "at": [
-      29.3,
-      113.55
+      33.225,
+      115.588
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-partition-3",
     "at": [
-      30.3,
-      113.55
+      33.225,
+      114.588
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-partition-4",
     "at": [
-      31.3,
-      113.55
+      33.225,
+      113.588
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-partition-5",
     "at": [
-      32.097,
-      113.55
+      33.225,
+      112.588
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-6",
+    "at": [
+      33.225,
+      111.588
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-7",
+    "at": [
+      33.225,
+      110.588
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-8",
+    "at": [
+      33.225,
+      109.588
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-partition-9",
+    "at": [
+      33.225,
+      108.979
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-0",
     "at": [
-      26.15,
-      108.9
+      22.375,
+      109.615
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-1",
     "at": [
-      26.15,
-      111.4
+      29.375,
+      109.615
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-2",
     "at": [
-      26.15,
-      115.4
+      18.56,
+      108.985
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-3",
     "at": [
-      26.15,
-      117.9
+      18.56,
+      118.015
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-4",
     "at": [
-      33.05,
-      108.9
+      38.44,
+      108.985
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-5",
     "at": [
-      33.05,
-      111.4
+      38.44,
+      118.015
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-6",
     "at": [
-      33.05,
-      115.4
+      23.25,
+      118.085
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-plant-7",
     "at": [
-      33.05,
-      117.9
+      28.5,
+      118.085
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-8",
+    "at": [
+      33.68,
+      108.985
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-plant-9",
+    "at": [
+      33.68,
+      118.015
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-0",
     "at": [
-      25.777,
-      117.745
+      18.625,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-1",
     "at": [
-      27.246,
-      118.714
+      19.407,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-2",
     "at": [
-      28.121,
-      118.8
+      19.813,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-3",
     "at": [
-      28.839,
-      118.8
+      21.313,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-4",
     "at": [
-      29.089,
-      118.8
+      22.157,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-5",
     "at": [
-      28.964,
-      118.433
+      22.407,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-6",
     "at": [
-      29.214,
-      118.183
+      22.5,
+      118.33
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-7",
     "at": [
-      28.121,
-      116.589
+      21.563,
+      117.958
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-8",
     "at": [
-      28.839,
-      116.808
+      22.188,
+      118.083
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-9",
     "at": [
-      29.089,
-      116.558
+      22.438,
+      117.833
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-10",
     "at": [
-      28.964,
-      115.933
+      22.5,
+      117.395
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-11",
     "at": [
-      29.214,
-      115.683
+      21.782,
+      116.177
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-12",
     "at": [
-      28.121,
-      114.089
+      22.219,
+      116.114
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-13",
     "at": [
-      28.839,
-      114.308
+      22.469,
+      115.864
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-14",
     "at": [
-      29.089,
-      114.058
+      22.5,
+      115.395
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-15",
     "at": [
-      28.964,
-      113.433
+      21.969,
+      114.364
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-16",
     "at": [
-      29.214,
-      113.183
+      22.25,
+      114.145
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-17",
     "at": [
-      28.121,
-      111.589
+      22.5,
+      113.895
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-18",
     "at": [
-      28.839,
-      111.808
+      22.5,
+      113.395
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-19",
     "at": [
-      29.089,
-      111.558
+      22.032,
+      112.426
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-20",
     "at": [
-      28.964,
-      110.933
+      22.282,
+      112.176
     ],
     "blocks": false
   },
   {
     "type": "sup-ph-shafts-21",
     "at": [
-      29.144,
-      110.753
+      22.5,
+      111.895
+    ],
+    "blocks": false
+  },
+  {
+    "type": "sup-ph-shafts-22",
+    "at": [
+      22.415,
+      111.481
     ],
     "blocks": false
   }

@@ -3,7 +3,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { chromium } from '@playwright/test';
 import sharp from 'sharp';
-import { KV, S, SCREEN_Z, tileOf } from './mosque-hall/layout';
+import { KV, S, tileOf } from './mosque-hall/layout';
 
 /*
  * The owner's 3D mosque (mosque-six-angle-final, 2026-11) in the world: its
@@ -13,9 +13,11 @@ import { KV, S, SCREEN_Z, tileOf } from './mosque-hall/layout';
  *
  *   node --import tsx tools/prepare-mosque-hall.ts <extracted mosque-model folder>
  *
- * Scale and place: tools/mosque-hall/layout.ts. Cut away for the view, as in the pack: no
- * roof, and the two walls nearest the viewer open. The qibla wall with its
- * mihrab is the far NE wall; the screen moves forward to model z 0.3.
+ * The hall is the grand version of that model (tools/mosque-hall/
+ * grand-mosque.mjs, the owner's double-size brief); scale and place:
+ * tools/mosque-hall/layout.ts. Cut away for the view, as in the pack: no
+ * roof, and only the two far walls. The qibla wall with its mihrab is the
+ * far NE wall.
  *
  * Writes art/supplied/prayer-hall/*.png, their art/supplied/index.json
  * entries and art/supplied/prayer-hall.json: where each piece stands.
@@ -63,13 +65,35 @@ const browser = await chromium.launch({
 const page = await browser.newPage();
 page.on('pageerror', (e) => console.error('page:', e.message));
 await page.goto(
-  `http://127.0.0.1:${port}/render/render.html?s=${S}&kv=${KV}&D=${D}&screenZ=${SCREEN_Z}`,
+  `http://127.0.0.1:${port}/render/render.html?s=${S}&kv=${KV}&D=${D}`,
 );
 await page.waitForFunction('window.READY === true', null, { timeout: 300000 });
-type Info = { W: number; H: number; PX: number; pieces: string[] };
+type P2 = [number, number];
+type Info = {
+  W: number;
+  H: number;
+  PX: number;
+  pieces: string[];
+  /** The hall's plan (tools/mosque-hall/grand-mosque.mjs LAYOUT). */
+  layout: {
+    x0: number;
+    x1: number;
+    z0: number;
+    z1: number;
+    columns: P2[];
+    arches: P2[];
+    ribs: number[];
+    lanterns: [number, number, number][];
+    plants: P2[];
+    partitionX: number;
+    westWindows: number[];
+    qiblaWindows: number[];
+  };
+};
 const info = (await page.evaluate(
-  '({ W: RESULT.W, H: RESULT.H, PX: RESULT.PX, pieces: RESULT.pieces })',
+  '({ W: RESULT.W, H: RESULT.H, PX: RESULT.PX, pieces: RESULT.pieces, layout: RESULT.layout })',
 )) as Info;
+const L = info.layout;
 const renders = new Map<string, Buffer>();
 for (const k of info.pieces.filter((k) => k !== 'shafts')) {
   const url = (await page.evaluate(
@@ -93,18 +117,19 @@ const at = (X: number, Y: number, Z: number): [number, number] => {
   return [x, y - Y * KV * Math.cos(Math.PI / 6) * info.PX];
 };
 
-/* ── Soft golden sun shafts from the west windows to the floor ── */
+/* ── Soft golden sun shafts from the windows to the floor ── */
 async function shafts() {
   const { W, H } = info,
     layer = new Float32Array(W * H);
   const sun = [14, -20, 6]; // the render's sun shines from (-14, 20, -6)
-  for (const z of [-7.5, -2.5, 2.5, 7.5]) {
-    const win: [number, number, number][] = [
-      [-7.95, 1.8, z - 0.75],
-      [-7.95, 1.8, z + 0.75],
-      [-7.95, 5.0, z + 0.75],
-      [-7.95, 5.0, z - 0.75],
-    ];
+  // Through the side (west) wall's windows, where the low sun stands.
+  const windows: [number, number, number][][] = L.westWindows.map((z) => [
+    [L.x0 + 0.05, 1.8, z - 0.95],
+    [L.x0 + 0.05, 1.8, z + 0.95],
+    [L.x0 + 0.05, 6.6, z + 0.95],
+    [L.x0 + 0.05, 6.6, z - 0.95],
+  ]);
+  for (const win of windows) {
     const lit = win.map(([X, Y, Z]) => {
       const t = (Y * KV) / -sun[1];
       return [X + sun[0] * t, 0.02, Z + sun[2] * t] as [number, number, number];
@@ -140,7 +165,7 @@ async function shafts() {
     rgba[i * 4] = 255;
     rgba[i * 4 + 1] = 214;
     rgba[i * 4 + 2] = 140;
-    rgba[i * 4 + 3] = Math.min(255, Math.round(layer[i] * 150));
+    rgba[i * 4 + 3] = Math.min(255, Math.round(layer[i] * 120));
   }
   return sharp(rgba, { raw: { width: info.W, height: info.H, channels: 4 } })
     .png()
@@ -153,42 +178,35 @@ type Base =
   | { point: [number, number] }
   | { path: [number, number][] }
   | { landing: true };
-const COLUMNS: [number, number][] = [],
-  PLANTS: [number, number][] = [],
-  ARCHES: [number, number][] = [];
-for (const x of [-5.7, 5.7])
-  for (const z of [-7.5, -2.5, 2.5, 7.5]) COLUMNS.push([x, z]);
-for (const x of [-6.9, 6.9])
-  for (const z of [-9, -4, 4, 9]) PLANTS.push([x, z]);
-for (const x of [-5.7, 5.7]) for (const z of [-5, 0, 5]) ARCHES.push([x, z]);
 function baseOf(k: string): Base {
   // The floor is baked into the ground texture (at its far corner). The
   // planet is strongly curved this far from the quarter's centre, so every
   // tall piece is cut into narrow strips, each standing on its own floor
   // point: the walls along their foot, the sun shafts where they land.
-  if (k === 'floor') return { point: [-8.45, -11.45] };
+  if (k === 'floor') return { point: [L.x0 - 0.45, L.z0 - 0.45] };
   if (k === 'walls')
     return {
       path: [
-        [-8.3, 11.3],
-        [-8.3, -11.3],
-        [8.3, -11.3],
+        [L.x0, L.z1],
+        [L.x0, L.z0],
+        [L.x1, L.z0],
       ],
     };
   if (k === 'shafts') return { landing: true };
   if (k === 'partition')
     return {
       path: [
-        [-5.6, SCREEN_Z],
-        [5.6, SCREEN_Z],
+        [L.partitionX, L.z0 + 1],
+        [L.partitionX, L.z1 - 1],
       ],
     };
   const n = +k.slice(k.lastIndexOf('-') + 1);
-  if (k.startsWith('column-')) return { point: COLUMNS[n] };
-  if (k.startsWith('plant-')) return { point: PLANTS[n] };
-  if (k.startsWith('lantern-')) return { point: [0, [-6, 0, 6][n]] };
+  if (k.startsWith('column-')) return { point: L.columns[n] };
+  if (k.startsWith('plant-')) return { point: L.plants[n] };
+  if (k.startsWith('lantern-'))
+    return { point: [L.lanterns[n][0], L.lanterns[n][1]] };
   if (k.startsWith('arch-')) {
-    const [x, z] = ARCHES[n];
+    const [x, z] = L.arches[n];
     return {
       path: [
         [x, z - 2.5],
@@ -200,8 +218,8 @@ function baseOf(k: string): Base {
     const z = +k.slice(4) / 10;
     return {
       path: [
-        [-5.7, z],
-        [5.7, z],
+        [-10, z],
+        [10, z],
       ],
     };
   }
@@ -268,7 +286,10 @@ function landing(x: number, y: number): [number, number] {
     ry = y - o[1],
     X = (rx * dw[1] - dw[0] * ry) / det,
     Z = (du[0] * ry - rx * du[1]) / det;
-  return [Math.min(7.8, Math.max(-7.8, X)), Math.min(10.8, Math.max(-10.8, Z))];
+  return [
+    Math.min(L.x1 - 0.2, Math.max(L.x0 + 0.2, X)),
+    Math.min(L.z1 - 0.2, Math.max(L.z0 + 0.2, Z)),
+  ];
 }
 for (const [k, png] of renders) {
   const { data, info: im } = await sharp(png)

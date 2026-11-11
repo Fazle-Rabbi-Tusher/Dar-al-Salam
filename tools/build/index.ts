@@ -461,6 +461,10 @@ async function build() {
         y >= sc.area[0][1] &&
         y <= sc.area[1][1],
     )?.id;
+  const stripCache = new Map<
+    string,
+    { flip: boolean; names: string[] } | null
+  >();
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
   for (const c of characters) {
@@ -520,24 +524,40 @@ async function build() {
           bakedCount += ACTIONS[s.action];
           continue;
         }
-        const strip = await stripFrames(
-          c.id,
-          `${s.action}${s.prop ? '@' + s.prop : ''}`,
-          facing,
-        );
-        if (strip) {
+        // A figure may play another's strips (`strip`: the prayer hall's rows
+        // repeat a dozen designs); each strip is registered once.
+        const stripKey = `${c.strip ?? c.id}|${s.action}${s.prop ? '@' + s.prop : ''}|${facing}`;
+        if (!stripCache.has(stripKey)) {
+          const strip = await stripFrames(
+            c.strip ?? c.id,
+            `${s.action}${s.prop ? '@' + s.prop : ''}`,
+            facing,
+          );
           // Every supplied pose plays, at the action's tempo (an eight-pose
           // reading strip is not cut down to the four-pose default).
-          const n = strip.frames.length,
-            tempo = stripTempo(s.action);
+          const tempo = stripTempo(s.action);
+          stripCache.set(
+            stripKey,
+            strip && {
+              flip: strip.flip,
+              names: strip.frames.map((fr) =>
+                register(
+                  fr.image,
+                  fr.anchor,
+                  strip.density,
+                  true,
+                  false,
+                  tempo,
+                ),
+              ),
+            },
+          );
+        }
+        const strip = stripCache.get(stripKey);
+        if (strip) {
           if (strip.flip) mirror.push(key);
-          for (let f = 0; f < n; f++) {
-            const fr = strip.frames[f];
-            frames[key].push(
-              register(fr.image, fr.anchor, strip.density, true, false, tempo),
-            );
-          }
-          bakedCount += n;
+          frames[key].push(...strip.names);
+          bakedCount += strip.names.length;
           continue;
         }
         if (sprite && !s.prop && !DRAWN_ACTIONS.has(s.action)) {
