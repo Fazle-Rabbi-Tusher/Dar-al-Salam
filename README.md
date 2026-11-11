@@ -57,3 +57,9 @@ Combines all five character/component packs. Includes 30 individual characters, 
 [Download model and component ZIP (27.7 MB)](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-3d-model-and-component.zip) · [Orbit preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-model-orbit.mp4) · [Angle sheet](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-model-angles.jpg)
 
 Includes complete and architecture-only GLB models, editable model source, embeddable web component, eleven camera presets, lossless rendered stills, original material textures and twelve-second 24 fps turntable. Pointed arches, coffered ceilings, hexagonal lanterns, teal patterned carpet, mihrab, walnut lattice and gold-planted greenery. Static standing imam plus 18 men and 12 women. Actual geometry tested by GLB roundtrip and Blender 4.3.2 import; DRAFT. No app deployment.
+
+## Final mosque — six requested camera angles
+
+[Download final ZIP (23.9 MB)](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-six-angle-final.zip) · [Six-angle sheet](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-six-angles.jpg)
+
+The same mosque geometry, materials and congregation: high front-right, low rear-left, 75-degree top-down oblique, eye-level front-left, high rear-right, and extreme low upward beneath the arches/lanterns. Includes both GLBs, source, rotatable component, six lossless renders, camera metadata and existing orbit video. Browser verified all six camera elevations; ZIP below 30,000,000 bytes.
