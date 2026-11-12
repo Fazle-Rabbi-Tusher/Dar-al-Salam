@@ -309,11 +309,11 @@ async function build() {
           facing,
         );
         if (strip) {
-          const n = ACTIONS[s.action],
+          const n = strip.frames.length,
             tempo = stripTempo(s.action);
           if (strip.flip) mirror.push(key);
           for (let f = 0; f < n; f++) {
-            const fr = strip.frames[Math.floor((f * strip.frames.length) / n)];
+            const fr = strip.frames[f];
             frames[key].push(
               register(fr.image, fr.anchor, SPRITE_DENSITY, true, false, tempo),
             );
@@ -382,8 +382,25 @@ async function build() {
           c.script[state.stepIndex].prop,
           state.facing,
         ),
-        mb = metas[frames[fk][state.index]].bounds,
+        sequence = frames[fk],
+        tempo = metas[sequence[0]].tempo,
+        selected = tempo
+          ? Math.floor((f % (sequence.length * tempo)) / tempo)
+          : state.index % sequence.length,
+        mb = metas[sequence[selected]].bounds,
         b = mirror.includes(fk) ? { ...mb, x: -(mb.x + mb.width) } : mb;
+      // Opt-in detailed actors retain a conservative envelope for every supplied pose.
+      if (c.smoothMotion)
+        for (const frame of sequence) {
+          const source = metas[frame].bounds;
+          const box = mirror.includes(fk)
+            ? { ...source, x: -(source.x + source.width) }
+            : source;
+          minX = Math.min(minX, state.position[0] + box.x);
+          minY = Math.min(minY, state.position[1] + box.y);
+          maxX = Math.max(maxX, state.position[0] + box.x + box.width);
+          maxY = Math.max(maxY, state.position[1] + box.y + box.height);
+        }
       if (shadowFrame) {
         const p = worldFromTile(...state.tile),
           sb = metas[shadowFrame].bounds;
@@ -491,6 +508,7 @@ async function build() {
           at = worldFromTile(...ground),
           m = metas[names[0]];
         sortables.push({
+          objectType: o.type,
           frame: names[0],
           x: wx,
           y: wy,

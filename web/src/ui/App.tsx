@@ -360,10 +360,10 @@ function World({ manifest }: { manifest: Manifest | null }) {
     engine.current?.clearSelection();
     history.replaceState(null, '', serialiseUrl(camera));
   };
-  const focusArea = (x: number, y: number) => {
+  const focusArea = (x: number, y: number, zoom = 2) => {
     const [wx, wy] = worldFromTile(x, y);
     setIntro(false);
-    engine.current?.flyTo({ x: wx, y: wy, zoom: 2 }, 600);
+    engine.current?.flyTo({ x: wx, y: wy, zoom }, 600);
   };
   return (
     <main className="world-page">
@@ -493,6 +493,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
         <button onClick={() => focusArea(40, 42)}>
           <Icon name="people" size={15} />
           {t('community')}
+        </button>
+        <button onClick={() => focusArea(31, 72, 1.1)}>
+          <Icon name="city" size={15} />
+          {t('city')}
+        </button>
+        <button onClick={() => focusArea(39, 14, 2)}>
+          <Icon name="flask" size={15} />
+          {t('labs')}
         </button>
       </div>
       {card && (

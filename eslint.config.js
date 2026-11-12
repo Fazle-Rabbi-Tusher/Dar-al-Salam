@@ -9,6 +9,7 @@ export default ts.config(
       'public-build/**',
       'web/public/**',
       'art/**',
+      'scene-packs/**/vendor/**',
     ],
   },
   js.configs.recommended,

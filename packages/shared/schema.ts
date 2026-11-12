@@ -63,6 +63,8 @@ export const stepSchema = z
     z: z.union([z.number(), z.array(z.number())]).optional(),
     /** Prop held during this step only (e.g. a trophy or keys changing hands). */
     prop: z.string().optional(),
+    /** Optional gentle acceleration/deceleration for authored paths. */
+    easing: z.enum(['linear', 'smoothstep']).optional(),
   })
   .refine(
     (s) =>
@@ -83,6 +85,8 @@ export const characterSchema = z.object({
   look: lookSchema,
   loop: z.union([z.literal(60), z.literal(120), z.literal(240)]),
   script: z.array(stepSchema).min(1),
+  /** Interpolate supplied sprite paths between fixed world ticks. */
+  smoothMotion: z.boolean().optional(),
   pairWith: z.string().optional(),
   bio: z.record(z.string()).optional(),
   story: z.record(z.string()).optional(),
@@ -176,6 +180,8 @@ export const bakedCharacterSchema = characterSchema.extend({
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({
+  /** Semantic source type enables a true 3D model; absent in older exports. */
+  objectType: z.string().optional(),
   frame: z.string(),
   x: z.number(),
   y: z.number(),

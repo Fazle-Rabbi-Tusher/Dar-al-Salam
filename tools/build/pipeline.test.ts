@@ -36,9 +36,19 @@ const {
 describe('real content validation', () => {
   it('validates every example with every ambient scenario', async () => {
     const files = await fs.readdir('content/characters');
-    const ambient = JSON.parse(
-      await fs.readFile('content/ambient/mosque-garden.json', 'utf8'),
+    const ambientFiles = (await fs.readdir('content/ambient')).filter((f) =>
+      f.endsWith('.json'),
     );
+    const ambient = (
+      await Promise.all(
+        ambientFiles.map(
+          async (file) =>
+            JSON.parse(
+              await fs.readFile(`content/ambient/${file}`, 'utf8'),
+            ) as Character[],
+        ),
+      )
+    ).flat();
     expect(content.characters).toHaveLength(files.length + ambient.length);
     for (const c of content.characters)
       expect(
@@ -706,10 +716,35 @@ describe('scene bible: cricket ground', () => {
   });
 });
 
-describe('main characters only, with supplied animation strips', () => {
-  it('keeps no background people: only named characters, balls, vehicles and animals', () => {
-    for (const c of content.characters)
-      if (!c.name) expect(c.kind, c.id).not.toBe('person');
+describe('main characters, requested lecture audience and working lab staff', () => {
+  it('limits anonymous people to the requested eight listeners and seven lab workers', () => {
+    const people = content.characters.filter(
+      (c) => !c.name && c.kind === 'person',
+    );
+    expect(people).toHaveLength(15);
+    const listeners = people.filter((c) =>
+      c.id.startsWith('menk-speech-listener-'),
+    );
+    const workers = people.filter((c) => c.id.startsWith('lab-'));
+    expect(listeners).toHaveLength(8);
+    expect(workers).toHaveLength(7);
+    for (const c of workers) {
+      expect(c.id).toMatch(
+        /^lab-(chemistry-operator-[12]|biology-researcher-[12]|architect-drafter-[12]|architect-cad)$/,
+      );
+      expect(c.role).toBeTruthy();
+      expect(c.loop).toBe(240);
+    }
+    for (const c of listeners) {
+      expect(c.id).toMatch(/^menk-speech-listener-[1-8]$/);
+      expect(c.depiction).toBe('back');
+      expect(
+        c.script.every(
+          (s) =>
+            s.action === 'sit' && !s.path && ['NE', 'NW'].includes(s.facing!),
+        ),
+      ).toBe(true);
+    }
     const ids = new Set(content.characters.map((c) => c.id));
     for (const c of content.characters)
       if (c.pairWith) expect(ids.has(c.pairWith), c.id).toBe(true);
@@ -718,7 +753,8 @@ describe('main characters only, with supplied animation strips', () => {
     const strips = new Set(await fs.readdir('art/sprites/anim'));
     const sprites = new Set(await fs.readdir('art/sprites'));
     for (const c of content.characters) {
-      if (!c.name || !sprites.has(`${c.id}.png`)) continue;
+      if ((!c.name && !c.id.startsWith('lab-')) || !sprites.has(`${c.id}.png`))
+        continue;
       for (const s of c.script) {
         const key = `${c.id}__${s.action}${s.prop ? '@' + s.prop : ''}`;
         expect(strips.has(`${key}_SE.png`), key).toBe(true);
@@ -730,6 +766,8 @@ describe('main characters only, with supplied animation strips', () => {
     for (const f of [
       'mohamed-salah__walk_NE.png',
       'mufti-ismail-menk__talk_SE.png',
+      'lab-chemistry-operator-1__pour@flask_NE.png',
+      'lab-architect-drafter-1__write@pen_NE.png',
     ]) {
       const m = await sharp(`art/sprites/anim/${f}`).metadata();
       expect(m.height).toBe(336);

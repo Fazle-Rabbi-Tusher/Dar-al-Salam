@@ -15,8 +15,12 @@ import {
   UniformGroup,
   type WebGLRenderer,
 } from 'pixi.js';
+import {
+  InfrastructureRenderer,
+  type LiveInfrastructure,
+} from './Infrastructure';
 import { OutlineFilter } from 'pixi-filters';
-import { globalFrame, frameMap } from '../../../packages/shared/clock';
+import { FPS, globalFrame, frameMap } from '../../../packages/shared/clock';
 import { characterState, frameKey } from '../../../packages/shared/script';
 import { motionFor } from '../../../packages/shared/motion';
 import { maskHit } from '../../../packages/shared/compositor';
@@ -231,6 +235,8 @@ export class Engine {
   private masks = new Map<string, Uint8Array>();
   private live = new Map<string, Live>();
   private statics: Static[] = [];
+  private infrastructure = new InfrastructureRenderer();
+  private buildings: LiveInfrastructure[] = [];
   private listeners = new Map<string, Set<(data: never) => void>>();
   private resizeObserver: ResizeObserver;
   private abort = new AbortController();
@@ -358,7 +364,15 @@ export class Engine {
     );
     this.behind.sortableChildren = true;
     this.front.sortableChildren = true;
+    const modeled = new Set<number>();
     for (const s of manifest.sortables) {
+      if (modeled.has(s.objectId)) continue;
+      const building = this.infrastructure.create(s);
+      if (building) {
+        this.buildings.push(building);
+        modeled.add(s.objectId);
+        continue;
+      }
       const sprite = new Sprite(this.textures.get(s.frame));
       sprite.pivot.set(...s.pivot);
       const m = this.metadata.get(s.frame)!;
@@ -600,6 +614,38 @@ export class Engine {
   private update() {
     if (!this.manifest) return;
     (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
+    this.infrastructure.update(this.proj);
+    for (const b of this.buildings) {
+      const p = project(this.proj, b.point),
+        reach = b.reach * this.view.zoom + 12;
+      b.mesh.visible =
+        p.depth > -0.28 &&
+        p.x > -reach &&
+        p.y > -reach &&
+        p.x < this.host.clientWidth + reach &&
+        p.y < this.host.clientHeight + reach;
+      if (b.activity) b.activity.mesh.visible = b.mesh.visible;
+      if (!b.mesh.visible) continue;
+      const layer = p.depth < 0 ? this.behind : this.front;
+      if (b.mesh.parent !== layer) layer.addChild(b.mesh);
+      // Ground-front sorting preserves the existing character/prop scene layers.
+      b.mesh.zIndex = Math.max(
+        ...[
+          [0, 0],
+          [b.footprint[0], 0],
+          [0, b.footprint[1]],
+          [...b.footprint],
+        ].map(
+          ([x, y]) =>
+            project(this.proj, tileToPlanet(b.tile[0] + x, b.tile[1] + y))
+              .depth,
+        ),
+      );
+      if (b.activity) {
+        if (b.activity.mesh.parent !== layer) layer.addChild(b.activity.mesh);
+        b.activity.mesh.zIndex = b.mesh.zIndex + 1e-7;
+      }
+    }
     for (const s of this.statics) {
       if (s.sortable.animation)
         this.texture(
@@ -703,6 +749,35 @@ export class Engine {
     this.visibleCount = visible;
     if (this.inspector) this.drawInspector();
   }
+  /** Render opt-in walks between deterministic 12 Hz ticks; pause freezes elapsed. */
+  private interpolatePaths() {
+    const time = this.elapsed * FPS;
+    const fraction = time - Math.floor(time);
+    for (const item of this.live.values()) {
+      const c = item.character;
+      if (!c.smoothMotion) continue;
+      const state = characterState(c, this.frame + fraction);
+      if (!c.script[state.stepIndex].path) continue;
+      const meta = this.metadata.get(item.frame);
+      if (!meta) continue;
+      const point = tileToPlanet(...state.tile);
+      const flip = item.sprite.scale.x < 0;
+      const p = this.place(
+        item.sprite,
+        point,
+        Math.max(meta.frame.w, meta.frame.h) / (meta.density ?? 1),
+        state.z,
+        2e-5,
+        meta.density ?? 1,
+      );
+      if (p && flip) item.sprite.scale.x *= -1;
+      if (p) item.depth = p.depth;
+      if (item.shadow) {
+        const shadow = p && this.place(item.shadow, point, 16, 0, 1e-5);
+        if (!shadow) item.shadow.visible = false;
+      }
+    }
+  }
   private visibleCount = 0;
   private tick(dt: number) {
     if (!this.ready || this.destroyed) return;
@@ -760,6 +835,10 @@ export class Engine {
       this.lastFrame = this.frame;
       this.dirty = false;
     }
+    this.interpolatePaths();
+    const activityTime = this.frame + ((this.elapsed * FPS) % 1);
+    for (const b of this.buildings)
+      this.infrastructure.animate(b, activityTime);
     this.emitElapsed += dt;
     if (this.emitElapsed >= 120) {
       this.emitElapsed = 0;
@@ -1041,10 +1120,21 @@ export class Engine {
       });
   }
   destroy() {
+    if (this.destroyed) return;
     this.destroyed = true;
     this.abort.abort();
     this.resizeObserver.disconnect();
     this.listeners.clear();
+    for (const b of this.buildings) {
+      for (const mesh of [b.mesh, ...(b.activity ? [b.activity.mesh] : [])]) {
+        const geometry = mesh.geometry,
+          shader = mesh.shader;
+        mesh.destroy();
+        geometry.destroy();
+        shader?.destroy();
+      }
+    }
+    this.buildings = [];
     if (this.ready) this.app.destroy(true, { children: true, texture: false });
   }
 }

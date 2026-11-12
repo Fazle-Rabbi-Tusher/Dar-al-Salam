@@ -1,0 +1,282 @@
+[
+  {
+    "id": "menk-speech-listener-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated male listener at the talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          9.4,
+          14
+        ],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-6",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated female listener at the talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          11.5,
+          14
+        ],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-3",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated male listener at the talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          15,
+          14
+        ],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-8",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated female listener at the talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          17.1,
+          14
+        ],
+        "facing": "NW"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-5",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated female listener at the talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          9.4,
+          16.7
+        ],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated male listener at the talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          11.5,
+          16.7
+        ],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-7",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated female listener at the talk",
+    "look": {
+      "base": "adult-woman",
+      "garment": "abaya",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          15,
+          16.7
+        ],
+        "facing": "NE"
+      }
+    ]
+  },
+  {
+    "id": "menk-speech-listener-4",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "back",
+    "role": "Seated male listener at the talk",
+    "look": {
+      "base": "adult-man-beard",
+      "garment": "jubba",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "white-linen",
+        "garmentSecondary": "brass",
+        "headwear": "white-linen",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          17.1,
+          16.7
+        ],
+        "facing": "NE"
+      }
+    ]
+  }
+]

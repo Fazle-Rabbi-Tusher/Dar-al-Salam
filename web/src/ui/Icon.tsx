@@ -1,5 +1,8 @@
 export function Icon({ name, size = 20 }: { name: string; size?: number }) {
   const paths: Record<string, React.ReactNode> = {
+    flask: (
+      <path d="M9 3h6M10 3v7L4 19a1.4 1.4 0 0 0 1.2 2h13.6a1.4 1.4 0 0 0 1.2-2l-6-9V3M7 15h10m-8 3h.1m4-1h.1" />
+    ),
     search: (
       <>
         <circle cx="10.5" cy="10.5" r="6.5" />
@@ -35,6 +38,11 @@ export function Icon({ name, size = 20 }: { name: string; size?: number }) {
       <>
         <circle cx="9" cy="8" r="3" />
         <path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m1 4a5 5 0 0 1 4 5" />
+      </>
+    ),
+    city: (
+      <>
+        <path d="M3 21V9h7v12M10 21V3h8v18M18 13h3v8M1 21h22M6 12v1m0 3v1M13 6h2m-2 4h2m-2 4h2m-2 4h2" />
       </>
     ),
     globe: (

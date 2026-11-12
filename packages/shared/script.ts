@@ -27,7 +27,12 @@ export function sampleStep(s: Step, t: number) {
       facing: s.facing!,
       z: typeof s.z === 'number' ? s.z : 0,
     };
-  let d = Math.max(0, Math.min(1, t)) * pathLength(s.path);
+  const progress = Math.max(0, Math.min(1, t));
+  const eased =
+    s.easing === 'smoothstep'
+      ? progress * progress * (3 - 2 * progress)
+      : progress;
+  let d = eased * pathLength(s.path);
   for (let i = 1; i < s.path.length; i++) {
     const a = s.path[i - 1],
       b = s.path[i],

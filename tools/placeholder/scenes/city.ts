@@ -8,6 +8,79 @@
  */
 type Placement = [string, number, number, number?];
 
+/** Infill uses existing block interiors. Cars occupy inner lanes, leaving the
+ * Mamdani scooter loop on y63.5/y76.5 and x22.5/x40.5 unobstructed. */
+export const CITY_DENSITY_OBJECTS: Placement[] = [
+  ['m-skyscraper-glass', 16.5, 66.2],
+  ['m-brick-building', 10.8, 69.5],
+  ['m-awning-shop-b', 6.5, 69.6],
+  ['m-awning-shop-b', 7, 73.6],
+  ['m-awning-shop-c', 15.2, 73.6],
+  ['m-awning-shop', 17.3, 73.6],
+  ['m-awning-shop-b', 19.4, 69.9],
+  ['m-skyscraper-glass', 34.2, 66.2],
+  ['m-brick-building-side', 37.3, 68.1],
+  ['m-awning-shop-c', 25, 70.2],
+  ['m-awning-shop-b', 34.3, 71.3],
+  ['m-brick-building', 43, 69.9],
+  ['m-brick-building', 49, 70],
+  ['m-awning-shop-b', 47.2, 73.5],
+  ['m-skyscraper-glass', 6.5, 82],
+  ['m-brick-building', 10.8, 82.3],
+  ['m-tower-slim-b', 16.5, 82.4],
+  ['m-awning-shop', 13.2, 84.6],
+  ['m-awning-shop-b', 15.3, 86.2],
+  ['m-awning-shop-c', 17.4, 86.2],
+  ['m-awning-shop', 19.5, 83.8],
+  ['m-skyscraper-glass', 46.5, 79],
+  ['m-brick-building', 42.7, 82.2],
+  ['m-skyscraper-glass', 48.2, 82.5],
+  ['m-tower-slim-b', 52, 82.6],
+  ['m-awning-shop-c', 46, 85.1],
+  // Red, blue, silver, charcoal and ochre cars, with occasional roof-lit taxis.
+  ...[11.5, 16.5, 26, 31, 36, 48.5, 52].map((x): Placement => [
+    'm-taxi',
+    x,
+    64,
+  ]),
+  ...[8, 12, 17, 26, 30.5, 35.5, 43, 51.5].map((x): Placement => [
+    'm-taxi',
+    x,
+    77,
+  ]),
+  ...[6.5, 14, 18, 26, 34, 43, 48, 52].map((x): Placement => ['m-taxi', x, 90]),
+  ...[66.6, 71, 83.5, 87].map((y): Placement => ['m-taxi-side', 4, y]),
+  ...[67, 71.5].map((y): Placement => ['m-taxi-side', 23, y]),
+  ...[67, 72, 80, 85].map((y): Placement => ['m-taxi-side', 41, y]),
+  ...[73, 80, 84.5, 88].map((y): Placement => ['m-taxi-side', 56, y]),
+  // Paired traffic signals stand on pavement at the avenue intersections.
+  ...[6, 24, 42, 54].flatMap((x): Placement[] => [
+    ['m-traffic-signal', x, 65.2],
+    ['m-traffic-signal', x, 78.2],
+    ['m-traffic-signal-side', x === 24 ? 25.3 : x === 54 ? 53.5 : x, 88.2],
+  ]),
+];
+
+/** Painted details are walkable; they never become collision obstacles. */
+export const CITY_ROAD_DETAILS: Placement[] = [
+  ...[63.94, 76.94, 89.94].flatMap((y) =>
+    [9, 13, 17, 27, 31, 35, 45, 49, 52].map((x): Placement => [
+      'm-road-dashes',
+      x,
+      y,
+    ]),
+  ),
+  ...[4.94, 22.94, 40.94, 55.94].flatMap((x) =>
+    [67, 71, 80, 84].map((y): Placement => ['m-road-dashes-side', x, y]),
+  ),
+  ['m-crosswalk', 24.5, 63],
+  ['m-crosswalk', 42, 63],
+  ['m-crosswalk', 6, 76],
+  ['m-crosswalk', 42, 76],
+  ['m-crosswalk', 6, 89],
+  ['m-crosswalk', 24.5, 89],
+];
+
 /**
  * A run of utility poles 6 tiles apart. Along a row the wires run along x;
  * along a column the mirrored -side poles carry them along y. The first and
@@ -28,6 +101,7 @@ function poleRun(axis: 'x' | 'y', fixed: number, from: number, count: number) {
 }
 
 export const CITY_OBJECTS: Placement[] = [
+  ...CITY_DENSITY_OBJECTS,
   // Downtown skyline (block C at the back, block F in front).
   ['m-tower-tall', 46.8, 66.2],
   ['m-broadcast-tower', 51, 66.6],

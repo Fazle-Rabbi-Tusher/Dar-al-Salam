@@ -24204,7 +24204,7 @@
         },
         {
           "id": 32,
-          "type": "m-lab-bench",
+          "type": "m-chemistry-bench",
           "x": 41,
           "y": 10.5,
           "footprint": [
@@ -24216,7 +24216,7 @@
         },
         {
           "id": 33,
-          "type": "m-lab-bench",
+          "type": "m-chemistry-bench",
           "x": 46,
           "y": 10.5,
           "footprint": [
@@ -24228,7 +24228,7 @@
         },
         {
           "id": 34,
-          "type": "m-lab-bench",
+          "type": "m-biology-bench",
           "x": 41,
           "y": 15.5,
           "footprint": [
@@ -24240,7 +24240,7 @@
         },
         {
           "id": 35,
-          "type": "m-lab-bench",
+          "type": "m-biology-bench",
           "x": 46,
           "y": 15.5,
           "footprint": [
@@ -24852,7 +24852,7 @@
         },
         {
           "id": 86,
-          "type": "m-computer-desk",
+          "type": "khwarizmi-desk",
           "x": 17,
           "y": 45.5,
           "footprint": [
@@ -28734,6 +28734,1614 @@
           "footprint": [
             1,
             1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 410,
+          "type": "menk-recording-camera",
+          "x": 11,
+          "y": 12.5,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 411,
+          "type": "menk-recording-camera",
+          "x": 14.1,
+          "y": 12.6,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 412,
+          "type": "menk-speech-lectern",
+          "x": 12.9,
+          "y": 10.95,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 413,
+          "type": "khwarizmi-geometry",
+          "x": 23,
+          "y": 44,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 414,
+          "type": "khwarizmi-armillary",
+          "x": 24,
+          "y": 45.5,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 415,
+          "type": "m-skyscraper-glass",
+          "x": 16.5,
+          "y": 66.2,
+          "footprint": [
+            3,
+            3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 416,
+          "type": "m-brick-building",
+          "x": 10.8,
+          "y": 69.5,
+          "footprint": [
+            4,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 417,
+          "type": "m-awning-shop-b",
+          "x": 6.5,
+          "y": 69.6,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 418,
+          "type": "m-awning-shop-b",
+          "x": 7,
+          "y": 73.6,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 419,
+          "type": "m-awning-shop-c",
+          "x": 15.2,
+          "y": 73.6,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 420,
+          "type": "m-awning-shop",
+          "x": 17.3,
+          "y": 73.6,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 421,
+          "type": "m-awning-shop-b",
+          "x": 19.4,
+          "y": 69.9,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 422,
+          "type": "m-skyscraper-glass",
+          "x": 34.2,
+          "y": 66.2,
+          "footprint": [
+            3,
+            3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 423,
+          "type": "m-brick-building-side",
+          "x": 37.3,
+          "y": 68.1,
+          "footprint": [
+            2,
+            4
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 424,
+          "type": "m-awning-shop-c",
+          "x": 25,
+          "y": 70.2,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 425,
+          "type": "m-awning-shop-b",
+          "x": 34.3,
+          "y": 71.3,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 426,
+          "type": "m-brick-building",
+          "x": 43,
+          "y": 69.9,
+          "footprint": [
+            4,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 427,
+          "type": "m-brick-building",
+          "x": 49,
+          "y": 70,
+          "footprint": [
+            4,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 428,
+          "type": "m-awning-shop-b",
+          "x": 47.2,
+          "y": 73.5,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 429,
+          "type": "m-skyscraper-glass",
+          "x": 6.5,
+          "y": 82,
+          "footprint": [
+            3,
+            3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 430,
+          "type": "m-brick-building",
+          "x": 10.8,
+          "y": 82.3,
+          "footprint": [
+            4,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 431,
+          "type": "m-tower-slim-b",
+          "x": 16.5,
+          "y": 82.4,
+          "footprint": [
+            2,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 432,
+          "type": "m-awning-shop",
+          "x": 13.2,
+          "y": 84.6,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 433,
+          "type": "m-awning-shop-b",
+          "x": 15.3,
+          "y": 86.2,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 434,
+          "type": "m-awning-shop-c",
+          "x": 17.4,
+          "y": 86.2,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 435,
+          "type": "m-awning-shop",
+          "x": 19.5,
+          "y": 83.8,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 436,
+          "type": "m-skyscraper-glass",
+          "x": 46.5,
+          "y": 79,
+          "footprint": [
+            3,
+            3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 437,
+          "type": "m-brick-building",
+          "x": 42.7,
+          "y": 82.2,
+          "footprint": [
+            4,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 438,
+          "type": "m-skyscraper-glass",
+          "x": 48.2,
+          "y": 82.5,
+          "footprint": [
+            3,
+            3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 439,
+          "type": "m-tower-slim-b",
+          "x": 52,
+          "y": 82.6,
+          "footprint": [
+            2,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 440,
+          "type": "m-awning-shop-c",
+          "x": 46,
+          "y": 85.1,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 441,
+          "type": "m-taxi",
+          "x": 11.5,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 442,
+          "type": "m-taxi",
+          "x": 16.5,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 443,
+          "type": "m-taxi",
+          "x": 26,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 444,
+          "type": "m-taxi",
+          "x": 31,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 445,
+          "type": "m-taxi",
+          "x": 36,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 446,
+          "type": "m-taxi",
+          "x": 48.5,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 447,
+          "type": "m-taxi",
+          "x": 52,
+          "y": 64,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 448,
+          "type": "m-taxi",
+          "x": 8,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 449,
+          "type": "m-taxi",
+          "x": 12,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 450,
+          "type": "m-taxi",
+          "x": 17,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 451,
+          "type": "m-taxi",
+          "x": 26,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 452,
+          "type": "m-taxi",
+          "x": 30.5,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 453,
+          "type": "m-taxi",
+          "x": 35.5,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 454,
+          "type": "m-taxi",
+          "x": 43,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 455,
+          "type": "m-taxi",
+          "x": 51.5,
+          "y": 77,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 456,
+          "type": "m-taxi",
+          "x": 6.5,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 457,
+          "type": "m-taxi",
+          "x": 14,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 458,
+          "type": "m-taxi",
+          "x": 18,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 459,
+          "type": "m-taxi",
+          "x": 26,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 460,
+          "type": "m-taxi",
+          "x": 34,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 461,
+          "type": "m-taxi",
+          "x": 43,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 462,
+          "type": "m-taxi",
+          "x": 48,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 463,
+          "type": "m-taxi",
+          "x": 52,
+          "y": 90,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 464,
+          "type": "m-taxi-side",
+          "x": 4,
+          "y": 66.6,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 465,
+          "type": "m-taxi-side",
+          "x": 4,
+          "y": 71,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 466,
+          "type": "m-taxi-side",
+          "x": 4,
+          "y": 83.5,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 467,
+          "type": "m-taxi-side",
+          "x": 4,
+          "y": 87,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 468,
+          "type": "m-taxi-side",
+          "x": 23,
+          "y": 67,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 469,
+          "type": "m-taxi-side",
+          "x": 23,
+          "y": 71.5,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 470,
+          "type": "m-taxi-side",
+          "x": 41,
+          "y": 67,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 471,
+          "type": "m-taxi-side",
+          "x": 41,
+          "y": 72,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 472,
+          "type": "m-taxi-side",
+          "x": 41,
+          "y": 80,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 473,
+          "type": "m-taxi-side",
+          "x": 41,
+          "y": 85,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 474,
+          "type": "m-taxi-side",
+          "x": 56,
+          "y": 73,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 475,
+          "type": "m-taxi-side",
+          "x": 56,
+          "y": 80,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 476,
+          "type": "m-taxi-side",
+          "x": 56,
+          "y": 84.5,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 477,
+          "type": "m-taxi-side",
+          "x": 56,
+          "y": 88,
+          "footprint": [
+            1,
+            2
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 478,
+          "type": "m-traffic-signal",
+          "x": 6,
+          "y": 65.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 479,
+          "type": "m-traffic-signal",
+          "x": 6,
+          "y": 78.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 480,
+          "type": "m-traffic-signal-side",
+          "x": 6,
+          "y": 88.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 481,
+          "type": "m-traffic-signal",
+          "x": 24,
+          "y": 65.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 482,
+          "type": "m-traffic-signal",
+          "x": 24,
+          "y": 78.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 483,
+          "type": "m-traffic-signal-side",
+          "x": 25.3,
+          "y": 88.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 484,
+          "type": "m-traffic-signal",
+          "x": 42,
+          "y": 65.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 485,
+          "type": "m-traffic-signal",
+          "x": 42,
+          "y": 78.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 486,
+          "type": "m-traffic-signal-side",
+          "x": 42,
+          "y": 88.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 487,
+          "type": "m-traffic-signal",
+          "x": 54,
+          "y": 65.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 488,
+          "type": "m-traffic-signal",
+          "x": 54,
+          "y": 78.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 489,
+          "type": "m-traffic-signal-side",
+          "x": 53.5,
+          "y": 88.2,
+          "footprint": [
+            0.35,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 490,
+          "type": "m-road-dashes",
+          "x": 9,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 491,
+          "type": "m-road-dashes",
+          "x": 13,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 492,
+          "type": "m-road-dashes",
+          "x": 17,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 493,
+          "type": "m-road-dashes",
+          "x": 27,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 494,
+          "type": "m-road-dashes",
+          "x": 31,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 495,
+          "type": "m-road-dashes",
+          "x": 35,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 496,
+          "type": "m-road-dashes",
+          "x": 45,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 497,
+          "type": "m-road-dashes",
+          "x": 49,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 498,
+          "type": "m-road-dashes",
+          "x": 52,
+          "y": 63.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 499,
+          "type": "m-road-dashes",
+          "x": 9,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 500,
+          "type": "m-road-dashes",
+          "x": 13,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 501,
+          "type": "m-road-dashes",
+          "x": 17,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 502,
+          "type": "m-road-dashes",
+          "x": 27,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 503,
+          "type": "m-road-dashes",
+          "x": 31,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 504,
+          "type": "m-road-dashes",
+          "x": 35,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 505,
+          "type": "m-road-dashes",
+          "x": 45,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 506,
+          "type": "m-road-dashes",
+          "x": 49,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 507,
+          "type": "m-road-dashes",
+          "x": 52,
+          "y": 76.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 508,
+          "type": "m-road-dashes",
+          "x": 9,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 509,
+          "type": "m-road-dashes",
+          "x": 13,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 510,
+          "type": "m-road-dashes",
+          "x": 17,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 511,
+          "type": "m-road-dashes",
+          "x": 27,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 512,
+          "type": "m-road-dashes",
+          "x": 31,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 513,
+          "type": "m-road-dashes",
+          "x": 35,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 514,
+          "type": "m-road-dashes",
+          "x": 45,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 515,
+          "type": "m-road-dashes",
+          "x": 49,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 516,
+          "type": "m-road-dashes",
+          "x": 52,
+          "y": 89.94,
+          "footprint": [
+            2,
+            0.15
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 517,
+          "type": "m-road-dashes-side",
+          "x": 4.94,
+          "y": 67,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 518,
+          "type": "m-road-dashes-side",
+          "x": 4.94,
+          "y": 71,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 519,
+          "type": "m-road-dashes-side",
+          "x": 4.94,
+          "y": 80,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 520,
+          "type": "m-road-dashes-side",
+          "x": 4.94,
+          "y": 84,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 521,
+          "type": "m-road-dashes-side",
+          "x": 22.94,
+          "y": 67,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 522,
+          "type": "m-road-dashes-side",
+          "x": 22.94,
+          "y": 71,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 523,
+          "type": "m-road-dashes-side",
+          "x": 22.94,
+          "y": 80,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 524,
+          "type": "m-road-dashes-side",
+          "x": 22.94,
+          "y": 84,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 525,
+          "type": "m-road-dashes-side",
+          "x": 40.94,
+          "y": 67,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 526,
+          "type": "m-road-dashes-side",
+          "x": 40.94,
+          "y": 71,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 527,
+          "type": "m-road-dashes-side",
+          "x": 40.94,
+          "y": 80,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 528,
+          "type": "m-road-dashes-side",
+          "x": 40.94,
+          "y": 84,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 529,
+          "type": "m-road-dashes-side",
+          "x": 55.94,
+          "y": 67,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 530,
+          "type": "m-road-dashes-side",
+          "x": 55.94,
+          "y": 71,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 531,
+          "type": "m-road-dashes-side",
+          "x": 55.94,
+          "y": 80,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 532,
+          "type": "m-road-dashes-side",
+          "x": 55.94,
+          "y": 84,
+          "footprint": [
+            0.15,
+            2
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 533,
+          "type": "m-crosswalk",
+          "x": 24.5,
+          "y": 63,
+          "footprint": [
+            3,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 534,
+          "type": "m-crosswalk",
+          "x": 42,
+          "y": 63,
+          "footprint": [
+            3,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 535,
+          "type": "m-crosswalk",
+          "x": 6,
+          "y": 76,
+          "footprint": [
+            3,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 536,
+          "type": "m-crosswalk",
+          "x": 42,
+          "y": 76,
+          "footprint": [
+            3,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 537,
+          "type": "m-crosswalk",
+          "x": 6,
+          "y": 89,
+          "footprint": [
+            3,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 538,
+          "type": "m-crosswalk",
+          "x": 24.5,
+          "y": 89,
+          "footprint": [
+            3,
+            1
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 539,
+          "type": "m-lab-stool",
+          "x": 41.5,
+          "y": 17,
+          "footprint": [
+            0.65,
+            0.65
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 540,
+          "type": "m-lab-stool",
+          "x": 46.5,
+          "y": 17,
+          "footprint": [
+            0.65,
+            0.65
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 541,
+          "type": "m-lab-stool",
+          "x": 25.35,
+          "y": 11.7,
+          "footprint": [
+            0.65,
+            0.65
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 542,
+          "type": "m-lab-stool",
+          "x": 25.35,
+          "y": 16.200000000000003,
+          "footprint": [
+            0.65,
+            0.65
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 543,
+          "type": "m-lab-stool",
+          "x": 33.25,
+          "y": 14.2,
+          "footprint": [
+            0.65,
+            0.65
           ],
           "walkable": false,
           "z": 0
