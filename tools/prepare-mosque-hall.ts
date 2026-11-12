@@ -84,8 +84,9 @@ type Info = {
     arches: P2[];
     ribs: number[];
     lanterns: [number, number, number][];
+    windowH: number;
     plants: P2[];
-    partitionX: number;
+    partition: { z: number; x0: number; x1: number };
     westWindows: number[];
     qiblaWindows: number[];
   };
@@ -126,8 +127,8 @@ async function shafts() {
   const windows: [number, number, number][][] = L.westWindows.map((z) => [
     [L.x0 + 0.05, 1.8, z - 0.95],
     [L.x0 + 0.05, 1.8, z + 0.95],
-    [L.x0 + 0.05, 6.6, z + 0.95],
-    [L.x0 + 0.05, 6.6, z - 0.95],
+    [L.x0 + 0.05, L.windowH, z + 0.95],
+    [L.x0 + 0.05, L.windowH, z - 0.95],
   ]);
   for (const win of windows) {
     const lit = win.map(([X, Y, Z]) => {
@@ -196,8 +197,8 @@ function baseOf(k: string): Base {
   if (k === 'partition')
     return {
       path: [
-        [L.partitionX, L.z0 + 1],
-        [L.partitionX, L.z1 - 1],
+        [L.partition.x0, L.partition.z],
+        [L.partition.x1, L.partition.z],
       ],
     };
   const n = +k.slice(k.lastIndexOf('-') + 1);

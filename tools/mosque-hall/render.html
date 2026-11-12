@@ -44,8 +44,9 @@
     scene.add(model.root);
     scene.add(new T.HemisphereLight('#ffe9c9', '#8fb2b0', 1.1));
     const sun = new T.DirectionalLight('#ffe0ab', 2.3);
-    sun.position.set(-14 + 7.5, 20, -6 + 11.5);
-    sun.target.position.set(7.5, 0, 11.5);
+    const mid = [(L.x0 + L.x1) / 2, (L.z0 + L.z1) / 2];
+    sun.position.set(-14 + mid[0], 20, -6 + mid[1]);
+    sun.target.position.set(mid[0], 0, mid[1]);
     scene.add(sun.target);
     sun.castShadow = true;
     sun.shadow.mapSize.set(4096, 4096);

@@ -377,17 +377,15 @@ async function stripFor(p: Person) {
 /*
  * Inside the grand mosque (tools/mosque-hall/grand-mosque.mjs and
  * layout.ts), in the model's metres: the qibla wall is the far NE wall
- * (Z −2.5) with the mihrab at X 0. The imam stands at X 0, Z 0. Behind him
- * eight long rows of men, shoulder to shoulder from X −20 to +20 (every
- * 2.5 m, leaving the twin pillar rows at X ±10 clear); beyond the walnut
- * screen at X 21, the women's section, its rows level with the men's.
+ * (Z −2.5) with the mihrab at X 0. The original small congregation (owner's
+ * brief), compact in the middle of the vast hall: the imam at X 0, Z 0;
+ * two rows of six men from X −6 to +6 at Z 2 and 4.4; the walnut screen at
+ * Z 5.9; two rows of six women beyond it.
  */
 export const IMAM = tileOf(0, 0); // on his own mat, before the mihrab
-const ROWS_Z = [2, 4.5, 7, 9.5, 12, 14.5, 17, 19.5];
-const MEN_X = [...Array(17).keys()]
-    .map((k) => -20 + k * 2.5)
-    .filter((x) => Math.abs(Math.abs(x) - 10) > 1.3),
-  WOMEN_X = [23.5, 26, 28.5, 31, 33.5];
+const ROW_X = [-6, -3.6, -1.2, 1.2, 3.6, 6];
+const MEN_Z = [2, 4.4],
+  WOMEN_Z = [7.2, 9.6];
 const pad = (n: number) => String(n).padStart(2, '0');
 type Placed = Person & { at: [number, number]; label: string; strip?: string };
 const people: Placed[] = [
@@ -400,59 +398,48 @@ const people: Placed[] = [
     label: '',
   },
 ];
-// A dozen men's and a dozen women's designs, each drawn once (its own
-// strip); the rows repeat them in a pattern that never puts two alike
-// side by side or one behind the other.
-let men = 0,
-  women = 0;
-ROWS_Z.forEach((z, r) => {
-  MEN_X.forEach((x, i) => {
-    const design = ((r * 5 + i) % 12) + 1,
-      n = ++men;
-    people.push({
-      id: `prayer-man-${pad(n)}`,
-      role: 'adult',
-      delay: 6,
-      art: {},
-      at: tileOf(x, z),
-      label: 'A worshipper in the men’s rows',
-      ...(n !== design ? { strip: `prayer-man-${pad(design)}` } : {}),
-    });
+for (let r = 0; r < 2; r++)
+  ROW_X.forEach((x, i) => {
+    const n = r * 6 + i + 1;
+    people.push(
+      {
+        id: `prayer-man-${pad(n)}`,
+        role: 'adult',
+        delay: 6,
+        art: {},
+        at: tileOf(x, MEN_Z[r]),
+        label: 'A worshipper in the men’s rows',
+      },
+      {
+        id: `prayer-woman-${pad(n)}`,
+        role: 'adult',
+        delay: 6,
+        art: {},
+        at: tileOf(x, WOMEN_Z[r]),
+        label: 'A worshipper in the women’s rows',
+      },
+    );
   });
-  WOMEN_X.forEach((x, i) => {
-    const design = ((r * 7 + i) % 12) + 1,
-      n = ++women;
-    people.push({
-      id: `prayer-woman-${pad(n)}`,
-      role: 'adult',
-      delay: 6,
-      art: {},
-      at: tileOf(x, z),
-      label: 'A worshipper in the women’s rows',
-      ...(n !== design ? { strip: `prayer-woman-${pad(design)}` } : {}),
-    });
-  });
-});
 people.push(
   {
-    // In the front row, in the pillar gap, beside his father.
+    // At the end of the front row, beside his father.
     id: 'prayer-toddler',
     role: 'child',
     delay: 18,
     art: {},
     glances: true,
     tug: true,
-    at: tileOf(10, ROWS_Z[0]),
+    at: tileOf(8.2, MEN_Z[0]),
     label: 'A toddler beside his father, tugging at his thawb',
   },
   {
-    // In the front row's other pillar gap, copying a moment late.
+    // At the other end of the front row, copying a moment late.
     id: 'bead-child',
     role: 'child',
     delay: 12,
     art: {},
     glances: true,
-    at: tileOf(-10, ROWS_Z[0]),
+    at: tileOf(-8.2, MEN_Z[0]),
     label: 'A boy copying the grown-ups, a moment late',
   },
   {
@@ -462,7 +449,7 @@ people.push(
     delay: 12,
     art: {},
     glances: true,
-    at: tileOf(22.25, ROWS_Z[0]),
+    at: tileOf(-8.2, WOMEN_Z[0]),
     label: 'A girl praying beside her mother',
   },
 );
@@ -486,8 +473,8 @@ for (const p of designs) {
 }
 
 /* ── The two children playing tag round the back pillar (eight views) ── */
-/** The back pillar, behind the last row, where two children play tag. */
-export const PILLAR = tileOf(-10, 23.25);
+/** A pillar out in the empty hall, where two children play tag. */
+export const PILLAR = tileOf(-10, 12);
 const VIEWS = ['000', '045', '090', '135', '180', '225', '270', '315']; // S, SE, E, NE, N, NW, W, SW
 for (const id of ['aisle-child-a', 'aisle-child-b']) {
   const views = await Promise.all(VIEWS.map((d) => voxel(id, 'stand', d))),
@@ -514,8 +501,7 @@ const circle = (phase: number): [number, number][] =>
   [...Array(25).keys()].map((i) => {
     // Two quiet laps a loop, round the pillar.
     const a = phase + (i / 24) * Math.PI * 4;
-    // An oval round the back pillar, behind the last row and clear of the
-    // plant beside it.
+    // An oval round the pillar, out in the open floor.
     return [
       +(PILLAR[0] + S * Math.cos(a) * 1.9).toFixed(3),
       +(PILLAR[1] + S * Math.sin(a) * 1.2).toFixed(3),

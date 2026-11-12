@@ -2,48 +2,54 @@ import * as T from '../pack/vendor/three.module.min.js';
 
 /*
  * The grand prayer hall: the owner's mosque model (mosque-six-angle-final,
- * pack mosque.mjs) rebuilt at the size of the owner's later brief, with
- * its own parts and materials: limestone block walls with arched
- * stained-glass windows, a glowing recessed mihrab, faceted pillars with
- * pointed arches, tiered hexagonal brass chandeliers, wall sconces, a
- * walnut mashrabiya screen, palms in brass pots, and the teal carpet of
- * gold-and-cream star rosettes with the imam's fringed mat.
+ * pack mosque.mjs) rebuilt at the scale of the owner's later brief, with
+ * its own parts and materials: limestone block walls with extra-tall
+ * arched stained-glass windows, a glowing recessed mihrab, twin rows of
+ * colossal pillars with pointed arches, tiered hexagonal brass
+ * chandeliers, wall sconces, a walnut mashrabiya screen, palms in brass
+ * pots, and the teal carpet of gold-and-cream star rosettes with the
+ * imam's fringed mat.
  *
- * Model metres, Y up. X across the qibla wall (the men's section X −20 to
- * +20 round a central aisle at X 0; the screen at X 21; the women's section
- * beyond it, to X 36); Z from the qibla wall (Z −2.5) back to the entrance
- * (Z 25.5). The imam stands at X 0, Z 0, facing the qibla (−Z).
+ * Model metres, Y up. X across the qibla wall (−16 to 16, the central
+ * aisle at X 0); Z from the qibla wall (−2.5) back to the entrance (37.5).
+ * The imam stands at X 0, Z 0, facing the qibla (−Z).
  */
 export const LAYOUT = (() => {
-  const x0 = -22,
-    x1 = 37,
+  // Double the original hall's width (16 → 32 m), a long nave (40 m) and
+  // half again its height (8.2 → 12 m): a vast, mostly empty hall round
+  // the original small congregation (owner's brief).
+  const x0 = -16,
+    x1 = 16,
     z0 = -2.5,
-    z1 = 25.5,
+    z1 = 37.5,
     wallH = 12,
-    columnH = 8;
-  const columnZ = [3.25, 8.25, 13.25, 18.25, 23.25];
+    columnH = 9.5;
+  const columnZ = [4, 12, 20, 28, 36];
   const columns = [];
   for (const x of [-10, 10]) for (const z of columnZ) columns.push([x, z]);
   const arches = [];
   for (const x of [-10, 10])
     for (let i = 1; i < columnZ.length; i++)
       arches.push([x, (columnZ[i - 1] + columnZ[i]) / 2]);
-  const lanterns = [];
-  for (const z of [5.75, 15.75]) {
-    for (const x of [-15, -5, 5, 15]) lanterns.push([x, z, 1.25]);
-    lanterns.push([29, z, 1.0]);
-  }
+  // Grand chandeliers far overhead: one great one over the congregation,
+  // then pairs down the nave.
+  const lanterns = [
+    [0, 5, 1.6],
+    [-5, 14, 1.2],
+    [5, 14, 1.2],
+    [0, 22, 1.3],
+    [-5, 30, 1.2],
+    [5, 30, 1.2],
+  ];
   const plants = [
     [-10, 0.4],
     [10, 0.4],
-    [-20.9, -1.4],
-    [-20.9, 24.4],
-    [35.9, -1.4],
-    [35.9, 24.4],
-    [-7.5, 24.6],
-    [7.5, 24.6],
-    [22.3, -1.4],
-    [22.3, 24.4],
+    [-14.9, -1.4],
+    [14.9, -1.4],
+    [-14.9, 36.4],
+    [14.9, 36.4],
+    [-10, 24],
+    [10, 24],
   ];
   return {
     x0,
@@ -55,12 +61,17 @@ export const LAYOUT = (() => {
     columnZ,
     columns,
     arches,
+    archW: columnZ[1] - columnZ[0] - 0.8,
     ribs: columnZ,
     lanterns,
+    lanternY: 8.4,
     plants,
-    partitionX: 21,
-    westWindows: [1.5, 7, 12.5, 18, 23.5],
-    qiblaWindows: [-18, -12, -6, 6, 12, 18, 25.5, 31.5],
+    // The walnut screen across the hall, behind the men's two rows (as in
+    // the original model), the women's rows beyond it.
+    partition: { z: 5.9, x0: -7.6, x1: 7.6 },
+    westWindows: [3, 11, 19, 27, 35],
+    qiblaWindows: [-12.5, -7, 7, 12.5],
+    windowH: 9.4,
     mihrabX: 0,
   };
 })();
@@ -285,17 +296,17 @@ export async function createGrandMosque() {
     const q = along === 'z' ? across : I;
     mesh(
       g,
-      archGeometry(2.6, 7.2, 0.18, 0.24),
+      archGeometry(2.6, L.windowH + 0.3, 0.18, 0.24),
       P(at, 1.18, out * -0.16),
       'sandstone',
       q,
     );
-    mesh(g, archGeometry(2.3, 6.9, 0, 0.015), P(at, 1.3, 0), 'glass', q);
+    mesh(g, archGeometry(2.3, L.windowH, 0, 0.015), P(at, 1.3, 0), 'glass', q);
     for (let d = -0.95; d <= 0.96; d += 0.38)
       beam(
         g,
         P(at + d, 1.4, out * -0.23),
-        P(at + d, 6.9, out * -0.23),
+        P(at + d, L.windowH, out * -0.23),
         0.035,
         0.035,
         'brass',
@@ -325,7 +336,8 @@ export async function createGrandMosque() {
     for (let j = 0; j < D / 0.5; j++) {
       const z = L.z0 + 0.25 + j * 0.5 + (row % 2) * 0.25,
         y = 0.18 + row * 0.36;
-      if (L.westWindows.some((c) => inArch(z, y, c, 2.3, 1.3, 6.9))) continue;
+      if (L.westWindows.some((c) => inArch(z, y, c, 2.3, 1.3, L.windowH)))
+        continue;
       box(
         'West-wall',
         [L.x0, y, z],
@@ -342,7 +354,8 @@ export async function createGrandMosque() {
       const x = L.x0 + 0.25 + j * 0.5 + (row % 2) * 0.25,
         y = 0.18 + row * 0.36;
       if (inArch(x, y, L.mihrabX, 3.6, 0, 8.2)) continue;
-      if (L.qiblaWindows.some((c) => inArch(x, y, c, 2.3, 1.3, 6.9))) continue;
+      if (L.qiblaWindows.some((c) => inArch(x, y, c, 2.3, 1.3, L.windowH)))
+        continue;
       box(
         'Qibla-wall',
         [x, y, L.z0],
@@ -415,7 +428,7 @@ export async function createGrandMosque() {
   for (const [x, z] of L.arches)
     mesh(
       'Colonnades',
-      archGeometry(4.3, 2.8, 0.26, 0.3),
+      archGeometry(L.archW, 3.4, 0.3, 0.32),
       [x, H + 0.6, z],
       'limestone',
       across,
@@ -486,34 +499,32 @@ export async function createGrandMosque() {
     l.position.set(x, y - 0.4, z);
     group('Lighting').add(l);
   }
-  for (const [x, z, s] of L.lanterns) lantern(x, z, s, 6.6);
+  for (const [x, z, s] of L.lanterns) lantern(x, z, s, L.lanternY);
 
-  /* ── The long walnut mashrabiya between the men's and women's sections ── */
+  /* ── The walnut mashrabiya between the men's and women's rows ── */
   {
-    const X = L.partitionX,
-      a = L.z0 + 1,
-      b = L.z1 - 1;
-    for (let z = a; z <= b + 0.01; z += 2.7) {
-      box('Partition', [X, 0.93, z], [0.18, 1.86, 0.15], 'walnut');
-      cylinder('Partition', [X, 1.91, z], 0.15, 0.14, 'brass');
+    const { z: Z, x0: a, x1: b } = L.partition;
+    for (let x = a; x <= b + 0.01; x += (b - a) / 6) {
+      box('Partition', [x, 0.93, Z], [0.15, 1.86, 0.18], 'walnut');
+      cylinder('Partition', [x, 1.91, Z], 0.15, 0.14, 'brass');
     }
     for (const y of [0.13, 0.38, 1.65])
-      box('Partition', [X, y, (a + b) / 2], [0.15, 0.12, b - a], 'walnut');
-    for (let z = a + 0.15; z < b; z += 0.35)
+      box('Partition', [(a + b) / 2, y, Z], [b - a, 0.12, 0.15], 'walnut');
+    for (let x = a + 0.15; x < b; x += 0.35)
       for (let y = 0.6; y < 1.6; y += 0.35) {
         for (const s of [-1, 1])
           beam(
             'Partition',
-            [X, y - 0.16, z - 0.16],
-            [X, y + s * 0.16, z + 0.16],
+            [x - 0.16, y - 0.16, Z - 0.01],
+            [x + 0.16, y + s * 0.16, Z - 0.01],
             0.028,
             0.055,
             'walnut',
           );
         beam(
           'Partition',
-          [X, y + 0.16, z - 0.16],
-          [X, y - 0.16, z + 0.16],
+          [x - 0.16, y + 0.16, Z - 0.01],
+          [x + 0.16, y - 0.16, Z - 0.01],
           0.028,
           0.055,
           'gold',

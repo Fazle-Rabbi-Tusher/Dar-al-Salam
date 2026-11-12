@@ -213,3 +213,15 @@
     - **Shared strips:** a new `strip` field lets a figure play another's strips, so the rows repeat the pack's 12 men's and 12 women's designs. They are arranged so that no two alike stand side by side or one behind the other. Each strip is registered once (2,821 unique frames for 249 characters).
     - **Performance:** a view of the hall renders at about the same frame rate as the rest of the world in software GL (3.0 against 3.3 fps).
     - **Not done:** the coffered ceiling (cut away to see the rows), and the brief's own camera (the world keeps its isometric view; you look at the hall diagonally from the front three-quarter).
+70. The vast hall round the original small congregation (owner's brief, replacing item 69's dozens of rows):
+    - **The hall:** `grand-mosque.mjs` is now 32 × 40 m, 12 m high, at 0.4 tiles to the metre on the plaza.
+      - **Pillars and arches:** twin rows of five colossal pillars (9.5 m) at X ±10, with wide pointed arches and vault ribs.
+      - **Windows:** five extra-tall (9.4 m) stained-glass windows on the side wall and four on the qibla wall.
+      - **Chandeliers:** six grand chandeliers hung high (8.4 m), with the largest over the congregation.
+      - **Plants:** palms in brass pots.
+    - **The people:** the original group of the imam, 12 men and 12 women, stays compact in the middle of the open hall.
+      - **Men:** two rows of six, from X −6 to +6, at Z 2 and 4.4.
+      - **The screen:** the walnut mashrabiya runs across the hall behind them, as in the owner's original model.
+      - **Women:** two rows of six beyond the screen.
+      - **Children:** the toddler and the boy at the ends of the front row, the girl beside her mother, and the tag game round a pillar out on the open floor.
+    - **Other changes:** the shared-strip feature stays available. The sharp-head test now allows 20 s, since it grows with the cast.

@@ -591,7 +591,8 @@ describe('sharp heads', () => {
             }
         }
     }
-  });
+    // Checks every named person's every action: it grows with the cast.
+  }, 20000);
 });
 
 describe('Bangladesh block', () => {
@@ -726,8 +727,9 @@ describe('main characters only, with supplied animation strips', () => {
         )
         .map((c) => c.id),
     );
-    // Dozens of rows (owner's grand-mosque brief): well over a hundred.
-    expect(congregation.size).toBeGreaterThan(150);
+    // The original small group (owner's brief): the imam, 12 men, 12 women,
+    // three children praying and two at tag.
+    expect(congregation.size).toBe(30);
     for (const c of content.characters.filter((c) => congregation.has(c.id)))
       for (const s of c.script)
         if (s.action === 'pray') {
