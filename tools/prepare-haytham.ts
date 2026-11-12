@@ -10,7 +10,8 @@ import sharp from 'sharp';
  *
  * His voxel figure (Interactive-Viewers/Scholar/model.js) is posed frame by
  * frame through the workflow (tools/haytham/poses.js): the aperture, the
- * water bowl, the dial, the compass and the inverted image. The shoulders
+ * water bowl, the dial, the compass and the inverted image on the dark
+ * room's screen (tools/prepare-dark-room.ts), where he stands. The shoulders
  * turn to bring each hand to its instrument. The instruments come from the
  * owner's equipment builder (Interactive-Viewers/Equipment/models.js): the
  * pinhole panel and screen, the glass bowl on its notched track, the
@@ -168,7 +169,7 @@ await sharp(portrait)
 fs.rmSync(`art/gallery/${ID}`, { recursive: true, force: true });
 fs.mkdirSync(`art/gallery/${ID}`, { recursive: true });
 // One still per gesture: the aperture, the bowl, the dial, the compass,
-// and watching the image on the wall screen.
+// and turning to watch the image on the dark room's screen.
 for (const [n, t] of [9, 30, 50, 64, 90].entries())
   await sharp(png((await big.evaluate(`RESULT.render(${t})`)) as string))
     .flatten({ background: '#2a2620' })
@@ -178,12 +179,15 @@ for (const [n, t] of [9, 30, 50, 64, 90].entries())
 await browser.close();
 server.close();
 
-/* ── His card: the workflow at the bench in the science lab ── */
+/* ── His card: the workflow at his bench in the dark room ── */
 const cardFile = `content/characters/${ID}.json`,
   card = JSON.parse(fs.readFileSync(cardFile, 'utf8'));
 card.loop = 120;
 card.script = [
-  { from: 0, to: 120, action: 'write', at: [49.6, 18.6], facing: 'SE' },
+  // Room point (0.53, −0.53) of tools/prepare-dark-room.ts: the beam from
+  // the pinhole to the screen passes just behind him, the lectern clears the
+  // bench's end.
+  { from: 0, to: 120, action: 'write', at: [51.8, 16.6], facing: 'SE' },
 ];
 // The character collection's colours: brown robe, burgundy turban, dark beard.
 card.look.colours.garmentPrimary = 'cocoa';

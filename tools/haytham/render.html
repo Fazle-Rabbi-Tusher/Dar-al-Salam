@@ -20,7 +20,6 @@
       BOWL,
       TOOLS,
       PARCH,
-      SCREEN,
     } from './poses.js';
 
     const P = new URLSearchParams(location.search);
@@ -269,49 +268,6 @@
     for (let x = BOWL.x - BOWL.slide - 0.6; x <= BOWL.x + 0.6; x += 0.17)
       box(0.02, 0.025, 0.18, woodDark, x, BENCH.y + 0.012, BENCH.z0 + 0.12);
 
-    /* ── The wall screen where the inverted image falls ── */
-    const screenX = SCREEN.x;
-    box(
-      0.08,
-      2.6,
-      1.7,
-      new T.MeshStandardMaterial({ color: '#e9dfc6', roughness: 0.95 }),
-      screenX,
-      SCREEN.y,
-      SCREEN.z,
-    );
-    for (const z of [SCREEN.z - 0.9, SCREEN.z + 0.9])
-      box(
-        0.12,
-        SCREEN.y + 1.35,
-        0.12,
-        woodDark,
-        screenX,
-        (SCREEN.y + 1.35) / 2,
-        z,
-      );
-    // An inverted flame: the candle's image, upside down on the screen.
-    const flameShape = new T.Shape();
-    flameShape.moveTo(0, -0.22);
-    flameShape.quadraticCurveTo(0.11, 0, 0, 0.12);
-    flameShape.quadraticCurveTo(-0.11, 0, 0, -0.22);
-    const flame = new T.Mesh(
-      new T.ShapeGeometry(flameShape),
-      new T.MeshBasicMaterial({ color: '#ffcf6a', transparent: true }),
-    );
-    flame.rotation.set(0, -Math.PI / 2, Math.PI);
-    station.add(flame);
-    const halo = new T.Mesh(
-      new T.CircleGeometry(0.32, 24),
-      new T.MeshBasicMaterial({
-        color: '#fff0c0',
-        transparent: true,
-        opacity: 0.25,
-      }),
-    );
-    halo.rotation.y = -Math.PI / 2;
-    station.add(halo);
-
     /* ── The compass in his hand (phase 4) ── */
     const compass = new T.Group();
     const brass = new T.MeshStandardMaterial({
@@ -461,9 +417,6 @@
         PARCH.z + Math.sin(ang) * PARCH.r * 0.5,
       );
       compass.rotation.set(0, -ang, 0);
-      // The inverted candle image on the wall screen drifts as he watches.
-      flame.position.set(screenX - 0.05, SCREEN.y + 0.25, SCREEN.z + s.image);
-      halo.position.set(screenX - 0.045, SCREEN.y + 0.25, SCREEN.z + s.image);
     }
 
     /* ── The world's 2:1 isometric camera ── */

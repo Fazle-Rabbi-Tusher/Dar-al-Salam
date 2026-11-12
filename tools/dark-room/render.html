@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8" />
+  <body style="margin: 0; background: #0000">
+    <canvas id="c"></canvas>
+    <script type="module">
+      /*
+       * Al-Bayt al-Muzlim, the dark room (the owner's collection, its cutaway
+       * GLB), rendered in the world's 2:1 isometric view, one piece at a
+       * time, for tools/prepare-dark-room.ts. The room is turned a quarter
+       * so its open (cut-away) sides face the viewer. ?s= tiles per room
+       * unit on the ground, ?kv= vertical stretch, ?D= sprite density.
+       * Its optical bench, bowl and lens stay out: Ibn al-Haytham's own
+       * animated bench stands there instead.
+       */
+      import * as T from '../three/three.module.min.js';
+      import { GLTFLoader } from '../three/GLTFLoader.js';
+      const P = new URLSearchParams(location.search);
+      const s = +P.get('s'),
+        kv = +P.get('kv'),
+        D = +P.get('D');
+      const PX = 22.627 * s * D;
+      const renderer = new T.WebGLRenderer({ canvas: c, antialias: false, alpha: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(1);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = T.PCFSoftShadowMap;
+      renderer.toneMapping = T.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+      renderer.setClearColor(0, 0);
+      const scene = new T.Scene();
+      const gltf = await new GLTFLoader().loadAsync('../room/assets/al-bayt-al-muzlim-cutaway.glb');
+      const root = gltf.scene;
+      const SKIP = ['Optical Workbench', 'Glass Bowl', 'Lens Stand'];
+      root.traverse((o) => {
+        if (o.isMesh) {
+          o.castShadow = o.receiveShadow = true;
+          for (const m of [o.material].flat()) if (m.name?.startsWith('projection') || m.name?.startsWith('ray') || m.name?.startsWith('flame')) o.castShadow = false;
+        }
+      });
+      // three.js turns the GLB's spaces into underscores; match the originals.
+      const plain = (o) => o.name.replace(/_/g, ' ');
+      for (const name of SKIP) root.getObjectByName(name.replace(/ /g, '_'))?.removeFromParent();
+      const room = new T.Group();
+      room.add(root);
+      // Its open sides (−X, +Z) toward the viewer; heights stretched.
+      room.rotation.y = Math.PI / 2;
+      room.scale.set(1, kv, 1);
+      scene.add(room);
+      scene.add(new T.HemisphereLight('#fff1dc', '#8b8a7c', 1.35));
+      const sun = new T.DirectionalLight('#ffe5bd', 1.9);
+      sun.position.set(-6, 14, 8);
+      sun.castShadow = true;
+      sun.shadow.mapSize.set(2048, 2048);
+      Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 0.5, far: 60 });
+      sun.shadow.bias = -0.0004;
+      scene.add(sun);
+      room.updateMatrixWorld(true);
+
+      const cam = new T.OrthographicCamera(-1, 1, 1, -1, -200, 200);
+      cam.position.set(30, 30 * Math.SQRT2 * Math.tan(Math.PI / 6), 30);
+      cam.lookAt(0, 0, 0);
+      cam.updateMatrixWorld(true);
+      const box = new T.Box3().setFromObject(room);
+      let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+      const v = new T.Vector3();
+      for (const X of [box.min.x, box.max.x]) for (const Y of [box.min.y, box.max.y]) for (const Z of [box.min.z, box.max.z]) {
+        v.set(X, Y, Z).applyMatrix4(cam.matrixWorldInverse);
+        x0 = Math.min(x0, v.x); x1 = Math.max(x1, v.x); y0 = Math.min(y0, v.y); y1 = Math.max(y1, v.y);
+      }
+      const W = Math.ceil((x1 - x0) * PX) + 8,
+        H = Math.ceil((y1 - y0) * PX) + 8;
+      Object.assign(cam, { left: x0 - 4 / PX, right: x0 - 4 / PX + W / PX, top: y1 + 4 / PX, bottom: y1 + 4 / PX - H / PX });
+      cam.updateProjectionMatrix();
+      renderer.setSize(W, H, false);
+      /** Canvas pixel of a room point (room units, before turning and stretching). */
+      const toPx = (X, Y, Z) => {
+        v.set(X, Y, Z).applyMatrix4(room.matrixWorld).project(cam);
+        return [((v.x + 1) / 2) * W, ((1 - v.y) / 2) * H];
+      };
+
+      /*
+       * Pieces: each mesh's triangles sorted by where they stand in the
+       * room, so the walls behind him, the screen beside him and the low
+       * cut walls in front of him sort apart.
+       */
+      function pieceOf(node, cx, cy, cz) {
+        const n = plain(node);
+        if (n === 'Floor') return 'floor';
+        if (n === 'Projection Screen') return 'screen';
+        if (n === 'Light Paths') return 'rays';
+        if (n === 'Geometry Lectern') return 'lectern';
+        if (n === 'Stool') return 'stool';
+        if (n === 'Storage') return cx < 0 ? 'slides' : 'storage';
+        if (n === 'Instrument Shelves') return 'shelves';
+        // Walls, the aperture window, the door and wall hangings: by wall.
+        if (cz < -3.55) return 'back';
+        if (cx > 4.65) return 'right';
+        if (cx < -4.65) return 'left';
+        if (cz > 3.55) return 'front';
+        return n === 'Hanging Instruments' ? 'back' : 'left';
+      }
+      const parts = new Map();
+      const hidden = new T.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
+      const meshes = [];
+      root.traverse((o) => o.isMesh && meshes.push(o));
+      // The named part a mesh belongs to: its nearest ancestor with a known name
+      // (the GLB wraps them all in one scene node).
+      const NAMED = new Set(['Aperture Window', 'Arched Door', 'Floor', 'Geometry Lectern', 'Hanging Instruments', 'Instrument Shelves', 'Light Paths', 'Projection Screen', 'Stool', 'Storage', 'Walls']);
+      const nodeOf = (o) => { let p = o; while (p && !NAMED.has(plain(p))) p = p.parent; return p ?? o; };
+      for (const mesh of meshes) {
+        const node = nodeOf(mesh), g = mesh.geometry, pos = g.attributes.position, idx = g.index;
+        const toRoom = new T.Matrix4().copy(root.matrixWorld).invert().multiply(mesh.matrixWorld);
+        const tri = idx ? idx.count / 3 : pos.count / 3;
+        const buckets = new Map(), a = new T.Vector3(), b = new T.Vector3(), cc = new T.Vector3();
+        for (let t = 0; t < tri; t++) {
+          const ia = idx ? idx.getX(t * 3) : t * 3, ib = idx ? idx.getX(t * 3 + 1) : t * 3 + 1, ic = idx ? idx.getX(t * 3 + 2) : t * 3 + 2;
+          a.fromBufferAttribute(pos, ia).applyMatrix4(toRoom); b.fromBufferAttribute(pos, ib).applyMatrix4(toRoom); cc.fromBufferAttribute(pos, ic).applyMatrix4(toRoom);
+          const k = pieceOf(node, (a.x + b.x + cc.x) / 3, (a.y + b.y + cc.y) / 3, (a.z + b.z + cc.z) / 3);
+          if (!buckets.has(k)) buckets.set(k, []);
+          buckets.get(k).push(ia, ib, ic);
+        }
+        for (const [k, list] of buckets) {
+          const sub = new T.Mesh(g.clone(), mesh.material);
+          sub.geometry.setIndex(list);
+          sub.castShadow = mesh.castShadow;
+          sub.receiveShadow = true;
+          sub.userData.material = mesh.material;
+          mesh.parent.add(sub);
+          sub.position.copy(mesh.position); sub.quaternion.copy(mesh.quaternion); sub.scale.copy(mesh.scale);
+          if (!parts.has(k)) parts.set(k, []);
+          parts.get(k).push(sub);
+        }
+        mesh.removeFromParent();
+      }
+      function render(only) {
+        for (const [k, list] of parts) for (const m of list) m.material = k === only ? m.userData.material : hidden;
+        renderer.render(scene, cam);
+        return c.toDataURL('image/png');
+      }
+      window.RESULT = { W, H, PX, pieces: [...parts.keys()], render, toPx };
+      window.READY = true;
+    </script>
+  </body>
+</html>

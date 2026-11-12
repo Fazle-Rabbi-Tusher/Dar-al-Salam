@@ -1,0 +1,16 @@
+{
+  "id": "dark-room",
+  "title": {
+    "en": "The dark room — Ibn al-Haytham and the inverted image",
+    "ar": "البيت المظلم — ابن الهيثم والصورة المقلوبة",
+    "bn": "অন্ধকার ঘর — ইবনে আল-হাইসাম ও উল্টো প্রতিবিম্ব"
+  },
+  "lead": "ibn-al-haytham",
+  "members": ["ibn-al-haytham"],
+  "props": ["sup-dr-*"],
+  "area": [
+    [49, 13],
+    [55.5, 21]
+  ],
+  "camera": "reveal"
+}

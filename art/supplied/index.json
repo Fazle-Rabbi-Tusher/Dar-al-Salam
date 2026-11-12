@@ -2488,5 +2488,933 @@
     ],
     "density": 2,
     "source": "Owner's 3D mosque model (mosque-six-angle-final, 2026-11), rendered by tools/prepare-mosque-hall.ts"
+  },
+  "sup-dr-left-0": {
+    "file": "supplied/dark-room/left-0.png",
+    "anchor": [
+      11,
+      38
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-1": {
+    "file": "supplied/dark-room/left-1.png",
+    "anchor": [
+      11,
+      42
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-2": {
+    "file": "supplied/dark-room/left-2.png",
+    "anchor": [
+      11,
+      265
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-3": {
+    "file": "supplied/dark-room/left-3.png",
+    "anchor": [
+      11,
+      271
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-4": {
+    "file": "supplied/dark-room/left-4.png",
+    "anchor": [
+      11,
+      271
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-5": {
+    "file": "supplied/dark-room/left-5.png",
+    "anchor": [
+      11,
+      271
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-6": {
+    "file": "supplied/dark-room/left-6.png",
+    "anchor": [
+      11,
+      271
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-7": {
+    "file": "supplied/dark-room/left-7.png",
+    "anchor": [
+      11,
+      302
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-8": {
+    "file": "supplied/dark-room/left-8.png",
+    "anchor": [
+      11,
+      348
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-9": {
+    "file": "supplied/dark-room/left-9.png",
+    "anchor": [
+      11,
+      359
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-10": {
+    "file": "supplied/dark-room/left-10.png",
+    "anchor": [
+      11,
+      355
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-11": {
+    "file": "supplied/dark-room/left-11.png",
+    "anchor": [
+      11,
+      169
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-12": {
+    "file": "supplied/dark-room/left-12.png",
+    "anchor": [
+      11,
+      49
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-left-13": {
+    "file": "supplied/dark-room/left-13.png",
+    "anchor": [
+      2,
+      45
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-0": {
+    "file": "supplied/dark-room/back-0.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-1": {
+    "file": "supplied/dark-room/back-1.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-2": {
+    "file": "supplied/dark-room/back-2.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-3": {
+    "file": "supplied/dark-room/back-3.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-4": {
+    "file": "supplied/dark-room/back-4.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-5": {
+    "file": "supplied/dark-room/back-5.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-6": {
+    "file": "supplied/dark-room/back-6.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-7": {
+    "file": "supplied/dark-room/back-7.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-8": {
+    "file": "supplied/dark-room/back-8.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-9": {
+    "file": "supplied/dark-room/back-9.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-10": {
+    "file": "supplied/dark-room/back-10.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-11": {
+    "file": "supplied/dark-room/back-11.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-12": {
+    "file": "supplied/dark-room/back-12.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-13": {
+    "file": "supplied/dark-room/back-13.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-14": {
+    "file": "supplied/dark-room/back-14.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-15": {
+    "file": "supplied/dark-room/back-15.png",
+    "anchor": [
+      11,
+      271
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-16": {
+    "file": "supplied/dark-room/back-16.png",
+    "anchor": [
+      5,
+      264
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-back-17": {
+    "file": "supplied/dark-room/back-17.png",
+    "anchor": [
+      -11,
+      180
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-floor": {
+    "file": "supplied/dark-room/floor.png",
+    "anchor": [
+      257,
+      6
+    ],
+    "density": 2,
+    "floor": true,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-lectern": {
+    "file": "supplied/dark-room/lectern.png",
+    "anchor": [
+      36,
+      134
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-0": {
+    "file": "supplied/dark-room/shelves-0.png",
+    "anchor": [
+      11,
+      186
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-1": {
+    "file": "supplied/dark-room/shelves-1.png",
+    "anchor": [
+      11,
+      162
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-2": {
+    "file": "supplied/dark-room/shelves-2.png",
+    "anchor": [
+      11,
+      162
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-3": {
+    "file": "supplied/dark-room/shelves-3.png",
+    "anchor": [
+      11,
+      162
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-4": {
+    "file": "supplied/dark-room/shelves-4.png",
+    "anchor": [
+      11,
+      188
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-5": {
+    "file": "supplied/dark-room/shelves-5.png",
+    "anchor": [
+      11,
+      141
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-8": {
+    "file": "supplied/dark-room/shelves-8.png",
+    "anchor": [
+      11,
+      158
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-9": {
+    "file": "supplied/dark-room/shelves-9.png",
+    "anchor": [
+      11,
+      186
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-10": {
+    "file": "supplied/dark-room/shelves-10.png",
+    "anchor": [
+      11,
+      163
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-11": {
+    "file": "supplied/dark-room/shelves-11.png",
+    "anchor": [
+      11,
+      158
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-12": {
+    "file": "supplied/dark-room/shelves-12.png",
+    "anchor": [
+      11,
+      163
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-13": {
+    "file": "supplied/dark-room/shelves-13.png",
+    "anchor": [
+      11,
+      187
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-shelves-14": {
+    "file": "supplied/dark-room/shelves-14.png",
+    "anchor": [
+      2,
+      144
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-0": {
+    "file": "supplied/dark-room/rays-0.png",
+    "anchor": [
+      11,
+      149
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-1": {
+    "file": "supplied/dark-room/rays-1.png",
+    "anchor": [
+      11,
+      155
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-2": {
+    "file": "supplied/dark-room/rays-2.png",
+    "anchor": [
+      11,
+      161
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-3": {
+    "file": "supplied/dark-room/rays-3.png",
+    "anchor": [
+      11,
+      167
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-4": {
+    "file": "supplied/dark-room/rays-4.png",
+    "anchor": [
+      11,
+      174
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-5": {
+    "file": "supplied/dark-room/rays-5.png",
+    "anchor": [
+      11,
+      180
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-6": {
+    "file": "supplied/dark-room/rays-6.png",
+    "anchor": [
+      11,
+      186
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-7": {
+    "file": "supplied/dark-room/rays-7.png",
+    "anchor": [
+      11,
+      192
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-8": {
+    "file": "supplied/dark-room/rays-8.png",
+    "anchor": [
+      11,
+      198
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-9": {
+    "file": "supplied/dark-room/rays-9.png",
+    "anchor": [
+      11,
+      204
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-10": {
+    "file": "supplied/dark-room/rays-10.png",
+    "anchor": [
+      11,
+      210
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-11": {
+    "file": "supplied/dark-room/rays-11.png",
+    "anchor": [
+      11,
+      207
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-12": {
+    "file": "supplied/dark-room/rays-12.png",
+    "anchor": [
+      11,
+      194
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-13": {
+    "file": "supplied/dark-room/rays-13.png",
+    "anchor": [
+      1,
+      183
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-rays-14": {
+    "file": "supplied/dark-room/rays-14.png",
+    "anchor": [
+      -15,
+      175
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-0": {
+    "file": "supplied/dark-room/screen-0.png",
+    "anchor": [
+      17,
+      220
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-1": {
+    "file": "supplied/dark-room/screen-1.png",
+    "anchor": [
+      11,
+      225
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-2": {
+    "file": "supplied/dark-room/screen-2.png",
+    "anchor": [
+      11,
+      225
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-3": {
+    "file": "supplied/dark-room/screen-3.png",
+    "anchor": [
+      11,
+      225
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-4": {
+    "file": "supplied/dark-room/screen-4.png",
+    "anchor": [
+      11,
+      225
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-5": {
+    "file": "supplied/dark-room/screen-5.png",
+    "anchor": [
+      11,
+      225
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-screen-6": {
+    "file": "supplied/dark-room/screen-6.png",
+    "anchor": [
+      -2,
+      26
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-stool": {
+    "file": "supplied/dark-room/stool.png",
+    "anchor": [
+      13,
+      49
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-storage": {
+    "file": "supplied/dark-room/storage.png",
+    "anchor": [
+      30,
+      92
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-slides": {
+    "file": "supplied/dark-room/slides.png",
+    "anchor": [
+      17,
+      34
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-0": {
+    "file": "supplied/dark-room/front-0.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-1": {
+    "file": "supplied/dark-room/front-1.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-2": {
+    "file": "supplied/dark-room/front-2.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-3": {
+    "file": "supplied/dark-room/front-3.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-4": {
+    "file": "supplied/dark-room/front-4.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-5": {
+    "file": "supplied/dark-room/front-5.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-6": {
+    "file": "supplied/dark-room/front-6.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-7": {
+    "file": "supplied/dark-room/front-7.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-8": {
+    "file": "supplied/dark-room/front-8.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-9": {
+    "file": "supplied/dark-room/front-9.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-10": {
+    "file": "supplied/dark-room/front-10.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-11": {
+    "file": "supplied/dark-room/front-11.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-12": {
+    "file": "supplied/dark-room/front-12.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-13": {
+    "file": "supplied/dark-room/front-13.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-14": {
+    "file": "supplied/dark-room/front-14.png",
+    "anchor": [
+      11,
+      50
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-15": {
+    "file": "supplied/dark-room/front-15.png",
+    "anchor": [
+      11,
+      47
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-front-16": {
+    "file": "supplied/dark-room/front-16.png",
+    "anchor": [
+      4,
+      40
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-0": {
+    "file": "supplied/dark-room/right-0.png",
+    "anchor": [
+      11,
+      264
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-1": {
+    "file": "supplied/dark-room/right-1.png",
+    "anchor": [
+      11,
+      269
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-2": {
+    "file": "supplied/dark-room/right-2.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-3": {
+    "file": "supplied/dark-room/right-3.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-4": {
+    "file": "supplied/dark-room/right-4.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-5": {
+    "file": "supplied/dark-room/right-5.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-6": {
+    "file": "supplied/dark-room/right-6.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-7": {
+    "file": "supplied/dark-room/right-7.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-8": {
+    "file": "supplied/dark-room/right-8.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-9": {
+    "file": "supplied/dark-room/right-9.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-10": {
+    "file": "supplied/dark-room/right-10.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-11": {
+    "file": "supplied/dark-room/right-11.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-12": {
+    "file": "supplied/dark-room/right-12.png",
+    "anchor": [
+      11,
+      272
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-dr-right-13": {
+    "file": "supplied/dark-room/right-13.png",
+    "anchor": [
+      1,
+      267
+    ],
+    "density": 2,
+    "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
   }
 }

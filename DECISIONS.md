@@ -247,3 +247,16 @@
     - **Lighting:** a little lower (exposure 0.95), so the darker colours match the concept art.
     - **Card colours:** cocoa robe, madder-red turban and secondary, black hair.
     - **Not used:** the shared exhibit link (al-bayt al-muzlim) could not be opened from this environment. Its network policy blocks the host, and the exhibits need the owner's ChatGPT sign-in.
+73. Al-Bayt al-Muzlim, the dark room, from the owner's collection (`al-bayt-al-muzlim-collection`), with Ibn al-Haytham working inside it:
+    - **The room:** the collection's cutaway GLB, an imagined chamber for the study of light. A shuttered pinhole in the near-left wall throws the courtyard, upside down, onto a linen screen. Around it stand shelves of vessels, a sealed arched door, hanging instruments, a geometry lectern, a stool and storage.
+    - **Rendering:** `tools/prepare-dark-room.ts` renders it in the world's view (`tools/dark-room/render.html`). The room is turned a quarter so its open sides face the viewer, heights are stretched 1.75×, and one room unit is 0.75 tiles.
+    - **Pieces:** 103 pieces (`sup-dr-*`, `art/supplied/dark-room.json`), so people stand between its walls, screen, shelves and furniture:
+      - the floor is baked into the ground;
+      - the walls, shelves, screen and beam stand in 16 px strips, each on its own floor point;
+      - the lectern, stool and storage are single pieces.
+      - three.js turns the GLB's spaces into underscores and wraps the parts in one scene node, so pieces match each mesh's nearest named ancestor.
+    - **Left out:** the room's own optical bench, glass bowl and lens stand. Ibn al-Haytham's animated bench (item 71) stands in their place.
+    - **Placement:** the room fills the science lab's south-east corner (x 49–55, y 13–21). The robot arm, roboticist, water cooler and al-Jazari moved out of its footprint.
+    - **Ibn al-Haytham:** he works at (51.8, 16.6), with the beam from the pinhole to the screen passing just behind him. His own wall screen was dropped, since the room's screen now carries the image. In the 54–106 phase he turns his head toward the room's screen, as far as a natural turn allows (63°).
+    - **Scene:** `content/scenes/dark-room.json`, led by him with the room's pieces as props. Clicking him or any part of the room frames it with the close-up-then-pull-back reveal.
+    - **Content:** the room carries no writing or symbols, and his card stays an unapproved draft.

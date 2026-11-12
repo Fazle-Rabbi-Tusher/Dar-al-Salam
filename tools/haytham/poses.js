@@ -8,7 +8,7 @@
  *   36–54  the dial: palm flat on the bench, a pinch at the scale's dial;
  *   54–84  the compass: presses the point into the parchment, scribes the
  *          arc with a twist of the wrist, then lifts his head, hand to chin,
- *          and follows the inverted image across the wall screen;
+ *          and turns to the inverted image on the dark room's screen;
  *   84–120 he watches, then gathers himself to begin again.
  *
  * Station coordinates (model units; he is 5.04 tall, standing at the
@@ -30,7 +30,12 @@ export const pointer = (p) => [
   TOOLS.z - 0.64 * SC,
 ];
 export const PARCH = { x: -0.55, z: 1.35, r: 0.3 };
-export const SCREEN = { x: 3.65, z: 0.9, y: 3.4 };
+/*
+ * The dark room's linen screen (tools/prepare-dark-room.ts), from where he
+ * stands: to his right and a little behind, at about head height. His head
+ * turns as far as it naturally can (63°) toward it.
+ */
+export const SCREEN = { x: 3.55, z: -0.6, y: 4.9 };
 
 const at = (x, y, z) => [x, y, z];
 export const POSE = {
@@ -46,7 +51,6 @@ export const POSE = {
     dial: 0.25,
     compassTurn: 0,
     compass: 0,
-    image: -0.3,
   },
   // Leaning close to the shutter: a fingertip at the plate over the pinhole.
   reach: {
@@ -159,7 +163,6 @@ export const POSE = {
     bowlTurn: 0.7,
     dial: 0.55,
     compassTurn: 1,
-    image: 0.2,
   },
   watch: {
     lean: -0.03,
@@ -171,7 +174,6 @@ export const POSE = {
     bowlTurn: 0.7,
     dial: 0.55,
     compassTurn: 1,
-    image: 0.55,
   },
 };
 export const KEYS = [

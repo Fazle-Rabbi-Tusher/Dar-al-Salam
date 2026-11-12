@@ -31,15 +31,15 @@
       "from": 0,
       "to": 60,
       "action": "talk",
-      "at": [52.3, 14.6],
-      "facing": "SW"
+      "at": [51.3, 11.8],
+      "facing": "SE"
     },
     {
       "from": 60,
       "to": 120,
       "action": "idle",
-      "at": [52.3, 14.6],
-      "facing": "SE"
+      "at": [51.3, 11.8],
+      "facing": "SW"
     }
   ],
   "bio": {

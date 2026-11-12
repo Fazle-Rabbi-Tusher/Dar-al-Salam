@@ -13028,8 +13028,8 @@
         0,
         0,
         0,
-        0,
-        0,
+        1,
+        1,
         0,
         0,
         0,
@@ -13220,8 +13220,8 @@
         0,
         0,
         0,
-        1,
-        1,
+        0,
+        0,
         0,
         0,
         0,
@@ -13606,8 +13606,8 @@
         0,
         0,
         0,
-        1,
-        1,
+        0,
+        0,
         0,
         0,
         0,
@@ -13786,8 +13786,8 @@
         0,
         0,
         0,
-        0,
-        0,
+        1,
+        1,
         0,
         0,
         0,
@@ -24119,162 +24119,6 @@
           "z": 0
         },
         {
-          "id": 25,
-          "type": "m-glasswall",
-          "x": 39,
-          "y": 6.65,
-          "footprint": [
-            8,
-            0.35
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 26,
-          "type": "m-glasswall",
-          "x": 47,
-          "y": 6.65,
-          "footprint": [
-            8,
-            0.35
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 27,
-          "type": "m-screen-wall",
-          "x": 40,
-          "y": 7.1,
-          "footprint": [
-            3,
-            0.3
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 28,
-          "type": "m-whiteboard",
-          "x": 44.5,
-          "y": 7.1,
-          "footprint": [
-            2,
-            0.3
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 29,
-          "type": "m-fume-hood",
-          "x": 49.5,
-          "y": 7.4,
-          "footprint": [
-            2,
-            1
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 30,
-          "type": "m-server-rack",
-          "x": 53,
-          "y": 7.3,
-          "footprint": [
-            1,
-            1
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 31,
-          "type": "m-server-rack",
-          "x": 54.1,
-          "y": 7.3,
-          "footprint": [
-            1,
-            1
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 32,
-          "type": "m-lab-bench",
-          "x": 41,
-          "y": 10.5,
-          "footprint": [
-            3,
-            1.5
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 33,
-          "type": "m-lab-bench",
-          "x": 46,
-          "y": 10.5,
-          "footprint": [
-            3,
-            1.5
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 34,
-          "type": "m-lab-bench",
-          "x": 41,
-          "y": 15.5,
-          "footprint": [
-            3,
-            1.5
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 35,
-          "type": "m-lab-bench",
-          "x": 46,
-          "y": 15.5,
-          "footprint": [
-            3,
-            1.5
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 36,
-          "type": "m-robot-arm",
-          "x": 52.5,
-          "y": 12.5,
-          "footprint": [
-            1,
-            1
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
-          "id": 37,
-          "type": "m-water-cooler",
-          "x": 54.6,
-          "y": 17.5,
-          "footprint": [
-            0.5,
-            0.5
-          ],
-          "walkable": false,
-          "z": 0
-        },
-        {
           "id": 38,
           "type": "m-whitewall-side",
           "x": 6.65,
@@ -31232,6 +31076,1398 @@
             1
           ],
           "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 25,
+          "type": "m-glasswall",
+          "x": 39,
+          "y": 6.65,
+          "footprint": [
+            8,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 26,
+          "type": "m-glasswall",
+          "x": 47,
+          "y": 6.65,
+          "footprint": [
+            8,
+            0.35
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 27,
+          "type": "m-screen-wall",
+          "x": 40,
+          "y": 7.1,
+          "footprint": [
+            3,
+            0.3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 28,
+          "type": "m-whiteboard",
+          "x": 44.5,
+          "y": 7.1,
+          "footprint": [
+            2,
+            0.3
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 29,
+          "type": "m-fume-hood",
+          "x": 49.5,
+          "y": 7.4,
+          "footprint": [
+            2,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 30,
+          "type": "m-server-rack",
+          "x": 53,
+          "y": 7.3,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 31,
+          "type": "m-server-rack",
+          "x": 54.1,
+          "y": 7.3,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 32,
+          "type": "m-lab-bench",
+          "x": 41,
+          "y": 10.5,
+          "footprint": [
+            3,
+            1.5
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 33,
+          "type": "m-lab-bench",
+          "x": 46,
+          "y": 10.5,
+          "footprint": [
+            3,
+            1.5
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 34,
+          "type": "m-lab-bench",
+          "x": 41,
+          "y": 15.5,
+          "footprint": [
+            3,
+            1.5
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 35,
+          "type": "m-lab-bench",
+          "x": 46,
+          "y": 15.5,
+          "footprint": [
+            3,
+            1.5
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 1117,
+          "type": "m-robot-arm",
+          "x": 52.6,
+          "y": 11.2,
+          "footprint": [
+            1,
+            1
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 1118,
+          "type": "m-water-cooler",
+          "x": 42.8,
+          "y": 19.2,
+          "footprint": [
+            0.5,
+            0.5
+          ],
+          "walkable": false,
+          "z": 0
+        },
+        {
+          "id": 1198,
+          "type": "sup-dr-left-0",
+          "x": 48.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1199,
+          "type": "sup-dr-left-1",
+          "x": 49.326,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1200,
+          "type": "sup-dr-left-2",
+          "x": 49.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1201,
+          "type": "sup-dr-left-3",
+          "x": 50.326,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1202,
+          "type": "sup-dr-left-4",
+          "x": 50.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1203,
+          "type": "sup-dr-left-5",
+          "x": 51.326,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1204,
+          "type": "sup-dr-left-6",
+          "x": 51.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1205,
+          "type": "sup-dr-left-7",
+          "x": 52.326,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1206,
+          "type": "sup-dr-left-8",
+          "x": 52.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1207,
+          "type": "sup-dr-left-9",
+          "x": 53.326,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1208,
+          "type": "sup-dr-left-10",
+          "x": 53.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1209,
+          "type": "sup-dr-left-11",
+          "x": 54.326,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1210,
+          "type": "sup-dr-left-12",
+          "x": 54.826,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1132,
+          "type": "sup-dr-left-13",
+          "x": 55.05,
+          "y": 20.465,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1148,
+          "type": "sup-dr-back-0",
+          "x": 48.938,
+          "y": 20.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1149,
+          "type": "sup-dr-back-1",
+          "x": 48.938,
+          "y": 20.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1150,
+          "type": "sup-dr-back-2",
+          "x": 48.938,
+          "y": 19.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1151,
+          "type": "sup-dr-back-3",
+          "x": 48.938,
+          "y": 19.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1152,
+          "type": "sup-dr-back-4",
+          "x": 48.938,
+          "y": 18.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1153,
+          "type": "sup-dr-back-5",
+          "x": 48.938,
+          "y": 18.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1154,
+          "type": "sup-dr-back-6",
+          "x": 48.938,
+          "y": 17.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1155,
+          "type": "sup-dr-back-7",
+          "x": 48.938,
+          "y": 17.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1156,
+          "type": "sup-dr-back-8",
+          "x": 48.938,
+          "y": 16.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1157,
+          "type": "sup-dr-back-9",
+          "x": 48.938,
+          "y": 16.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1158,
+          "type": "sup-dr-back-10",
+          "x": 48.938,
+          "y": 15.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1159,
+          "type": "sup-dr-back-11",
+          "x": 48.938,
+          "y": 15.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1160,
+          "type": "sup-dr-back-12",
+          "x": 48.938,
+          "y": 14.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1161,
+          "type": "sup-dr-back-13",
+          "x": 48.938,
+          "y": 14.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1162,
+          "type": "sup-dr-back-14",
+          "x": 48.938,
+          "y": 13.576,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1163,
+          "type": "sup-dr-back-15",
+          "x": 48.938,
+          "y": 13.076,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1164,
+          "type": "sup-dr-back-16",
+          "x": 48.938,
+          "y": 12.763,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1165,
+          "type": "sup-dr-back-17",
+          "x": 48.938,
+          "y": 12.763,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1211,
+          "type": "sup-dr-floor",
+          "x": 48.675,
+          "y": 12.68,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1212,
+          "type": "sup-dr-lectern",
+          "x": 53.138,
+          "y": 19.025,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1213,
+          "type": "sup-dr-shelves-0",
+          "x": 49.35,
+          "y": 19.957,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1214,
+          "type": "sup-dr-shelves-1",
+          "x": 49.35,
+          "y": 19.457,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1215,
+          "type": "sup-dr-shelves-2",
+          "x": 49.35,
+          "y": 18.957,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1216,
+          "type": "sup-dr-shelves-3",
+          "x": 49.35,
+          "y": 18.457,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1217,
+          "type": "sup-dr-shelves-4",
+          "x": 49.35,
+          "y": 17.957,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1218,
+          "type": "sup-dr-shelves-5",
+          "x": 49.35,
+          "y": 17.457,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1219,
+          "type": "sup-dr-shelves-8",
+          "x": 49.35,
+          "y": 15.957,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1220,
+          "type": "sup-dr-shelves-9",
+          "x": 49.35,
+          "y": 15.457,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1221,
+          "type": "sup-dr-shelves-10",
+          "x": 49.35,
+          "y": 14.957,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1222,
+          "type": "sup-dr-shelves-11",
+          "x": 49.35,
+          "y": 14.457,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1223,
+          "type": "sup-dr-shelves-12",
+          "x": 49.35,
+          "y": 13.957,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1224,
+          "type": "sup-dr-shelves-13",
+          "x": 49.35,
+          "y": 13.457,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1225,
+          "type": "sup-dr-shelves-14",
+          "x": 49.35,
+          "y": 13.25,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1226,
+          "type": "sup-dr-rays-0",
+          "x": 50.85,
+          "y": 20.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1227,
+          "type": "sup-dr-rays-1",
+          "x": 50.85,
+          "y": 19.582,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1228,
+          "type": "sup-dr-rays-2",
+          "x": 50.85,
+          "y": 19.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1229,
+          "type": "sup-dr-rays-3",
+          "x": 50.85,
+          "y": 18.582,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1230,
+          "type": "sup-dr-rays-4",
+          "x": 50.85,
+          "y": 18.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1231,
+          "type": "sup-dr-rays-5",
+          "x": 50.85,
+          "y": 17.582,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1232,
+          "type": "sup-dr-rays-6",
+          "x": 50.85,
+          "y": 17.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1233,
+          "type": "sup-dr-rays-7",
+          "x": 50.85,
+          "y": 16.582,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1234,
+          "type": "sup-dr-rays-8",
+          "x": 50.85,
+          "y": 16.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1235,
+          "type": "sup-dr-rays-9",
+          "x": 50.85,
+          "y": 15.582,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1236,
+          "type": "sup-dr-rays-10",
+          "x": 50.85,
+          "y": 15.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1237,
+          "type": "sup-dr-rays-11",
+          "x": 50.85,
+          "y": 14.582,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1238,
+          "type": "sup-dr-rays-12",
+          "x": 50.85,
+          "y": 14.082,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1239,
+          "type": "sup-dr-rays-13",
+          "x": 50.85,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1240,
+          "type": "sup-dr-rays-14",
+          "x": 50.85,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1241,
+          "type": "sup-dr-screen-0",
+          "x": 49.65,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1242,
+          "type": "sup-dr-screen-1",
+          "x": 49.968,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1243,
+          "type": "sup-dr-screen-2",
+          "x": 50.468,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1244,
+          "type": "sup-dr-screen-3",
+          "x": 50.968,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1245,
+          "type": "sup-dr-screen-4",
+          "x": 51.468,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1246,
+          "type": "sup-dr-screen-5",
+          "x": 51.968,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1247,
+          "type": "sup-dr-screen-6",
+          "x": 52.05,
+          "y": 13.888,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1248,
+          "type": "sup-dr-stool",
+          "x": 53.963,
+          "y": 18.673,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1249,
+          "type": "sup-dr-storage",
+          "x": 53.775,
+          "y": 14.337,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1250,
+          "type": "sup-dr-slides",
+          "x": 54.075,
+          "y": 19.745,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1251,
+          "type": "sup-dr-front-0",
+          "x": 54.863,
+          "y": 20.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1252,
+          "type": "sup-dr-front-1",
+          "x": 54.863,
+          "y": 20.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1253,
+          "type": "sup-dr-front-2",
+          "x": 54.863,
+          "y": 19.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1254,
+          "type": "sup-dr-front-3",
+          "x": 54.863,
+          "y": 19.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1255,
+          "type": "sup-dr-front-4",
+          "x": 54.863,
+          "y": 18.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1256,
+          "type": "sup-dr-front-5",
+          "x": 54.863,
+          "y": 18.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1257,
+          "type": "sup-dr-front-6",
+          "x": 54.863,
+          "y": 17.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1258,
+          "type": "sup-dr-front-7",
+          "x": 54.863,
+          "y": 17.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1259,
+          "type": "sup-dr-front-8",
+          "x": 54.863,
+          "y": 16.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1260,
+          "type": "sup-dr-front-9",
+          "x": 54.863,
+          "y": 16.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1261,
+          "type": "sup-dr-front-10",
+          "x": 54.863,
+          "y": 15.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1262,
+          "type": "sup-dr-front-11",
+          "x": 54.863,
+          "y": 15.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1263,
+          "type": "sup-dr-front-12",
+          "x": 54.863,
+          "y": 14.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1264,
+          "type": "sup-dr-front-13",
+          "x": 54.863,
+          "y": 14.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1265,
+          "type": "sup-dr-front-14",
+          "x": 54.863,
+          "y": 13.532,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1266,
+          "type": "sup-dr-front-15",
+          "x": 54.863,
+          "y": 13.032,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1267,
+          "type": "sup-dr-front-16",
+          "x": 54.863,
+          "y": 12.763,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1166,
+          "type": "sup-dr-right-0",
+          "x": 48.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1167,
+          "type": "sup-dr-right-1",
+          "x": 49.359,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1168,
+          "type": "sup-dr-right-2",
+          "x": 49.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1169,
+          "type": "sup-dr-right-3",
+          "x": 50.359,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1170,
+          "type": "sup-dr-right-4",
+          "x": 50.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1171,
+          "type": "sup-dr-right-5",
+          "x": 51.359,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1172,
+          "type": "sup-dr-right-6",
+          "x": 51.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1173,
+          "type": "sup-dr-right-7",
+          "x": 52.359,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1174,
+          "type": "sup-dr-right-8",
+          "x": 52.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1175,
+          "type": "sup-dr-right-9",
+          "x": 53.359,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1176,
+          "type": "sup-dr-right-10",
+          "x": 53.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1177,
+          "type": "sup-dr-right-11",
+          "x": 54.359,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1178,
+          "type": "sup-dr-right-12",
+          "x": 54.859,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
+          "z": 0
+        },
+        {
+          "id": 1179,
+          "type": "sup-dr-right-13",
+          "x": 55.05,
+          "y": 12.935,
+          "footprint": [
+            0.6,
+            0.6
+          ],
+          "walkable": true,
           "z": 0
         }
       ]

@@ -788,6 +788,35 @@ describe('main characters only, with supplied animation strips', () => {
   });
 });
 
+describe('the dark room', () => {
+  it('stands Ibn al-Haytham at his bench inside Al-Bayt al-Muzlim', async () => {
+    const placed: { type: string; at: [number, number] }[] = JSON.parse(
+      await fs.readFile('art/supplied/dark-room.json', 'utf8'),
+    );
+    const index = JSON.parse(
+      await fs.readFile('art/supplied/index.json', 'utf8'),
+    );
+    // Its walls, screen, shelves, beam and furniture as separate pieces.
+    const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
+    for (const k of ['back', 'right', 'screen', 'shelves', 'rays', 'lectern'])
+      expect(kinds).toContain(k);
+    for (const p of placed) expect(index[p.type]).toBeTruthy();
+    const xs = placed.map((p) => p.at[0]),
+      ys = placed.map((p) => p.at[1]);
+    const him = content.characters.find((c) => c.id === 'ibn-al-haytham')!;
+    expect(him.panelApproved).not.toBe(true);
+    for (const step of him.script) {
+      expect(step.at![0]).toBeGreaterThan(Math.min(...xs) + 1);
+      expect(step.at![0]).toBeLessThan(Math.max(...xs) - 1);
+      expect(step.at![1]).toBeGreaterThan(Math.min(...ys) + 1);
+      expect(step.at![1]).toBeLessThan(Math.max(...ys) - 1);
+    }
+    const scene = content.scenes.find((s) => s.id === 'dark-room')!;
+    expect(scene.lead).toBe('ibn-al-haytham');
+    expect(scene.props).toEqual(['sup-dr-*']);
+  });
+});
+
 describe('landmarks', () => {
   it('loads the Mosque of the Companions as an unapproved draft card', () => {
     const l = content.landmarks.find(
