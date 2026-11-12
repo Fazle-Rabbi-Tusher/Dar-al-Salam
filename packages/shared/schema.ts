@@ -240,6 +240,8 @@ export const bakedCharacterSchema = characterSchema.extend({
 });
 export type BakedCharacter = z.infer<typeof bakedCharacterSchema>;
 export const sortableSchema = z.object({
+  /** Source object semantics for dimensional infrastructure; supplied art stays painted. */
+  objectType: z.string().optional(),
   frame: z.string(),
   x: z.number(),
   y: z.number(),

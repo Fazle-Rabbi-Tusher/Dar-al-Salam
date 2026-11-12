@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dar al-Salam Art Style"
+  short_description: "Create consistent isometric pixel art and natural animation."
+  default_prompt: "Use $dar-al-salam-art-style to create the requested artwork using our saved visual references and animation conventions."

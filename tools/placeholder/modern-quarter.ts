@@ -23,7 +23,8 @@ import {
   cricketAmbient,
 } from './scenes/cricket';
 import { NATURE_OBJECTS } from './scenes/nature';
-import { CITY_OBJECTS } from './scenes/city';
+import { CITY_OBJECTS, CITY_ROAD_DETAILS } from './scenes/city';
+import { LAB_STOOLS } from './scenes/laboratories';
 import { detailFootprints, type DetailType } from './details';
 
 /*
@@ -315,12 +316,13 @@ export function modernQuarter() {
   obj('m-fume-hood', 49.5, 7.4);
   obj('m-server-rack', 53, 7.3);
   obj('m-server-rack', 54.1, 7.3);
-  obj('m-lab-bench', 41, 10.5);
-  obj('m-lab-bench', 46, 10.5);
-  obj('m-lab-bench', 41, 15.5);
-  obj('m-lab-bench', 46, 15.5);
+  obj('m-chemistry-bench', 41, 10.5);
+  obj('m-chemistry-bench', 46, 10.5);
+  obj('m-biology-bench', 41, 15.5);
+  obj('m-biology-bench', 46, 15.5);
   obj('m-robot-arm', 52.5, 12.5);
   obj('m-water-cooler', 54.6, 17.5);
+  for (const stool of LAB_STOOLS) obj(stool.type, stool.x, stool.y);
   const coat = (base: 'adult-man' | 'adult-woman', prop: string) =>
     L(base, 'lab-coat', base === 'adult-woman' ? 'hijab' : 'none', prop, {
       garmentPrimary: 'lab-white',
@@ -1376,6 +1378,7 @@ export function modernQuarter() {
   // Nature and city passes (scenes/nature.ts, scenes/city.ts).
   for (const [type, x, y, z] of [...NATURE_OBJECTS, ...CITY_OBJECTS])
     obj(type, x, y, false, z ?? 0);
+  for (const [type, x, y] of CITY_ROAD_DETAILS) obj(type, x, y, true);
   ambient.push(...cricketAmbient());
 
   /* ════════ Fight-night arena (x 61–95, y 45–56) ════════ */

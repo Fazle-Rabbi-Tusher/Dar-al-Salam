@@ -1,0 +1,158 @@
+{
+  "archives": [
+    "Isometric_Character_Sprites_Part_1 (1).zip",
+    "Isometric_Character_Sprites_Part_2.zip"
+  ],
+  "png_count": 37,
+  "workspace_reference_directory": "/workspace/style-references/isometric-character-sprites",
+  "files": [
+    {
+      "file": "abdul-el-sayed.png",
+      "sha256": "fe353c3023250ac28a6830f267a8eb5d709e69c845b3076b1d0c0fd9f676d080"
+    },
+    {
+      "file": "ahmed-zewail.png",
+      "sha256": "bc6631eab8c689154450a1b5daaeb2bad96f3d1f40dc41694bdde8487019ce1b"
+    },
+    {
+      "file": "al-biruni.png",
+      "sha256": "522d47ecf6d8e34a41611f705711cd4b9edd5eaa09505014edad3801a9380502"
+    },
+    {
+      "file": "al-jazari.png",
+      "sha256": "1b0fd83b30cce8a7b06d5e6b9ee4b3b7bb6320919b85411a85d8d0f5e2ba60c2"
+    },
+    {
+      "file": "al-khwarizmi.png",
+      "sha256": "b69c555d00e5a04097ad5f291a75e69f5f7c3aa8cea6aa9da648d43e2667cc55"
+    },
+    {
+      "file": "al-zahrawi.png",
+      "sha256": "da5057f3d6707d06d3f0baa7cfa34b2cc5da15aaf415cf2ec8d88f62929954a4"
+    },
+    {
+      "file": "aziz-sancar.png",
+      "sha256": "52ae097ca3bb945b30f867f1ebc78cd4783917ce162d881db298f2dc9afb631d"
+    },
+    {
+      "file": "begum-rokeya.png",
+      "sha256": "de76f15f318a93623915b2c5ec0ce402aaa606a992ed1bb080f7745e385c30bb"
+    },
+    {
+      "file": "fatima-al-fihri.png",
+      "sha256": "8633292d5fe324f811eaa734110fe78edf4a89d0e9b2370f75427775dd531b0a"
+    },
+    {
+      "file": "fazlur-rahman-khan.png",
+      "sha256": "c50042f125be79f09f7459ffabe2805e65c1fbe1e2263613164401f293544115"
+    },
+    {
+      "file": "hakeem-olajuwon.png",
+      "sha256": "64c4fb5f5f0f95b4200a23bb2e6270d788f3ac92594198f306f2fa9516b0ab39"
+    },
+    {
+      "file": "hamza-yusuf.png",
+      "sha256": "4f19f9a0fd756bfee9e6a579c0828d8b0c0b980151bf9ccac892828ad434ead0"
+    },
+    {
+      "file": "ibn-al-haytham.png",
+      "sha256": "838534168b1ec7c5c5855e8b95a9ebdb32febaf4c28339af7b5bcfefb9f1e86f"
+    },
+    {
+      "file": "ibn-battuta.png",
+      "sha256": "16cec98ddf12202896defd3f4ccdcad37d70a2d1cd71e10eb23f08105f334a4a"
+    },
+    {
+      "file": "ibn-khaldun.png",
+      "sha256": "a2b615ab2728db63ed9b2f90f1357fb1aa7afd1e3e1287d1ba8b357f491ca634"
+    },
+    {
+      "file": "ibn-rushd.png",
+      "sha256": "2e573215cb793bd32884936f170bc5dd4ccb2c3b9fde951accdd6fd9eb500885"
+    },
+    {
+      "file": "ibn-sina.png",
+      "sha256": "ab714220dddf81f5bfae1dcf03196e6a0ff5da92382c13965e7899e04b37988d"
+    },
+    {
+      "file": "islam-makhachev.png",
+      "sha256": "71f61cd938d34b37550ccf679d5a5c72339e77238685250bcf9ca4950e0dd5c8"
+    },
+    {
+      "file": "kamaru-usman.png",
+      "sha256": "9daaee31589e91195828c65d99ef88c519208da86b1d968e597937278689b3df"
+    },
+    {
+      "file": "karim-benzema.png",
+      "sha256": "b73f7871aaf5b864e0fb697fab58554cbbde1dc8359f5158e83069988e2b7cb8"
+    },
+    {
+      "file": "kazi-nazrul-islam.png",
+      "sha256": "f2ebbf2f06fb7fe54c22f777866903043b1dcddb2b808df22a8fe958da98eb59"
+    },
+    {
+      "file": "khabib-nurmagomedov.png",
+      "sha256": "932570238828bd262d02f0fb98437447b2671ea325c37d724a44729e6ef24adf"
+    },
+    {
+      "file": "khamzat-chimaev.png",
+      "sha256": "c24c4bf696dd75f974d54ea673e861295c594c7b388a42466c350a508000616e"
+    },
+    {
+      "file": "malala-yousafzai.png",
+      "sha256": "3b9cdab9c7805e4b063b19824c38caa7e345eadcfb816dba76ce0f8867220930"
+    },
+    {
+      "file": "mashrafe-mortaza.png",
+      "sha256": "e65ce8efc3bb4a3ebdc46360d10968647fb20f58c988470e834ecc87bc2c3e31"
+    },
+    {
+      "file": "mesut-ozil.png",
+      "sha256": "d8279a9f03ffd9fd51256aa003b8eab5f4939321077070ac86dcf46288120fd4"
+    },
+    {
+      "file": "mohamed-salah.png",
+      "sha256": "47a6af260689188d3b694ae1454c4e908a543d9f5c76337dce58fb43dd48b08d"
+    },
+    {
+      "file": "mufti-ismail-menk.png",
+      "sha256": "75e74b43bba4d21a57a9e6fd7c197898f476234c27e5d4025bcc8db755d4fcf7"
+    },
+    {
+      "file": "muhammad-ali.png",
+      "sha256": "f356c16b6c1fd234b125d49901de96c7baef2190af5b95a8f3467855eac0cc2d"
+    },
+    {
+      "file": "muhammad-yunus.png",
+      "sha256": "745ef1a026668df6cbda87f8eb008453d465f64fada5a111b12a68ea33c19a48"
+    },
+    {
+      "file": "ngolo-kante.png",
+      "sha256": "262791daa7205f86b8ca75a0557b5b734e8fe65429d450661b25b0b72e1e7b6f"
+    },
+    {
+      "file": "omar-suleiman.png",
+      "sha256": "c251967faa23845dc840bf63e46cc5735c3a3c46dd88573dfcfeabbd07342357"
+    },
+    {
+      "file": "sadio-mane.png",
+      "sha256": "3099dae69b5ec43e7bf783c6b7667ff680f1d14d7dc66f7eb04a1f0fc04d0fc8"
+    },
+    {
+      "file": "tamim-iqbal.png",
+      "sha256": "04b4ca2cee5cc8a340b74255f60148a3f95a5c812dac9d5d3319144410e2e13b"
+    },
+    {
+      "file": "zabit-magomedsharipov.png",
+      "sha256": "039782c938f1fb892eb75ba00ca0eaeb820b74d9ea49b1b10c3fdaaf4ac95f04"
+    },
+    {
+      "file": "zaha-hadid.png",
+      "sha256": "18ec38b458ea4046adb4e1eb3400ec655f7930228b14f2897d46adb16bae513b"
+    },
+    {
+      "file": "zohran-mamdani.png",
+      "sha256": "a830bf7e714267e6cae55c8cb4ee5e6ed1f865c542f2c6e34ffa014e03baee16"
+    }
+  ]
+}
