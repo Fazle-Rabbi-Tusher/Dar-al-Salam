@@ -11,16 +11,7 @@
     import * as T from '../three/three.module.min.js';
     import { createScholarModel } from '../scholar/model.js';
     import { buildEquipment } from '../equipment/models.js';
-    import {
-      POSE,
-      KEYS,
-      SC,
-      BENCH,
-      AP,
-      BOWL,
-      TOOLS,
-      PARCH,
-    } from './poses.js';
+    import { POSE, KEYS, SC, BENCH, AP, BOWL, TOOLS, PARCH } from './poses.js';
 
     const P = new URLSearchParams(location.search);
     const K = +(P.get('k') || 66); // pixels per model unit

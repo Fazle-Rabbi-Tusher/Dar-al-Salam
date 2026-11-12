@@ -48,7 +48,6 @@ statue as the reference instead.
 | hakeem-olajuwon.png | Hakeem Olajuwon | red basketball kit with a T-shirt under it, knee-length shorts |
 | hamza-yusuf.png | Hamza Yusuf | khaki jubba, white turban, glasses, book |
 | ibn-al-haytham.png | Ibn al-Haytham | indigo qaba, white turban, book |
-| ibn-battuta.png | Ibn Battuta | khaki traveller's kaftan, white turban, scroll |
 | ibn-khaldun.png | Ibn Khaldun | cream scholar's robe, white turban, book |
 | ibn-rushd.png | Ibn Rushd | black jubba, cream turban, book |
 | ibn-sina.png | Ibn Sina | olive jubba, white turban |

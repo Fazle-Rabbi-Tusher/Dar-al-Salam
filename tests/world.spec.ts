@@ -107,13 +107,13 @@ test("clicking a listener lights up Mufti Menk's whole talk and opens his card; 
   await expect(page.locator('.scene-caption')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
-test('clicking any worshipper opens Yasser al-Dosari and lights up the whole prayer', async ({
+test('clicking Ibn al-Haytham opens his card and frames the dark room', async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  // The prayer hall on the Baitul Mukarram plaza.
-  await ready(page, '/?x=688&y=2545&z=1.8');
+  // Al-Bayt al-Muzlim, in the science lab's south-east corner.
+  await ready(page, '/?x=2607&y=1974&z=2');
   const points = await page.evaluate(() =>
     (
       window as unknown as {
@@ -121,7 +121,7 @@ test('clicking any worshipper opens Yasser al-Dosari and lights up the whole pra
           debugPoints(id: string): { opaque: { x: number; y: number } } | null;
         };
       }
-    ).__darEngine.debugPoints('prayer-woman-12'),
+    ).__darEngine.debugPoints('ibn-al-haytham'),
   );
   expect(points?.opaque).toBeTruthy();
   const canvas = await page.locator('.world-host canvas').boundingBox();
@@ -129,17 +129,14 @@ test('clicking any worshipper opens Yasser al-Dosari and lights up the whole pra
     canvas!.x + points!.opaque.x,
     canvas!.y + points!.opaque.y,
   );
-  // Hovering stays normal: the worshipper's own label, no scene light.
-  await expect(page.locator('.hover-label')).toContainText('worshipper');
+  // Hovering stays normal: no scene light.
   await expect(page.locator('.scene-caption')).toHaveCount(0);
   await page.mouse.click(
     canvas!.x + points!.opaque.x,
     canvas!.y + points!.opaque.y,
   );
-  await expect(page.locator('.story-card h2')).toHaveText('Yasser al-Dosari');
-  await expect(page.locator('.scene-caption')).toContainText(
-    'Congregational prayer',
-  );
+  await expect(page.locator('.story-card h2')).toHaveText('Ibn al-Haytham');
+  await expect(page.locator('.scene-caption')).toContainText('The dark room');
   expect(errors).toEqual([]);
 });
 test('the Massawa button flies to the town and the mosque opens its landmark card', async ({

@@ -35,9 +35,6 @@ const HAIR = {
   // Dark beard greying at the chin.
   salt: ['#B5C3BA', '#8B9D96', '#65564B', '#493C35', '#3B322E'],
 };
-const CLOTH = {
-  white: ['#FBFAF4', '#F5EEDB', '#EDE6CE', '#CCC4AA', '#A9A296'],
-};
 
 /* ───────────── small helpers ───────────── */
 const hash = (x: number, y: number) => {
@@ -690,39 +687,6 @@ export const BANGLADESH_MORE: Record<string, PortraitDef> = {
       each(f, (x, y) => {
         if (f.region(x, y) === 'beard' && y <= 14 && x >= 9) f.px(x, y, T[2]);
       });
-    },
-  }),
-  // A traveller: weathered, sun-browned face, dark beard, white turban.
-  'ibn-battuta': person({
-    bias: -0.2,
-    skin: 'skin-4',
-    hair: HAIR.black,
-    hairStyle: 'neat',
-    beard: { tones: HAIR.black, style: 'full' },
-    brow: 'thick',
-    browColour: '#2E2B34',
-    age: 1,
-    hat: { tones: CLOTH.white, kind: 'wrap' },
-    after: (f, T) => {
-      if (f.away) return;
-      // Squint lines from long journeys in the sun.
-      P_(
-        [
-          [7, 12],
-          [7, 14],
-          [12, 15],
-        ],
-        f,
-        T[4],
-        ['skin'],
-      );
-      // A few grey hairs in the beard.
-      for (const [x, y] of [
-        [10, 19],
-        [12, 22],
-        [9, 17],
-      ] as P[])
-        if (f.region(x, y) === 'beard') f.px(x, y, '#80766B');
     },
   }),
   // Very dark skin, short hair, light moustache and goatee, broad smile.

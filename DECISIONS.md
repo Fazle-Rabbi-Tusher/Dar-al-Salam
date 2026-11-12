@@ -260,3 +260,16 @@
     - **Ibn al-Haytham:** he works at (51.8, 16.6), with the beam from the pinhole to the screen passing just behind him. His own wall screen was dropped, since the room's screen now carries the image. In the 54–106 phase he turns his head toward the room's screen, as far as a natural turn allows (63°).
     - **Scene:** `content/scenes/dark-room.json`, led by him with the room's pieces as props. Clicking him or any part of the room frames it with the close-up-then-pull-back reveal.
     - **Content:** the room carries no writing or symbols, and his card stays an unapproved draft.
+74. The Baitul Mukarram plaza is cleared (owner's request, 2026-11, with a circled screenshot). The owner chose to remove everything on it:
+    - **Baitul Mukarram:** the cube, gate, arcades, pavilion and tea stall, and the tree in the middle of the plaza.
+    - **Ibn Battuta:** his card, head, sprite and strips. The owner took him for Ibn al-Haytham, who stays in the dark room (item 73).
+    - **The prayer hall:**
+      - Yasser al-Dosari's card and art;
+      - the 29 worshippers and children;
+      - the congregational-prayer scene;
+      - the mosque pieces (`sup-ph-*`);
+      - the tools that built them: `tools/prepare-prayer.ts`, `tools/prepare-mosque-hall.ts`, `tools/mosque-hall/`;
+      - the prayer brief.
+    - **Kept:** items 61–70 record that work, and it remains in git history (the last commit with the hall is 5b24ca5).
+    - **The plaza now:** an open lawn (x 3–38, y 96–121) with its two corner trees, between the desert town and the city.
+    - **Engine:** its general features stay, since the dark room and other scenes use them: strip `sequence`, shared strips, baked floor art, `prefix-*` scene props, and the reveal camera.

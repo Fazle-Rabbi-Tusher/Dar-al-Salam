@@ -532,12 +532,8 @@ describe('scholars and scene roles', () => {
       expect(forbiddenName(n, content.rules)).toBe(true);
   });
   it('keeps only the ambient people that named scenes need', () => {
-    // The congregation in the grand mosque is counted on its own (above).
-    const congregation = new Set(
-      content.scenes.find((s) => s.id === 'congregational-prayer')?.members,
-    );
     const people = content.characters.filter(
-      (c) => !c.name && c.kind === 'person' && !congregation.has(c.id),
+      (c) => !c.name && c.kind === 'person',
     );
     // Only scene roles (named scenes' partners); the scene bible adds a few per scene.
     expect(people.length).toBeLessThanOrEqual(90);
@@ -596,15 +592,23 @@ describe('sharp heads', () => {
 });
 
 describe('Bangladesh block', () => {
-  it('places Baitul Mukarram, the school and the new people', async () => {
+  it('places the school and the new people; the west plaza is an open lawn', async () => {
     const { forbiddenName } = await import('../../packages/shared/rules');
     const objects = content.room.layers.find((l) => l.type === 'objectgroup');
     const types = new Set(
       objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
     );
+    // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
+    // (2026-11): nothing stands on the west plaza but its corner trees.
+    for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
+      expect(types.has(t), t).toBe(false);
+    if (objects?.type === 'objectgroup')
+      for (const o of objects.objects)
+        if (o.x > 2 && o.x < 39 && o.y > 95 && o.y < 120)
+          expect(o.type).toBe('m-tree');
+    for (const id of ['ibn-battuta', 'yasser-al-dosari'])
+      expect(content.characters.some((c) => c.id === id)).toBe(false);
     for (const t of [
-      'm-baitul-mukarram',
-      'm-bm-gate',
       'm-bd-school',
       'm-bd-flag',
       'm-shapla-pond',
@@ -618,7 +622,6 @@ describe('Bangladesh block', () => {
       'mashrafe-mortaza',
       'tamim-iqbal',
       'malala-yousafzai',
-      'ibn-battuta',
       'hakeem-olajuwon',
     ]) {
       const c = content.characters.find((c) => c.id === id)!;
@@ -716,35 +719,8 @@ describe('main characters only, with supplied animation strips', () => {
     // The owner asked for exceptions (2026-11): Massawa's caravan guide and
     // the eight seated listeners at Mufti Menk's talk.
     const allowed = new Set(['amb-msw-guide']);
-    // And the congregation praying behind Yasser al-Dosari (2026-11): its
-    // ambient file holds only worshippers and the two children at tag.
-    const congregation = new Set(
-      content.characters
-        .filter((c) =>
-          content.scenes.some(
-            (s) => s.id === 'congregational-prayer' && s.members.includes(c.id),
-          ),
-        )
-        .map((c) => c.id),
-    );
-    // The original small group (owner's brief): the imam, 12 men, 12 women,
-    // three children praying and two at tag.
-    expect(congregation.size).toBe(30);
-    for (const c of content.characters.filter((c) => congregation.has(c.id)))
-      for (const s of c.script)
-        if (s.action === 'pray') {
-          // Everyone faces the qibla wall and mihrab together: the far NE
-          // wall, so all are seen from behind (owner's brief, 2026-11).
-          expect(s.facing, c.id).toBe('NE');
-          expect(c.depiction, c.id).toBe('back');
-        } else expect([c.id, s.action]).toEqual([c.id, 'walk']);
     for (const c of content.characters)
-      if (
-        !c.name &&
-        !allowed.has(c.id) &&
-        !/^menk-speech-listener-/.test(c.id) &&
-        !congregation.has(c.id)
-      )
+      if (!c.name && !allowed.has(c.id) && !/^menk-speech-listener-/.test(c.id))
         expect(c.kind, c.id).not.toBe('person');
     const listeners = content.characters.filter((c) =>
       c.id.startsWith('menk-speech-listener-'),

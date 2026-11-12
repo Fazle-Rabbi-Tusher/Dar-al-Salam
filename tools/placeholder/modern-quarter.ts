@@ -26,7 +26,6 @@ import { NATURE_OBJECTS } from './scenes/nature';
 import { CITY_OBJECTS } from './scenes/city';
 import { detailFootprints, type DetailType } from './details';
 import DARK_ROOM from '../../art/supplied/dark-room.json';
-import PRAYER_HALL from '../../art/supplied/prayer-hall.json';
 
 /*
  * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
@@ -1857,36 +1856,13 @@ export function modernQuarter() {
   );
 
   /* ════════ Bangladesh (x 2–94, y 95–122), south of New York ════════ */
-  // Baitul Mukarram, the national mosque: the cube, its gate and arcades on a
-  // white marble plaza (no calligraphy is drawn).
-  obj('m-baitul-mukarram', 8, 96);
-  obj('m-bm-gate', 9.5, 104);
-  obj('m-bm-arcade', 18, 103.5);
-  obj('m-bm-arcade', 25, 103.5);
-  obj('m-bm-pavilion', 4.5, 108);
-  obj('m-tea-stall', 35.4, 119.4);
   /*
-   * The congregational prayer hall, led by Yasser al-Dosari: the owner's 3D
-   * mosque rendered in our projection (tools/prepare-mosque-hall.ts), in 86
-   * pieces so people stand between its columns and arches. The qibla wall
-   * and mihrab are the far NE wall; everyone faces it. The two near walls
-   * are cut away to see in. People: content/ambient/prayer.json.
+   * The plaza west of the street (x 2–39, y 95–121) is an open lawn: the
+   * owner removed Baitul Mukarram, Ibn Battuta and the prayer hall there
+   * (2026-11, DECISIONS 74).
    */
-  for (const p of PRAYER_HALL as {
-    type: string;
-    at: [number, number];
-    blocks: boolean;
-  }[])
-    // Supplied pieces stand on their footprint's centre (0.6 tiles square).
-    obj(
-      p.type,
-      +(p.at[0] - 0.3).toFixed(3),
-      +(p.at[1] - 0.3).toFixed(3),
-      !p.blocks,
-    );
   for (const [x, y] of [
     [4, 120],
-    [38, 96],
     [38, 120],
   ])
     obj('m-tree', x, y);
@@ -2021,7 +1997,7 @@ export function modernQuarter() {
               ? 7
               : x <= 39
                 ? inX(3, 38) && inY(96, 121)
-                  ? 14
+                  ? 4
                   : 7
                 : y <= 110
                   ? x <= 63
@@ -2291,10 +2267,6 @@ const facts: Record<string, { en: string; links: Character['links'] }> = {
     en: 'Pakistani campaigner for girls’ education from the Swat Valley. In 2014 she became the youngest person to receive the Nobel Peace Prize.',
     links: wiki('Malala_Yousafzai'),
   },
-  'ibn-battuta': {
-    en: 'Traveller from Tangier whose Rihla describes nearly thirty years of journeys across Africa, Asia and Europe, including a visit to Bengal in 1346.',
-    links: wiki('Ibn_Battuta'),
-  },
   'muhammad-yunus': {
     en: 'Bangladeshi economist who founded Grameen Bank, pioneering small loans for people too poor for ordinary banks. He and the bank shared the 2006 Nobel Peace Prize.',
     links: wiki('Muhammad_Yunus'),
@@ -2339,7 +2311,6 @@ const SCENE_ROLES = [
 ];
 /** Hover labels: what each ambient person is doing (English for now). */
 const ROLES: [RegExp, string][] = [
-  [/^bd-worshipper/, 'Crossing the plaza of Baitul Mukarram'],
   [/^bd-tea-seller/, 'Pouring cha at the tea stall'],
   [/^bd-tea-drinker/, 'Enjoying a cup of cha'],
   [/^bd-pupil/, 'Pupil at a Bangladeshi school'],
@@ -3589,21 +3560,6 @@ function bangladeshAndMore(): (Partial<Character> &
       }),
       // At the crease, then raising his bat.
       script: two('idle', 'cheer', [78.8, 115.4], 'SW', 'SE'),
-    },
-    {
-      id: 'ibn-battuta',
-      name: { en: 'Ibn Battuta', ar: 'ابن بطوطة', bn: 'ইবনে বতুতা' },
-      years: '1304–c. 1369',
-      place: 'Tangier',
-      district: 'maghreb',
-      look: look('adult-man-beard', 'kaftan', 'imamah', 'scroll', {
-        skin: 'skin-3',
-        garmentPrimary: 'khaki',
-        garmentSecondary: 'cocoa',
-        prop: 'wool-cream',
-      }),
-      // A traveller arriving at the mosque plaza.
-      script: two('talk', 'wave', [16, 110.5], 'SE', 'SW'),
     },
     {
       id: 'muhammad-yunus',
