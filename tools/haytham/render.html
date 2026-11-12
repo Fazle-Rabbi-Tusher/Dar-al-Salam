@@ -1,0 +1,560 @@
+<!doctype html><meta charset="utf-8" />
+<body style="margin: 0; background: #0000">
+  <canvas id="c"></canvas>
+  <script type="module">
+    /*
+     * Ibn al-Haytham at his optics bench (tools/prepare-haytham.ts): the owner's
+     * voxel scholar (Scholar/model.js) posed through the optics workflow
+     * (poses.js), with the owner's instruments (Equipment/models.js), rendered
+     * in the world's 2:1 isometric view. ?k= sets pixels per model unit.
+     */
+    import * as T from '../three/three.module.min.js';
+    import { createScholarModel } from '../scholar/model.js';
+    import { buildEquipment } from '../equipment/models.js';
+    import {
+      POSE,
+      KEYS,
+      SC,
+      BENCH,
+      AP,
+      BOWL,
+      TOOLS,
+      PARCH,
+      SCREEN,
+    } from './poses.js';
+
+    const P = new URLSearchParams(location.search);
+    const K = +(P.get('k') || 66); // pixels per model unit
+    const renderer = new T.WebGLRenderer({
+      canvas: c,
+      antialias: false,
+      alpha: true,
+      preserveDrawingBuffer: true,
+    });
+    renderer.setPixelRatio(1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = T.PCFSoftShadowMap;
+    renderer.toneMapping = T.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    renderer.setClearColor(0, 0);
+    const scene = new T.Scene();
+    scene.add(new T.HemisphereLight('#fff1dc', '#8a8f86', 1.5));
+    const sun = new T.DirectionalLight('#ffe7c4', 2.0);
+    sun.position.set(-4, 9, 6);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    Object.assign(sun.shadow.camera, {
+      left: -8,
+      right: 8,
+      top: 8,
+      bottom: -8,
+      near: 0.5,
+      far: 40,
+    });
+    sun.shadow.bias = -0.0004;
+    scene.add(sun);
+    const fill = new T.DirectionalLight('#bcd4e0', 0.6);
+    fill.position.set(6, 4, -4);
+    scene.add(fill);
+
+    /* ── Quads (both packs' part lists) → meshes, one per material ── */
+    const MAT = {
+      brass: { metalness: 0.45, roughness: 0.38 },
+      glass: {
+        transparent: true,
+        roughness: 0.15,
+        metalness: 0.05,
+        side: T.DoubleSide,
+        depthWrite: false,
+      },
+      water: {
+        transparent: true,
+        roughness: 0.15,
+        side: T.DoubleSide,
+        depthWrite: false,
+      },
+      ray: { emissive: true },
+    };
+    function meshes(parts, offset = [0, 0, 0]) {
+      const byKey = new Map();
+      for (const p of parts) {
+        const m = p.material || 'solid',
+          alpha = p.color[3] ?? 1;
+        const key = m + (alpha < 1 ? ':a' : '');
+        if (!byKey.has(key)) byKey.set(key, { m, alpha, pos: [], col: [] });
+        const b = byKey.get(key),
+          v = p.vertices;
+        for (const i of [0, 1, 2, 0, 2, 3]) {
+          b.pos.push(
+            v[i * 3] - offset[0],
+            v[i * 3 + 1] - offset[1],
+            v[i * 3 + 2] - offset[2],
+          );
+          b.col.push(p.color[0], p.color[1], p.color[2]);
+        }
+      }
+      const g = new T.Group();
+      for (const { m, alpha, pos, col } of byKey.values()) {
+        const geo = new T.BufferGeometry();
+        geo.setAttribute('position', new T.Float32BufferAttribute(pos, 3));
+        geo.setAttribute('color', new T.Float32BufferAttribute(col, 3));
+        geo.computeVertexNormals();
+        const spec = MAT[m] || {};
+        const mat = spec.emissive
+          ? new T.MeshBasicMaterial({
+              vertexColors: true,
+              transparent: true,
+              opacity: 0.9,
+            })
+          : new T.MeshStandardMaterial({
+              vertexColors: true,
+              roughness: spec.roughness ?? 0.85,
+              metalness: spec.metalness ?? 0,
+              side: spec.side ?? T.DoubleSide,
+              flatShading: true,
+              ...(alpha < 1 || spec.transparent
+                ? {
+                    transparent: true,
+                    opacity: Math.max(alpha, 0.25),
+                    depthWrite: false,
+                  }
+                : {}),
+            });
+        const mesh = new T.Mesh(geo, mat);
+        mesh.castShadow = !(alpha < 1) && !spec.emissive;
+        mesh.receiveShadow = true;
+        g.add(mesh);
+      }
+      return g;
+    }
+
+    /* ── The scholar: the pack's voxel sculpture, its articulated groups on their pivots ── */
+    const model = createScholarModel();
+    let minY = Infinity;
+    for (const p of model.parts)
+      for (let i = 1; i < p.vertices.length; i += 3)
+        minY = Math.min(minY, p.vertices[i]);
+    const scholar = new T.Group(),
+      joints = {};
+    const byGroup = {};
+    for (const p of model.parts) (byGroup[p.group] ??= []).push(p);
+    for (const [name, parts] of Object.entries(byGroup)) {
+      const pivot = model.pivots[name]
+        ? [
+            model.pivots[name][0],
+            model.pivots[name][1] + minY,
+            model.pivots[name][2],
+          ]
+        : [0, 0, 0];
+      const joint = new T.Group();
+      joint.position.set(pivot[0], pivot[1] - minY, pivot[2]);
+      joint.rotation.order = 'ZYX';
+      joint.add(meshes(parts, [pivot[0], pivot[1], pivot[2]]));
+      scholar.add(joint);
+      joints[name] = joint;
+    }
+    const station = new T.Group();
+    station.add(scholar);
+
+    /* ── The workbench in front of him (model units: he is 5.04 tall, front +Z) ── */
+    const wood = new T.MeshStandardMaterial({
+      color: '#8c5d32',
+      roughness: 0.8,
+      flatShading: true,
+    });
+    const woodDark = new T.MeshStandardMaterial({
+      color: '#59391f',
+      roughness: 0.85,
+      flatShading: true,
+    });
+    function box(w, h, d, mat, x, y, z) {
+      const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
+      m.position.set(x, y, z);
+      m.castShadow = m.receiveShadow = true;
+      station.add(m);
+      return m;
+    }
+    box(
+      BENCH.x1 - BENCH.x0,
+      0.14,
+      BENCH.z1 - BENCH.z0,
+      wood,
+      0,
+      BENCH.y - 0.07,
+      (BENCH.z0 + BENCH.z1) / 2,
+    );
+    for (const x of [BENCH.x0 + 0.15, BENCH.x1 - 0.15])
+      for (const z of [BENCH.z0 + 0.15, BENCH.z1 - 0.15])
+        box(0.16, BENCH.y - 0.14, 0.16, woodDark, x, (BENCH.y - 0.14) / 2, z);
+    box(BENCH.x1 - BENCH.x0 - 0.3, 0.1, 0.1, woodDark, 0, 0.5, BENCH.z1 - 0.15);
+    // The closed green Book of Optics, set down on the bench.
+    box(
+      0.42,
+      0.1,
+      0.56,
+      new T.MeshStandardMaterial({ color: '#2f5e35', roughness: 0.7 }),
+      -0.75,
+      BENCH.y + 0.05,
+      2.05,
+    );
+    // Parchment for the compass, pinned flat.
+    const parchment = box(
+      0.9,
+      0.012,
+      0.66,
+      new T.MeshStandardMaterial({ color: '#e7d9b9', roughness: 0.95 }),
+      PARCH.x,
+      BENCH.y + 0.006,
+      PARCH.z,
+    );
+    // The arc already scribed: the compass retraces it.
+    const arcPts = [];
+    for (let i = 0; i <= 24; i++) {
+      const a = -0.2 + (i / 24) * 1.9;
+      arcPts.push(
+        new T.Vector3(
+          PARCH.x + Math.cos(a) * PARCH.r,
+          BENCH.y + 0.014,
+          PARCH.z + Math.sin(a) * PARCH.r,
+        ),
+      );
+    }
+    station.add(
+      new T.Line(
+        new T.BufferGeometry().setFromPoints(arcPts),
+        new T.LineBasicMaterial({ color: '#3a2a1c' }),
+      ),
+    );
+
+    /* ── Instruments from the owner's equipment pack, scaled onto the bench ── */
+    function instrument(id, opts, x, z, rot = 0) {
+      const g = meshes(buildEquipment(id, opts).parts);
+      g.scale.setScalar(SC);
+      g.position.set(x, BENCH.y, z);
+      g.rotation.y = rot;
+      station.add(g);
+      return g;
+    }
+    let apertures = null,
+      bowl = null,
+      tools = null;
+    const MARK_X = BOWL.x;
+    // Focal card behind the bowl: a pale card with the bright point.
+    box(
+      0.34,
+      0.42,
+      0.04,
+      new T.MeshStandardMaterial({ color: '#e7d9b9' }),
+      MARK_X,
+      BENCH.y + 0.24,
+      BENCH.z1,
+    );
+    const focus = new T.Mesh(
+      new T.CircleGeometry(0.05, 16),
+      new T.MeshBasicMaterial({ color: '#ffe9a8', transparent: true }),
+    );
+    focus.position.set(MARK_X, BENCH.y + 0.34, BENCH.z1 - 0.03);
+    focus.rotation.y = Math.PI;
+    station.add(focus);
+    // The target marker on the notched track.
+    box(
+      0.05,
+      0.12,
+      0.05,
+      new T.MeshStandardMaterial({ color: '#bc9859', metalness: 0.5 }),
+      MARK_X,
+      BENCH.y + 0.06,
+      BENCH.z0 + 0.08,
+    );
+    for (let x = BOWL.x - BOWL.slide - 0.6; x <= BOWL.x + 0.6; x += 0.17)
+      box(0.02, 0.025, 0.18, woodDark, x, BENCH.y + 0.012, BENCH.z0 + 0.12);
+
+    /* ── The wall screen where the inverted image falls ── */
+    const screenX = SCREEN.x;
+    box(
+      0.08,
+      2.6,
+      1.7,
+      new T.MeshStandardMaterial({ color: '#e9dfc6', roughness: 0.95 }),
+      screenX,
+      SCREEN.y,
+      SCREEN.z,
+    );
+    for (const z of [SCREEN.z - 0.9, SCREEN.z + 0.9])
+      box(
+        0.12,
+        SCREEN.y + 1.35,
+        0.12,
+        woodDark,
+        screenX,
+        (SCREEN.y + 1.35) / 2,
+        z,
+      );
+    // An inverted flame: the candle's image, upside down on the screen.
+    const flameShape = new T.Shape();
+    flameShape.moveTo(0, -0.22);
+    flameShape.quadraticCurveTo(0.11, 0, 0, 0.12);
+    flameShape.quadraticCurveTo(-0.11, 0, 0, -0.22);
+    const flame = new T.Mesh(
+      new T.ShapeGeometry(flameShape),
+      new T.MeshBasicMaterial({ color: '#ffcf6a', transparent: true }),
+    );
+    flame.rotation.set(0, -Math.PI / 2, Math.PI);
+    station.add(flame);
+    const halo = new T.Mesh(
+      new T.CircleGeometry(0.32, 24),
+      new T.MeshBasicMaterial({
+        color: '#fff0c0',
+        transparent: true,
+        opacity: 0.25,
+      }),
+    );
+    halo.rotation.y = -Math.PI / 2;
+    station.add(halo);
+
+    /* ── The compass in his hand (phase 4) ── */
+    const compass = new T.Group();
+    const brass = new T.MeshStandardMaterial({
+      color: '#bc9859',
+      metalness: 0.5,
+      roughness: 0.35,
+    });
+    for (const s of [-1, 1]) {
+      const leg = new T.Mesh(
+        new T.CylinderGeometry(0.018, 0.012, 0.62, 6),
+        brass,
+      );
+      leg.position.set(s * 0.1, -0.3, 0);
+      leg.rotation.z = s * 0.33;
+      compass.add(leg);
+    }
+    const hinge = new T.Mesh(
+      new T.CylinderGeometry(0.045, 0.045, 0.05, 12),
+      brass,
+    );
+    hinge.rotation.x = Math.PI / 2;
+    compass.add(hinge);
+    station.add(compass);
+
+    // The whole station faces the world's SE (model +Z → three +X).
+    station.rotation.y = Math.PI / 2;
+    scene.add(station);
+
+    /* ── Posing over the 120-tick loop ── */
+    const ease = (t) => t * t * (3 - 2 * t);
+    const HAND = {
+      leftArm: new T.Vector3(-0.48, 2.69, 0.855),
+      rightArm: new T.Vector3(0.48, 2.69, 0.855),
+    };
+    const pivotOf = (j) => joints[j].position.clone();
+    const tmp = new T.Object3D();
+    /** A key pose's joint rotations, for its own lean and place along the bench. */
+    function solve(k) {
+      const p = { ...POSE.rest, ...POSE[k] };
+      tmp.position.set(p.glide, 0, 0);
+      tmp.rotation.set(p.lean, 0, 0);
+      tmp.updateMatrix();
+      const inv = tmp.matrix.clone().invert();
+      const local = (pt) => new T.Vector3(...pt).applyMatrix4(inv);
+      const q = {};
+      for (const [j, key] of [
+        ['leftArm', 'L'],
+        ['rightArm', 'R'],
+      ]) {
+        const target = p[key];
+        q[j] = new T.Quaternion();
+        if (!target) continue;
+        const pivot = pivotOf(j),
+          from = HAND[j].clone().sub(pivot).normalize();
+        // The hand to his chin: aim just before the beard (the arm is rigid).
+        const pt =
+          target === 'chin'
+            ? local([p.glide * 0 + 0.0, 3.45, 0.78])
+                .applyMatrix4(tmp.matrix)
+                .toArray()
+            : target;
+        const to = local(pt).sub(pivot).normalize();
+        q[j].setFromUnitVectors(from, to);
+      }
+      const eye = pivotOf('head').add(new T.Vector3(0, 0.15, 0.3)),
+        d = local(p.look).sub(eye);
+      q.head = new T.Quaternion().setFromEuler(
+        new T.Euler(
+          Math.max(
+            -0.35,
+            Math.min(0.6, Math.atan2(-d.y, Math.hypot(d.x, d.z))),
+          ),
+          Math.max(-1.1, Math.min(1.1, Math.atan2(d.x, d.z))),
+          0,
+          'ZYX',
+        ),
+      );
+      return { p, q };
+    }
+    const SOLVED = Object.fromEntries(
+      Object.keys(POSE).map((k) => [k, solve(k)]),
+    );
+    function sample(tick) {
+      let a = KEYS[0],
+        b = KEYS[KEYS.length - 1];
+      for (let i = 0; i < KEYS.length - 1; i++)
+        if (tick >= KEYS[i].t && tick <= KEYS[i + 1].t) {
+          a = KEYS[i];
+          b = KEYS[i + 1];
+          break;
+        }
+      const u = b.t === a.t ? 0 : ease((tick - a.t) / (b.t - a.t));
+      const A = SOLVED[a.p],
+        B = SOLVED[b.p],
+        out = { q: {} };
+      for (const k of Object.keys(POSE.rest)) {
+        const x = A.p[k],
+          y = B.p[k];
+        if (typeof x === 'number') out[k] = x + (y - x) * u;
+      }
+      for (const j of ['head', 'leftArm', 'rightArm'])
+        out.q[j] = A.q[j].clone().slerp(B.q[j], u);
+      return out;
+    }
+    function pose(tick) {
+      const s = sample(tick);
+      for (const j of ['head', 'leftArm', 'rightArm'])
+        joints[j].quaternion.copy(s.q[j]);
+      joints.book.visible = false;
+      scholar.position.set(s.glide, 0, 0);
+      scholar.rotation.set(s.lean, 0, 0);
+      // Phase 1: the brass plate narrows the pinhole (aperture parameter).
+      if (apertures) station.remove(apertures);
+      apertures = instrument(
+        'apertures',
+        { active: true, parameter: s.aperture },
+        AP.x,
+        AP.z,
+      );
+      // Phase 2: the bowl turns and slides along the track onto the marker.
+      if (bowl) station.remove(bowl);
+      bowl = instrument(
+        'bowl',
+        { parameter: 0.55 },
+        BOWL.x + s.bowlX,
+        BOWL.z,
+        s.bowlTurn,
+      );
+      focus.material.opacity = Math.max(0, 1 - Math.abs(s.bowlX) * 3);
+      focus.scale.setScalar(0.6 + Math.abs(s.bowlX) * 3);
+      // Phase 3: the dial moves the scale's pointer to the beam's edge.
+      if (tools) station.remove(tools);
+      tools = instrument(
+        'tools',
+        { active: true, parameter: s.dial },
+        TOOLS.x,
+        TOOLS.z,
+        Math.PI,
+      );
+      // Phase 4: the compass, held point down in his hand, scribes the arc.
+      compass.visible = s.compass > 0.5;
+      scholar.updateMatrixWorld(true);
+      const ang = -0.2 + s.compassTurn * 1.9;
+      compass.position.set(
+        PARCH.x + Math.cos(ang) * PARCH.r * 0.5,
+        BENCH.y + 0.66,
+        PARCH.z + Math.sin(ang) * PARCH.r * 0.5,
+      );
+      compass.rotation.set(0, -ang, 0);
+      // The inverted candle image on the wall screen drifts as he watches.
+      flame.position.set(screenX - 0.05, SCREEN.y + 0.25, SCREEN.z + s.image);
+      halo.position.set(screenX - 0.045, SCREEN.y + 0.25, SCREEN.z + s.image);
+    }
+
+    /* ── The world's 2:1 isometric camera ── */
+    const cam = new T.OrthographicCamera(-1, 1, 1, -1, -100, 100);
+    cam.position.set(30, 30 * Math.SQRT2 * Math.tan(Math.PI / 6), 30);
+    cam.lookAt(0, 0, 0);
+    cam.updateMatrixWorld(true);
+    // Frame: the station's bounds over the whole loop.
+    let x0 = Infinity,
+      x1 = -Infinity,
+      y0 = Infinity,
+      y1 = -Infinity;
+    const v = new T.Vector3();
+    for (let t = 0; t < 120; t += 3) {
+      pose(t);
+      scene.updateMatrixWorld(true);
+      const bb = new T.Box3().setFromObject(station);
+      for (const X of [bb.min.x, bb.max.x])
+        for (const Y of [bb.min.y, bb.max.y])
+          for (const Z of [bb.min.z, bb.max.z]) {
+            v.set(X, Y, Z).applyMatrix4(cam.matrixWorldInverse);
+            x0 = Math.min(x0, v.x);
+            x1 = Math.max(x1, v.x);
+            y0 = Math.min(y0, v.y);
+            y1 = Math.max(y1, v.y);
+          }
+    }
+    const W = Math.ceil((x1 - x0) * K) + 8,
+      H = Math.ceil((y1 - y0) * K) + 8;
+    Object.assign(cam, {
+      left: x0 - 4 / K,
+      right: x0 - 4 / K + W / K,
+      top: y1 + 4 / K,
+      bottom: y1 + 4 / K - H / K,
+    });
+    cam.updateProjectionMatrix();
+    renderer.setSize(W, H, false);
+    v.set(0, 0, 0).project(cam);
+    const foot = [
+      Math.round(((v.x + 1) / 2) * W),
+      Math.round(((1 - v.y) / 2) * H),
+    ];
+    /** His card picture: standing with the Book of Optics, no bench. */
+    function portrait(k) {
+      pose(0);
+      joints.book.visible = true;
+      const hidden = station.children.filter((o) => o !== scholar);
+      for (const o of hidden) o.visible = false;
+      scene.updateMatrixWorld(true);
+      const bb = new T.Box3().setFromObject(scholar);
+      let a = Infinity,
+        b = -Infinity,
+        c0 = Infinity,
+        d = -Infinity;
+      for (const X of [bb.min.x, bb.max.x])
+        for (const Y of [bb.min.y, bb.max.y])
+          for (const Z of [bb.min.z, bb.max.z]) {
+            v.set(X, Y, Z).applyMatrix4(cam.matrixWorldInverse);
+            a = Math.min(a, v.x);
+            b = Math.max(b, v.x);
+            c0 = Math.min(c0, v.y);
+            d = Math.max(d, v.y);
+          }
+      const w = Math.ceil((b - a) * k) + 16,
+        h = Math.ceil((d - c0) * k) + 16;
+      const pc = cam.clone();
+      Object.assign(pc, {
+        left: a - 8 / k,
+        right: a - 8 / k + w / k,
+        top: d + 8 / k,
+        bottom: d + 8 / k - h / k,
+      });
+      pc.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+      renderer.render(scene, pc);
+      const url = c.toDataURL('image/png');
+      for (const o of hidden) o.visible = true;
+      renderer.setSize(W, H, false);
+      return url;
+    }
+    window.RESULT = {
+      W,
+      H,
+      foot,
+      render(tick) {
+        pose(tick);
+        renderer.render(scene, cam);
+        return c.toDataURL('image/png');
+      },
+      portrait,
+    };
+    window.READY = true;
+  </script>
+</body>

@@ -225,3 +225,20 @@
       - **Women:** two rows of six beyond the screen.
       - **Children:** the toddler and the boy at the ends of the front row, the girl beside her mother, and the tag game round a pillar out on the open floor.
     - **Other changes:** the shared-strip feature stays available. The sharp-head test now allows 20 s, since it grows with the cast.
+71. Ibn al-Haytham at his optics bench, from the owner's Ibn al-Haytham collection and optics-workflow brief (`tools/prepare-haytham.ts <collection> <three.js vendor>`):
+    - **The figure:** the pack's voxel scholar (`Scholar/model.js`, with movable head, arms and book) is posed frame by frame. Each shoulder turns its rigid bent arm to bring the hand to a target point (pinhole plate, bowl, dial, parchment). He leans slightly and steps along the bench, and his head turns to what he works on.
+    - **The instruments:** the pack's own equipment builder (`Equipment/models.js`) at 0.42 scale on a wooden bench:
+      - the pinhole panel and screen, the pinhole narrowing as the plate slides;
+      - the glass bowl, turned, then slid along a notched track until a bright focal point appears on the card at the marker;
+      - the measuring scale, its pointer moving onto the light beam as the dial turns.
+      - **Also on the bench:** a parchment with a scribed arc and the closed Book of Optics. A tall wall screen beside the bench carries the candle's inverted image.
+    - **The workflow (120 ticks, the brief's times at 12 ticks a second):**
+      - 0–18: the aperture.
+      - 18–36: the bowl.
+      - 36–54: the dial, palm flat on the bench.
+      - 54–84: the compass scribing the arc, then hand raised to his chin as he follows the image drifting across the wall screen.
+      - 84–120: he watches, then begins again.
+    - **One figure:** he and the bench are drawn together as one 40-frame `write` strip (density 3), so his hands sit correctly against the instruments. The back-view strip is the same frames, since he always works facing SE.
+    - **Placement:** he moved to the open south-east corner of the university science lab (49.6, 18.6).
+    - **Card:** a new picture of him standing with the green Book of Optics, a sprite rendered from it, and five gallery stills, one per gesture. The card's facts are unchanged and `panelApproved` stays false.
+    - **Approximations:** the figure has no elbows, wrists or fingers to bend, so the fine gestures are the arms' reach and the instruments' movement. These are the fingernail on the plate, the pinch on the dial, the twist of the wrist and the hand resting on the chin. The compass is shown at the parchment rather than held in the fingers.

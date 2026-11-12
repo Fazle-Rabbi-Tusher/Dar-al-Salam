@@ -18,8 +18,8 @@
     "prop": "book",
     "colours": {
       "skin": "skin-3",
-      "hair": "hair-black",
-      "garmentPrimary": "indigo",
+      "hair": "hair-grey",
+      "garmentPrimary": "olive",
       "garmentSecondary": "saffron",
       "headwear": "white-linen",
       "prop": "cocoa"
@@ -29,17 +29,10 @@
   "script": [
     {
       "from": 0,
-      "to": 60,
-      "action": "talk",
-      "at": [44.6, 18.4],
-      "facing": "SE"
-    },
-    {
-      "from": 60,
       "to": 120,
-      "action": "idle",
-      "at": [44.6, 18.4],
-      "facing": "SW"
+      "action": "write",
+      "at": [49.6, 18.6],
+      "facing": "SE"
     }
   ],
   "bio": {
