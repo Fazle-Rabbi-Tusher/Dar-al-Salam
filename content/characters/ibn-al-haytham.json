@@ -18,10 +18,10 @@
     "prop": "book",
     "colours": {
       "skin": "skin-3",
-      "hair": "hair-grey",
-      "garmentPrimary": "olive",
-      "garmentSecondary": "saffron",
-      "headwear": "white-linen",
+      "hair": "hair-black",
+      "garmentPrimary": "cocoa",
+      "garmentSecondary": "madder-red",
+      "headwear": "madder-red",
       "prop": "cocoa"
     }
   },

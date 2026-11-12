@@ -23,11 +23,16 @@ import sharp from 'sharp';
  * (standing with the Book of Optics), his sprite, and a gallery of the four
  * gestures.
  *
- *   node --import tsx tools/prepare-haytham.ts <Ibn-al-Haytham-Complete-Collection> <three.js vendor folder>
+ *   node --import tsx tools/prepare-haytham.ts <Ibn-al-Haytham-Complete-Collection> <three.js vendor folder> [figure folder]
+ *
+ * The figure: by default the complete collection's Scholar viewer. The
+ * owner's later character collection (Ibn-al-Haytham-Character-Collection:
+ * burgundy turban, dark beard, brown and rust robes, finer voxels) has the
+ * same model.js with the same joints; pass its folder as the third argument.
  *
  * three.js: the vendor folder of the owner's mosque model pack (0.180).
  */
-const [collection, three] = process.argv.slice(2);
+const [collection, three, figure] = process.argv.slice(2);
 if (!collection || !three)
   throw Error(
     'Usage: prepare-haytham.ts <collection folder> <three vendor folder>',
@@ -38,7 +43,9 @@ const ID = 'ibn-al-haytham',
   K = (72 * D) / (5.04 * Math.cos(Math.PI / 6));
 
 const roots: Record<string, string> = {
-  scholar: path.resolve(collection, 'Interactive-Viewers/Scholar'),
+  scholar: path.resolve(
+    figure ?? path.join(collection, 'Interactive-Viewers/Scholar'),
+  ),
   equipment: path.resolve(collection, 'Interactive-Viewers/Equipment'),
   three: path.resolve(three),
   render: path.resolve('tools/haytham'),
@@ -178,9 +185,11 @@ card.loop = 120;
 card.script = [
   { from: 0, to: 120, action: 'write', at: [49.6, 18.6], facing: 'SE' },
 ];
-card.look.colours.garmentPrimary = 'olive';
-card.look.colours.headwear = 'white-linen';
-card.look.colours.hair = 'hair-grey';
+// The character collection's colours: brown robe, burgundy turban, dark beard.
+card.look.colours.garmentPrimary = 'cocoa';
+card.look.colours.garmentSecondary = 'madder-red';
+card.look.colours.headwear = 'madder-red';
+card.look.colours.hair = 'hair-black';
 fs.writeFileSync(cardFile, JSON.stringify(card, null, 2) + '\n');
 console.log(
   `Ibn al-Haytham: ${unique.length} frames ${W}×${H}, card art and gallery written.`,

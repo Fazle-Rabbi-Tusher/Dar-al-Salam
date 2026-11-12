@@ -35,10 +35,10 @@
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = T.PCFSoftShadowMap;
     renderer.toneMapping = T.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 0.95;
     renderer.setClearColor(0, 0);
     const scene = new T.Scene();
-    scene.add(new T.HemisphereLight('#fff1dc', '#8a8f86', 1.5));
+    scene.add(new T.HemisphereLight('#fff1dc', '#8a8f86', 1.15));
     const sun = new T.DirectionalLight('#ffe7c4', 2.0);
     sun.position.set(-4, 9, 6);
     sun.castShadow = true;

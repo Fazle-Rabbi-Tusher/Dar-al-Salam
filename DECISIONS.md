@@ -242,3 +242,8 @@
     - **Placement:** he moved to the open south-east corner of the university science lab (49.6, 18.6).
     - **Card:** a new picture of him standing with the green Book of Optics, a sprite rendered from it, and five gallery stills, one per gesture. The card's facts are unchanged and `panelApproved` stays false.
     - **Approximations:** the figure has no elbows, wrists or fingers to bend, so the fine gestures are the arms' reach and the instruments' movement. These are the fingernail on the plate, the pinch on the dial, the twist of the wrist and the hand resting on the chin. The compass is shown at the parchment rather than held in the fingers.
+72. Ibn al-Haytham's new look, from the owner's character collection (`Ibn-al-Haytham-Character-Collection`), which follows two portrait references the owner supplied:
+    - **The figure:** a burgundy wrapped turban, a dark beard, and brown and rust robes, built on a finer voxel grid (0.02). It is the same model with the same joints, so `tools/prepare-haytham.ts` takes the collection's folder as an optional third argument and re-renders the whole optics workflow, his card picture, sprite and gallery with it.
+    - **Lighting:** a little lower (exposure 0.95), so the darker colours match the concept art.
+    - **Card colours:** cocoa robe, madder-red turban and secondary, black hair.
+    - **Not used:** the shared exhibit link (al-bayt al-muzlim) could not be opened from this environment. Its network policy blocks the host, and the exhibits need the owner's ChatGPT sign-in.
