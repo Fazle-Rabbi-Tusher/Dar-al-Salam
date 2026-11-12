@@ -592,20 +592,21 @@ describe('sharp heads', () => {
 });
 
 describe('Bangladesh block', () => {
-  it('places the school and the new people; the west plaza is an open lawn', async () => {
+  it('places the school and the new people; the dark room stands on the west lawn', async () => {
     const { forbiddenName } = await import('../../packages/shared/rules');
     const objects = content.room.layers.find((l) => l.type === 'objectgroup');
     const types = new Set(
       objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
     );
     // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
-    // (2026-11): nothing stands on the west plaza but its corner trees.
+    // (2026-11): only the dark room and the corner trees stand on the west
+    // lawn now.
     for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
       expect(types.has(t), t).toBe(false);
     if (objects?.type === 'objectgroup')
       for (const o of objects.objects)
         if (o.x > 2 && o.x < 39 && o.y > 95 && o.y < 120)
-          expect(o.type).toBe('m-tree');
+          expect(o.type).toMatch(/^(m-tree|sup-dr-)/);
     for (const id of ['ibn-battuta', 'yasser-al-dosari'])
       expect(content.characters.some((c) => c.id === id)).toBe(false);
     for (const t of [

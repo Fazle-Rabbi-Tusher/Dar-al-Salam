@@ -320,18 +320,8 @@ export function modernQuarter() {
   obj('m-lab-bench', 46, 10.5);
   obj('m-lab-bench', 41, 15.5);
   obj('m-lab-bench', 46, 15.5);
-  obj('m-robot-arm', 52.6, 11.2);
-  obj('m-water-cooler', 42.8, 19.2);
-  /*
-   * Al-Bayt al-Muzlim, the dark room, in the lab's south-east corner (x
-   * 49–55, y 13–21): the owner's cutaway room rendered in our projection
-   * (tools/prepare-dark-room.ts), in pieces so Ibn al-Haytham stands between
-   * its walls, screen and lectern. A pinhole in the near-left wall throws
-   * the courtyard upside down onto the linen screen.
-   */
-  for (const p of DARK_ROOM as { type: string; at: [number, number] }[])
-    // Supplied pieces stand on their footprint's centre (0.6 tiles square).
-    obj(p.type, +(p.at[0] - 0.3).toFixed(3), +(p.at[1] - 0.3).toFixed(3), true);
+  obj('m-robot-arm', 52.5, 12.5);
+  obj('m-water-cooler', 54.6, 17.5);
   const coat = (base: 'adult-man' | 'adult-woman', prop: string) =>
     L(base, 'lab-coat', base === 'adult-woman' ? 'hijab' : 'none', prop, {
       garmentPrimary: 'lab-white',
@@ -348,7 +338,7 @@ export function modernQuarter() {
   person('chemist-4', [50.4, 9.4], 'pour', coat('adult-man', 'flask'), 'NE');
   person(
     'roboticist',
-    [53.1, 12.4],
+    [52.3, 14.6],
     'talk',
     withProp(L('adult-woman', 'hoodie-jeans', 'hijab'), 'laptop'),
     'NE',
@@ -1859,8 +1849,15 @@ export function modernQuarter() {
   /*
    * The plaza west of the street (x 2–39, y 95–121) is an open lawn: the
    * owner removed Baitul Mukarram, Ibn Battuta and the prayer hall there
-   * (2026-11, DECISIONS 74).
+   * (2026-11, DECISIONS 74). In its middle stands Al-Bayt al-Muzlim, the
+   * dark room (x 17–24, y 104–113): the owner's cutaway room rendered in our
+   * projection (tools/prepare-dark-room.ts), in pieces so Ibn al-Haytham
+   * stands between its walls, screen and lectern. A pinhole in the
+   * near-left wall throws the courtyard upside down onto the linen screen.
    */
+  for (const p of DARK_ROOM as { type: string; at: [number, number] }[])
+    // Supplied pieces stand on their footprint's centre (0.6 tiles square).
+    obj(p.type, +(p.at[0] - 0.3).toFixed(3), +(p.at[1] - 0.3).toFixed(3), true);
   for (const [x, y] of [
     [4, 120],
     [38, 120],
@@ -3337,7 +3334,7 @@ function scholars(): (Partial<Character> &
         prop: 'sky',
       }),
       // Beside the robot arm with the plans of his machines.
-      script: two('talk', 'idle', [51.3, 11.8], 'SE', 'SW'),
+      script: two('talk', 'idle', [52.3, 14.6], 'SW', 'SE'),
     },
     {
       id: 'al-biruni',

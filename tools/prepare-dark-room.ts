@@ -28,8 +28,8 @@ if (!collection || !three)
 export const S = 0.75,
   KV = 1.75,
   D = 2;
-/** The tile under the room's centre, in the science lab's south-east corner. */
-export const ROOM: [number, number] = [52.2, 17.0];
+/** The tile under the room's centre, on the Bangladesh block's west lawn. */
+export const ROOM: [number, number] = [20.5, 108.5];
 /** Tile under a room point. The room is turned so its open sides face the
  * viewer: room +Z runs along the world's +x, room +X along the world's −y. */
 export const tileOf = (X: number, Z: number): [number, number] => [

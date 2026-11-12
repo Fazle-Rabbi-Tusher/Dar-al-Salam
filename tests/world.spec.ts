@@ -112,8 +112,12 @@ test('clicking Ibn al-Haytham opens his card and frames the dark room', async ({
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  // Al-Bayt al-Muzlim, in the science lab's south-east corner.
-  await ready(page, '/?x=2607&y=1974&z=2');
+  // Al-Bayt al-Muzlim, on the Bangladesh block's west lawn: his card link
+  // turns the planet to it; close the card to see the room.
+  await ready(page, '/c/ibn-al-haytham');
+  await expect(page.locator('.story-card')).toBeVisible();
+  await page.locator('.card-close').click();
+  await page.waitForTimeout(1100);
   const points = await page.evaluate(() =>
     (
       window as unknown as {

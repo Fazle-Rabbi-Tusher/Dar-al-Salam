@@ -179,7 +179,7 @@ for (const [n, t] of [9, 30, 50, 64, 90].entries())
 await browser.close();
 server.close();
 
-/* ── His card: the workflow at his bench in the dark room ── */
+/* ── His card: the workflow at his bench in the dark room (west lawn) ── */
 const cardFile = `content/characters/${ID}.json`,
   card = JSON.parse(fs.readFileSync(cardFile, 'utf8'));
 card.loop = 120;
@@ -187,7 +187,7 @@ card.script = [
   // Room point (0.53, −0.53) of tools/prepare-dark-room.ts: the beam from
   // the pinhole to the screen passes just behind him, the lectern clears the
   // bench's end.
-  { from: 0, to: 120, action: 'write', at: [51.8, 16.6], facing: 'SE' },
+  { from: 0, to: 120, action: 'write', at: [20.1, 108.1], facing: 'SE' },
 ];
 // The character collection's colours: brown robe, burgundy turban, dark beard.
 card.look.colours.garmentPrimary = 'cocoa';
