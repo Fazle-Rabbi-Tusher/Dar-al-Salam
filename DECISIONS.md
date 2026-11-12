@@ -276,4 +276,4 @@
 75. The dark room moved to the cleared west lawn of the Bangladesh block (owner's choice, 2026-11), where Baitul Mukarram stood:
     - **Placement:** it stands in the middle of the lawn, centred on (20.5, 108.5) and covering x 17–24, y 104–113, with its open sides toward the viewer. Ibn al-Haytham works at his bench inside, at (20.1, 108.1), in the same place in the room as before.
     - **The science lab:** back as it was before item 73. The robot arm, roboticist, water cooler and al-Jazari are in their old places.
-    - **Tests:** the e2e test now reaches him through his card link (`/c/ibn-al-haytham`). A `?x=    - **Tests:** the e2e test now visits the new spot.y=` link pans from the default planet orientation, so it can't point this far round the planet.
+    - **Tests:** the e2e test now reaches him through his card link (`/c/ibn-al-haytham`). A `?x=…&y=…` link pans from the default planet orientation, so it can't point this far round the planet.
