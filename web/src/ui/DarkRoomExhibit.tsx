@@ -70,6 +70,10 @@ export function DarkRoomExhibit({ onClose }: { onClose: () => void }) {
     const doc = frameDocument();
     if (!doc) return;
     setLoaded(true);
+    // Enter the approved chamber through its own control, preserving the
+    // source renderer, furniture, lighting and walking behavior unchanged.
+    if (doc.querySelector('#loading.ready'))
+      doc.querySelector<HTMLButtonElement>('[data-view="interior"]')?.click();
 
     const keyboard = (event: KeyboardEvent) => {
       // An exhibit-owned dialog or fullscreen view gets its own Escape first.

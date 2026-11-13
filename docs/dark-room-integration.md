@@ -6,7 +6,11 @@ including the enlarged equipment, spacious chamber, courtyard, surrounding
 buildings, original rendering, working demonstrations, model downloads and
 previews. Its entrypoint is `index.html` in that directory.
 
-The main website opens this exhibit through `/?exhibit=dark-room`. The host
+The main website opens this exhibit through `/?exhibit=dark-room`. On entry,
+the host activates the source viewer's **Inside** control and brings its stage
+into view, so entering from the world takes the visitor directly into the
+approved chamber. Room, Court, Study and Site remain available in the source
+viewer. The host
 provides the exhibit frame and return controls, suspends world activity while
 it is open, and retains the world camera for the return journey. The exhibit
 loads from the same website; it does not depend on an authenticated external
