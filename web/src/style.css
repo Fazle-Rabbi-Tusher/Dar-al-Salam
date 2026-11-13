@@ -1640,3 +1640,194 @@ html[dir='rtl'] .portrait-decoration {
 .world-page input {
   touch-action: manipulation;
 }
+
+/* The original optical workshop owns its viewport. Keep this host chrome
+   outside .app so the world can be inert without disabling the exhibit. */
+.dark-room-exhibit {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  color: #ede7d4;
+  background: #121511;
+  overscroll-behavior: contain;
+}
+.dark-room-exhibit[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.dark-room-exhibit::backdrop {
+  background: #121511;
+}
+.dark-room-exhibit-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  min-height: 68px;
+  padding: max(10px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right)) 10px
+    max(20px, env(safe-area-inset-left));
+  border-bottom: 1px solid #ded6ad33;
+  background: #161d17;
+}
+.dark-room-return,
+.dark-room-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ded6ad55;
+  border-radius: 4px;
+  color: #f5edcf;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: start;
+}
+.dark-room-return svg,
+.dark-room-download svg {
+  flex-shrink: 0;
+}
+.dark-room-return svg {
+  transform: rotate(180deg);
+}
+[dir='rtl'] .dark-room-return svg {
+  transform: none;
+}
+.dark-room-download {
+  justify-self: end;
+}
+.dark-room-return:hover,
+.dark-room-download:hover {
+  background: #ded6ad15;
+  border-color: #ded6ad;
+}
+.dark-room-exhibit-title {
+  text-align: center;
+}
+.dark-room-exhibit-title > span {
+  color: #b0b9a6;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dark-room-exhibit-title h1 {
+  margin: 3px 0 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.dark-room-exhibit-content {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.dark-room-exhibit iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  border: 0;
+  background: #121511;
+}
+.dark-room-exhibit-loading {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  padding: 24px;
+  color: #d9cc9f;
+  background: #121511;
+  font-size: 16px;
+}
+.district-tabs .dark-room-tab {
+  background: #244c40;
+  color: #fff8dc;
+}
+.district-tabs .dark-room-tab:hover {
+  background: #18382f;
+  color: #fff8dc;
+}
+.scene-exhibit-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  margin: 7px auto 0;
+  padding: 8px 12px;
+  border: 1px solid #f0e7cba6;
+  border-radius: 4px;
+  background: #18382f;
+  color: #fff8dc;
+  font-size: 11px;
+  line-height: 1.4;
+  text-shadow: none;
+  pointer-events: auto;
+}
+.scene-exhibit-link:hover {
+  background: #244c40;
+}
+.story-exhibit {
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+.story-exhibit h3 {
+  margin-top: 0;
+}
+.story-exhibit .primary {
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 14px;
+  text-align: start;
+}
+@media (max-width: 700px) {
+  .dark-room-exhibit-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    min-height: 62px;
+    padding: max(8px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right)) 8px
+      max(10px, env(safe-area-inset-left));
+  }
+  .dark-room-exhibit-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .dark-room-return,
+  .dark-room-download {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+  .dark-room-download span {
+    display: none;
+  }
+  .dark-room-download {
+    justify-content: center;
+    min-width: 44px;
+  }
+  .district-tabs .dark-room-tab {
+    min-height: 36px;
+    font-weight: 600;
+  }
+}

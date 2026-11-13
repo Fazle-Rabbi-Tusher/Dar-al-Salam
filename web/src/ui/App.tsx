@@ -18,6 +18,7 @@ import { tileFromWorld, worldFromTile } from '../../../packages/shared/iso';
 import { useStore, useT, type Language } from './store';
 import { Icon } from './Icon';
 import { Lab } from './Lab';
+import { DarkRoomExhibit } from './DarkRoomExhibit';
 export function App() {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -217,6 +218,23 @@ function matches(query: string, value: string) {
   }
   return true;
 }
+function hasDarkRoomExhibit() {
+  return new URL(location.href).searchParams.get('exhibit') === 'dark-room';
+}
+function withoutExhibit(href: string) {
+  const url = new URL(href, location.origin);
+  url.searchParams.delete('exhibit');
+  return url.pathname + url.search + url.hash;
+}
+/** Keep the existing route and unrelated query parameters in exhibit links. */
+function worldHistoryUrl(camera: Camera, selected: string | null) {
+  const url = new URL(location.href),
+    world = new URL(serialiseUrl(camera, selected ?? undefined), url.origin);
+  url.pathname = world.pathname;
+  world.searchParams.forEach((value, key) => url.searchParams.set(key, value));
+  url.searchParams.delete('exhibit');
+  return url.pathname + url.search + url.hash;
+}
 function World({ manifest }: { manifest: Manifest | null }) {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -228,8 +246,12 @@ function World({ manifest }: { manifest: Manifest | null }) {
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<Engine | null>(null),
     search = useRef<HTMLInputElement>(null),
-    urlTimer = useRef<ReturnType<typeof setTimeout>>();
+    urlTimer = useRef<ReturnType<typeof setTimeout>>(),
+    exhibitOpenRef = useRef(hasDarkRoomExhibit()),
+    exhibitReturnUrl = useRef(withoutExhibit(location.href)),
+    exhibitClosing = useRef(false);
   const [progress, setProgress] = useState(0),
+    [exhibitOpen, setExhibitOpen] = useState(hasDarkRoomExhibit),
     [error, setError] = useState(''),
     [intro, setIntro] = useState(false),
     [query, setQuery] = useState(''),
@@ -285,14 +307,69 @@ function World({ manifest }: { manifest: Manifest | null }) {
       ? hoverCharacter.name
         ? {
             title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
-            note: t('clickStory'),
+            note:
+              hoverCharacter.id === 'ibn-al-haytham'
+                ? t('exploreDarkRoom')
+                : t('clickStory'),
           }
         : hoverCharacter.role
           ? { title: hoverCharacter.role, note: '' }
           : null
       : null;
+  const openExhibit = useCallback(
+    (characterId?: string) => {
+      if (exhibitOpenRef.current) return;
+      // Stop the world synchronously, including the rest of a character-click
+      // handler. A pending camera debounce must not erase the exhibit route.
+      exhibitOpenRef.current = true;
+      clearTimeout(urlTimer.current);
+      engine.current?.setSuspended(true);
+      if (characterId) select(characterId);
+      setIntro(false);
+      setFocused(false);
+      setHovered(null);
+      const state = useStore.getState(),
+        returnUrl = worldHistoryUrl(
+          engine.current?.getCamera() ?? state.camera,
+          state.selected,
+        ),
+        returnState = { ...history.state };
+      delete returnState.darExhibit;
+      exhibitReturnUrl.current = returnUrl;
+      // Make Back return to this exact view, rather than a stale camera URL.
+      history.replaceState(returnState, '', returnUrl);
+      const url = new URL(returnUrl, location.origin);
+      url.searchParams.set('exhibit', 'dark-room');
+      history.pushState(
+        { ...returnState, darExhibit: { returnUrl } },
+        '',
+        url.pathname + url.search + url.hash,
+      );
+      setExhibitOpen(true);
+    },
+    [select],
+  );
+  const closeExhibit = useCallback(() => {
+    if (!exhibitOpenRef.current || exhibitClosing.current) return;
+    clearTimeout(urlTimer.current);
+    const returnUrl = withoutExhibit(location.href);
+    if (history.state?.darExhibit?.returnUrl === returnUrl) {
+      // Closing our own entry is also reversible with browser Forward.
+      exhibitClosing.current = true;
+      history.back();
+      return;
+    }
+    // A directly shared exhibit link has no in-app entry to go back to.
+    const returnState = { ...history.state };
+    delete returnState.darExhibit;
+    history.replaceState(returnState, '', returnUrl);
+    exhibitOpenRef.current = false;
+    setExhibitOpen(false);
+    engine.current?.setSuspended(false);
+  }, []);
   const open = useCallback(
     (id: string) => {
+      if (exhibitOpenRef.current) return;
       select(id);
       engine.current?.focusCharacter(id);
       setIntro(false);
@@ -314,18 +391,24 @@ function World({ manifest }: { manifest: Manifest | null }) {
     select(initial.id ?? null);
     const world = new Engine(host.current);
     engine.current = world;
+    world.setSuspended(exhibitOpenRef.current);
     world.on('progress', (p) => setProgress(p));
     world.on('characterClick', (id) => {
+      if (exhibitOpenRef.current) return;
+      if (id === 'ibn-al-haytham') {
+        openExhibit(id);
+        return;
+      }
       select(id);
       setIntro(false);
       history.pushState(null, '', serialiseUrl(world.getCamera(), id));
     });
     world.on('cameraChange', (c) => {
       setCamera(c);
-      if (initialising) return;
+      if (initialising || exhibitOpenRef.current) return;
       clearTimeout(urlTimer.current);
       urlTimer.current = setTimeout(() => {
-        if (!cancelled)
+        if (!cancelled && !exhibitOpenRef.current)
           history.replaceState(
             null,
             '',
@@ -346,39 +429,59 @@ function World({ manifest }: { manifest: Manifest | null }) {
       .load('/world/world.json')
       .then(() => {
         if (cancelled) return;
-        initialising = false;
+        const current = parseUrl(location.href);
         world.setMotion(useStore.getState().motion);
-        if (initial.id) {
-          select(initial.id);
-          world.focusCharacter(initial.id);
+        world.setSuspended(exhibitOpenRef.current);
+        if (current.id) {
+          select(current.id);
+          world.focusCharacter(current.id);
+          if (current.hasZoom) world.flyTo(current, 1);
         } else
           world.flyTo(
             {
-              ...initial,
+              ...current,
               // Phones open on the whole planet unless the link sets a zoom.
               zoom:
-                !initial.hasZoom &&
+                !current.hasZoom &&
                 Math.min(window.innerWidth, window.innerHeight) < PHONE_WIDTH
                   ? PHONE_ZOOM
-                  : initial.zoom,
+                  : current.zoom,
             },
             1,
           );
+        initialising = false;
+        world.setSuspended(exhibitOpenRef.current);
       })
       .catch((e) => {
         if (!cancelled) setError(String(e));
       });
     const pop = () => {
-      const next = parseUrl(location.href);
+      clearTimeout(urlTimer.current);
+      const next = parseUrl(location.href),
+        wasOpen = exhibitOpenRef.current,
+        isOpen = hasDarkRoomExhibit();
+      exhibitClosing.current = false;
+      exhibitOpenRef.current = isOpen;
+      setExhibitOpen(isOpen);
+      world.setSuspended(isOpen);
+      if (isOpen) {
+        exhibitReturnUrl.current = withoutExhibit(location.href);
+        return;
+      }
+      if (wasOpen && withoutExhibit(location.href) === exhibitReturnUrl.current)
+        return;
       select(next.id ?? null);
-      if (next.id) world.focusCharacter(next.id);
-      else {
+      if (next.id) {
+        world.focusCharacter(next.id);
+        if (next.hasZoom) world.flyTo(next, 1);
+      } else {
         world.clearSelection();
         world.flyTo(next, 300);
       }
     };
     window.addEventListener('popstate', pop);
     const keyboard = (e: KeyboardEvent) => {
+      if (exhibitOpenRef.current) return;
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         search.current?.focus();
@@ -392,17 +495,20 @@ function World({ manifest }: { manifest: Manifest | null }) {
     window.addEventListener('keydown', keyboard);
     // iOS Safari: stop pinches over the interface from zooming the whole page;
     // pinching the planet zooms the planet instead.
-    const noPageZoom = (e: Event) => e.preventDefault();
+    const noPageZoom = (e: Event) => {
+      if (!exhibitOpenRef.current) e.preventDefault();
+    };
     document.addEventListener('gesturestart', noPageZoom);
     return () => {
       cancelled = true;
       clearTimeout(urlTimer.current);
       world.destroy();
+      if (engine.current === world) engine.current = null;
       window.removeEventListener('popstate', pop);
       window.removeEventListener('keydown', keyboard);
       document.removeEventListener('gesturestart', noPageZoom);
     };
-  }, [select, setCamera]);
+  }, [select, setCamera, openExhibit]);
   useEffect(() => {
     engine.current?.setMotion(motion);
   }, [motion]);
@@ -446,7 +552,16 @@ function World({ manifest }: { manifest: Manifest | null }) {
       )}
       {litScene && (
         <div className="scene-caption" ref={caption} role="status">
-          {litScene.title[lang] ?? litScene.title.en}
+          <span>{litScene.title[lang] ?? litScene.title.en}</span>
+          {litScene.id === 'dark-room' && (
+            <button
+              className="scene-exhibit-link"
+              onClick={() => openExhibit()}
+              aria-haspopup="dialog"
+            >
+              {t('exploreDarkRoom')} <Icon name="arrow" size={14} />
+            </button>
+          )}
         </div>
       )}
       <div className="scene-vignette" />
@@ -541,6 +656,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
         </section>
       )}
       <div className="district-tabs">
+        <button
+          className="dark-room-tab"
+          onClick={() => openExhibit()}
+          aria-haspopup="dialog"
+        >
+          <Icon name="compass" size={15} />
+          {t('darkRoom')}
+        </button>
         <button onClick={() => focusArea(16, 20)}>
           <Icon name="book" size={15} />
           {t('knowledge')}
@@ -636,6 +759,19 @@ function World({ manifest }: { manifest: Manifest | null }) {
             </p>
           </div>
           <div className="story-body">
+            {card.id === 'ibn-al-haytham' && (
+              <section className="story-exhibit">
+                <h3>{t('darkRoomTitle')}</h3>
+                <p>{t('darkRoomStory')}</p>
+                <button
+                  className="primary"
+                  onClick={() => openExhibit()}
+                  aria-haspopup="dialog"
+                >
+                  {t('exploreDarkRoom')} <Icon name="arrow" size={17} />
+                </button>
+              </section>
+            )}
             {card.summary && (
               <>
                 <h3>{t('quickFacts')}</h3>
@@ -815,6 +951,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
           </button>
         </div>
       )}
+      {exhibitOpen && <DarkRoomExhibit onClose={closeExhibit} />}
     </main>
   );
 }

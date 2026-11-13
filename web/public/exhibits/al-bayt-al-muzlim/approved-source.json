@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "title": "Approved Al-Bayt al-Muzlim exhibit",
+  "source": {
+    "site": "https://al-bayt-al-muzlim-pixel-atelier.f-r-tusher007.chatgpt.site/",
+    "commit": "c784d7c27a8120d85242175641b029ddfbd12285",
+    "directory": "dist",
+    "description": "Byte-for-byte approved exhibit; original geometry, renderer, controls, models and previews."
+  },
+  "entrypoint": "index.html",
+  "files": [
+    {
+      "path": "app.js",
+      "bytes": 25506,
+      "sha256": "4962951afa2592d00bdf0e0dbb8616f40522611f3bea1c9f0be7159e45762bc1"
+    },
+    {
+      "path": "assets/al-bayt-al-muzlim-collection.zip",
+      "bytes": 7363028,
+      "sha256": "c120c1664d9f525081f6fa4a24c9812f46a6e9a8d2b52343cf975ec8e4f77f8c"
+    },
+    {
+      "path": "assets/al-bayt-al-muzlim-complete.glb",
+      "bytes": 18755368,
+      "sha256": "f98d7fc581ebc1171a904541f6b80a9b117c524541a03c7d9eb38d656e0af5ea"
+    },
+    {
+      "path": "assets/al-bayt-al-muzlim-cutaway.glb",
+      "bytes": 17935332,
+      "sha256": "083ad781c1abec34144968fdcc7a2becbce357feda97865c60971cf3b69dee6c"
+    },
+    {
+      "path": "assets/al-bayt-al-muzlim-instruments.glb",
+      "bytes": 3316640,
+      "sha256": "385ce85e2c299935d5de051bae0319450c8ffb69e730cc654561b6be368117f4"
+    },
+    {
+      "path": "assets/courtyard-ground-level.jpg",
+      "bytes": 123434,
+      "sha256": "0a3f87e9900cd440de625271548a0bcea4a2a6dd4b1ec5ebe6353fa10362a8db"
+    },
+    {
+      "path": "assets/export-validation.json",
+      "bytes": 242017,
+      "sha256": "523ebf684113633d6ba4513c12782b8f4e924102f34259e677affa1d788afadf"
+    },
+    {
+      "path": "assets/favicon.svg",
+      "bytes": 299,
+      "sha256": "5666b67cdfd62c3b7e9b7bc46a5c107d062fc29a07ce2942367cdb8e7aa233c5"
+    },
+    {
+      "path": "assets/location-architecture.jpg",
+      "bytes": 135883,
+      "sha256": "262f8b1a50817dcee7b693f479ae79af7e3803168009bfed23d952b4e20b9958"
+    },
+    {
+      "path": "assets/mirror-reflection-demo.jpg",
+      "bytes": 98476,
+      "sha256": "90215a280dcb49e0843a3c0974baebf2b1cde0b18a3d19934739107851c886e3"
+    },
+    {
+      "path": "assets/precision-mirrors.jpg",
+      "bytes": 98675,
+      "sha256": "67ac1eed26011a489f59f64be64c85c280ca61f902fea3650fac50ce1f84bd4c"
+    },
+    {
+      "path": "assets/spacious-room-interior.jpg",
+      "bytes": 114876,
+      "sha256": "34d53ed27ee7a7c0c2bb3e68baece88961b3b4f71f1877d57449d65c6a73ec41"
+    },
+    {
+      "path": "assets/spacious-room-plan.jpg",
+      "bytes": 83982,
+      "sha256": "d35f6970739e50a27fbecabcb6f9468306b95e244e65664c9f678861e3f6c407"
+    },
+    {
+      "path": "assets/water-clock.jpg",
+      "bytes": 96329,
+      "sha256": "82ed78a9d546f1b1d0050fc8ed052f57843a7f28a52712f0cdd17ca515649ffc"
+    },
+    {
+      "path": "assets/working-room-stations.jpg",
+      "bytes": 80765,
+      "sha256": "5848f3cfa180c357e088b8d486555617bf67990a06718298c9ac9dc0475c9ee5"
+    },
+    {
+      "path": "courtyard.js",
+      "bytes": 41199,
+      "sha256": "9ac61fb86c3b1d5973bc7f14fa9722059dd0bfbee4b4f20cd4232871b7acf36e"
+    },
+    {
+      "path": "index.html",
+      "bytes": 27089,
+      "sha256": "893e99d36b488e8cdc29a10f49470ad55158acf68671112999dd8853570cdb21"
+    },
+    {
+      "path": "instrument-experiments.js",
+      "bytes": 13187,
+      "sha256": "7c171da96ba0eeecabc461c5a79bd1cb2f57e4877e2e3db8cd89b19bcd0d1be1"
+    },
+    {
+      "path": "instruments.js",
+      "bytes": 16780,
+      "sha256": "949104580978a0ddcb24ab1bb303286f9508963a51c6d885e8756ee7996dd8ac"
+    },
+    {
+      "path": "observation-instruments.js",
+      "bytes": 11949,
+      "sha256": "6593827dc25cbcf5b05662753e41a2e5c7a9f6119a0e46be765e6a07ad4b90cd"
+    },
+    {
+      "path": "renderer.js",
+      "bytes": 47152,
+      "sha256": "fdfe569a43ac1a61c9cf7deaedabb1137363afda5388e3250b713029028b2dd7"
+    },
+    {
+      "path": "scene.js",
+      "bytes": 31056,
+      "sha256": "5a2e2047bc35ad5af6d03cab7bdb5120741901731805be5ef3d3e23fa375ca7b"
+    },
+    {
+      "path": "software.js",
+      "bytes": 11150,
+      "sha256": "a3f4ec58801ab0d6969aa538f698a799b50b5cd2676ed2e1a9fc36b3f162de19"
+    },
+    {
+      "path": "style.css",
+      "bytes": 45647,
+      "sha256": "8aa8ac91291a85a3fcfe91fd4307c3f96e00a58da91b6f3f8b2de7f677649e2b"
+    }
+  ]
+}
