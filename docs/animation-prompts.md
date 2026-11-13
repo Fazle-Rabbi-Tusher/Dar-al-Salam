@@ -257,19 +257,6 @@ Outfit as in the sprite (qaba, imamah). Default held item: a plain book (no read
 - **`ibn-al-haytham__idle_NE.png`** — 4 frames, view NE. Holding: a plain book (no readable text). Pose: standing relaxed, weight on both feet; small breathing movement; one frame with a blink.
   > Prompt: "Pixel-art sprite strip of Ibn al-Haytham (same person and outfit as the attached sprite), 4 frames in one row, each 224×336 px, feet at x 112 y 320, view NE, standing relaxed, weight on both feet; small breathing movement; one frame with a blink, holding a plain book (no readable text). Flat #14131B background, no text or logos."
 
-## Ibn Battuta — `ibn-battuta`
-
-Outfit as in the sprite (kaftan, imamah). Default held item: a plain rolled scroll.
-
-- **`ibn-battuta__talk_SE.png`** — 4 frames, view SE. Holding: a plain rolled scroll. Pose: standing, speaking warmly, one hand gesturing at chest height; mouth alternates open and closed.
-  > Prompt: "Pixel-art sprite strip of Ibn Battuta (same person and outfit as the attached sprite), 4 frames in one row, each 224×336 px, feet at x 112 y 320, view SE, standing, speaking warmly, one hand gesturing at chest height; mouth alternates open and closed, holding a plain rolled scroll. Flat #14131B background, no text or logos."
-- **`ibn-battuta__talk_NE.png`** — 4 frames, view NE. Holding: a plain rolled scroll. Pose: standing, speaking warmly, one hand gesturing at chest height; mouth alternates open and closed.
-  > Prompt: "Pixel-art sprite strip of Ibn Battuta (same person and outfit as the attached sprite), 4 frames in one row, each 224×336 px, feet at x 112 y 320, view NE, standing, speaking warmly, one hand gesturing at chest height; mouth alternates open and closed, holding a plain rolled scroll. Flat #14131B background, no text or logos."
-- **`ibn-battuta__wave_SE.png`** — 4 frames, view SE. Holding: a plain rolled scroll. Pose: standing, right hand raised above the shoulder waving side to side, friendly smile.
-  > Prompt: "Pixel-art sprite strip of Ibn Battuta (same person and outfit as the attached sprite), 4 frames in one row, each 224×336 px, feet at x 112 y 320, view SE, standing, right hand raised above the shoulder waving side to side, friendly smile, holding a plain rolled scroll. Flat #14131B background, no text or logos."
-- **`ibn-battuta__wave_NE.png`** — 4 frames, view NE. Holding: a plain rolled scroll. Pose: standing, right hand raised above the shoulder waving side to side, friendly smile.
-  > Prompt: "Pixel-art sprite strip of Ibn Battuta (same person and outfit as the attached sprite), 4 frames in one row, each 224×336 px, feet at x 112 y 320, view NE, standing, right hand raised above the shoulder waving side to side, friendly smile, holding a plain rolled scroll. Flat #14131B background, no text or logos."
-
 ## Ibn Khaldun — `ibn-khaldun`
 
 Outfit as in the sprite (scholar-robe, imamah). Default held item: a plain book (no readable text).

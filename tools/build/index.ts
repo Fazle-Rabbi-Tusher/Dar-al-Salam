@@ -246,6 +246,11 @@ async function build() {
       frame: [number, number];
       foot: [number, number];
       density: number;
+      /**
+       * Play order over the strip's unique poses (the prayer congregation):
+       * the strip holds each pose once, and this lists one per step.
+       */
+      sequence?: number[];
     } = await readJson(`${base}.json`).catch(() => ({
       frame: [224, 336],
       foot: [112, 320],
@@ -261,7 +266,7 @@ async function build() {
       });
     // Left-facing views reuse these frames, flipped by the engine.
     return {
-      frames: out,
+      frames: meta.sequence ? meta.sequence.map((i) => out[i]) : out,
       flip: facing === 'SW' || facing === 'NW',
       density: meta.density,
     };
@@ -284,6 +289,8 @@ async function build() {
     shadow?: [number, number] | false;
     /** Other strips for particular actions (the tram's open doors). */
     actions?: Record<string, string>;
+    /** Walking steps for this figure: the moving share of its height. */
+    steps?: number;
   };
   /** Walking actions get generated steps (legs and hems move). */
   const STEPPING = new Set(['animal_walk', 'walk']);
@@ -390,12 +397,19 @@ async function build() {
           sets[action] = other.map((v) => [reg(v)]);
         } else if (
           STEPPING.has(action) &&
-          (base === 'camel' || base === 'guide')
+          (base === 'camel' || base === 'guide' || meta.steps)
         )
           // Camels' legs are long (the lower 45%); a robe moves at the hem.
           sets[action] = views.map((v, i) =>
             [0, 1, 2, 3].map((f) =>
-              reg(stepped(v, i, f / 4, base === 'camel' ? 0.45 : 0.16)),
+              reg(
+                stepped(
+                  v,
+                  i,
+                  f / 4,
+                  meta.steps ?? (base === 'camel' ? 0.45 : 0.16),
+                ),
+              ),
             ),
           );
       }
@@ -438,12 +452,19 @@ async function build() {
   const sceneOfProp = (type: string, [x, y]: [number, number]) =>
     content.scenes.find(
       (sc) =>
-        sc.props.includes(type) &&
+        // A prop type, or a family of them ('sup-ph-*': the mosque's pieces).
+        sc.props.some((p) =>
+          p.endsWith('*') ? type.startsWith(p.slice(0, -1)) : p === type,
+        ) &&
         x >= sc.area[0][0] &&
         x <= sc.area[1][0] &&
         y >= sc.area[0][1] &&
         y <= sc.area[1][1],
     )?.id;
+  const stripCache = new Map<
+    string,
+    { flip: boolean; names: string[] } | null
+  >();
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
   for (const c of characters) {
@@ -503,24 +524,40 @@ async function build() {
           bakedCount += ACTIONS[s.action];
           continue;
         }
-        const strip = await stripFrames(
-          c.id,
-          `${s.action}${s.prop ? '@' + s.prop : ''}`,
-          facing,
-        );
-        if (strip) {
+        // A figure may play another's strips (`strip`: the prayer hall's rows
+        // repeat a dozen designs); each strip is registered once.
+        const stripKey = `${c.strip ?? c.id}|${s.action}${s.prop ? '@' + s.prop : ''}|${facing}`;
+        if (!stripCache.has(stripKey)) {
+          const strip = await stripFrames(
+            c.strip ?? c.id,
+            `${s.action}${s.prop ? '@' + s.prop : ''}`,
+            facing,
+          );
           // Every supplied pose plays, at the action's tempo (an eight-pose
           // reading strip is not cut down to the four-pose default).
-          const n = strip.frames.length,
-            tempo = stripTempo(s.action);
+          const tempo = stripTempo(s.action);
+          stripCache.set(
+            stripKey,
+            strip && {
+              flip: strip.flip,
+              names: strip.frames.map((fr) =>
+                register(
+                  fr.image,
+                  fr.anchor,
+                  strip.density,
+                  true,
+                  false,
+                  tempo,
+                ),
+              ),
+            },
+          );
+        }
+        const strip = stripCache.get(stripKey);
+        if (strip) {
           if (strip.flip) mirror.push(key);
-          for (let f = 0; f < n; f++) {
-            const fr = strip.frames[f];
-            frames[key].push(
-              register(fr.image, fr.anchor, strip.density, true, false, tempo),
-            );
-          }
-          bakedCount += n;
+          frames[key].push(...strip.names);
+          bakedCount += strip.names.length;
           continue;
         }
         if (sprite && !s.prop && !DRAWN_ACTIONS.has(s.action)) {
@@ -698,6 +735,8 @@ async function build() {
       frames?: string[];
       period?: number;
       replaces?: string;
+      /** Flat floor art: baked into the ground texture, under everything. */
+      floor?: boolean;
     }
   > = await readJson('art/supplied/index.json');
   const replacing = new Map(
@@ -713,6 +752,7 @@ async function build() {
       // Supplied art placed in the room (art/supplied): planted like
       // Massawa's pieces, standing on the footprint's centre.
       if (!objectArt[o.type] && suppliedArt[o.type]) {
+        if (suppliedArt[o.type].floor) continue; // baked into the ground below
         replaced.push([
           o.type,
           o.x + o.footprint[0] / 2,
@@ -764,6 +804,9 @@ async function build() {
           tile: [o.x, o.y],
           footprint: o.footprint,
           ground,
+          ...(sceneOfProp(o.type, [o.x, o.y])
+            ? { scene: sceneOfProp(o.type, [o.x, o.y]) }
+            : {}),
           // Frame pixel resting on the ground point, so strips follow the curve.
           pivot: [m.anchor[0] + at[0] - base[0], m.anchor[1] + at[1] - base[1]],
           lift: o.z,
@@ -1133,6 +1176,40 @@ async function build() {
         im,
         Math.round(p[0] - art.anchor[0]),
         Math.round(p[1] - art.anchor[1]),
+      );
+    }
+  // Supplied floor art (the prayer hall's carpet), brought to one sprite
+  // pixel per world pixel and baked in the same way, standing on the centre
+  // of its room object's footprint.
+  if (objectLayer?.type === 'objectgroup')
+    for (const o of objectLayer.objects) {
+      const sup = objectArt[o.type] ? undefined : suppliedArt[o.type];
+      if (!sup || !sup.floor) continue;
+      const { data, info } = await sharp(`art/${sup.file}`)
+        .resize({
+          width: Math.round(
+            ((await sharp(`art/${sup.file}`).metadata()).width ?? 1) /
+              sup.density,
+          ),
+          kernel: 'lanczos3',
+        })
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      const im: PixelImage = {
+          width: info.width,
+          height: info.height,
+          data: new Uint8Array(data),
+        },
+        p = worldFromTile(o.x + o.footprint[0] / 2, o.y + o.footprint[1] / 2);
+      // Keep only solid pixels (the resize softens the outline).
+      for (let i = 3; i < im.data.length; i += 4)
+        im.data[i] = im.data[i] > 127 ? 255 : 0;
+      blit(
+        floor,
+        im,
+        Math.round(p[0] - sup.anchor[0] / sup.density),
+        Math.round(p[1] - sup.anchor[1] / sup.density),
       );
     }
   // Top-down floor in tile space: each texel samples the isometric floor art

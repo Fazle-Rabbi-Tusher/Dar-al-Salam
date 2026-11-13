@@ -107,6 +107,42 @@ test("clicking a listener lights up Mufti Menk's whole talk and opens his card; 
   await expect(page.locator('.scene-caption')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+test('clicking Ibn al-Haytham opens his card and frames the dark room', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  // Al-Bayt al-Muzlim, on the Bangladesh block's west lawn: his card link
+  // turns the planet to it; close the card to see the room.
+  await ready(page, '/c/ibn-al-haytham');
+  await expect(page.locator('.story-card')).toBeVisible();
+  await page.locator('.card-close').click();
+  await page.waitForTimeout(1100);
+  const points = await page.evaluate(() =>
+    (
+      window as unknown as {
+        __darEngine: {
+          debugPoints(id: string): { opaque: { x: number; y: number } } | null;
+        };
+      }
+    ).__darEngine.debugPoints('ibn-al-haytham'),
+  );
+  expect(points?.opaque).toBeTruthy();
+  const canvas = await page.locator('.world-host canvas').boundingBox();
+  await page.mouse.move(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  // Hovering stays normal: no scene light.
+  await expect(page.locator('.scene-caption')).toHaveCount(0);
+  await page.mouse.click(
+    canvas!.x + points!.opaque.x,
+    canvas!.y + points!.opaque.y,
+  );
+  await expect(page.locator('.story-card h2')).toHaveText('Ibn al-Haytham');
+  await expect(page.locator('.scene-caption')).toContainText('The dark room');
+  expect(errors).toEqual([]);
+});
 test('the Massawa button flies to the town and the mosque opens its landmark card', async ({
   page,
 }) => {

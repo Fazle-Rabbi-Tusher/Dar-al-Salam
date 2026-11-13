@@ -103,6 +103,8 @@ export const characterSchema = z.object({
   loop: z.union([z.literal(60), z.literal(120), z.literal(240)]),
   script: z.array(stepSchema).min(1),
   pairWith: z.string().optional(),
+  /** Id of another figure whose animation strips this one plays. */
+  strip: z.string().optional(),
   /** Id of a figure this one leads on a rope (a guide leading a camel). */
   leads: z.string().optional(),
   bio: z.record(z.string()).optional(),
@@ -152,10 +154,15 @@ export const sceneSchema = z.object({
   lead: z.string(),
   /** Every character in the scene, the lead included. */
   members: z.array(z.string()).min(1),
-  /** Room object types that belong to the scene, inside `area`. */
+  /** Room object types that belong to the scene, inside `area` ('x-*': all starting 'x-'). */
   props: z.array(z.string()).default([]),
   /** Tile rectangle [[x0, y0], [x1, y1]] holding the scene's props. */
   area: z.tuple([pointSchema, pointSchema]),
+  /**
+   * How a click frames the scene: straight to the whole group, or 'reveal':
+   * a close-up of the lead first, then a slow pull back over everyone.
+   */
+  camera: z.enum(['frame', 'reveal']).default('frame'),
 });
 export type Scene = z.infer<typeof sceneSchema>;
 export const objectSchema = z.object({

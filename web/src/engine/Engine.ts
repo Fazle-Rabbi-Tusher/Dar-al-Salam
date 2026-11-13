@@ -613,6 +613,7 @@ export class Engine {
     // Buttons and keys zoom around the focus; zoomAt re-sets its own point.
     this.zoomPoint = null;
     this.flight = null;
+    this.nextFlight = null;
     this.view.zoom = Math.max(this.minZoom(), Math.min(MAX_ZOOM, zoom));
     this.zoomIdle = 240;
     this.applyCamera();
@@ -664,7 +665,10 @@ export class Engine {
       zoom: Math.max(this.minZoom(), Math.min(MAX_ZOOM, to.zoom)),
     };
   }
+  /** A second camera move queued after the current one (a scene's reveal). */
+  private nextFlight: { to: Camera; ms: number } | null = null;
   flyTo(to: Camera, ms = 600) {
+    this.nextFlight = null;
     this.velocity = { lat: 0, lon: 0 };
     this.zoomIdle = ms + 240;
     const goal = this.target(to);
@@ -736,16 +740,31 @@ export class Engine {
         (h * (phone ? 0.2 : 0.75)) / (bottom - top),
       ),
       zoom = Math.max(phone ? 0.8 : 1.2, Math.min(3, fit));
-    this.flyTo(
-      {
-        x: (left + right) / 2,
-        // Phones: the scene's middle a quarter of the way down, under the
-        // top buttons with room for its caption.
-        y: (top + bottom) / 2 + (phone ? (0.5 - 0.25) * (h / zoom) : 20),
-        zoom,
-      },
-      700,
-    );
+    const whole: Camera = {
+      x: (left + right) / 2,
+      // Phones: the scene's middle a quarter of the way down, under the
+      // top buttons with room for its caption.
+      y: (top + bottom) / 2 + (phone ? (0.5 - 0.25) * (h / zoom) : 20),
+      zoom,
+    };
+    const lead = this.manifest.characters.find((c) => c.id === scene.lead);
+    if (scene.camera === 'reveal' && lead) {
+      // A close-up of the lead first, then a slow drift back and up over
+      // the whole scene.
+      const [lx, ly] = worldFromTile(...characterState(lead, this.frame).tile),
+        close = phone ? 2.6 : 3.6;
+      this.flyTo(
+        {
+          x: lx,
+          y: ly - 36 + (phone ? (0.5 - 0.25) * (h / close) : 0),
+          zoom: close,
+        },
+        900,
+      );
+      this.nextFlight = { to: whole, ms: 4200 };
+      return;
+    }
+    this.flyTo(whole, 700);
   }
   /**
    * Floor796-style group highlight: a soft light box over every member and
@@ -1103,7 +1122,11 @@ export class Engine {
         zoom: fl.from.zoom + (fl.to.zoom - fl.from.zoom) * ease,
       };
       moved = true;
-      if (t === 1) this.flight = null;
+      if (t === 1) {
+        this.flight = null;
+        const next = this.nextFlight;
+        if (next) this.flyTo(next.to, next.ms);
+      }
     } else if (
       !this.pointers.size &&
       Math.hypot(this.velocity.lat, this.velocity.lon) > 1e-6
@@ -1273,6 +1296,7 @@ export class Engine {
         this.moved = 0;
         this.velocity = { lat: 0, lon: 0 };
         this.flight = null;
+        this.nextFlight = null;
       },
       options,
     );
@@ -1397,6 +1421,7 @@ export class Engine {
         else return;
         e.preventDefault();
         this.flight = null;
+        this.nextFlight = null;
         this.applyCamera();
       },
       options,

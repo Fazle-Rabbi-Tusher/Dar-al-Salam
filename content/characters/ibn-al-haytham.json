@@ -19,9 +19,9 @@
     "colours": {
       "skin": "skin-3",
       "hair": "hair-black",
-      "garmentPrimary": "indigo",
-      "garmentSecondary": "saffron",
-      "headwear": "white-linen",
+      "garmentPrimary": "cocoa",
+      "garmentSecondary": "madder-red",
+      "headwear": "madder-red",
       "prop": "cocoa"
     }
   },
@@ -29,17 +29,10 @@
   "script": [
     {
       "from": 0,
-      "to": 60,
-      "action": "talk",
-      "at": [44.6, 18.4],
-      "facing": "SE"
-    },
-    {
-      "from": 60,
       "to": 120,
-      "action": "idle",
-      "at": [44.6, 18.4],
-      "facing": "SW"
+      "action": "write",
+      "at": [21.5, 101.96],
+      "facing": "SE"
     }
   ],
   "bio": {

@@ -138,3 +138,157 @@
     - **Props:** the pack was made for the old library workstation. In the maths lab only its antique writing desk is added (4× art, seen from its closed front). Its armillary, geometry stand and bookcase are left out: the owner's rule is only mathematical equipment with no piece twice, and the astrolabe and globe were removed at the owner's request.
     - **Not taken from the pack:** its render-time path smoothing. That interpolates between ticks using wall-clock time, and every other walker moves on the fixed 12 fps clock.
     - **Other changes:** his sharp head was regenerated to cover the new actions. `tools/prepare-khwarizmi.ts` now cuts only the gallery scenes.
+67. Yasser al-Dosari leads a congregational prayer, from the owner's prayer-library pack and production prompt (`tools/prepare-prayer.ts <extracted pack>`):
+    - **Card:** a draft card for Yasser al-Dosari (b. 1980, Al-Kharj · Makkah). The summary holds dated facts only, with a Wikipedia link. Biography, story and sources stay placeholders, and `panelApproved` is false.
+      - **Name check:** the name, both aliases, the Arabic and Bangla spellings and the full name pass the never-depict check. "Hussain" in his full name is lineage.
+      - **Living person:** he is living, so the panel should confirm consent and the depiction policy before approval (as in item 18).
+      - **Art:** his card picture and an eight-picture gallery come from the pack's detailed prayer poses.
+    - **Where:** a new prayer hall on the Baitul Mukarram plaza (owner's choice), so the Peace Quarter mosque keeps Mufti Menk's talk, Habib Umar's circle and Omar Suleiman. The plaza's tea stall moved south.
+      - **Facing:** the qibla faces the viewer (owner's choice: faces show), so everyone faces SE, depiction `full`.
+      - **Walls:** only the two far walls stand. The near walls are cut away, as in the pack.
+    - **Layout, front to back:**
+      - Yasser on a low imam's dais, with a crimson-and-gold rug.
+      - Two men's rows of six.
+      - A chest-high carved wooden mashrabiya, geometric lattice only.
+      - Two women's rows of six.
+      - Brass lanterns that glow slowly. A marble pillar stands in the far corner.
+    - **Art (owner's hybrid choice):**
+      - Detailed pixel art whenever someone stands, for all of Yasser's poses and for the children's sujood.
+      - The pack's voxel key poses (rendered from its 3D component, three-quarter view) for the other positions.
+      - A cross-fade frame at each change of pose.
+      - Each person has one 240-tick `pray` strip. Unique poses are stored once, with a new `sequence` field listing the play order.
+    - **The prayer (240 ticks):** takbir; standing with the right hand over the left; ruku; standing up; two sujoods with the sitting between; tashahhud; salam to the right, then to the left; then standing to begin again. It is time-compressed to one rak'ah to fit the loop. Adults follow the imam half a second late.
+    - **The children:**
+      - The toddler beside his father follows 1.5 seconds late, glances across at each change, and tugs at his father's thawb as the rows rise from ruku.
+      - A boy in the men's rows and a girl beside her mother in the women's rows copy a moment late, glancing first.
+      - Two children tiptoe round the marble pillar in a quiet game of tag. They are eight-view figures, and any eight-view figure can now ask for generated steps.
+    - **Click:**
+      - **Hover:** hovering anyone in the prayer shows only their own label.
+      - **Click:** clicking anyone opens Yasser's card and lights the whole scene with its caption (scene `congregational-prayer`).
+      - **Camera:** a new `camera: reveal` mode starts with a close-up of the imam, then drifts slowly back and up over the hall.
+    - **Rules kept:** no sacred text, calligraphy or symbols, and no audio or recitation (the pack is silent too). The prayer poses are flagged for panel review like all prayer moves.
+    - **Not done from the prompt:**
+      - God rays and dust motes, hanging ceiling lanterns, and depth-of-field blur on the back rows.
+      - The father's glance and smile, the child's head-turn under his arm in sujood, and the elder turning round: the pack has no art for these poses.
+68. The prayer hall is now the owner's 3D mosque (`mosque-six-angle-final` on the `downloads/world-designs-and-animation` branch), and everyone faces its qibla wall and mihrab (owner's brief, replacing the viewer-facing layout in item 67):
+    - **Rendering:** `tools/prepare-mosque-hall.ts` renders the model's own three.js source in the world's 2:1 isometric projection, with its lighting and shadows, one piece at a time.
+      - **Where it stands:** the same spot on the plaza, set in `tools/mosque-hall/layout.ts`, shared with `tools/prepare-prayer.ts`.
+      - **Scale:** half a tile to the model's metre on the ground (8.4 × 11.4 tiles), with heights stretched 1.84× so the columns stand above our people.
+    - **What shows:**
+      - The limestone west wall with arched stained-glass windows, wall lanterns and foliage outside.
+      - The qibla wall with the glowing recessed mihrab.
+      - Faceted columns with pointed arches, vault ribs, three tiered brass chandeliers, ferns in brass pots and the walnut mashrabiya screen.
+      - The teal-blue carpet with gold-and-cream star rosettes, and the imam's own fringed mat.
+      - Soft golden sun shafts from the west windows.
+    - **Cut away for the view:** the roof and the two walls nearest the viewer, as in the pack's viewer. The screen moves forward so the men's and women's rows fit between the colonnades.
+    - **The curved planet:** the hall sits far from the map's centre, where the ground is stretched.
+      - The carpet is baked into the ground texture (supplied art can now be `floor: true`), so it follows the curve.
+      - Everything tall is cut into narrow, overlapping vertical strips, each standing on its own floor point. That keeps the joins invisible and sorts people correctly in front of or behind every column, arch and wall.
+      - The hall is 129 pieces.
+    - **Facing:** everyone faces the qibla wall (NE), seen from behind (`depiction: back`), from the pack's back three-quarter voxel poses. Yasser's detailed back view (his turnaround) shows whenever he stands. No detailed art exists from behind for the congregation, and the brief asks for voxel art.
+    - **People:**
+      - Yasser on his mat before the mihrab, then two men's rows of six, the screen, and two women's rows of six.
+      - The toddler and the boy at the ends of the front row, and the girl beside her mother.
+      - The two children play tag round the column by the entrance.
+    - **Clicking:** clicking any person or piece of the mosque opens Yasser's card and lights up the scene. Scene props can now name a family of types (`sup-ph-*`).
+    - **Removed:** the hall drawn for item 67 (walls, carpet, dais, lattice, pillar, lanterns), and the plaza lamp that stood where the qibla wall now is.
+    - **Not used from the pack:** its own congregation (static figures), the coffered ceiling and the two near walls (cut away to see in).
+69. The grand mosque (owner's double-size brief), replacing the 16 × 22 m hall of item 68:
+    - **The builder:** `tools/mosque-hall/grand-mosque.mjs` rebuilds the owner's model at the brief's size with the model's own parts, materials and textures.
+      - **The hall:** 59 × 28 m, 12 m high.
+      - **The men's section:** a central aisle at X 0, the men's rows running from X −20 to +20, and the twin rows of five massive pillars at X ±10.
+      - **Arches:** side arcades of pointed arches, and vault ribs spanning the hall.
+      - **Walls:** five tall stained-glass windows on the side wall and eight on the qibla wall, with sconces between them.
+      - **The mihrab:** a larger glowing mihrab at X 0.
+      - **Chandeliers:** ten tiered hexagonal brass chandeliers, in two rows across the hall.
+      - **The screen and the women's section:** a long walnut mashrabiya at X 21, running the depth of the hall, with the women's section beyond it to X 36.
+      - **Plants and carpet:** palms in brass planters, and the teal star-rosette carpet with the imam's fringed mat.
+      - **Its plan:** `LAYOUT` drives the render tool and the congregation tool.
+    - **In the world:** 0.35 tiles to the metre (about 21 × 10 tiles, the whole plaza), with heights stretched 2.37×. The pillars stand about 130 world px and the walls about 195. The near walls and the roof are cut away. Sun shafts come from the side windows.
+    - **The congregation (165 people):**
+      - Yasser on his mat at X 0, Z 0, facing the mihrab.
+      - Eight long rows of men (14 a row, leaving the pillars clear) and eight rows of women (5 a row), every 2.5 m back to Z 19.5.
+      - The toddler and the boy in the front row's pillar gaps; the girl by the screen; the tag game round the back pillar.
+      - Everyone faces the qibla wall (NE), seen from behind.
+    - **Shared strips:** a new `strip` field lets a figure play another's strips, so the rows repeat the pack's 12 men's and 12 women's designs. They are arranged so that no two alike stand side by side or one behind the other. Each strip is registered once (2,821 unique frames for 249 characters).
+    - **Performance:** a view of the hall renders at about the same frame rate as the rest of the world in software GL (3.0 against 3.3 fps).
+    - **Not done:** the coffered ceiling (cut away to see the rows), and the brief's own camera (the world keeps its isometric view; you look at the hall diagonally from the front three-quarter).
+70. The vast hall round the original small congregation (owner's brief, replacing item 69's dozens of rows):
+    - **The hall:** `grand-mosque.mjs` is now 32 × 40 m, 12 m high, at 0.4 tiles to the metre on the plaza.
+      - **Pillars and arches:** twin rows of five colossal pillars (9.5 m) at X ±10, with wide pointed arches and vault ribs.
+      - **Windows:** five extra-tall (9.4 m) stained-glass windows on the side wall and four on the qibla wall.
+      - **Chandeliers:** six grand chandeliers hung high (8.4 m), with the largest over the congregation.
+      - **Plants:** palms in brass pots.
+    - **The people:** the original group of the imam, 12 men and 12 women, stays compact in the middle of the open hall.
+      - **Men:** two rows of six, from X −6 to +6, at Z 2 and 4.4.
+      - **The screen:** the walnut mashrabiya runs across the hall behind them, as in the owner's original model.
+      - **Women:** two rows of six beyond the screen.
+      - **Children:** the toddler and the boy at the ends of the front row, the girl beside her mother, and the tag game round a pillar out on the open floor.
+    - **Other changes:** the shared-strip feature stays available. The sharp-head test now allows 20 s, since it grows with the cast.
+71. Ibn al-Haytham at his optics bench, from the owner's Ibn al-Haytham collection and optics-workflow brief (`tools/prepare-haytham.ts <collection> <three.js vendor>`):
+    - **The figure:** the pack's voxel scholar (`Scholar/model.js`, with movable head, arms and book) is posed frame by frame. Each shoulder turns its rigid bent arm to bring the hand to a target point (pinhole plate, bowl, dial, parchment). He leans slightly and steps along the bench, and his head turns to what he works on.
+    - **The instruments:** the pack's own equipment builder (`Equipment/models.js`) at 0.42 scale on a wooden bench:
+      - the pinhole panel and screen, the pinhole narrowing as the plate slides;
+      - the glass bowl, turned, then slid along a notched track until a bright focal point appears on the card at the marker;
+      - the measuring scale, its pointer moving onto the light beam as the dial turns.
+      - **Also on the bench:** a parchment with a scribed arc and the closed Book of Optics. A tall wall screen beside the bench carries the candle's inverted image.
+    - **The workflow (120 ticks, the brief's times at 12 ticks a second):**
+      - 0–18: the aperture.
+      - 18–36: the bowl.
+      - 36–54: the dial, palm flat on the bench.
+      - 54–84: the compass scribing the arc, then hand raised to his chin as he follows the image drifting across the wall screen.
+      - 84–120: he watches, then begins again.
+    - **One figure:** he and the bench are drawn together as one 40-frame `write` strip (density 3), so his hands sit correctly against the instruments. The back-view strip is the same frames, since he always works facing SE.
+    - **Placement:** he moved to the open south-east corner of the university science lab (49.6, 18.6).
+    - **Card:** a new picture of him standing with the green Book of Optics, a sprite rendered from it, and five gallery stills, one per gesture. The card's facts are unchanged and `panelApproved` stays false.
+    - **Approximations:** the figure has no elbows, wrists or fingers to bend, so the fine gestures are the arms' reach and the instruments' movement. These are the fingernail on the plate, the pinch on the dial, the twist of the wrist and the hand resting on the chin. The compass is shown at the parchment rather than held in the fingers.
+72. Ibn al-Haytham's new look, from the owner's character collection (`Ibn-al-Haytham-Character-Collection`), which follows two portrait references the owner supplied:
+    - **The figure:** a burgundy wrapped turban, a dark beard, and brown and rust robes, built on a finer voxel grid (0.02). It is the same model with the same joints, so `tools/prepare-haytham.ts` takes the collection's folder as an optional third argument and re-renders the whole optics workflow, his card picture, sprite and gallery with it.
+    - **Lighting:** a little lower (exposure 0.95), so the darker colours match the concept art.
+    - **Card colours:** cocoa robe, madder-red turban and secondary, black hair.
+    - **Not used:** the shared exhibit link (al-bayt al-muzlim) could not be opened from this environment. Its network policy blocks the host, and the exhibits need the owner's ChatGPT sign-in.
+73. Al-Bayt al-Muzlim, the dark room, from the owner's collection (`al-bayt-al-muzlim-collection`), with Ibn al-Haytham working inside it:
+    - **The room:** the collection's cutaway GLB, an imagined chamber for the study of light. A shuttered pinhole in the near-left wall throws the courtyard, upside down, onto a linen screen. Around it stand shelves of vessels, a sealed arched door, hanging instruments, a geometry lectern, a stool and storage.
+    - **Rendering:** `tools/prepare-dark-room.ts` renders it in the world's view (`tools/dark-room/render.html`). The room is turned a quarter so its open sides face the viewer, heights are stretched 1.75×, and one room unit is 0.75 tiles.
+    - **Pieces:** 103 pieces (`sup-dr-*`, `art/supplied/dark-room.json`), so people stand between its walls, screen, shelves and furniture:
+      - the floor is baked into the ground;
+      - the walls, shelves, screen and beam stand in 16 px strips, each on its own floor point;
+      - the lectern, stool and storage are single pieces.
+      - three.js turns the GLB's spaces into underscores and wraps the parts in one scene node, so pieces match each mesh's nearest named ancestor.
+    - **Left out:** the room's own optical bench, glass bowl and lens stand. Ibn al-Haytham's animated bench (item 71) stands in their place.
+    - **Placement:** the room fills the science lab's south-east corner (x 49–55, y 13–21). The robot arm, roboticist, water cooler and al-Jazari moved out of its footprint.
+    - **Ibn al-Haytham:** he works at (51.8, 16.6), with the beam from the pinhole to the screen passing just behind him. His own wall screen was dropped, since the room's screen now carries the image. In the 54–106 phase he turns his head toward the room's screen, as far as a natural turn allows (63°).
+    - **Scene:** `content/scenes/dark-room.json`, led by him with the room's pieces as props. Clicking him or any part of the room frames it with the close-up-then-pull-back reveal.
+    - **Content:** the room carries no writing or symbols, and his card stays an unapproved draft.
+74. The Baitul Mukarram plaza is cleared (owner's request, 2026-11, with a circled screenshot). The owner chose to remove everything on it:
+    - **Baitul Mukarram:** the cube, gate, arcades, pavilion and tea stall, and the tree in the middle of the plaza.
+    - **Ibn Battuta:** his card, head, sprite and strips. The owner took him for Ibn al-Haytham, who stays in the dark room (item 73).
+    - **The prayer hall:**
+      - Yasser al-Dosari's card and art;
+      - the 29 worshippers and children;
+      - the congregational-prayer scene;
+      - the mosque pieces (`sup-ph-*`);
+      - the tools that built them: `tools/prepare-prayer.ts`, `tools/prepare-mosque-hall.ts`, `tools/mosque-hall/`;
+      - the prayer brief.
+    - **Kept:** items 61–70 record that work, and it remains in git history (the last commit with the hall is 5b24ca5).
+    - **The plaza now:** an open lawn (x 3–38, y 96–121) with its two corner trees, between the desert town and the city.
+    - **Engine:** its general features stay, since the dark room and other scenes use them: strip `sequence`, shared strips, baked floor art, `prefix-*` scene props, and the reveal camera.
+75. The dark room moved to the cleared west lawn of the Bangladesh block (owner's choice, 2026-11), where Baitul Mukarram stood:
+    - **Placement:** it stands in the middle of the lawn, centred on (20.5, 108.5) and covering x 17–24, y 104–113, with its open sides toward the viewer. Ibn al-Haytham works at his bench inside, at (20.1, 108.1), in the same place in the room as before.
+    - **The science lab:** back as it was before item 73. The robot arm, roboticist, water cooler and al-Jazari are in their old places.
+    - **Tests:** the e2e test now reaches him through his card link (`/c/ibn-al-haytham`). A `?x=…&y=…` link pans from the default planet orientation, so it can't point this far round the planet.
+76. Al-Bayt al-Muzlim, the complete location: the owner's updated collection (2026-11) replaces the dark room of items 73 and 75.
+    - **The room:** 1.5 times larger each way (14.4 × 11.2 design units of clear floor). The bench, lectern, stool, shelves, storage and screen keep their shapes on separate working areas, and the shutter slides lie by the back wall.
+    - **The courtyard:** beyond the pinhole wall, a roofed hall, a shaded gallery with an arcade, a side wing, a turquoise basin, palms, planters and everyday things.
+    - **Placement:** both stand on the west lawn (x 14–26, y 97–121), the room nearest the city, the courtyard reaching toward the desert town. Scale is 0.62 tiles per design unit, with heights stretched 2.1×, so the room is as tall beside Ibn al-Haytham as before.
+    - **Left out:**
+      - the neighbouring houses, streets and ground (the world is around it);
+      - the painted courtyard shadows (it is lit in our render);
+      - the roofs of the hall and gallery, whose walls are cut low (1 unit) like the room's own near walls, because they face the camera and would hide the court;
+      - the wing behind the court, which stays whole.
+    - **Pieces:** 225 pieces:
+      - the room's walls, screen, shelves and beam on their own floor lines;
+      - the courtyard's buildings and things on the near edges of their footprints;
+      - the floors, paving and basin baked into the ground.
+    - **Ibn al-Haytham:** behind his bench where the model's own bench stood, at (21.5, 101.96). The beam passes just behind him, and his gaze turns toward the screen in its new place.
+    - **Content:** the location and its sources (`SOURCE-LINKS.json`) are the owner's. It is an imagined chamber, not a historical site, and carries no writing or symbols.

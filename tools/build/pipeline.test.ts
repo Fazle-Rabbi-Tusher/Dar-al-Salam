@@ -587,19 +587,29 @@ describe('sharp heads', () => {
             }
         }
     }
-  });
+    // Checks every named person's every action: it grows with the cast.
+  }, 20000);
 });
 
 describe('Bangladesh block', () => {
-  it('places Baitul Mukarram, the school and the new people', async () => {
+  it('places the school and the new people; the dark room stands on the west lawn', async () => {
     const { forbiddenName } = await import('../../packages/shared/rules');
     const objects = content.room.layers.find((l) => l.type === 'objectgroup');
     const types = new Set(
       objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
     );
+    // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
+    // (2026-11): only the dark room and the corner trees stand on the west
+    // lawn now.
+    for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
+      expect(types.has(t), t).toBe(false);
+    if (objects?.type === 'objectgroup')
+      for (const o of objects.objects)
+        if (o.x > 2 && o.x < 39 && o.y > 95 && o.y < 120)
+          expect(o.type).toMatch(/^(m-tree|sup-dr-)/);
+    for (const id of ['ibn-battuta', 'yasser-al-dosari'])
+      expect(content.characters.some((c) => c.id === id)).toBe(false);
     for (const t of [
-      'm-baitul-mukarram',
-      'm-bm-gate',
       'm-bd-school',
       'm-bd-flag',
       'm-shapla-pond',
@@ -613,7 +623,6 @@ describe('Bangladesh block', () => {
       'mashrafe-mortaza',
       'tamim-iqbal',
       'malala-yousafzai',
-      'ibn-battuta',
       'hakeem-olajuwon',
     ]) {
       const c = content.characters.find((c) => c.id === id)!;
@@ -762,6 +771,35 @@ describe('main characters only, with supplied animation strips', () => {
       expect(m.width % 224).toBe(0);
       expect(m.hasAlpha).toBe(true);
     }
+  });
+});
+
+describe('the dark room', () => {
+  it('stands Ibn al-Haytham at his bench inside Al-Bayt al-Muzlim', async () => {
+    const placed: { type: string; at: [number, number] }[] = JSON.parse(
+      await fs.readFile('art/supplied/dark-room.json', 'utf8'),
+    );
+    const index = JSON.parse(
+      await fs.readFile('art/supplied/index.json', 'utf8'),
+    );
+    // Its walls, screen, shelves, beam and furniture as separate pieces.
+    const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
+    for (const k of ['back', 'right', 'screen', 'shelves', 'rays', 'lectern'])
+      expect(kinds).toContain(k);
+    for (const p of placed) expect(index[p.type]).toBeTruthy();
+    const xs = placed.map((p) => p.at[0]),
+      ys = placed.map((p) => p.at[1]);
+    const him = content.characters.find((c) => c.id === 'ibn-al-haytham')!;
+    expect(him.panelApproved).not.toBe(true);
+    for (const step of him.script) {
+      expect(step.at![0]).toBeGreaterThan(Math.min(...xs) + 1);
+      expect(step.at![0]).toBeLessThan(Math.max(...xs) - 1);
+      expect(step.at![1]).toBeGreaterThan(Math.min(...ys) + 1);
+      expect(step.at![1]).toBeLessThan(Math.max(...ys) - 1);
+    }
+    const scene = content.scenes.find((s) => s.id === 'dark-room')!;
+    expect(scene.lead).toBe('ibn-al-haytham');
+    expect(scene.props).toEqual(['sup-dr-*']);
   });
 });
 
