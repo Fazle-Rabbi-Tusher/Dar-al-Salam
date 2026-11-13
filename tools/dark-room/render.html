@@ -7,9 +7,10 @@
       { "imports": { "three": "../three/three.module.min.js" } }
     </script>
     <script type="module">
-      /* Complete exterior from the owner's Site view. Keep the chamber roof,
-       * enclosing courtyard and every neighboring house together so their
-       * internal occlusion survives placement in the curved pixel world. */
+      /* Complete neighborhood with an open chamber: the supplied cutaway
+       * removes the chamber roof and lowers its near walls so viewers see
+       * the furniture and instruments directly in the world. Courtyard and
+       * surrounding houses retain their original roofs and arrangement. */
       import * as T from '../three/three.module.min.js';
       import { GLTFLoader } from '../three/GLTFLoader.js';
       const P = new URLSearchParams(location.search);
@@ -32,7 +33,7 @@
       renderer.localClippingEnabled = true;
       const scene = new T.Scene();
       const gltf = await new GLTFLoader().loadAsync(
-        '../room/assets/al-bayt-al-muzlim-complete.glb',
+        '../room/assets/al-bayt-al-muzlim-cutaway.glb',
       );
       const root = gltf.scene;
       const SKIP = ['Courtyard Shadows', 'Site Context Shadows'];
@@ -125,7 +126,7 @@
       };
 
       // Render the full architecture in one pass, then split only its image.
-      // Interior objects remain behind the opaque chamber walls and roof.
+      // The chamber cutaway exposes its interior; neighboring houses stay enclosed.
       function pieceOf(node) {
         return plain(node) === 'Site Ground' ? 'floor' : 'site';
       }

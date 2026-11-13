@@ -175,13 +175,15 @@ for the native world, and the existing native landmark sprites were not rebuilt.
 
 ![Working mirror inside a 390-pixel phone viewport](previews/dar-al-salam-dark-room-phone.jpg)
 
-## Native world plot: complete exterior
+## Native world plot: visible chamber inside the complete neighborhood
 
 The world plot follows the owner's **Site / complete architecture** reference:
-the closed dark chamber with its roof, the central courtyard and turquoise basin,
+the open dark chamber with a visible interior, the central courtyard and turquoise basin,
 roofed hall and gallery, and the surrounding houses, balconies, external stairs,
 streets and planting. The authoritative geometry is the uploaded collection's
-`al-bayt-al-muzlim-complete.glb`, rather than its cutaway model.
+`al-bayt-al-muzlim-cutaway.glb`. Its chamber roof is removed and its near walls
+are lowered, exposing the furniture, shelves, screen and instruments directly
+on the world plot. The courtyard and neighboring houses retain their roofs.
 
 The whole architecture is rendered together before splitting its image into
 strips, retaining the original occlusion between roofs, walls and furnishings.
@@ -194,7 +196,7 @@ lighting still differ from the standalone viewer's camera and shader.
 The scholar's existing red turban, brown robe, beard, book and animation assets
 remain in place. Its sprite metadata uses density 17 so the scholar and bench
 fit the chamber at this neighborhood scale; all 40 frames in each view remain
-unchanged. In the exterior view the roof and walls occlude the interior.
+unchanged. The room's open top and low near walls keep the interior visible.
 The interactive exhibit remains available for entering the chamber and exploring
 the experiments. No character approvals or biographies are changed.
 

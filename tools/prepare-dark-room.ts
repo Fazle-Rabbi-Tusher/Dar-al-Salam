@@ -6,7 +6,7 @@ import sharp from 'sharp';
 
 /*
  * Render the owner's complete Al-Bayt al-Muzlim exterior into the native world
- * plot, preserving its roofed chamber, courtyard and surrounding neighborhood.
+ * plot, exposing the chamber interior within the complete surrounding neighborhood.
  * Usage: node --import tsx tools/prepare-dark-room.ts <collection> <three vendor>
  * Writes the supplied sprite inventory and updates only this landmark's room objects.
  */
@@ -127,7 +127,7 @@ for (const key of Object.keys(index))
   if (key.startsWith('sup-dr-')) delete index[key];
 const placed: { type: string; at: P2 }[] = [];
 const SOURCE =
-  "Owner's Al-Bayt al-Muzlim collection (2026-11), complete GLB rendered by tools/prepare-dark-room.ts";
+  "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts";
 async function emit(
   name: string,
   img: sharp.Sharp,

@@ -775,14 +775,14 @@ describe('main characters only, with supplied animation strips', () => {
 });
 
 describe('the dark room', () => {
-  it('places the complete exterior around the scholar’s chamber', async () => {
+  it('places the complete neighborhood around the open chamber', async () => {
     const placed: { type: string; at: [number, number] }[] = JSON.parse(
       await fs.readFile('art/supplied/dark-room.json', 'utf8'),
     );
     const index = JSON.parse(
       await fs.readFile('art/supplied/index.json', 'utf8'),
     );
-    // The native plot shows the complete exterior, including its sandy base.
+    // The native plot shows the open chamber and complete neighborhood on sand.
     const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
     expect(kinds).toEqual(new Set(['site', 'floor']));
     for (const p of placed) expect(index[p.type]).toBeTruthy();
