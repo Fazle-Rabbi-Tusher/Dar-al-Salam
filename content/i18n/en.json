@@ -91,5 +91,14 @@
   "massawa": "Massawa",
   "landmark": "LANDMARK",
   "clickPlace": "Click to read about this place",
-  "atWork": "At work"
+  "atWork": "At work",
+  "darkRoom": "The dark room",
+  "darkRoomTitle": "Al-Bayt al-Muzlim",
+  "exploreDarkRoom": "Enter the 3D dark room",
+  "darkRoomStory": "Explore the chamber, courtyard and working optical instruments in an interactive 3D reconstruction.",
+  "returnToDar": "Return to Dar al-Salam",
+  "downloadDarkRoom": "Download the dark room ZIP",
+  "downloadZip": "Download ZIP",
+  "loadingDarkRoom": "Opening the dark room…",
+  "darkRoomFrameTitle": "Al-Bayt al-Muzlim — interactive 3D optical workshop"
 }

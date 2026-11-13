@@ -8,3 +8,7 @@ test-results/
 *.log
 
 .vercel/
+
+# Restored byte-for-byte from the approved ZIP before development/builds.
+web/public/exhibits/al-bayt-al-muzlim/assets/al-bayt-al-muzlim-complete.glb
+web/public/exhibits/al-bayt-al-muzlim/assets/al-bayt-al-muzlim-cutaway.glb

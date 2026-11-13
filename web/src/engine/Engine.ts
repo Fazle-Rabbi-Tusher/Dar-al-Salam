@@ -382,6 +382,7 @@ export class Engine {
   private abort = new AbortController();
   private destroyed = false;
   private ready = false;
+  private suspended = false;
   private elapsed = 0;
   private lastFrame = -1;
   private frame = 0;
@@ -533,12 +534,16 @@ export class Engine {
     this.update();
     this.bindInput();
     this.app.ticker.add((t) => this.tick(t.deltaMS));
+    if (this.suspended) this.app.stop();
     if (import.meta.env.DEV)
       (window as unknown as { __darEngine?: Engine }).__darEngine = this;
     this.emit('progress', 1);
   }
   private countDrawCalls() {
     const gl = (this.app.renderer as WebGLRenderer).gl;
+    // Pixi can fall back to Canvas when WebGL is unavailable. Development
+    // instrumentation must not prevent the world from loading there.
+    if (!gl) return;
     const elements = gl.drawElements.bind(gl),
       arrays = gl.drawArrays.bind(gl);
     gl.drawElements = (mode, count, type, offset) => {
@@ -608,6 +613,33 @@ export class Engine {
   }
   setMotion(on: boolean) {
     this.motion = on;
+  }
+  /** Release the world renderer while a full-screen exhibit owns the viewport.
+   * This does not change the user's motion preference or advance world time.
+   */
+  setSuspended(on: boolean) {
+    if (this.destroyed || this.suspended === on) return;
+    this.suspended = on;
+    if (on) {
+      if (this.ready) {
+        for (const id of this.pointers.keys())
+          if (this.app.canvas.hasPointerCapture(id))
+            this.app.canvas.releasePointerCapture(id);
+      }
+      this.pointers.clear();
+      this.velocity = { lat: 0, lon: 0 };
+      this.flight = null;
+      this.nextFlight = null;
+      this.zoomIdle = 0;
+      this.hover = null;
+      this.emit('characterHover', null);
+    }
+    if (!this.ready) return;
+    if (on) this.app.stop();
+    else {
+      this.dirty = true;
+      this.app.start();
+    }
   }
   setZoom(zoom: number) {
     // Buttons and keys zoom around the focus; zoomAt re-sets its own point.
@@ -1104,7 +1136,7 @@ export class Engine {
     g.zIndex = depth + 1e-5;
   }
   private tick(dt: number) {
-    if (!this.ready || this.destroyed) return;
+    if (!this.ready || this.destroyed || this.suspended) return;
     this.lastDrawCalls = this.drawCalls;
     this.drawCalls = 0;
     dt = Math.min(dt, 64);
@@ -1288,6 +1320,7 @@ export class Engine {
     canvas.addEventListener(
       'pointerdown',
       (e) => {
+        if (this.suspended) return;
         canvas.focus();
         canvas.setPointerCapture(e.pointerId);
         const p = this.point(e);
@@ -1303,6 +1336,7 @@ export class Engine {
     canvas.addEventListener(
       'pointermove',
       (e) => {
+        if (this.suspended) return;
         const p = this.point(e),
           old = this.pointers.get(e.pointerId);
         if (old) {
@@ -1346,6 +1380,7 @@ export class Engine {
       options,
     );
     const up = (e: PointerEvent) => {
+      if (this.suspended) return;
       if (!this.pointers.has(e.pointerId)) return;
       // Lifting one finger of a pinch must not fling the planet.
       if (this.pointers.size === 2) this.velocity = { lat: 0, lon: 0 };
@@ -1361,7 +1396,7 @@ export class Engine {
         if (hit && this.clickable(hit)) {
           this.selected = hit;
           this.emit('characterClick', hit);
-          if (scene) this.frameScene(scene);
+          if (scene && !this.suspended) this.frameScene(scene);
           this.dirty = true;
         }
         this.velocity = { lat: 0, lon: 0 };
@@ -1391,6 +1426,7 @@ export class Engine {
     canvas.addEventListener(
       'wheel',
       (e) => {
+        if (this.suspended) return;
         e.preventDefault();
         const p = this.point(e);
         this.zoomAt(this.view.zoom * Math.exp(-e.deltaY * 0.0015), p.x, p.y);
@@ -1400,6 +1436,7 @@ export class Engine {
     window.addEventListener(
       'keydown',
       (e) => {
+        if (this.suspended) return;
         if ((e.target as HTMLElement)?.closest('input,textarea,select,button'))
           return;
         if (e.key.toLowerCase() === 'i' && import.meta.env.DEV) {

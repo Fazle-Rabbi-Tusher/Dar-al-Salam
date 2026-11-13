@@ -91,5 +91,14 @@
   "massawa": "مصوع",
   "landmark": "معلم",
   "clickPlace": "انقر لتقرأ عن هذا المكان",
-  "atWork": "في العمل"
+  "atWork": "في العمل",
+  "darkRoom": "الغرفة المظلمة",
+  "darkRoomTitle": "البيت المظلم",
+  "exploreDarkRoom": "ادخل الغرفة المظلمة ثلاثية الأبعاد",
+  "darkRoomStory": "استكشف الحجرة والفناء والأدوات البصرية العاملة في تصور تفاعلي ثلاثي الأبعاد.",
+  "returnToDar": "العودة إلى دار السلام",
+  "downloadDarkRoom": "تنزيل الغرفة المظلمة بصيغة ZIP",
+  "downloadZip": "تنزيل ZIP",
+  "loadingDarkRoom": "نفتح الغرفة المظلمة…",
+  "darkRoomFrameTitle": "البيت المظلم — ورشة بصريات تفاعلية ثلاثية الأبعاد"
 }
