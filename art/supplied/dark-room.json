@@ -1,1311 +1,576 @@
 [
   {
-    "type": "sup-dr-left-0",
+    "type": "sup-dr-site-0",
     "at": [
-      17.377,
-      106.531
+      17.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-1",
+    "type": "sup-dr-site-1",
     "at": [
-      17.877,
-      106.531
+      17.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-2",
+    "type": "sup-dr-site-2",
     "at": [
-      18.377,
-      106.531
+      17.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-3",
+    "type": "sup-dr-site-3",
     "at": [
-      18.877,
-      106.531
+      18.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-4",
+    "type": "sup-dr-site-4",
     "at": [
-      19.377,
-      106.531
+      18.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-5",
+    "type": "sup-dr-site-5",
     "at": [
-      19.877,
-      106.531
+      18.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-6",
+    "type": "sup-dr-site-6",
     "at": [
-      20.377,
-      106.531
+      18.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-7",
+    "type": "sup-dr-site-7",
     "at": [
-      20.877,
-      106.531
+      19.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-8",
+    "type": "sup-dr-site-8",
     "at": [
-      21.377,
-      106.531
+      19.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-9",
+    "type": "sup-dr-site-9",
     "at": [
-      21.877,
-      106.531
+      19.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-10",
+    "type": "sup-dr-site-10",
     "at": [
-      22.377,
-      106.531
+      19.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-11",
+    "type": "sup-dr-site-11",
     "at": [
-      22.877,
-      106.531
+      20.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-12",
+    "type": "sup-dr-site-12",
     "at": [
-      23.377,
-      106.531
+      20.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-13",
+    "type": "sup-dr-site-13",
     "at": [
-      23.877,
-      106.531
+      20.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-14",
+    "type": "sup-dr-site-14",
     "at": [
-      24.377,
-      106.531
+      20.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-15",
+    "type": "sup-dr-site-15",
     "at": [
-      24.751,
-      106.531
+      21.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-left-16",
+    "type": "sup-dr-site-16",
     "at": [
-      24.751,
-      106.531
+      21.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-0",
+    "type": "sup-dr-site-17",
     "at": [
-      17.392,
-      106.546
+      21.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-1",
+    "type": "sup-dr-site-18",
     "at": [
-      17.392,
-      106.046
+      21.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-2",
+    "type": "sup-dr-site-19",
     "at": [
-      17.392,
-      105.546
+      22.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-3",
+    "type": "sup-dr-site-20",
     "at": [
-      17.392,
-      105.046
+      22.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-4",
+    "type": "sup-dr-site-21",
     "at": [
-      17.392,
-      104.546
+      22.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-5",
+    "type": "sup-dr-site-22",
     "at": [
-      17.392,
-      104.046
+      22.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-6",
+    "type": "sup-dr-site-23",
     "at": [
-      17.392,
-      103.546
+      23.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-7",
+    "type": "sup-dr-site-24",
     "at": [
-      17.392,
-      103.046
+      23.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-8",
+    "type": "sup-dr-site-25",
     "at": [
-      17.392,
-      102.546
+      23.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-9",
+    "type": "sup-dr-site-26",
     "at": [
-      17.392,
-      102.046
+      23.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-10",
+    "type": "sup-dr-site-27",
     "at": [
-      17.392,
-      101.546
+      24.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-11",
+    "type": "sup-dr-site-28",
     "at": [
-      17.392,
-      101.046
+      24.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-12",
+    "type": "sup-dr-site-29",
     "at": [
-      17.392,
-      100.546
+      24.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-13",
+    "type": "sup-dr-site-30",
     "at": [
-      17.392,
-      100.046
+      24.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-14",
+    "type": "sup-dr-site-31",
     "at": [
-      17.392,
-      99.546
+      25.09,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-15",
+    "type": "sup-dr-site-32",
     "at": [
-      17.392,
-      99.046
+      25.34,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-16",
+    "type": "sup-dr-site-33",
     "at": [
-      17.392,
-      98.546
+      25.59,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-17",
+    "type": "sup-dr-site-34",
     "at": [
-      17.392,
-      98.046
+      25.84,
+      112.956
     ]
   },
   {
-    "type": "sup-dr-back-18",
+    "type": "sup-dr-site-35",
     "at": [
-      17.392,
-      97.546
+      25.943,
+      112.809
     ]
   },
   {
-    "type": "sup-dr-back-19",
+    "type": "sup-dr-site-36",
     "at": [
-      17.392,
-      97.169
+      25.943,
+      112.559
     ]
   },
   {
-    "type": "sup-dr-back-20",
+    "type": "sup-dr-site-37",
     "at": [
-      17.392,
-      97.169
+      25.943,
+      112.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-38",
+    "at": [
+      25.943,
+      112.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-39",
+    "at": [
+      25.943,
+      111.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-40",
+    "at": [
+      25.943,
+      111.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-41",
+    "at": [
+      25.943,
+      111.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-42",
+    "at": [
+      25.943,
+      111.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-43",
+    "at": [
+      25.943,
+      110.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-44",
+    "at": [
+      25.943,
+      110.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-45",
+    "at": [
+      25.943,
+      110.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-46",
+    "at": [
+      25.943,
+      110.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-47",
+    "at": [
+      25.943,
+      109.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-48",
+    "at": [
+      25.943,
+      109.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-49",
+    "at": [
+      25.943,
+      109.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-50",
+    "at": [
+      25.943,
+      109.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-51",
+    "at": [
+      25.943,
+      108.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-52",
+    "at": [
+      25.943,
+      108.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-53",
+    "at": [
+      25.943,
+      108.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-54",
+    "at": [
+      25.943,
+      108.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-55",
+    "at": [
+      25.943,
+      107.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-56",
+    "at": [
+      25.943,
+      107.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-57",
+    "at": [
+      25.943,
+      107.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-58",
+    "at": [
+      25.943,
+      107.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-59",
+    "at": [
+      25.943,
+      106.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-60",
+    "at": [
+      25.943,
+      106.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-61",
+    "at": [
+      25.943,
+      106.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-62",
+    "at": [
+      25.943,
+      106.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-63",
+    "at": [
+      25.943,
+      105.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-64",
+    "at": [
+      25.943,
+      105.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-65",
+    "at": [
+      25.943,
+      105.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-66",
+    "at": [
+      25.943,
+      105.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-67",
+    "at": [
+      25.943,
+      104.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-68",
+    "at": [
+      25.943,
+      104.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-69",
+    "at": [
+      25.943,
+      104.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-70",
+    "at": [
+      25.943,
+      104.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-71",
+    "at": [
+      25.943,
+      103.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-72",
+    "at": [
+      25.943,
+      103.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-73",
+    "at": [
+      25.943,
+      103.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-74",
+    "at": [
+      25.943,
+      103.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-75",
+    "at": [
+      25.943,
+      102.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-76",
+    "at": [
+      25.943,
+      102.559
+    ]
+  },
+  {
+    "type": "sup-dr-site-77",
+    "at": [
+      25.943,
+      102.309
+    ]
+  },
+  {
+    "type": "sup-dr-site-78",
+    "at": [
+      25.943,
+      102.059
+    ]
+  },
+  {
+    "type": "sup-dr-site-79",
+    "at": [
+      25.943,
+      101.809
+    ]
+  },
+  {
+    "type": "sup-dr-site-80",
+    "at": [
+      25.943,
+      101.598
     ]
   },
   {
     "type": "sup-dr-floor",
     "at": [
-      17.28,
-      97.2
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-0",
-    "at": [
-      16.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-1",
-    "at": [
-      16.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-2",
-    "at": [
-      17.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-3",
-    "at": [
-      17.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-4",
-    "at": [
-      18.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-5",
-    "at": [
-      18.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-6",
-    "at": [
-      19.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-7",
-    "at": [
-      19.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-8",
-    "at": [
-      20.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-9",
-    "at": [
-      20.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-10",
-    "at": [
-      21.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-11",
-    "at": [
-      21.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-12",
-    "at": [
-      22.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-13",
-    "at": [
-      22.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-14",
-    "at": [
-      23.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-15",
-    "at": [
-      23.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-16",
-    "at": [
-      24.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-17",
-    "at": [
-      24.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-18",
-    "at": [
-      25.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-19",
-    "at": [
-      25.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-20",
-    "at": [
-      26.2,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-21",
-    "at": [
-      26.7,
-      123.823
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-22",
-    "at": [
-      27.107,
-      123.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-23",
-    "at": [
-      27.107,
-      123.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-24",
-    "at": [
-      27.107,
-      122.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-25",
-    "at": [
-      27.107,
-      122.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-26",
-    "at": [
-      27.107,
-      121.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-27",
-    "at": [
-      27.107,
-      121.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-28",
-    "at": [
-      27.107,
-      120.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-29",
-    "at": [
-      27.107,
-      120.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-30",
-    "at": [
-      27.107,
-      119.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-31",
-    "at": [
-      27.107,
-      119.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-32",
-    "at": [
-      27.107,
-      118.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-33",
-    "at": [
-      27.107,
-      118.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-34",
-    "at": [
-      27.107,
-      117.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-35",
-    "at": [
-      27.107,
-      117.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-36",
-    "at": [
-      27.107,
-      116.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-37",
-    "at": [
-      27.107,
-      116.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-38",
-    "at": [
-      27.107,
-      115.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-39",
-    "at": [
-      27.107,
-      115.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-40",
-    "at": [
-      27.107,
-      114.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-41",
-    "at": [
-      27.107,
-      114.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-42",
-    "at": [
-      27.107,
-      113.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-43",
-    "at": [
-      27.107,
-      113.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-44",
-    "at": [
-      27.107,
-      112.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-45",
-    "at": [
-      27.107,
-      112.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-46",
-    "at": [
-      27.107,
-      111.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-47",
-    "at": [
-      27.107,
-      111.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-48",
-    "at": [
-      27.107,
-      110.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-49",
-    "at": [
-      27.107,
-      110.23
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-50",
-    "at": [
-      27.107,
-      109.73
-    ]
-  },
-  {
-    "type": "sup-dr-courtyard-51",
-    "at": [
-      27.107,
-      109.261
-    ]
-  },
-  {
-    "type": "sup-dr-lectern",
-    "at": [
-      22.742,
-      105.415
-    ]
-  },
-  {
-    "type": "sup-dr-astronomy-0",
-    "at": [
-      21.884,
-      98.038
-    ]
-  },
-  {
-    "type": "sup-dr-astronomy-1",
-    "at": [
-      22.384,
-      98.038
-    ]
-  },
-  {
-    "type": "sup-dr-astronomy-2",
-    "at": [
-      22.693,
-      97.847
-    ]
-  },
-  {
-    "type": "sup-dr-astronomy-3",
-    "at": [
-      22.693,
-      97.581
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-0",
-    "at": [
-      24.225,
-      104.411
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-1",
-    "at": [
-      24.394,
-      104.079
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-2",
-    "at": [
-      24.394,
-      103.579
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-3",
-    "at": [
-      24.394,
-      103.079
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-4",
-    "at": [
-      24.394,
-      102.579
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-5",
-    "at": [
-      24.394,
-      102.079
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-6",
-    "at": [
-      24.394,
-      101.579
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-7",
-    "at": [
-      24.394,
-      101.079
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-8",
-    "at": [
-      24.394,
-      100.579
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-9",
-    "at": [
-      24.394,
-      100.079
-    ]
-  },
-  {
-    "type": "sup-dr-mirrors-10",
-    "at": [
-      24.394,
-      99.783
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-0",
-    "at": [
-      17.745,
-      104.587
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-1",
-    "at": [
-      17.745,
-      104.087
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-2",
-    "at": [
-      17.745,
-      103.587
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-3",
-    "at": [
-      17.745,
-      103.087
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-4",
-    "at": [
-      17.745,
-      102.587
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-7",
-    "at": [
-      17.745,
-      101.087
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-8",
-    "at": [
-      17.745,
-      100.587
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-9",
-    "at": [
-      17.745,
-      100.087
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-10",
-    "at": [
-      17.745,
-      99.587
-    ]
-  },
-  {
-    "type": "sup-dr-shelves-11",
-    "at": [
-      17.745,
-      99.118
-    ]
-  },
-  {
-    "type": "sup-dr-tubes-0",
-    "at": [
-      18.012,
-      98.76
-    ]
-  },
-  {
-    "type": "sup-dr-tubes-1",
-    "at": [
-      18.512,
-      98.76
-    ]
-  },
-  {
-    "type": "sup-dr-tubes-2",
-    "at": [
-      18.576,
-      98.324
-    ]
-  },
-  {
-    "type": "sup-dr-tubes-3",
-    "at": [
-      18.576,
-      97.855
-    ]
-  },
-  {
-    "type": "sup-dr-waterclock-0",
-    "at": [
-      17.898,
-      106.303
-    ]
-  },
-  {
-    "type": "sup-dr-waterclock-1",
-    "at": [
-      18.398,
-      106.303
-    ]
-  },
-  {
-    "type": "sup-dr-waterclock-2",
-    "at": [
-      18.552,
-      105.956
-    ]
-  },
-  {
-    "type": "sup-dr-waterclock-3",
-    "at": [
-      18.552,
-      105.55
-    ]
-  },
-  {
-    "type": "sup-dr-rays-0",
-    "at": [
-      20.132,
-      106.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-1",
-    "at": [
-      20.132,
-      105.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-2",
-    "at": [
-      20.132,
-      105.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-3",
-    "at": [
-      20.132,
-      104.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-4",
-    "at": [
-      20.132,
-      104.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-5",
-    "at": [
-      20.132,
-      103.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-6",
-    "at": [
-      20.132,
-      103.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-7",
-    "at": [
-      20.132,
-      102.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-8",
-    "at": [
-      20.132,
-      102.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-9",
-    "at": [
-      20.132,
-      101.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-10",
-    "at": [
-      20.132,
-      101.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-11",
-    "at": [
-      20.132,
-      100.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-12",
-    "at": [
-      20.132,
-      100.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-13",
-    "at": [
-      20.132,
-      99.63
-    ]
-  },
-  {
-    "type": "sup-dr-rays-14",
-    "at": [
-      20.132,
-      99.13
-    ]
-  },
-  {
-    "type": "sup-dr-rays-15",
-    "at": [
-      20.132,
-      98.8
-    ]
-  },
-  {
-    "type": "sup-dr-rays-16",
-    "at": [
-      20.132,
-      98.8
-    ]
-  },
-  {
-    "type": "sup-dr-screen-0",
-    "at": [
-      19.066,
-      98.787
-    ]
-  },
-  {
-    "type": "sup-dr-screen-1",
-    "at": [
-      19.539,
-      98.787
-    ]
-  },
-  {
-    "type": "sup-dr-screen-2",
-    "at": [
-      20.039,
-      98.787
-    ]
-  },
-  {
-    "type": "sup-dr-screen-3",
-    "at": [
-      20.539,
-      98.787
-    ]
-  },
-  {
-    "type": "sup-dr-screen-4",
-    "at": [
-      21.039,
-      98.787
-    ]
-  },
-  {
-    "type": "sup-dr-screen-5",
-    "at": [
-      21.211,
-      98.787
-    ]
-  },
-  {
-    "type": "sup-dr-slides",
-    "at": [
-      17.782,
-      104.243
-    ]
-  },
-  {
-    "type": "sup-dr-stool",
-    "at": [
-      23.48,
-      105.093
-    ]
-  },
-  {
-    "type": "sup-dr-storage",
-    "at": [
-      23.604,
-      98.812
-    ]
-  },
-  {
-    "type": "sup-dr-front-0",
-    "at": [
-      24.615,
-      106.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-1",
-    "at": [
-      24.615,
-      106.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-2",
-    "at": [
-      24.615,
-      105.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-3",
-    "at": [
-      24.615,
-      105.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-4",
-    "at": [
-      24.615,
-      104.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-5",
-    "at": [
-      24.615,
-      104.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-6",
-    "at": [
-      24.615,
-      103.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-7",
-    "at": [
-      24.615,
-      103.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-8",
-    "at": [
-      24.615,
-      102.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-9",
-    "at": [
-      24.615,
-      102.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-10",
-    "at": [
-      24.615,
-      101.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-11",
-    "at": [
-      24.615,
-      101.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-12",
-    "at": [
-      24.615,
-      100.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-13",
-    "at": [
-      24.615,
-      100.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-14",
-    "at": [
-      24.615,
-      99.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-15",
-    "at": [
-      24.615,
-      99.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-16",
-    "at": [
-      24.615,
-      98.519
-    ]
-  },
-  {
-    "type": "sup-dr-front-17",
-    "at": [
-      24.615,
-      98.019
-    ]
-  },
-  {
-    "type": "sup-dr-front-18",
-    "at": [
-      24.615,
-      97.518
-    ]
-  },
-  {
-    "type": "sup-dr-front-19",
-    "at": [
-      24.615,
-      97.169
-    ]
-  },
-  {
-    "type": "sup-dr-right-0",
-    "at": [
-      17.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-1",
-    "at": [
-      17.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-2",
-    "at": [
-      18.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-3",
-    "at": [
-      18.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-4",
-    "at": [
-      19.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-5",
-    "at": [
-      19.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-6",
-    "at": [
-      20.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-7",
-    "at": [
-      20.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-8",
-    "at": [
-      21.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-9",
-    "at": [
-      21.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-10",
-    "at": [
-      22.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-11",
-    "at": [
-      22.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-12",
-    "at": [
-      23.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-13",
-    "at": [
-      23.87,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-14",
-    "at": [
-      24.37,
-      97.305
-    ]
-  },
-  {
-    "type": "sup-dr-right-15",
-    "at": [
-      24.745,
-      97.305
+      19.62,
+      101.1
     ]
   }
 ]

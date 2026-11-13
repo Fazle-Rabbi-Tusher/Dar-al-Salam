@@ -132,7 +132,9 @@ const strip = await sharp({
 for (const old of fs.readdirSync('art/sprites/anim'))
   if (old.startsWith(`${ID}__`)) fs.rmSync(`art/sprites/anim/${old}`);
 const meta =
-  JSON.stringify({ frame: [W, H], foot, density: D, sequence }) + '\n';
+  // Match the complete neighborhood's world scale; keep the source render
+  // and every animation frame at their original pixel resolution.
+  JSON.stringify({ frame: [W, H], foot, density: 17, sequence }) + '\n';
 // Back view (NE): the same frames. He works facing SE; the strip is only
 // needed for the rare planet turn that shows him from behind.
 for (const view of ['SE', 'NE']) {

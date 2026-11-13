@@ -7,20 +7,9 @@
       { "imports": { "three": "../three/three.module.min.js" } }
     </script>
     <script type="module">
-      /*
-       * Al-Bayt al-Muzlim, the complete location (the owner's collection, its
-       * cutaway GLB): the dark room and the courtyard beyond its pinhole
-       * wall, rendered in the world's 2:1 isometric view, one piece at a
-       * time, for tools/prepare-dark-room.ts. The room is turned a quarter
-       * so its open (cut-away) sides face the viewer. ?s= tiles per room
-       * unit on the ground, ?kv= vertical stretch, ?D= sprite density.
-       *
-       * Left out: the room's optical bench, bowl and lens (Ibn al-Haytham's
-       * own animated bench stands there instead); the neighbouring houses,
-       * streets and ground (the world is around it); the courtyard's painted
-       * shadows (it is lit here). Preserve the supplied courtyard buildings,
-       * roofs and enlarged equipment in the native world representation.
-       */
+      /* Complete exterior from the owner's Site view. Keep the chamber roof,
+       * enclosing courtyard and every neighboring house together so their
+       * internal occlusion survives placement in the curved pixel world. */
       import * as T from '../three/three.module.min.js';
       import { GLTFLoader } from '../three/GLTFLoader.js';
       const P = new URLSearchParams(location.search);
@@ -43,24 +32,23 @@
       renderer.localClippingEnabled = true;
       const scene = new T.Scene();
       const gltf = await new GLTFLoader().loadAsync(
-        '../room/assets/al-bayt-al-muzlim-cutaway.glb',
+        '../room/assets/al-bayt-al-muzlim-complete.glb',
       );
       const root = gltf.scene;
-      const SKIP = [
-        'Optical Workbench',
-        'Glass Bowl',
-        'Lens Stand',
-        'Courtyard Shadows',
-        'Site Ground',
-        'Site Street',
-        'Site Context Houses',
-        'Site Context Openings',
-        'Site Context Roofs',
-        'Site Context Balconies',
-        'Site Context Roof Access',
-        'Site Context Shadows',
-        'Site Context Vegetation',
-      ];
+      const SKIP = ['Courtyard Shadows', 'Site Context Shadows'];
+      // Bound the source's expansive sand plane to this landmark's plot.
+      // Architecture, streets and vegetation retain their original geometry.
+      root.getObjectByName('Site_Ground')?.traverse((o) => {
+        if (!o.isMesh) return;
+        const positions = o.geometry.attributes.position;
+        for (let i = 0; i < positions.count; i++) {
+          positions.setX(i, T.MathUtils.clamp(positions.getX(i), -44, 16));
+          positions.setZ(i, T.MathUtils.clamp(positions.getZ(i), -28, 23));
+        }
+        positions.needsUpdate = true;
+        o.geometry.computeBoundingBox();
+        o.geometry.computeBoundingSphere();
+      });
       root.traverse((o) => {
         if (o.isMesh) {
           o.castShadow = o.receiveShadow = true;
@@ -79,7 +67,7 @@
         root.getObjectByName(name.replace(/ /g, '_'))?.removeFromParent();
       const room = new T.Group();
       room.add(root);
-      // Its open sides (−X, +Z) toward the viewer; heights stretched.
+      // Match the Site reference orientation and preserve building proportions.
       room.rotation.y = Math.PI / 2;
       room.scale.set(1, kv, 1);
       scene.add(room);
@@ -136,48 +124,10 @@
         return [((v.x + 1) / 2) * W, ((1 - v.y) / 2) * H];
       };
 
-      /*
-       * Pieces: each mesh's triangles sorted by where they stand in the
-       * room, so the walls behind him, the screen beside him and the low
-       * cut walls in front of him sort apart.
-       */
-      function pieceOf(node, cx, cy, cz) {
-        const n = plain(node);
-        // The room's floor and the court's paving, ground, basin and planting
-        // are baked flat into the ground.
-        if (
-          [
-            'Floor',
-            'Courtyard Paving',
-            'Courtyard Ground Detail',
-            'Courtyard Basin',
-            'Courtyard Planting',
-          ].includes(n)
-        )
-          return 'floor';
-        // Keep each equipment assembly on its own ground footprint, rather
-        // than sorting every newly supplied instrument as part of the left wall.
-        if (n.startsWith('Instrument Mirror')) return 'mirrors';
-        if (n.startsWith('Instrument Tube')) return 'tubes';
-        if (n.startsWith('Instrument Waterclock')) return 'waterclock';
-        if (/^Instrument (Astronomy|Context Astrolabe|Gnomon|Meridian)/.test(n))
-          return 'astronomy';
-        if (n === 'Projection Screen') return 'screen';
-        if (n === 'Light Paths') return 'rays';
-        if (n === 'Geometry Lectern') return 'lectern';
-        if (n === 'Stool') return 'stool';
-        if (n === 'Storage') return 'storage';
-        if (n === 'Shutter Slides') return 'slides';
-        if (n === 'Instrument Shelves') return 'shelves';
-        // Render the courtyard architecture together so roofs, arches and
-        // furniture retain the model's own occlusion before strip placement.
-        if (n.startsWith('Courtyard ')) return 'courtyard';
-        // Walls, the aperture window, the door and wall hangings: by wall.
-        if (cz < -4.95) return 'back';
-        if (cx > 9.5) return 'right';
-        if (cx < -4.7) return 'left';
-        if (cz > 5.5) return 'front';
-        return n === 'Hanging Instruments' ? 'back' : 'left';
+      // Render the full architecture in one pass, then split only its image.
+      // Interior objects remain behind the opaque chamber walls and roof.
+      function pieceOf(node) {
+        return plain(node) === 'Site Ground' ? 'floor' : 'site';
       }
       const parts = new Map();
       const hidden = new T.MeshBasicMaterial({

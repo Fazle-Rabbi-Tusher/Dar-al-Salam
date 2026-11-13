@@ -5,37 +5,21 @@ import { chromium } from '@playwright/test';
 import sharp from 'sharp';
 
 /*
- * Al-Bayt al-Muzlim, the complete location, from the owner's collection
- * (2026-11): an imagined chamber for the study of light, with a sunlit
- * courtyard beyond its pinhole wall. The shuttered pinhole throws the
- * courtyard, upside down, onto a linen screen. The room (14.4 × 11.2 design
- * units of clear floor) holds shelves of vessels, a sealed arched door,
- * hanging instruments, a geometry lectern, a stool, storage and the
- * shutter slides. The courtyard has a roofed hall, a shaded gallery, a side
- * wing, a turquoise basin, palms and planters. The cutaway GLB (its
- * embedded textures include the inverted projection) is rendered in the
- * world's view, piece by piece (tools/dark-room/render.html). Ibn
- * al-Haytham's own animated bench (tools/prepare-haytham.ts) stands where
- * the room's bench was.
- *
- *   node --import tsx tools/prepare-dark-room.ts <al-bayt-al-muzlim collection> <three.js vendor folder>
- *
- * Writes art/supplied/dark-room/*.png, their art/supplied/index.json
- * entries and art/supplied/dark-room.json (where each piece stands).
+ * Render the owner's complete Al-Bayt al-Muzlim exterior into the native world
+ * plot, preserving its roofed chamber, courtyard and surrounding neighborhood.
+ * Usage: node --import tsx tools/prepare-dark-room.ts <collection> <three vendor>
+ * Writes the supplied sprite inventory and updates only this landmark's room objects.
  */
 const [collection, three] = process.argv.slice(2);
 if (!collection || !three)
   throw Error(
     'Usage: prepare-dark-room.ts <collection folder> <three vendor folder>',
   );
-/** Tiles per room unit on the ground, the vertical stretch, sprite density. */
-export const S = 0.62,
-  // Heights as before (0.75 × 1.75 tiles per unit), so the room stands as
-  // tall beside Ibn al-Haytham.
-  KV = 2.1,
-  D = 2;
-/** The tile under the room's origin, on the Bangladesh block's west lawn;
- * the courtyard runs south-west of it to y 120.5. */
+/** Fit the complete neighborhood inside the existing lawn, without stretching heights. */
+export const S = 0.23,
+  KV = 1,
+  D = 4;
+/** The original chamber origin keeps the scholar's existing position indoors. */
 export const ROOM: [number, number] = [21.0, 103.4];
 /** Tile under a room point. The room is turned so its open sides face the
  * viewer: room +Z runs along the world's +x, room +X along the world's −y. */
@@ -116,59 +100,11 @@ const ground = (X: number, Z: number): [number, number] => [
 type P2 = [number, number];
 type Base = { point: P2 } | { path: P2[] };
 const BASES: Record<string, Base> = {
-  // Baked into the ground, at the room's far corner.
   floor: { point: [10.0, -6.0] },
-  back: {
-    path: [
-      [-5.28, -5.82],
-      [10.05, -5.82],
-    ],
-  },
-  right: {
-    path: [
-      [9.83, -6.04],
-      [9.83, 6.05],
-    ],
-  },
-  left: {
-    path: [
-      [-5.05, -6.04],
-      [-5.05, 6.05],
-    ],
-  },
-  front: {
-    path: [
-      [-5.28, 5.83],
-      [10.05, 5.83],
-    ],
-  },
-  shelves: {
-    path: [
-      [-1.97, -5.25],
-      [6.93, -5.25],
-    ],
-  },
-  screen: {
-    path: [
-      [7.44, -3.12],
-      [7.44, 0.34],
-    ],
-  },
-  // The beam from the pinhole to the screen, at its floor line.
-  rays: {
-    path: [
-      [-4.84, -1.4],
-      [7.42, -1.4],
-    ],
-  },
-  lectern: { point: [-3.25, 2.81] },
-  stool: { point: [-2.73, 4.0] },
-  storage: { point: [7.4, 4.2] },
-  slides: { point: [-1.36, -5.19] },
 };
 /*
- * The courtyard's buildings and things stand on the near edges of their
- * footprints: the viewer looks from room +Z and −X, so a column of a piece
+ * The complete exterior stands on the near edges of its footprint:
+ * the viewer looks from room +Z and −X, so each image strip
  * sorts by the nearest ground under it.
  */
 const nearEdge = ([x0, z0, x1, z1]: [
@@ -191,7 +127,7 @@ for (const key of Object.keys(index))
   if (key.startsWith('sup-dr-')) delete index[key];
 const placed: { type: string; at: P2 }[] = [];
 const SOURCE =
-  "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts";
+  "Owner's Al-Bayt al-Muzlim collection (2026-11), complete GLB rendered by tools/prepare-dark-room.ts";
 async function emit(
   name: string,
   img: sharp.Sharp,

@@ -171,30 +171,36 @@ for the native world, and the existing native landmark sprites were not rebuilt.
 
 ![Working mirror inside a 390-pixel phone viewport](previews/dar-al-salam-dark-room-phone.jpg)
 
-## Native world plot update
+## Native world plot: complete exterior
 
-The dark-room landmark on the west lawn now uses regenerated pieces from the
-uploaded collection's cutaway model, including all seven mirrors, sighting
-tubes, astronomy equipment and water clock. The courtyard keeps its supplied
-roofed hall, gallery and side wing. World streets and neighboring buildings
-remain supplied by the existing quarter; the animated scholar and bench keep
-their existing placement.
+The world plot follows the owner's **Site / complete architecture** reference:
+the closed dark chamber with its roof, the central courtyard and turquoise basin,
+roofed hall and gallery, and the surrounding houses, balconies, external stairs,
+streets and planting. The authoritative geometry is the uploaded collection's
+`al-bayt-al-muzlim-complete.glb`, rather than its cutaway model.
 
-The importer resolves original GLB node names before grouping material
-primitives, and sorts the four equipment assemblies by their own footprints.
-Courtyard roofs, arches and furnishings are rendered together to retain their
-internal occlusion when the scene is split into curved-world sprite strips.
+The whole architecture is rendered together before splitting its image into
+strips, retaining the original occlusion between roofs, walls and furnishings.
+It uses uniform model proportions (`KV = 1`) and a ground scale of 0.23 tiles
+per model unit to fit the existing lawn. Only the expansive background sand
+plane is bounded to the plot; no neighboring house is removed. The supplied
+geometry keeps its original arrangement. The world's isometric camera and
+lighting still differ from the standalone viewer's camera and shader.
+
+The scholar's existing red turban, brown robe, beard, book and animation assets
+remain in place. Its sprite metadata uses density 17 so the scholar and bench
+fit the chamber at this neighborhood scale; all 40 frames in each view remain
+unchanged. In the exterior view the roof and walls occlude the interior.
+The interactive exhibit remains available for entering the chamber and exploring
+the experiments. No character approvals or biographies are changed.
+
 `prepare-dark-room.ts` updates this landmark's authored room objects together
-with its sprite inventory, preserving every unrelated world object.
-
-Rebuild using the uploaded collection extracted to a folder and a compatible
-Three.js vendor folder containing `three.module.min.js`, `three.core.js`,
-`GLTFLoader.js` and its utilities:
+with its sprite inventory, preserving every unrelated world object. Rebuild
+using the uploaded collection extracted to a folder and a compatible Three.js
+vendor folder containing `three.module.min.js`, `three.core.js`, `GLTFLoader.js`
+and its utilities:
 
 ```bash
 CHROMIUM_PATH=/usr/bin/chromium node --import tsx tools/prepare-dark-room.ts /path/to/collection /path/to/three
 pnpm prepare:world
 ```
-
-The native representation uses the world's existing projection and depth
-sorting. The full interactive exhibit remains available for experiment controls.
