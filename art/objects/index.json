@@ -1796,6 +1796,166 @@
     "width": 64,
     "height": 77
   },
+  "menk-recording-camera": {
+    "file": "objects/menk-camera-0.png",
+    "width": 40,
+    "height": 56,
+    "anchor": [
+      20,
+      54
+    ],
+    "frames": [
+      "objects/menk-camera-0.png",
+      "objects/menk-camera-1.png",
+      "objects/menk-camera-2.png",
+      "objects/menk-camera-3.png"
+    ],
+    "period": 120
+  },
+  "menk-speech-lectern": {
+    "file": "objects/menk-lectern.png",
+    "width": 64,
+    "height": 64,
+    "anchor": [
+      32,
+      61
+    ]
+  },
+  "khwarizmi-desk": {
+    "file": "objects/khwarizmi-desk.png",
+    "width": 80,
+    "height": 56,
+    "anchor": [
+      40,
+      52
+    ]
+  },
+  "khwarizmi-desk-back": {
+    "file": "objects/khwarizmi-desk-back.png",
+    "width": 80,
+    "height": 56,
+    "anchor": [
+      40,
+      52
+    ]
+  },
+  "khwarizmi-geometry": {
+    "file": "objects/khwarizmi-geometry.png",
+    "width": 64,
+    "height": 88,
+    "anchor": [
+      32,
+      84
+    ]
+  },
+  "khwarizmi-armillary": {
+    "file": "objects/khwarizmi-armillary.png",
+    "width": 48,
+    "height": 80,
+    "anchor": [
+      24,
+      76
+    ]
+  },
+  "khwarizmi-bookcase": {
+    "file": "objects/khwarizmi-bookcase.png",
+    "width": 80,
+    "height": 104,
+    "anchor": [
+      40,
+      100
+    ]
+  },
+  "khwarizmi-stool": {
+    "file": "objects/khwarizmi-stool.png",
+    "width": 32,
+    "height": 40,
+    "anchor": [
+      16,
+      36
+    ]
+  },
+  "khwarizmi-reading-stand": {
+    "file": "objects/khwarizmi-reading-stand.png",
+    "width": 48,
+    "height": 48,
+    "anchor": [
+      24,
+      44
+    ]
+  },
+  "khwarizmi-scrolls": {
+    "file": "objects/khwarizmi-scrolls.png",
+    "width": 40,
+    "height": 32,
+    "anchor": [
+      20,
+      28
+    ]
+  },
+  "m-traffic-signal": {
+    "file": "objects/m-city-lamp.png",
+    "anchor": [
+      32,
+      56
+    ],
+    "width": 64,
+    "height": 77
+  },
+  "m-traffic-signal-side": {
+    "file": "objects/m-city-lamp.png",
+    "anchor": [
+      32,
+      56
+    ],
+    "width": 64,
+    "height": 77
+  },
+  "m-road-dashes": {
+    "file": "objects/m-crosswalk.png",
+    "anchor": [
+      16,
+      1
+    ],
+    "width": 64,
+    "height": 32
+  },
+  "m-road-dashes-side": {
+    "file": "objects/m-crosswalk.png",
+    "anchor": [
+      16,
+      1
+    ],
+    "width": 64,
+    "height": 32
+  },
+  "m-biology-bench": {
+    "file": "objects/m-lab-bench.png",
+    "anchor": [
+      32,
+      40
+    ],
+    "width": 96,
+    "height": 82
+  },
+  "m-chemistry-bench": {
+    "file": "objects/m-lab-bench.png",
+    "anchor": [
+      32,
+      40
+    ],
+    "width": 96,
+    "height": 82
+  },
+  "m-lab-stool": {
+    "file": "objects/m-bench.png",
+    "anchor": [
+      32,
+      27
+    ],
+    "width": 80,
+    "height": 57
+  },
   "msw-house-white": {
     "file": "objects/msw-house-white.png",
     "anchor": [

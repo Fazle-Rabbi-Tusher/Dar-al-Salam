@@ -1,0 +1,407 @@
+[
+  {
+    "id": "lab-chemistry-operator-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "lab-coat",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "navy",
+        "headwear": "navy",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 48,
+        "action": "idle",
+        "at": [
+          42.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "clipboard"
+      },
+      {
+        "from": 48,
+        "to": 84,
+        "action": "pour",
+        "at": [
+          42.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "flask"
+      },
+      {
+        "from": 84,
+        "to": 168,
+        "action": "talk",
+        "at": [
+          42.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "tablet"
+      },
+      {
+        "from": 168,
+        "to": 240,
+        "action": "idle",
+        "at": [
+          42.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "clipboard"
+      }
+    ],
+    "role": "Scientist mixing reagent and watching the reaction"
+  },
+  {
+    "id": "lab-chemistry-operator-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "lab-coat",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "navy",
+        "headwear": "rose",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 48,
+        "action": "idle",
+        "at": [
+          47.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "clipboard"
+      },
+      {
+        "from": 48,
+        "to": 84,
+        "action": "pour",
+        "at": [
+          47.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "flask"
+      },
+      {
+        "from": 84,
+        "to": 168,
+        "action": "talk",
+        "at": [
+          47.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "tablet"
+      },
+      {
+        "from": 168,
+        "to": 240,
+        "action": "idle",
+        "at": [
+          47.7,
+          12.5
+        ],
+        "facing": "NE",
+        "prop": "clipboard"
+      }
+    ],
+    "role": "Scientist mixing reagent and watching the reaction"
+  },
+  {
+    "id": "lab-biology-researcher-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "lab-coat",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "navy",
+        "headwear": "sky",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 144,
+        "action": "write",
+        "at": [
+          41.8,
+          17.3
+        ],
+        "facing": "NE",
+        "prop": "none"
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "write",
+        "at": [
+          41.8,
+          17.3
+        ],
+        "facing": "NE",
+        "prop": "pen"
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          41.8,
+          17.3
+        ],
+        "facing": "NE",
+        "prop": "none"
+      }
+    ],
+    "role": "Biologist preparing samples and recording microscope observations"
+  },
+  {
+    "id": "lab-biology-researcher-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "lab-coat",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "lab-white",
+        "garmentSecondary": "navy",
+        "headwear": "navy",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 144,
+        "action": "write",
+        "at": [
+          46.8,
+          17.3
+        ],
+        "facing": "NE",
+        "prop": "none"
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "write",
+        "at": [
+          46.8,
+          17.3
+        ],
+        "facing": "NE",
+        "prop": "pen"
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "sit",
+        "at": [
+          46.8,
+          17.3
+        ],
+        "facing": "NE",
+        "prop": "none"
+      }
+    ],
+    "role": "Biologist preparing samples and recording microscope observations"
+  },
+  {
+    "id": "lab-architect-drafter-1",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "shirt-trousers",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-4",
+        "hair": "hair-black",
+        "garmentPrimary": "sky",
+        "garmentSecondary": "navy",
+        "headwear": "rose",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 144,
+        "action": "write",
+        "at": [
+          26.1,
+          12.1
+        ],
+        "facing": "NE",
+        "prop": "pen"
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "sit",
+        "at": [
+          26.1,
+          12.1
+        ],
+        "facing": "NE",
+        "prop": "blueprint"
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "write",
+        "at": [
+          26.1,
+          12.1
+        ],
+        "facing": "NE",
+        "prop": "pen"
+      }
+    ],
+    "role": "Architect drawing a floor plan and reviewing the blueprint"
+  },
+  {
+    "id": "lab-architect-drafter-2",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-2",
+        "hair": "hair-black",
+        "garmentPrimary": "olive",
+        "garmentSecondary": "navy",
+        "headwear": "sky",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 144,
+        "action": "write",
+        "at": [
+          26.1,
+          16.6
+        ],
+        "facing": "NE",
+        "prop": "pen"
+      },
+      {
+        "from": 144,
+        "to": 216,
+        "action": "sit",
+        "at": [
+          26.1,
+          16.6
+        ],
+        "facing": "NE",
+        "prop": "blueprint"
+      },
+      {
+        "from": 216,
+        "to": 240,
+        "action": "write",
+        "at": [
+          26.1,
+          16.6
+        ],
+        "facing": "NE",
+        "prop": "pen"
+      }
+    ],
+    "role": "Architect drawing a floor plan and reviewing the blueprint"
+  },
+  {
+    "id": "lab-architect-cad",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "shirt-trousers",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-5",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "navy",
+        "headwear": "navy",
+        "prop": "sky"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "write",
+        "at": [
+          34,
+          14.6
+        ],
+        "facing": "NE"
+      }
+    ],
+    "role": "Architect working on the CAD model"
+  }
+]

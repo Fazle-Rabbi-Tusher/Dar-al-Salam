@@ -621,7 +621,12 @@ async function build() {
           c.script[state.stepIndex].prop,
           state.facing,
         ),
-        mb = metas[frames[fk][state.index]].bounds,
+        sequence = frames[fk],
+        tempo = metas[sequence[0]].tempo,
+        selected = tempo
+          ? Math.floor((f % (sequence.length * tempo)) / tempo)
+          : state.index % sequence.length,
+        mb = metas[sequence[selected]].bounds,
         b = mirror.includes(fk) ? { ...mb, x: -(mb.x + mb.width) } : mb;
       if (shadowFrame) {
         const p = worldFromTile(...state.tile),
@@ -786,6 +791,11 @@ async function build() {
           at = worldFromTile(...ground),
           m = metas[names[0]];
         sortables.push({
+          // Keep the owner's authored mathematics collection in its current art.
+          // Supplied props, landmarks and Massawa plantings use their own paths.
+          ...(!(o.x >= 7 && o.x < 22 && o.y >= 40 && o.y < 56)
+            ? { objectType: o.type }
+            : {}),
           frame: names[0],
           x: wx,
           y: wy,

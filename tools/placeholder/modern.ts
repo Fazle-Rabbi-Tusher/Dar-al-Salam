@@ -8450,7 +8450,26 @@ const city: Record<string, Spec> = {
     },
   },
 };
+// These IDs also have volumetric runtime models. Keep small legacy fallback
+// definitions so rebuilding source art does not drop their manifest entries.
+city['m-traffic-signal'] = {
+  ...city['m-city-lamp'],
+  footprint: [0.35, 0.35],
+  side: true,
+};
+city['m-road-dashes'] = {
+  footprint: [2, 0.15],
+  h: 1,
+  side: true,
+  shadow: false,
+  draw(c) {
+    for (const x of [0.1, 1.2]) c.box(x, 0, 0.5, 0.05, 1, M.white);
+  },
+};
 Object.assign(objects, city);
+objects['m-chemistry-bench'] = { ...objects['m-lab-bench'] };
+objects['m-biology-bench'] = { ...objects['m-lab-bench'] };
+objects['m-lab-stool'] = { ...objects['m-bench'], footprint: [0.65, 0.65] };
 
 /* ════════ Massawa pass: an island town on the Red Sea, c. 615 CE ════════ */
 /*

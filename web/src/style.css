@@ -464,6 +464,8 @@ html[lang='bn'] .brand strong {
   color: #b39f79;
 }
 .district-tabs {
+  max-width: calc(100vw - 32px);
+  flex-wrap: wrap;
   display: flex;
   align-items: center;
   gap: 1px;
