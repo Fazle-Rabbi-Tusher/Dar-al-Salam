@@ -784,7 +784,19 @@ describe('the dark room', () => {
     );
     // Its walls, screen, shelves, beam and furniture as separate pieces.
     const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
-    for (const k of ['back', 'right', 'screen', 'shelves', 'rays', 'lectern'])
+    for (const k of [
+      'back',
+      'right',
+      'screen',
+      'shelves',
+      'rays',
+      'lectern',
+      'mirrors',
+      'tubes',
+      'astronomy',
+      'waterclock',
+      'courtyard',
+    ])
       expect(kinds).toContain(k);
     for (const p of placed) expect(index[p.type]).toBeTruthy();
     const xs = placed.map((p) => p.at[0]),

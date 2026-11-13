@@ -170,3 +170,31 @@ for the native world, and the existing native landmark sprites were not rebuilt.
 ![Approved architecture inside the main-site frame](previews/dar-al-salam-dark-room-architecture.jpg)
 
 ![Working mirror inside a 390-pixel phone viewport](previews/dar-al-salam-dark-room-phone.jpg)
+
+## Native world plot update
+
+The dark-room landmark on the west lawn now uses regenerated pieces from the
+uploaded collection's cutaway model, including all seven mirrors, sighting
+tubes, astronomy equipment and water clock. The courtyard keeps its supplied
+roofed hall, gallery and side wing. World streets and neighboring buildings
+remain supplied by the existing quarter; the animated scholar and bench keep
+their existing placement.
+
+The importer resolves original GLB node names before grouping material
+primitives, and sorts the four equipment assemblies by their own footprints.
+Courtyard roofs, arches and furnishings are rendered together to retain their
+internal occlusion when the scene is split into curved-world sprite strips.
+`prepare-dark-room.ts` updates this landmark's authored room objects together
+with its sprite inventory, preserving every unrelated world object.
+
+Rebuild using the uploaded collection extracted to a folder and a compatible
+Three.js vendor folder containing `three.module.min.js`, `three.core.js`,
+`GLTFLoader.js` and its utilities:
+
+```bash
+CHROMIUM_PATH=/usr/bin/chromium node --import tsx tools/prepare-dark-room.ts /path/to/collection /path/to/three
+pnpm prepare:world
+```
+
+The native representation uses the world's existing projection and depth
+sorting. The full interactive exhibit remains available for experiment controls.

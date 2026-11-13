@@ -2,105 +2,105 @@
   {
     "type": "sup-dr-left-0",
     "at": [
-      17.366,
+      17.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-1",
     "at": [
-      17.866,
+      17.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-2",
     "at": [
-      18.366,
+      18.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-3",
     "at": [
-      18.866,
+      18.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-4",
     "at": [
-      19.366,
+      19.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-5",
     "at": [
-      19.867,
+      19.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-6",
     "at": [
-      20.367,
+      20.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-7",
     "at": [
-      20.867,
+      20.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-8",
     "at": [
-      21.367,
+      21.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-9",
     "at": [
-      21.867,
+      21.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-10",
     "at": [
-      22.367,
+      22.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-11",
     "at": [
-      22.867,
+      22.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-12",
     "at": [
-      23.367,
+      23.377,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-13",
     "at": [
-      23.867,
+      23.877,
       106.531
     ]
   },
   {
     "type": "sup-dr-left-14",
     "at": [
-      24.367,
+      24.377,
       106.531
     ]
   },
@@ -122,133 +122,133 @@
     "type": "sup-dr-back-0",
     "at": [
       17.392,
-      106.556
+      106.546
     ]
   },
   {
     "type": "sup-dr-back-1",
     "at": [
       17.392,
-      106.056
+      106.046
     ]
   },
   {
     "type": "sup-dr-back-2",
     "at": [
       17.392,
-      105.556
+      105.546
     ]
   },
   {
     "type": "sup-dr-back-3",
     "at": [
       17.392,
-      105.056
+      105.046
     ]
   },
   {
     "type": "sup-dr-back-4",
     "at": [
       17.392,
-      104.556
+      104.546
     ]
   },
   {
     "type": "sup-dr-back-5",
     "at": [
       17.392,
-      104.056
+      104.046
     ]
   },
   {
     "type": "sup-dr-back-6",
     "at": [
       17.392,
-      103.556
+      103.546
     ]
   },
   {
     "type": "sup-dr-back-7",
     "at": [
       17.392,
-      103.056
+      103.046
     ]
   },
   {
     "type": "sup-dr-back-8",
     "at": [
       17.392,
-      102.556
+      102.546
     ]
   },
   {
     "type": "sup-dr-back-9",
     "at": [
       17.392,
-      102.056
+      102.046
     ]
   },
   {
     "type": "sup-dr-back-10",
     "at": [
       17.392,
-      101.556
+      101.546
     ]
   },
   {
     "type": "sup-dr-back-11",
     "at": [
       17.392,
-      101.056
+      101.046
     ]
   },
   {
     "type": "sup-dr-back-12",
     "at": [
       17.392,
-      100.556
+      100.546
     ]
   },
   {
     "type": "sup-dr-back-13",
     "at": [
       17.392,
-      100.056
+      100.046
     ]
   },
   {
     "type": "sup-dr-back-14",
     "at": [
       17.392,
-      99.556
+      99.546
     ]
   },
   {
     "type": "sup-dr-back-15",
     "at": [
       17.392,
-      99.056
+      99.046
     ]
   },
   {
     "type": "sup-dr-back-16",
     "at": [
       17.392,
-      98.556
+      98.546
     ]
   },
   {
     "type": "sup-dr-back-17",
     "at": [
       17.392,
-      98.056
+      98.046
     ]
   },
   {
     "type": "sup-dr-back-18",
     "at": [
       17.392,
-      97.556
+      97.546
     ]
   },
   {
@@ -273,794 +273,367 @@
     ]
   },
   {
-    "type": "sup-dr-court-north-0",
+    "type": "sup-dr-courtyard-0",
     "at": [
-      17.166,
-      112.018
+      16.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-1",
+    "type": "sup-dr-courtyard-1",
     "at": [
-      17.666,
-      112.018
+      16.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-2",
+    "type": "sup-dr-courtyard-2",
     "at": [
-      18.166,
-      112.018
+      17.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-3",
+    "type": "sup-dr-courtyard-3",
     "at": [
-      18.34,
-      111.692
+      17.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-4",
+    "type": "sup-dr-courtyard-4",
     "at": [
-      18.34,
-      111.192
+      18.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-5",
+    "type": "sup-dr-courtyard-5",
     "at": [
-      18.34,
-      110.692
+      18.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-6",
+    "type": "sup-dr-courtyard-6",
     "at": [
-      18.34,
-      110.192
+      19.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-7",
+    "type": "sup-dr-courtyard-7",
     "at": [
-      18.34,
-      109.692
+      19.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-8",
+    "type": "sup-dr-courtyard-8",
     "at": [
-      18.34,
-      109.192
+      20.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-9",
+    "type": "sup-dr-courtyard-9",
     "at": [
-      18.34,
-      108.692
+      20.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-10",
+    "type": "sup-dr-courtyard-10",
     "at": [
-      18.34,
-      108.192
+      21.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-11",
+    "type": "sup-dr-courtyard-11",
     "at": [
-      18.34,
-      107.692
+      21.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-12",
+    "type": "sup-dr-courtyard-12",
     "at": [
-      18.34,
-      107.192
+      22.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-north-13",
+    "type": "sup-dr-courtyard-13",
     "at": [
-      18.34,
-      106.833
+      22.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-0",
+    "type": "sup-dr-courtyard-14",
     "at": [
-      23.307,
-      110.065
+      23.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-1",
+    "type": "sup-dr-courtyard-15",
     "at": [
-      23.666,
-      109.924
+      23.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-2",
+    "type": "sup-dr-courtyard-16",
     "at": [
-      23.666,
-      109.424
+      24.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-3",
+    "type": "sup-dr-courtyard-17",
     "at": [
-      23.666,
-      108.924
+      24.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-4",
+    "type": "sup-dr-courtyard-18",
     "at": [
-      23.666,
-      108.424
+      25.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-5",
+    "type": "sup-dr-courtyard-19",
     "at": [
-      23.666,
-      107.924
+      25.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-6",
+    "type": "sup-dr-courtyard-20",
     "at": [
-      23.666,
-      107.424
+      26.2,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-south-7",
+    "type": "sup-dr-courtyard-21",
     "at": [
-      23.666,
-      106.94
+      26.7,
+      123.823
     ]
   },
   {
-    "type": "sup-dr-court-things-0",
+    "type": "sup-dr-courtyard-22",
     "at": [
-      22.539,
-      116.172
+      27.107,
+      123.73
     ]
   },
   {
-    "type": "sup-dr-court-things-1",
+    "type": "sup-dr-courtyard-23",
     "at": [
-      22.785,
-      115.918
+      27.107,
+      123.23
     ]
   },
   {
-    "type": "sup-dr-court-things-2",
+    "type": "sup-dr-courtyard-24",
     "at": [
-      22.785,
-      115.418
+      27.107,
+      122.73
     ]
   },
   {
-    "type": "sup-dr-court-things-3",
+    "type": "sup-dr-courtyard-25",
     "at": [
-      22.785,
-      114.918
+      27.107,
+      122.23
     ]
   },
   {
-    "type": "sup-dr-court-things-4",
+    "type": "sup-dr-courtyard-26",
     "at": [
-      22.785,
-      114.575
+      27.107,
+      121.73
     ]
   },
   {
-    "type": "sup-dr-gallery-things-0",
+    "type": "sup-dr-courtyard-27",
     "at": [
-      24.859,
-      116.399
+      27.107,
+      121.23
     ]
   },
   {
-    "type": "sup-dr-gallery-things-1",
+    "type": "sup-dr-courtyard-28",
     "at": [
-      25.102,
-      116.141
+      27.107,
+      120.73
     ]
   },
   {
-    "type": "sup-dr-gallery-things-2",
+    "type": "sup-dr-courtyard-29",
     "at": [
-      25.102,
-      115.641
+      27.107,
+      120.23
     ]
   },
   {
-    "type": "sup-dr-gallery-things-7",
+    "type": "sup-dr-courtyard-30",
     "at": [
-      25.102,
-      113.141
+      27.107,
+      119.73
     ]
   },
   {
-    "type": "sup-dr-gallery-things-8",
+    "type": "sup-dr-courtyard-31",
     "at": [
-      25.102,
-      112.641
+      27.107,
+      119.23
     ]
   },
   {
-    "type": "sup-dr-gallery-things-9",
+    "type": "sup-dr-courtyard-32",
     "at": [
-      25.102,
-      112.376
+      27.107,
+      118.73
     ]
   },
   {
-    "type": "sup-dr-arcade-0",
+    "type": "sup-dr-courtyard-33",
     "at": [
-      23.28,
-      117.195
+      27.107,
+      118.23
     ]
   },
   {
-    "type": "sup-dr-arcade-1",
+    "type": "sup-dr-courtyard-34",
     "at": [
-      23.43,
-      116.845
+      27.107,
+      117.73
     ]
   },
   {
-    "type": "sup-dr-arcade-2",
+    "type": "sup-dr-courtyard-35",
     "at": [
-      23.43,
-      116.345
+      27.107,
+      117.23
     ]
   },
   {
-    "type": "sup-dr-arcade-3",
+    "type": "sup-dr-courtyard-36",
     "at": [
-      23.43,
-      115.845
+      27.107,
+      116.73
     ]
   },
   {
-    "type": "sup-dr-arcade-4",
+    "type": "sup-dr-courtyard-37",
     "at": [
-      23.43,
-      115.345
+      27.107,
+      116.23
     ]
   },
   {
-    "type": "sup-dr-arcade-5",
+    "type": "sup-dr-courtyard-38",
     "at": [
-      23.43,
-      114.845
+      27.107,
+      115.73
     ]
   },
   {
-    "type": "sup-dr-arcade-6",
+    "type": "sup-dr-courtyard-39",
     "at": [
-      23.43,
-      114.345
+      27.107,
+      115.23
     ]
   },
   {
-    "type": "sup-dr-arcade-7",
+    "type": "sup-dr-courtyard-40",
     "at": [
-      23.43,
-      113.845
+      27.107,
+      114.73
     ]
   },
   {
-    "type": "sup-dr-arcade-8",
+    "type": "sup-dr-courtyard-41",
     "at": [
-      23.43,
-      113.345
+      27.107,
+      114.23
     ]
   },
   {
-    "type": "sup-dr-arcade-9",
+    "type": "sup-dr-courtyard-42",
     "at": [
-      23.43,
-      112.845
+      27.107,
+      113.73
     ]
   },
   {
-    "type": "sup-dr-arcade-10",
+    "type": "sup-dr-courtyard-43",
     "at": [
-      23.43,
-      112.345
+      27.107,
+      113.23
     ]
   },
   {
-    "type": "sup-dr-arcade-11",
+    "type": "sup-dr-courtyard-44",
     "at": [
-      23.43,
-      111.845
+      27.107,
+      112.73
     ]
   },
   {
-    "type": "sup-dr-arcade-12",
+    "type": "sup-dr-courtyard-45",
     "at": [
-      23.43,
-      111.345
+      27.107,
+      112.23
     ]
   },
   {
-    "type": "sup-dr-arcade-13",
+    "type": "sup-dr-courtyard-46",
     "at": [
-      23.43,
-      110.845
+      27.107,
+      111.73
     ]
   },
   {
-    "type": "sup-dr-arcade-14",
+    "type": "sup-dr-courtyard-47",
     "at": [
-      23.43,
-      110.376
+      27.107,
+      111.23
     ]
   },
   {
-    "type": "sup-dr-gallery-0",
+    "type": "sup-dr-courtyard-48",
     "at": [
-      23.28,
-      117.195
+      27.107,
+      110.73
     ]
   },
   {
-    "type": "sup-dr-gallery-1",
+    "type": "sup-dr-courtyard-49",
     "at": [
-      23.78,
-      117.195
+      27.107,
+      110.23
     ]
   },
   {
-    "type": "sup-dr-gallery-2",
+    "type": "sup-dr-courtyard-50",
     "at": [
-      24.28,
-      117.195
+      27.107,
+      109.73
     ]
   },
   {
-    "type": "sup-dr-gallery-3",
+    "type": "sup-dr-courtyard-51",
     "at": [
-      24.78,
-      117.195
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-4",
-    "at": [
-      25.28,
-      117.195
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-5",
-    "at": [
-      25.402,
-      116.817
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-6",
-    "at": [
-      25.402,
-      116.317
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-7",
-    "at": [
-      25.402,
-      115.817
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-8",
-    "at": [
-      25.402,
-      115.317
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-9",
-    "at": [
-      25.402,
-      114.817
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-10",
-    "at": [
-      25.402,
-      114.317
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-11",
-    "at": [
-      25.402,
-      113.817
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-12",
-    "at": [
-      25.402,
-      113.317
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-13",
-    "at": [
-      25.402,
-      112.817
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-14",
-    "at": [
-      25.402,
-      112.316
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-15",
-    "at": [
-      25.402,
-      111.816
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-16",
-    "at": [
-      25.402,
-      111.316
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-17",
-    "at": [
-      25.402,
-      110.816
-    ]
-  },
-  {
-    "type": "sup-dr-gallery-18",
-    "at": [
-      25.402,
-      110.316
-    ]
-  },
-  {
-    "type": "sup-dr-hall-0",
-    "at": [
-      17.41,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-1",
-    "at": [
-      17.91,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-2",
-    "at": [
-      18.41,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-3",
-    "at": [
-      18.91,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-4",
-    "at": [
-      19.41,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-5",
-    "at": [
-      19.91,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-6",
-    "at": [
-      20.41,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-7",
-    "at": [
-      20.91,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-8",
-    "at": [
-      21.41,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-9",
-    "at": [
-      21.91,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-10",
-    "at": [
-      22.41,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-11",
-    "at": [
-      22.91,
-      120.45
-    ]
-  },
-  {
-    "type": "sup-dr-hall-12",
-    "at": [
-      23.077,
-      120.117
-    ]
-  },
-  {
-    "type": "sup-dr-hall-13",
-    "at": [
-      23.077,
-      119.617
-    ]
-  },
-  {
-    "type": "sup-dr-hall-14",
-    "at": [
-      23.077,
-      119.117
-    ]
-  },
-  {
-    "type": "sup-dr-hall-15",
-    "at": [
-      23.077,
-      118.617
-    ]
-  },
-  {
-    "type": "sup-dr-hall-16",
-    "at": [
-      23.077,
-      118.117
-    ]
-  },
-  {
-    "type": "sup-dr-hall-17",
-    "at": [
-      23.077,
-      117.617
-    ]
-  },
-  {
-    "type": "sup-dr-hall-18",
-    "at": [
-      23.077,
-      117.226
-    ]
-  },
-  {
-    "type": "sup-dr-palms-0",
-    "at": [
-      17.766,
-      114.712
-    ]
-  },
-  {
-    "type": "sup-dr-palms-1",
-    "at": [
-      18.266,
-      114.712
-    ]
-  },
-  {
-    "type": "sup-dr-palms-2",
-    "at": [
-      18.766,
-      114.712
-    ]
-  },
-  {
-    "type": "sup-dr-palms-3",
-    "at": [
-      18.943,
-      114.389
-    ]
-  },
-  {
-    "type": "sup-dr-palms-4",
-    "at": [
-      18.943,
-      113.889
-    ]
-  },
-  {
-    "type": "sup-dr-palms-5",
-    "at": [
-      18.943,
-      113.436
-    ]
-  },
-  {
-    "type": "sup-dr-planters-0",
-    "at": [
-      18.524,
-      116.001
-    ]
-  },
-  {
-    "type": "sup-dr-planters-1",
-    "at": [
-      19.024,
-      116.001
-    ]
-  },
-  {
-    "type": "sup-dr-planters-12",
-    "at": [
-      22.848,
-      114.325
-    ]
-  },
-  {
-    "type": "sup-dr-planters-13",
-    "at": [
-      22.848,
-      113.903
-    ]
-  },
-  {
-    "type": "sup-dr-wing-0",
-    "at": [
-      14.592,
-      117.257
-    ]
-  },
-  {
-    "type": "sup-dr-wing-1",
-    "at": [
-      15.092,
-      117.257
-    ]
-  },
-  {
-    "type": "sup-dr-wing-2",
-    "at": [
-      15.592,
-      117.257
-    ]
-  },
-  {
-    "type": "sup-dr-wing-3",
-    "at": [
-      16.092,
-      117.257
-    ]
-  },
-  {
-    "type": "sup-dr-wing-4",
-    "at": [
-      16.592,
-      117.257
-    ]
-  },
-  {
-    "type": "sup-dr-wing-5",
-    "at": [
-      17.092,
-      117.257
-    ]
-  },
-  {
-    "type": "sup-dr-wing-6",
-    "at": [
-      17.33,
-      116.994
-    ]
-  },
-  {
-    "type": "sup-dr-wing-7",
-    "at": [
-      17.33,
-      116.494
-    ]
-  },
-  {
-    "type": "sup-dr-wing-8",
-    "at": [
-      17.33,
-      115.994
-    ]
-  },
-  {
-    "type": "sup-dr-wing-9",
-    "at": [
-      17.33,
-      115.494
-    ]
-  },
-  {
-    "type": "sup-dr-wing-10",
-    "at": [
-      17.33,
-      114.994
-    ]
-  },
-  {
-    "type": "sup-dr-wing-11",
-    "at": [
-      17.33,
-      114.494
-    ]
-  },
-  {
-    "type": "sup-dr-wing-12",
-    "at": [
-      17.33,
-      113.994
-    ]
-  },
-  {
-    "type": "sup-dr-wing-13",
-    "at": [
-      17.33,
-      113.494
-    ]
-  },
-  {
-    "type": "sup-dr-wing-14",
-    "at": [
-      17.33,
-      112.994
-    ]
-  },
-  {
-    "type": "sup-dr-wing-15",
-    "at": [
-      17.33,
-      112.494
-    ]
-  },
-  {
-    "type": "sup-dr-wing-16",
-    "at": [
-      17.33,
-      112.135
+      27.107,
+      109.261
     ]
   },
   {
@@ -1071,178 +644,339 @@
     ]
   },
   {
+    "type": "sup-dr-astronomy-0",
+    "at": [
+      21.884,
+      98.038
+    ]
+  },
+  {
+    "type": "sup-dr-astronomy-1",
+    "at": [
+      22.384,
+      98.038
+    ]
+  },
+  {
+    "type": "sup-dr-astronomy-2",
+    "at": [
+      22.693,
+      97.847
+    ]
+  },
+  {
+    "type": "sup-dr-astronomy-3",
+    "at": [
+      22.693,
+      97.581
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-0",
+    "at": [
+      24.225,
+      104.411
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-1",
+    "at": [
+      24.394,
+      104.079
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-2",
+    "at": [
+      24.394,
+      103.579
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-3",
+    "at": [
+      24.394,
+      103.079
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-4",
+    "at": [
+      24.394,
+      102.579
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-5",
+    "at": [
+      24.394,
+      102.079
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-6",
+    "at": [
+      24.394,
+      101.579
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-7",
+    "at": [
+      24.394,
+      101.079
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-8",
+    "at": [
+      24.394,
+      100.579
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-9",
+    "at": [
+      24.394,
+      100.079
+    ]
+  },
+  {
+    "type": "sup-dr-mirrors-10",
+    "at": [
+      24.394,
+      99.783
+    ]
+  },
+  {
     "type": "sup-dr-shelves-0",
     "at": [
       17.745,
-      104.566
+      104.587
     ]
   },
   {
     "type": "sup-dr-shelves-1",
     "at": [
       17.745,
-      104.066
+      104.087
     ]
   },
   {
     "type": "sup-dr-shelves-2",
     "at": [
       17.745,
-      103.566
+      103.587
     ]
   },
   {
     "type": "sup-dr-shelves-3",
     "at": [
       17.745,
-      103.066
+      103.087
     ]
   },
   {
     "type": "sup-dr-shelves-4",
     "at": [
       17.745,
-      102.566
+      102.587
     ]
   },
   {
     "type": "sup-dr-shelves-7",
     "at": [
       17.745,
-      101.066
+      101.087
     ]
   },
   {
     "type": "sup-dr-shelves-8",
     "at": [
       17.745,
-      100.566
+      100.587
     ]
   },
   {
     "type": "sup-dr-shelves-9",
     "at": [
       17.745,
-      100.066
+      100.087
     ]
   },
   {
     "type": "sup-dr-shelves-10",
     "at": [
       17.745,
-      99.566
+      99.587
     ]
   },
   {
     "type": "sup-dr-shelves-11",
     "at": [
       17.745,
-      99.113
+      99.118
+    ]
+  },
+  {
+    "type": "sup-dr-tubes-0",
+    "at": [
+      18.012,
+      98.76
+    ]
+  },
+  {
+    "type": "sup-dr-tubes-1",
+    "at": [
+      18.512,
+      98.76
+    ]
+  },
+  {
+    "type": "sup-dr-tubes-2",
+    "at": [
+      18.576,
+      98.324
+    ]
+  },
+  {
+    "type": "sup-dr-tubes-3",
+    "at": [
+      18.576,
+      97.855
+    ]
+  },
+  {
+    "type": "sup-dr-waterclock-0",
+    "at": [
+      17.898,
+      106.303
+    ]
+  },
+  {
+    "type": "sup-dr-waterclock-1",
+    "at": [
+      18.398,
+      106.303
+    ]
+  },
+  {
+    "type": "sup-dr-waterclock-2",
+    "at": [
+      18.552,
+      105.956
+    ]
+  },
+  {
+    "type": "sup-dr-waterclock-3",
+    "at": [
+      18.552,
+      105.55
     ]
   },
   {
     "type": "sup-dr-rays-0",
     "at": [
       20.132,
-      106.14
+      106.13
     ]
   },
   {
     "type": "sup-dr-rays-1",
     "at": [
       20.132,
-      105.64
+      105.63
     ]
   },
   {
     "type": "sup-dr-rays-2",
     "at": [
       20.132,
-      105.14
+      105.13
     ]
   },
   {
     "type": "sup-dr-rays-3",
     "at": [
       20.132,
-      104.64
+      104.63
     ]
   },
   {
     "type": "sup-dr-rays-4",
     "at": [
       20.132,
-      104.14
+      104.13
     ]
   },
   {
     "type": "sup-dr-rays-5",
     "at": [
       20.132,
-      103.64
+      103.63
     ]
   },
   {
     "type": "sup-dr-rays-6",
     "at": [
       20.132,
-      103.14
+      103.13
     ]
   },
   {
     "type": "sup-dr-rays-7",
     "at": [
       20.132,
-      102.64
+      102.63
     ]
   },
   {
     "type": "sup-dr-rays-8",
     "at": [
       20.132,
-      102.14
+      102.13
     ]
   },
   {
     "type": "sup-dr-rays-9",
     "at": [
       20.132,
-      101.64
+      101.63
     ]
   },
   {
     "type": "sup-dr-rays-10",
     "at": [
       20.132,
-      101.14
+      101.13
     ]
   },
   {
     "type": "sup-dr-rays-11",
     "at": [
       20.132,
-      100.64
+      100.63
     ]
   },
   {
     "type": "sup-dr-rays-12",
     "at": [
       20.132,
-      100.14
+      100.13
     ]
   },
   {
     "type": "sup-dr-rays-13",
     "at": [
       20.132,
-      99.64
+      99.63
     ]
   },
   {
     "type": "sup-dr-rays-14",
     "at": [
       20.132,
-      99.14
+      99.13
     ]
   },
   {
@@ -1269,28 +1003,28 @@
   {
     "type": "sup-dr-screen-1",
     "at": [
-      19.529,
+      19.539,
       98.787
     ]
   },
   {
     "type": "sup-dr-screen-2",
     "at": [
-      20.029,
+      20.039,
       98.787
     ]
   },
   {
     "type": "sup-dr-screen-3",
     "at": [
-      20.529,
+      20.539,
       98.787
     ]
   },
   {
     "type": "sup-dr-screen-4",
     "at": [
-      21.029,
+      21.039,
       98.787
     ]
   },
@@ -1326,133 +1060,133 @@
     "type": "sup-dr-front-0",
     "at": [
       24.615,
-      106.529
+      106.519
     ]
   },
   {
     "type": "sup-dr-front-1",
     "at": [
       24.615,
-      106.029
+      106.019
     ]
   },
   {
     "type": "sup-dr-front-2",
     "at": [
       24.615,
-      105.529
+      105.519
     ]
   },
   {
     "type": "sup-dr-front-3",
     "at": [
       24.615,
-      105.029
+      105.019
     ]
   },
   {
     "type": "sup-dr-front-4",
     "at": [
       24.615,
-      104.529
+      104.519
     ]
   },
   {
     "type": "sup-dr-front-5",
     "at": [
       24.615,
-      104.029
+      104.019
     ]
   },
   {
     "type": "sup-dr-front-6",
     "at": [
       24.615,
-      103.529
+      103.519
     ]
   },
   {
     "type": "sup-dr-front-7",
     "at": [
       24.615,
-      103.029
+      103.019
     ]
   },
   {
     "type": "sup-dr-front-8",
     "at": [
       24.615,
-      102.529
+      102.519
     ]
   },
   {
     "type": "sup-dr-front-9",
     "at": [
       24.615,
-      102.029
+      102.019
     ]
   },
   {
     "type": "sup-dr-front-10",
     "at": [
       24.615,
-      101.529
+      101.519
     ]
   },
   {
     "type": "sup-dr-front-11",
     "at": [
       24.615,
-      101.029
+      101.019
     ]
   },
   {
     "type": "sup-dr-front-12",
     "at": [
       24.615,
-      100.529
+      100.519
     ]
   },
   {
     "type": "sup-dr-front-13",
     "at": [
       24.615,
-      100.029
+      100.019
     ]
   },
   {
     "type": "sup-dr-front-14",
     "at": [
       24.615,
-      99.529
+      99.519
     ]
   },
   {
     "type": "sup-dr-front-15",
     "at": [
       24.615,
-      99.029
+      99.019
     ]
   },
   {
     "type": "sup-dr-front-16",
     "at": [
       24.615,
-      98.529
+      98.519
     ]
   },
   {
     "type": "sup-dr-front-17",
     "at": [
       24.615,
-      98.029
+      98.019
     ]
   },
   {
     "type": "sup-dr-front-18",
     "at": [
       24.615,
-      97.529
+      97.518
     ]
   },
   {
@@ -1465,112 +1199,112 @@
   {
     "type": "sup-dr-right-0",
     "at": [
-      17.36,
+      17.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-1",
     "at": [
-      17.86,
+      17.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-2",
     "at": [
-      18.36,
+      18.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-3",
     "at": [
-      18.86,
+      18.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-4",
     "at": [
-      19.36,
+      19.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-5",
     "at": [
-      19.86,
+      19.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-6",
     "at": [
-      20.36,
+      20.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-7",
     "at": [
-      20.86,
+      20.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-8",
     "at": [
-      21.36,
+      21.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-9",
     "at": [
-      21.86,
+      21.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-10",
     "at": [
-      22.36,
+      22.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-11",
     "at": [
-      22.86,
+      22.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-12",
     "at": [
-      23.36,
+      23.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-13",
     "at": [
-      23.86,
+      23.87,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-14",
     "at": [
-      24.36,
+      24.37,
       97.305
     ]
   },
   {
     "type": "sup-dr-right-15",
     "at": [
-      24.751,
+      24.745,
       97.305
     ]
   }

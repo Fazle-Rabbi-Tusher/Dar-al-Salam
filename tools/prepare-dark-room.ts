@@ -309,4 +309,32 @@ fs.writeFileSync(
   'art/supplied/dark-room.json',
   JSON.stringify(placed, null, 2) + '\n',
 );
+// Update only this landmark in the authored world. Regenerating the whole
+// placeholder quarter would also replace unrelated hand-edited placements.
+const roomFile = 'rooms/mosque-garden.tmj';
+const world = JSON.parse(fs.readFileSync(roomFile, 'utf8'));
+const layer = world.layers.find(
+  (l: { type: string }) => l.type === 'objectgroup',
+);
+const first = layer.objects.findIndex((o: { type: string }) =>
+  o.type.startsWith('sup-dr-'),
+);
+if (first < 0) throw Error('Dark-room plot is missing from the world');
+const previous = layer.objects.filter((o: { type: string }) =>
+  o.type.startsWith('sup-dr-'),
+);
+let nextId = Math.max(...layer.objects.map((o: { id: number }) => o.id)) + 1;
+const replacements = placed.map((piece, i) => ({
+  ...previous[0],
+  id: previous[i]?.id ?? nextId++,
+  type: piece.type,
+  x: piece.at[0],
+  y: piece.at[1],
+}));
+layer.objects = layer.objects.filter(
+  (o: { type: string }) => !o.type.startsWith('sup-dr-'),
+);
+layer.objects.splice(first, 0, ...replacements);
+if ('nextobjectid' in world) world.nextobjectid = nextId;
+fs.writeFileSync(roomFile, JSON.stringify(world, null, 2) + '\n');
 console.log(`Dark room: ${placed.length} pieces from ${renders.size} renders.`);
