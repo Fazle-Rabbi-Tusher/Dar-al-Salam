@@ -35,7 +35,7 @@ export const PARCH = { x: -0.55, z: 1.35, r: 0.3 };
  * stands: to his right and a little behind, at about head height. His head
  * turns as far as it naturally can (63°) toward it.
  */
-export const SCREEN = { x: 3.55, z: -0.6, y: 4.9 };
+export const SCREEN = { x: 4.35, z: -1.88, y: 4.0 };
 
 const at = (x, y, z) => [x, y, z];
 export const POSE = {

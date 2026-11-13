@@ -184,10 +184,10 @@ const cardFile = `content/characters/${ID}.json`,
   card = JSON.parse(fs.readFileSync(cardFile, 'utf8'));
 card.loop = 120;
 card.script = [
-  // Room point (0.53, −0.53) of tools/prepare-dark-room.ts: the beam from
-  // the pinhole to the screen passes just behind him, the lectern clears the
-  // bench's end.
-  { from: 0, to: 120, action: 'write', at: [20.1, 108.1], facing: 'SE' },
+  // Room point (2.33, 0.81) of tools/prepare-dark-room.ts: behind his bench
+  // where the room's own bench stood, the beam from the pinhole to the
+  // screen passing just behind him.
+  { from: 0, to: 120, action: 'write', at: [21.5, 101.96], facing: 'SE' },
 ];
 // The character collection's colours: brown robe, burgundy turban, dark beard.
 card.look.colours.garmentPrimary = 'cocoa';

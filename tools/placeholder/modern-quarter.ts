@@ -1849,11 +1849,12 @@ export function modernQuarter() {
   /*
    * The plaza west of the street (x 2–39, y 95–121) is an open lawn: the
    * owner removed Baitul Mukarram, Ibn Battuta and the prayer hall there
-   * (2026-11, DECISIONS 74). In its middle stands Al-Bayt al-Muzlim, the
-   * dark room (x 17–24, y 104–113): the owner's cutaway room rendered in our
-   * projection (tools/prepare-dark-room.ts), in pieces so Ibn al-Haytham
-   * stands between its walls, screen and lectern. A pinhole in the
-   * near-left wall throws the courtyard upside down onto the linen screen.
+   * (2026-11, DECISIONS 74). On it stands Al-Bayt al-Muzlim, the complete
+   * location (x 14–26, y 97–121): the dark room and the courtyard beyond its
+   * pinhole wall, the owner's cutaway model rendered in our projection
+   * (tools/prepare-dark-room.ts), in pieces so Ibn al-Haytham stands
+   * between the room's walls, screen and lectern. The pinhole throws the
+   * courtyard upside down onto the linen screen.
    */
   for (const p of DARK_ROOM as { type: string; at: [number, number] }[])
     // Supplied pieces stand on their footprint's centre (0.6 tiles square).

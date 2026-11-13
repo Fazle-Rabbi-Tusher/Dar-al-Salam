@@ -277,3 +277,18 @@
     - **Placement:** it stands in the middle of the lawn, centred on (20.5, 108.5) and covering x 17–24, y 104–113, with its open sides toward the viewer. Ibn al-Haytham works at his bench inside, at (20.1, 108.1), in the same place in the room as before.
     - **The science lab:** back as it was before item 73. The robot arm, roboticist, water cooler and al-Jazari are in their old places.
     - **Tests:** the e2e test now reaches him through his card link (`/c/ibn-al-haytham`). A `?x=…&y=…` link pans from the default planet orientation, so it can't point this far round the planet.
+76. Al-Bayt al-Muzlim, the complete location: the owner's updated collection (2026-11) replaces the dark room of items 73 and 75.
+    - **The room:** 1.5 times larger each way (14.4 × 11.2 design units of clear floor). The bench, lectern, stool, shelves, storage and screen keep their shapes on separate working areas, and the shutter slides lie by the back wall.
+    - **The courtyard:** beyond the pinhole wall, a roofed hall, a shaded gallery with an arcade, a side wing, a turquoise basin, palms, planters and everyday things.
+    - **Placement:** both stand on the west lawn (x 14–26, y 97–121), the room nearest the city, the courtyard reaching toward the desert town. Scale is 0.62 tiles per design unit, with heights stretched 2.1×, so the room is as tall beside Ibn al-Haytham as before.
+    - **Left out:**
+      - the neighbouring houses, streets and ground (the world is around it);
+      - the painted courtyard shadows (it is lit in our render);
+      - the roofs of the hall and gallery, whose walls are cut low (1 unit) like the room's own near walls, because they face the camera and would hide the court;
+      - the wing behind the court, which stays whole.
+    - **Pieces:** 225 pieces:
+      - the room's walls, screen, shelves and beam on their own floor lines;
+      - the courtyard's buildings and things on the near edges of their footprints;
+      - the floors, paving and basin baked into the ground.
+    - **Ibn al-Haytham:** behind his bench where the model's own bench stood, at (21.5, 101.96). The beam passes just behind him, and his gaze turns toward the screen in its new place.
+    - **Content:** the location and its sources (`SOURCE-LINKS.json`) are the owner's. It is an imagined chamber, not a historical site, and carries no writing or symbols.

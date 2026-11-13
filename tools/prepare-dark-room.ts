@@ -5,14 +5,18 @@ import { chromium } from '@playwright/test';
 import sharp from 'sharp';
 
 /*
- * Al-Bayt al-Muzlim, the dark room, from the owner's collection (2026-11):
- * an imagined chamber for the study of light. A shuttered pinhole in the
- * left wall throws the courtyard, upside down, onto a linen screen, with
- * shelves of vessels, a sealed arched door, hanging instruments, a geometry
- * lectern, a stool and storage. The cutaway GLB (its embedded textures
- * include the inverted projection) is rendered in the world's view, piece
- * by piece (tools/dark-room/render.html). Ibn al-Haytham's own animated
- * bench (tools/prepare-haytham.ts) stands where the room's bench was.
+ * Al-Bayt al-Muzlim, the complete location, from the owner's collection
+ * (2026-11): an imagined chamber for the study of light, with a sunlit
+ * courtyard beyond its pinhole wall. The shuttered pinhole throws the
+ * courtyard, upside down, onto a linen screen. The room (14.4 × 11.2 design
+ * units of clear floor) holds shelves of vessels, a sealed arched door,
+ * hanging instruments, a geometry lectern, a stool, storage and the
+ * shutter slides. The courtyard has a roofed hall, a shaded gallery, a side
+ * wing, a turquoise basin, palms and planters. The cutaway GLB (its
+ * embedded textures include the inverted projection) is rendered in the
+ * world's view, piece by piece (tools/dark-room/render.html). Ibn
+ * al-Haytham's own animated bench (tools/prepare-haytham.ts) stands where
+ * the room's bench was.
  *
  *   node --import tsx tools/prepare-dark-room.ts <al-bayt-al-muzlim collection> <three.js vendor folder>
  *
@@ -25,11 +29,14 @@ if (!collection || !three)
     'Usage: prepare-dark-room.ts <collection folder> <three vendor folder>',
   );
 /** Tiles per room unit on the ground, the vertical stretch, sprite density. */
-export const S = 0.75,
-  KV = 1.75,
+export const S = 0.62,
+  // Heights as before (0.75 × 1.75 tiles per unit), so the room stands as
+  // tall beside Ibn al-Haytham.
+  KV = 2.1,
   D = 2;
-/** The tile under the room's centre, on the Bangladesh block's west lawn. */
-export const ROOM: [number, number] = [20.5, 108.5];
+/** The tile under the room's origin, on the Bangladesh block's west lawn;
+ * the courtyard runs south-west of it to y 120.5. */
+export const ROOM: [number, number] = [21.0, 103.4];
 /** Tile under a room point. The room is turned so its open sides face the
  * viewer: room +Z runs along the world's +x, room +X along the world's −y. */
 export const tileOf = (X: number, Z: number): [number, number] => [
@@ -79,11 +86,13 @@ await page.goto(
 );
 await page.waitForFunction('window.READY === true', null, { timeout: 300000 });
 const info = (await page.evaluate(
-  '({ W: RESULT.W, H: RESULT.H, pieces: RESULT.pieces })',
+  '({ W: RESULT.W, H: RESULT.H, pieces: RESULT.pieces, boxes: RESULT.boxes })',
 )) as {
   W: number;
   H: number;
   pieces: string[];
+  /** Each piece's footprint in room units: [x0, z0, x1, z1]. */
+  boxes: Record<string, [number, number, number, number]>;
 };
 const renders = new Map<string, Buffer>();
 for (const k of info.pieces) {
@@ -108,55 +117,72 @@ type P2 = [number, number];
 type Base = { point: P2 } | { path: P2[] };
 const BASES: Record<string, Base> = {
   // Baked into the ground, at the room's far corner.
-  floor: { point: [5.36, -4.3] },
+  floor: { point: [10.0, -6.0] },
   back: {
     path: [
-      [-5.25, -3.95],
-      [5.25, -3.95],
+      [-5.28, -5.82],
+      [10.05, -5.82],
     ],
   },
   right: {
     path: [
-      [5.02, -4.2],
-      [5.02, 4.2],
+      [9.83, -6.04],
+      [9.83, 6.05],
     ],
   },
   left: {
     path: [
-      [-5.02, -4.2],
-      [-5.02, 4.2],
+      [-5.05, -6.04],
+      [-5.05, 6.05],
     ],
   },
   front: {
     path: [
-      [-5.25, 3.95],
-      [5.25, 3.95],
+      [-5.28, 5.83],
+      [10.05, 5.83],
     ],
   },
   shelves: {
     path: [
-      [-4.4, -3.4],
-      [4.6, -3.4],
+      [-1.97, -5.25],
+      [6.93, -5.25],
     ],
   },
   screen: {
     path: [
-      [3.75, -3.0],
-      [3.75, 0.2],
+      [7.44, -3.12],
+      [7.44, 0.34],
     ],
   },
   // The beam from the pinhole to the screen, at its floor line.
   rays: {
     path: [
       [-4.84, -1.4],
-      [3.75, -1.4],
+      [7.42, -1.4],
     ],
   },
-  lectern: { point: [-3.1, 1.65] },
-  stool: { point: [-2.63, 2.75] },
-  storage: { point: [3.15, 2.5] },
-  slides: { point: [-4.06, 2.9] },
+  lectern: { point: [-3.25, 2.81] },
+  stool: { point: [-2.73, 4.0] },
+  storage: { point: [7.4, 4.2] },
+  slides: { point: [-1.36, -5.19] },
 };
+/*
+ * The courtyard's buildings and things stand on the near edges of their
+ * footprints: the viewer looks from room +Z and −X, so a column of a piece
+ * sorts by the nearest ground under it.
+ */
+const nearEdge = ([x0, z0, x1, z1]: [
+  number,
+  number,
+  number,
+  number,
+]): Base => ({
+  path: [
+    [x1, z1],
+    [x0, z1],
+    [x0, z0],
+  ],
+});
 const OUT = 'art/supplied/dark-room';
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
@@ -209,7 +235,7 @@ function onPath(line: P2[], x: number): P2 {
 const STRIP = 16,
   OVERLAP = 3;
 for (const [k, png] of renders) {
-  const base = BASES[k];
+  const base = BASES[k] ?? (info.boxes[k] && nearEdge(info.boxes[k]));
   if (!base) throw Error(`No base for ${k}`);
   const { data, info: im } = await sharp(png)
     .ensureAlpha()
