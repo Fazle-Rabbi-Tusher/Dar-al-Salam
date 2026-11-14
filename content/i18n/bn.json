@@ -134,5 +134,8 @@
   "mirrorConeConvex": "উত্তল শঙ্কু",
   "mirrorConeConcave": "অবতল শঙ্কু",
   "runClock": "জলঘড়ি চালু করুন",
-  "pauseClock": "জলঘড়ি থামান"
+  "pauseClock": "জলঘড়ি থামান",
+  "cricket": "ক্রিকেট",
+  "basketball": "বাস্কেটবল",
+  "arena": "বক্সিং ও এমএমএ"
 }

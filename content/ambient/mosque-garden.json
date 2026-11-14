@@ -472,63 +472,6 @@
     "role": "The match ball"
   },
   {
-    "id": "amb-stadium-ambulance",
-    "kind": "vehicle",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "ambulance",
-      "garment": "none",
-      "headwear": "none",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-4",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
-        "headwear": "white-linen",
-        "prop": "wool-cream"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 96,
-        "action": "vehicle_drive",
-        "at": [71.6, 38.9],
-        "facing": "SE"
-      },
-      {
-        "from": 96,
-        "to": 150,
-        "action": "vehicle_drive",
-        "path": [
-          [71.6, 38.9],
-          [76.4, 38.9]
-        ]
-      },
-      {
-        "from": 150,
-        "to": 200,
-        "action": "vehicle_drive",
-        "at": [76.4, 38.9],
-        "facing": "SE"
-      },
-      {
-        "from": 200,
-        "to": 240,
-        "action": "vehicle_drive",
-        "path": [
-          [76.4, 38.9],
-          [71.6, 38.9]
-        ]
-      }
-    ],
-    "role": "Ambulance from the village ambulance centre"
-  },
-  {
     "id": "amb-stadium-penalty-ball",
     "kind": "ball",
     "aliases": [],
@@ -585,63 +528,6 @@
       }
     ],
     "role": "The match ball"
-  },
-  {
-    "id": "amb-cricket-amla-ball",
-    "kind": "ball",
-    "aliases": [],
-    "district": "mosque-garden",
-    "depiction": "full",
-    "look": {
-      "base": "ball",
-      "garment": "none",
-      "headwear": "none",
-      "prop": "none",
-      "colours": {
-        "skin": "skin-3",
-        "hair": "hair-black",
-        "garmentPrimary": "white-linen",
-        "garmentSecondary": "white-linen",
-        "headwear": "emerald",
-        "prop": "wool-cream"
-      }
-    },
-    "loop": 240,
-    "script": [
-      {
-        "from": 0,
-        "to": 12,
-        "action": "ball_still",
-        "at": [86.9, 117.6],
-        "facing": "SE"
-      },
-      {
-        "from": 12,
-        "to": 40,
-        "action": "ball_roll",
-        "path": [
-          [86.9, 117.6],
-          [92.6, 119.2]
-        ]
-      },
-      {
-        "from": 40,
-        "to": 220,
-        "action": "ball_still",
-        "at": [92.6, 119.2],
-        "facing": "SE"
-      },
-      {
-        "from": 220,
-        "to": 240,
-        "action": "ball_roll",
-        "path": [
-          [92.6, 119.2],
-          [86.9, 117.6]
-        ]
-      }
-    ],
-    "role": "The ball racing to the boundary"
   },
   {
     "id": "amb-bodega-cat",

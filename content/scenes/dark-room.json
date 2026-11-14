@@ -6,11 +6,21 @@
     "bn": "অন্ধকার ঘর — ইবনে আল-হাইসাম ও উল্টো প্রতিবিম্ব"
   },
   "lead": "ibn-al-haytham",
-  "members": ["ibn-al-haytham"],
-  "props": ["sup-dr-*"],
+  "members": [
+    "ibn-al-haytham"
+  ],
+  "props": [
+    "sup-dr-*"
+  ],
   "area": [
-    [14, 96.5],
-    [26, 121]
+    [
+      41,
+      24
+    ],
+    [
+      53,
+      38
+    ]
   ],
   "camera": "reveal"
 }

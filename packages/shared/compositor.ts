@@ -13,6 +13,15 @@ export type Palette = {
   outline: string;
   shadow: string;
 };
+// The character editor can still preview older paper-doll parts. Native sport
+// performances use the complete newly drawn strips, packed by the builder.
+const editorFallback: Partial<Record<Action, Action>> = {
+  bowl: 'idle',
+  catch: 'idle',
+  shoot: 'idle',
+  dunk: 'idle',
+  dribble: 'idle',
+};
 export type Aseprite = {
   frames: {
     filename: string;
@@ -78,7 +87,17 @@ export function resolveFrame(
   const exact = part.frames[`${action}_${facing}_${index}`];
   if (exact) return { frame: exact, mirror: false };
   const source = facing === 'SW' ? 'SE' : facing === 'NW' ? 'NE' : facing;
-  const frame = part.frames[`${action}_${source}_${index}`];
+  let frame = part.frames[`${action}_${source}_${index}`];
+  const fallback = editorFallback[action];
+  if (!frame && fallback) {
+    const pose = Math.min(
+      ACTIONS[fallback] - 1,
+      Math.floor((index * ACTIONS[fallback]) / ACTIONS[action]),
+    );
+    const explicit = part.frames[`${fallback}_${facing}_${pose}`];
+    if (explicit) return { frame: explicit, mirror: false };
+    frame = part.frames[`${fallback}_${source}_${pose}`];
+  }
   if (!frame) throw Error(`${part.id}: missing ${action}/${facing}/${index}`);
   return { frame, mirror: facing === 'SW' || facing === 'NW' };
 }

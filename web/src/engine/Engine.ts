@@ -34,6 +34,11 @@ import {
 import { OutlineFilter } from 'pixi-filters';
 import { FPS, globalFrame, frameMap } from '../../../packages/shared/clock';
 import { characterState, frameKey } from '../../../packages/shared/script';
+import {
+  isSportsPlayer,
+  sportsPose,
+  basketballLift,
+} from '../../../packages/shared/sports';
 import { motionFor } from '../../../packages/shared/motion';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
@@ -558,7 +563,7 @@ export class Engine {
     this.applyCamera();
     this.update();
     this.bindInput();
-    this.app.ticker.add((t) => this.tick(t.deltaMS));
+    this.app.ticker.add((t) => this.tick(t.elapsedMS));
     if (this.suspended) this.app.stop();
     if (import.meta.env.DEV)
       (window as unknown as { __darEngine?: Engine }).__darEngine = this;
@@ -989,78 +994,93 @@ export class Engine {
     depth?.sync(p, lift, density, depthBias === 2e-5, depthBias);
     return p;
   }
-  private update() {
+  private update(sportsOnly = false) {
     if (!this.manifest) return;
-    (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
-    this.infrastructure.update(this.proj);
-    this.darkRoom.update(
-      this.proj,
-      this.front,
-      this.behind,
-      this.host.clientWidth,
-      this.host.clientHeight,
-    );
-    for (const b of this.buildings) {
-      const p = project(this.proj, b.point),
-        reach = b.reach * this.view.zoom + 12;
-      b.mesh.visible =
-        p.depth > -0.28 &&
-        p.x > -reach &&
-        p.y > -reach &&
-        p.x < this.host.clientWidth + reach &&
-        p.y < this.host.clientHeight + reach;
-      if (b.activity) b.activity.mesh.visible = b.mesh.visible;
-      if (!b.mesh.visible) continue;
-      const layer = p.depth < 0 ? this.behind : this.front;
-      if (b.mesh.parent !== layer) layer.addChild(b.mesh);
-      b.mesh.zIndex = Math.max(
-        ...[
-          [0, 0],
-          [b.footprint[0], 0],
-          [0, b.footprint[1]],
-          [...b.footprint],
-        ].map(
-          ([x, y]) =>
-            project(this.proj, tileToPlanet(b.tile[0] + x, b.tile[1] + y))
-              .depth,
-        ),
+    if (!sportsOnly) {
+      (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
+      this.infrastructure.update(this.proj);
+      this.darkRoom.update(
+        this.proj,
+        this.front,
+        this.behind,
+        this.host.clientWidth,
+        this.host.clientHeight,
       );
-      if (b.activity) {
-        if (b.activity.mesh.parent !== layer) layer.addChild(b.activity.mesh);
-        b.activity.mesh.zIndex = b.mesh.zIndex + 1e-7;
-      }
-    }
-    for (const s of this.statics) {
-      if (s.sortable.animation)
-        this.texture(
-          s.sprite,
-          s.sortable.animation[
-            frameMap(
-              this.frame,
-              s.sortable.period ?? 60,
-              s.sortable.animation.length,
-            )
-          ],
-          s.sortable.pivot,
+      for (const b of this.buildings) {
+        const p = project(this.proj, b.point),
+          reach = b.reach * this.view.zoom + 12;
+        b.mesh.visible =
+          p.depth > -0.28 &&
+          p.x > -reach &&
+          p.y > -reach &&
+          p.x < this.host.clientWidth + reach &&
+          p.y < this.host.clientHeight + reach;
+        if (b.activity) b.activity.mesh.visible = b.mesh.visible;
+        if (b.glass) b.glass.visible = b.mesh.visible;
+        if (!b.mesh.visible) continue;
+        const layer = p.depth < 0 ? this.behind : this.front;
+        if (b.mesh.parent !== layer) layer.addChild(b.mesh);
+        if (b.glass) {
+          if (b.glass.parent !== layer) layer.addChild(b.glass);
+          // Glass blends after opaque geometry and sprites, while sharing
+          // their depth test. It never hides a dunk or a face behind the pane.
+          b.glass.zIndex = 3;
+        }
+        b.mesh.zIndex = Math.max(
+          ...[
+            [0, 0],
+            [b.footprint[0], 0],
+            [0, b.footprint[1]],
+            [...b.footprint],
+          ].map(
+            ([x, y]) =>
+              project(this.proj, tileToPlanet(b.tile[0] + x, b.tile[1] + y))
+                .depth,
+          ),
         );
-      const p = this.place(
-        s.sprite,
-        s.point,
-        s.size,
-        s.sortable.lift,
-        0,
-        s.density,
-      );
-      if (!p) continue;
-      s.depth = p.depth;
-      const id = s.sortable.landmark;
-      if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
+        if (b.activity) {
+          if (b.activity.mesh.parent !== layer) layer.addChild(b.activity.mesh);
+          b.activity.mesh.zIndex = b.mesh.zIndex + 1e-7;
+        }
+      }
+      for (const s of this.statics) {
+        if (s.sortable.animation)
+          this.texture(
+            s.sprite,
+            s.sortable.animation[
+              frameMap(
+                this.frame,
+                s.sortable.period ?? 60,
+                s.sortable.animation.length,
+              )
+            ],
+            s.sortable.pivot,
+          );
+        const p = this.place(
+          s.sprite,
+          s.point,
+          s.size,
+          s.sortable.lift,
+          0,
+          s.density,
+        );
+        if (!p) continue;
+        s.depth = p.depth;
+        const id = s.sortable.landmark;
+        if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
+      }
     }
     let visible = 0;
     const probes: VisibilityProbe[] = [];
     for (const c of this.manifest.characters) {
-      const state = characterState(c, this.frame),
+      const sports = isSportsPlayer(c.id);
+      if (sportsOnly && !sports) continue;
+      const renderTime = sports
+        ? this.frame + ((this.elapsed * FPS) % 1)
+        : this.frame;
+      const state = characterState(c, renderTime),
         step = c.script[state.stepIndex];
+      if (c.id === 'hakeem-olajuwon') state.z += basketballLift(renderTime);
       let item = this.live.get(c.id);
       if (!item) {
         item = { sprite: new Sprite(), character: c, frame: '', depth: 0 };
@@ -1104,9 +1124,17 @@ export class Engine {
         // Generated walking steps advance every three ticks (a stride a second).
         name = steps
           ? steps[Math.floor(this.frame / 3) % steps.length]
-          : tempo
-            ? frames[Math.floor((this.frame % (frames.length * tempo)) / tempo)]
-            : frames[state.index % frames.length];
+          : sports
+            ? frames[
+                (['walk', 'dribble'].includes(state.action)
+                  ? Math.floor(renderTime / 2)
+                  : sportsPose(c.id, renderTime)) % frames.length
+              ]
+            : tempo
+              ? frames[
+                  Math.floor((this.frame % (frames.length * tempo)) / tempo)
+                ]
+              : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
@@ -1120,6 +1148,7 @@ export class Engine {
         2e-5,
         density,
       );
+      if (p && sports) item.sprite.position.set(p.x, p.y);
       // Left/right views share frames; the engine flips them about the feet.
       if (p && flip && view < 0) item.sprite.scale.x *= -1;
       if (p && motion) {
@@ -1167,6 +1196,7 @@ export class Engine {
         this.selected === c.id,
       );
     }
+    if (sportsOnly) return;
     this.visibleCount = visible;
     for (const b of this.buildings)
       this.infrastructure.reveal(b, this.proj, probes);
@@ -1251,13 +1281,16 @@ export class Engine {
     if (!this.ready || this.destroyed || this.suspended) return;
     this.lastDrawCalls = this.drawCalls;
     this.drawCalls = 0;
+    const cameraDt = dt;
     dt = Math.min(dt, 64);
     if (this.motion) this.elapsed += dt / 1000;
     this.frame = globalFrame(this.elapsed);
     let moved = false;
     if (this.flight) {
       const fl = this.flight;
-      fl.elapsed += dt;
+      // Navigation keeps its promised duration even during shader compilation
+      // or a slow rendered frame; only the simulation limits catch-up time.
+      fl.elapsed += cameraDt;
       const t = Math.min(1, fl.elapsed / fl.duration),
         ease = 1 - (1 - t) ** 3;
       this.view = {
@@ -1310,6 +1343,14 @@ export class Engine {
       this.dirty = false;
     }
     const activityTime = this.frame + ((this.elapsed * FPS) % 1);
+    if (
+      !changed &&
+      this.motion &&
+      [...this.live.values()].some(
+        (item) => isSportsPlayer(item.character.id) && item.sprite.visible,
+      )
+    )
+      this.update(true);
     for (const b of this.buildings)
       this.infrastructure.animate(b, activityTime);
     if (
@@ -1676,7 +1717,11 @@ export class Engine {
     for (const sprite of this.spriteDepth.values()) sprite.destroy();
     this.spriteDepth.clear();
     for (const b of this.buildings) {
-      for (const mesh of [b.mesh, ...(b.activity ? [b.activity.mesh] : [])]) {
+      for (const mesh of [
+        b.mesh,
+        ...(b.glass ? [b.glass] : []),
+        ...(b.activity ? [b.activity.mesh] : []),
+      ]) {
         const geometry = mesh.geometry,
           shader = mesh.shader;
         mesh.destroy();

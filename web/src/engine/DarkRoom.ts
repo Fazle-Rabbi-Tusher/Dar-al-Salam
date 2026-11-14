@@ -589,8 +589,12 @@ export class DarkRoom {
     return true;
   }
   target(view: DarkRoomView): { point: Vec3; zoom: number } {
-    if (view === 'room') return { point: [2.4, 0, 0], zoom: 6.5 };
-    return { point: this.model.landmarks[view] ?? [2.4, 0, 0], zoom: 10 };
+    const scale = 0.23 / DARK_ROOM.scale;
+    if (view === 'room') return { point: [2.4, 0, 0], zoom: 6.5 * scale };
+    return {
+      point: this.model.landmarks[view] ?? [2.4, 0, 0],
+      zoom: 10 * scale,
+    };
   }
   /** Front-of-house picking uses the projected chamber volume, including its
    * upper walls. Selecting the exhibit keeps the main world canvas alive. */

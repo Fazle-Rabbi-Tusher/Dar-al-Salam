@@ -562,6 +562,15 @@ describe('sharp heads', () => {
       expect(heads[c.id], c.id).toBeDefined();
       for (const action of new Set(c.script.map((s) => s.action)))
         for (const facing of ['SE', 'NW'] as const) {
+          // Newly authored full-body performances already contain the face;
+          // they must not have an old paper-doll head composited on top.
+          const source = facing === 'NW' ? 'NE' : 'SE';
+          if (!heads[c.id].frames[`${action}_${source}_0`]) {
+            await expect(
+              fs.access(`art/sprites/anim/${c.id}__${action}_${source}.png`),
+            ).resolves.toBeUndefined();
+            continue;
+          }
           const { image: img, overhang } = composeWithHead(
             c.look,
             action,
@@ -592,15 +601,15 @@ describe('sharp heads', () => {
 });
 
 describe('Bangladesh block', () => {
-  it('places the school and the new people; the dark room stands on the west lawn', async () => {
+  it('preserves the school and named people beside the new cricket stadium', async () => {
     const { forbiddenName } = await import('../../packages/shared/rules');
     const objects = content.room.layers.find((l) => l.type === 'objectgroup');
     const types = new Set(
       objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
     );
     // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
-    // (2026-11): only the dark room and the corner trees stand on the west
-    // lawn now.
+    // (2026-11): the chamber has since moved beside Community, leaving the
+    // west lawn and corner trees clear.
     for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
       expect(types.has(t), t).toBe(false);
     if (objects?.type === 'objectgroup')
@@ -614,7 +623,7 @@ describe('Bangladesh block', () => {
       'm-bd-flag',
       'm-shapla-pond',
       'm-rickshaw',
-      'm-cricket-pitch',
+      'sports-cricket-stadium',
     ])
       expect(types.has(t), t).toBe(true);
     for (const id of [
@@ -652,11 +661,7 @@ describe('scene bible: stadium (batch 1a)', () => {
     expect(kante.script.some((s) => s.prop === 'trophy')).toBe(true);
     expect(frameKey('carry', 'trophy', 'SE')).toBe('carry@trophy_SE');
     expect(frameKey('idle', undefined, 'NW')).toBe('idle_NW');
-    const ambulance = byId('amb-stadium-ambulance');
-    expect(ambulance.kind).toBe('vehicle');
-    expect(characterState(ambulance, 120).tile[0]).toBeGreaterThan(
-      characterState(ambulance, 0).tile[0],
-    );
+    expect(byId('amb-stadium-ambulance')).toBeUndefined();
   });
   it('draws no named Elneny (his first name is denylisted)', () => {
     expect(content.characters.some((c) => /elneny/i.test(c.id))).toBe(false);
@@ -708,10 +713,11 @@ describe('scene bible: cricket ground', () => {
     }
     expect(forbiddenName('Mohammad Rizwan', content.rules)).toBe(true);
     expect(content.characters.some((c) => /rizwan/.test(c.id))).toBe(false);
-    // Khawaja steps off the stage and comes back up.
+    // Khawaja now fields on the stadium turf instead of standing on a podium.
     const k = content.characters.find((c) => c.id === 'usman-khawaja')!;
-    expect(characterState(k, 100).z).toBe(0);
-    expect(characterState(k, 180).z).toBe(10);
+    expect(characterState(k, 100).action).toBe('catch');
+    expect(characterState(k, 100).z).toBe(1.2);
+    expect(characterState(k, 180).z).toBe(1.2);
   });
 });
 
@@ -775,30 +781,31 @@ describe('main characters only, with supplied animation strips', () => {
 });
 
 describe('the dark room', () => {
-  it('places the complete neighborhood around the open chamber', async () => {
+  it('preserves the original reference artwork while moving the native chamber beside Community', async () => {
     const placed: { type: string; at: [number, number] }[] = JSON.parse(
       await fs.readFile('art/supplied/dark-room.json', 'utf8'),
     );
     const index = JSON.parse(
       await fs.readFile('art/supplied/index.json', 'utf8'),
     );
-    // The native plot shows the open chamber and complete neighborhood on sand.
+    // The archived billboard reference remains available; it is no longer
+    // planted in the room or used to position the native chamber's scholar.
     const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
     expect(kinds).toEqual(new Set(['site', 'floor']));
     for (const p of placed) expect(index[p.type]).toBeTruthy();
-    const xs = placed.map((p) => p.at[0]),
-      ys = placed.map((p) => p.at[1]);
+    const { darkRoomTile } = await import('../../packages/shared/dark-room');
     const him = content.characters.find((c) => c.id === 'ibn-al-haytham')!;
     expect(him.panelApproved).not.toBe(true);
     for (const step of him.script) {
-      expect(step.at![0]).toBeGreaterThan(Math.min(...xs));
-      expect(step.at![0]).toBeLessThan(Math.max(...xs));
-      expect(step.at![1]).toBeGreaterThan(Math.min(...ys));
-      expect(step.at![1]).toBeLessThan(Math.max(...ys));
+      expect(step.at).toEqual(darkRoomTile(2.45, 1.25));
     }
     const scene = content.scenes.find((s) => s.id === 'dark-room')!;
     expect(scene.lead).toBe('ibn-al-haytham');
     expect(scene.props).toEqual(['sup-dr-*']);
+    expect(scene.area).toEqual([
+      [41, 24],
+      [53, 38],
+    ]);
   });
 });
 

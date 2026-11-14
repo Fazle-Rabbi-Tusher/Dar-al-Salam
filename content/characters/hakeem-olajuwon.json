@@ -6,7 +6,9 @@
     "ar": "حكيم أولاجوون",
     "bn": "হাকিম ওলাজুওন"
   },
-  "aliases": ["Hakeem the Dream"],
+  "aliases": [
+    "Hakeem the Dream"
+  ],
   "years": "b. 1963",
   "place": "Lagos · Houston",
   "district": "modern-quarter",
@@ -25,21 +27,164 @@
       "prop": "cocoa"
     }
   },
-  "loop": 120,
+  "loop": 240,
   "script": [
     {
       "from": 0,
-      "to": 60,
-      "action": "celebrate",
-      "at": [88, 99.6],
-      "facing": "SE"
+      "to": 33,
+      "action": "shoot",
+      "at": [
+        74.5,
+        39.8
+      ],
+      "facing": "SE",
+      "z": 2
     },
     {
-      "from": 60,
-      "to": 120,
-      "action": "idle",
-      "at": [88, 99.6],
-      "facing": "SW"
+      "from": 33,
+      "to": 51,
+      "action": "dribble",
+      "path": [
+        [
+          74.5,
+          39.8
+        ],
+        [
+          78,
+          40.2
+        ]
+      ],
+      "z": 2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 51,
+      "to": 72,
+      "action": "dribble",
+      "path": [
+        [
+          78,
+          40.2
+        ],
+        [
+          74.5,
+          39.8
+        ]
+      ],
+      "z": 2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 72,
+      "to": 91,
+      "action": "dribble",
+      "path": [
+        [
+          74.5,
+          39.8
+        ],
+        [
+          77.8,
+          39.8
+        ]
+      ],
+      "z": 2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 91,
+      "to": 96,
+      "action": "dunk",
+      "at": [
+        77.8,
+        39.8
+      ],
+      "facing": "SE",
+      "z": 2
+    },
+    {
+      "from": 96,
+      "to": 113,
+      "action": "dunk",
+      "at": [
+        77.8,
+        39.8
+      ],
+      "facing": "SE",
+      "z": 2
+    },
+    {
+      "from": 113,
+      "to": 150,
+      "action": "dribble",
+      "path": [
+        [
+          77.8,
+          39.8
+        ],
+        [
+          73,
+          39.8
+        ]
+      ],
+      "z": 2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 150,
+      "to": 201,
+      "action": "dribble",
+      "path": [
+        [
+          73,
+          39.8
+        ],
+        [
+          77.8,
+          39.8
+        ]
+      ],
+      "z": 2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 201,
+      "to": 206,
+      "action": "dunk",
+      "at": [
+        77.8,
+        39.8
+      ],
+      "facing": "SE",
+      "z": 2
+    },
+    {
+      "from": 206,
+      "to": 223,
+      "action": "dunk",
+      "at": [
+        77.8,
+        39.8
+      ],
+      "facing": "SE",
+      "z": 2
+    },
+    {
+      "from": 223,
+      "to": 240,
+      "action": "dribble",
+      "path": [
+        [
+          77.8,
+          39.8
+        ],
+        [
+          74.5,
+          39.8
+        ]
+      ],
+      "z": 2,
+      "easing": "smoothstep"
     }
   ],
   "bio": {

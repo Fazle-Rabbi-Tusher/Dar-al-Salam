@@ -44,6 +44,13 @@ extracted from an attached document. New explicit owner instructions override th
   correct per-pixel depth, grounded anchors and nearby foreground-wall cutaways.
 - **Dark-room scene refinement:** show only the dark chamber, its scholar and
   interior equipment. Omit the surrounding courtyard and neighboring buildings.
+- **Sports and Community refinement (14 November 2026):** remove the ambulance
+  section beside football; replace it with a basketball court and bring Hakeem
+  there for shooting, dribbling and dunks. Put all four cricketers in a proper
+  stadium with bowling, batting, running and fielding. Give boxing and MMA real
+  ropes, padding, an octagonal chain-link cage and access details. Replace the
+  kitchen beside Community with a larger native dark chamber; scale its scholar
+  and equipment together to match neighboring laboratory furniture.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

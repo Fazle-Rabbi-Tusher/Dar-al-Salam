@@ -612,6 +612,18 @@ function World({ manifest }: { manifest: Manifest | null }) {
           <Icon name="flask" size={15} />
           {t('labs')}
         </button>
+        <button onClick={() => focusArea(82.25, 111.5, 1.3)}>
+          <Icon name="people" size={15} />
+          {t('cricket')}
+        </button>
+        <button onClick={() => focusArea(74.1, 39.8, 2.1)}>
+          <Icon name="people" size={15} />
+          {t('basketball')}
+        </button>
+        <button onClick={() => focusArea(74, 50, 2)}>
+          <Icon name="people" size={15} />
+          {t('arena')}
+        </button>
         {/* Massawa, south-west of the quarter (packages/shared/massawa.ts). */}
         <button onClick={() => focusArea(-12, 117, 1.2)}>
           <Icon name="compass" size={15} />

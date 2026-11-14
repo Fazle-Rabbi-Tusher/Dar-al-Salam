@@ -47,7 +47,7 @@ const C = {
   green: '#75bd8a',
   ink: '#174359',
 };
-class MeshBuilder {
+export class MeshBuilder {
   faces: Face3[] = [];
   opacity = 1;
   face(points: Vertex3[], color: string) {

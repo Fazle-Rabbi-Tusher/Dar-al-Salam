@@ -1,0 +1,20 @@
+{
+  "frame": [
+    224,
+    336
+  ],
+  "foot": [
+    112,
+    320
+  ],
+  "density": 5,
+  "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "source": "../source/sports/hashim-amla-bat.png"
+}

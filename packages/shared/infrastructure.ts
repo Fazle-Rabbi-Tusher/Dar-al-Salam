@@ -1,5 +1,6 @@
 import type { Point } from './iso';
 import { laboratoryKind, laboratoryModel } from './laboratory';
+import { sportsKind, sportsModel } from './sports';
 
 /** Model-space X/Z follow the existing tile footprint; Y is height in world px. */
 export type Vertex3 = [number, number, number];
@@ -16,6 +17,8 @@ const supplied = /^(khwarizmi-|menk-|sup-|msw-|land-)/;
 const mathematicalArt =
   /^m-(model-case|chalkboard|seminar-table|book-cart|tally-sticks|counting-board|abacus|antikythera|napiers-bones|slide-rule|pascaline|stepped-reckoner|difference-engine|analytical-engine|curta|planimeter|nomogram|graphing-calculator|drafting-set|integraph|harmonic-analyzer|differential-analyzer|mainframe)(?:-|$)/;
 export function infrastructureKind(type: string): string | null {
+  const sports = sportsKind(type);
+  if (sports) return sports;
   const laboratory = laboratoryKind(type);
   if (laboratory) return laboratory;
   if (
@@ -102,6 +105,8 @@ export function infrastructureModel(
 ): InfrastructureModel | null {
   const kind = infrastructureKind(type);
   if (!kind) return null;
+  const sports = sportsModel(type, footprint);
+  if (sports) return sports;
   const laboratory = laboratoryModel(type, footprint);
   if (laboratory) return laboratory;
   // Authored instance variation stays stable when the planet turns or reloads.

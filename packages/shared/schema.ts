@@ -31,6 +31,11 @@ export const ACTIONS = {
   sujood: 2,
   /** Cricket cover drive. */
   bat: 4,
+  bowl: 6,
+  catch: 6,
+  shoot: 6,
+  dunk: 6,
+  dribble: 6,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,
@@ -215,7 +220,7 @@ export const frameMetaSchema = z.object({
   bounds: rectSchema,
   hitMask: z.string(),
   /** Sprite pixels per world pixel (2 for named characters' sharp heads). */
-  density: z.number().int().positive().optional(),
+  density: z.number().positive().optional(),
   /** A supplied still sprite the engine animates (packages/shared/motion.ts). */
   still: z.boolean().optional(),
   /** Supplied animation strip frame: world ticks per frame (motion.ts). */

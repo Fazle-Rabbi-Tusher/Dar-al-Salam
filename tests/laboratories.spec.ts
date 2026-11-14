@@ -38,7 +38,11 @@ test('lab apparatus and working poses animate together, freeze on pause and surv
           value = Math.imul(value ^ Math.round(n * 1e7), 16777619);
         return value;
       };
-      const labs = engine.buildings.filter((b) => b.activity);
+      const labs = engine.buildings.filter(
+        (b) =>
+          b.activity &&
+          ['chemistry-lab', 'biology-lab', 'drafting'].includes(b.kind),
+      );
       return {
         fixed: labs.map((b) =>
           hash(b.mesh.geometry.getAttribute('aPosition').buffer.data),

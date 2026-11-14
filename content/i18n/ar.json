@@ -134,5 +134,8 @@
   "mirrorConeConvex": "مخروط محدب",
   "mirrorConeConcave": "مخروط مقعر",
   "runClock": "تشغيل الساعة المائية",
-  "pauseClock": "إيقاف الساعة المائية"
+  "pauseClock": "إيقاف الساعة المائية",
+  "cricket": "الكريكيت",
+  "basketball": "كرة السلة",
+  "arena": "الملاكمة والفنون القتالية"
 }

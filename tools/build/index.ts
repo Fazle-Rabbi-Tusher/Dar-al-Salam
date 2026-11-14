@@ -42,6 +42,7 @@ import {
 } from '../../packages/shared/script';
 import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripTempo } from '../../packages/shared/motion';
+import { sportsKind } from '../../packages/shared/sports';
 import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
@@ -752,6 +753,25 @@ async function build() {
       // The approved Al-Bayt al-Muzlim mesh is a native world component.
       // Keep source PNGs as references, without packing flat duplicates.
       if (o.type.startsWith('sup-dr-')) continue;
+      if (sportsKind(o.type)) {
+        // Native-only arenas have geometry, not a hidden billboard duplicate.
+        const frame = register(new Pixels(1, 1), [0, 0]);
+        const [x, y] = worldFromTile(o.x, o.y, o.z);
+        sortables.push({
+          objectType: o.type,
+          frame,
+          x,
+          y,
+          depth: depth(o.x, o.y),
+          objectId: o.id,
+          tile: [o.x, o.y],
+          footprint: o.footprint,
+          ground: [o.x, o.y],
+          pivot: [0, 0],
+          lift: o.z,
+        });
+        continue;
+      }
       // Supplied art placed in the room (art/supplied): planted like
       // Massawa's pieces, standing on the footprint's centre.
       if (!objectArt[o.type] && suppliedArt[o.type]) {

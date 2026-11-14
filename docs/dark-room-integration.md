@@ -51,7 +51,10 @@ from different cameras or render backends are not claimed to be pixel-identical.
 
 `packages/shared/dark-room.ts` defines the one uniform model-to-world transform:
 source +Z follows tile +x, source +X follows tile −y, and source Y is radial
-height. The existing plot origin is `[21, 103.4]` and its uniform scale is 0.23.
+height. The plot origin is `[47, 33]` and its uniform scale is 0.85. The chamber
+replaces the removed kitchen beside Community. The benches, instruments,
+architecture and scholar grow by the same factor; the original writing strip
+uses density 4.6 instead of 17. Camera zoom compensates for the larger model.
 Camera targets use the same transform. No height-only scaling is applied.
 
 The asset builder keeps the legacy PNGs as source references, but neither packs

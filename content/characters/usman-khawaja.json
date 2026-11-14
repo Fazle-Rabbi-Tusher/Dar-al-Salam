@@ -29,54 +29,51 @@
   "script": [
     {
       "from": 0,
-      "to": 60,
-      "action": "idle",
-      "at": [66.2, 114.6],
+      "to": 96,
+      "action": "catch",
+      "at": [78.2, 116.8],
+      "facing": "NE",
+      "z": 1.2
+    },
+    {
+      "from": 96,
+      "to": 108,
+      "action": "catch",
+      "at": [78.2, 116.8],
       "facing": "SE",
-      "z": 10
+      "z": 1.2
     },
     {
-      "from": 60,
-      "to": 84,
-      "action": "walk",
-      "path": [
-        [66.2, 114.6],
-        [66.2, 116.4]
-      ],
-      "z": [10, 0]
-    },
-    {
-      "from": 84,
+      "from": 108,
       "to": 120,
-      "action": "idle",
-      "at": [66.2, 116.4],
-      "facing": "NW"
+      "action": "catch",
+      "at": [78.2, 116.8],
+      "facing": "NE",
+      "z": 1.2
     },
     {
       "from": 120,
-      "to": 144,
-      "action": "walk",
-      "path": [
-        [66.2, 116.4],
-        [66.2, 114.6]
-      ],
-      "z": [0, 10]
-    },
-    {
-      "from": 144,
       "to": 216,
-      "action": "cheer",
-      "at": [66.2, 114.6],
-      "facing": "SE",
-      "z": 10
+      "action": "catch",
+      "at": [78.2, 116.8],
+      "facing": "NE",
+      "z": 1.2
     },
     {
       "from": 216,
-      "to": 240,
-      "action": "idle",
-      "at": [66.2, 114.6],
+      "to": 228,
+      "action": "catch",
+      "at": [78.2, 116.8],
       "facing": "SE",
-      "z": 10
+      "z": 1.2
+    },
+    {
+      "from": 228,
+      "to": 240,
+      "action": "catch",
+      "at": [78.2, 116.8],
+      "facing": "NE",
+      "z": 1.2
     }
   ],
   "bio": {

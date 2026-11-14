@@ -20,6 +20,7 @@ import {
 } from '../../../packages/shared/planet';
 import type { Sortable } from '../../../packages/shared/schema';
 import { laboratoryActivityModel } from '../../../packages/shared/laboratory';
+import { sportsActivityModel } from '../../../packages/shared/sports';
 import {
   projectSurface,
   surfaceOccludes,
@@ -61,6 +62,7 @@ const program = () =>
   });
 export type LiveInfrastructure = {
   mesh: Mesh<Geometry, Shader>;
+  glass?: Mesh<Geometry, Shader>;
   point: Vec3;
   reach: number;
   objectId: number;
@@ -143,8 +145,23 @@ export class InfrastructureRenderer {
     if (!s.objectType || s.scene || s.landmark) return null;
     const model = infrastructureModel(s.objectType, s.footprint, s.objectId);
     if (!model) return null;
-    const moving = laboratoryActivityModel(s.objectType, s.footprint, 0);
-    const mesh = this.mesh(model, s.tile, s.footprint, s.lift);
+    const moving =
+      laboratoryActivityModel(s.objectType, s.footprint, 0) ??
+      sportsActivityModel(s.objectType, s.footprint, 0);
+    const transparent = model.faces.filter((f) => (f.opacity ?? 1) < 1);
+    const mesh = this.mesh(
+      { ...model, faces: model.faces.filter((f) => (f.opacity ?? 1) >= 1) },
+      s.tile,
+      s.footprint,
+      s.lift,
+    );
+    const glass = transparent.length
+      ? this.mesh({ ...model, faces: transparent }, s.tile, s.footprint, s.lift)
+      : undefined;
+    if (glass) {
+      glass.state.depthMask = false;
+      glass.label = `Glass ${s.objectType} #${s.objectId}`;
+    }
     mesh.label = `3D ${s.objectType} #${s.objectId}`;
     const activity = moving
       ? {
@@ -158,6 +175,7 @@ export class InfrastructureRenderer {
       activity.mesh.label = `Working parts ${s.objectType} #${s.objectId}`;
     return {
       mesh,
+      glass,
       activity,
       objectId: s.objectId,
       kind: model.kind,
@@ -213,7 +231,8 @@ export class InfrastructureRenderer {
   animate(b: LiveInfrastructure, time: number) {
     const a = b.activity;
     if (!a || !b.mesh.visible || a.time === time) return;
-    const model = laboratoryActivityModel(a.type, b.footprint, time)!;
+    const model = (laboratoryActivityModel(a.type, b.footprint, time) ??
+      sportsActivityModel(a.type, b.footprint, time))!;
     const data = modelGeometry(model, b.tile, b.footprint, a.lift);
     for (const [attribute, values] of [
       ['aPosition', data.positions],

@@ -1,8 +1,8 @@
 import { worldFromTile, type Point } from './iso';
 
-/** The approved chamber keeps its existing place in the quarter. Geometry,
+/** The approved chamber replaces the kitchen beside Community. Geometry,
  * furnishings and camera targets all use this single, uniform transform. */
-export const DARK_ROOM = { origin: [21, 103.4] as Point, scale: 0.23 };
+export const DARK_ROOM = { origin: [47, 33] as Point, scale: 0.85 };
 export function darkRoomTile(x: number, z: number): Point {
   return [
     DARK_ROOM.origin[0] + z * DARK_ROOM.scale,

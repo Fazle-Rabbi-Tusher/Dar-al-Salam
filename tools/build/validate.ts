@@ -66,6 +66,15 @@ export function validateCharacter(
   )
     (prod ? errors : warnings).push(`Wardrobe invalid for ${c.district}`);
   for (const step of c.script) {
+    if (['bowl', 'catch', 'shoot', 'dunk', 'dribble'].includes(step.action)) {
+      for (const view of ['SE', 'NE'])
+        if (
+          !fs.existsSync(
+            `art/sprites/anim/${c.strip ?? c.id}__${step.action}_${view}.png`,
+          )
+        )
+          errors.push(`Missing authored sports strip ${step.action}/${view}`);
+    }
     const facings = step.path
       ? (['SE', 'SW', 'NE', 'NW'] as const)
       : [step.facing!];

@@ -9,7 +9,7 @@
   "chapter": "CHAPTER 01",
   "room": "The Peace Quarter",
   "introTitle": "A little world.\nA shared peace.",
-  "introText": "Spin a little planet where a mosque, a science lab, a hospital, a community kitchen, a coding class, a football stadium and a fight-night arena sit side by side. There is a story around every corner.",
+  "introText": "Spin a little planet where a mosque, working science labs, a hospital, a community, the dark chamber, a football pitch, a cricket stadium, basketball and a fight-night arena sit side by side. There is a story around every corner.",
   "explore": "Explore the quarter",
   "introNote": "An evolving pixel-art prototype",
   "live": "The quarter is alive",
@@ -134,5 +134,8 @@
   "mirrorConeConvex": "Convex cone",
   "mirrorConeConcave": "Concave cone",
   "runClock": "Animate water clock",
-  "pauseClock": "Pause water clock"
+  "pauseClock": "Pause water clock",
+  "cricket": "Cricket",
+  "basketball": "Basketball",
+  "arena": "Boxing & MMA"
 }
