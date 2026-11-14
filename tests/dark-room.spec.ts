@@ -74,7 +74,7 @@ test('approved optical workshop is real geometry in the same main-world canvas',
       location.origin,
     ).href;
     const source = await import(path),
-      original = source.buildSanctuary({ cutaway: true });
+      original = source.buildSanctuary({ cutaway: true, courtyard: false });
     const parts = e.darkRoom.model.parts;
     return {
       count: e.darkRoom.partCount,
@@ -94,15 +94,25 @@ test('approved optical workshop is real geometry in the same main-world canvas',
         0,
       ),
       depth: e.darkRoom.batches.every((b) => b.mesh.state.depthTest),
+      exterior: parts.some((p) => /^(site-|courtyard-)/.test(p.group)),
       frames: e.manifest.characters.find((c) => c.id === 'ibn-al-haytham')!
         .frames,
     };
   });
-  expect(fidelity.count).toBe(79806);
+  expect(fidelity.count).toBe(36316);
   expect(fidelity.count).toBe(fidelity.original);
   expect(fidelity.same).toBe(true);
-  expect(fidelity.vertices).toBeGreaterThan(300000);
+  expect(fidelity.vertices).toBeGreaterThan(140000);
   expect(fidelity.depth).toBe(true);
+  expect(fidelity.exterior).toBe(false);
+  await expect(
+    page.getByRole('button', { name: 'Courtyard', exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.locator(
+      '.dark-room-station option[value="site"],.dark-room-station option[value="courtyard"]',
+    ),
+  ).toHaveCount(0);
   expect(
     Object.values(fidelity.frames).every((frames) => frames.length === 40),
   ).toBe(true);
@@ -134,7 +144,7 @@ test('approved optical workshop is real geometry in the same main-world canvas',
       ),
     )
     .toBe(25);
-  await page.getByRole('button', { name: 'Courtyard', exact: true }).click();
+  await page.getByRole('button', { name: 'Chamber', exact: true }).click();
   expect(
     await page.evaluate(
       (c) => c === document.querySelector('.world-host canvas'),
@@ -213,6 +223,14 @@ test('native water clock remains attached through updates and obeys the main Pau
     .click();
   await page.locator('.dark-room-controls summary').click();
   await expect(page.getByLabel('Aperture', { exact: true })).toHaveValue('100');
+  const exterior = await page.evaluate(() =>
+    (
+      window as unknown as { __darEngine: DebugEngine }
+    ).__darEngine.darkRoom.model.parts.some((p) =>
+      /^(site-|courtyard-)/.test(p.group),
+    ),
+  );
+  expect(exterior).toBe(false);
   expect(errors).toEqual([]);
 });
 

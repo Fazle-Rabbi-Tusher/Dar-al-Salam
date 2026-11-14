@@ -93,19 +93,9 @@ export function DarkRoomControls(props: Props) {
         role="group"
         aria-label={t('darkRoomViews')}
       >
-        {(['room', 'courtyard', 'site'] as const).map((key, i) => (
-          <button
-            key={key}
-            aria-pressed={view === key}
-            onClick={() => focus(key)}
-          >
-            {t(
-              (['darkRoomChamber', 'darkRoomCourt', 'darkRoomSite'] as const)[
-                i
-              ],
-            )}
-          </button>
-        ))}
+        <button aria-pressed={view === 'room'} onClick={() => focus('room')}>
+          {t('darkRoomChamber')}
+        </button>
       </div>
       <label className="dark-room-station">
         {t('darkRoomStation')}
@@ -125,8 +115,6 @@ export function DarkRoomControls(props: Props) {
           {(
             [
               'room',
-              'courtyard',
-              'site',
               'aperture',
               'screen',
               'bench',
@@ -142,8 +130,6 @@ export function DarkRoomControls(props: Props) {
                 (
                   [
                     'darkRoomChamber',
-                    'darkRoomCourt',
-                    'darkRoomSite',
                     'darkRoomAperture',
                     'darkRoomScreen',
                     'darkRoomBench',

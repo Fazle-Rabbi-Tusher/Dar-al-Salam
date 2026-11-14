@@ -42,6 +42,8 @@ extracted from an attached document. New explicit owner instructions override th
   world, rather than opening a separate page or iframe. Preserve the approved
   three-dimensional model components and materials. Keep people visible with
   correct per-pixel depth, grounded anchors and nearby foreground-wall cutaways.
+- **Dark-room scene refinement:** show only the dark chamber, its scholar and
+  interior equipment. Omit the surrounding courtyard and neighboring buildings.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

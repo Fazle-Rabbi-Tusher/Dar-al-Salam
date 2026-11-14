@@ -85,7 +85,6 @@ type Source = {
 type Batch = {
   mesh: Mesh<Geometry, Shader>;
   group: string;
-  scope: 'room' | 'court';
   material: Material;
   transparent: boolean;
   bounds: Bounds;
@@ -132,7 +131,7 @@ export class DarkRoom {
   partCount = 0;
   private source!: Source;
   private textures = new Map<string, Texture>();
-  private courtyard!: HTMLCanvasElement;
+  private projectionReference!: HTMLCanvasElement;
   private fragment = '';
   private programs = new Map<string, GlProgram>();
   private destroyed = false;
@@ -209,15 +208,20 @@ export class DarkRoom {
       );
     this.fragment = fragment;
     const sources = this.source.createSceneTextures(this.options);
-    this.courtyard = sources.courtyard;
+    // The courtyard image is used only by the pinhole experiment's texture.
+    // Surrounding architecture is excluded from the world model.
+    this.projectionReference = sources.courtyard;
     for (const [name, canvas] of Object.entries(sources)) {
       const texture = Texture.from(canvas);
       texture.source.scaleMode = 'nearest';
       this.textures.set(name, texture);
     }
-    this.model = this.source.buildSanctuary(this.options);
+    this.model = this.buildModel();
     this.partCount = this.model.parts.length;
     this.add(this.model.parts);
+  }
+  private buildModel() {
+    return this.source.buildSanctuary({ ...this.options, courtyard: false });
   }
   private point(p: number[]): Vec3 {
     const tile = darkRoomTile(p[0], p[2]),
@@ -361,7 +365,6 @@ export class DarkRoom {
         transparent,
         bounds,
         demo,
-        scope: /^(site-|courtyard-)/.test(part.group) ? 'court' : 'room',
       });
     }
   }
@@ -369,7 +372,6 @@ export class DarkRoom {
     // Merge only immutable components with identical material state. Every
     // approved vertex, colour and UV remains; movable experiment assemblies
     // and walls keep their own batches for independent updates/cutaways.
-    if (/^(site-|courtyard-)/.test(group)) return 'courtyard';
     if (group.startsWith('instrument-waterclock'))
       return 'instrument-waterclock';
     if (
@@ -425,7 +427,7 @@ export class DarkRoom {
         Math.max(...corners.map((q) => q.y)) >= 0 &&
         Math.min(...corners.map((q) => q.y)) <= height;
     for (const b of this.batches) {
-      // Keep the compound intact at the horizon; ordinary GPU depth handles
+      // Keep the chamber intact at the horizon; ordinary GPU depth handles
       // every wall, instrument and character inside it.
       const corners = Array.from({ length: 8 }, (_, i) =>
           project(
@@ -527,25 +529,13 @@ export class DarkRoom {
     this.optical.uniforms.uExposure = this.options.exposure;
     this.optical.uniforms.uSunlight = this.options.sunlight ? 1 : 0;
     if (geometry) {
-      this.remove((b) => b.scope === 'room');
-      const room = this.source.buildSanctuary({
-        ...this.options,
-        courtyard: false,
-      });
-      this.model = {
-        ...this.model,
-        ...room,
-        bounds: this.model.bounds,
-        landmarks: { ...this.model.landmarks, ...room.landmarks },
-        parts: this.model.parts
-          .filter((p) => /^(site-|courtyard-)/.test(p.group))
-          .concat(room.parts),
-      };
-      this.add(room.parts);
+      this.remove(() => true);
+      this.model = this.buildModel();
+      this.add(this.model.parts);
       const texture = this.textures.get('projection')!;
       const canvas = this.source.createProjectionTexture(
         this.options,
-        this.courtyard,
+        this.projectionReference,
       );
       const replacement = Texture.from(canvas);
       replacement.source.scaleMode = 'nearest';
@@ -587,7 +577,7 @@ export class DarkRoom {
     if (
       !this.clockStart ||
       frame === this.clockTick ||
-      !this.batches.some((b) => b.scope === 'room' && b.mesh.visible)
+      !this.batches.some((b) => b.mesh.visible)
     )
       return false;
     // The approved sinking-cylinder mechanism follows the 12 Hz world clock.
@@ -599,8 +589,6 @@ export class DarkRoom {
     return true;
   }
   target(view: DarkRoomView): { point: Vec3; zoom: number } {
-    if (view === 'site') return { point: [-14, 0, -1.9], zoom: 1.8 };
-    if (view === 'courtyard') return { point: [-16.4, 0, -1.4], zoom: 3.8 };
     if (view === 'room') return { point: [2.4, 0, 0], zoom: 6.5 };
     return { point: this.model.landmarks[view] ?? [2.4, 0, 0], zoom: 10 };
   }

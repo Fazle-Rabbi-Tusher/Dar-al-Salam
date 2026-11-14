@@ -1,6 +1,6 @@
 import { worldFromTile, type Point } from './iso';
 
-/** The approved compound keeps its existing place in the quarter. Geometry,
+/** The approved chamber keeps its existing place in the quarter. Geometry,
  * furnishings and camera targets all use this single, uniform transform. */
 export const DARK_ROOM = { origin: [21, 103.4] as Point, scale: 0.23 };
 export function darkRoomTile(x: number, z: number): Point {
@@ -15,8 +15,6 @@ export function darkRoomCamera(x: number, z: number, zoom: number) {
 }
 export type DarkRoomView =
   | 'room'
-  | 'courtyard'
-  | 'site'
   | 'aperture'
   | 'screen'
   | 'bench'

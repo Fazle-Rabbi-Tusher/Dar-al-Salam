@@ -1,6 +1,6 @@
 # Al-Bayt al-Muzlim in the main world
 
-The approved optical chamber, courtyard, neighborhood and instruments now render
+The approved optical chamber and its interior instruments render
 as native three-dimensional geometry on Dar al-Salam’s existing world canvas.
 The dark-room tab, Ibn al-Haytham’s card and scene selection all focus that world
 component. A compact, non-modal control panel adjusts the exhibit; the world
@@ -27,7 +27,11 @@ previews, scripts and textures remain available for download.
 `web/src/engine/DarkRoom.ts` imports the original ES modules from the same
 origin. It calls `buildSanctuary`, `buildWaterClock`, `buildInstrumentExperiment`
 and the original material/projection texture constructors directly. The default
-cutaway contains **79,806 original quad parts**. Coordinates, colors, UVs and
+cutaway contains **36,316 original quad parts**. The world component always calls
+`buildSanctuary` with `courtyard: false`, including when controls rebuild its
+geometry, so neighboring buildings and outdoor paving are excluded. The pinhole
+projection retains its reference image as a texture, without exterior world
+geometry. Coordinates, colors, UVs and
 apparatus proportions are retained; the implementation does not replace them
 with generic furniture or flat images.
 
@@ -70,7 +74,7 @@ their existing paths.
 
 ## Controls, animation and lifecycle
 
-The inline controls offer chamber, courtyard and neighborhood views, station
+The inline controls offer the chamber view and station
 close-ups, aperture and screen-distance adjustments, lighting/cutaway/ray
 toggles, all seven mirror forms, tube/astronomy demonstrations and the water
 clock. Experiments use the source’s actual faceted apparatus, ray intersections,
