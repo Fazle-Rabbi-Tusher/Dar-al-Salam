@@ -38,6 +38,10 @@ extracted from an attached document. New explicit owner instructions override th
   microscopy, mixing and reactions, with staff working beside the apparatus.
   Architecture studios should show drawing, developing blueprints and CAD work.
   Keep these activities on the shared world clock and freeze them on pause.
+- **World integration (2026-11-14):** Al-Bayt al-Muzlim belongs inside the main
+  world, rather than opening a separate page or iframe. Preserve the approved
+  three-dimensional model components and materials. Keep people visible with
+  correct per-pixel depth, grounded anchors and nearby foreground-wall cutaways.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

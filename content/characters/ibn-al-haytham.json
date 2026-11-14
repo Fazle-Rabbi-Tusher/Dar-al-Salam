@@ -6,7 +6,9 @@
     "ar": "ابن الهيثم",
     "bn": "ইবনে আল-হাইসাম"
   },
-  "aliases": ["Alhazen"],
+  "aliases": [
+    "Alhazen"
+  ],
   "years": "965–c. 1040",
   "place": "Basra · Cairo",
   "district": "house-of-wisdom",
@@ -31,8 +33,12 @@
       "from": 0,
       "to": 120,
       "action": "write",
-      "at": [21.5, 101.96],
-      "facing": "SE"
+      "at": [
+        21.2875,
+        102.8365
+      ],
+      "facing": "SE",
+      "z": 1.2
     }
   ],
   "bio": {

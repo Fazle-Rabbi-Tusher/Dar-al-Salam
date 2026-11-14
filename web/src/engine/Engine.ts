@@ -19,6 +19,18 @@ import {
   InfrastructureRenderer,
   type LiveInfrastructure,
 } from './Infrastructure';
+import { DepthSprite } from './DepthSprite';
+import { DarkRoom } from './DarkRoom';
+import {
+  darkRoomCamera,
+  type DarkRoomOptions,
+  type DarkRoomView,
+  type DarkRoomExperiment,
+} from '../../../packages/shared/dark-room';
+import {
+  surfaceOccludes,
+  type VisibilityProbe,
+} from '../../../packages/shared/occlusion';
 import { OutlineFilter } from 'pixi-filters';
 import { FPS, globalFrame, frameMap } from '../../../packages/shared/clock';
 import { characterState, frameKey } from '../../../packages/shared/script';
@@ -84,7 +96,7 @@ type Static = {
   depth: number;
 };
 type ViewState = { lat: number; lon: number; zoom: number };
-const MAX_ZOOM = 4,
+const MAX_ZOOM = 12,
   MAX_LAT = 1.32;
 
 const vertex = /* glsl */ `
@@ -374,14 +386,17 @@ export class Engine {
   private metadata = new Map<string, FrameMeta>();
   private masks = new Map<string, Uint8Array>();
   private live = new Map<string, Live>();
+  private spriteDepth = new Map<Sprite, DepthSprite>();
   private statics: Static[] = [];
   private infrastructure = new InfrastructureRenderer();
+  private darkRoom = new DarkRoom(this.infrastructure.uniforms);
   private buildings: LiveInfrastructure[] = [];
   private listeners = new Map<string, Set<(data: never) => void>>();
   private resizeObserver: ResizeObserver;
   private abort = new AbortController();
   private destroyed = false;
   private ready = false;
+  private initialized = false;
   private suspended = false;
   private elapsed = 0;
   private lastFrame = -1;
@@ -449,10 +464,15 @@ export class Engine {
       antialias: false,
       preference: 'webgl',
     });
+    this.initialized = true;
     if (this.destroyed) {
       this.app.destroy(true);
       return;
     }
+    // Keep input/camera ticks responsive without continuously redrawing the
+    // detailed 3D world while it is paused. Simulation poses remain at 12 Hz;
+    // visible lab apparatus and camera motion can still draw between poses.
+    this.app.ticker.remove(this.app.render, this.app);
     if (import.meta.env.DEV) this.countDrawCalls();
     this.host.appendChild(this.app.canvas);
     this.app.canvas.setAttribute(
@@ -509,6 +529,9 @@ export class Engine {
     this.front.sortableChildren = true;
     const modeled = new Set<number>();
     for (const s of manifest.sortables) {
+      // Compatibility with older manifests: the approved chamber is now real
+      // geometry, so its old flat site strips must never be drawn over people.
+      if (s.scene === 'dark-room') continue;
       if (modeled.has(s.objectId)) continue;
       const building = this.infrastructure.create(s);
       if (building) {
@@ -529,6 +552,8 @@ export class Engine {
         depth: 0,
       });
     }
+    await this.darkRoom.load(this.abort.signal);
+    if (this.destroyed) return;
     this.ready = true;
     this.applyCamera();
     this.update();
@@ -613,6 +638,40 @@ export class Engine {
   }
   setMotion(on: boolean) {
     this.motion = on;
+  }
+  focusDarkRoom(view: DarkRoomView = 'room') {
+    if (!this.darkRoom.model) return;
+    if (!['mirrors', 'tubes', 'astronomy'].includes(view))
+      this.darkRoom.setExperiment({ kind: 'none' });
+    const { point, zoom } = this.darkRoom.target(view),
+      // Leave room for the persistent site's controls on smaller viewports.
+      fit = Math.min(
+        1,
+        this.host.clientWidth / 1100,
+        this.host.clientHeight / 820,
+      );
+    this.flyTo(
+      darkRoomCamera(point[0], point[2], Math.max(1.2, zoom * fit)),
+      650,
+    );
+  }
+  setDarkRoomOptions(changes: Partial<DarkRoomOptions>) {
+    this.darkRoom.setOptions(changes);
+    this.dirty = true;
+  }
+  setDarkRoomClock(running: boolean) {
+    this.darkRoom.setClockRunning(running, this.frame);
+    this.dirty = true;
+  }
+  setDarkRoomExperiment(options: DarkRoomExperiment) {
+    this.darkRoom.setExperiment(options);
+    this.dirty = true;
+  }
+  getDarkRoomState() {
+    return {
+      options: { ...this.darkRoom.options },
+      clockRunning: this.darkRoom.clockRunning,
+    };
   }
   /** Release the world renderer while a full-screen exhibit owns the viewport.
    * This does not change the user's motion preference or advance world time.
@@ -746,6 +805,10 @@ export class Engine {
   }
   /** Fly to show a whole scene: every member and prop, heads included. */
   private frameScene(id: string) {
+    if (id === 'dark-room') {
+      this.focusDarkRoom();
+      return;
+    }
     const scene = this.manifest?.scenes.find((s) => s.id === id);
     if (!scene || !this.manifest) return;
     const points: [number, number][] = [];
@@ -822,6 +885,15 @@ export class Engine {
         x1 = Math.max(x1, b.maxX);
         y1 = Math.max(y1, b.maxY);
       };
+      if (id === 'dark-room') {
+        const b = this.darkRoom.screenBounds();
+        if (b) {
+          x0 = b.x;
+          y0 = b.y;
+          x1 = b.x + b.w;
+          y1 = b.y + b.h;
+        }
+      }
       for (const i of this.live.values())
         if (i.character.scene === id) grow(i.sprite);
       for (const s of this.statics) if (s.sortable.scene === id) grow(s.sprite);
@@ -886,6 +958,11 @@ export class Engine {
     depthBias = 0,
     density = 1,
   ) {
+    let depth = this.spriteDepth.get(sprite);
+    if (!depth && depthBias !== 0) {
+      depth = new DepthSprite(sprite, depthBias === 1e-5);
+      this.spriteDepth.set(sprite, depth);
+    }
     const p = project(this.proj, point, lift),
       zoom = this.view.zoom,
       reach = size * zoom + 8,
@@ -899,6 +976,7 @@ export class Engine {
       p.y > h + reach * 0.3
     ) {
       sprite.visible = false;
+      depth?.sync(null);
       return null;
     }
     const layer = p.depth < 0 ? this.behind : this.front;
@@ -908,12 +986,20 @@ export class Engine {
     sprite.rotation = p.rotation;
     sprite.scale.set(zoom / density);
     sprite.zIndex = p.depth + depthBias;
+    depth?.sync(p, lift, density, depthBias === 2e-5, depthBias);
     return p;
   }
   private update() {
     if (!this.manifest) return;
     (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
     this.infrastructure.update(this.proj);
+    this.darkRoom.update(
+      this.proj,
+      this.front,
+      this.behind,
+      this.host.clientWidth,
+      this.host.clientHeight,
+    );
     for (const b of this.buildings) {
       const p = project(this.proj, b.point),
         reach = b.reach * this.view.zoom + 12;
@@ -971,6 +1057,7 @@ export class Engine {
       if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
     }
     let visible = 0;
+    const probes: VisibilityProbe[] = [];
     for (const c of this.manifest.characters) {
       const state = characterState(c, this.frame),
         step = c.script[state.stepIndex];
@@ -1052,11 +1139,26 @@ export class Engine {
         item.sprite.scale.y *= motion.sy;
         item.sprite.rotation += motion.lean * toward;
       }
+      this.spriteDepth
+        .get(item.sprite)
+        ?.sync(p, state.z + (motion?.lift ?? 0), density, true, 2e-5);
       if (item.shadow) {
         const sp = p && this.place(item.shadow, point, 36, 0, 1e-5);
         if (!sp) item.shadow.visible = false;
       }
       if (!p) continue;
+      const bounds = item.sprite.getBounds(),
+        depth = this.spriteDepth.get(item.sprite)!;
+      // Sample head and torso; cut only a foreground wall that actually
+      // covers a person, keeping its plinth and all other walls intact.
+      for (const fraction of [0.22, 0.46]) {
+        const q = {
+            x: bounds.x + bounds.width * 0.5,
+            y: bounds.y + bounds.height * fraction,
+          },
+          local = item.sprite.toLocal(q);
+        probes.push({ ...q, depth: depth.depthAt(local.y), tile: state.tile });
+      }
       visible++;
       item.depth = p.depth;
       this.outline(
@@ -1066,12 +1168,22 @@ export class Engine {
       );
     }
     this.visibleCount = visible;
+    for (const b of this.buildings)
+      this.infrastructure.reveal(b, this.proj, probes);
+    this.darkRoom.reveal(probes);
     this.drawRopes();
     this.drawSceneGlow();
     if (this.inspector) this.drawInspector();
   }
   /** Gold outline on hover; a slow pulse while selected. */
   private outline(sprite: Sprite, hovered: boolean, selected: boolean) {
+    const depth = this.spriteDepth.get(sprite);
+    if (depth) {
+      depth.highlight(
+        selected ? 0.65 + 0.35 * Math.sin(this.frame / 4) : hovered ? 1 : 0,
+      );
+      return;
+    }
     if (hovered || selected) {
       let filter = sprite.filters?.[0] as OutlineFilter | undefined;
       if (!filter) {
@@ -1190,7 +1302,9 @@ export class Engine {
       }
     }
     if (moved) this.applyCamera();
-    if (this.lastFrame !== this.frame || this.dirty) {
+    const clockChanged = this.darkRoom.animate(this.frame);
+    const changed = this.lastFrame !== this.frame || this.dirty || clockChanged;
+    if (changed) {
       this.update();
       this.lastFrame = this.frame;
       this.dirty = false;
@@ -1198,6 +1312,11 @@ export class Engine {
     const activityTime = this.frame + ((this.elapsed * FPS) % 1);
     for (const b of this.buildings)
       this.infrastructure.animate(b, activityTime);
+    if (
+      changed ||
+      (this.motion && this.buildings.some((b) => b.activity && b.mesh.visible))
+    )
+      this.app.render();
     this.emitElapsed += dt;
     if (this.emitElapsed >= 120) {
       this.emitElapsed = 0;
@@ -1272,10 +1391,26 @@ export class Engine {
           local.x,
           local.y,
         )
-      )
+      ) {
+        const sprite = this.spriteDepth.get(item.sprite),
+          depth = sprite?.depthAt(local.y);
+        if (
+          depth !== undefined &&
+          this.buildings.some(
+            (b) =>
+              b.mesh.visible &&
+              surfaceOccludes(
+                this.infrastructure.surface(b, this.proj),
+                { ...p, depth },
+                b.cutHeight,
+              ),
+          )
+        )
+          continue;
         return item.id;
+      }
     }
-    return null;
+    return this.darkRoom.hit(p) ? 'ibn-al-haytham' : null;
   }
   private clickable(id: string | null) {
     return Boolean(
@@ -1537,6 +1672,9 @@ export class Engine {
     this.abort.abort();
     this.resizeObserver.disconnect();
     this.listeners.clear();
+    this.darkRoom.destroy();
+    for (const sprite of this.spriteDepth.values()) sprite.destroy();
+    this.spriteDepth.clear();
     for (const b of this.buildings) {
       for (const mesh of [b.mesh, ...(b.activity ? [b.activity.mesh] : [])]) {
         const geometry = mesh.geometry,
@@ -1547,6 +1685,17 @@ export class Engine {
       }
     }
     this.buildings = [];
-    if (this.ready) this.app.destroy(true, { children: true, texture: false });
+    if (this.initialized)
+      this.app.destroy(true, { children: true, texture: false });
+    this.live.clear();
+    this.statics = [];
+    this.textures.clear();
+    this.metadata.clear();
+    this.masks.clear();
+    this.manifest = null;
+    if (import.meta.env.DEV) {
+      const debug = window as unknown as { __darEngine?: Engine };
+      if (debug.__darEngine === this) delete debug.__darEngine;
+    }
   }
 }

@@ -749,6 +749,9 @@ async function build() {
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
+      // The approved Al-Bayt al-Muzlim mesh is a native world component.
+      // Keep source PNGs as references, without packing flat duplicates.
+      if (o.type.startsWith('sup-dr-')) continue;
       // Supplied art placed in the room (art/supplied): planted like
       // Massawa's pieces, standing on the footprint's centre.
       if (!objectArt[o.type] && suppliedArt[o.type]) {
@@ -1184,6 +1187,7 @@ async function build() {
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
       const sup = objectArt[o.type] ? undefined : suppliedArt[o.type];
+      if (o.type.startsWith('sup-dr-')) continue;
       if (!sup || !sup.floor) continue;
       const { data, info } = await sharp(`art/${sup.file}`)
         .resize({

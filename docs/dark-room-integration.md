@@ -1,212 +1,102 @@
-# The approved dark-room exhibit
+# Al-Bayt al-Muzlim in the main world
 
-The full interactive Al-Bayt al-Muzlim design lives inside Dar al-Salam at
-`web/public/exhibits/al-bayt-al-muzlim/`. It is a copy of the approved exhibit,
-including the enlarged equipment, spacious chamber, courtyard, surrounding
-buildings, original rendering, working demonstrations, model downloads and
-previews. Its entrypoint is `index.html` in that directory.
+The approved optical chamber, courtyard, neighborhood and instruments now render
+as native three-dimensional geometry on Dar al-Salam’s existing world canvas.
+The dark-room tab, Ibn al-Haytham’s card and scene selection all focus that world
+component. A compact, non-modal control panel adjusts the exhibit; the world
+remains interactive. There is no iframe, exhibit dialog, second WebGL context,
+world suspension or separate application launch.
 
-The main website opens this exhibit through `/?exhibit=dark-room`. On entry,
-the host activates the source viewer's **Inside** control and brings its stage
-into view, so entering from the world takes the visitor directly into the
-approved chamber. Room, Court, Study and Site remain available in the source
-viewer. The host
-provides the exhibit frame and return controls, suspends world activity while
-it is open, and retains the world camera for the return journey. The exhibit
-loads from the same website; it does not depend on an authenticated external
-Site iframe.
+Old `/?exhibit=dark-room` links focus the component and remove the legacy query
+parameter. Ordinary camera/person links continue to work, including close-up
+zoom values up to 12. The original standalone source remains archived in the
+verified exhibit directory and download ZIP.
+Legacy exhibit directory/index URLs redirect into this component in development,
+preview and production; the verified source files themselves stay unchanged.
 
-## Approved source and fidelity
+## Approved design and source integrity
 
-The approved source is the `dist/` directory at approved source commit
-`c784d7c27a8120d85242175641b029ddfbd12285` from
-<https://al-bayt-al-muzlim-pixel-atelier.f-r-tusher007.chatgpt.site/>.
+The unchanged approved source is in
+`web/public/exhibits/al-bayt-al-muzlim/`, from source commit
+`c784d7c27a8120d85242175641b029ddfbd12285`.
+`approved-source.json` records its original byte lengths and SHA-256 hashes.
+`pnpm verify:dark-room` verifies that inventory and restores the exact complete
+and cutaway GLBs from the original ZIP. The ZIP and all original models,
+previews, scripts and textures remain available for download.
 
-`approved-source.json` records the source identity, exact byte lengths and
-SHA-256 checksums of every copied file. The original files are intentionally
-unchanged. Host navigation and lifecycle behavior belong outside the exhibit
-directory so they cannot silently change the approved art or controls.
+`web/src/engine/DarkRoom.ts` imports the original ES modules from the same
+origin. It calls `buildSanctuary`, `buildWaterClock`, `buildInstrumentExperiment`
+and the original material/projection texture constructors directly. The default
+cutaway contains **79,806 original quad parts**. Coordinates, colors, UVs and
+apparatus proportions are retained; the implementation does not replace them
+with generic furniture or flat images.
 
-The complete and cutaway GLBs exceed the repository connector's 16 MiB
-request limit when base64 encoded. Their exact bytes are already contained in
-the approved ZIP. `tools/prepare-dark-room-exhibit.mjs` restores those two files
-from that archive before development or either build mode. It checks the
-archive and model hashes against `approved-source.json`; the models are not
-regenerated or re-exported. The extracted files are ignored by Git, and Vite
-copies the restored originals into the deployed static assets. All other
-approved files, including the unchanged ZIP, are stored directly in Git.
+The approved fragment shader is read from the verified source and adapted to
+GLSL 3 syntax and Pixi’s premultiplied output. Its original material constants,
+lighting, ambient occlusion, reflections and glass highlights are retained.
+Material constants are specialized at compilation so stone does not perform
+unneeded mirror/glass calculations. Exterior exposure and the absence of aerial
+haze match the source’s isometric views. The camera position is expressed in
+local model coordinates for view-dependent reflections.
 
-The live exhibit builds its own meshes and procedural textures. It does not
-load a GLB to draw the interactive scene. The same source supplies the room,
-courtyard, neighboring architecture, furniture, instruments, collisions,
-camera presets and teaching demonstrations.
+The world camera and curved planet projection intentionally differ from the
+standalone renderer. Geometry/material fidelity is checked directly; screenshots
+from different cameras or render backends are not claimed to be pixel-identical.
 
-| Files                                          | Responsibility                                                                               |
-| ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `scene.js`, `courtyard.js`                     | Room, original furnishings, outdoor architecture and navigation                              |
-| `instruments.js`, `observation-instruments.js` | Enlarged mirror, tube, astronomy and clock geometry                                          |
-| `instrument-experiments.js`                    | Mirror ray intersections, sighting alignment and shadow calculations                         |
-| `renderer.js`, `software.js`                   | Approved lighting, materials, pixel sampling, projection, camera framing and Canvas fallback |
-| `app.js`, `index.html`, `style.css`            | Working controls, live readouts, picture selectors and responsive layout                     |
-| `assets/`                                      | Original model/ZIP downloads, source validation, favicon and approved browser previews       |
+## World transform, depth and visibility
 
-All runtime modules and assets use local relative paths. There are no new
-runtime dependencies, remote fonts or downloaded textures. The existing Book,
-Scholar and Workshop navigation links and the historical source links still
-lead to their separate websites.
+`packages/shared/dark-room.ts` defines the one uniform model-to-world transform:
+source +Z follows tile +x, source +X follows tile −y, and source Y is radial
+height. The existing plot origin is `[21, 103.4]` and its uniform scale is 0.23.
+Camera targets use the same transform. No height-only scaling is applied.
 
-## The world representation and the full exhibit
+The asset builder keeps the legacy PNGs as source references, but neither packs
+the old `sup-dr-*` strips nor bakes their floor into the world ground. This
+prevents flat copies from covering the native model and its characters.
+Ibn al-Haytham’s original 40-frame writing animation remains. Its ground anchor
+is registered to his shoes, and his script places him behind the optical bench,
+on the chamber floor and clear of the pinhole-to-screen cone. Approval and
+biography fields are unchanged.
 
-The repository's existing `tools/prepare-dark-room.ts` pipeline renders a
-cutaway GLB through `tools/dark-room/render.html` into PNG pieces for the
-rotatable pixel world. That pipeline applies its own projection, ground scale
-and vertical scale, splits large surfaces into sprite strips, and has separate
-character/bench composition. It is a different presentation pipeline from the
-approved interactive exhibit.
+`DepthSprite.ts` keeps the supplied character art and alpha picking masks while
+rendering their pixels into the same depth buffer as native infrastructure.
+Transparent atlas margins discard without writing depth. Head/torso depth rises
+with the standing figure rather than using a whole building’s nearest corner.
+Nearby walls that actually cover a person receive a low cutaway; their plinths
+and non-obstructing walls remain solid. Picking checks the same projected
+triangles, so hidden body regions cannot be clicked through a wall. Authored
+sprite props, landscapes, card selection, scene highlights and landmarks retain
+their existing paths.
 
-Consequently, a GLB import or a sprite representation alone cannot guarantee
-the approved render. The full exhibit preserves the original geometry,
-lighting shader, reflective and glass highlights, fine pixel sampling,
-inverted courtyard projection, camera presets and dynamic experiment parts.
-Use this source as the authoritative close-up experience. Evaluate any world
-landmark or sprite updates separately against the same approved design rather
-than treating a successful GLB load as proof of visual fidelity.
+## Controls, animation and lifecycle
 
-Pixel-level screenshot comparison also requires the same renderer backend,
-viewport size, device-pixel ratio, camera preset, pixel-detail setting and
-experiment values. Different aspect ratios intentionally change the camera
-fit so the equipment stays readable.
+The inline controls offer chamber, courtyard and neighborhood views, station
+close-ups, aperture and screen-distance adjustments, lighting/cutaway/ray
+toggles, all seven mirror forms, tube/astronomy demonstrations and the water
+clock. Experiments use the source’s actual faceted apparatus, ray intersections,
+reflection normals and shadow calculations. They are interpretive teaching
+reconstructions, not claims about personal ownership or calibrated equipment.
 
-## Runtime isolation
+The water clock follows the same deterministic 12 Hz, 240-frame master loop as
+people and laboratories. Starting it explicitly resumes world animation; the
+main Pause freezes everything. New moving meshes are attached in the same
+update, including paused updates. Closing the panel does not remove the world
+component, and reopening preserves its optical settings.
 
-Keep the exhibit in its own same-origin browsing context. Its stylesheet
-contains document-wide selectors and `app.js` binds its own element IDs,
-keyboard handlers, timers and canvas. Directly importing that application into
-the main React document would create CSS and input conflicts.
+Immutable meshes with matching materials are batched together without removing
+vertices. Movable assemblies and walls retain independent batches. Off-screen
+batches are culled; transparent quads are ordered after opaque geometry. Owned
+geometry, shaders and textures are released on teardown, including interrupted
+loads. The main renderer is also released if navigation interrupts asset loading.
 
-The host must stop world input/rendering while the exhibit has focus, provide
-an accessible return control, permit fullscreen/downloads, and unmount the
-exhibit frame when closing it. Removing the frame releases its WebGL context,
-animation loop and timers. Merely hiding a frame can leave work running.
+## Verification
 
-The world remains on its existing deterministic 12-Hz, 240-tick simulation.
-The isolated exhibit retains its approved interactive clock playback and
-camera animation. Those controls are not imported into the world simulation.
-No character approvals, biographies or depiction allowlists are changed by
-this integration.
-
-## What the downloads contain
-
-- `al-bayt-al-muzlim-collection.zip`: 7,363,028 bytes, below 30,000,000 bytes.
-- `al-bayt-al-muzlim-complete.glb`: complete architecture and equipment.
-- `al-bayt-al-muzlim-cutaway.glb`: open chamber and the full exterior setting.
-- `al-bayt-al-muzlim-instruments.glb`: the instrument assemblies separately.
-
-The three GLBs are static model snapshots at clock hour 6. The interactive
-controls, animated clock, material rendering and experiment overlays are
-implemented by the included viewer source. The clock is an illustrative
-mechanical demonstration, not a hydraulic flow calculation. The scene is an
-artistic reconstruction, not an archaeological measurement of a documented
-private sanctuary; the original source notes remain included.
-
-The ZIP remains an exact copy of the approved standalone package. It contains
-its own local viewer/server instructions. It is not a ZIP of the entire
-Dar al-Salam repository.
-
-## Verify the integration
-
-Run the focused fidelity gate from the repository root:
-
-```bash
-pnpm verify:dark-room
-```
-
-This first restores the two large GLBs if missing, then checks the approved
-revision, the exact inventory, file sizes and SHA-256
-hashes, every static local HTML/CSS/module reference, and the ZIP size limit.
-It rejects unlisted files or symlinks, which also prevents accidentally
-shipping temporary QA files with the exhibit.
-
-After restoration, when the original approved source directory is available,
-additionally compare
-every vendored file with it:
-
-```bash
-node tools/verify-dark-room-exhibit.mjs --source /absolute/path/to/approved/dist
-```
-
-The main-site integration also needs ordinary build and browser checks:
-
-1. Open the exhibit through the main website, then return to the same world
-   camera. Open it again and ensure no duplicate running frames remain.
-2. Confirm the room, courtyard, instruments and complete-location presets.
-3. Compare mirror incidence/reflection at 15 degrees, tube elevations of
-   14 and 22 degrees, low/high Sun shadow lengths, and clock reset/run/pause.
-4. Check desktop controls beside the model and phone controls with the model
-   kept visible. Verify that the host and exhibit do not overflow the viewport.
-5. Follow the ZIP and all three GLB downloads from the hosted subdirectory.
-
-Hash validation proves the approved source is present. Browser checks prove
-that the host opens and displays that source successfully; these are separate
-claims.
-
-## Integration verification, 13 November 2026
-
-The production bundle, TypeScript check, scoped ESLint check and all 124
-existing unit tests passed. The fresh world asset build produced 89 characters
-and 2,635 unique frames with zero content warnings. The approved exhibit also
-passed the optional byte-for-byte comparison with its source directory.
-
-Browser checks covered opening from the district control, returning through
-the host and exhibit home links, Escape, browser Forward/reopening, and a
-direct `?exhibit=dark-room` link. The 390 × 844 CSS-pixel viewport keeps the
-return and download controls available above the unchanged responsive viewer.
-The mirror readout changed from 15°/15° to 16°/16°; the sighting tube aligned at
-22°; low/high Sun presets produced 1.19×/0.18× shadow readouts; the water clock
-ran, paused and reset to 00:00. The complete-location preset displayed the
-approved courtyard and surrounding buildings.
-
-The verification browser used the approved Canvas fallback for the exhibit.
-Its lack of WebGL limits visual verification of the main world's existing
-shader-based planet. This does not establish a cross-device pixel comparison
-for the native world, and the existing native landmark sprites were not rebuilt.
-
-![Approved architecture inside the main-site frame](previews/dar-al-salam-dark-room-architecture.jpg)
-
-![Working mirror inside a 390-pixel phone viewport](previews/dar-al-salam-dark-room-phone.jpg)
-
-## Native world plot: visible chamber inside the complete neighborhood
-
-The world plot follows the owner's **Site / complete architecture** reference:
-the open dark chamber with a visible interior, the central courtyard and turquoise basin,
-roofed hall and gallery, and the surrounding houses, balconies, external stairs,
-streets and planting. The authoritative geometry is the uploaded collection's
-`al-bayt-al-muzlim-cutaway.glb`. Its chamber roof is removed and its near walls
-are lowered, exposing the furniture, shelves, screen and instruments directly
-on the world plot. The courtyard and neighboring houses retain their roofs.
-
-The whole architecture is rendered together before splitting its image into
-strips, retaining the original occlusion between roofs, walls and furnishings.
-It uses uniform model proportions (`KV = 1`) and a ground scale of 0.23 tiles
-per model unit to fit the existing lawn. Only the expansive background sand
-plane is bounded to the plot; no neighboring house is removed. The supplied
-geometry keeps its original arrangement. The world's isometric camera and
-lighting still differ from the standalone viewer's camera and shader.
-
-The scholar's existing red turban, brown robe, beard, book and animation assets
-remain in place. Its sprite metadata uses density 17 so the scholar and bench
-fit the chamber at this neighborhood scale; all 40 frames in each view remain
-unchanged. The room's open top and low near walls keep the interior visible.
-The interactive exhibit remains available for entering the chamber and exploring
-the experiments. No character approvals or biographies are changed.
-
-`prepare-dark-room.ts` updates this landmark's authored room objects together
-with its sprite inventory, preserving every unrelated world object. Rebuild
-using the uploaded collection extracted to a folder and a compatible Three.js
-vendor folder containing `three.module.min.js`, `three.core.js`, `GLTFLoader.js`
-and its utilities:
-
-```bash
-CHROMIUM_PATH=/usr/bin/chromium node --import tsx tools/prepare-dark-room.ts /path/to/collection /path/to/three
-pnpm prepare:world
-```
+- The source inventory verifier checks the unchanged approved source/downloads.
+- Unit regressions exercise oblique-wall depth, cutaway plinths, camera rotation,
+  world transforms, scholar placement and all retained animation frames.
+- Browser checks compare native model coordinates/colors/UVs against the source,
+  verify the single canvas and inline/mobile navigation, run optical reflection
+  and water-clock controls, and verify main Pause and setting persistence.
+- A browser regression renders an avatar and a long oblique wall into the real
+  WebGL depth buffer and measures visible avatar pixels. This checks actual
+  occlusion, rather than merely inspecting a `visible` flag.

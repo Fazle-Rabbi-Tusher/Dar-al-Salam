@@ -20,13 +20,21 @@ import {
 } from '../../../packages/shared/planet';
 import type { Sortable } from '../../../packages/shared/schema';
 import { laboratoryActivityModel } from '../../../packages/shared/laboratory';
+import {
+  projectSurface,
+  surfaceOccludes,
+  type ProjectedSurface,
+  type VisibilityProbe,
+} from '../../../packages/shared/occlusion';
 
 const vertex = `
 in vec3 aPosition;
 in vec3 aNormal;
 in vec4 aColor;
+in float aHeight;
 out vec4 vColor;
 out vec3 vWorld;
+out float vHeight;
 uniform mat3 uProjectionMatrix;
 uniform mat3 uWorldTransformMatrix;
 uniform mat3 uTransformMatrix;
@@ -38,12 +46,12 @@ void main(){
  vec3 normal=normalize(uPlanetRotation*aNormal);
  float lambert=max(0.,dot(normal,normalize(vec3(-.35,.65,.72))));
  float light=.53+.47*floor(lambert*7.)/7.;
- vColor=vec4(aColor.rgb*light,aColor.a);vWorld=aPosition*1450.;
+ vColor=vec4(aColor.rgb*light,aColor.a);vWorld=aPosition*1450.;vHeight=aHeight;
  vec2 screen=uCentre+vec2(p.x,-p.y)*uRadius;
  mat3 mvp=uProjectionMatrix*uWorldTransformMatrix*uTransformMatrix;
  gl_Position=vec4((mvp*vec3(screen,1.)).xy,-p.z*.45,1.);
 }`;
-const fragment = `in vec4 vColor;in vec3 vWorld;out vec4 finalColor;void main(){if(vColor.a<.01)discard;float grain=fract(sin(dot(floor(vWorld*.65),vec3(12.9898,78.233,37.719)))*43758.5453);finalColor=vec4(vColor.rgb*(.95+.09*grain)*vColor.a,vColor.a);}`;
+const fragment = `in vec4 vColor;in vec3 vWorld;in float vHeight;uniform float uCutHeight;out vec4 finalColor;void main(){if(vColor.a<.01||vHeight>uCutHeight)discard;float grain=fract(sin(dot(floor(vWorld*.65),vec3(12.9898,78.233,37.719)))*43758.5453);finalColor=vec4(vColor.rgb*(.95+.09*grain)*vColor.a,vColor.a);}`;
 const program = () =>
   GlProgram.from({
     vertex,
@@ -59,6 +67,9 @@ export type LiveInfrastructure = {
   kind: string;
   tile: [number, number];
   footprint: [number, number];
+  cutHeight: number;
+  projected?: ProjectedSurface;
+  projectedFrame?: Frame;
   activity?: {
     mesh: Mesh<Geometry, Shader>;
     type: string;
@@ -79,6 +90,7 @@ export function modelGeometry(
   const positions: number[] = [],
     normals: number[] = [],
     colors: number[] = [],
+    heights: number[] = [],
     indices: number[] = [];
   const centre: [number, number] = [
     tile[0] + footprint[0] / 2,
@@ -103,10 +115,11 @@ export function modelGeometry(
       len = Math.hypot(...normal) || 1,
       c = color(face.color),
       base = positions.length / 3;
-    for (const p of points) {
+    for (const [i, p] of points.entries()) {
       positions.push(...p);
       normals.push(...normal.map((n) => n / len));
       colors.push(...c, face.opacity ?? 1);
+      heights.push(face.points[i][1] + lift);
     }
     for (let i = 1; i < points.length - 1; i++)
       indices.push(base, base + i, base + i + 1);
@@ -115,6 +128,7 @@ export function modelGeometry(
     positions: new Float32Array(positions),
     normals: new Float32Array(normals),
     colors: new Float32Array(colors),
+    heights: new Float32Array(heights),
     indices: new Uint32Array(indices),
   };
 }
@@ -153,11 +167,47 @@ export class InfrastructureRenderer {
       ),
       tile: s.tile,
       footprint: s.footprint,
+      cutHeight: 10000,
       reach:
         Math.max(...s.footprint) * TILE_SIDE +
         Math.max(model.height, moving?.height ?? 0) +
         s.lift,
     };
+  }
+  surface(b: LiveInfrastructure, f: Frame) {
+    if (b.projectedFrame !== f) {
+      const g = b.mesh.geometry;
+      b.projected = projectSurface(f, {
+        vertices: g.getAttribute('aPosition').buffer.data as Float32Array,
+        indices: g.indexBuffer!.data as Uint32Array,
+        heights: g.getAttribute('aHeight').buffer.data as Float32Array,
+      });
+      b.projectedFrame = f;
+    }
+    return b.projected!;
+  }
+  reveal(b: LiveInfrastructure, f: Frame, probes: VisibilityProbe[]) {
+    if (b.kind !== 'facade' || !b.mesh.visible) return;
+    const s = this.surface(b, f),
+      cut = probes.some((p) => {
+        if (!p.tile) return false;
+        const dx = Math.max(
+            b.tile[0] - p.tile[0],
+            0,
+            p.tile[0] - b.tile[0] - b.footprint[0],
+          ),
+          dy = Math.max(
+            b.tile[1] - p.tile[1],
+            0,
+            p.tile[1] - b.tile[1] - b.footprint[1],
+          );
+        return Math.hypot(dx, dy) < 5 && surfaceOccludes(s, p);
+      })
+        ? 10
+        : 10000;
+    b.cutHeight = cut;
+    (b.mesh.shader!.resources.cutaway as UniformGroup).uniforms.uCutHeight =
+      cut;
   }
   /** Reuse each activity buffer; off-screen laboratories perform no rebuilds. */
   animate(b: LiveInfrastructure, time: number) {
@@ -189,6 +239,7 @@ export class InfrastructureRenderer {
         aPosition: { buffer: data.positions, format: 'float32x3' },
         aNormal: { buffer: data.normals, format: 'float32x3' },
         aColor: { buffer: data.colors, format: 'float32x4' },
+        aHeight: { buffer: data.heights, format: 'float32' },
       },
       indexBuffer: data.indices,
     });
@@ -201,7 +252,12 @@ export class InfrastructureRenderer {
       geometry,
       shader: new Shader({
         glProgram: program(),
-        resources: { infrastructure: this.uniforms },
+        resources: {
+          infrastructure: this.uniforms,
+          cutaway: new UniformGroup({
+            uCutHeight: { value: 10000, type: 'f32' },
+          }),
+        },
       }),
       state,
     });

@@ -1641,119 +1641,6 @@ html[dir='rtl'] .portrait-decoration {
   touch-action: manipulation;
 }
 
-/* The original optical workshop owns its viewport. Keep this host chrome
-   outside .app so the world can be inert without disabling the exhibit. */
-.dark-room-exhibit {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  color: #ede7d4;
-  background: #121511;
-  overscroll-behavior: contain;
-}
-.dark-room-exhibit[open] {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-}
-.dark-room-exhibit::backdrop {
-  background: #121511;
-}
-.dark-room-exhibit-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: 20px;
-  min-height: 68px;
-  padding: max(10px, env(safe-area-inset-top))
-    max(20px, env(safe-area-inset-right)) 10px
-    max(20px, env(safe-area-inset-left));
-  border-bottom: 1px solid #ded6ad33;
-  background: #161d17;
-}
-.dark-room-return,
-.dark-room-download {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 44px;
-  width: fit-content;
-  max-width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ded6ad55;
-  border-radius: 4px;
-  color: #f5edcf;
-  font-size: 12px;
-  line-height: 1.4;
-  text-align: start;
-}
-.dark-room-return svg,
-.dark-room-download svg {
-  flex-shrink: 0;
-}
-.dark-room-return svg {
-  transform: rotate(180deg);
-}
-[dir='rtl'] .dark-room-return svg {
-  transform: none;
-}
-.dark-room-download {
-  justify-self: end;
-}
-.dark-room-return:hover,
-.dark-room-download:hover {
-  background: #ded6ad15;
-  border-color: #ded6ad;
-}
-.dark-room-exhibit-title {
-  text-align: center;
-}
-.dark-room-exhibit-title > span {
-  color: #b0b9a6;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.dark-room-exhibit-title h1 {
-  margin: 3px 0 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.2;
-}
-.dark-room-exhibit-content {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.dark-room-exhibit iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  border: 0;
-  background: #121511;
-}
-.dark-room-exhibit-loading {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  margin: 0;
-  padding: 24px;
-  color: #d9cc9f;
-  background: #121511;
-  font-size: 16px;
-}
 .district-tabs .dark-room-tab {
   background: #244c40;
   color: #fff8dc;
@@ -1796,38 +1683,35 @@ html[dir='rtl'] .portrait-decoration {
   margin-top: 14px;
   text-align: start;
 }
+/* The optical chamber is part of the world, with compact, non-modal controls. */
+.dark-room-controls {
+  position: absolute; inset-inline-start: 24px; bottom: 160px; z-index: 12;
+  width: min(310px, calc(100vw - 32px)); max-height: calc(100dvh - 310px);
+  overflow-y: auto; padding: 17px; border: 1px solid #d9ddce;
+  border-radius: 10px; background: #faf9f1f2; color: #28483f;
+  box-shadow: 0 8px 32px #1f3f3320; backdrop-filter: blur(12px);
+}
+.dark-room-controls header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.dark-room-controls header span {font-size: 10px; color: #77836e;}
+.dark-room-controls h2 {margin: 4px 0 14px; font: 21px Georgia, serif;}
+.dark-room-controls-close {width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center;}
+.dark-room-views {display: flex; gap: 4px; margin-bottom: 13px;}
+.dark-room-views button, .dark-room-clock button {border: 1px solid #d5d9cc; padding: 8px 10px; border-radius: 5px; font-size: 11px;}
+.dark-room-views [aria-pressed='true'], .dark-room-clock [aria-pressed='true'] {background: #2d5549; color: #fffdf1; border-color: #2d5549;}
+.dark-room-controls label {display: grid; gap: 7px; font-size: 11px;}
+.dark-room-controls select {width: 100%; min-height: 34px; border: 1px solid #d5d9cc; padding: 5px 8px; background: #fffef7; color: inherit; border-radius: 5px;}
+.dark-room-controls details {border-top: 1px solid #daddd1; margin-top: 13px; padding-top: 12px;}
+.dark-room-controls summary {font-size: 12px; cursor: pointer;}
+.dark-room-range {margin: 12px 0;}
+.dark-room-range > span {display: flex; justify-content: space-between; gap: 12px;}
+.dark-room-range output {font-variant-numeric: tabular-nums; color: #77836e;}
+.dark-room-controls input[type='range'] {width: 100%; accent-color: #47745f;}
+.dark-room-toggles {display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 0;}
+.dark-room-toggles label {display: flex; align-items: center; gap: 5px;}
+.dark-room-controls input[type='checkbox'] {accent-color: #47745f;}
+.dark-room-experiment {display: grid; gap: 13px; margin-top: 14px;}
+.dark-room-source-download {display: flex; align-items: center; gap: 6px; font-size: 10px; margin-top: 15px; color: #6c806d;}
 @media (max-width: 700px) {
-  .dark-room-exhibit-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px;
-    min-height: 62px;
-    padding: max(8px, env(safe-area-inset-top))
-      max(10px, env(safe-area-inset-right)) 8px
-      max(10px, env(safe-area-inset-left));
-  }
-  .dark-room-exhibit-title {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .dark-room-return,
-  .dark-room-download {
-    padding: 8px 10px;
-    font-size: 11px;
-  }
-  .dark-room-download span {
-    display: none;
-  }
-  .dark-room-download {
-    justify-content: center;
-    min-width: 44px;
-  }
-  .district-tabs .dark-room-tab {
-    min-height: 36px;
-    font-weight: 600;
-  }
+  .district-tabs .dark-room-tab {min-height: 36px; font-weight: 600;}
+  .dark-room-controls {inset-inline-start: 12px; bottom: 146px; width: 260px; max-height: 42dvh; padding: 12px;}
 }

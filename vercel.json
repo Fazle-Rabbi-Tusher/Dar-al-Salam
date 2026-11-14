@@ -5,6 +5,23 @@
   "buildCommand": "npx --yes pnpm@11.25.0 run build:vercel",
   "devCommand": "pnpm dev",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/exhibits/al-bayt-al-muzlim",
+      "destination": "/?exhibit=dark-room",
+      "permanent": false
+    },
+    {
+      "source": "/exhibits/al-bayt-al-muzlim/",
+      "destination": "/?exhibit=dark-room",
+      "permanent": false
+    },
+    {
+      "source": "/exhibits/al-bayt-al-muzlim/index.html",
+      "destination": "/?exhibit=dark-room",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/c/:id", "destination": "/index.html" },
     { "source": "/about", "destination": "/index.html" },
