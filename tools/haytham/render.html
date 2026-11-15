@@ -3,13 +3,13 @@
   <canvas id="c"></canvas>
   <script type="module">
     /*
-     * Ibn al-Haytham at his optics bench (tools/prepare-haytham.ts): the owner's
-     * voxel scholar (Scholar/model.js) posed through the optics workflow
+     * Ibn al-Haytham at his optics bench (tools/prepare-haytham.ts): his figure
+     * after the owner's character turnaround (figure.js) posed through the optics workflow
      * (poses.js), with the owner's instruments (Equipment/models.js), rendered
      * in the world's 2:1 isometric view. ?k= sets pixels per model unit.
      */
     import * as T from '../three/three.module.min.js';
-    import { createScholarModel } from '../scholar/model.js';
+    import { buildFigure } from './figure.js';
     import { buildEquipment } from '../equipment/models.js';
     import { POSE, KEYS, SC, BENCH, AP, BOWL, TOOLS, PARCH } from './poses.js';
 
@@ -118,31 +118,8 @@
       return g;
     }
 
-    /* ── The scholar: the pack's voxel sculpture, its articulated groups on their pivots ── */
-    const model = createScholarModel();
-    let minY = Infinity;
-    for (const p of model.parts)
-      for (let i = 1; i < p.vertices.length; i += 3)
-        minY = Math.min(minY, p.vertices[i]);
-    const scholar = new T.Group(),
-      joints = {};
-    const byGroup = {};
-    for (const p of model.parts) (byGroup[p.group] ??= []).push(p);
-    for (const [name, parts] of Object.entries(byGroup)) {
-      const pivot = model.pivots[name]
-        ? [
-            model.pivots[name][0],
-            model.pivots[name][1] + minY,
-            model.pivots[name][2],
-          ]
-        : [0, 0, 0];
-      const joint = new T.Group();
-      joint.position.set(pivot[0], pivot[1] - minY, pivot[2]);
-      joint.rotation.order = 'ZYX';
-      joint.add(meshes(parts, [pivot[0], pivot[1], pivot[2]]));
-      scholar.add(joint);
-      joints[name] = joint;
-    }
+    /* ── The scholar: modelled after the owner's turnaround (figure.js), jointed like the pack's voxel scholar ── */
+    const { root: scholar, joints } = buildFigure(T);
     const station = new T.Group();
     station.add(scholar);
 
