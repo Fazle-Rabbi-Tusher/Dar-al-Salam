@@ -412,27 +412,36 @@ export function buildFigure(T, image) {
     const Y0 = 0.2,
       Y1 = 4.04;
     const gap = table([
-      [0.2, 0.42],
-      [1.5, 0.36],
-      [2.9, 0.27],
+      [0.2, 0.5],
+      [1.5, 0.42],
+      [2.9, 0.3],
       [3.6, 0.2],
       [3.9, 0.12],
       [4.04, 0.12],
     ]);
     const B = 0.1; // the embroidered border's width
+    const drape = table([
+      [0.2, 0.36],
+      [1.2, 0.4],
+      [2.2, 0.38],
+      [3.0, 0.25],
+      [3.5, 0.1],
+      [3.56, 0.08],
+    ]);
     add(
       'body',
       surface(260, 250, (u, v) => {
         const y = Y0 + (Y1 - Y0) * v,
           yr = Math.min(y, 3.56);
-        const extra = 0.07 + 0.14 * smooth(2.8, 0.2, y);
+        // A great drape: over the arms at the chest, widest at the hips.
+        const extra = drape(y);
         const rx = shoulder(y, 3.56, Y1, robeRx(yr) + extra, 0.2),
-          rz = shoulder(y, 3.56, Y1, robeRz(yr) + extra, 0.19);
+          rz = shoulder(y, 3.56, Y1, robeRz(yr) + 0.75 * extra, 0.19);
         const th0 = Math.asin(clamp(gap(y) / rx, 0, 0.99));
         const th = th0 + u * (2 * Math.PI - 2 * th0);
         // Deep folds, deepest at the back and towards the hem.
         const amp =
-          (0.035 + 0.05 * Math.max(0, -Math.cos(th))) * smooth(3.5, 0.4, y);
+          (0.04 + 0.07 * Math.max(0, -Math.cos(th))) * smooth(3.5, 0.6, y);
         const wave =
           Math.sin(th * 7 + 0.7 * Math.sin(y * 1.4)) * 0.6 +
           Math.sin(th * 12 + 2.1 + 0.4 * y) * 0.4;

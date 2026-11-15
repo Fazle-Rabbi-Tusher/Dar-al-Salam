@@ -293,7 +293,7 @@
     - **Ibn al-Haytham:** behind his bench where the model's own bench stood, at (21.5, 101.96). The beam passes just behind him, and his gaze turns toward the screen in its new place.
     - **Content:** the location and its sources (`SOURCE-LINKS.json`) are the owner's. It is an imagined chamber, not a historical site, and carries no writing or symbols.
 77. Ibn al-Haytham's figure, remodelled in 3D after the owner's character turnaround (owner's request, 2026-11, with the turnaround image: "keep the face real and reflect like real in 3D"; it is `assets/scholar-turnaround.png` of `Ibn-al-Haytham-Character-Collection`). It replaces the coarse voxel scholar of items 71 and 72:
-    - **The figure** (`tools/haytham/figure.js`) is modelled in three.js with the turnaround's proportions (about 195 of its pixels to a model unit, soles at its y = 1000 in every view). It has a great wrapped turban over a dark cap, a long beard, a heavy open cloak over a rust robe with a cream collar and cuffs, leather shoes, and the green Book of Optics in his card picture.
+    - **The figure** (`tools/haytham/figure.js`) is modelled in three.js with the turnaround's proportions (about 195 of its pixels to a model unit, soles at its y = 1000 in every view). It has a great wrapped turban over a dark cap, a long beard, a heavy open cloak draped wide over the arms and a rust robe with a cream collar and cuffs, leather shoes, and the green Book of Optics in his card picture.
     - **Real face:** the head, beard and turban carry the turnaround's own painting, projected from its three views:
       - the front view (his head turned 24° to his right in it) for the face;
       - the profile for the sides and ears;
