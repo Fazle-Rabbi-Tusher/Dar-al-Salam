@@ -10,9 +10,9 @@ import sharp from 'sharp';
  *
  * His figure (tools/haytham/figure.js), modelled in three.js after the
  * owner's character turnaround (Ibn-al-Haytham-Character-Collection,
- * assets/scholar-turnaround.png: crimson wrapped turban, long dark beard,
- * heavy woven brown cloak with gold edges over a rust robe), is posed frame
- * by frame through the workflow (tools/haytham/poses.js): the aperture, the
+ * assets/scholar-turnaround.png), with the turnaround's own painted face,
+ * beard and turban projected onto it and its cloth tiled over his clothes,
+ * is posed frame by frame through the workflow (tools/haytham/poses.js): the aperture, the
  * water bowl, the dial, the compass and the inverted image on the dark
  * room's screen (tools/prepare-dark-room.ts), where he stands. The shoulders
  * turn to bring each hand to its instrument. The instruments come from the
@@ -27,17 +27,17 @@ import sharp from 'sharp';
  * (standing with the Book of Optics), his sprite, and a gallery of the four
  * gestures.
  *
- *   node --import tsx tools/prepare-haytham.ts <Ibn-al-Haytham-Complete-Collection> <three.js vendor folder>
+ *   node --import tsx tools/prepare-haytham.ts <Ibn-al-Haytham-Complete-Collection> <three.js vendor folder> <Ibn-al-Haytham-Character-Collection>
  *
- * The figure keeps the joints of the collections' voxel scholar (model.js),
- * so the poses drive it unchanged.
+ * The figure's head, arms and book turn about their own pivots; its rest
+ * hands, chin and eyes (REST in figure.js) are what the poses are solved from.
  *
  * three.js: the vendor folder of the owner's mosque model pack (0.180).
  */
-const [collection, three] = process.argv.slice(2);
-if (!collection || !three)
+const [collection, three, character] = process.argv.slice(2);
+if (!collection || !three || !character)
   throw Error(
-    'Usage: prepare-haytham.ts <collection folder> <three vendor folder>',
+    'Usage: prepare-haytham.ts <collection folder> <three vendor folder> <character collection folder>',
   );
 const ID = 'ibn-al-haytham',
   D = 3, // sprite pixels per world pixel
@@ -48,6 +48,7 @@ const roots: Record<string, string> = {
   equipment: path.resolve(collection, 'Interactive-Viewers/Equipment'),
   three: path.resolve(three),
   render: path.resolve('tools/haytham'),
+  turnaround: path.resolve(character, 'assets'),
 };
 const server = http.createServer((req, res) => {
   const [, root, ...rest] = decodeURI(req.url!.split('?')[0]).split('/');
@@ -58,7 +59,11 @@ const server = http.createServer((req, res) => {
     return;
   }
   res.writeHead(200, {
-    'content-type': file.endsWith('.html') ? 'text/html' : 'text/javascript',
+    'content-type': file.endsWith('.html')
+      ? 'text/html'
+      : file.endsWith('.png')
+        ? 'image/png'
+        : 'text/javascript',
   });
   fs.createReadStream(file).pipe(res);
 });

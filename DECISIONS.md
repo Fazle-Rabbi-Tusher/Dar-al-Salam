@@ -292,13 +292,14 @@
       - the floors, paving and basin baked into the ground.
     - **Ibn al-Haytham:** behind his bench where the model's own bench stood, at (21.5, 101.96). The beam passes just behind him, and his gaze turns toward the screen in its new place.
     - **Content:** the location and its sources (`SOURCE-LINKS.json`) are the owner's. It is an imagined chamber, not a historical site, and carries no writing or symbols.
-77. Ibn al-Haytham's figure, remodelled in 3D after the owner's character turnaround (owner's request, 2026-11, with the turnaround image; it is `assets/scholar-turnaround.png` of `Ibn-al-Haytham-Character-Collection`). It replaces the coarse voxel scholar of items 71 and 72:
-    - **The figure** (`tools/haytham/figure.js`) is modelled in three.js, with smooth vertex-coloured surfaces. Its parts:
-      - a big wrapped crimson turban, its bands crossing at the front, over a dark cap;
-      - a realistic face (brows, eyes, nose, moustache, lips) and ears;
-      - a long dark beard with grey strands;
-      - a heavy woven brown cloak with embroidered gold edges and wide sleeves, over a rust robe with a gold placket, hem and sash;
-      - a cream collar and cuffs, leather shoes, and the green Book of Optics in his card picture.
-    - **Texture:** weave, knit and hair come from a positional hash, so the render is deterministic.
-    - **Joints:** the head, the arms and the book keep the voxel scholar's pivots, so the optics workflow (`poses.js`) drives the new figure unchanged.
-    - **Renders:** the workstation strip, card picture, sprite and gallery are re-rendered by `tools/prepare-haytham.ts`, which no longer takes a figure folder.
+77. Ibn al-Haytham's figure, remodelled in 3D after the owner's character turnaround (owner's request, 2026-11, with the turnaround image: "keep the face real and reflect like real in 3D"; it is `assets/scholar-turnaround.png` of `Ibn-al-Haytham-Character-Collection`). It replaces the coarse voxel scholar of items 71 and 72:
+    - **The figure** (`tools/haytham/figure.js`) is modelled in three.js with the turnaround's proportions (about 195 of its pixels to a model unit, soles at its y = 1000 in every view). It has a great wrapped turban over a dark cap, a long beard, a heavy open cloak over a rust robe with a cream collar and cuffs, leather shoes, and the green Book of Optics in his card picture.
+    - **Real face:** the head, beard and turban carry the turnaround's own painting, projected from its three views:
+      - the front view (his head turned 24° to his right in it) for the face;
+      - the profile for the sides and ears;
+      - the back view for the back;
+      - for the turban's crown, its painted wraps as if seen from the front and above.
+    - **Cloth:** tiled from patches of the painting: the cloak's weave, the embroidered gold edge, the rust robe, cream cuffs and collar, leather and the skin of the hands. Each patch is mirrored into a seamless tile and its painted light evened out, so folds do not repeat as a pattern.
+    - **Real light:** every material is physically based. The painting's light and dark serve as relief (bump) maps, the cloth has sheen, and the skin has soft highlights. A room environment adds reflections to the sun and fill lights (`render.html`).
+    - **Joints:** the head, arms and book turn about their own pivots. The rest hands, chin and eyes (`REST`) are what the optics workflow (`poses.js`) is solved from. In his card picture his head turns to the viewer.
+    - **Renders:** the workstation strip, card picture, sprite and gallery are re-rendered by `tools/prepare-haytham.ts <complete collection> <three.js vendor> <character collection>`. The render is deterministic: the painting is its only input.
