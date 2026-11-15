@@ -19,6 +19,7 @@ import { useStore, useT, type Language } from './store';
 import { Icon } from './Icon';
 import { Lab } from './Lab';
 import { DarkRoomControls } from './DarkRoomControls';
+import { PODCAST } from '../../../packages/shared/podcast';
 export function App() {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -612,7 +613,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
           <Icon name="flask" size={15} />
           {t('labs')}
         </button>
-        <button onClick={() => focusArea(22, 106, 2)}>
+        <button onClick={() => focusArea(...PODCAST.center, 2)}>
           <Icon name="people" size={15} />
           {t('podcast')}
         </button>

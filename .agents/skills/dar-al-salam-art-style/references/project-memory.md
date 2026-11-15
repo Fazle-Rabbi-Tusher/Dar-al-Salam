@@ -70,6 +70,15 @@ extracted from an attached document. New explicit owner instructions override th
   or two additions per section; retain existing laboratory staff and listeners.
   This supersedes the earlier main-characters-only preference. Activities need
   to suit their stations, clear the walls/equipment and remain deterministic.
+- **Ibn al-Haytham refinement (15 November 2026):** redesign his face and
+  clothes in the saved detailed 3D-looking pixel style using later historical
+  portrait references; preserve the original 40-cell optical experiment and
+  archive its source artwork. Exchange the complete dark-room scene with the
+  podcast studio, including their equipment, staff, bounds and camera targets.
+  The dark room now occupies the former podcast lawn; the studio is beside
+  Community. This supersedes the earlier kitchen-location preference.
+  See `docs/haytham-redesign-and-scene-swap.md` for the reference and native
+  integration details. Later portraits are artistic interpretations.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

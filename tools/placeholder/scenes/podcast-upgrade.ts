@@ -3,7 +3,11 @@ import {
   type Character,
   type Room,
 } from '../../../packages/shared/schema';
-import { PODCAST, podcastScript } from '../../../packages/shared/podcast';
+import {
+  PODCAST,
+  podcastScript,
+  podcastTile,
+} from '../../../packages/shared/podcast';
 
 /** Draft public likeness; photo verification is recorded as pending in docs. */
 export const MEHDI_CARD = characterSchema.parse({
@@ -61,6 +65,19 @@ export function upgradePodcastRoom(room: Room) {
     collision = room.layers.find((l) => l.name === 'collision');
   if (layer?.type !== 'objectgroup' || collision?.type !== 'tilelayer')
     throw Error('Missing room layers');
+  const clear = (o: (typeof layer.objects)[number]) => {
+    for (
+      let y = Math.max(0, Math.floor(o.y));
+      y < Math.min(room.height, o.y + o.footprint[1]);
+      y++
+    )
+      for (
+        let x = Math.max(0, Math.floor(o.x));
+        x < Math.min(room.width, o.x + o.footprint[0]);
+        x++
+      )
+        collision.data[y * room.width + x] = 0;
+  };
   for (const o of layer.objects)
     if (/^m-goal-(west|east)$/.test(o.type)) {
       for (let y = Math.floor(o.y); y < o.y + o.footprint[1]; y++)
@@ -82,21 +99,26 @@ export function upgradePodcastRoom(room: Room) {
     },
     {
       type: 'podcast-wall',
-      x: 14,
-      y: 100,
+      x: PODCAST.tile[0],
+      y: PODCAST.tile[1],
       footprint: [16, 0.25],
       walkable: false,
     },
     {
       type: 'podcast-wall-side',
-      x: 14,
-      y: 100.25,
+      x: podcastTile(0, 0.25)[0],
+      y: podcastTile(0, 0.25)[1],
       footprint: [0.25, 11.75],
       walkable: false,
     },
-  ] as const)
-    if (!layer.objects.some((p) => p.type === o.type))
+  ] as const) {
+    const existing = layer.objects.find((p) => p.type === o.type);
+    if (existing) {
+      clear(existing);
+      Object.assign(existing, o, { footprint: [...o.footprint] });
+    } else
       layer.objects.push({ ...o, id: id++, footprint: [...o.footprint], z: 0 });
+  }
   for (const o of layer.objects)
     if (!o.walkable)
       for (

@@ -22,10 +22,7 @@ for (const file of await files('content/ambient', '.json')) {
     await writeJson(file, updated);
 }
 const scene = await readJson('content/scenes/dark-room.json');
-scene.area = [
-  [41, 24],
-  [53, 38],
-];
+scene.area = DARK_ROOM.area;
 await writeJson('content/scenes/dark-room.json', scene);
 for (const side of ['SE', 'NE']) {
   const file = `art/sprites/anim/ibn-al-haytham__write_${side}.json`;

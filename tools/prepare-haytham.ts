@@ -3,6 +3,8 @@ import http from 'node:http';
 import path from 'node:path';
 import { chromium } from '@playwright/test';
 import sharp from 'sharp';
+import { DARK_ROOM, darkRoomTile } from '../packages/shared/dark-room';
+import { TILE_SIDE } from '../packages/shared/planet';
 
 /*
  * Ibn al-Haytham at his optics bench, from the owner's Ibn al-Haytham
@@ -134,7 +136,12 @@ for (const old of fs.readdirSync('art/sprites/anim'))
 const meta =
   // Match the complete neighborhood's world scale; keep the source render
   // and every animation frame at their original pixel resolution.
-  JSON.stringify({ frame: [W, H], foot, density: 17, sequence }) + '\n';
+  JSON.stringify({
+    frame: [W, H],
+    foot,
+    density: (17 * 0.23) / DARK_ROOM.scale,
+    sequence,
+  }) + '\n';
 // Back view (NE): the same frames. He works facing SE; the strip is only
 // needed for the rare planet turn that shows him from behind.
 for (const view of ['SE', 'NE']) {
@@ -189,7 +196,14 @@ card.script = [
   // Room point (2.33, 0.81) of tools/prepare-dark-room.ts: behind his bench
   // where the room's own bench stood, the beam from the pinhole to the
   // screen passing just behind him.
-  { from: 0, to: 120, action: 'write', at: [21.5, 101.96], facing: 'SE' },
+  {
+    from: 0,
+    to: 120,
+    action: 'write',
+    at: darkRoomTile(2.45, 1.25),
+    facing: 'SE',
+    z: 0.23 * DARK_ROOM.scale * TILE_SIDE,
+  },
 ];
 // The character collection's colours: brown robe, burgundy turban, dark beard.
 card.look.colours.garmentPrimary = 'cocoa';

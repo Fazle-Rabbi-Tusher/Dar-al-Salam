@@ -4,21 +4,29 @@ import type { InfrastructureModel, Vertex3 } from './infrastructure';
 import { MeshBuilder } from './laboratory';
 import { TILE_SIDE } from './planet';
 
+const PODCAST_TILE: Point = [39, 24.96];
+/** All furniture, performers, staff and cameras travel with the studio. */
+export const podcastTile = (x: number, y: number): Point => [
+  +(PODCAST_TILE[0] + x).toFixed(4),
+  +(PODCAST_TILE[1] + y).toFixed(4),
+];
 export const PODCAST = {
-  tile: [14, 100] as Point,
+  tile: PODCAST_TILE,
+  center: podcastTile(8, 6),
   footprint: [16, 12] as Point,
-  omar: [19.15, 106.4] as Point,
-  mehdi: [22.4, 103.15] as Point,
-  seats: [
-    [18.5, 106.4],
-    [22.4, 102.5],
-  ] as Point[],
-  table: [21.6, 105.6] as Point,
+  omar: podcastTile(5.15, 6.4),
+  mehdi: podcastTile(8.4, 3.15),
+  seats: [podcastTile(4.5, 6.4), podcastTile(8.4, 2.5)] as Point[],
+  table: podcastTile(7.6, 5.6),
+  cameras: [
+    podcastTile(10.5, 10.2),
+    podcastTile(14.7, 5.7),
+    podcastTile(3, 10.3),
+  ],
+  monitor: podcastTile(14.3, 9),
+  operator: podcastTile(14.3, 10.2),
   floor: 1.8,
-  area: [
-    [13.5, 99.5],
-    [30.5, 112.5],
-  ] as [Point, Point],
+  area: [podcastTile(-0.5, -0.5), podcastTile(16.5, 12.5)] as [Point, Point],
 };
 const TAU = Math.PI * 2;
 const C = {
@@ -310,19 +318,16 @@ export function podcastModel(
     m.ring(tx + dx, 29.3, tz + 8, 3, 5.3, C.white);
     m.ring(tx + dx, 34.6, tz + 8, 2.2, 0.2, '#61412c');
   }
-  const cameras = [at([24.5, 110.2]), at([28.7, 105.7]), at([17, 110.3])];
+  const cameras = PODCAST.cameras.map(at);
   cameras.forEach(([x, z], i) =>
     camera(m, x, z, i === 1 ? at(PODCAST.seats[0]) : at(PODCAST.seats[1])),
   );
-  for (const p of [
-    [16, 102],
-    [27.2, 101.8],
-  ] as Point[]) {
+  for (const p of [podcastTile(2, 2), podcastTile(13.2, 1.8)] as Point[]) {
     const [x, z] = at(p);
     softbox(m, x, z, [tx, tz]);
   }
   // Monitor cart, acoustic side tables and a fixed cable route to the recorder.
-  const [mx, mz] = at([28.3, 109]);
+  const [mx, mz] = at(PODCAST.monitor);
   for (const z of [-8, 8])
     m.beam([mx - 11, 3, mz + z], [mx + 11, 3, mz + z], 2, C.black);
   for (const x of [-10, 10]) m.box(mx + x, 16, mz, 2, 28, 15, C.dark);
@@ -338,10 +343,7 @@ export function podcastModel(
   ];
   for (let i = 1; i < cable.length; i++)
     m.beam(cable[i - 1], cable[i], 0.8, C.black);
-  for (const p of [
-    [15.8, 110.6],
-    [28.4, 101.2],
-  ] as Point[]) {
+  for (const p of [podcastTile(1.8, 10.6), podcastTile(14.4, 1.2)] as Point[]) {
     const [x, z] = at(p);
     m.ring(x, 2, z, 8, 12, C.bronze, 10);
     for (let i = 0; i < 10; i++) {
@@ -367,14 +369,8 @@ export function podcastActivityModel(
     at = (p: Point) => coords(PODCAST.tile, fp, p);
   frame = state.t;
   const [tx, tz] = at(PODCAST.table),
-    [mx, mz] = at([28.3, 109]);
-  for (const [i, p] of (
-    [
-      [24.5, 110.2],
-      [28.7, 105.7],
-      [17, 110.3],
-    ] as Point[]
-  ).entries()) {
+    [mx, mz] = at(PODCAST.monitor);
+  for (const [i, p] of PODCAST.cameras.entries()) {
     const [x, z] = at(p);
     camera(
       m,

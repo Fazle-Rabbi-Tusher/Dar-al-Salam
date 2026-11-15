@@ -32,8 +32,8 @@
       "to": 84,
       "action": "podcast-talk",
       "at": [
-        19.15,
-        106.4
+        44.15,
+        31.36
       ],
       "facing": "SE",
       "z": 1.8
@@ -43,8 +43,8 @@
       "to": 108,
       "action": "podcast-listen",
       "at": [
-        19.15,
-        106.4
+        44.15,
+        31.36
       ],
       "facing": "SE",
       "z": 1.8
@@ -54,8 +54,8 @@
       "to": 192,
       "action": "podcast-listen",
       "at": [
-        19.15,
-        106.4
+        44.15,
+        31.36
       ],
       "facing": "SE",
       "z": 1.8
@@ -65,8 +65,8 @@
       "to": 216,
       "action": "podcast-listen",
       "at": [
-        19.15,
-        106.4
+        44.15,
+        31.36
       ],
       "facing": "SE",
       "z": 1.8
@@ -76,8 +76,8 @@
       "to": 240,
       "action": "podcast-talk",
       "at": [
-        19.15,
-        106.4
+        44.15,
+        31.36
       ],
       "facing": "SE",
       "z": 1.8

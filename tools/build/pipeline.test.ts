@@ -621,14 +621,14 @@ describe('Bangladesh block', () => {
       objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
     );
     // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
-    // (2026-11): the chamber has since moved beside Community, leaving the
-    // west lawn now hosts the podcast set with the corner trees retained.
+    // (2026-11): the native chamber occupies the former podcast lawn, with
+    // the corner trees retained and the studio now beside Community.
     for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
       expect(types.has(t), t).toBe(false);
     if (objects?.type === 'objectgroup')
       for (const o of objects.objects)
         if (o.x > 2 && o.x < 39 && o.y > 95 && o.y < 120)
-          expect(o.type).toMatch(/^(m-tree|podcast-(studio|wall(?:-side)?))$/);
+          expect(o.type).toBe('m-tree');
     for (const id of ['ibn-battuta', 'yasser-al-dosari'])
       expect(content.characters.some((c) => c.id === id)).toBe(false);
     for (const t of [
@@ -798,7 +798,7 @@ describe('a sparse supporting cast, with supplied animation strips', () => {
 });
 
 describe('the dark room', () => {
-  it('preserves the original reference artwork while moving the native chamber beside Community', async () => {
+  it('preserves the original reference artwork while moving the native chamber to the former podcast plot', async () => {
     const placed: { type: string; at: [number, number] }[] = JSON.parse(
       await fs.readFile('art/supplied/dark-room.json', 'utf8'),
     );
@@ -810,7 +810,8 @@ describe('the dark room', () => {
     const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
     expect(kinds).toEqual(new Set(['site', 'floor']));
     for (const p of placed) expect(index[p.type]).toBeTruthy();
-    const { darkRoomTile } = await import('../../packages/shared/dark-room');
+    const { darkRoomTile, DARK_ROOM } =
+      await import('../../packages/shared/dark-room');
     const him = content.characters.find((c) => c.id === 'ibn-al-haytham')!;
     expect(him.panelApproved).not.toBe(true);
     for (const step of him.script) {
@@ -819,10 +820,7 @@ describe('the dark room', () => {
     const scene = content.scenes.find((s) => s.id === 'dark-room')!;
     expect(scene.lead).toBe('ibn-al-haytham');
     expect(scene.props).toEqual(['sup-dr-*']);
-    expect(scene.area).toEqual([
-      [41, 24],
-      [53, 38],
-    ]);
+    expect(scene.area).toEqual(DARK_ROOM.area);
   });
 });
 

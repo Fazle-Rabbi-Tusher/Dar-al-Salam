@@ -53,7 +53,8 @@ describe('sports district and enlarged optical chamber', () => {
       ),
     ).toBe(false);
     expect(DARK_ROOM.scale).toBe(0.85);
-    expect(darkRoomTile(2.45, 1.25)).toEqual([48.0625, 30.9175]);
+    expect(darkRoomTile(2.45, 1.25)[0]).toBeCloseTo(23.0625);
+    expect(darkRoomTile(2.45, 1.25)[1]).toBeCloseTo(105.9575);
     const meta = read('art/sprites/anim/ibn-al-haytham__write_SE.json');
     expect(meta.density).toBeCloseTo((17 * 0.23) / 0.85);
     expect(0.23 * DARK_ROOM.scale * TILE_SIDE).toBeGreaterThan(4);

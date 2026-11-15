@@ -6,6 +6,7 @@ import {
   type Step,
 } from './schema';
 import { darkRoomTile, DARK_ROOM } from './dark-room';
+import { PODCAST } from './podcast';
 import { TILE_SIDE } from './planet';
 import type { Point } from './iso';
 
@@ -101,10 +102,10 @@ export const SUPPORTING_CAST: SupportingRole[] = [
     model: 'technician',
     section: 'podcast',
     role: 'A production technician monitoring the podcast recording',
-    at: [28.3, 110.2],
+    at: PODCAST.operator,
     facing: 'NE',
     action: 'write',
-    z: 1.8,
+    z: PODCAST.floor,
   },
   {
     id: 'support-football-official',
