@@ -21,7 +21,7 @@ void main(){
 }`;
 const fragment = `
 in vec2 vUV;out vec4 finalColor;uniform sampler2D uTexture;
-uniform vec4 uBounds;uniform vec2 uTexel;uniform float uHighlight;
+uniform vec4 uBounds;uniform vec2 uTexel;uniform float uHighlight;uniform float uPass;
 float opacity(vec2 uv){
  if(any(lessThan(uv,uBounds.xy))||any(greaterThan(uv,uBounds.zw)))return 0.;
  return texture(uTexture,uv).a;
@@ -35,6 +35,10 @@ void main(){
   c+=vec4(vec3(.847,.678,.341)*edge,edge)*(1.-c.a);
  }
  if(c.a<.08)discard;
+ // Opaque pixels may establish depth before the architecture. Soft edges
+ // blend only after all opaque geometry, without blocking its background.
+ if(uPass==0.&&c.a<.999)discard;
+ if(uPass==1.&&c.a>=.999)discard;
  finalColor=c;
 }`;
 
@@ -44,6 +48,7 @@ void main(){
  */
 export class DepthSprite {
   readonly mesh: Mesh<MeshGeometry, Shader>;
+  readonly edgeMesh?: Mesh<MeshGeometry, Shader>;
   private texture: Texture | null = null;
   private uniforms = new UniformGroup({
     uDepth: { value: 0, type: 'f32' },
@@ -71,29 +76,57 @@ export class DepthSprite {
           vertex,
           fragment,
           name: 'dar-depth-sprite',
+          preferredFragmentPrecision: 'highp',
         }),
         resources: {
           spriteDepth: this.uniforms,
           uTexture: Texture.WHITE.source,
+          alphaPass: new UniformGroup({
+            uPass: { value: shadow ? -1 : 0, type: 'f32' },
+          }),
         },
       }),
       state,
     });
     this.mesh.eventMode = 'none';
+    if (!shadow) {
+      const edgeState = new State();
+      edgeState.depthTest = true;
+      edgeState.depthMask = false;
+      edgeState.cullMode = 'none';
+      this.edgeMesh = new Mesh({
+        geometry: this.mesh.geometry,
+        shader: new Shader({
+          glProgram: this.mesh.shader!.glProgram!,
+          resources: {
+            spriteDepth: this.uniforms,
+            uTexture: Texture.WHITE.source,
+            alphaPass: new UniformGroup({ uPass: { value: 1, type: 'f32' } }),
+          },
+        }),
+        state: edgeState,
+      });
+      this.edgeMesh.eventMode = 'none';
+    }
     sprite.renderable = false;
   }
   sync(p: Projected | null, lift = 0, density = 1, upright = false, bias = 0) {
     const s = this.sprite,
       m = this.mesh;
     m.visible = s.visible && Boolean(p);
+    if (this.edgeMesh) this.edgeMesh.visible = m.visible;
     if (!m.visible || !p) return;
-    if (s.parent && m.parent !== s.parent) s.parent.addChild(m);
-    m.position.copyFrom(s.position);
-    m.pivot.copyFrom(s.pivot);
-    m.scale.copyFrom(s.scale);
-    m.rotation = s.rotation;
-    m.alpha = s.alpha;
-    m.zIndex = s.zIndex;
+    for (const pass of [m, this.edgeMesh]) {
+      if (!pass) continue;
+      if (s.parent && pass.parent !== s.parent) s.parent.addChild(pass);
+      pass.position.copyFrom(s.position);
+      pass.pivot.copyFrom(s.pivot);
+      pass.scale.copyFrom(s.scale);
+      pass.rotation = s.rotation;
+      pass.alpha = s.alpha;
+      // Glass follows at 3 (native chamber glass follows just above 2).
+      pass.zIndex = pass === m ? s.zIndex : 2 + s.zIndex * 1e-5;
+    }
     const u = this.uniforms.uniforms;
     // Billboards keep their authored screen height. Infer the corresponding
     // radial height from the projected planet normal, including horizon lean.
@@ -129,6 +162,7 @@ export class DepthSprite {
         uv.y3,
       ]);
       m.shader!.resources.uTexture = t.source;
+      if (this.edgeMesh) this.edgeMesh.shader!.resources.uTexture = t.source;
       u.uBounds.set([uv.x0, uv.y0, uv.x2, uv.y2]);
       u.uTexel.set([density / t.source.width, density / t.source.height]);
       this.texture = t;
@@ -143,8 +177,11 @@ export class DepthSprite {
   }
   destroy() {
     const { geometry, shader } = this.mesh;
+    const edgeShader = this.edgeMesh?.shader;
+    this.edgeMesh?.destroy();
     this.mesh.destroy();
     geometry.destroy();
     shader?.destroy();
+    edgeShader?.destroy();
   }
 }

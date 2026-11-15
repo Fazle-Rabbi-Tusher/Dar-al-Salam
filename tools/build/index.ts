@@ -481,7 +481,7 @@ async function build() {
       c.script.some((s) =>
         Array.isArray(s.z) ? s.z.some((z) => z !== 0) : Boolean(s.z),
       );
-    const sprite = await characterSprite(c.id),
+    const sprite = await characterSprite(c.strip ?? c.id),
       d8 = await dir8Views(
         c.look.base,
         c.look.colours.garmentPrimary,
@@ -689,7 +689,7 @@ async function build() {
     if (!illustration && sprite) {
       // (Uses the supplied front view.)
       // Head-and-shoulders card portrait cropped from the supplied sprite.
-      const src = `art/sprites/${c.id}.png`,
+      const src = `art/sprites/${c.strip ?? c.id}.png`,
         meta = await sharp(src).trim().toBuffer({ resolveWithObject: true });
       const w = meta.info.width,
         h = Math.round(Math.min(meta.info.height, w * 1.1));

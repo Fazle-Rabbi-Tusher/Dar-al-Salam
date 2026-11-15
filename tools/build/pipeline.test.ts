@@ -22,6 +22,7 @@ import {
   paletteErrors,
 } from '../../packages/shared/pixels';
 import { characterSchema, type Character } from '../../packages/shared/schema';
+import { SUPPORTING_CAST } from '../../packages/shared/supporting-cast';
 let content: Awaited<ReturnType<typeof loadContent>>,
   parts: Record<string, Part>;
 beforeAll(async () => {
@@ -733,8 +734,8 @@ describe('scene bible: cricket ground', () => {
   });
 });
 
-describe('main characters only, with supplied animation strips', () => {
-  it('keeps no background people: only named characters, balls, vehicles and animals', () => {
+describe('a sparse supporting cast, with supplied animation strips', () => {
+  it('keeps only the explicitly authored supporting people and existing scene roles', () => {
     // The owner asked for exceptions (2026-11): Massawa's caravan guide and
     // the eight seated listeners at Mufti Menk's talk.
     const workers = content.characters.filter((c) =>
@@ -743,7 +744,11 @@ describe('main characters only, with supplied animation strips', () => {
       ),
     );
     expect(workers).toHaveLength(7);
-    const allowed = new Set(['amb-msw-guide', ...workers.map((c) => c.id)]);
+    const allowed = new Set([
+      'amb-msw-guide',
+      ...workers.map((c) => c.id),
+      ...SUPPORTING_CAST.map((c) => c.id),
+    ]);
     for (const c of content.characters)
       if (!c.name && !allowed.has(c.id) && !/^menk-speech-listener-/.test(c.id))
         expect(c.kind, c.id).not.toBe('person');

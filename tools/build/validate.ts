@@ -75,7 +75,8 @@ export function validateCharacter(
         'dribble',
         'podcast-talk',
         'podcast-listen',
-      ].includes(step.action)
+      ].includes(step.action) ||
+      c.id.startsWith('support-')
     ) {
       for (const view of ['SE', 'NE'])
         if (

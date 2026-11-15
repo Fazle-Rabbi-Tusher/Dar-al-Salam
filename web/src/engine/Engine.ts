@@ -41,6 +41,7 @@ import {
 } from '../../../packages/shared/sports';
 import { motionFor } from '../../../packages/shared/motion';
 import { podcastPose } from '../../../packages/shared/podcast';
+import { supportingPose } from '../../../packages/shared/supporting-cast';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
   FACING_DIRECTION,
@@ -1134,6 +1135,7 @@ export class Engine {
         tempo = this.metadata.get(frames[0])?.tempo,
         steps =
           view >= 0 ? (c.dir8![state.action] ?? c.dir8!['*'])[view] : null,
+        supportPose = supportingPose(c.id, state.action, this.frame),
         // Generated walking steps advance every three ticks (a stride a second).
         name = steps
           ? steps[Math.floor(this.frame / 3) % steps.length]
@@ -1145,11 +1147,13 @@ export class Engine {
               ]
             : state.action.startsWith('podcast-')
               ? frames[podcastPose(c.id, this.frame) % frames.length]
-              : tempo
-                ? frames[
-                    Math.floor((this.frame % (frames.length * tempo)) / tempo)
-                  ]
-                : frames[state.index % frames.length];
+              : supportPose !== undefined
+                ? frames[supportPose % frames.length]
+                : tempo
+                  ? frames[
+                      Math.floor((this.frame % (frames.length * tempo)) / tempo)
+                    ]
+                  : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;

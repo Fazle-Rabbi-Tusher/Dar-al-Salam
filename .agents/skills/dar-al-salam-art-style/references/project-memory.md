@@ -60,6 +60,16 @@ extracted from an attached document. New explicit owner instructions override th
   stationary chairs/soles, alternating talk/listen gestures and pause behavior.
   Mehdi's provisional likeness still needs comparison with an accessible photo;
   see `docs/podcast-and-stadiums.md` for the located but blocked source.
+- **Clean character edges (15 November 2026):** the owner wants the smooth
+  appearance of Mufti Menk, without a white outer cutout layer on other people.
+  Preserve the original clothes, skin, faces and white fabrics. Soft alpha edges
+  must blend over the actual 3D background without prematurely writing depth.
+- **Sparse supporting cast (15 November 2026):** add a few logical anonymous
+  people across the sections, such as an umpire, assistant referee, coaches,
+  nurse, readers, gardeners, shopkeepers and production staff. Keep roughly one
+  or two additions per section; retain existing laboratory staff and listeners.
+  This supersedes the earlier main-characters-only preference. Activities need
+  to suit their stations, clear the walls/equipment and remain deterministic.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.
