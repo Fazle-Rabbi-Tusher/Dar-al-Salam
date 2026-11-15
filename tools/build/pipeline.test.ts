@@ -545,7 +545,7 @@ describe('scholars and scene roles', () => {
 });
 
 describe('sharp heads', () => {
-  it('gives every named person a 2× head that fits the body exactly', async () => {
+  it('uses a fitting sharp head or a complete authored body for every named performance', async () => {
     const heads = await loadHeads(),
       pal = {
         keys: content.keys,
@@ -559,7 +559,19 @@ describe('sharp heads', () => {
     );
     expect(named.length).toBeGreaterThanOrEqual(30);
     for (const c of named) {
-      expect(heads[c.id], c.id).toBeDefined();
+      if (!heads[c.id]) {
+        // A new full-body character includes its own face in every authored
+        // view, rather than carrying an unused legacy paper-doll head sheet.
+        await expect(
+          fs.access(`art/sprites/${c.id}.png`),
+        ).resolves.toBeUndefined();
+        for (const action of new Set(c.script.map((s) => s.action)))
+          for (const source of ['SE', 'NE'])
+            await expect(
+              fs.access(`art/sprites/anim/${c.id}__${action}_${source}.png`),
+            ).resolves.toBeUndefined();
+        continue;
+      }
       for (const action of new Set(c.script.map((s) => s.action)))
         for (const facing of ['SE', 'NW'] as const) {
           // Newly authored full-body performances already contain the face;
@@ -609,13 +621,13 @@ describe('Bangladesh block', () => {
     );
     // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
     // (2026-11): the chamber has since moved beside Community, leaving the
-    // west lawn and corner trees clear.
+    // west lawn now hosts the podcast set with the corner trees retained.
     for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
       expect(types.has(t), t).toBe(false);
     if (objects?.type === 'objectgroup')
       for (const o of objects.objects)
         if (o.x > 2 && o.x < 39 && o.y > 95 && o.y < 120)
-          expect(o.type).toMatch(/^(m-tree|sup-dr-)/);
+          expect(o.type).toMatch(/^(m-tree|podcast-(studio|wall(?:-side)?))$/);
     for (const id of ['ibn-battuta', 'yasser-al-dosari'])
       expect(content.characters.some((c) => c.id === id)).toBe(false);
     for (const t of [

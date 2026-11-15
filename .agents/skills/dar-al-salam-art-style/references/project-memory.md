@@ -51,6 +51,15 @@ extracted from an attached document. New explicit owner instructions override th
   ropes, padding, an octagonal chain-link cage and access details. Replace the
   kitchen beside Community with a larger native dark chamber; scale its scholar
   and equipment together to match neighboring laboratory furniture.
+- **Stadium realism and podcast refinement (15 November 2026):** grass should
+  read as living turf with fine texture, restrained mowing grain and short
+  dimensional blades. Football needs clearly visible full-width goalposts,
+  crossbars and deep open nets. Omar Suleiman's new podcast performance sits
+  opposite journalist Mehdi Hasan in a complete 3D studio with microphones,
+  cameras, acoustic treatment and production equipment. Keep adult proportions,
+  stationary chairs/soles, alternating talk/listen gestures and pause behavior.
+  Mehdi's provisional likeness still needs comparison with an accessible photo;
+  see `docs/podcast-and-stadiums.md` for the located but blocked source.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

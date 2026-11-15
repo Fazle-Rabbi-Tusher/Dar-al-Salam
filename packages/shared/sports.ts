@@ -4,6 +4,7 @@ import type { InfrastructureModel, Vertex3 } from './infrastructure';
 import { MeshBuilder } from './laboratory';
 import { TILE_SIDE } from './planet';
 import { sampleStep } from './script';
+import { stadiumTurf } from './turf';
 
 /** Tile coordinates are shared by the room, players, wickets, hoops and balls. */
 export const SPORTS = {
@@ -311,6 +312,8 @@ export function basketballBall(frame: number, playerTile: Point): BallState {
   return ball(hand, h, 'dribble');
 }
 export function sportsKind(type: string) {
+  if (type === 'm-pitch') return 'football-pitch';
+  if (/^m-goal-(west|east)$/.test(type)) return 'football-goal';
   return /^sports-(cricket-stadium|basketball-court|boxing-ring|mma-octagon)$/.test(
     type,
   )
@@ -508,23 +511,7 @@ export function sportsModel(
     d = fp[1] * TILE_SIDE;
   if (kind === 'cricket-stadium') {
     m.box(0, -1.6, 0, w, 3.2, d, C.cream);
-    ellipse(m, 0, 1.2, 0, w * 0.405, d * 0.405, C.grass);
-    // Mown strips follow one coherent oval, with a visible rope boundary.
-    for (let j = -6; j <= 6; j++) {
-      const z = j * d * 0.056,
-        rz = d * 0.404,
-        rx = w * 0.404;
-      const x = Math.sqrt(Math.max(0, 1 - (z / rz) ** 2)) * rx;
-      m.face(
-        [
-          [-x, 1.23, z - 8],
-          [-x, 1.23, z + 8],
-          [x, 1.23, z + 8],
-          [x, 1.23, z - 8],
-        ],
-        j % 2 ? C.grass : C.lightGrass,
-      );
-    }
+    stadiumTurf(m, w, d, true, 1.2);
     ellipseLine(m, 1.6, w * 0.383, d * 0.383, C.white, 1.2);
     ellipseLine(m, 1.55, w * 0.26, d * 0.26, '#b5bf8d', 0.45);
     // Square, dry central wicket; two bowling creases and three stumps per end.
@@ -678,6 +665,98 @@ export function sportsModel(
         m.box(x, 42, z, 2, 84, 2, C.dark);
         m.box(x, 84, z, 16, 5, 7, C.cream);
       }
+  } else if (kind === 'football-pitch') {
+    stadiumTurf(m, w, d, false, 0.18);
+    const X = (t: number) => (t - fp[0] / 2) * TILE_SIDE,
+      Z = (t: number) => (t - fp[1] / 2) * TILE_SIDE;
+    const line = (a: number, b: number, c: number, e: number) =>
+      m.beam([X(a), 1.15, Z(b)], [X(c), 1.15, Z(e)], 0.85, C.white);
+    const rect = (x: number, z: number, a: number, b: number) => {
+      line(x, z, x + a, z);
+      line(x + a, z, x + a, z + b);
+      line(x + a, z + b, x, z + b);
+      line(x, z + b, x, z);
+    };
+    rect(0.5, 0.5, 23, 15);
+    line(12, 0.5, 12, 15.5);
+    ellipseLine(m, 1.15, 2.2 * TILE_SIDE, 2.2 * TILE_SIDE, C.white, 0.85, 48);
+    for (const x of [0.5, 20.3]) rect(x, 4, 3.2, 8);
+    for (const x of [0.5, 22.4]) rect(x, 6, 1.1, 4);
+    for (const [x, z] of [
+      [12, 8],
+      [2.6, 8],
+      [21.4, 8],
+    ])
+      ellipse(m, X(x), 1.16, Z(z), 1.1, 1.1, C.white, 12);
+    for (const sign of [-1, 1]) {
+      const x = sign === -1 ? 2.6 : 21.4;
+      for (let i = 0; i < 24; i++) {
+        const a = (sign === -1 ? -0.93 : Math.PI - 0.93) + (i * 1.86) / 24,
+          b = a + 1.86 / 24;
+        line(
+          x + Math.cos(a) * 2.2,
+          8 + Math.sin(a) * 2.2,
+          x + Math.cos(b) * 2.2,
+          8 + Math.sin(b) * 2.2,
+        );
+      }
+    }
+  } else if (kind === 'football-goal') {
+    // Mouth spans the Y footprint, opening along the pitch's X axis. The
+    // previous generic frame used the one-tile depth as its mouth width.
+    const sign = type.endsWith('west') ? 1 : -1,
+      front = (sign * w) / 2,
+      back = -sign * w * 0.46,
+      h = 64,
+      half = d * 0.48;
+    for (const z of [-half, half]) {
+      m.beam([front, 0, z], [front, h, z], 2.8, C.white);
+      m.beam([front, 0, z], [back, 0, z], 1.7, '#c8d2ce');
+      m.beam([front, h - 2, z], [back, h * 0.66, z], 1.3, '#d4ddd5');
+      m.beam([back, 0, z], [back, h * 0.66, z], 1.4, '#b7c3bd');
+      m.box(front, 1, z, 6, 2, 6, C.cream);
+    }
+    m.beam([front, h, -half], [front, h, half], 2.8, C.white);
+    m.beam([back, 1, -half], [back, 1, half], 1.4, '#b6c4ba');
+    // Back, side and roof nets have real depth and slight natural sag.
+    const nz = Math.ceil(d / 5),
+      ny = 11;
+    const net = (u: number, v: number): Vertex3 => [
+      back - sign * Math.sin(u * Math.PI) * Math.sin(v * Math.PI) * 1.5,
+      1 + v * h * 0.66,
+      (-1 + 2 * u) * half,
+    ];
+    for (let j = 0; j <= nz; j++)
+      for (let k = 0; k < ny; k++)
+        m.beam(net(j / nz, k / ny), net(j / nz, (k + 1) / ny), 0.38, '#d9e0ce');
+    for (let k = 0; k <= ny; k++)
+      for (let j = 0; j < nz; j++)
+        m.beam(net(j / nz, k / ny), net((j + 1) / nz, k / ny), 0.38, '#d9e0ce');
+    for (const z of [-half, half]) {
+      for (let j = 0; j <= 6; j++) {
+        const t = j / 6,
+          x = front + (back - front) * t,
+          top = h * (1 - 0.34 * t);
+        m.beam([x, 1, z], [x, top, z], 0.38, '#d9e0ce');
+      }
+      for (let k = 1; k <= 11; k++) {
+        const t = k / 11;
+        m.beam([front, h * t, z], [back, h * 0.66 * t, z], 0.38, '#d9e0ce');
+      }
+    }
+    for (let j = 0; j <= nz; j++) {
+      const z = -half + (2 * half * j) / nz;
+      m.beam([front, h, z], [back, h * 0.66, z], 0.38, '#d9e0ce');
+    }
+    for (let j = 1; j <= 6; j++) {
+      const t = j / 6;
+      m.beam(
+        [front + (back - front) * t, h * (1 - 0.34 * t), -half],
+        [front + (back - front) * t, h * (1 - 0.34 * t), half],
+        0.38,
+        '#d9e0ce',
+      );
+    }
   } else if (kind === 'boxing-ring') {
     const h = 8,
       r = w / 2 - 8;

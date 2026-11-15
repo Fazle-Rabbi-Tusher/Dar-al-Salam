@@ -36,6 +36,8 @@ export const ACTIONS = {
   shoot: 6,
   dunk: 6,
   dribble: 6,
+  'podcast-talk': 6,
+  'podcast-listen': 6,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,
@@ -99,6 +101,8 @@ export const characterSchema = z.object({
     .enum(['person', 'cat', 'bird', 'ball', 'vehicle', 'animal'])
     .default('person'),
   name: z.record(z.string()).optional(),
+  /** Explicit family surname; never treated as a given-name approval. */
+  familyName: z.string().min(1).optional(),
   aliases: z.array(z.string()).default([]),
   years: z.string().optional(),
   place: z.string().optional(),

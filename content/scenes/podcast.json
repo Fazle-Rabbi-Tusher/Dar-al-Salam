@@ -1,0 +1,16 @@
+{
+  "id": "podcast",
+  "title": {
+    "en": "In conversation — Omar Suleiman & Mehdi Hasan",
+    "ar": "حوار — عمر سليمان ومهدي حسن",
+    "bn": "আলাপচারিতায় — ওমর সুলাইমান ও মেহদি হাসান"
+  },
+  "lead": "omar-suleiman",
+  "members": ["omar-suleiman", "mehdi-hasan"],
+  "props": [],
+  "area": [
+    [13.5, 99.5],
+    [30.5, 112.5]
+  ],
+  "camera": "frame"
+}

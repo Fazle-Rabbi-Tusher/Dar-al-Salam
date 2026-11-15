@@ -612,6 +612,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
           <Icon name="flask" size={15} />
           {t('labs')}
         </button>
+        <button onClick={() => focusArea(22, 106, 2)}>
+          <Icon name="people" size={15} />
+          {t('podcast')}
+        </button>
+        <button onClick={() => focusArea(79, 23, 1.3)}>
+          <Icon name="people" size={15} />
+          {t('football')}
+        </button>
         <button onClick={() => focusArea(82.25, 111.5, 1.3)}>
           <Icon name="people" size={15} />
           {t('cricket')}

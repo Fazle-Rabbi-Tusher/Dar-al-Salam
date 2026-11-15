@@ -31,6 +31,10 @@ import {
   upgradeSportsCharacters,
   upgradeSportsRoom,
 } from './scenes/sports-upgrade';
+import {
+  upgradePodcastRoom,
+  upgradePodcastCharacters,
+} from './scenes/podcast-upgrade';
 
 /*
  * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
@@ -2115,8 +2119,9 @@ export function modernQuarter() {
     if (c.pairWith?.startsWith('amb-') && !kept.has(c.pairWith))
       delete c.pairWith;
   upgradeSportsRoom(room);
+  upgradePodcastRoom(room);
   const updatedAmbient = upgradeSportsCharacters(ambient);
-  const updatedCards = upgradeSportsCharacters(cards);
+  const updatedCards = upgradePodcastCharacters(upgradeSportsCharacters(cards));
   for (const c of [...updatedAmbient, ...updatedCards]) {
     const errors = scriptErrors(characterSchema.parse(c), room);
     if (errors.length) throw Error(`${c.id}: ${errors.join('; ')}`);

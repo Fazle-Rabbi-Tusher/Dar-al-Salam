@@ -47,7 +47,7 @@ export function validateCharacter(
   const errors: string[] = [],
     warnings: string[] = [];
   for (const name of [c.id, ...Object.values(c.name ?? {}), ...c.aliases])
-    if (forbiddenName(name, rules))
+    if (forbiddenName(name, rules, c.familyName))
       errors.push(`never-depict rule rejects name/alias/id: ${name}`);
   if (c.name) {
     if ((c.sources?.length ?? 0) < 2)
@@ -66,14 +66,26 @@ export function validateCharacter(
   )
     (prod ? errors : warnings).push(`Wardrobe invalid for ${c.district}`);
   for (const step of c.script) {
-    if (['bowl', 'catch', 'shoot', 'dunk', 'dribble'].includes(step.action)) {
+    if (
+      [
+        'bowl',
+        'catch',
+        'shoot',
+        'dunk',
+        'dribble',
+        'podcast-talk',
+        'podcast-listen',
+      ].includes(step.action)
+    ) {
       for (const view of ['SE', 'NE'])
         if (
           !fs.existsSync(
             `art/sprites/anim/${c.strip ?? c.id}__${step.action}_${view}.png`,
           )
         )
-          errors.push(`Missing authored sports strip ${step.action}/${view}`);
+          errors.push(
+            `Missing authored performance strip ${step.action}/${view}`,
+          );
     }
     const facings = step.path
       ? (['SE', 'SW', 'NE', 'NW'] as const)

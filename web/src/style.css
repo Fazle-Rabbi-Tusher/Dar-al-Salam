@@ -464,7 +464,7 @@ html[lang='bn'] .brand strong {
   color: #b39f79;
 }
 .district-tabs {
-  max-width: calc(100vw - 32px);
+  max-width: calc(100vw - 285px);
   flex-wrap: wrap;
   display: flex;
   align-items: center;
@@ -1183,6 +1183,7 @@ html[dir='rtl'] .portrait-decoration {
   }
   .district-tabs {
     inset-inline-start: 24px;
+    max-width: calc(100vw - 240px);
   }
   .story-card {
     width: 320px;
@@ -1352,6 +1353,7 @@ html[dir='rtl'] .portrait-decoration {
   }
   .district-tabs {
     inset-inline-start: 16px;
+    max-width: calc(100vw - 32px);
     bottom: 83px;
   }
   .district-tabs button {

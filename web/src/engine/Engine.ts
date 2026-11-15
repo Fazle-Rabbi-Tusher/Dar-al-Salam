@@ -40,6 +40,7 @@ import {
   basketballLift,
 } from '../../../packages/shared/sports';
 import { motionFor } from '../../../packages/shared/motion';
+import { podcastPose } from '../../../packages/shared/podcast';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
   FACING_DIRECTION,
@@ -532,6 +533,8 @@ export class Engine {
     );
     this.behind.sortableChildren = true;
     this.front.sortableChildren = true;
+    await this.infrastructure.loadMaterials(this.base);
+    if (this.destroyed) return;
     const modeled = new Set<number>();
     for (const s of manifest.sortables) {
       // Compatibility with older manifests: the approved chamber is now real
@@ -822,6 +825,16 @@ export class Engine {
         points.push(worldFromTile(...characterState(c, this.frame).tile));
     for (const s of this.manifest.sortables)
       if (s.scene === id) points.push(worldFromTile(...s.tile));
+    if (id === 'podcast') {
+      const [[x0, y0], [x1, y1]] = scene.area;
+      for (const [x, y] of [
+        [x0, y0],
+        [x1, y0],
+        [x1, y1],
+        [x0, y1],
+      ])
+        points.push(worldFromTile(x, y));
+    }
     if (!points.length) return;
     const xs = points.map((p) => p[0]),
       ys = points.map((p) => p[1]);
@@ -1130,11 +1143,13 @@ export class Engine {
                   ? Math.floor(renderTime / 2)
                   : sportsPose(c.id, renderTime)) % frames.length
               ]
-            : tempo
-              ? frames[
-                  Math.floor((this.frame % (frames.length * tempo)) / tempo)
-                ]
-              : frames[state.index % frames.length];
+            : state.action.startsWith('podcast-')
+              ? frames[podcastPose(c.id, this.frame) % frames.length]
+              : tempo
+                ? frames[
+                    Math.floor((this.frame % (frames.length * tempo)) / tempo)
+                  ]
+                : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;

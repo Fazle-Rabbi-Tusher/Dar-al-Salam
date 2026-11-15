@@ -5,6 +5,8 @@ import {
   Shader,
   State,
   UniformGroup,
+  Assets,
+  Texture,
 } from 'pixi.js';
 import {
   infrastructureModel,
@@ -21,6 +23,7 @@ import {
 import type { Sortable } from '../../../packages/shared/schema';
 import { laboratoryActivityModel } from '../../../packages/shared/laboratory';
 import { sportsActivityModel } from '../../../packages/shared/sports';
+import { podcastActivityModel } from '../../../packages/shared/podcast';
 import {
   projectSurface,
   surfaceOccludes,
@@ -33,9 +36,13 @@ in vec3 aPosition;
 in vec3 aNormal;
 in vec4 aColor;
 in float aHeight;
+in vec2 aTurfUV;
+in float aTurf;
 out vec4 vColor;
 out vec3 vWorld;
 out float vHeight;
+out vec2 vTurfUV;
+out float vTurf;
 uniform mat3 uProjectionMatrix;
 uniform mat3 uWorldTransformMatrix;
 uniform mat3 uTransformMatrix;
@@ -48,11 +55,12 @@ void main(){
  float lambert=max(0.,dot(normal,normalize(vec3(-.35,.65,.72))));
  float light=.53+.47*floor(lambert*7.)/7.;
  vColor=vec4(aColor.rgb*light,aColor.a);vWorld=aPosition*1450.;vHeight=aHeight;
+ vTurfUV=aTurfUV;vTurf=aTurf;
  vec2 screen=uCentre+vec2(p.x,-p.y)*uRadius;
  mat3 mvp=uProjectionMatrix*uWorldTransformMatrix*uTransformMatrix;
  gl_Position=vec4((mvp*vec3(screen,1.)).xy,-p.z*.45,1.);
 }`;
-const fragment = `in vec4 vColor;in vec3 vWorld;in float vHeight;uniform float uCutHeight;out vec4 finalColor;void main(){if(vColor.a<.01||vHeight>uCutHeight)discard;float grain=fract(sin(dot(floor(vWorld*.65),vec3(12.9898,78.233,37.719)))*43758.5453);finalColor=vec4(vColor.rgb*(.95+.09*grain)*vColor.a,vColor.a);}`;
+const fragment = `in vec4 vColor;in vec3 vWorld;in float vHeight;in vec2 vTurfUV;in float vTurf;uniform sampler2D uTurf;uniform float uCutHeight;out vec4 finalColor;void main(){if(vColor.a<.01||vHeight>uCutHeight)discard;float grain=fract(sin(dot(floor(vWorld*.65),vec3(12.9898,78.233,37.719)))*43758.5453);vec3 c=vColor.rgb;if(vTurf>.5)c*=texture(uTurf,vTurfUV).rgb;finalColor=vec4(c*(.95+.09*grain)*vColor.a,vColor.a);}`;
 const program = () =>
   GlProgram.from({
     vertex,
@@ -93,6 +101,8 @@ export function modelGeometry(
     normals: number[] = [],
     colors: number[] = [],
     heights: number[] = [],
+    turfUV: number[] = [],
+    turf: number[] = [],
     indices: number[] = [];
   const centre: [number, number] = [
     tile[0] + footprint[0] / 2,
@@ -122,6 +132,8 @@ export function modelGeometry(
       normals.push(...normal.map((n) => n / len));
       colors.push(...c, face.opacity ?? 1);
       heights.push(face.points[i][1] + lift);
+      turfUV.push(face.points[i][0] / 96, face.points[i][2] / 96);
+      turf.push(face.material === 'turf' ? 1 : 0);
     }
     for (let i = 1; i < points.length - 1; i++)
       indices.push(base, base + i, base + i + 1);
@@ -131,10 +143,22 @@ export function modelGeometry(
     normals: new Float32Array(normals),
     colors: new Float32Array(colors),
     heights: new Float32Array(heights),
+    turfUV: new Float32Array(turfUV),
+    turf: new Float32Array(turf),
     indices: new Uint32Array(indices),
   };
 }
 export class InfrastructureRenderer {
+  private turf: Texture = Texture.WHITE;
+  async loadMaterials(base: string) {
+    this.turf = await Assets.load<Texture>(
+      base + 'materials/stadium-grass.webp',
+    );
+    this.turf.source.addressMode = 'repeat';
+    this.turf.source.scaleMode = 'linear';
+    this.turf.source.autoGenerateMipmaps = true;
+    this.turf.source.updateMipmaps();
+  }
   readonly uniforms = new UniformGroup({
     uPlanetRotation: { value: new Float32Array(9), type: 'mat3x3<f32>' },
     uCentre: { value: new Float32Array(2), type: 'vec2<f32>' },
@@ -147,7 +171,8 @@ export class InfrastructureRenderer {
     if (!model) return null;
     const moving =
       laboratoryActivityModel(s.objectType, s.footprint, 0) ??
-      sportsActivityModel(s.objectType, s.footprint, 0);
+      sportsActivityModel(s.objectType, s.footprint, 0) ??
+      podcastActivityModel(s.objectType, s.footprint, 0);
     const transparent = model.faces.filter((f) => (f.opacity ?? 1) < 1);
     const mesh = this.mesh(
       { ...model, faces: model.faces.filter((f) => (f.opacity ?? 1) >= 1) },
@@ -232,7 +257,8 @@ export class InfrastructureRenderer {
     const a = b.activity;
     if (!a || !b.mesh.visible || a.time === time) return;
     const model = (laboratoryActivityModel(a.type, b.footprint, time) ??
-      sportsActivityModel(a.type, b.footprint, time))!;
+      sportsActivityModel(a.type, b.footprint, time) ??
+      podcastActivityModel(a.type, b.footprint, time))!;
     const data = modelGeometry(model, b.tile, b.footprint, a.lift);
     for (const [attribute, values] of [
       ['aPosition', data.positions],
@@ -259,6 +285,8 @@ export class InfrastructureRenderer {
         aNormal: { buffer: data.normals, format: 'float32x3' },
         aColor: { buffer: data.colors, format: 'float32x4' },
         aHeight: { buffer: data.heights, format: 'float32' },
+        aTurfUV: { buffer: data.turfUV, format: 'float32x2' },
+        aTurf: { buffer: data.turf, format: 'float32' },
       },
       indexBuffer: data.indices,
     });
@@ -273,6 +301,7 @@ export class InfrastructureRenderer {
         glProgram: program(),
         resources: {
           infrastructure: this.uniforms,
+          uTurf: this.turf.source,
           cutaway: new UniformGroup({
             uCutHeight: { value: 10000, type: 'f32' },
           }),

@@ -181,13 +181,13 @@ export class MeshBuilder {
     this.face(low, color);
   }
   model(kind: string): InfrastructureModel {
+    let height = 0;
+    for (const f of this.faces)
+      for (const p of f.points) height = Math.max(height, p[1]);
     return {
       kind,
       faces: this.faces,
-      height: Math.max(
-        0,
-        ...this.faces.flatMap((f) => f.points.map((p) => p[1])),
-      ),
+      height,
     };
   }
 }

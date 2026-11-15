@@ -21,6 +21,8 @@ const editorFallback: Partial<Record<Action, Action>> = {
   shoot: 'idle',
   dunk: 'idle',
   dribble: 'idle',
+  'podcast-talk': 'sit',
+  'podcast-listen': 'sit',
 };
 export type Aseprite = {
   frames: {

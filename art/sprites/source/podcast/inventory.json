@@ -1,0 +1,41 @@
+{
+  "style": "Dar al-Salam isometric pixel art; natural adult proportions",
+  "status": "Draft unapproved character art; Mehdi photo comparison pending",
+  "referencePhoto": {
+    "context": "https://github.com/kufarooq/World-News/issues/145",
+    "url": "http://kufarooq99.files.wordpress.com/2014/12/60582-mehdi_hasan.jpg?w=400&h=300",
+    "access": "Download blocked by environment HTTP policy; not visually inspected"
+  },
+  "sources": [
+    {
+      "file": "mehdi-hasan-actions.png",
+      "bytes": 1351947,
+      "sha256": "a30092477fed92185fb1219a4adb68d129bd773680e75b91e5e3553abc1b8ed5"
+    },
+    {
+      "file": "mehdi-hasan-canonical.png",
+      "bytes": 1376926,
+      "sha256": "d928eca87494c93dd661c248fe95de2c7fbef106288a938d01dbf10a2a7a181d"
+    },
+    {
+      "file": "mehdi-hasan-rear-listen.png",
+      "bytes": 1616500,
+      "sha256": "a8b434ba27013d3e5128f7425649db63a85fb55db7fb854dbdea3d3b89165ca6"
+    },
+    {
+      "file": "omar-suleiman-actions.png",
+      "bytes": 1929183,
+      "sha256": "041acade579b3fe8c91d15c8a8ac4c4966c998c8ce903b7cd2e2b5e9a8567f87"
+    },
+    {
+      "file": "original-orientation/mehdi-hasan-actions-unequal-rows.png",
+      "bytes": 2150166,
+      "sha256": "360c2b599df7ed65830c688607447d4025319e6e41c1eab4e34391d6148a6bbb"
+    },
+    {
+      "file": "original-orientation/omar-suleiman-actions.png",
+      "bytes": 1987111,
+      "sha256": "c448195d091044869c31b8f1a532d922ecf7405ed69615a8839f09082f5ab19c"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "id": "mehdi-hasan",
+  "kind": "person",
+  "name": {
+    "en": "Mehdi Hasan",
+    "ar": "مهدي حسن",
+    "bn": "মেহদি হাসান"
+  },
+  "familyName": "Hasan",
+  "aliases": ["Mehedi Hassan", "Mehdi Hassan"],
+  "place": "United Kingdom · United States",
+  "district": "modern-quarter",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-clean",
+    "garment": "suit",
+    "headwear": "none",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-4",
+      "hair": "hair-black",
+      "garmentPrimary": "navy",
+      "garmentSecondary": "lab-white",
+      "headwear": "white-linen",
+      "prop": "cocoa"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 84,
+      "action": "podcast-listen",
+      "at": [22.4, 103.15],
+      "facing": "SW",
+      "z": 1.8
+    },
+    {
+      "from": 84,
+      "to": 108,
+      "action": "podcast-listen",
+      "at": [22.4, 103.15],
+      "facing": "SW",
+      "z": 1.8
+    },
+    {
+      "from": 108,
+      "to": 192,
+      "action": "podcast-talk",
+      "at": [22.4, 103.15],
+      "facing": "SW",
+      "z": 1.8
+    },
+    {
+      "from": 192,
+      "to": 216,
+      "action": "podcast-listen",
+      "at": [22.4, 103.15],
+      "facing": "SW",
+      "z": 1.8
+    },
+    {
+      "from": 216,
+      "to": 240,
+      "action": "podcast-listen",
+      "at": [22.4, 103.15],
+      "facing": "SW",
+      "z": 1.8
+    }
+  ],
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "British-American journalist and interviewer. This illustrative podcast scene and his character likeness are drafts awaiting review."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mehdi_Hasan"
+    },
+    {
+      "label": "Zeteo",
+      "url": "https://zeteo.com/"
+    }
+  ],
+  "panelApproved": false
+}
