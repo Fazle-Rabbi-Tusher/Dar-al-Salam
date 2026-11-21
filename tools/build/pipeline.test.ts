@@ -22,7 +22,6 @@ import {
   paletteErrors,
 } from '../../packages/shared/pixels';
 import { characterSchema, type Character } from '../../packages/shared/schema';
-import { SUPPORTING_CAST } from '../../packages/shared/supporting-cast';
 let content: Awaited<ReturnType<typeof loadContent>>,
   parts: Record<string, Part>;
 beforeAll(async () => {
@@ -734,47 +733,22 @@ describe('scene bible: cricket ground', () => {
   });
 });
 
-describe('a sparse supporting cast, with supplied animation strips', () => {
-  it('keeps only the explicitly authored supporting people and existing scene roles', () => {
-    // The owner asked for exceptions (2026-11): Massawa's caravan guide and
-    // the eight seated listeners at Mufti Menk's talk.
-    const workers = content.characters.filter((c) =>
-      /^lab-(chemistry-operator-[12]|biology-researcher-[12]|architect-drafter-[12]|architect-cad)$/.test(
-        c.id,
-      ),
-    );
-    expect(workers).toHaveLength(7);
-    const allowed = new Set([
-      'amb-msw-guide',
-      ...workers.map((c) => c.id),
-      ...SUPPORTING_CAST.map((c) => c.id),
-    ]);
+describe('named characters only, with supplied animation strips', () => {
+  it('has no anonymous people (the owner asked to remove all NPCs, 2026-11)', () => {
+    // Animals and vehicles may stay; every person is a named character card.
     for (const c of content.characters)
-      if (!c.name && !allowed.has(c.id) && !/^menk-speech-listener-/.test(c.id))
-        expect(c.kind, c.id).not.toBe('person');
-    const listeners = content.characters.filter((c) =>
-      c.id.startsWith('menk-speech-listener-'),
-    );
-    expect(listeners).toHaveLength(8);
-    for (const c of listeners) {
-      // Seen from behind, seated, facing the speaker (back views: NE/NW only).
-      expect(c.depiction, c.id).toBe('back');
-      for (const s of c.script) {
-        expect(s.action, c.id).toBe('sit');
-        expect(s.path, c.id).toBeUndefined();
-        expect(['NE', 'NW'], c.id).toContain(s.facing);
-      }
-    }
+      if (c.kind === 'person') expect(c.name, c.id).toBeTruthy();
     const ids = new Set(content.characters.map((c) => c.id));
-    for (const c of content.characters)
+    for (const c of content.characters) {
       if (c.pairWith) expect(ids.has(c.pairWith), c.id).toBe(true);
+      if (c.leads) expect(ids.has(c.leads), c.id).toBe(true);
+    }
   });
   it('has a prepared strip, both views, for every action of every sprite character', async () => {
     const strips = new Set(await fs.readdir('art/sprites/anim'));
     const sprites = new Set(await fs.readdir('art/sprites'));
     for (const c of content.characters) {
-      if ((!c.name && !c.id.startsWith('lab-')) || !sprites.has(`${c.id}.png`))
-        continue;
+      if (!c.name || !sprites.has(`${c.id}.png`)) continue;
       for (const s of c.script) {
         const key = `${c.id}__${s.action}${s.prop ? '@' + s.prop : ''}`;
         expect(strips.has(`${key}_SE.png`), key).toBe(true);
@@ -786,8 +760,6 @@ describe('a sparse supporting cast, with supplied animation strips', () => {
     for (const f of [
       'mohamed-salah__walk_NE.png',
       'mufti-ismail-menk__talk_SE.png',
-      'lab-chemistry-operator-1__pour@flask_NE.png',
-      'lab-architect-drafter-1__write@pen_NE.png',
     ]) {
       const m = await sharp(`art/sprites/anim/${f}`).metadata();
       expect(m.height).toBe(336);

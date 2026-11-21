@@ -66,7 +66,7 @@ test('pixel mask ignores transparent space and clicking an opaque pixel opens on
   await expect(page.locator('.story-card')).toContainText('Al-Khwarizmi');
   expect(errors).toEqual([]);
 });
-test("clicking a listener lights up Mufti Menk's whole talk and opens his card; hovering stays normal", async ({
+test('clicking Mufti Menk lights up his talk and opens his card', async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -82,7 +82,7 @@ test("clicking a listener lights up Mufti Menk's whole talk and opens his card; 
           } | null;
         };
       }
-    ).__darEngine.debugPoints('menk-speech-listener-2'),
+    ).__darEngine.debugPoints('mufti-ismail-menk'),
   );
   expect(points?.opaque).toBeTruthy();
   const canvas = await page.locator('.world-host canvas').boundingBox();
@@ -90,10 +90,7 @@ test("clicking a listener lights up Mufti Menk's whole talk and opens his card; 
     canvas!.x + points!.opaque.x,
     canvas!.y + points!.opaque.y,
   );
-  // Hovering is as for anyone: their own label, no scene light.
-  await expect(page.locator('.hover-label')).toContainText('listener');
-  await expect(page.locator('.scene-caption')).toHaveCount(0);
-  // A listener has no card of their own: the click opens the speaker's.
+  await expect(page.locator('.hover-label')).toContainText('Menk');
   await page.mouse.click(
     canvas!.x + points!.opaque.x,
     canvas!.y + points!.opaque.y,

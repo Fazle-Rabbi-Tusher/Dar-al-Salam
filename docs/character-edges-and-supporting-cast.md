@@ -1,5 +1,7 @@
 # Clean character edges and a sparse supporting cast
 
+> **Removed (owner's request, 2026-11-21: "remove all npc").** Every anonymous person described here is gone from the world; only named characters remain. This page is kept as a record.
+
 The character sources have been preserved. The pale silhouette fringe came
 from soft alpha pixels writing depth before a later native 3D surface. Grass or
 furniture then failed the depth test behind those pixels, leaving the lighter

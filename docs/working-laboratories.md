@@ -1,5 +1,7 @@
 # Working laboratories and architecture studio
 
+> **Removed (owner's request, 2026-11-21: "remove all npc").** Every anonymous person described here is gone from the world; only named characters remain. This page is kept as a record.
+
 The university's four benches are now distinct chemistry and biology workstations.
 Two inclined drafting boards show architectural plans developing stroke by stroke.
 Seven lab/studio staff instances use four detailed original character identities,

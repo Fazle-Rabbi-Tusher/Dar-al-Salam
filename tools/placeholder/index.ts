@@ -10,8 +10,6 @@ import {
   generateModernTiles,
 } from './modern';
 import { modernQuarter } from './modern-quarter';
-import { laboratoryStaff } from './scenes/laboratories';
-import { supportingCharacters } from '../../packages/shared/supporting-cast';
 import { png, writeJson, readJson, files } from '../build/io';
 import { generatePortraits } from './portraits/core';
 import { PORTRAITS, PORTRAIT_COLOURS } from './portraits';
@@ -227,8 +225,6 @@ await seed('content/wardrobe.json', {
 const { room, ambient, cards } = modernQuarter();
 await seed('rooms/mosque-garden.tmj', room);
 await seed('content/ambient/mosque-garden.json', ambient);
-await seed('content/ambient/laboratories.json', laboratoryStaff());
-await seed('content/ambient/supporting-cast.json', supportingCharacters());
 for (const c of cards) await seed(`content/characters/${c.id}.json`, c);
 // Legacy floor tiles 1–6 (stone ×3, grass, water, pale stone); 7–13 are modern.
 for (let i = 0; i < 6; i++) {

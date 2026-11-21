@@ -147,83 +147,19 @@ test('soft character edges blend with the actual 3D turf while opaque faces and 
   expect(errors).toEqual([]);
 });
 
-test('every authored supporting role appears in its section with native art and no draft identity card', async ({
+test('the world has no anonymous people: every person is a named character', async ({
   page,
 }) => {
-  test.setTimeout(120000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await ready(page);
-  const ids = await page.evaluate(() => {
+  const people = await page.evaluate(() => {
     const e = (window as unknown as { __darEngine: Debug }).__darEngine;
     return e.manifest.characters
-      .filter((c) => c.id.startsWith('support-'))
-      .map((c) => c.id);
+      .filter((c) => c.kind === 'person')
+      .map((c) => ({ id: c.id, named: !!c.name }));
   });
-  expect(ids).toHaveLength(17);
-  for (const id of ids) {
-    await page.evaluate((id) => {
-      const e = (window as unknown as { __darEngine: Debug }).__darEngine,
-        c = e.manifest.characters.find((c) => c.id === id)!,
-        s = c.script[0],
-        p = s.at ?? s.path![0];
-      e.flyTo(
-        { x: 2048 + (p[0] - p[1]) * 16, y: 1460 + (p[0] + p[1]) * 8, zoom: 2 },
-        1,
-      );
-    }, id);
-    await page.waitForFunction(
-      () => !(window as unknown as { __darEngine: Debug }).__darEngine.flight,
-    );
-    const info = await page.evaluate((id) => {
-      const e = (window as unknown as { __darEngine: Debug }).__darEngine,
-        c = e.manifest.characters.find((c) => c.id === id)!,
-        p = e.live.get(id)!,
-        d = e.spriteDepth.get(p.sprite)!;
-      return {
-        visible: p.sprite.visible,
-        role: c.role,
-        interactive: c.interactive,
-        pose: p.frame,
-        counts: Object.values(c.frames).map((f) => new Set(f).size),
-        edge: d.edgeMesh?.visible,
-        core: d.mesh.visible,
-      };
-    }, id);
-    expect(info.visible && info.edge && info.core, id).toBe(true);
-    expect(info.role!.length).toBeGreaterThan(35);
-    expect(info.interactive, id).toBe(false);
-    expect(info.pose).toBeTruthy();
-    expect(
-      info.counts.some((n) => n === 6),
-      id,
-    ).toBe(true);
-    if (
-      [
-        'support-podcast-operator',
-        'support-school-girl',
-        'support-optics-assistant',
-        'support-cricket-umpire',
-      ].includes(id)
-    )
-      await page.screenshot({ path: `.playwright/support/${id}.png` });
-  }
-  await page.getByRole('button', { name: 'Podcast', exact: true }).click();
-  const frame = () =>
-    page.evaluate(() => {
-      const e = (window as unknown as { __darEngine: Debug }).__darEngine,
-        p = e.live.get('support-podcast-operator')!;
-      return { frame: e.frame, pose: p.frame, x: p.sprite.x, y: p.sprite.y };
-    });
-  const before = await frame();
-  await page.getByLabel('Resume animation', { exact: true }).click();
-  await expect
-    .poll(async () => (await frame()).pose, { timeout: 20000 })
-    .not.toBe(before.pose);
-  await page.getByLabel('Pause animation', { exact: true }).click();
-  await page.waitForTimeout(150);
-  const paused = await frame();
-  await page.waitForTimeout(350);
-  expect(await frame()).toEqual(paused);
+  expect(people.length).toBeGreaterThan(10);
+  expect(people.filter((p) => !p.named)).toEqual([]);
   expect(errors).toEqual([]);
 });

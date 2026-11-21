@@ -7,8 +7,6 @@ import {
   draftingPoint,
   BLUEPRINT_STROKES,
 } from './laboratory';
-import { roomSchema, characterSchema } from './schema';
-import { scriptErrors } from './script';
 const types = ['m-chemistry-bench', 'm-biology-bench', 'm-drafting-table'];
 const shape = (type: string) =>
   type.includes('drafting')
@@ -80,32 +78,7 @@ describe('working laboratories', () => {
       expect(Math.hypot(...a.map((v, j) => v - b[j]))).toBeLessThan(0.01);
     }
   });
-  it('keeps native staff routines contiguous, on their seats or bench sides and on the same reaction clock', () => {
-    const staff = (
-      JSON.parse(
-        fs.readFileSync('content/ambient/laboratories.json', 'utf8'),
-      ) as unknown[]
-    ).map((c: unknown) => characterSchema.parse(c));
-    const room = roomSchema.parse(
-      JSON.parse(fs.readFileSync('rooms/mosque-garden.tmj', 'utf8')),
-    );
-    expect(staff).toHaveLength(7);
-    for (const c of staff) {
-      expect(c.loop).toBe(240);
-      expect(scriptErrors(c, room)).toEqual([]);
-      expect(
-        c.script.every(
-          (s) =>
-            s.at &&
-            s.at[0] === c.script[0].at![0] &&
-            s.at[1] === c.script[0].at![1],
-        ),
-      ).toBe(true);
-    }
-    const mixer = staff.find((c) => c.id === 'lab-chemistry-operator-1')!;
-    expect(mixer.script.find((s) => s.action === 'pour')).toMatchObject({
-      from: 48,
-      to: 84,
-    });
+  it('has no anonymous laboratory staff (removed with every NPC, 2026-11)', () => {
+    expect(fs.existsSync('content/ambient/laboratories.json')).toBe(false);
   });
 });

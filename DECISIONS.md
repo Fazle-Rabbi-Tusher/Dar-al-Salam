@@ -292,3 +292,13 @@
       - the floors, paving and basin baked into the ground.
     - **Ibn al-Haytham:** behind his bench where the model's own bench stood, at (21.5, 101.96). The beam passes just behind him, and his gaze turns toward the screen in its new place.
     - **Content:** the location and its sources (`SOURCE-LINKS.json`) are the owner's. It is an imagined chamber, not a historical site, and carries no writing or symbols.
+77. No NPCs (owner's request, 2026-11-21: "remove all npc"). Every anonymous person is removed; every person in the world is now a named character card:
+    - **Removed:** 33 people:
+      - the 17-person supporting cast (`content/ambient/supporting-cast.json` and `packages/shared/supporting-cast.ts`);
+      - the 7 laboratory staff (`content/ambient/laboratories.json`; the lab stools stay as furniture);
+      - Mufti Menk's 8 listeners (`content/ambient/menk-speech.json`; the talk's scene is now Menk alone, with his lectern and cameras);
+      - Massawa's caravan guide (his camel now walks on its own).
+    - **Their art:** about 160 sprite, strip and source files are deleted.
+    - **Their generators:** the tools that would recreate them no longer do (the placeholder seeds, `prepare-menk-speech.ts`, `prepare-world-life.ts`), and the supporting-cast importers are deleted.
+    - **Kept:** named characters, animals (cats, birds, camels, goats, gazelles), vehicles and balls.
+    - **Tests:** a unit test and a browser test check that every person in the world has a name.

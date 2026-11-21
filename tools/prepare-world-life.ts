@@ -1,12 +1,11 @@
 import fs from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
 
 /*
  * Prepares the world's moving life and scenery from two owner-supplied packs
  * (2026-11):
  *
- *   node --import tsx tools/prepare-world-life.ts <rework art/landscape dir> <desert set dir>
+ *   node --import tsx tools/prepare-world-life.ts <rework art/landscape dir>
  *
  * 1. The earlier world rework's landscape art: a galleon in four views, a
  *    taxi and a tram (two views each, the tram also with its doors open), a
@@ -14,12 +13,12 @@ import sharp from 'sharp';
  *    painted trees. Vehicles become eight-view sets in art/sprites/dir8/
  *    (missing views are mirrors: a car seen from the left is the mirror of
  *    one seen from the right); scenery goes to art/supplied/.
- * 2. The desert set's caravan guide: eight turnaround views → dir8/guide.
+ * (The desert set's caravan guide was cut here too, until every anonymous
+ *    person was removed from the world, 2026-11.)
  *
  * Eight-view order: S, SE, E, NE, N, NW, W, SW (the screen heading).
  */
-const [land, desert] = process.argv.slice(2);
-const tmp = fs.mkdtempSync('/tmp/world-life-');
+const [land] = process.argv.slice(2);
 type Img = { data: Buffer; width: number; height: number };
 async function load(file: string, flip = false): Promise<Img> {
   let s = sharp(file).ensureAlpha();
@@ -118,43 +117,6 @@ for (const [id, files, height] of [
       shadow: [height * 0.75, height * 0.2],
       ...(id === 'tram' ? { actions: { vehicle_stop: 'tram-open' } } : {}),
     }),
-  );
-}
-/* ── Caravan guide: the desert set's turnaround row ── */
-{
-  const sheet = `${desert}/desert-guide-camels-and-rider.png`;
-  const boxes = [
-    [75, 19, 94, 231],
-    [292, 18, 79, 234],
-    [498, 18, 64, 234],
-    [686, 19, 77, 232],
-    [868, 21, 89, 230],
-    [1066, 16, 75, 235],
-    [1241, 18, 69, 234],
-    [1406, 19, 84, 232],
-  ];
-  // Sheet order: front, front-right, right, back-right, back, back-left,
-  // left, front-left = S, SE, E, NE, N, NW, W, SW.
-  const views: Img[] = [];
-  for (const [i, b] of boxes.entries()) {
-    const out = `${tmp}/g${i}.png`;
-    execFileSync('node', [
-      '--import',
-      'tsx',
-      'tools/prepare-landmark.ts',
-      sheet,
-      out,
-      String(b[0] - 5),
-      String(Math.max(0, b[1] - 5)),
-      String(b[2] + 10),
-      String(b[3] + 10),
-      'largest',
-    ]);
-    views.push(await load(out));
-  }
-  save(
-    'guide',
-    await strip(views, 'art/sprites/dir8/guide', 56, { shadow: [20, 6] }),
   );
 }
 /* ── Scenery: waterfall with its pool, painted trees, tram platform ── */

@@ -3,8 +3,7 @@ import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import sharp from 'sharp';
 import { DARK_ROOM, darkRoomTile } from './dark-room';
-import { PODCAST, podcastTile } from './podcast';
-import { SUPPORTING_CAST } from './supporting-cast';
+import { PODCAST } from './podcast';
 import { roomSchema, characterSchema } from './schema';
 import { scriptErrors } from './script';
 import { upgradePodcastRoom } from '../../tools/placeholder/scenes/podcast-upgrade';
@@ -13,7 +12,7 @@ const read = (f: string) => JSON.parse(readFileSync(f, 'utf8'));
 const source = 'art/sprites/source/haytham-redesign';
 const room = roomSchema.parse(read('rooms/mosque-garden.tmj'));
 describe('complete optics and podcast scene exchange', () => {
-  it('exchanges centers, keeps staff attached and updates scene bounds', () => {
+  it('exchanges centers and updates scene bounds', () => {
     const center = darkRoomTile(2.4, 0);
     expect(center[0]).toBe(22);
     expect(center[1]).toBeCloseTo(106);
@@ -21,12 +20,6 @@ describe('complete optics and podcast scene exchange', () => {
     expect(PODCAST.center[1]).toBeCloseTo(30.96);
     expect(read('content/scenes/dark-room.json').area).toEqual(DARK_ROOM.area);
     expect(read('content/scenes/podcast.json').area).toEqual(PODCAST.area);
-    expect(
-      SUPPORTING_CAST.find((c) => c.id === 'support-optics-assistant')!.at,
-    ).toEqual(darkRoomTile(5.7, 1.8));
-    expect(
-      SUPPORTING_CAST.find((c) => c.id === 'support-podcast-operator')!.at,
-    ).toEqual(podcastTile(14.3, 10.2));
     for (const id of ['ibn-al-haytham', 'omar-suleiman', 'mehdi-hasan']) {
       const c = characterSchema.parse(read(`content/characters/${id}.json`));
       expect(scriptErrors(c, room)).toEqual([]);

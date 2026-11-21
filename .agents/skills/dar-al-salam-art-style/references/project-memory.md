@@ -79,6 +79,11 @@ extracted from an attached document. New explicit owner instructions override th
   Community. This supersedes the earlier kitchen-location preference.
   See `docs/haytham-redesign-and-scene-swap.md` for the reference and native
   integration details. Later portraits are artistic interpretations.
+- **No NPCs (21 November 2026):** the owner asked to remove all NPCs. The
+  world has no anonymous people: no supporting cast, laboratory staff, talk
+  listeners or caravan guide. Every person is a named character card; animals
+  and vehicles may stay. This supersedes the sparse-supporting-cast preference
+  above. Do not add anonymous people again unless the owner asks.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

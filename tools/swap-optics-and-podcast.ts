@@ -3,7 +3,6 @@ import { roomSchema, characterSchema } from '../packages/shared/schema';
 import { DARK_ROOM, darkRoomTile } from '../packages/shared/dark-room';
 import { PODCAST, podcastScript } from '../packages/shared/podcast';
 import { TILE_SIDE } from '../packages/shared/planet';
-import { supportingCharacters } from '../packages/shared/supporting-cast';
 import { upgradePodcastRoom } from './placeholder/scenes/podcast-upgrade';
 
 // Move the existing authored scenes, keeping object IDs, equipment, performers,
@@ -31,17 +30,6 @@ for (const [id, area] of [
     scene = await readJson(file);
   await writeJson(file, { ...scene, area });
 }
-const file = 'content/ambient/supporting-cast.json',
-  previous = characterSchema.array().parse(await readJson(file)),
-  updated = supportingCharacters();
-await writeJson(
-  file,
-  previous.map((c) =>
-    ['support-optics-assistant', 'support-podcast-operator'].includes(c.id)
-      ? updated.find((p) => p.id === c.id)!
-      : c,
-  ),
-);
 console.log(
-  'Swapped the complete optical chamber and podcast studio, their staff, scene bounds and navigation anchors.',
+  'Swapped the complete optical chamber and podcast studio, scene bounds and navigation anchors.',
 );

@@ -4,8 +4,9 @@ import sharp from 'sharp';
 
 /*
  * Mufti Ismail Menk's talk, from the owner's speech-scene pack (2026-11):
- * eight seated listeners (four men, four women, seen from behind), his
- * lectern with two microphones and two recording cameras on tripods.
+ * his lectern with two microphones and two recording cameras on tripods.
+ * The pack's eight seated listeners were removed with every anonymous
+ * person (owner's request, 2026-11); only Menk speaks in the hall.
  *
  * Menk keeps his current animation strips (owner: "match current version");
  * only his script changes, to the pack's rhythm on the 240-frame loop:
@@ -19,68 +20,9 @@ const [pack] = process.argv.slice(2);
 if (!pack) throw Error('Usage: prepare-menk-speech.ts <pack folder>');
 const src = (p: string) => path.join(pack, p);
 
-/**
- * Where Menk stands and his listeners sit: two rows of four, centred on him.
- * The pack's rows were wider; these keep clear of Omar Suleiman (9, 17.7)
- * and Habib Umar's study circle (19.1, 15.8) in the same hall.
- */
+/** Where Menk stands, clear of the other figures in the same hall. */
 export const SPEAKER: [number, number] = [12.7, 10.4];
-const SEATS: [number, number][] = [
-  [10.0, 14.2],
-  [11.9, 14.2],
-  [13.8, 14.2],
-  [15.7, 14.2],
-  [10.0, 16.0],
-  [11.9, 16.0],
-  [13.8, 16.0],
-  [15.7, 16.0],
-];
-/** Listener art per seat, mixed so men and women alternate (the pack's order). */
-const VARIANTS = [0, 5, 2, 7, 4, 1, 6, 3];
-
-// Listener strips: two seated poses each, seen from behind (NE; NW mirrors).
-for (let v = 1; v <= 8; v++)
-  fs.copyFileSync(
-    src(`repo-overlay/art/sprites/anim/menk-speech-listener-${v}__sit_NE.png`),
-    `art/sprites/anim/menk-speech-listener-${v}__sit_NE.png`,
-  );
-
-const listeners = VARIANTS.map((variant, i) => {
-  const [x, y] = SEATS[i],
-    woman = variant >= 4;
-  // Face the speaker: NE looks along −y, NW along −x.
-  const facing = SPEAKER[0] - x - (SPEAKER[1] - y) >= 0 ? 'NE' : 'NW';
-  return {
-    id: `menk-speech-listener-${variant + 1}`,
-    kind: 'person',
-    aliases: [],
-    district: 'modern-quarter',
-    depiction: 'back',
-    role: 'A listener at Mufti Menk’s talk',
-    look: {
-      base: woman ? 'adult-woman' : 'adult-man-beard',
-      garment: woman ? 'abaya' : 'jubba',
-      headwear: woman ? 'hijab' : 'none',
-      prop: 'none',
-      colours: {
-        skin: 'skin-3',
-        hair: 'hair-black',
-        garmentPrimary: woman ? 'indigo' : 'white-linen',
-        garmentSecondary: 'white-linen',
-        headwear: 'indigo',
-        prop: 'cocoa',
-      },
-    },
-    loop: 240,
-    script: [{ from: 0, to: 240, action: 'sit', at: [x, y], facing }],
-  };
-});
-fs.writeFileSync(
-  'content/ambient/menk-speech.json',
-  JSON.stringify(listeners, null, 2) + '\n',
-);
-
-// Menk: the pack's speaking rhythm, facing his listeners (SW).
+// Menk: the pack's speaking rhythm, facing the hall (SW).
 const cardFile = 'content/characters/mufti-ismail-menk.json',
   card = JSON.parse(fs.readFileSync(cardFile, 'utf8'));
 card.loop = 240;
@@ -153,4 +95,4 @@ fs.writeFileSync(
   'art/supplied/index.json',
   JSON.stringify(index, null, 2) + '\n',
 );
-console.log('Menk speech scene: 8 listeners, lectern, camera; script updated.');
+console.log('Menk speech scene: lectern, camera; script updated.');
