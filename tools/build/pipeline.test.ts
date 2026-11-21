@@ -22,6 +22,7 @@ import {
   paletteErrors,
 } from '../../packages/shared/pixels';
 import { characterSchema, type Character } from '../../packages/shared/schema';
+import { SUPPORTING_CAST } from '../../packages/shared/supporting-cast';
 let content: Awaited<ReturnType<typeof loadContent>>,
   parts: Record<string, Part>;
 beforeAll(async () => {
@@ -545,7 +546,7 @@ describe('scholars and scene roles', () => {
 });
 
 describe('sharp heads', () => {
-  it('gives every named person a 2× head that fits the body exactly', async () => {
+  it('uses a fitting sharp head or a complete authored body for every named performance', async () => {
     const heads = await loadHeads(),
       pal = {
         keys: content.keys,
@@ -559,9 +560,30 @@ describe('sharp heads', () => {
     );
     expect(named.length).toBeGreaterThanOrEqual(30);
     for (const c of named) {
-      expect(heads[c.id], c.id).toBeDefined();
+      if (!heads[c.id]) {
+        // A new full-body character includes its own face in every authored
+        // view, rather than carrying an unused legacy paper-doll head sheet.
+        await expect(
+          fs.access(`art/sprites/${c.id}.png`),
+        ).resolves.toBeUndefined();
+        for (const action of new Set(c.script.map((s) => s.action)))
+          for (const source of ['SE', 'NE'])
+            await expect(
+              fs.access(`art/sprites/anim/${c.id}__${action}_${source}.png`),
+            ).resolves.toBeUndefined();
+        continue;
+      }
       for (const action of new Set(c.script.map((s) => s.action)))
         for (const facing of ['SE', 'NW'] as const) {
+          // Newly authored full-body performances already contain the face;
+          // they must not have an old paper-doll head composited on top.
+          const source = facing === 'NW' ? 'NE' : 'SE';
+          if (!heads[c.id].frames[`${action}_${source}_0`]) {
+            await expect(
+              fs.access(`art/sprites/anim/${c.id}__${action}_${source}.png`),
+            ).resolves.toBeUndefined();
+            continue;
+          }
           const { image: img, overhang } = composeWithHead(
             c.look,
             action,
@@ -592,21 +614,21 @@ describe('sharp heads', () => {
 });
 
 describe('Bangladesh block', () => {
-  it('places the school and the new people; the dark room stands on the west lawn', async () => {
+  it('preserves the school and named people beside the new cricket stadium', async () => {
     const { forbiddenName } = await import('../../packages/shared/rules');
     const objects = content.room.layers.find((l) => l.type === 'objectgroup');
     const types = new Set(
       objects?.type === 'objectgroup' ? objects.objects.map((o) => o.type) : [],
     );
     // The owner removed Baitul Mukarram, Ibn Battuta and the prayer hall
-    // (2026-11): only the dark room and the corner trees stand on the west
-    // lawn now.
+    // (2026-11): the native chamber occupies the former podcast lawn, with
+    // the corner trees retained and the studio now beside Community.
     for (const t of ['m-baitul-mukarram', 'm-bm-gate', 'm-bm-arcade'])
       expect(types.has(t), t).toBe(false);
     if (objects?.type === 'objectgroup')
       for (const o of objects.objects)
         if (o.x > 2 && o.x < 39 && o.y > 95 && o.y < 120)
-          expect(o.type).toMatch(/^(m-tree|sup-dr-)/);
+          expect(o.type).toBe('m-tree');
     for (const id of ['ibn-battuta', 'yasser-al-dosari'])
       expect(content.characters.some((c) => c.id === id)).toBe(false);
     for (const t of [
@@ -614,7 +636,7 @@ describe('Bangladesh block', () => {
       'm-bd-flag',
       'm-shapla-pond',
       'm-rickshaw',
-      'm-cricket-pitch',
+      'sports-cricket-stadium',
     ])
       expect(types.has(t), t).toBe(true);
     for (const id of [
@@ -652,11 +674,7 @@ describe('scene bible: stadium (batch 1a)', () => {
     expect(kante.script.some((s) => s.prop === 'trophy')).toBe(true);
     expect(frameKey('carry', 'trophy', 'SE')).toBe('carry@trophy_SE');
     expect(frameKey('idle', undefined, 'NW')).toBe('idle_NW');
-    const ambulance = byId('amb-stadium-ambulance');
-    expect(ambulance.kind).toBe('vehicle');
-    expect(characterState(ambulance, 120).tile[0]).toBeGreaterThan(
-      characterState(ambulance, 0).tile[0],
-    );
+    expect(byId('amb-stadium-ambulance')).toBeUndefined();
   });
   it('draws no named Elneny (his first name is denylisted)', () => {
     expect(content.characters.some((c) => /elneny/i.test(c.id))).toBe(false);
@@ -708,15 +726,16 @@ describe('scene bible: cricket ground', () => {
     }
     expect(forbiddenName('Mohammad Rizwan', content.rules)).toBe(true);
     expect(content.characters.some((c) => /rizwan/.test(c.id))).toBe(false);
-    // Khawaja steps off the stage and comes back up.
+    // Khawaja now fields on the stadium turf instead of standing on a podium.
     const k = content.characters.find((c) => c.id === 'usman-khawaja')!;
-    expect(characterState(k, 100).z).toBe(0);
-    expect(characterState(k, 180).z).toBe(10);
+    expect(characterState(k, 100).action).toBe('catch');
+    expect(characterState(k, 100).z).toBe(1.2);
+    expect(characterState(k, 180).z).toBe(1.2);
   });
 });
 
-describe('main characters only, with supplied animation strips', () => {
-  it('keeps no background people: only named characters, balls, vehicles and animals', () => {
+describe('a sparse supporting cast, with supplied animation strips', () => {
+  it('keeps only the explicitly authored supporting people and existing scene roles', () => {
     // The owner asked for exceptions (2026-11): Massawa's caravan guide and
     // the eight seated listeners at Mufti Menk's talk.
     const workers = content.characters.filter((c) =>
@@ -725,7 +744,11 @@ describe('main characters only, with supplied animation strips', () => {
       ),
     );
     expect(workers).toHaveLength(7);
-    const allowed = new Set(['amb-msw-guide', ...workers.map((c) => c.id)]);
+    const allowed = new Set([
+      'amb-msw-guide',
+      ...workers.map((c) => c.id),
+      ...SUPPORTING_CAST.map((c) => c.id),
+    ]);
     for (const c of content.characters)
       if (!c.name && !allowed.has(c.id) && !/^menk-speech-listener-/.test(c.id))
         expect(c.kind, c.id).not.toBe('person');
@@ -775,31 +798,29 @@ describe('main characters only, with supplied animation strips', () => {
 });
 
 describe('the dark room', () => {
-  it('stands Ibn al-Haytham at his bench inside Al-Bayt al-Muzlim', async () => {
+  it('preserves the original reference artwork while moving the native chamber to the former podcast plot', async () => {
     const placed: { type: string; at: [number, number] }[] = JSON.parse(
       await fs.readFile('art/supplied/dark-room.json', 'utf8'),
     );
     const index = JSON.parse(
       await fs.readFile('art/supplied/index.json', 'utf8'),
     );
-    // Its walls, screen, shelves, beam and furniture as separate pieces.
+    // The archived billboard reference remains available; it is no longer
+    // planted in the room or used to position the native chamber's scholar.
     const kinds = new Set(placed.map((p) => p.type.split('-')[2]));
-    for (const k of ['back', 'right', 'screen', 'shelves', 'rays', 'lectern'])
-      expect(kinds).toContain(k);
+    expect(kinds).toEqual(new Set(['site', 'floor']));
     for (const p of placed) expect(index[p.type]).toBeTruthy();
-    const xs = placed.map((p) => p.at[0]),
-      ys = placed.map((p) => p.at[1]);
+    const { darkRoomTile, DARK_ROOM } =
+      await import('../../packages/shared/dark-room');
     const him = content.characters.find((c) => c.id === 'ibn-al-haytham')!;
     expect(him.panelApproved).not.toBe(true);
     for (const step of him.script) {
-      expect(step.at![0]).toBeGreaterThan(Math.min(...xs) + 1);
-      expect(step.at![0]).toBeLessThan(Math.max(...xs) - 1);
-      expect(step.at![1]).toBeGreaterThan(Math.min(...ys) + 1);
-      expect(step.at![1]).toBeLessThan(Math.max(...ys) - 1);
+      expect(step.at).toEqual(darkRoomTile(2.45, 1.25));
     }
     const scene = content.scenes.find((s) => s.id === 'dark-room')!;
     expect(scene.lead).toBe('ibn-al-haytham');
     expect(scene.props).toEqual(['sup-dr-*']);
+    expect(scene.area).toEqual(DARK_ROOM.area);
   });
 });
 

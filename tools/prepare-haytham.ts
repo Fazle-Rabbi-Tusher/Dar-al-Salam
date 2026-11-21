@@ -3,16 +3,15 @@ import http from 'node:http';
 import path from 'node:path';
 import { chromium } from '@playwright/test';
 import sharp from 'sharp';
+import { DARK_ROOM, darkRoomTile } from '../packages/shared/dark-room';
+import { TILE_SIDE } from '../packages/shared/planet';
 
 /*
  * Ibn al-Haytham at his optics bench, from the owner's Ibn al-Haytham
  * collection (2026-11) and the owner's optics-workflow brief.
  *
- * His figure (tools/haytham/figure.js), modelled in three.js after the
- * owner's character turnaround (Ibn-al-Haytham-Character-Collection,
- * assets/scholar-turnaround.png), with the turnaround's own painted face,
- * beard and turban projected onto it and its cloth tiled over his clothes,
- * is posed frame by frame through the workflow (tools/haytham/poses.js): the aperture, the
+ * His voxel figure (Interactive-Viewers/Scholar/model.js) is posed frame by
+ * frame through the workflow (tools/haytham/poses.js): the aperture, the
  * water bowl, the dial, the compass and the inverted image on the dark
  * room's screen (tools/prepare-dark-room.ts), where he stands. The shoulders
  * turn to bring each hand to its instrument. The instruments come from the
@@ -27,17 +26,19 @@ import sharp from 'sharp';
  * (standing with the Book of Optics), his sprite, and a gallery of the four
  * gestures.
  *
- *   node --import tsx tools/prepare-haytham.ts <Ibn-al-Haytham-Complete-Collection> <three.js vendor folder> <Ibn-al-Haytham-Character-Collection>
+ *   node --import tsx tools/prepare-haytham.ts <Ibn-al-Haytham-Complete-Collection> <three.js vendor folder> [figure folder]
  *
- * The figure's head, arms and book turn about their own pivots; its rest
- * hands, chin and eyes (REST in figure.js) are what the poses are solved from.
+ * The figure: by default the complete collection's Scholar viewer. The
+ * owner's later character collection (Ibn-al-Haytham-Character-Collection:
+ * burgundy turban, dark beard, brown and rust robes, finer voxels) has the
+ * same model.js with the same joints; pass its folder as the third argument.
  *
  * three.js: the vendor folder of the owner's mosque model pack (0.180).
  */
-const [collection, three, character] = process.argv.slice(2);
-if (!collection || !three || !character)
+const [collection, three, figure] = process.argv.slice(2);
+if (!collection || !three)
   throw Error(
-    'Usage: prepare-haytham.ts <collection folder> <three vendor folder> <character collection folder>',
+    'Usage: prepare-haytham.ts <collection folder> <three vendor folder>',
   );
 const ID = 'ibn-al-haytham',
   D = 3, // sprite pixels per world pixel
@@ -45,10 +46,12 @@ const ID = 'ibn-al-haytham',
   K = (72 * D) / (5.04 * Math.cos(Math.PI / 6));
 
 const roots: Record<string, string> = {
+  scholar: path.resolve(
+    figure ?? path.join(collection, 'Interactive-Viewers/Scholar'),
+  ),
   equipment: path.resolve(collection, 'Interactive-Viewers/Equipment'),
   three: path.resolve(three),
   render: path.resolve('tools/haytham'),
-  turnaround: path.resolve(character, 'assets'),
 };
 const server = http.createServer((req, res) => {
   const [, root, ...rest] = decodeURI(req.url!.split('?')[0]).split('/');
@@ -59,11 +62,7 @@ const server = http.createServer((req, res) => {
     return;
   }
   res.writeHead(200, {
-    'content-type': file.endsWith('.html')
-      ? 'text/html'
-      : file.endsWith('.png')
-        ? 'image/png'
-        : 'text/javascript',
+    'content-type': file.endsWith('.html') ? 'text/html' : 'text/javascript',
   });
   fs.createReadStream(file).pipe(res);
 });
@@ -135,7 +134,14 @@ const strip = await sharp({
 for (const old of fs.readdirSync('art/sprites/anim'))
   if (old.startsWith(`${ID}__`)) fs.rmSync(`art/sprites/anim/${old}`);
 const meta =
-  JSON.stringify({ frame: [W, H], foot, density: D, sequence }) + '\n';
+  // Match the complete neighborhood's world scale; keep the source render
+  // and every animation frame at their original pixel resolution.
+  JSON.stringify({
+    frame: [W, H],
+    foot,
+    density: (17 * 0.23) / DARK_ROOM.scale,
+    sequence,
+  }) + '\n';
 // Back view (NE): the same frames. He works facing SE; the strip is only
 // needed for the rare planet turn that shows him from behind.
 for (const view of ['SE', 'NE']) {
@@ -190,9 +196,16 @@ card.script = [
   // Room point (2.33, 0.81) of tools/prepare-dark-room.ts: behind his bench
   // where the room's own bench stood, the beam from the pinhole to the
   // screen passing just behind him.
-  { from: 0, to: 120, action: 'write', at: [21.5, 101.96], facing: 'SE' },
+  {
+    from: 0,
+    to: 120,
+    action: 'write',
+    at: darkRoomTile(2.45, 1.25),
+    facing: 'SE',
+    z: 0.23 * DARK_ROOM.scale * TILE_SIDE,
+  },
 ];
-// The turnaround's colours: brown cloak, rust robe, crimson turban, dark beard.
+// The character collection's colours: brown robe, burgundy turban, dark beard.
 card.look.colours.garmentPrimary = 'cocoa';
 card.look.colours.garmentSecondary = 'madder-red';
 card.look.colours.headwear = 'madder-red';

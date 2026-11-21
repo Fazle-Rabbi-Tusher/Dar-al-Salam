@@ -18,6 +18,8 @@ import { tileFromWorld, worldFromTile } from '../../../packages/shared/iso';
 import { useStore, useT, type Language } from './store';
 import { Icon } from './Icon';
 import { Lab } from './Lab';
+import { DarkRoomControls } from './DarkRoomControls';
+import { PODCAST } from '../../../packages/shared/podcast';
 export function App() {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -230,6 +232,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
     search = useRef<HTMLInputElement>(null),
     urlTimer = useRef<ReturnType<typeof setTimeout>>();
   const [progress, setProgress] = useState(0),
+    [darkRoomOpen, setDarkRoomOpen] = useState(false),
     [error, setError] = useState(''),
     [intro, setIntro] = useState(false),
     [query, setQuery] = useState(''),
@@ -285,15 +288,28 @@ function World({ manifest }: { manifest: Manifest | null }) {
       ? hoverCharacter.name
         ? {
             title: hoverCharacter.name[lang] ?? hoverCharacter.name.en,
-            note: t('clickStory'),
+            note:
+              hoverCharacter.id === 'ibn-al-haytham'
+                ? t('exploreDarkRoom')
+                : t('clickStory'),
           }
         : hoverCharacter.role
           ? { title: hoverCharacter.role, note: '' }
           : null
       : null;
+  const openDarkRoom = useCallback(() => {
+    select(null);
+    engine.current?.clearSelection();
+    setDarkRoomOpen(true);
+    setIntro(false);
+    setFocused(false);
+    setHovered(null);
+    engine.current?.focusDarkRoom();
+  }, [select]);
   const open = useCallback(
     (id: string) => {
       select(id);
+      setDarkRoomOpen(false);
       engine.current?.focusCharacter(id);
       setIntro(false);
       setFocused(false);
@@ -316,6 +332,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
     engine.current = world;
     world.on('progress', (p) => setProgress(p));
     world.on('characterClick', (id) => {
+      setDarkRoomOpen(false);
       select(id);
       setIntro(false);
       history.pushState(null, '', serialiseUrl(world.getCamera(), id));
@@ -346,33 +363,54 @@ function World({ manifest }: { manifest: Manifest | null }) {
       .load('/world/world.json')
       .then(() => {
         if (cancelled) return;
-        initialising = false;
+        const current = parseUrl(location.href);
         world.setMotion(useStore.getState().motion);
-        if (initial.id) {
-          select(initial.id);
-          world.focusCharacter(initial.id);
+        if (current.id) {
+          select(current.id);
+          world.focusCharacter(current.id);
+          if (current.hasZoom) world.flyTo(current, 1);
         } else
           world.flyTo(
             {
-              ...initial,
+              ...current,
               // Phones open on the whole planet unless the link sets a zoom.
               zoom:
-                !initial.hasZoom &&
+                !current.hasZoom &&
                 Math.min(window.innerWidth, window.innerHeight) < PHONE_WIDTH
                   ? PHONE_ZOOM
-                  : initial.zoom,
+                  : current.zoom,
             },
             1,
           );
+        // Old shared exhibit links now focus the same native world component.
+        // They no longer create a page, iframe, modal or suspended world.
+        const legacy = new URL(location.href);
+        if (legacy.searchParams.get('exhibit') === 'dark-room') {
+          select(null);
+          world.clearSelection();
+          setDarkRoomOpen(true);
+          world.focusDarkRoom();
+          legacy.searchParams.delete('exhibit');
+          history.replaceState(
+            null,
+            '',
+            legacy.pathname + legacy.search + legacy.hash,
+          );
+        }
+        initialising = false;
       })
       .catch((e) => {
         if (!cancelled) setError(String(e));
       });
     const pop = () => {
+      clearTimeout(urlTimer.current);
       const next = parseUrl(location.href);
+      setDarkRoomOpen(false);
       select(next.id ?? null);
-      if (next.id) world.focusCharacter(next.id);
-      else {
+      if (next.id) {
+        world.focusCharacter(next.id);
+        if (next.hasZoom) world.flyTo(next, 1);
+      } else {
         world.clearSelection();
         world.flyTo(next, 300);
       }
@@ -384,6 +422,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
         search.current?.focus();
       }
       if (e.key === 'Escape') {
+        setDarkRoomOpen(false);
         setFocused(false);
         select(null);
         world.clearSelection();
@@ -392,12 +431,15 @@ function World({ manifest }: { manifest: Manifest | null }) {
     window.addEventListener('keydown', keyboard);
     // iOS Safari: stop pinches over the interface from zooming the whole page;
     // pinching the planet zooms the planet instead.
-    const noPageZoom = (e: Event) => e.preventDefault();
+    const noPageZoom = (e: Event) => {
+      e.preventDefault();
+    };
     document.addEventListener('gesturestart', noPageZoom);
     return () => {
       cancelled = true;
       clearTimeout(urlTimer.current);
       world.destroy();
+      if (engine.current === world) engine.current = null;
       window.removeEventListener('popstate', pop);
       window.removeEventListener('keydown', keyboard);
       document.removeEventListener('gesturestart', noPageZoom);
@@ -415,6 +457,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
     history.replaceState(null, '', serialiseUrl(camera));
   };
   const focusArea = (x: number, y: number, zoom = 2) => {
+    setDarkRoomOpen(false);
     const [wx, wy] = worldFromTile(x, y);
     setIntro(false);
     engine.current?.flyTo({ x: wx, y: wy, zoom }, 600);
@@ -446,7 +489,12 @@ function World({ manifest }: { manifest: Manifest | null }) {
       )}
       {litScene && (
         <div className="scene-caption" ref={caption} role="status">
-          {litScene.title[lang] ?? litScene.title.en}
+          <span>{litScene.title[lang] ?? litScene.title.en}</span>
+          {litScene.id === 'dark-room' && (
+            <button className="scene-exhibit-link" onClick={openDarkRoom}>
+              {t('exploreDarkRoom')} <Icon name="arrow" size={14} />
+            </button>
+          )}
         </div>
       )}
       <div className="scene-vignette" />
@@ -541,6 +589,10 @@ function World({ manifest }: { manifest: Manifest | null }) {
         </section>
       )}
       <div className="district-tabs">
+        <button className="dark-room-tab" onClick={openDarkRoom}>
+          <Icon name="compass" size={15} />
+          {t('darkRoom')}
+        </button>
         <button onClick={() => focusArea(16, 20)}>
           <Icon name="book" size={15} />
           {t('knowledge')}
@@ -560,6 +612,26 @@ function World({ manifest }: { manifest: Manifest | null }) {
         <button onClick={() => focusArea(39, 14, 2)}>
           <Icon name="flask" size={15} />
           {t('labs')}
+        </button>
+        <button onClick={() => focusArea(...PODCAST.center, 2)}>
+          <Icon name="people" size={15} />
+          {t('podcast')}
+        </button>
+        <button onClick={() => focusArea(79, 23, 1.3)}>
+          <Icon name="people" size={15} />
+          {t('football')}
+        </button>
+        <button onClick={() => focusArea(82.25, 111.5, 1.3)}>
+          <Icon name="people" size={15} />
+          {t('cricket')}
+        </button>
+        <button onClick={() => focusArea(74.1, 39.8, 2.1)}>
+          <Icon name="people" size={15} />
+          {t('basketball')}
+        </button>
+        <button onClick={() => focusArea(74, 50, 2)}>
+          <Icon name="people" size={15} />
+          {t('arena')}
         </button>
         {/* Massawa, south-west of the quarter (packages/shared/massawa.ts). */}
         <button onClick={() => focusArea(-12, 117, 1.2)}>
@@ -636,6 +708,15 @@ function World({ manifest }: { manifest: Manifest | null }) {
             </p>
           </div>
           <div className="story-body">
+            {card.id === 'ibn-al-haytham' && (
+              <section className="story-exhibit">
+                <h3>{t('darkRoomTitle')}</h3>
+                <p>{t('darkRoomStory')}</p>
+                <button className="primary" onClick={openDarkRoom}>
+                  {t('exploreDarkRoom')} <Icon name="arrow" size={17} />
+                </button>
+              </section>
+            )}
             {card.summary && (
               <>
                 <h3>{t('quickFacts')}</h3>
@@ -814,6 +895,21 @@ function World({ manifest }: { manifest: Manifest | null }) {
             {t('retry')}
           </button>
         </div>
+      )}
+      {darkRoomOpen && (
+        <DarkRoomControls
+          onClose={() => setDarkRoomOpen(false)}
+          onView={(view) => engine.current?.focusDarkRoom(view)}
+          onChange={(options) => engine.current?.setDarkRoomOptions(options)}
+          onClock={(running) => {
+            if (running) useStore.getState().setMotion(true);
+            engine.current?.setDarkRoomClock(running);
+          }}
+          onExperiment={(options) =>
+            engine.current?.setDarkRoomExperiment(options)
+          }
+          getState={() => engine.current?.getDarkRoomState()}
+        />
       )}
     </main>
   );

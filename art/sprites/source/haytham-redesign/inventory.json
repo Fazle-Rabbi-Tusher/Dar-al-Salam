@@ -1,0 +1,112 @@
+{
+  "sourceRevision": "b82825cf6e33f08b6a98e1368b5f05eb41202b28",
+  "loop": 120,
+  "ticksPerCell": 3,
+  "originalCellsPerView": 40,
+  "references": [
+    "Original owner Isometric Character Sprites: ibn-al-haytham.png",
+    "https://github.com/amzubair/freecodecamp-tribute-page/blob/master/images/ibn-al-haytham%402x.png"
+  ],
+  "files": [
+    {
+      "path": "actions-0.png",
+      "bytes": 2752848,
+      "sha256": "38ac417796b4358d6415f0908ab639e53ec7eaa82345ce1aabb0f5ccbffe8eda"
+    },
+    {
+      "path": "actions-1.png",
+      "bytes": 1415217,
+      "sha256": "ec537d3da43803d73930960bc15e3df0b142a803160b1dd6e773542719cc715d"
+    },
+    {
+      "path": "actions-2.png",
+      "bytes": 1380622,
+      "sha256": "22a6258be1211ea1063fe8b1bf84077de2840a47fa7c7dadf0c0f062d890cc4c"
+    },
+    {
+      "path": "actions-3.png",
+      "bytes": 1665445,
+      "sha256": "062b74a31715c486cd04f47774f95196100e9ceb323f24813a3715fba37c913f"
+    },
+    {
+      "path": "canonical.png",
+      "bytes": 957494,
+      "sha256": "15504e37678f5b324ecf369f23682f8bf434a6b2b24de67152fbaf9796355aac"
+    },
+    {
+      "path": "original/anim/ibn-al-haytham__write_NE.json",
+      "bytes": 420,
+      "sha256": "2a31eacc144af8acef8b0c8283467d77c878f30d79309aa1d299974486a17897"
+    },
+    {
+      "path": "original/anim/ibn-al-haytham__write_NE.png",
+      "bytes": 276932,
+      "sha256": "4effda439b7565e95a6319c0886b27eaef5eec6c68bdaf6feb3bf6a70abc9ba3"
+    },
+    {
+      "path": "original/anim/ibn-al-haytham__write_SE.json",
+      "bytes": 420,
+      "sha256": "2a31eacc144af8acef8b0c8283467d77c878f30d79309aa1d299974486a17897"
+    },
+    {
+      "path": "original/anim/ibn-al-haytham__write_SE.png",
+      "bytes": 276932,
+      "sha256": "4effda439b7565e95a6319c0886b27eaef5eec6c68bdaf6feb3bf6a70abc9ba3"
+    },
+    {
+      "path": "original/character.json",
+      "bytes": 1619,
+      "sha256": "8bb01ff2a429bbcb15377c4ea0cf0cb9e7e9ae493ee3033b6a1eda55ffa9e5be"
+    },
+    {
+      "path": "original/gallery/0.png",
+      "bytes": 14977,
+      "sha256": "a7537125195d25a7987f56daf8264cc22809766e1c2bac6ef116ab373da65548"
+    },
+    {
+      "path": "original/gallery/1.png",
+      "bytes": 14853,
+      "sha256": "c2e3436f9c8092afdb9a159279ee26c27ad4348f3c93e5ee2e1966ea1b7d5a73"
+    },
+    {
+      "path": "original/gallery/2.png",
+      "bytes": 16619,
+      "sha256": "67ec212d3f35c28805c2ff02e5c40de84d0658cc9a7b1604645f3415fea595d8"
+    },
+    {
+      "path": "original/gallery/3.png",
+      "bytes": 16008,
+      "sha256": "44d6b48be8b6753fbeb0a4aec6c8de84c5b7668cc33c26ad5dfb3ce0a2cb252a"
+    },
+    {
+      "path": "original/gallery/4.png",
+      "bytes": 16381,
+      "sha256": "b557f952a2091426425f4cb8608609aa8041bace79ed1abee7fc754cc49881ea"
+    },
+    {
+      "path": "original/ibn-al-haytham.png",
+      "bytes": 59831,
+      "sha256": "15c13184ed85e109af618ede73477360bd766cae2cdf31cc6ded2afc051b191d"
+    },
+    {
+      "path": "original/illustration.png",
+      "bytes": 133562,
+      "sha256": "b3978f74496e96f29e796248cfc326f7491a45c5ff9cdc64b465f79a5d9a112f"
+    },
+    {
+      "path": "original/owner-style-reference.png",
+      "bytes": 1265861,
+      "sha256": "838534168b1ec7c5c5855e8b95a9ebdb32febaf4c28339af7b5bcfefb9f1e86f"
+    },
+    {
+      "path": "original/poses.js",
+      "bytes": 5524,
+      "sha256": "681ed7fadcd7e6a25ec3eaf4dd4c15a8b0c73b023c65c590efcd382002d7a1ca"
+    },
+    {
+      "path": "registration.json",
+      "bytes": 5263,
+      "sha256": "668c9594561108ec6c924990e8adae3d57b59253b3d0a11c96e0d395e1125d26"
+    }
+  ]
+}

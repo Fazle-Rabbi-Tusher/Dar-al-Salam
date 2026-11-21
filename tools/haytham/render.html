@@ -3,14 +3,13 @@
   <canvas id="c"></canvas>
   <script type="module">
     /*
-     * Ibn al-Haytham at his optics bench (tools/prepare-haytham.ts): his figure
-     * after the owner's character turnaround (figure.js) posed through the optics workflow
+     * Ibn al-Haytham at his optics bench (tools/prepare-haytham.ts): the owner's
+     * voxel scholar (Scholar/model.js) posed through the optics workflow
      * (poses.js), with the owner's instruments (Equipment/models.js), rendered
      * in the world's 2:1 isometric view. ?k= sets pixels per model unit.
      */
     import * as T from '../three/three.module.min.js';
-    import { buildFigure, REST } from './figure.js';
-    import { RoomEnvironment } from '../three/RoomEnvironment.js';
+    import { createScholarModel } from '../scholar/model.js';
     import { buildEquipment } from '../equipment/models.js';
     import { POSE, KEYS, SC, BENCH, AP, BOWL, TOOLS, PARCH } from './poses.js';
 
@@ -44,13 +43,6 @@
     });
     sun.shadow.bias = -0.0004;
     scene.add(sun);
-    // Soft reflections from a room around him, so cloth sheen and skin
-    // highlights read as a real object in the light.
-    scene.environment = new T.PMREMGenerator(renderer).fromScene(
-      new RoomEnvironment(),
-      0.04,
-    ).texture;
-    scene.environmentIntensity = 0.45;
     const fill = new T.DirectionalLight('#bcd4e0', 0.6);
     fill.position.set(6, 4, -4);
     scene.add(fill);
@@ -126,12 +118,31 @@
       return g;
     }
 
-    /* ── The scholar: modelled after the owner's turnaround (figure.js), jointed like the pack's voxel scholar ── */
-    // The owner's turnaround: the figure's painted face and turban, and its cloth.
-    const painting = new Image();
-    painting.src = '../turnaround/scholar-turnaround.png';
-    await painting.decode();
-    const { root: scholar, joints } = buildFigure(T, painting);
+    /* ── The scholar: the pack's voxel sculpture, its articulated groups on their pivots ── */
+    const model = createScholarModel();
+    let minY = Infinity;
+    for (const p of model.parts)
+      for (let i = 1; i < p.vertices.length; i += 3)
+        minY = Math.min(minY, p.vertices[i]);
+    const scholar = new T.Group(),
+      joints = {};
+    const byGroup = {};
+    for (const p of model.parts) (byGroup[p.group] ??= []).push(p);
+    for (const [name, parts] of Object.entries(byGroup)) {
+      const pivot = model.pivots[name]
+        ? [
+            model.pivots[name][0],
+            model.pivots[name][1] + minY,
+            model.pivots[name][2],
+          ]
+        : [0, 0, 0];
+      const joint = new T.Group();
+      joint.position.set(pivot[0], pivot[1] - minY, pivot[2]);
+      joint.rotation.order = 'ZYX';
+      joint.add(meshes(parts, [pivot[0], pivot[1], pivot[2]]));
+      scholar.add(joint);
+      joints[name] = joint;
+    }
     const station = new T.Group();
     station.add(scholar);
 
@@ -279,8 +290,8 @@
     /* ── Posing over the 120-tick loop ── */
     const ease = (t) => t * t * (3 - 2 * t);
     const HAND = {
-      leftArm: new T.Vector3(...REST.hand.leftArm),
-      rightArm: new T.Vector3(...REST.hand.rightArm),
+      leftArm: new T.Vector3(-0.48, 2.69, 0.855),
+      rightArm: new T.Vector3(0.48, 2.69, 0.855),
     };
     const pivotOf = (j) => joints[j].position.clone();
     const tmp = new T.Object3D();
@@ -305,12 +316,14 @@
         // The hand to his chin: aim just before the beard (the arm is rigid).
         const pt =
           target === 'chin'
-            ? local(REST.chin).applyMatrix4(tmp.matrix).toArray()
+            ? local([p.glide * 0 + 0.0, 3.45, 0.78])
+                .applyMatrix4(tmp.matrix)
+                .toArray()
             : target;
         const to = local(pt).sub(pivot).normalize();
         q[j].setFromUnitVectors(from, to);
       }
-      const eye = pivotOf('head').add(new T.Vector3(...REST.eye)),
+      const eye = pivotOf('head').add(new T.Vector3(0, 0.15, 0.3)),
         d = local(p.look).sub(eye);
       q.head = new T.Quaternion().setFromEuler(
         new T.Euler(
@@ -441,8 +454,6 @@
     function portrait(k) {
       pose(0);
       joints.book.visible = true;
-      // Head level and turned to the viewer (his front-right), face to face.
-      joints.head.rotation.set(0.04, -0.55, 0, 'ZYX');
       const hidden = station.children.filter((o) => o !== scholar);
       for (const o of hidden) o.visible = false;
       scene.updateMatrixWorld(true);

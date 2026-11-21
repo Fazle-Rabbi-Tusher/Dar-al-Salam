@@ -464,7 +464,7 @@ html[lang='bn'] .brand strong {
   color: #b39f79;
 }
 .district-tabs {
-  max-width: calc(100vw - 32px);
+  max-width: calc(100vw - 285px);
   flex-wrap: wrap;
   display: flex;
   align-items: center;
@@ -1183,6 +1183,7 @@ html[dir='rtl'] .portrait-decoration {
   }
   .district-tabs {
     inset-inline-start: 24px;
+    max-width: calc(100vw - 240px);
   }
   .story-card {
     width: 320px;
@@ -1352,6 +1353,7 @@ html[dir='rtl'] .portrait-decoration {
   }
   .district-tabs {
     inset-inline-start: 16px;
+    max-width: calc(100vw - 32px);
     bottom: 83px;
   }
   .district-tabs button {
@@ -1639,4 +1641,79 @@ html[dir='rtl'] .portrait-decoration {
 .world-page a,
 .world-page input {
   touch-action: manipulation;
+}
+
+.district-tabs .dark-room-tab {
+  background: #244c40;
+  color: #fff8dc;
+}
+.district-tabs .dark-room-tab:hover {
+  background: #18382f;
+  color: #fff8dc;
+}
+.scene-exhibit-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  margin: 7px auto 0;
+  padding: 8px 12px;
+  border: 1px solid #f0e7cba6;
+  border-radius: 4px;
+  background: #18382f;
+  color: #fff8dc;
+  font-size: 11px;
+  line-height: 1.4;
+  text-shadow: none;
+  pointer-events: auto;
+}
+.scene-exhibit-link:hover {
+  background: #244c40;
+}
+.story-exhibit {
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+.story-exhibit h3 {
+  margin-top: 0;
+}
+.story-exhibit .primary {
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 14px;
+  text-align: start;
+}
+/* The optical chamber is part of the world, with compact, non-modal controls. */
+.dark-room-controls {
+  position: absolute; inset-inline-start: 24px; bottom: 160px; z-index: 12;
+  width: min(310px, calc(100vw - 32px)); max-height: calc(100dvh - 310px);
+  overflow-y: auto; padding: 17px; border: 1px solid #d9ddce;
+  border-radius: 10px; background: #faf9f1f2; color: #28483f;
+  box-shadow: 0 8px 32px #1f3f3320; backdrop-filter: blur(12px);
+}
+.dark-room-controls header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.dark-room-controls header span {font-size: 10px; color: #77836e;}
+.dark-room-controls h2 {margin: 4px 0 14px; font: 21px Georgia, serif;}
+.dark-room-controls-close {width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center;}
+.dark-room-views {display: flex; gap: 4px; margin-bottom: 13px;}
+.dark-room-views button, .dark-room-clock button {border: 1px solid #d5d9cc; padding: 8px 10px; border-radius: 5px; font-size: 11px;}
+.dark-room-views [aria-pressed='true'], .dark-room-clock [aria-pressed='true'] {background: #2d5549; color: #fffdf1; border-color: #2d5549;}
+.dark-room-controls label {display: grid; gap: 7px; font-size: 11px;}
+.dark-room-controls select {width: 100%; min-height: 34px; border: 1px solid #d5d9cc; padding: 5px 8px; background: #fffef7; color: inherit; border-radius: 5px;}
+.dark-room-controls details {border-top: 1px solid #daddd1; margin-top: 13px; padding-top: 12px;}
+.dark-room-controls summary {font-size: 12px; cursor: pointer;}
+.dark-room-range {margin: 12px 0;}
+.dark-room-range > span {display: flex; justify-content: space-between; gap: 12px;}
+.dark-room-range output {font-variant-numeric: tabular-nums; color: #77836e;}
+.dark-room-controls input[type='range'] {width: 100%; accent-color: #47745f;}
+.dark-room-toggles {display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 0;}
+.dark-room-toggles label {display: flex; align-items: center; gap: 5px;}
+.dark-room-controls input[type='checkbox'] {accent-color: #47745f;}
+.dark-room-experiment {display: grid; gap: 13px; margin-top: 14px;}
+.dark-room-source-download {display: flex; align-items: center; gap: 6px; font-size: 10px; margin-top: 15px; color: #6c806d;}
+@media (max-width: 700px) {
+  .district-tabs .dark-room-tab {min-height: 36px; font-weight: 600;}
+  .dark-room-controls {inset-inline-start: 12px; bottom: 146px; width: 260px; max-height: 42dvh; padding: 12px;}
 }

@@ -42,6 +42,8 @@ import {
 } from '../../packages/shared/script';
 import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripTempo } from '../../packages/shared/motion';
+import { sportsKind } from '../../packages/shared/sports';
+import { podcastKind } from '../../packages/shared/podcast';
 import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
@@ -80,7 +82,8 @@ async function build() {
       p.startsWith('art/sprites/') ||
       p.startsWith('art/landmarks/') ||
       p.startsWith('art/supplied/') ||
-      p.startsWith('art/gallery/')
+      p.startsWith('art/gallery/') ||
+      p.startsWith('art/materials/')
     )
       continue;
     const errors = paletteErrors(
@@ -94,6 +97,11 @@ async function build() {
   }
   await fs.rm(out, { recursive: true, force: true });
   await fs.mkdir(out, { recursive: true });
+  await fs.mkdir(`${out}/materials`, { recursive: true });
+  await sharp('art/materials/stadium-grass.png')
+    .resize({ width: 512, kernel: 'nearest' })
+    .webp({ lossless: true })
+    .toFile(`${out}/materials/stadium-grass.webp`);
   const images = new Map<string, PixelImage>(),
     metas: Record<string, Omit<FrameMeta, 'frame'>> = {};
   function register(
@@ -473,7 +481,7 @@ async function build() {
       c.script.some((s) =>
         Array.isArray(s.z) ? s.z.some((z) => z !== 0) : Boolean(s.z),
       );
-    const sprite = await characterSprite(c.id),
+    const sprite = await characterSprite(c.strip ?? c.id),
       d8 = await dir8Views(
         c.look.base,
         c.look.colours.garmentPrimary,
@@ -681,7 +689,7 @@ async function build() {
     if (!illustration && sprite) {
       // (Uses the supplied front view.)
       // Head-and-shoulders card portrait cropped from the supplied sprite.
-      const src = `art/sprites/${c.id}.png`,
+      const src = `art/sprites/${c.strip ?? c.id}.png`,
         meta = await sharp(src).trim().toBuffer({ resolveWithObject: true });
       const w = meta.info.width,
         h = Math.round(Math.min(meta.info.height, w * 1.1));
@@ -749,6 +757,28 @@ async function build() {
   const objectLayer = room.layers.find((l) => l.type === 'objectgroup');
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
+      // The approved Al-Bayt al-Muzlim mesh is a native world component.
+      // Keep source PNGs as references, without packing flat duplicates.
+      if (o.type.startsWith('sup-dr-')) continue;
+      if (sportsKind(o.type) || podcastKind(o.type)) {
+        // Native-only arenas have geometry, not a hidden billboard duplicate.
+        const frame = register(new Pixels(1, 1), [0, 0]);
+        const [x, y] = worldFromTile(o.x, o.y, o.z);
+        sortables.push({
+          objectType: o.type,
+          frame,
+          x,
+          y,
+          depth: depth(o.x, o.y),
+          objectId: o.id,
+          tile: [o.x, o.y],
+          footprint: o.footprint,
+          ground: [o.x, o.y],
+          pivot: [0, 0],
+          lift: o.z,
+        });
+        continue;
+      }
       // Supplied art placed in the room (art/supplied): planted like
       // Massawa's pieces, standing on the footprint's centre.
       if (!objectArt[o.type] && suppliedArt[o.type]) {
@@ -1168,6 +1198,7 @@ async function build() {
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
       const art = objectArt[o.type];
+      if (sportsKind(o.type)) continue;
       if (!art || !o.walkable || !bakedIntoFloor(o.type, art)) continue;
       const im = await image(`art/${art.file}`),
         p = worldFromTile(o.x, o.y, o.z);
@@ -1184,6 +1215,7 @@ async function build() {
   if (objectLayer?.type === 'objectgroup')
     for (const o of objectLayer.objects) {
       const sup = objectArt[o.type] ? undefined : suppliedArt[o.type];
+      if (o.type.startsWith('sup-dr-')) continue;
       if (!sup || !sup.floor) continue;
       const { data, info } = await sharp(`art/${sup.file}`)
         .resize({

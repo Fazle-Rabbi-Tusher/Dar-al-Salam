@@ -5,6 +5,8 @@ import {
   Shader,
   State,
   UniformGroup,
+  Assets,
+  Texture,
 } from 'pixi.js';
 import {
   infrastructureModel,
@@ -20,13 +22,27 @@ import {
 } from '../../../packages/shared/planet';
 import type { Sortable } from '../../../packages/shared/schema';
 import { laboratoryActivityModel } from '../../../packages/shared/laboratory';
+import { sportsActivityModel } from '../../../packages/shared/sports';
+import { podcastActivityModel } from '../../../packages/shared/podcast';
+import {
+  projectSurface,
+  surfaceOccludes,
+  type ProjectedSurface,
+  type VisibilityProbe,
+} from '../../../packages/shared/occlusion';
 
 const vertex = `
 in vec3 aPosition;
 in vec3 aNormal;
 in vec4 aColor;
+in float aHeight;
+in vec2 aTurfUV;
+in float aTurf;
 out vec4 vColor;
 out vec3 vWorld;
+out float vHeight;
+out vec2 vTurfUV;
+out float vTurf;
 uniform mat3 uProjectionMatrix;
 uniform mat3 uWorldTransformMatrix;
 uniform mat3 uTransformMatrix;
@@ -38,12 +54,13 @@ void main(){
  vec3 normal=normalize(uPlanetRotation*aNormal);
  float lambert=max(0.,dot(normal,normalize(vec3(-.35,.65,.72))));
  float light=.53+.47*floor(lambert*7.)/7.;
- vColor=vec4(aColor.rgb*light,aColor.a);vWorld=aPosition*1450.;
+ vColor=vec4(aColor.rgb*light,aColor.a);vWorld=aPosition*1450.;vHeight=aHeight;
+ vTurfUV=aTurfUV;vTurf=aTurf;
  vec2 screen=uCentre+vec2(p.x,-p.y)*uRadius;
  mat3 mvp=uProjectionMatrix*uWorldTransformMatrix*uTransformMatrix;
  gl_Position=vec4((mvp*vec3(screen,1.)).xy,-p.z*.45,1.);
 }`;
-const fragment = `in vec4 vColor;in vec3 vWorld;out vec4 finalColor;void main(){if(vColor.a<.01)discard;float grain=fract(sin(dot(floor(vWorld*.65),vec3(12.9898,78.233,37.719)))*43758.5453);finalColor=vec4(vColor.rgb*(.95+.09*grain)*vColor.a,vColor.a);}`;
+const fragment = `in vec4 vColor;in vec3 vWorld;in float vHeight;in vec2 vTurfUV;in float vTurf;uniform sampler2D uTurf;uniform float uCutHeight;out vec4 finalColor;void main(){if(vColor.a<.01||vHeight>uCutHeight)discard;float grain=fract(sin(dot(floor(vWorld*.65),vec3(12.9898,78.233,37.719)))*43758.5453);vec3 c=vColor.rgb;if(vTurf>.5)c*=texture(uTurf,vTurfUV).rgb;finalColor=vec4(c*(.95+.09*grain)*vColor.a,vColor.a);}`;
 const program = () =>
   GlProgram.from({
     vertex,
@@ -53,12 +70,16 @@ const program = () =>
   });
 export type LiveInfrastructure = {
   mesh: Mesh<Geometry, Shader>;
+  glass?: Mesh<Geometry, Shader>;
   point: Vec3;
   reach: number;
   objectId: number;
   kind: string;
   tile: [number, number];
   footprint: [number, number];
+  cutHeight: number;
+  projected?: ProjectedSurface;
+  projectedFrame?: Frame;
   activity?: {
     mesh: Mesh<Geometry, Shader>;
     type: string;
@@ -79,6 +100,9 @@ export function modelGeometry(
   const positions: number[] = [],
     normals: number[] = [],
     colors: number[] = [],
+    heights: number[] = [],
+    turfUV: number[] = [],
+    turf: number[] = [],
     indices: number[] = [];
   const centre: [number, number] = [
     tile[0] + footprint[0] / 2,
@@ -103,10 +127,13 @@ export function modelGeometry(
       len = Math.hypot(...normal) || 1,
       c = color(face.color),
       base = positions.length / 3;
-    for (const p of points) {
+    for (const [i, p] of points.entries()) {
       positions.push(...p);
       normals.push(...normal.map((n) => n / len));
       colors.push(...c, face.opacity ?? 1);
+      heights.push(face.points[i][1] + lift);
+      turfUV.push(face.points[i][0] / 96, face.points[i][2] / 96);
+      turf.push(face.material === 'turf' ? 1 : 0);
     }
     for (let i = 1; i < points.length - 1; i++)
       indices.push(base, base + i, base + i + 1);
@@ -115,10 +142,23 @@ export function modelGeometry(
     positions: new Float32Array(positions),
     normals: new Float32Array(normals),
     colors: new Float32Array(colors),
+    heights: new Float32Array(heights),
+    turfUV: new Float32Array(turfUV),
+    turf: new Float32Array(turf),
     indices: new Uint32Array(indices),
   };
 }
 export class InfrastructureRenderer {
+  private turf: Texture = Texture.WHITE;
+  async loadMaterials(base: string) {
+    this.turf = await Assets.load<Texture>(
+      base + 'materials/stadium-grass.webp',
+    );
+    this.turf.source.addressMode = 'repeat';
+    this.turf.source.scaleMode = 'linear';
+    this.turf.source.autoGenerateMipmaps = true;
+    this.turf.source.updateMipmaps();
+  }
   readonly uniforms = new UniformGroup({
     uPlanetRotation: { value: new Float32Array(9), type: 'mat3x3<f32>' },
     uCentre: { value: new Float32Array(2), type: 'vec2<f32>' },
@@ -129,8 +169,24 @@ export class InfrastructureRenderer {
     if (!s.objectType || s.scene || s.landmark) return null;
     const model = infrastructureModel(s.objectType, s.footprint, s.objectId);
     if (!model) return null;
-    const moving = laboratoryActivityModel(s.objectType, s.footprint, 0);
-    const mesh = this.mesh(model, s.tile, s.footprint, s.lift);
+    const moving =
+      laboratoryActivityModel(s.objectType, s.footprint, 0) ??
+      sportsActivityModel(s.objectType, s.footprint, 0) ??
+      podcastActivityModel(s.objectType, s.footprint, 0);
+    const transparent = model.faces.filter((f) => (f.opacity ?? 1) < 1);
+    const mesh = this.mesh(
+      { ...model, faces: model.faces.filter((f) => (f.opacity ?? 1) >= 1) },
+      s.tile,
+      s.footprint,
+      s.lift,
+    );
+    const glass = transparent.length
+      ? this.mesh({ ...model, faces: transparent }, s.tile, s.footprint, s.lift)
+      : undefined;
+    if (glass) {
+      glass.state.depthMask = false;
+      glass.label = `Glass ${s.objectType} #${s.objectId}`;
+    }
     mesh.label = `3D ${s.objectType} #${s.objectId}`;
     const activity = moving
       ? {
@@ -144,6 +200,7 @@ export class InfrastructureRenderer {
       activity.mesh.label = `Working parts ${s.objectType} #${s.objectId}`;
     return {
       mesh,
+      glass,
       activity,
       objectId: s.objectId,
       kind: model.kind,
@@ -153,17 +210,55 @@ export class InfrastructureRenderer {
       ),
       tile: s.tile,
       footprint: s.footprint,
+      cutHeight: 10000,
       reach:
         Math.max(...s.footprint) * TILE_SIDE +
         Math.max(model.height, moving?.height ?? 0) +
         s.lift,
     };
   }
+  surface(b: LiveInfrastructure, f: Frame) {
+    if (b.projectedFrame !== f) {
+      const g = b.mesh.geometry;
+      b.projected = projectSurface(f, {
+        vertices: g.getAttribute('aPosition').buffer.data as Float32Array,
+        indices: g.indexBuffer!.data as Uint32Array,
+        heights: g.getAttribute('aHeight').buffer.data as Float32Array,
+      });
+      b.projectedFrame = f;
+    }
+    return b.projected!;
+  }
+  reveal(b: LiveInfrastructure, f: Frame, probes: VisibilityProbe[]) {
+    if (b.kind !== 'facade' || !b.mesh.visible) return;
+    const s = this.surface(b, f),
+      cut = probes.some((p) => {
+        if (!p.tile) return false;
+        const dx = Math.max(
+            b.tile[0] - p.tile[0],
+            0,
+            p.tile[0] - b.tile[0] - b.footprint[0],
+          ),
+          dy = Math.max(
+            b.tile[1] - p.tile[1],
+            0,
+            p.tile[1] - b.tile[1] - b.footprint[1],
+          );
+        return Math.hypot(dx, dy) < 5 && surfaceOccludes(s, p);
+      })
+        ? 10
+        : 10000;
+    b.cutHeight = cut;
+    (b.mesh.shader!.resources.cutaway as UniformGroup).uniforms.uCutHeight =
+      cut;
+  }
   /** Reuse each activity buffer; off-screen laboratories perform no rebuilds. */
   animate(b: LiveInfrastructure, time: number) {
     const a = b.activity;
     if (!a || !b.mesh.visible || a.time === time) return;
-    const model = laboratoryActivityModel(a.type, b.footprint, time)!;
+    const model = (laboratoryActivityModel(a.type, b.footprint, time) ??
+      sportsActivityModel(a.type, b.footprint, time) ??
+      podcastActivityModel(a.type, b.footprint, time))!;
     const data = modelGeometry(model, b.tile, b.footprint, a.lift);
     for (const [attribute, values] of [
       ['aPosition', data.positions],
@@ -189,6 +284,9 @@ export class InfrastructureRenderer {
         aPosition: { buffer: data.positions, format: 'float32x3' },
         aNormal: { buffer: data.normals, format: 'float32x3' },
         aColor: { buffer: data.colors, format: 'float32x4' },
+        aHeight: { buffer: data.heights, format: 'float32' },
+        aTurfUV: { buffer: data.turfUV, format: 'float32x2' },
+        aTurf: { buffer: data.turf, format: 'float32' },
       },
       indexBuffer: data.indices,
     });
@@ -201,7 +299,13 @@ export class InfrastructureRenderer {
       geometry,
       shader: new Shader({
         glProgram: program(),
-        resources: { infrastructure: this.uniforms },
+        resources: {
+          infrastructure: this.uniforms,
+          uTurf: this.turf.source,
+          cutaway: new UniformGroup({
+            uCutHeight: { value: 10000, type: 'f32' },
+          }),
+        },
       }),
       state,
     });

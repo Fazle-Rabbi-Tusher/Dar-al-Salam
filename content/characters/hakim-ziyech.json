@@ -31,21 +31,21 @@
       "from": 0,
       "to": 12,
       "action": "kick",
-      "at": [79.2, 39.4],
+      "at": [85, 29.8],
       "facing": "SE"
     },
     {
       "from": 12,
       "to": 60,
       "action": "celebrate",
-      "at": [79.2, 39.4],
+      "at": [85, 29.8],
       "facing": "SE"
     },
     {
       "from": 60,
       "to": 110,
       "action": "idle",
-      "at": [79.2, 39.4],
+      "at": [85, 29.8],
       "facing": "SE",
       "prop": "envelope"
     },
@@ -53,7 +53,7 @@
       "from": 110,
       "to": 150,
       "action": "talk",
-      "at": [79.2, 39.4],
+      "at": [85, 29.8],
       "facing": "SW",
       "prop": "envelope"
     },
@@ -61,7 +61,7 @@
       "from": 150,
       "to": 240,
       "action": "wave",
-      "at": [79.2, 39.4],
+      "at": [85, 29.8],
       "facing": "SE"
     }
   ],

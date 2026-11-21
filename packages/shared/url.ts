@@ -14,7 +14,7 @@ export function parseUrl(url: string) {
   return {
     x: num('x', 2048),
     y: num('y', 1930),
-    zoom: Math.min(4, Math.max(MIN_URL_ZOOM, num('z', 2))),
+    zoom: Math.min(12, Math.max(MIN_URL_ZOOM, num('z', 2))),
     /** True when the link chose a zoom; otherwise the app picks one for the screen. */
     hasZoom: u.searchParams.has('z'),
     id: u.pathname.startsWith('/c/')

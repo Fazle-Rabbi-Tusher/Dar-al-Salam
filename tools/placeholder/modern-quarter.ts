@@ -27,6 +27,14 @@ import { CITY_OBJECTS, CITY_ROAD_DETAILS } from './scenes/city';
 import { LAB_STOOLS } from './scenes/laboratories';
 import { detailFootprints, type DetailType } from './details';
 import DARK_ROOM from '../../art/supplied/dark-room.json';
+import {
+  upgradeSportsCharacters,
+  upgradeSportsRoom,
+} from './scenes/sports-upgrade';
+import {
+  upgradePodcastRoom,
+  upgradePodcastCharacters,
+} from './scenes/podcast-upgrade';
 
 /*
  * The Peace Quarter: one 96×64-tile room showing contemporary Muslim life and
@@ -2110,11 +2118,15 @@ export function modernQuarter() {
   for (const c of cards)
     if (c.pairWith?.startsWith('amb-') && !kept.has(c.pairWith))
       delete c.pairWith;
-  for (const c of [...ambient, ...cards]) {
+  upgradeSportsRoom(room);
+  upgradePodcastRoom(room);
+  const updatedAmbient = upgradeSportsCharacters(ambient);
+  const updatedCards = upgradePodcastCharacters(upgradeSportsCharacters(cards));
+  for (const c of [...updatedAmbient, ...updatedCards]) {
     const errors = scriptErrors(characterSchema.parse(c), room);
     if (errors.length) throw Error(`${c.id}: ${errors.join('; ')}`);
   }
-  return { room, ambient, cards };
+  return { room, ambient: updatedAmbient, cards: updatedCards };
 }
 
 const PLACEHOLDER = {

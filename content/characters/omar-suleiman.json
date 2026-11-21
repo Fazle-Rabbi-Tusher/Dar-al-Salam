@@ -25,21 +25,62 @@
       "prop": "cocoa"
     }
   },
-  "loop": 120,
+  "loop": 240,
   "script": [
     {
       "from": 0,
-      "to": 60,
-      "action": "talk",
-      "at": [9, 17.7],
-      "facing": "SE"
+      "to": 84,
+      "action": "podcast-talk",
+      "at": [
+        44.15,
+        31.36
+      ],
+      "facing": "SE",
+      "z": 1.8
     },
     {
-      "from": 60,
-      "to": 120,
-      "action": "wave",
-      "at": [9, 17.7],
-      "facing": "SW"
+      "from": 84,
+      "to": 108,
+      "action": "podcast-listen",
+      "at": [
+        44.15,
+        31.36
+      ],
+      "facing": "SE",
+      "z": 1.8
+    },
+    {
+      "from": 108,
+      "to": 192,
+      "action": "podcast-listen",
+      "at": [
+        44.15,
+        31.36
+      ],
+      "facing": "SE",
+      "z": 1.8
+    },
+    {
+      "from": 192,
+      "to": 216,
+      "action": "podcast-listen",
+      "at": [
+        44.15,
+        31.36
+      ],
+      "facing": "SE",
+      "z": 1.8
+    },
+    {
+      "from": 216,
+      "to": 240,
+      "action": "podcast-talk",
+      "at": [
+        44.15,
+        31.36
+      ],
+      "facing": "SE",
+      "z": 1.8
     }
   ],
   "bio": {

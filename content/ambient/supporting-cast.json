@@ -1,0 +1,695 @@
+[
+  {
+    "id": "support-knowledge-student",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [
+          14.5,
+          46.3
+        ],
+        "facing": "NW",
+        "z": 0
+      }
+    ],
+    "strip": "support-student",
+    "role": "A student studying a book beside the mathematics workshop"
+  },
+  {
+    "id": "support-hospital-nurse",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "scrubs",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "write",
+        "at": [
+          12.1,
+          28.5
+        ],
+        "facing": "NW",
+        "z": 0
+      }
+    ],
+    "strip": "support-nurse",
+    "role": "A nurse checking a clinical tablet beside the treatment beds"
+  },
+  {
+    "id": "support-hospital-visitor",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [
+          17.1,
+          30.7
+        ],
+        "facing": "NE",
+        "z": 0
+      }
+    ],
+    "strip": "support-student",
+    "role": "A visitor reading quietly beside the waiting area"
+  },
+  {
+    "id": "support-garden-caretaker",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 72,
+        "action": "idle",
+        "at": [
+          28.4,
+          26.4
+        ],
+        "facing": "NE",
+        "z": 0
+      },
+      {
+        "from": 72,
+        "to": 120,
+        "action": "pour",
+        "at": [
+          28.4,
+          26.4
+        ],
+        "facing": "NE",
+        "z": 0
+      },
+      {
+        "from": 120,
+        "to": 240,
+        "action": "idle",
+        "at": [
+          28.4,
+          26.4
+        ],
+        "facing": "NE",
+        "z": 0
+      }
+    ],
+    "strip": "support-gardener",
+    "role": "A caretaker watering the garden flowers"
+  },
+  {
+    "id": "support-community-host",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "carry",
+        "at": [
+          31.4,
+          43.3
+        ],
+        "facing": "SW",
+        "z": 0
+      }
+    ],
+    "strip": "support-host",
+    "role": "A café host offering refreshments beside the coffee cart"
+  },
+  {
+    "id": "support-city-bookseller",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-woman",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [
+          17.9,
+          75.3
+        ],
+        "facing": "SW",
+        "z": 0
+      }
+    ],
+    "strip": "support-bookseller",
+    "role": "A bookseller arranging books at the street shop"
+  },
+  {
+    "id": "support-city-pedestrian",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 60,
+        "action": "walk",
+        "path": [
+          [
+            27.2,
+            75.2
+          ],
+          [
+            30.8,
+            75.2
+          ]
+        ],
+        "easing": "smoothstep"
+      },
+      {
+        "from": 60,
+        "to": 120,
+        "action": "idle",
+        "at": [
+          30.8,
+          75.2
+        ],
+        "facing": "SE"
+      },
+      {
+        "from": 120,
+        "to": 180,
+        "action": "walk",
+        "path": [
+          [
+            30.8,
+            75.2
+          ],
+          [
+            27.2,
+            75.2
+          ]
+        ],
+        "easing": "smoothstep"
+      },
+      {
+        "from": 180,
+        "to": 240,
+        "action": "idle",
+        "at": [
+          27.2,
+          75.2
+        ],
+        "facing": "SE",
+        "z": 0
+      }
+    ],
+    "strip": "support-pedestrian",
+    "role": "A neighbour walking along the pavement and pausing at the shops"
+  },
+  {
+    "id": "support-optics-assistant",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [
+          23.53,
+          103.19500000000001
+        ],
+        "facing": "SW",
+        "z": 4.423660023103041
+      }
+    ],
+    "strip": "support-student",
+    "role": "An optics assistant checking notes beside the experimental bench"
+  },
+  {
+    "id": "support-podcast-operator",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "write",
+        "at": [
+          53.3,
+          35.16
+        ],
+        "facing": "NE",
+        "z": 1.8
+      }
+    ],
+    "strip": "support-technician",
+    "role": "A production technician monitoring the podcast recording"
+  },
+  {
+    "id": "support-football-official",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [
+          77.2,
+          31.5
+        ],
+        "facing": "NE",
+        "z": 0
+      }
+    ],
+    "strip": "support-referee",
+    "role": "An assistant referee watching the touchline with a lowered flag"
+  },
+  {
+    "id": "support-cricket-umpire",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "cap",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "idle",
+        "at": [
+          86.8,
+          112.8
+        ],
+        "facing": "NW",
+        "z": 1.2
+      }
+    ],
+    "strip": "support-umpire",
+    "role": "An umpire watching the delivery from behind the bowler’s wicket"
+  },
+  {
+    "id": "support-basketball-coach",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [
+          67.1,
+          41.7
+        ],
+        "facing": "SE",
+        "z": 0
+      }
+    ],
+    "strip": "support-coach",
+    "role": "A basketball coach encouraging the player from outside the court"
+  },
+  {
+    "id": "support-boxing-corner",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [
+          84.8,
+          52.5
+        ],
+        "facing": "NW",
+        "z": 0
+      }
+    ],
+    "strip": "support-coach",
+    "role": "A cornerman waiting outside the boxing ring with a towel and water"
+  },
+  {
+    "id": "support-mma-corner",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-6",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "talk",
+        "at": [
+          70.8,
+          51.8
+        ],
+        "facing": "NW",
+        "z": 0
+      }
+    ],
+    "strip": "support-coach",
+    "role": "An MMA coach watching from outside the cage"
+  },
+  {
+    "id": "support-massawa-host",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "adult-man-clean",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "carry",
+        "at": [
+          -1.3,
+          123.7
+        ],
+        "facing": "SW",
+        "z": 0
+      }
+    ],
+    "strip": "support-host",
+    "role": "An anonymous market host offering refreshments beside a stall"
+  },
+  {
+    "id": "support-school-boy",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "shirt-trousers",
+      "headwear": "none",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [
+          52.2,
+          101.5
+        ],
+        "facing": "SW",
+        "z": 0
+      }
+    ],
+    "strip": "support-school-boy",
+    "role": "A schoolboy reading while listening to his teacher"
+  },
+  {
+    "id": "support-school-girl",
+    "kind": "person",
+    "aliases": [],
+    "district": "modern-quarter",
+    "depiction": "full",
+    "look": {
+      "base": "child",
+      "garment": "long-dress",
+      "headwear": "hijab",
+      "prop": "none",
+      "colours": {
+        "skin": "skin-3",
+        "hair": "hair-black",
+        "garmentPrimary": "navy",
+        "garmentSecondary": "white-linen",
+        "headwear": "navy",
+        "prop": "cocoa"
+      }
+    },
+    "loop": 240,
+    "script": [
+      {
+        "from": 0,
+        "to": 240,
+        "action": "read",
+        "at": [
+          53.7,
+          101.5
+        ],
+        "facing": "SW",
+        "z": 0
+      }
+    ],
+    "strip": "support-school-girl",
+    "role": "A schoolgirl studying her book beside her classmate"
+  }
+]

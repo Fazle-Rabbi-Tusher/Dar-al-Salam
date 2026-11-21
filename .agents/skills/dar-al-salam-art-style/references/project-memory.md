@@ -38,6 +38,47 @@ extracted from an attached document. New explicit owner instructions override th
   microscopy, mixing and reactions, with staff working beside the apparatus.
   Architecture studios should show drawing, developing blueprints and CAD work.
   Keep these activities on the shared world clock and freeze them on pause.
+- **World integration (2026-11-14):** Al-Bayt al-Muzlim belongs inside the main
+  world, rather than opening a separate page or iframe. Preserve the approved
+  three-dimensional model components and materials. Keep people visible with
+  correct per-pixel depth, grounded anchors and nearby foreground-wall cutaways.
+- **Dark-room scene refinement:** show only the dark chamber, its scholar and
+  interior equipment. Omit the surrounding courtyard and neighboring buildings.
+- **Sports and Community refinement (14 November 2026):** remove the ambulance
+  section beside football; replace it with a basketball court and bring Hakeem
+  there for shooting, dribbling and dunks. Put all four cricketers in a proper
+  stadium with bowling, batting, running and fielding. Give boxing and MMA real
+  ropes, padding, an octagonal chain-link cage and access details. Replace the
+  kitchen beside Community with a larger native dark chamber; scale its scholar
+  and equipment together to match neighboring laboratory furniture.
+- **Stadium realism and podcast refinement (15 November 2026):** grass should
+  read as living turf with fine texture, restrained mowing grain and short
+  dimensional blades. Football needs clearly visible full-width goalposts,
+  crossbars and deep open nets. Omar Suleiman's new podcast performance sits
+  opposite journalist Mehdi Hasan in a complete 3D studio with microphones,
+  cameras, acoustic treatment and production equipment. Keep adult proportions,
+  stationary chairs/soles, alternating talk/listen gestures and pause behavior.
+  Mehdi's provisional likeness still needs comparison with an accessible photo;
+  see `docs/podcast-and-stadiums.md` for the located but blocked source.
+- **Clean character edges (15 November 2026):** the owner wants the smooth
+  appearance of Mufti Menk, without a white outer cutout layer on other people.
+  Preserve the original clothes, skin, faces and white fabrics. Soft alpha edges
+  must blend over the actual 3D background without prematurely writing depth.
+- **Sparse supporting cast (15 November 2026):** add a few logical anonymous
+  people across the sections, such as an umpire, assistant referee, coaches,
+  nurse, readers, gardeners, shopkeepers and production staff. Keep roughly one
+  or two additions per section; retain existing laboratory staff and listeners.
+  This supersedes the earlier main-characters-only preference. Activities need
+  to suit their stations, clear the walls/equipment and remain deterministic.
+- **Ibn al-Haytham refinement (15 November 2026):** redesign his face and
+  clothes in the saved detailed 3D-looking pixel style using later historical
+  portrait references; preserve the original 40-cell optical experiment and
+  archive its source artwork. Exchange the complete dark-room scene with the
+  podcast studio, including their equipment, staff, bounds and camera targets.
+  The dark room now occupies the former podcast lawn; the studio is beside
+  Community. This supersedes the earlier kitchen-location preference.
+  See `docs/haytham-redesign-and-scene-swap.md` for the reference and native
+  integration details. Later portraits are artistic interpretations.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

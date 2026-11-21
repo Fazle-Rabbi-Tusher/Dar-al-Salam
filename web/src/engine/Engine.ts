@@ -19,10 +19,29 @@ import {
   InfrastructureRenderer,
   type LiveInfrastructure,
 } from './Infrastructure';
+import { DepthSprite } from './DepthSprite';
+import { DarkRoom } from './DarkRoom';
+import {
+  darkRoomCamera,
+  type DarkRoomOptions,
+  type DarkRoomView,
+  type DarkRoomExperiment,
+} from '../../../packages/shared/dark-room';
+import {
+  surfaceOccludes,
+  type VisibilityProbe,
+} from '../../../packages/shared/occlusion';
 import { OutlineFilter } from 'pixi-filters';
 import { FPS, globalFrame, frameMap } from '../../../packages/shared/clock';
 import { characterState, frameKey } from '../../../packages/shared/script';
+import {
+  isSportsPlayer,
+  sportsPose,
+  basketballLift,
+} from '../../../packages/shared/sports';
 import { motionFor } from '../../../packages/shared/motion';
+import { podcastPose } from '../../../packages/shared/podcast';
+import { supportingPose } from '../../../packages/shared/supporting-cast';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
   FACING_DIRECTION,
@@ -84,7 +103,7 @@ type Static = {
   depth: number;
 };
 type ViewState = { lat: number; lon: number; zoom: number };
-const MAX_ZOOM = 4,
+const MAX_ZOOM = 12,
   MAX_LAT = 1.32;
 
 const vertex = /* glsl */ `
@@ -374,14 +393,18 @@ export class Engine {
   private metadata = new Map<string, FrameMeta>();
   private masks = new Map<string, Uint8Array>();
   private live = new Map<string, Live>();
+  private spriteDepth = new Map<Sprite, DepthSprite>();
   private statics: Static[] = [];
   private infrastructure = new InfrastructureRenderer();
+  private darkRoom = new DarkRoom(this.infrastructure.uniforms);
   private buildings: LiveInfrastructure[] = [];
   private listeners = new Map<string, Set<(data: never) => void>>();
   private resizeObserver: ResizeObserver;
   private abort = new AbortController();
   private destroyed = false;
   private ready = false;
+  private initialized = false;
+  private suspended = false;
   private elapsed = 0;
   private lastFrame = -1;
   private frame = 0;
@@ -448,10 +471,15 @@ export class Engine {
       antialias: false,
       preference: 'webgl',
     });
+    this.initialized = true;
     if (this.destroyed) {
       this.app.destroy(true);
       return;
     }
+    // Keep input/camera ticks responsive without continuously redrawing the
+    // detailed 3D world while it is paused. Simulation poses remain at 12 Hz;
+    // visible lab apparatus and camera motion can still draw between poses.
+    this.app.ticker.remove(this.app.render, this.app);
     if (import.meta.env.DEV) this.countDrawCalls();
     this.host.appendChild(this.app.canvas);
     this.app.canvas.setAttribute(
@@ -506,8 +534,13 @@ export class Engine {
     );
     this.behind.sortableChildren = true;
     this.front.sortableChildren = true;
+    await this.infrastructure.loadMaterials(this.base);
+    if (this.destroyed) return;
     const modeled = new Set<number>();
     for (const s of manifest.sortables) {
+      // Compatibility with older manifests: the approved chamber is now real
+      // geometry, so its old flat site strips must never be drawn over people.
+      if (s.scene === 'dark-room') continue;
       if (modeled.has(s.objectId)) continue;
       const building = this.infrastructure.create(s);
       if (building) {
@@ -528,17 +561,23 @@ export class Engine {
         depth: 0,
       });
     }
+    await this.darkRoom.load(this.abort.signal);
+    if (this.destroyed) return;
     this.ready = true;
     this.applyCamera();
     this.update();
     this.bindInput();
-    this.app.ticker.add((t) => this.tick(t.deltaMS));
+    this.app.ticker.add((t) => this.tick(t.elapsedMS));
+    if (this.suspended) this.app.stop();
     if (import.meta.env.DEV)
       (window as unknown as { __darEngine?: Engine }).__darEngine = this;
     this.emit('progress', 1);
   }
   private countDrawCalls() {
     const gl = (this.app.renderer as WebGLRenderer).gl;
+    // Pixi can fall back to Canvas when WebGL is unavailable. Development
+    // instrumentation must not prevent the world from loading there.
+    if (!gl) return;
     const elements = gl.drawElements.bind(gl),
       arrays = gl.drawArrays.bind(gl);
     gl.drawElements = (mode, count, type, offset) => {
@@ -608,6 +647,67 @@ export class Engine {
   }
   setMotion(on: boolean) {
     this.motion = on;
+  }
+  focusDarkRoom(view: DarkRoomView = 'room') {
+    if (!this.darkRoom.model) return;
+    if (!['mirrors', 'tubes', 'astronomy'].includes(view))
+      this.darkRoom.setExperiment({ kind: 'none' });
+    const { point, zoom } = this.darkRoom.target(view),
+      // Leave room for the persistent site's controls on smaller viewports.
+      fit = Math.min(
+        1,
+        this.host.clientWidth / 1100,
+        this.host.clientHeight / 820,
+      );
+    this.flyTo(
+      darkRoomCamera(point[0], point[2], Math.max(1.2, zoom * fit)),
+      650,
+    );
+  }
+  setDarkRoomOptions(changes: Partial<DarkRoomOptions>) {
+    this.darkRoom.setOptions(changes);
+    this.dirty = true;
+  }
+  setDarkRoomClock(running: boolean) {
+    this.darkRoom.setClockRunning(running, this.frame);
+    this.dirty = true;
+  }
+  setDarkRoomExperiment(options: DarkRoomExperiment) {
+    this.darkRoom.setExperiment(options);
+    this.dirty = true;
+  }
+  getDarkRoomState() {
+    return {
+      options: { ...this.darkRoom.options },
+      clockRunning: this.darkRoom.clockRunning,
+    };
+  }
+  /** Release the world renderer while a full-screen exhibit owns the viewport.
+   * This does not change the user's motion preference or advance world time.
+   */
+  setSuspended(on: boolean) {
+    if (this.destroyed || this.suspended === on) return;
+    this.suspended = on;
+    if (on) {
+      if (this.ready) {
+        for (const id of this.pointers.keys())
+          if (this.app.canvas.hasPointerCapture(id))
+            this.app.canvas.releasePointerCapture(id);
+      }
+      this.pointers.clear();
+      this.velocity = { lat: 0, lon: 0 };
+      this.flight = null;
+      this.nextFlight = null;
+      this.zoomIdle = 0;
+      this.hover = null;
+      this.emit('characterHover', null);
+    }
+    if (!this.ready) return;
+    if (on) this.app.stop();
+    else {
+      this.dirty = true;
+      this.app.start();
+    }
   }
   setZoom(zoom: number) {
     // Buttons and keys zoom around the focus; zoomAt re-sets its own point.
@@ -714,6 +814,10 @@ export class Engine {
   }
   /** Fly to show a whole scene: every member and prop, heads included. */
   private frameScene(id: string) {
+    if (id === 'dark-room') {
+      this.focusDarkRoom();
+      return;
+    }
     const scene = this.manifest?.scenes.find((s) => s.id === id);
     if (!scene || !this.manifest) return;
     const points: [number, number][] = [];
@@ -722,6 +826,16 @@ export class Engine {
         points.push(worldFromTile(...characterState(c, this.frame).tile));
     for (const s of this.manifest.sortables)
       if (s.scene === id) points.push(worldFromTile(...s.tile));
+    if (id === 'podcast') {
+      const [[x0, y0], [x1, y1]] = scene.area;
+      for (const [x, y] of [
+        [x0, y0],
+        [x1, y0],
+        [x1, y1],
+        [x0, y1],
+      ])
+        points.push(worldFromTile(x, y));
+    }
     if (!points.length) return;
     const xs = points.map((p) => p[0]),
       ys = points.map((p) => p[1]);
@@ -790,6 +904,15 @@ export class Engine {
         x1 = Math.max(x1, b.maxX);
         y1 = Math.max(y1, b.maxY);
       };
+      if (id === 'dark-room') {
+        const b = this.darkRoom.screenBounds();
+        if (b) {
+          x0 = b.x;
+          y0 = b.y;
+          x1 = b.x + b.w;
+          y1 = b.y + b.h;
+        }
+      }
       for (const i of this.live.values())
         if (i.character.scene === id) grow(i.sprite);
       for (const s of this.statics) if (s.sortable.scene === id) grow(s.sprite);
@@ -854,6 +977,11 @@ export class Engine {
     depthBias = 0,
     density = 1,
   ) {
+    let depth = this.spriteDepth.get(sprite);
+    if (!depth && depthBias !== 0) {
+      depth = new DepthSprite(sprite, depthBias === 1e-5);
+      this.spriteDepth.set(sprite, depth);
+    }
     const p = project(this.proj, point, lift),
       zoom = this.view.zoom,
       reach = size * zoom + 8,
@@ -867,6 +995,7 @@ export class Engine {
       p.y > h + reach * 0.3
     ) {
       sprite.visible = false;
+      depth?.sync(null);
       return null;
     }
     const layer = p.depth < 0 ? this.behind : this.front;
@@ -876,72 +1005,96 @@ export class Engine {
     sprite.rotation = p.rotation;
     sprite.scale.set(zoom / density);
     sprite.zIndex = p.depth + depthBias;
+    depth?.sync(p, lift, density, depthBias === 2e-5, depthBias);
     return p;
   }
-  private update() {
+  private update(sportsOnly = false) {
     if (!this.manifest) return;
-    (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
-    this.infrastructure.update(this.proj);
-    for (const b of this.buildings) {
-      const p = project(this.proj, b.point),
-        reach = b.reach * this.view.zoom + 12;
-      b.mesh.visible =
-        p.depth > -0.28 &&
-        p.x > -reach &&
-        p.y > -reach &&
-        p.x < this.host.clientWidth + reach &&
-        p.y < this.host.clientHeight + reach;
-      if (b.activity) b.activity.mesh.visible = b.mesh.visible;
-      if (!b.mesh.visible) continue;
-      const layer = p.depth < 0 ? this.behind : this.front;
-      if (b.mesh.parent !== layer) layer.addChild(b.mesh);
-      b.mesh.zIndex = Math.max(
-        ...[
-          [0, 0],
-          [b.footprint[0], 0],
-          [0, b.footprint[1]],
-          [...b.footprint],
-        ].map(
-          ([x, y]) =>
-            project(this.proj, tileToPlanet(b.tile[0] + x, b.tile[1] + y))
-              .depth,
-        ),
+    if (!sportsOnly) {
+      (this.uniforms.uniforms as { uTime: number }).uTime = this.frame;
+      this.infrastructure.update(this.proj);
+      this.darkRoom.update(
+        this.proj,
+        this.front,
+        this.behind,
+        this.host.clientWidth,
+        this.host.clientHeight,
       );
-      if (b.activity) {
-        if (b.activity.mesh.parent !== layer) layer.addChild(b.activity.mesh);
-        b.activity.mesh.zIndex = b.mesh.zIndex + 1e-7;
+      for (const b of this.buildings) {
+        const p = project(this.proj, b.point),
+          reach = b.reach * this.view.zoom + 12;
+        b.mesh.visible =
+          p.depth > -0.28 &&
+          p.x > -reach &&
+          p.y > -reach &&
+          p.x < this.host.clientWidth + reach &&
+          p.y < this.host.clientHeight + reach;
+        if (b.activity) b.activity.mesh.visible = b.mesh.visible;
+        if (b.glass) b.glass.visible = b.mesh.visible;
+        if (!b.mesh.visible) continue;
+        const layer = p.depth < 0 ? this.behind : this.front;
+        if (b.mesh.parent !== layer) layer.addChild(b.mesh);
+        if (b.glass) {
+          if (b.glass.parent !== layer) layer.addChild(b.glass);
+          // Glass blends after opaque geometry and sprites, while sharing
+          // their depth test. It never hides a dunk or a face behind the pane.
+          b.glass.zIndex = 3;
+        }
+        b.mesh.zIndex = Math.max(
+          ...[
+            [0, 0],
+            [b.footprint[0], 0],
+            [0, b.footprint[1]],
+            [...b.footprint],
+          ].map(
+            ([x, y]) =>
+              project(this.proj, tileToPlanet(b.tile[0] + x, b.tile[1] + y))
+                .depth,
+          ),
+        );
+        if (b.activity) {
+          if (b.activity.mesh.parent !== layer) layer.addChild(b.activity.mesh);
+          b.activity.mesh.zIndex = b.mesh.zIndex + 1e-7;
+        }
+      }
+      for (const s of this.statics) {
+        if (s.sortable.animation)
+          this.texture(
+            s.sprite,
+            s.sortable.animation[
+              frameMap(
+                this.frame,
+                s.sortable.period ?? 60,
+                s.sortable.animation.length,
+              )
+            ],
+            s.sortable.pivot,
+          );
+        const p = this.place(
+          s.sprite,
+          s.point,
+          s.size,
+          s.sortable.lift,
+          0,
+          s.density,
+        );
+        if (!p) continue;
+        s.depth = p.depth;
+        const id = s.sortable.landmark;
+        if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
       }
     }
-    for (const s of this.statics) {
-      if (s.sortable.animation)
-        this.texture(
-          s.sprite,
-          s.sortable.animation[
-            frameMap(
-              this.frame,
-              s.sortable.period ?? 60,
-              s.sortable.animation.length,
-            )
-          ],
-          s.sortable.pivot,
-        );
-      const p = this.place(
-        s.sprite,
-        s.point,
-        s.size,
-        s.sortable.lift,
-        0,
-        s.density,
-      );
-      if (!p) continue;
-      s.depth = p.depth;
-      const id = s.sortable.landmark;
-      if (id) this.outline(s.sprite, this.hover === id, this.selected === id);
-    }
     let visible = 0;
+    const probes: VisibilityProbe[] = [];
     for (const c of this.manifest.characters) {
-      const state = characterState(c, this.frame),
+      const sports = isSportsPlayer(c.id);
+      if (sportsOnly && !sports) continue;
+      const renderTime = sports
+        ? this.frame + ((this.elapsed * FPS) % 1)
+        : this.frame;
+      const state = characterState(c, renderTime),
         step = c.script[state.stepIndex];
+      if (c.id === 'hakeem-olajuwon') state.z += basketballLift(renderTime);
       let item = this.live.get(c.id);
       if (!item) {
         item = { sprite: new Sprite(), character: c, frame: '', depth: 0 };
@@ -982,12 +1135,25 @@ export class Engine {
         tempo = this.metadata.get(frames[0])?.tempo,
         steps =
           view >= 0 ? (c.dir8![state.action] ?? c.dir8!['*'])[view] : null,
+        supportPose = supportingPose(c.id, state.action, this.frame),
         // Generated walking steps advance every three ticks (a stride a second).
         name = steps
           ? steps[Math.floor(this.frame / 3) % steps.length]
-          : tempo
-            ? frames[Math.floor((this.frame % (frames.length * tempo)) / tempo)]
-            : frames[state.index % frames.length];
+          : sports
+            ? frames[
+                (['walk', 'dribble'].includes(state.action)
+                  ? Math.floor(renderTime / 2)
+                  : sportsPose(c.id, renderTime)) % frames.length
+              ]
+            : state.action.startsWith('podcast-')
+              ? frames[podcastPose(c.id, this.frame) % frames.length]
+              : supportPose !== undefined
+                ? frames[supportPose % frames.length]
+                : tempo
+                  ? frames[
+                      Math.floor((this.frame % (frames.length * tempo)) / tempo)
+                    ]
+                  : frames[state.index % frames.length];
       this.texture(item.sprite, name);
       item.frame = name;
       const m = this.metadata.get(name)!;
@@ -1001,6 +1167,7 @@ export class Engine {
         2e-5,
         density,
       );
+      if (p && sports) item.sprite.position.set(p.x, p.y);
       // Left/right views share frames; the engine flips them about the feet.
       if (p && flip && view < 0) item.sprite.scale.x *= -1;
       if (p && motion) {
@@ -1020,11 +1187,26 @@ export class Engine {
         item.sprite.scale.y *= motion.sy;
         item.sprite.rotation += motion.lean * toward;
       }
+      this.spriteDepth
+        .get(item.sprite)
+        ?.sync(p, state.z + (motion?.lift ?? 0), density, true, 2e-5);
       if (item.shadow) {
         const sp = p && this.place(item.shadow, point, 36, 0, 1e-5);
         if (!sp) item.shadow.visible = false;
       }
       if (!p) continue;
+      const bounds = item.sprite.getBounds(),
+        depth = this.spriteDepth.get(item.sprite)!;
+      // Sample head and torso; cut only a foreground wall that actually
+      // covers a person, keeping its plinth and all other walls intact.
+      for (const fraction of [0.22, 0.46]) {
+        const q = {
+            x: bounds.x + bounds.width * 0.5,
+            y: bounds.y + bounds.height * fraction,
+          },
+          local = item.sprite.toLocal(q);
+        probes.push({ ...q, depth: depth.depthAt(local.y), tile: state.tile });
+      }
       visible++;
       item.depth = p.depth;
       this.outline(
@@ -1033,13 +1215,24 @@ export class Engine {
         this.selected === c.id,
       );
     }
+    if (sportsOnly) return;
     this.visibleCount = visible;
+    for (const b of this.buildings)
+      this.infrastructure.reveal(b, this.proj, probes);
+    this.darkRoom.reveal(probes);
     this.drawRopes();
     this.drawSceneGlow();
     if (this.inspector) this.drawInspector();
   }
   /** Gold outline on hover; a slow pulse while selected. */
   private outline(sprite: Sprite, hovered: boolean, selected: boolean) {
+    const depth = this.spriteDepth.get(sprite);
+    if (depth) {
+      depth.highlight(
+        selected ? 0.65 + 0.35 * Math.sin(this.frame / 4) : hovered ? 1 : 0,
+      );
+      return;
+    }
     if (hovered || selected) {
       let filter = sprite.filters?.[0] as OutlineFilter | undefined;
       if (!filter) {
@@ -1104,16 +1297,19 @@ export class Engine {
     g.zIndex = depth + 1e-5;
   }
   private tick(dt: number) {
-    if (!this.ready || this.destroyed) return;
+    if (!this.ready || this.destroyed || this.suspended) return;
     this.lastDrawCalls = this.drawCalls;
     this.drawCalls = 0;
+    const cameraDt = dt;
     dt = Math.min(dt, 64);
     if (this.motion) this.elapsed += dt / 1000;
     this.frame = globalFrame(this.elapsed);
     let moved = false;
     if (this.flight) {
       const fl = this.flight;
-      fl.elapsed += dt;
+      // Navigation keeps its promised duration even during shader compilation
+      // or a slow rendered frame; only the simulation limits catch-up time.
+      fl.elapsed += cameraDt;
       const t = Math.min(1, fl.elapsed / fl.duration),
         ease = 1 - (1 - t) ** 3;
       this.view = {
@@ -1158,14 +1354,29 @@ export class Engine {
       }
     }
     if (moved) this.applyCamera();
-    if (this.lastFrame !== this.frame || this.dirty) {
+    const clockChanged = this.darkRoom.animate(this.frame);
+    const changed = this.lastFrame !== this.frame || this.dirty || clockChanged;
+    if (changed) {
       this.update();
       this.lastFrame = this.frame;
       this.dirty = false;
     }
     const activityTime = this.frame + ((this.elapsed * FPS) % 1);
+    if (
+      !changed &&
+      this.motion &&
+      [...this.live.values()].some(
+        (item) => isSportsPlayer(item.character.id) && item.sprite.visible,
+      )
+    )
+      this.update(true);
     for (const b of this.buildings)
       this.infrastructure.animate(b, activityTime);
+    if (
+      changed ||
+      (this.motion && this.buildings.some((b) => b.activity && b.mesh.visible))
+    )
+      this.app.render();
     this.emitElapsed += dt;
     if (this.emitElapsed >= 120) {
       this.emitElapsed = 0;
@@ -1240,10 +1451,26 @@ export class Engine {
           local.x,
           local.y,
         )
-      )
+      ) {
+        const sprite = this.spriteDepth.get(item.sprite),
+          depth = sprite?.depthAt(local.y);
+        if (
+          depth !== undefined &&
+          this.buildings.some(
+            (b) =>
+              b.mesh.visible &&
+              surfaceOccludes(
+                this.infrastructure.surface(b, this.proj),
+                { ...p, depth },
+                b.cutHeight,
+              ),
+          )
+        )
+          continue;
         return item.id;
+      }
     }
-    return null;
+    return this.darkRoom.hit(p) ? 'ibn-al-haytham' : null;
   }
   private clickable(id: string | null) {
     return Boolean(
@@ -1288,6 +1515,7 @@ export class Engine {
     canvas.addEventListener(
       'pointerdown',
       (e) => {
+        if (this.suspended) return;
         canvas.focus();
         canvas.setPointerCapture(e.pointerId);
         const p = this.point(e);
@@ -1303,6 +1531,7 @@ export class Engine {
     canvas.addEventListener(
       'pointermove',
       (e) => {
+        if (this.suspended) return;
         const p = this.point(e),
           old = this.pointers.get(e.pointerId);
         if (old) {
@@ -1346,6 +1575,7 @@ export class Engine {
       options,
     );
     const up = (e: PointerEvent) => {
+      if (this.suspended) return;
       if (!this.pointers.has(e.pointerId)) return;
       // Lifting one finger of a pinch must not fling the planet.
       if (this.pointers.size === 2) this.velocity = { lat: 0, lon: 0 };
@@ -1361,7 +1591,7 @@ export class Engine {
         if (hit && this.clickable(hit)) {
           this.selected = hit;
           this.emit('characterClick', hit);
-          if (scene) this.frameScene(scene);
+          if (scene && !this.suspended) this.frameScene(scene);
           this.dirty = true;
         }
         this.velocity = { lat: 0, lon: 0 };
@@ -1391,6 +1621,7 @@ export class Engine {
     canvas.addEventListener(
       'wheel',
       (e) => {
+        if (this.suspended) return;
         e.preventDefault();
         const p = this.point(e);
         this.zoomAt(this.view.zoom * Math.exp(-e.deltaY * 0.0015), p.x, p.y);
@@ -1400,6 +1631,7 @@ export class Engine {
     window.addEventListener(
       'keydown',
       (e) => {
+        if (this.suspended) return;
         if ((e.target as HTMLElement)?.closest('input,textarea,select,button'))
           return;
         if (e.key.toLowerCase() === 'i' && import.meta.env.DEV) {
@@ -1500,8 +1732,15 @@ export class Engine {
     this.abort.abort();
     this.resizeObserver.disconnect();
     this.listeners.clear();
+    this.darkRoom.destroy();
+    for (const sprite of this.spriteDepth.values()) sprite.destroy();
+    this.spriteDepth.clear();
     for (const b of this.buildings) {
-      for (const mesh of [b.mesh, ...(b.activity ? [b.activity.mesh] : [])]) {
+      for (const mesh of [
+        b.mesh,
+        ...(b.glass ? [b.glass] : []),
+        ...(b.activity ? [b.activity.mesh] : []),
+      ]) {
         const geometry = mesh.geometry,
           shader = mesh.shader;
         mesh.destroy();
@@ -1510,6 +1749,17 @@ export class Engine {
       }
     }
     this.buildings = [];
-    if (this.ready) this.app.destroy(true, { children: true, texture: false });
+    if (this.initialized)
+      this.app.destroy(true, { children: true, texture: false });
+    this.live.clear();
+    this.statics = [];
+    this.textures.clear();
+    this.metadata.clear();
+    this.masks.clear();
+    this.manifest = null;
+    if (import.meta.env.DEV) {
+      const debug = window as unknown as { __darEngine?: Engine };
+      if (debug.__darEngine === this) delete debug.__darEngine;
+    }
   }
 }

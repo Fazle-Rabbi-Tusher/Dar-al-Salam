@@ -31,6 +31,13 @@ export const ACTIONS = {
   sujood: 2,
   /** Cricket cover drive. */
   bat: 4,
+  bowl: 6,
+  catch: 6,
+  shoot: 6,
+  dunk: 6,
+  dribble: 6,
+  'podcast-talk': 6,
+  'podcast-listen': 6,
   cat_idle: 4,
   cat_walk: 6,
   cat_sleep: 4,
@@ -94,6 +101,8 @@ export const characterSchema = z.object({
     .enum(['person', 'cat', 'bird', 'ball', 'vehicle', 'animal'])
     .default('person'),
   name: z.record(z.string()).optional(),
+  /** Explicit family surname; never treated as a given-name approval. */
+  familyName: z.string().min(1).optional(),
   aliases: z.array(z.string()).default([]),
   years: z.string().optional(),
   place: z.string().optional(),
@@ -215,7 +224,7 @@ export const frameMetaSchema = z.object({
   bounds: rectSchema,
   hitMask: z.string(),
   /** Sprite pixels per world pixel (2 for named characters' sharp heads). */
-  density: z.number().int().positive().optional(),
+  density: z.number().positive().optional(),
   /** A supplied still sprite the engine animates (packages/shared/motion.ts). */
   still: z.boolean().optional(),
   /** Supplied animation strip frame: world ticks per frame (motion.ts). */

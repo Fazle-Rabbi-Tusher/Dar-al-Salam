@@ -80,6 +80,20 @@ describe('content identities', () => {
     ).toBe(true));
   it('does not mistake a patronymic for a prophet', () =>
     expect(forbiddenName('Scholar ibn Musa', rules)).toBe(false));
+  it('distinguishes an explicit trailing surname without approving a given name', () => {
+    expect(forbiddenName('Mehdi Hasan', rules, 'Hasan')).toBe(false);
+    expect(forbiddenName('mehdi-hasan', rules, 'Hasan')).toBe(false);
+    expect(forbiddenName('Mehdi Hasan', rules)).toBe(true);
+    for (const name of [
+      'Hasan',
+      'Hasan ibn Ali',
+      'Muhammad Hasan',
+      'Hasan Scholar',
+    ])
+      expect(forbiddenName(name, rules, 'Hasan'), name).toBe(true);
+    expect(forbiddenName('Ali ibn Abi Talib', rules, 'Talib')).toBe(true);
+    expect(forbiddenName('Scholar Hasan Extra', rules, 'Hasan')).toBe(true);
+  });
   it('normalises apostrophes, accents and leading articles', () => {
     expect(normalise('  el-Mūsā ')).toBe('musa');
     expect(normalise("Shu'ayb")).toBe('shuayb');

@@ -25,21 +25,57 @@
       "prop": "wool-cream"
     }
   },
-  "loop": 120,
+  "loop": 240,
   "script": [
     {
       "from": 0,
-      "to": 60,
-      "action": "idle",
-      "at": [78.8, 115.4],
-      "facing": "SW"
+      "to": 76,
+      "action": "bat",
+      "at": [85.15, 110.55],
+      "facing": "SE",
+      "z": 1.2
     },
     {
-      "from": 60,
-      "to": 120,
-      "action": "cheer",
-      "at": [78.8, 115.4],
-      "facing": "SE"
+      "from": 76,
+      "to": 116,
+      "action": "walk",
+      "path": [
+        [85.15, 110.55],
+        [85.15, 112.2],
+        [78.65, 112.2],
+        [78.65, 111.5]
+      ],
+      "z": 1.2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 116,
+      "to": 196,
+      "action": "bat",
+      "at": [78.65, 111.5],
+      "facing": "SE",
+      "z": 1.2
+    },
+    {
+      "from": 196,
+      "to": 236,
+      "action": "walk",
+      "path": [
+        [78.65, 111.5],
+        [78.65, 112.2],
+        [85.15, 112.2],
+        [85.15, 110.55]
+      ],
+      "z": 1.2,
+      "easing": "smoothstep"
+    },
+    {
+      "from": 236,
+      "to": 240,
+      "action": "bat",
+      "at": [85.15, 110.55],
+      "facing": "SE",
+      "z": 1.2
     }
   ],
   "bio": {

@@ -31,12 +31,11 @@ describe('modern Muslim-world infrastructure geometry', () => {
       expect(Math.max(...zs) - Math.min(...zs), o.type).toBeGreaterThan(0);
     }
   });
-  it('preserves supplied character art, natural landscaping and painted sports floors', () => {
+  it('preserves supplied character art, natural landscaping and painted crossings', () => {
     for (const type of [
       'm-tree',
       'm-pine',
       'm-waterfall',
-      'm-pitch',
       'm-crosswalk',
       'khwarizmi-desk',
       'menk-recording-camera',

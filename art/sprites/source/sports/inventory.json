@@ -1,0 +1,169 @@
+{
+  "style": "Dar al-Salam approved isometric pixel art",
+  "originalAnimations": "Existing idle, cheer and celebration PNGs are preserved unchanged.",
+  "sources": [
+    {
+      "file": "hashim-amla-bat.png",
+      "rows": 2,
+      "columns": 6
+    },
+    {
+      "file": "tamim-iqbal-bat.png",
+      "rows": 2,
+      "columns": 6
+    },
+    {
+      "file": "mashrafe-mortaza-bowl.png",
+      "rows": 2,
+      "columns": 6
+    },
+    {
+      "file": "usman-khawaja-catch.png",
+      "rows": 2,
+      "columns": 6
+    },
+    {
+      "file": "hakeem-olajuwon-actions.png",
+      "rows": 4,
+      "columns": 6
+    },
+    {
+      "file": "cricket-running.png",
+      "rows": 4,
+      "columns": 6
+    },
+    {
+      "file": "hakeem-olajuwon-dribble.png",
+      "rows": 2,
+      "columns": 6
+    }
+  ],
+  "strips": [
+    {
+      "id": "hashim-amla",
+      "action": "bat",
+      "side": "SE",
+      "frames": 6,
+      "scale": 0.779783393501805
+    },
+    {
+      "id": "hashim-amla",
+      "action": "bat",
+      "side": "NE",
+      "frames": 6,
+      "scale": 0.7474048442906575
+    },
+    {
+      "id": "tamim-iqbal",
+      "action": "bat",
+      "side": "SE",
+      "frames": 6,
+      "scale": 0.7415730337078652
+    },
+    {
+      "id": "tamim-iqbal",
+      "action": "bat",
+      "side": "NE",
+      "frames": 6,
+      "scale": 0.7232876712328767
+    },
+    {
+      "id": "mashrafe-mortaza",
+      "action": "bowl",
+      "side": "SE",
+      "frames": 6,
+      "scale": 0.7542857142857143
+    },
+    {
+      "id": "mashrafe-mortaza",
+      "action": "bowl",
+      "side": "NE",
+      "frames": 6,
+      "scale": 0.7521367521367521
+    },
+    {
+      "id": "usman-khawaja",
+      "action": "catch",
+      "side": "SE",
+      "frames": 6,
+      "scale": 0.7374301675977654
+    },
+    {
+      "id": "usman-khawaja",
+      "action": "catch",
+      "side": "NE",
+      "frames": 6,
+      "scale": 0.7374301675977654
+    },
+    {
+      "id": "hakeem-olajuwon",
+      "action": "shoot",
+      "side": "SE",
+      "frames": 6,
+      "scale": 1.214574898785425
+    },
+    {
+      "id": "hakeem-olajuwon",
+      "action": "shoot",
+      "side": "NE",
+      "frames": 6,
+      "scale": 1.2745098039215685
+    },
+    {
+      "id": "hakeem-olajuwon",
+      "action": "dunk",
+      "side": "SE",
+      "frames": 6,
+      "scale": 1.171875
+    },
+    {
+      "id": "hakeem-olajuwon",
+      "action": "dunk",
+      "side": "NE",
+      "frames": 6,
+      "scale": 1.2552301255230125
+    },
+    {
+      "id": "hashim-amla",
+      "action": "walk",
+      "side": "SE",
+      "frames": 6,
+      "scale": 1.2342857142857142
+    },
+    {
+      "id": "hashim-amla",
+      "action": "walk",
+      "side": "NE",
+      "frames": 6,
+      "scale": 1.196969696969697
+    },
+    {
+      "id": "tamim-iqbal",
+      "action": "walk",
+      "side": "SE",
+      "frames": 6,
+      "scale": 1.2279792746113989
+    },
+    {
+      "id": "tamim-iqbal",
+      "action": "walk",
+      "side": "NE",
+      "frames": 6,
+      "scale": 1.2216494845360826
+    },
+    {
+      "id": "hakeem-olajuwon",
+      "action": "dribble",
+      "side": "SE",
+      "frames": 6,
+      "scale": 0.636144578313253
+    },
+    {
+      "id": "hakeem-olajuwon",
+      "action": "dribble",
+      "side": "NE",
+      "frames": 6,
+      "scale": 0.6717557251908397
+    }
+  ]
+}

@@ -16,10 +16,17 @@ export function normalise(s: string) {
     .replace(/\s+/g, ' ')
     .trim();
 }
-export function forbiddenName(s: string, rules: Rules) {
+export function forbiddenName(s: string, rules: Rules, familyName?: string) {
   const n = normalise(s);
   if (rules.allowlist.some((a) => normalise(a) === n)) return false;
-  const beforeLineage = n.split(/\s+(?:ibn|bin|bint)\s+/)[0];
+  // AGENTS.md distinguishes given names from surnames. Only an explicitly
+  // recorded, whole trailing surname can be excluded from the given-name
+  // check. Keep checking the original full identity and all remaining given
+  // names; a lone denylisted name can never be removed this way.
+  const family = familyName && normalise(familyName),
+    given =
+      family && n.endsWith(` ${family}`) ? n.slice(0, -family.length - 1) : n,
+    beforeLineage = given.split(/\s+(?:ibn|bin|bint)\s+/)[0];
   return rules.denylist.some((d) => {
     const v = normalise(d);
     return (
