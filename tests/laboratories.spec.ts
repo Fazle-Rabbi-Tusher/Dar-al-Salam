@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 // Runtime-only inspection: private fields are intentionally exposed on the dev engine.
-test('lab apparatus and working poses animate together, freeze on pause and survive rotation', async ({
+test('lab apparatus animates with no staff, freezes on pause and survives rotation', async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -64,19 +64,13 @@ test('lab apparatus and working poses animate together, freeze on pause and surv
     });
   // Wait for the whole pair of rooms to enter the viewport.
   await expect.poll(async () => (await snapshot()).visible).toBe(6);
-  await expect
-    .poll(async () => (await snapshot()).staff.filter((c) => c.visible).length)
-    .toBe(7);
+  // The anonymous lab staff were removed with every NPC (2026-11).
+  expect((await snapshot()).staff).toEqual([]);
   await page.getByLabel('Resume animation', { exact: true }).click();
   const running = await snapshot();
   await expect
     .poll(async () => JSON.stringify((await snapshot()).moving))
     .not.toBe(JSON.stringify(running.moving));
-  await expect
-    .poll(async () =>
-      JSON.stringify((await snapshot()).staff.map((c) => c.frame)),
-    )
-    .not.toBe(JSON.stringify(running.staff.map((c) => c.frame)));
   await page.getByLabel('Pause animation', { exact: true }).click();
   await expect(
     page.getByLabel('Resume animation', { exact: true }),
