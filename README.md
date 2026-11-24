@@ -79,3 +79,21 @@ with the character card still a draft. The native scene is included on main.
 The ZIP is 14,478,853 bytes, below the 30,000,000-byte limit. Its extracted viewer
 and component were tested without external downloads. All earlier files on this
 branch are preserved. SHA-256 checksums are recorded in SHA256SUMS.
+
+## Mansa Musa — realistic pixel 3D, eight-angle update
+
+[Download the complete ZIP — 28.49 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-realistic-pixel-3d.zip) · [Eight-angle PNG study](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-pixel-eight-angles.png) · [Animated model preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-realistic-pixel-3d.mp4) · [Website character study](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-pixel-character-study.png)
+
+The latest owner-selected white turban, single gold medallion, ivory robe,
+crimson mantle, layered necklaces and disk-topped staff in realistic pixel art.
+Eight individual transparent lossless WebP directions and the full PNG study;
+four actual animated GLBs with embedded pixel-art textures, a local rotatable
+viewer, reusable Three.js component, source artwork and a 12-second preview.
+The caravan retains twelve guards, four camels and three gold handovers.
+The main website includes the requested olive/gold character-study dialog.
+
+The design study is reference artwork; the video records the actual GLB and
+native renderers. The ruler remains an unreviewed draft. The ZIP is
+28,494,723 bytes, strictly below 30,000,000.
+Lossless source artwork is supplied as WebP with visible-pixel checksums.
+Earlier packs and previews remain available unchanged.
