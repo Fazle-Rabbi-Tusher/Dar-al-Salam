@@ -37,5 +37,12 @@ export default defineConfig({
   ],
   server: { fs: { allow: ['..'] } },
   build: { outDir: '../dist', emptyOutDir: true },
-  test: { root: '.', include: ['packages/**/*.test.ts', 'tools/**/*.test.ts'] },
+  test: {
+    root: '.',
+    include: [
+      'packages/**/*.test.ts',
+      'tools/**/*.test.ts',
+      'tools/**/*.test.mjs',
+    ],
+  },
 });

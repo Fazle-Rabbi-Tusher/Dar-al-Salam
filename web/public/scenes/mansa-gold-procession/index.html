@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Mansa Musa · The gold procession</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #171b14;
+        color: #e4d8b5;
+        font:
+          14px system-ui,
+          sans-serif;
+      }
+      header,
+      footer {
+        width: min(980px, calc(100% - 32px));
+        margin: 24px auto;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+      }
+      .eyebrow {
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.28em;
+        color: #c3b180;
+      }
+      h1 {
+        font:
+          normal clamp(23px, 4vw, 34px) Georgia,
+          serif;
+        margin: 10px 0 4px;
+      }
+      header p {
+        font-size: 11px;
+        color: #a7ab91;
+        margin: 0;
+      }
+      main {
+        width: min(980px, 100%);
+        margin: auto;
+        position: relative;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        image-rendering: pixelated;
+        background: #281d12;
+      }
+      button,
+      a {
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: 1px solid #666b4d;
+        background: #2b3223;
+        border-radius: 3px;
+        padding: 10px 16px;
+        font: inherit;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible {
+        outline: 2px solid #e6c46b;
+        outline-offset: 4px;
+      }
+      .controls {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      input {
+        flex: 1;
+        min-width: 120px;
+        accent-color: #d1ac58;
+      }
+      output {
+        font-variant-numeric: tabular-nums;
+        color: #c4bd9f;
+      }
+      footer p {
+        font-size: 11px;
+        line-height: 1.7;
+        color: #acb198;
+      }
+      footer a {
+        font-size: 12px;
+        text-underline-offset: 4px;
+        margin-inline-end: 22px;
+      }
+      .status {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #191b14;
+        color: #d7c28a;
+      }
+      .status[hidden] {
+        display: none;
+      }
+      .badge {
+        border: 1px solid #51593d;
+        color: #b6bc9f;
+        padding: 8px;
+        font-size: 9px;
+        letter-spacing: 0.12em;
+      }
+      @media (max-width: 600px) {
+        header {
+          margin: 18px auto;
+        }
+        .badge {
+          display: none;
+        }
+        footer {
+          margin: 18px auto;
+        }
+        .controls {
+          gap: 10px;
+        }
+        button {
+          padding: 9px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="eyebrow">The gold procession</span>
+        <h1>Mansa Musa</h1>
+        <p>A layered pixel-art animation</p>
+      </div>
+      <span class="badge">ILLUSTRATIVE RECONSTRUCTION</span>
+    </header>
+    <main>
+      <canvas
+        id="scene"
+        width="1080"
+        height="1080"
+        role="img"
+        aria-label="Mansa Musa riding a decorated black horse through a gold-laden desert procession, with an elephant, camels and attendants."
+      ></canvas>
+      <div id="status" class="status" role="status">
+        Preparing the procession…
+      </div>
+    </main>
+    <footer>
+      <div class="controls">
+        <button id="play" aria-label="Play animation">Play</button
+        ><input
+          id="time"
+          type="range"
+          min="0"
+          max="239.99"
+          step=".25"
+          value="0"
+          aria-label="Animation timeline"
+        /><output id="clock">0.0 / 20s</output>
+      </div>
+      <a href="mansa-gold-procession-animation.mp4" download>Download MP4</a
+      ><a href="mansa-gold-procession-animation.gif" download>Download GIF</a>
+      <p>
+        Twelve drawn walking poses, subtle depth, drifting dust and gold glints.
+        A 20-second loop; the video and this preview use the same animation.
+        This is an animated illustration.
+      </p>
+    </footer>
+    <script type="module">
+      import { createProcession, LOOP, TICKS_PER_SECOND } from './scene.js';
+      const canvas = document.getElementById('scene'),
+        button = document.getElementById('play'),
+        slider = document.getElementById('time'),
+        clock = document.getElementById('clock'),
+        status = document.getElementById('status');
+      const image = (src) =>
+        new Promise((resolve, reject) => {
+          const i = new Image();
+          i.onload = () => resolve(i);
+          i.onerror = () => reject(Error('Could not load ' + src));
+          i.src = src;
+        });
+      try {
+        const manifest = await fetch('./manifest.json').then((r) => {
+          if (!r.ok) throw Error('Scene manifest missing');
+          return r.json();
+        });
+        const [background, rider] = await Promise.all([
+          image(manifest.assets.background),
+          image(manifest.assets.rider),
+        ]);
+        const animation = createProcession(canvas, {
+          background,
+          rider,
+          manifest,
+        });
+        let playing = !matchMedia('(prefers-reduced-motion: reduce)').matches,
+          previous;
+        const update = () => {
+          button.textContent = playing ? 'Pause' : 'Play';
+          button.setAttribute(
+            'aria-label',
+            playing ? 'Pause animation' : 'Play animation',
+          );
+          slider.value = animation.frame;
+          clock.value =
+            (animation.frame / TICKS_PER_SECOND).toFixed(1) + ' / 20s';
+        };
+        button.onclick = () => {
+          playing = !playing;
+          update();
+        };
+        slider.oninput = () => {
+          animation.setFrame(+slider.value);
+          update();
+        };
+        const loop = (now) => {
+          const delta =
+            previous === undefined ? 0 : Math.min(0.1, (now - previous) / 1000);
+          previous = now;
+          if (playing) {
+            animation.setFrame(
+              (animation.frame + delta * TICKS_PER_SECOND) % LOOP,
+            );
+            update();
+          }
+          requestAnimationFrame(loop);
+        };
+        window.__procession = {
+          setFrame(f) {
+            animation.setFrame(f);
+            update();
+            return animation.state;
+          },
+          pause() {
+            playing = false;
+            update();
+          },
+          play() {
+            playing = true;
+            update();
+          },
+          get frame() {
+            return animation.frame;
+          },
+          get state() {
+            return animation.state;
+          },
+          canvas,
+          manifest,
+        };
+        update();
+        status.hidden = true;
+        requestAnimationFrame(loop);
+      } catch (error) {
+        status.textContent = 'The animation could not load. ' + error.message;
+        console.error(error);
+      }
+    </script>
+  </body>
+</html>

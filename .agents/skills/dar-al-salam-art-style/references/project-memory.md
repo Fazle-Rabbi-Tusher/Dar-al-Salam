@@ -120,6 +120,14 @@ extracted from an attached document. New explicit owner instructions override th
   `downloads/world-designs-and-animation` branch with tested GitHub downloads.
   Preserve existing files on that branch. Do not assume permission to publish
   unrelated material or modify/deploy the app branch.
+- **Mounted gold-procession animation (25 November 2026):** the latest scene
+  reference uses a crowned, gold-robed Mansa Musa on a black decorated horse,
+  surrounded by gold bearers, camels, an elephant and a large desert procession.
+  This scene-specific costume does not replace the white-turbaned main-world
+  avatar. The requested animation is supplied as a 20-second layered pixel-art
+  illustration with twelve authored horse/rider poses, dust, gold glints and a
+  local HTML player. Describe the format accurately; these scene exports are
+  not a new rotatable mesh. See `docs/mansa-gold-procession-animation.md`.
 - **Drafts:** keep `DRAFT / AWAITING REVIEW` status and approval metadata intact.
   Artwork generation does not grant advisory approval.
 
