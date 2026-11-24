@@ -79,6 +79,14 @@ extracted from an attached document. New explicit owner instructions override th
   Community. This supersedes the earlier kitchen-location preference.
   See `docs/haytham-redesign-and-scene-swap.md` for the reference and native
   integration details. Later portraits are artistic interpretations.
+- **Mansa Musa refinement (24 November 2026):** the owner requested the Malian
+  ruler and his army sharing gold, using the supplied gold/crimson/white
+  illustrations. Deliver actual articulated 3D geometry, not only rotation
+  stills. The native caravan has twelve guards, four camels and three logical
+  handover stops, with natural adult proportions and generated facial and
+  brocade references mapped onto curved meshes. Preserve exact-name checks and
+  draft review status. See `docs/mansa-musa-3d-caravan.md` and the reusable GLBs,
+  local viewer and component in `web/public/models/mali-caravan/`.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.

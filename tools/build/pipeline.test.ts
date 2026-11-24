@@ -560,6 +560,25 @@ describe('sharp heads', () => {
     );
     expect(named.length).toBeGreaterThanOrEqual(30);
     for (const c of named) {
+      if (c.nativeModel) {
+        expect(c.id).toBe('mansa-musa');
+        const manifest = JSON.parse(
+          await fs.readFile(
+            'web/public/models/mali-caravan/manifest.json',
+            'utf8',
+          ),
+        );
+        expect(manifest.files).toHaveLength(4);
+        expect(
+          manifest.files.every(
+            (f: { animationTracks: number }) => f.animationTracks > 10,
+          ),
+        ).toBe(true);
+        await expect(
+          fs.access(`art/illustrations/${c.id}.png`),
+        ).resolves.toBeUndefined();
+        continue;
+      }
       if (!heads[c.id]) {
         // A new full-body character includes its own face in every authored
         // view, rather than carrying an unused legacy paper-doll head sheet.
@@ -775,6 +794,16 @@ describe('a sparse supporting cast, with supplied animation strips', () => {
     for (const c of content.characters) {
       if ((!c.name && !c.id.startsWith('lab-')) || !sprites.has(`${c.id}.png`))
         continue;
+      if (c.nativeModel) {
+        expect(c.nativeModel).toBe('mali-ruler');
+        await expect(
+          fs.access('web/public/models/mali-caravan/mansa-musa-standing.glb'),
+        ).resolves.toBeUndefined();
+        await expect(
+          fs.access('web/public/models/mali-caravan/mansa-musa-mounted.glb'),
+        ).resolves.toBeUndefined();
+        continue;
+      }
       for (const s of c.script) {
         const key = `${c.id}__${s.action}${s.prop ? '@' + s.prop : ''}`;
         expect(strips.has(`${key}_SE.png`), key).toBe(true);

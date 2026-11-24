@@ -20,6 +20,7 @@ import { Icon } from './Icon';
 import { Lab } from './Lab';
 import { DarkRoomControls } from './DarkRoomControls';
 import { PODCAST } from '../../../packages/shared/podcast';
+import { CARAVAN } from '../../../packages/shared/royal-caravan';
 export function App() {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -634,6 +635,10 @@ function World({ manifest }: { manifest: Manifest | null }) {
           {t('arena')}
         </button>
         {/* Massawa, south-west of the quarter (packages/shared/massawa.ts). */}
+        <button onClick={() => focusArea(...CARAVAN.center, 1.2)}>
+          <Icon name="compass" size={15} />
+          {t('goldCaravan')}
+        </button>
         <button onClick={() => focusArea(-12, 117, 1.2)}>
           <Icon name="compass" size={15} />
           {t('massawa')}

@@ -1,0 +1,24 @@
+{
+  "id": "gold-caravan",
+  "title": {
+    "en": "Mansa Musa — the gold caravan",
+    "ar": "مانسا موسى — قافلة الذهب",
+    "bn": "মানসা মুসা — সোনার কাফেলা"
+  },
+  "lead": "mansa-musa",
+  "members": [
+    "mansa-musa"
+  ],
+  "props": [],
+  "area": [
+    [
+      -52,
+      60
+    ],
+    [
+      -16,
+      92
+    ]
+  ],
+  "camera": "frame"
+}

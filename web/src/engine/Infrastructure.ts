@@ -24,6 +24,8 @@ import type { Sortable } from '../../../packages/shared/schema';
 import { laboratoryActivityModel } from '../../../packages/shared/laboratory';
 import { sportsActivityModel } from '../../../packages/shared/sports';
 import { podcastActivityModel } from '../../../packages/shared/podcast';
+import { caravanKind } from '../../../packages/shared/royal-caravan';
+import { RiggedCaravan } from './RiggedCaravan';
 import {
   projectSurface,
   surfaceOccludes,
@@ -78,6 +80,7 @@ export type LiveInfrastructure = {
   tile: [number, number];
   footprint: [number, number];
   cutHeight: number;
+  rig?: RiggedCaravan;
   projected?: ProjectedSurface;
   projectedFrame?: Frame;
   activity?: {
@@ -202,6 +205,9 @@ export class InfrastructureRenderer {
       mesh,
       glass,
       activity,
+      rig: caravanKind(s.objectType)
+        ? new RiggedCaravan(this.uniforms)
+        : undefined,
       objectId: s.objectId,
       kind: model.kind,
       point: tileToPlanet(
@@ -254,6 +260,7 @@ export class InfrastructureRenderer {
   }
   /** Reuse each activity buffer; off-screen laboratories perform no rebuilds. */
   animate(b: LiveInfrastructure, time: number) {
+    b.rig?.animate(time);
     const a = b.activity;
     if (!a || !b.mesh.visible || a.time === time) return;
     const model = (laboratoryActivityModel(a.type, b.footprint, time) ??
