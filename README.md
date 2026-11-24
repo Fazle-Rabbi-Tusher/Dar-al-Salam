@@ -63,3 +63,19 @@ Includes complete and architecture-only GLB models, editable model source, embed
 [Download final ZIP (23.9 MB)](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-six-angle-final.zip) · [Six-angle sheet](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mosque-six-angles.jpg)
 
 The same mosque geometry, materials and congregation: high front-right, low rear-left, 75-degree top-down oblique, eye-level front-left, high rear-right, and extreme low upward beneath the arches/lanterns. Includes both GLBs, source, rotatable component, six lossless renders, camera metadata and existing orbit video. Browser verified all six camera elevations; ZIP below 30,000,000 bytes.
+
+## Mansa Musa — articulated 3D gold caravan
+
+[Download one complete ZIP — 14.48 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-3d-caravan.zip) · [Watch the 28-second preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-3d-caravan.mp4) · [Gold handover](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-gold-handover.jpg) · [Standing character](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-musa-3d-standing.jpg)
+
+Four animated GLBs: standing and mounted Mansa Musa, an individual guard, and the
+full procession with twelve guards, four pack camels, three stewards and six
+recipients. Three gold distribution stops use articulated hand contact and a
+continuous route. Includes a rotatable local viewer, reusable Three.js component,
+generated artwork, integration references and the rendered preview. Actual 3D
+geometry with pixel-art faces and fabric colors; illustrative historical design,
+with the character card still a draft. The native scene is included on main.
+
+The ZIP is 14,478,853 bytes, below the 30,000,000-byte limit. Its extracted viewer
+and component were tested without external downloads. All earlier files on this
+branch are preserved. SHA-256 checksums are recorded in SHA256SUMS.
