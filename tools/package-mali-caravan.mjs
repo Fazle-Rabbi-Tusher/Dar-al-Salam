@@ -3,26 +3,62 @@ import path from 'node:path';
 import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import sharp from 'sharp';
+const visiblePixels = (data) => {
+  for (let i = 0; i < data.length; i += 4)
+    if (data[i + 3] === 0) data.fill(0, i, i + 3);
+  return data;
+};
 
 const output = path.resolve(
-  process.argv[2] || '/tmp/mansa-musa-3d-caravan.zip',
+  process.argv[2] || '/tmp/mansa-musa-reference-pixel-v3.zip',
 );
 const staging = await fs.mkdtemp(path.join(os.tmpdir(), 'mali-caravan-pack-'));
 try {
   await fs.cp('web/public/models/mali-caravan', staging, { recursive: true });
-  await fs.cp(
-    'art/sprites/source/mali-caravan/source',
-    path.join(staging, 'source/artwork'),
-    { recursive: true },
+  const sourceArt = 'art/sprites/source/mali-caravan/reference-pixel-v3',
+    artOut = path.join(staging, 'source/artwork');
+  await fs.mkdir(artOut, { recursive: true });
+  const artIndex = [];
+  for (const name of await fs.readdir(sourceArt)) {
+    const original = path.join(sourceArt, name);
+    if (name.endsWith('.png')) {
+      const file = name.replace(/\.png$/, '.webp'),
+        target = path.join(artOut, file);
+      await sharp(original).webp({ lossless: true }).toFile(target);
+      const before = await sharp(original).ensureAlpha().raw().toBuffer(),
+        after = await sharp(target).ensureAlpha().raw().toBuffer();
+      if (!visiblePixels(before).equals(visiblePixels(after)))
+        throw Error('Lossless source pixels changed: ' + name);
+      artIndex.push({
+        originalPng: name,
+        pixelHashMode: 'RGBA with invisible RGB zeroed at alpha=0',
+        file,
+        originalSha256: createHash('sha256')
+          .update(await fs.readFile(original))
+          .digest('hex'),
+        decodedPixelsSha256: createHash('sha256').update(after).digest('hex'),
+      });
+    } else await fs.copyFile(original, path.join(artOut, name));
+  }
+  await fs.writeFile(
+    path.join(artOut, 'lossless-source-index.json'),
+    JSON.stringify(artIndex, null, 2) + '\n',
   );
   for (const file of [
     'packages/shared/royal-caravan.ts',
+    'packages/shared/mansa-reference.ts',
     'packages/shared/royal-caravan.test.ts',
     'packages/shared/generated/mali-faces.json',
     'packages/shared/generated/mali-cloth.json',
+    'packages/shared/generated/mansa-reference.json',
     'web/src/engine/RiggedCaravan.ts',
     'tools/prepare-mali-character-art.mjs',
+    'tools/prepare-mansa-reference.mjs',
     'tools/export-mali-caravan.mjs',
+    'tools/render-mansa-portrait.mjs',
+    'tools/capture-mali-preview.mjs',
+    'web/src/ui/CharacterStudy.tsx',
     'content/characters/mansa-musa.json',
     'content/scenes/gold-caravan.json',
     'docs/mansa-musa-3d-caravan.md',

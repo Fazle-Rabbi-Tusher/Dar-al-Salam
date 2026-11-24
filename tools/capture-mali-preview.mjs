@@ -23,7 +23,18 @@ async function record(name, frames, update) {
   for (let i = 0; i < frames; i++) {
     await update(i);
     const file = `${out}/${String(index++).padStart(4, '0')}.jpg`;
-    await page.screenshot({ path: file, type: 'jpeg', quality: 88 });
+    // Capture the already-rendered GLB canvas directly. A browser compositor
+    // screenshot waits for additional WebGL frames on software-rendered hosts.
+    const canvas = await page.evaluate(
+      () =>
+        window.__maliViewer?.renderer.domElement.toDataURL(
+          'image/jpeg',
+          0.88,
+        ) ?? null,
+    );
+    if (canvas)
+      await fs.writeFile(file, Buffer.from(canvas.split(',')[1], 'base64'));
+    else await page.screenshot({ path: file, type: 'jpeg', quality: 88 });
     if (i === (name.endsWith('3d-standing') ? 0 : Math.min(24, frames - 1)))
       await fs.copyFile(file, `docs/previews/${name}.jpg`);
   }
@@ -38,6 +49,13 @@ async function load(name) {
     await v.loadModel(name);
     window.__maliViewer.pause();
     window.__maliViewer.controls.enableDamping = false;
+    window.__maliViewer.scene.traverse((o) => {
+      if (o.isLight && o.shadow) {
+        o.shadow.map?.dispose();
+        o.shadow.map = null;
+        o.shadow.mapSize.set(512, 512);
+      }
+    });
   }, name);
 }
 try {
@@ -50,6 +68,14 @@ try {
       'header,.panel,.timeline,.status{display:none!important}main{height:100vh!important}',
   });
   await load('mansa-musa-standing');
+  await page.evaluate(() => {
+    const v = window.__maliViewer;
+    v.setTime(0);
+    v.portrait();
+  });
+  await record('mansa-musa-reference-closeup', 24, async (i) => {
+    await page.evaluate((t) => window.__maliViewer.setTime(t), i / 24);
+  });
   await page.evaluate(() => {
     const v = window.__maliViewer;
     v.angle('front');
@@ -73,15 +99,17 @@ try {
     }, i);
   });
   await load('mali-gold-caravan');
-  await record('mansa-musa-gold-handover', 480, async (i) => {
-    await page.evaluate((t) => window.__maliViewer.setTime(t), i / 24);
+  await record('mansa-musa-gold-handover', 108, async (i) => {
+    const station = Math.floor(i / 36),
+      time = [0.25, 5.58, 10.92][station] + (i % 36) / 24;
+    await page.evaluate((t) => window.__maliViewer.setTime(t), time);
   });
   await page.evaluate(() => {
     const v = window.__maliViewer;
     v.setTime(6.2);
     v.overview();
   });
-  await record('mansa-musa-army-overview', 48, async (i) => {
+  await record('mansa-musa-army-overview', 36, async (i) => {
     await page.evaluate((t) => window.__maliViewer.setTime(t), 6.2 + i / 24);
   });
   await page.goto(`${base}/`);
@@ -105,7 +133,7 @@ try {
   }, process.cwd());
   await page.waitForFunction(() => !window.__darEngine.flight);
   await page.evaluate(() => window.__darEngine.app.ticker.stop());
-  await record('mansa-musa-native-world', 72, async (i) => {
+  await record('mansa-musa-native-world', 48, async (i) => {
     await page.evaluate(
       (t) => {
         const e = window.__darEngine;

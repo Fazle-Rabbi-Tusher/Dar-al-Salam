@@ -119,6 +119,22 @@ test('the native caravan animates joint matrices, keeps its meshes, pauses and o
   await expect(page.locator('.story-card')).toContainText(
     /DRAFT|Awaiting|review/i,
   );
+  await page
+    .getByRole('button', { name: 'View character study', exact: true })
+    .click();
+  const study = page.getByRole('dialog', { name: 'One ruler. Every angle.' });
+  await expect(study).toBeVisible();
+  await expect
+    .poll(() =>
+      study
+        .locator('img')
+        .evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThan(1000);
+  await page.screenshot({ path: 'test-results/mansa-character-study.png' });
+  await page.keyboard.press('Escape');
+  await expect(study).toHaveCount(0);
+  await expect(page.locator('.story-card')).toContainText('Mansa Musa');
   expect(errors).toEqual([]);
 });
 

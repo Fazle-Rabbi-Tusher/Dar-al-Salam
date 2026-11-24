@@ -88,6 +88,31 @@ extracted from an attached document. New explicit owner instructions override th
   draft review status. See `docs/mansa-musa-3d-caravan.md` and the reusable GLBs,
   local viewer and component in `web/public/models/mali-caravan/`.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
+- **Final Mansa Musa surface direction (25 November 2026):** the owner selected
+  the white/red/gold reference sheet and clarified that the final result must
+  be **very realistic pixel 3D art from various angles**. Preserve the detailed
+  adult face, anatomy, cloth volume and costume, with deliberate fine pixel
+  clusters and crisp sampling. This clarification supersedes smooth photographic
+  surface treatment while retaining the requested physical three-dimensional
+  form. Supply eight consistent front, rear, side and three-quarter study views.
+- **Character-study presentation (25 November 2026):** the owner supplied a
+  scholar study as the presentation pattern for Mansa Musa: one consistent
+  character in full-body front, side and rear views, richly detailed realistic
+  faces and cloth, warm studio illumination, a dark chocolate background, and
+  an understated olive/gold study frame. Preserve Mansa Musa's own identity and
+  white/red/gold costume; the scholar is a style reference. Design-reference
+  artwork and actual rotatable model previews must be identified accurately.
+- **Mansa Musa likeness correction (25 November 2026):** his latest portrait
+  governs this character: deep brown skin, the particular realistic face and
+  black beard, white wrapped turban with one round gold forehead medallion,
+  ivory draped robe, crimson mantle on his anatomical right shoulder, ochre
+  brocade on the left arm, layered necklaces with five prominent pendants and
+  the disk-topped staff in his right hand. Replace the earlier pointed crown
+  and mostly gold robe. The owner explicitly asks for much greater 3D realism
+  for Mansa Musa; use smooth anatomical geometry, detailed generated facial and
+  textile maps and physical gold, while retaining the established supporting
+  cast style and gold-distribution routine. The new reference direction takes
+  precedence over the earlier general pixel-surface defaults for this figure.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.
 - **Delivery:** workspace-only ZIP links previously failed for this owner.

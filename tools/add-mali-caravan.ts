@@ -62,7 +62,7 @@ const card = characterSchema.parse(
           colours: {
             skin: 'skin-8',
             hair: 'hair-black',
-            garmentPrimary: 'saffron',
+            garmentPrimary: 'white-linen',
             garmentSecondary: 'madder-red',
             headwear: 'white-linen',
           },

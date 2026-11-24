@@ -20,12 +20,18 @@ export async function createMansaCaravan({
     new URL(variant + '.glb', assetBase).href,
   );
   const object3D = gltf.scene,
-    mixer = new THREE.AnimationMixer(object3D);
+    mixer = new THREE.AnimationMixer(object3D),
+    ownedTextures = new Set();
   for (const clip of gltf.animations) mixer.clipAction(clip).play();
   object3D.traverse((object) => {
     if (object.isMesh) {
       object.castShadow = true;
       object.receiveShadow = true;
+      for (const material of Array.isArray(object.material)
+        ? object.material
+        : [object.material])
+        for (const value of Object.values(material))
+          if (value?.isTexture) ownedTextures.add(value);
     }
   });
   return {
@@ -58,6 +64,8 @@ export async function createMansaCaravan({
       });
       for (const g of geometry) g.dispose();
       for (const m of materials) m.dispose();
+      for (const texture of ownedTextures) texture.dispose();
+      ownedTextures.clear();
       object3D.removeFromParent();
     },
   };

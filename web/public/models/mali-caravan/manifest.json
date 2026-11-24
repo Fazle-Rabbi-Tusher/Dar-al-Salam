@@ -1,6 +1,7 @@
 {
   "format": "glTF 2.0 binary",
-  "source": "Articulated geometry from packages/shared/royal-caravan.ts; six image-generated facial color maps; no billboard character meshes.",
+  "source": "Articulated geometry from royal-caravan.ts and mansa-reference.ts. The ruler uses smooth anatomical surfaces, embedded reference face and textile maps, and separate metallic gold. Supporting cast retains the existing pixel-art geometry.",
+  "rulerDesignRevision": "reference-pixel-v3",
   "ticksPerSecond": 12,
   "masterTicks": 240,
   "guards": 12,
@@ -10,34 +11,34 @@
   "files": [
     {
       "file": "mansa-musa-standing.glb",
-      "bytes": 1455908,
-      "sha256": "f715062d5371e0f14b076c4f038eab0aa432643893ba11d3d6a87e314d6f7aff",
-      "nodes": 21,
-      "animationTracks": 21,
+      "bytes": 7699072,
+      "sha256": "df55d18023c503f3c9e4b5226a7e9b59f5eb6614e0251c44b7d3150cb86c92cd",
+      "nodes": 56,
+      "animationTracks": 60,
       "duration": 20
     },
     {
       "file": "mansa-musa-mounted.glb",
-      "bytes": 1514636,
-      "sha256": "01521464dcc951a066ae091e4e7fe3487cbf6f1ec57ee0108af25df60a4aace0",
-      "nodes": 36,
-      "animationTracks": 31,
+      "bytes": 7495816,
+      "sha256": "bca6009f0aa26ef3a2794866293ffd140a195706443a93b898708c55ce0aea06",
+      "nodes": 71,
+      "animationTracks": 70,
       "duration": 20
     },
     {
       "file": "mali-guard.glb",
-      "bytes": 342480,
-      "sha256": "99cb52b518b0cd3ae2b7e3d312fe81506f00640a894aaa78dd82c726494d14de",
+      "bytes": 390140,
+      "sha256": "85b72ff220c0b519686320c93767bc78757648d726da9af94fc5a6fec1b46015",
       "nodes": 21,
       "animationTracks": 21,
       "duration": 20
     },
     {
       "file": "mali-gold-caravan.glb",
-      "bytes": 6529356,
-      "sha256": "daa68f8373e029af5a66fdc7228e1295d1a5bbe9ca56cef1ec64bff5d3a546d8",
-      "nodes": 533,
-      "animationTracks": 534,
+      "bytes": 13036760,
+      "sha256": "56a0d9bfc366761b494a6dcf68e5d97a52f4fc04bff194408351900485236b5b",
+      "nodes": 568,
+      "animationTracks": 573,
       "duration": 20
     }
   ]

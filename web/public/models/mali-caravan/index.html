@@ -212,8 +212,8 @@
       <aside class="panel">
         <label for="model">Explore the collection</label
         ><select id="model">
-          <option value="mali-gold-caravan">The complete caravan</option>
           <option value="mansa-musa-standing">Mansa Musa · standing</option>
+          <option value="mali-gold-caravan">The complete caravan</option>
           <option value="mansa-musa-mounted">Mansa Musa · mounted</option>
           <option value="mali-guard">Malian guard</option>
         </select>
@@ -224,7 +224,8 @@
           ><button data-angle="overhead">Overhead</button
           ><button data-angle="isometric">Isometric</button>
           <button id="hero">Gold handover</button
-          ><button id="overview">Overview</button>
+          ><button id="overview">Overview</button
+          ><button id="portrait">Face close-up</button>
         </div>
         <p class="hint">
           Drag to orbit. Scroll or pinch to zoom.<br />Pause to inspect the
@@ -262,18 +263,19 @@
       const host = document.getElementById('view'),
         renderer = new T.WebGLRenderer({
           antialias: false,
+          alpha: true,
           preserveDrawingBuffer: true,
         });
       renderer.setPixelRatio(1);
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = T.PCFSoftShadowMap;
       renderer.toneMapping = T.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.12;
+      renderer.toneMappingExposure = 1.0;
       host.append(renderer.domElement);
       const scene = new T.Scene();
       scene.background = new T.Color('#eee5d6');
-      scene.add(new T.HemisphereLight('#fff0d3', '#727b70', 2.0));
-      const sun = new T.DirectionalLight('#ffe0a6', 3.3);
+      scene.add(new T.HemisphereLight('#fff5e8', '#646e7b', 1.0));
+      const sun = new T.DirectionalLight('#ffe8ca', 2.4);
       sun.position.set(-12, 22, 17);
       sun.castShadow = true;
       sun.shadow.mapSize.set(2048, 2048);
@@ -290,6 +292,38 @@
       const fill = new T.DirectionalLight('#bdd8e4', 1.0);
       fill.position.set(12, 7, -8);
       scene.add(fill);
+      const rim = new T.DirectionalLight('#fff4de', 1.6);
+      rim.position.set(-4, 8, -12);
+      scene.add(rim);
+      // Local softbox environment: reflective gold without any remote HDRI.
+      const studio = new T.Scene();
+      studio.background = new T.Color('#777b80');
+      for (const [x, y, z, w, h, power] of [
+        [-5, 5, 5, 4, 7, 4],
+        [5, 3, -3, 3, 6, 2],
+        [0, 8, 0, 6, 2, 3],
+      ]) {
+        const card = new T.Mesh(
+          new T.PlaneGeometry(w, h),
+          new T.MeshBasicMaterial({
+            color: new T.Color().setRGB(power, power * 0.95, power * 0.88),
+            side: T.DoubleSide,
+          }),
+        );
+        card.position.set(x, y, z);
+        card.lookAt(0, 1, 0);
+        studio.add(card);
+      }
+      const pmrem = new T.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(studio, 0.04).texture;
+      scene.environmentIntensity = 0.75;
+      pmrem.dispose();
+      studio.traverse((o) => {
+        if (o.isMesh) {
+          o.geometry.dispose();
+          o.material.dispose();
+        }
+      });
       const floor = new T.Mesh(
         new T.PlaneGeometry(100, 100),
         new T.MeshStandardMaterial({ color: '#d1b17e', roughness: 1 }),
@@ -389,13 +423,66 @@
           1.13;
         angle('isometric');
       }
+      function portrait() {
+        if (!model) return;
+        const head = model.getObjectByName('head');
+        if (!head) return;
+        follow = false;
+        model.updateMatrixWorld(true);
+        center
+          .copy(head.getWorldPosition(new T.Vector3()))
+          .add(new T.Vector3(0, -0.035, 0.01));
+        radius = 0.98;
+        const direction = new T.Vector3(0, 0.06, 1);
+        head.getWorldQuaternion(new T.Quaternion()).normalize();
+        direction.applyQuaternion(head.getWorldQuaternion(new T.Quaternion()));
+        camera.position.copy(center).addScaledVector(direction, 0.98);
+        controls.target.copy(center);
+        controls.update();
+        renderer.render(scene, camera);
+      }
       async function loadModel(name) {
         const id = ++request;
         status.textContent = 'Loading the model…';
         const gltf = await new GLTFLoader().loadAsync('./' + name + '.glb');
         if (id !== request) return;
-        if (model) scene.remove(model);
+        if (model) {
+          scene.remove(model);
+          mixer?.stopAllAction();
+          mixer?.uncacheRoot(model);
+          const geometry = new Set(),
+            materials = new Set(),
+            textures = new Set();
+          model.traverse((o) => {
+            if (o.isMesh) {
+              geometry.add(o.geometry);
+              for (const material of Array.isArray(o.material)
+                ? o.material
+                : [o.material])
+                materials.add(material);
+            }
+          });
+          for (const material of materials) {
+            for (const value of Object.values(material))
+              if (value?.isTexture) textures.add(value);
+            material.dispose();
+          }
+          for (const texture of textures) texture.dispose();
+          for (const g of geometry) g.dispose();
+        }
         model = gltf.scene;
+        const full = name === 'mali-gold-caravan';
+        scene.background = new T.Color(full ? '#e5dccb' : '#20262d');
+        scene.fog = full ? null : new T.Fog('#20262d', 5, 22);
+        floor.material.color.set(full ? '#d1b17e' : '#272e36');
+        const shadowExtent = full ? 18 : 3;
+        Object.assign(sun.shadow.camera, {
+          left: -shadowExtent,
+          right: shadowExtent,
+          top: shadowExtent,
+          bottom: -shadowExtent,
+        });
+        sun.shadow.camera.updateProjectionMatrix();
         model.traverse((o) => {
           if (o.isMesh) {
             o.castShadow = true;
@@ -425,6 +512,7 @@
           camera,
           renderer,
           controls,
+          floor,
           get model() {
             return model;
           },
@@ -436,6 +524,7 @@
           angle,
           hero,
           overview,
+          portrait,
           get time() {
             return time;
           },
@@ -454,6 +543,7 @@
       }
       select.onchange = () => loadModel(select.value).catch(fail);
       document.getElementById('hero').onclick = hero;
+      document.getElementById('portrait').onclick = portrait;
       document.getElementById('overview').onclick = overview;
       document
         .querySelectorAll('[data-angle]')

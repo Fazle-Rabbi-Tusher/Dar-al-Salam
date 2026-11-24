@@ -1,0 +1,36 @@
+{
+  "direction": "Latest owner correction, 25 November 2026: retain the selected white/red/gold Mansa Musa design, with very realistic detailed PIXEL 3D ART, natural anatomy and consistent front, rear, side and three-quarter views. No pointed crown. The image is an artistic likeness, not a historical photograph.",
+  "faceCrop": {
+    "left": 370,
+    "top": 265,
+    "width": 565,
+    "height": 790
+  },
+  "files": [
+    {
+      "file": "character-reference.png",
+      "bytes": 3145781,
+      "sha256": "e9a70165bdc1b5701e3a3ce3a040797575a7b1e901da78c2e2e9829e95a77068"
+    },
+    {
+      "file": "material-atlas.png",
+      "bytes": 3672991,
+      "sha256": "a8197ebc386904711146f2edb7948fd4a9e5eb053118a0a9d3f1e0933569cb7c"
+    },
+    {
+      "file": "pixel-face.png",
+      "bytes": 2914971,
+      "sha256": "7db2d40e74fa20dc4b0545816c6805c55fda9188fd1e01586037a8bc3928cf52"
+    },
+    {
+      "file": "pixel-turnaround.png",
+      "bytes": 2508109,
+      "sha256": "46b243f1e6142e4425f186900e420efe52d6969cac205c394b08282e16199cd1"
+    },
+    {
+      "file": "character-study.png",
+      "bytes": 2417942,
+      "sha256": "4fc938bcaf9e0aa879d344c0c121bd22f96f84568c404f5f4ac2a37c8023c11a"
+    }
+  ]
+}

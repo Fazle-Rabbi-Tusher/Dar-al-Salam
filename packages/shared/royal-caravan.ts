@@ -4,14 +4,22 @@ import { MeshBuilder } from './laboratory';
 import { TILE_SIDE } from './planet';
 import faces from './generated/mali-faces.json' with { type: 'json' };
 import cloth from './generated/mali-cloth.json' with { type: 'json' };
+import { realisticMansa } from './mansa-reference';
 
 export type Quaternion = [number, number, number, number];
+export type RoyalFinish =
+  'face' | 'skin' | 'linen' | 'brocade' | 'velvet' | 'gold' | 'hair';
+export type RigFace = Face3 & {
+  uv?: Point[];
+  normals?: Vertex3[];
+  finish?: RoyalFinish;
+};
 export type RigNode = {
   name: string;
   position: Vertex3;
   rotation: Quaternion;
   scale: Vertex3;
-  faces?: Face3[];
+  faces?: RigFace[];
   children: RigNode[];
 };
 export const CARAVAN = {
@@ -489,8 +497,10 @@ export type HumanPose = {
   guard?: boolean;
   flag?: boolean;
   color?: string;
+  staffHand?: 'right' | 'left';
 };
 function human(p: HumanPose): RigNode {
+  if (p.royal) return realisticMansa(p, { plantedStep, elbowFor });
   const royal = !!p.royal,
     color = p.color ?? (royal ? '#d5b26c' : p.woman ? '#45685d' : C.cream),
     skin = faces[p.face].skin,
@@ -1097,8 +1107,25 @@ export function mansaActor(frame: number, mounted = false): RigNode {
     contact: Vertex3 = mounted
       ? inverse(active?.contact ?? [0, 59, 0], at, angle)
       : [-25, 52, 8],
-    rest: Vertex3 = [-9, mounted ? 65 : 51, 8],
-    right = mix(rest, contact, active?.reach ?? 0);
+    hip = mounted ? 50 : 36,
+    rest: Vertex3 = [-17, hip + 17, 10],
+    right = mix(rest, contact, active?.reach ?? 0),
+    hipHand: Vertex3 = [13, hip + 9, 8],
+    otherStaff: Vertex3 = [17, hip + 17, 8],
+    progress = active?.phase ?? 1;
+  // At rest the staff is in his right hand, exactly as in the owner's portrait.
+  // Both hands meet before the left takes it during the original gold gesture.
+  let left = hipHand,
+    staffHand: 'right' | 'left' = 'right';
+  if (active && progress < 0.18)
+    left = mix(hipHand, rest, ease(progress / 0.18));
+  else if (active && progress < 0.9) {
+    left = mix(rest, otherStaff, ease((progress - 0.18) / 0.12));
+    staffHand = 'left';
+  } else if (active && progress < 0.96) {
+    left = mix(otherStaff, rest, ease((progress - 0.9) / 0.06));
+    staffHand = 'left';
+  } else if (active) left = mix(rest, hipHand, ease((progress - 0.96) / 0.04));
   return human({
     name: 'mansa-musa',
     at,
@@ -1110,7 +1137,8 @@ export function mansaActor(frame: number, mounted = false): RigNode {
     walk: mounted ? 0 : s.walk,
     distance: s.travel,
     right,
-    left: [17, mounted ? 64 : 50, 0],
+    left,
+    staffHand,
   });
 }
 export function caravanActors(frame: number): RigNode {
@@ -1215,7 +1243,7 @@ export function caravanActors(frame: number): RigNode {
         color: station === 0 ? '#8e6558' : '#d6c5a0',
       }),
     );
-    const kingRest: Vertex3 = [-9, 65, 8],
+    const kingRest: Vertex3 = [-17, 67, 10],
       giverHand = add(
         s.point,
         rotate(

@@ -34,6 +34,9 @@ const T = await import(
   ),
   { GLTFExporter } = await import(
     pathToFileURL(path.resolve(out + '/vendor/GLTFExporter.js')).href
+  ),
+  { mergeVertices } = await import(
+    pathToFileURL(path.resolve(out + '/vendor/BufferGeometryUtils.js')).href
   );
 globalThis.FileReader = class {
   readAsArrayBuffer(blob) {
@@ -56,41 +59,97 @@ const material = new T.MeshStandardMaterial({
   metalness: 0.09,
   side: T.DoubleSide,
 });
+material.name = 'caravan-original';
+const finishes = [
+  'default',
+  'face',
+  'skin',
+  'linen',
+  'brocade',
+  'velvet',
+  'gold',
+  'hair',
+];
+const materials = [
+  material,
+  ...finishes.slice(1).map((finish) => {
+    const m = new T.MeshStandardMaterial({
+      name: 'mansa:' + finish,
+      vertexColors: true,
+      side: T.DoubleSide,
+      roughness:
+        finish === 'gold'
+          ? 0.24
+          : finish === 'skin' || finish === 'face'
+            ? 0.56
+            : finish === 'brocade'
+              ? 0.5
+              : 0.9,
+      metalness: finish === 'gold' ? 0.92 : finish === 'brocade' ? 0.12 : 0,
+    });
+    return m;
+  }),
+];
 const cache = new Map(),
   colors = new Map();
 function geometry(faces) {
   if (cache.has(faces)) return cache.get(faces);
   const positions = [],
     rgb = [],
-    indices = [];
-  for (const face of faces) {
-    let c = colors.get(face.color);
+    indices = [],
+    uv = [],
+    suppliedNormals = [],
+    groups = [];
+  const sorted = [...faces].sort(
+    (a, b) =>
+      finishes.indexOf(a.finish || 'default') -
+      finishes.indexOf(b.finish || 'default'),
+  );
+  let lastMaterial = -1;
+  for (const face of sorted) {
+    const materialIndex = finishes.indexOf(face.finish || 'default');
+    if (materialIndex !== lastMaterial) {
+      groups.push({ start: indices.length, count: 0, materialIndex });
+      lastMaterial = materialIndex;
+    }
+    const color = face.uv ? '#ffffff' : face.color;
+    let c = colors.get(color);
     if (!c) {
-      c = new T.Color(face.color).toArray();
-      colors.set(face.color, c);
+      c = new T.Color(color).toArray();
+      colors.set(color, c);
     }
     const base = positions.length / 3;
-    for (const p of face.points) {
+    for (const [i, p] of face.points.entries()) {
       positions.push(...p);
       rgb.push(...c);
+      uv.push(...(face.uv?.[i] || [0, 0]));
+      suppliedNormals.push(face.normals?.[i]);
     }
     for (let i = 1; i < face.points.length - 1; i++)
       indices.push(base, base + i, base + i + 1);
+    groups[groups.length - 1].count += (face.points.length - 2) * 3;
   }
   const g = new T.BufferGeometry();
   g.setAttribute('position', new T.Float32BufferAttribute(positions, 3));
   g.setAttribute('color', new T.Float32BufferAttribute(rgb, 3));
+  g.setAttribute('uv', new T.Float32BufferAttribute(uv, 2));
   g.setIndex(indices);
+  for (const group of groups)
+    g.addGroup(group.start, group.count, group.materialIndex);
   g.computeVertexNormals();
   const normals = g.getAttribute('normal');
   for (let i = 0; i < normals.count; i++) {
-    const v = new T.Vector3().fromBufferAttribute(normals, i);
+    const v = suppliedNormals[i]
+      ? new T.Vector3(...suppliedNormals[i])
+      : new T.Vector3().fromBufferAttribute(normals, i);
     if (v.lengthSq() < 1e-9) v.set(0, 1, 0);
     else v.normalize();
     normals.setXYZ(i, v.x, v.y, v.z);
   }
-  cache.set(faces, g);
-  return g;
+  const compact = mergeVertices(g, 1e-6);
+  g.dispose();
+  cache.set(faces, compact);
+  return compact;
 }
 function indexRig(root) {
   const map = new Map();
@@ -108,7 +167,7 @@ async function exportModel(name, rigAt) {
   const build = (n, parent) => {
     const key = parent + '/' + n.name,
       obj = n.faces?.length
-        ? new T.Mesh(geometry(n.faces), material)
+        ? new T.Mesh(geometry(n.faces), materials)
         : new T.Group();
     obj.name = n.name;
     obj.position.fromArray(n.position);
@@ -154,7 +213,61 @@ async function exportModel(name, rigAt) {
     animations: [clip],
     onlyVisible: false,
   });
-  const buffer = Buffer.from(data);
+  // Embed source pixel-art PNG bytes directly. This keeps the GLBs self-contained and
+  // avoids a browser-only canvas re-encode in the Node build pipeline.
+  const original = Buffer.from(data),
+    jsonLength = original.readUInt32LE(12);
+  const gltf = JSON.parse(original.subarray(20, 20 + jsonLength).toString());
+  const binStart = 20 + jsonLength + 8;
+  const chunks = [original.subarray(binStart)],
+    textureIndices = new Map();
+  let byteLength = chunks[0].length;
+  for (const m of gltf.materials || []) {
+    const finish = m.name?.replace('mansa:', '');
+    if (!['face', 'linen', 'brocade', 'velvet', 'gold'].includes(finish))
+      continue;
+    if (!textureIndices.has(finish)) {
+      const jpg = await fs.readFile(`${out}/textures/${finish}.png`);
+      const view =
+        (gltf.bufferViews ||= []).push({
+          buffer: 0,
+          byteOffset: byteLength,
+          byteLength: jpg.length,
+        }) - 1;
+      const image =
+        (gltf.images ||= []).push({
+          name: `Mansa reference ${finish}`,
+          bufferView: view,
+          mimeType: 'image/png',
+        }) - 1;
+      gltf.samplers ||= [
+        { magFilter: 9728, minFilter: 9984, wrapS: 10497, wrapT: 10497 },
+      ];
+      const texture =
+        (gltf.textures ||= []).push({ sampler: 0, source: image }) - 1;
+      textureIndices.set(finish, texture);
+      const padding = Buffer.alloc((4 - (jpg.length % 4)) % 4);
+      chunks.push(jpg, padding);
+      byteLength += jpg.length + padding.length;
+    }
+    m.pbrMetallicRoughness.baseColorTexture = {
+      index: textureIndices.get(finish),
+    };
+  }
+  gltf.buffers[0].byteLength = byteLength;
+  const jsonBytes = Buffer.from(JSON.stringify(gltf)),
+    jsonPadding = Buffer.alloc((4 - (jsonBytes.length % 4)) % 4, 0x20);
+  const jsonChunk = Buffer.concat([jsonBytes, jsonPadding]),
+    header = Buffer.alloc(20),
+    binHeader = Buffer.alloc(8);
+  header.writeUInt32LE(0x46546c67, 0);
+  header.writeUInt32LE(2, 4);
+  header.writeUInt32LE(28 + jsonChunk.length + byteLength, 8);
+  header.writeUInt32LE(jsonChunk.length, 12);
+  header.writeUInt32LE(0x4e4f534a, 16);
+  binHeader.writeUInt32LE(byteLength, 0);
+  binHeader.writeUInt32LE(0x004e4942, 4);
+  const buffer = Buffer.concat([header, jsonChunk, binHeader, ...chunks]);
   await fs.writeFile(`${out}/${name}.glb`, buffer);
   console.log(
     name,
@@ -219,7 +332,8 @@ await fs.writeFile(
     {
       format: 'glTF 2.0 binary',
       source:
-        'Articulated geometry from packages/shared/royal-caravan.ts; six image-generated facial color maps; no billboard character meshes.',
+        'Articulated geometry from royal-caravan.ts and mansa-reference.ts. The ruler uses smooth anatomical surfaces, embedded reference face and textile maps, and separate metallic gold. Supporting cast retains the existing pixel-art geometry.',
+      rulerDesignRevision: 'reference-pixel-v3',
       ticksPerSecond: 12,
       masterTicks: 240,
       guards: 12,

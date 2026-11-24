@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import {
   CARAVAN,
@@ -10,6 +11,7 @@ import {
   plantedStep,
   rigMatrices,
   rulerTile,
+  type RoyalFinish,
 } from './royal-caravan';
 import { forbiddenName } from './rules';
 import { characterSchema, roomSchema } from './schema';
@@ -133,6 +135,103 @@ describe('articulated Mansa Musa and his procession', () => {
       expect(gltf.nodes.length).toBeGreaterThan(20);
       expect(gltf.animations[0].channels.length).toBeGreaterThan(10);
       expect(gltf.meshes.length).toBeGreaterThan(10);
+    }
+  });
+  it('wears the reference turban, single medallion, ivory robe and red mantle, with the staff in the reference hand', () => {
+    const pose = rigMatrices(mansaActor(0)),
+      entries = [...pose];
+    expect(entries.some(([key]) => key.endsWith('/wrapped-linen-turban'))).toBe(
+      true,
+    );
+    expect(
+      entries.filter(([key]) => key.endsWith('/single-brow-medallion')),
+    ).toHaveLength(1);
+    const finish = new Set(
+      entries.flatMap(([, v]) => v.node.faces?.map((f) => f.finish) ?? []),
+    );
+    for (const required of ['face', 'linen', 'brocade', 'velvet', 'gold'])
+      expect(finish.has(required as RoyalFinish)).toBe(true);
+    const find = (suffix: string) =>
+      xyz(entries.find(([key]) => key.endsWith(suffix))![1].matrix);
+    expect(find('/scepter')).toEqual(find('/right-arm/right-arm-hand'));
+    const passed = rigMatrices(mansaActor(6));
+    const hand = xyz(
+      [...passed].find(([key]) => key.endsWith('/left-arm/left-arm-hand'))![1]
+        .matrix,
+    );
+    expect(
+      xyz([...passed].find(([key]) => key.endsWith('/scepter'))![1].matrix),
+    ).toEqual(hand);
+  });
+  it('embeds reference texture images and separate physical gold in the reusable models', () => {
+    const data = readFileSync(
+      'web/public/models/mali-caravan/mansa-musa-standing.glb',
+    );
+    const length = data.readUInt32LE(12),
+      gltf = JSON.parse(data.subarray(20, 20 + length).toString());
+    expect(gltf.images).toHaveLength(5);
+    expect(
+      gltf.materials.find((m: { name: string }) => m.name === 'mansa:gold')
+        .pbrMetallicRoughness.metallicFactor,
+    ).toBeGreaterThan(0.8);
+    for (const image of gltf.images) {
+      expect(image.mimeType).toBe('image/png');
+      const view = gltf.bufferViews[image.bufferView],
+        offset = 28 + length + view.byteOffset;
+      expect(data.subarray(offset, offset + 4).toString('hex')).toBe(
+        '89504e47',
+      );
+      expect(view.byteLength).toBeGreaterThan(10000);
+    }
+    expect(
+      gltf.meshes.some(
+        (m: { primitives: { attributes: { TEXCOORD_0?: number } }[] }) =>
+          m.primitives.some((p) => p.attributes.TEXCOORD_0 !== undefined),
+      ),
+    ).toBe(true);
+    expect(gltf.samplers[0].magFilter).toBe(9728);
+  });
+  it('delivers all eight pixel-art directions without changing visible crop pixels', async () => {
+    const folder = 'web/public/models/mali-caravan/',
+      index = json(folder + 'angles/manifest.json');
+    expect(index.views.map((v: { angle: string }) => v.angle)).toEqual([
+      'front',
+      'front-left',
+      'left',
+      'rear-left',
+      'rear',
+      'rear-right',
+      'right',
+      'front-right',
+    ]);
+    const canonical = (bytes: Buffer) => {
+      for (let i = 0; i < bytes.length; i += 4)
+        if (bytes[i + 3] === 0) bytes.fill(0, i, i + 3);
+      return bytes;
+    };
+    for (const [i, view] of index.views.entries()) {
+      const original = canonical(
+        await sharp(folder + 'character-study.png')
+          .extract({
+            left: (i % 4) * 384,
+            top: Math.floor(i / 4) * 512,
+            width: 384,
+            height: 512,
+          })
+          .ensureAlpha()
+          .raw()
+          .toBuffer(),
+      );
+      const decoded = canonical(
+        await sharp(folder + 'angles/' + view.file)
+          .ensureAlpha()
+          .raw()
+          .toBuffer(),
+      );
+      expect(original.equals(decoded)).toBe(true);
+      expect(createHash('sha256').update(decoded).digest('hex')).toBe(
+        view.decodedPixelsSha256,
+      );
     }
   });
 });
