@@ -97,3 +97,21 @@ native renderers. The ruler remains an unreviewed draft. The ZIP is
 28,494,723 bytes, strictly below 30,000,000.
 Lossless source artwork is supplied as WebP with visible-pixel checksums.
 Earlier packs and previews remain available unchanged.
+
+## Mansa Musa — animated mounted gold procession
+
+[Watch the 20-second MP4](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-gold-procession-animation.mp4) · [Looping GIF preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-gold-procession-animation.gif) · [Download the complete ZIP — 29.14 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-gold-procession-animation.zip) · [Poster](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/mansa-gold-procession-poster.png)
+
+The owner's crowned, gold-robed rider on a black horse, with the elephant,
+camels, gold bearers and desert procession. Twelve authored walking poses,
+drifting dust, gold glints and a restrained camera move form a 20-second loop.
+The MP4 is 1080 × 1080, 24 fps; the GIF is a 256 × 256, 12 fps preview.
+
+This is a layered pixel-art illustration with three-dimensional shading.
+Background people and animals are painted scenery. The pack contains the
+original PNG artwork, prepared WebPs, manifest, renderer, portable HTML
+player, preparation/capture scripts and checksums. The previous rotatable
+GLB library and main-world character are unchanged. Review remains a draft.
+
+The ZIP is 29,137,739 bytes, strictly below 30,000,000.
+All earlier downloads remain unchanged.
