@@ -115,3 +115,26 @@ GLB library and main-world character are unchanged. Review remains a draft.
 
 The ZIP is 29,137,739 bytes, strictly below 30,000,000.
 All earlier downloads remain unchanged.
+
+## The people and gold carriers — six animated 3D characters
+
+[Download the complete ZIP — 20.40 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-carriers-3d.zip) · [20-second model preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-carriers-3d.mp4) · [GIF preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-carriers-3d.gif) · [Character lineup](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-carriers-lineup.png)
+
+Six distinct anonymous people: an overhead gold-bowl carrier, an ivory-robed
+bowl bearer, rust and indigo chest porters, a banner attendant and an elder
+recipient. Nine self-contained animated GLBs include the six individuals,
+the paired chest load, the gold-sharing pair and the complete supporting cast.
+The figures have actual curved anatomy, sampled pixel-art faces, cloth folds,
+textured garments and physical gold. Four rendered transparent PNG directions
+per person and the chest pair, a portable local 3D viewer, reusable Three.js
+component, original reference PNG and source scripts are included.
+
+The same six people also appear on separate clear delivery loops in the native
+caravan. The shared chest stays aligned to all four porter grips; the giver and
+recipient meet right hands before the single coin changes ownership. Every GLB
+contains the full 20-second animation on the shared 12 Hz / 240-tick clock.
+The MP4 records the actual meshes. These people are separate from the earlier
+layered illustration, whose painted background remains its own artwork.
+
+The ZIP is 20,400,383 bytes, below 30,000,000, with
+verified entries and checksums. All previous downloads remain unchanged.
