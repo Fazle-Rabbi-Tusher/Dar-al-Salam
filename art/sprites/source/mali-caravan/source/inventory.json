@@ -1,0 +1,15 @@
+{
+  "description": "Image-generated original designs based on the owner-provided Mansa Musa illustrations and saved Dar al-Salam style. Face grids sample this artwork onto curved 3D head surfaces.",
+  "files": [
+    {
+      "path": "mansa-turnaround.png",
+      "bytes": 2344538,
+      "sha256": "05ca6f4bfc9787caa488d7b408a9491fab3b3f8a6fb322600e536fc37ccfaebd"
+    },
+    {
+      "path": "six-generated-faces.png",
+      "bytes": 2232772,
+      "sha256": "dab2a35b12f36c4fe12051d5ae7e373729ee192d99fbb6f64becf7cf4f28b8fd"
+    }
+  ]
+}

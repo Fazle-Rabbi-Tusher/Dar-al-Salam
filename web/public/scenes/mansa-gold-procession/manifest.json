@@ -1,0 +1,213 @@
+{
+  "title": "Mansa Musa — the gold procession",
+  "format": "Layered pixel-art animation",
+  "ticksPerSecond": 12,
+  "loopTicks": 240,
+  "duration": 20,
+  "poseCount": 12,
+  "columns": 4,
+  "rows": 3,
+  "sheet": {
+    "width": 1024,
+    "height": 1536
+  },
+  "frames": [
+    {
+      "index": 0,
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.53040152963672,
+      "baseline": 495,
+      "bounds": {
+        "left": 12,
+        "right": 244,
+        "top": 11,
+        "bottom": 495
+      },
+      "opaquePixels": 68912
+    },
+    {
+      "index": 1,
+      "x": 256,
+      "y": 0,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.7532986805278,
+      "baseline": 495,
+      "bounds": {
+        "left": 12,
+        "right": 245,
+        "top": 13,
+        "bottom": 495
+      },
+      "opaquePixels": 68475
+    },
+    {
+      "index": 2,
+      "x": 512,
+      "y": 0,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.48463868455215,
+      "baseline": 496,
+      "bounds": {
+        "left": 11,
+        "right": 246,
+        "top": 15,
+        "bottom": 496
+      },
+      "opaquePixels": 67240
+    },
+    {
+      "index": 3,
+      "x": 768,
+      "y": 0,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.64342536265792,
+      "baseline": 498,
+      "bounds": {
+        "left": 12,
+        "right": 246,
+        "top": 17,
+        "bottom": 498
+      },
+      "opaquePixels": 66837
+    },
+    {
+      "index": 4,
+      "x": 0,
+      "y": 512,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.87552388935458,
+      "baseline": 497,
+      "bounds": {
+        "left": 12,
+        "right": 253,
+        "top": 14,
+        "bottom": 497
+      },
+      "opaquePixels": 67946
+    },
+    {
+      "index": 5,
+      "x": 256,
+      "y": 512,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.93505976095616,
+      "baseline": 496,
+      "bounds": {
+        "left": 14,
+        "right": 251,
+        "top": 13,
+        "bottom": 496
+      },
+      "opaquePixels": 68524
+    },
+    {
+      "index": 6,
+      "x": 512,
+      "y": 512,
+      "width": 256,
+      "height": 512,
+      "anchorX": 134.31574608408903,
+      "baseline": 496,
+      "bounds": {
+        "left": 14,
+        "right": 252,
+        "top": 13,
+        "bottom": 496
+      },
+      "opaquePixels": 67276
+    },
+    {
+      "index": 7,
+      "x": 768,
+      "y": 512,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.83126454615982,
+      "baseline": 498,
+      "bounds": {
+        "left": 15,
+        "right": 249,
+        "top": 11,
+        "bottom": 498
+      },
+      "opaquePixels": 65935
+    },
+    {
+      "index": 8,
+      "x": 0,
+      "y": 1024,
+      "width": 256,
+      "height": 512,
+      "anchorX": 134.00945254037023,
+      "baseline": 496,
+      "bounds": {
+        "left": 14,
+        "right": 245,
+        "top": 13,
+        "bottom": 496
+      },
+      "opaquePixels": 66648
+    },
+    {
+      "index": 9,
+      "x": 256,
+      "y": 1024,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.67387033398822,
+      "baseline": 489,
+      "bounds": {
+        "left": 12,
+        "right": 244,
+        "top": 11,
+        "bottom": 489
+      },
+      "opaquePixels": 67881
+    },
+    {
+      "index": 10,
+      "x": 512,
+      "y": 1024,
+      "width": 256,
+      "height": 512,
+      "anchorX": 134.41038318912237,
+      "baseline": 494,
+      "bounds": {
+        "left": 13,
+        "right": 246,
+        "top": 13,
+        "bottom": 494
+      },
+      "opaquePixels": 67261
+    },
+    {
+      "index": 11,
+      "x": 768,
+      "y": 1024,
+      "width": 256,
+      "height": 512,
+      "anchorX": 133.39570063694268,
+      "baseline": 495,
+      "bounds": {
+        "left": 13,
+        "right": 242,
+        "top": 11,
+        "bottom": 495
+      },
+      "opaquePixels": 68181
+    }
+  ],
+  "assets": {
+    "background": "background.webp",
+    "rider": "rider.webp"
+  },
+  "review": "Illustrative reconstruction; existing character approval remains a draft."
+}

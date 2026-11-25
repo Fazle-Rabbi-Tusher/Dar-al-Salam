@@ -1,0 +1,14 @@
+{
+  "description": "Generated pixel-art material swatches based on the owner-selected elephant and gold-procession reference. Original preserved unchanged; samples texture actual 3D surfaces.",
+  "file": "materials.png",
+  "bytes": 4103266,
+  "sha256": "a23dc2469f20cc6dda63d10cc8aaea9d7bda1ad7d313a5cdf4cee6babf22683a",
+  "tiles": [
+    "elephant",
+    "wicker",
+    "brocade",
+    "wood",
+    "gold",
+    "rope"
+  ]
+}

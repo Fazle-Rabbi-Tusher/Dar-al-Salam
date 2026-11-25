@@ -302,3 +302,4 @@
     - **Their generators:** the tools that would recreate them no longer do (the placeholder seeds, `prepare-menk-speech.ts`, `prepare-world-life.ts`), and the supporting-cast importers are deleted.
     - **Kept:** named characters, animals (cats, birds, camels, goats, gazelles), vehicles and balls.
     - **Tests:** a unit test and a browser test check that every person in the world has a name.
+    - **Exception (owner's choice, 2026-11-25):** Mansa Musa's caravan from main keeps its people: the guards, gold carriers and recipients. They are part of its 3D procession rather than character cards.

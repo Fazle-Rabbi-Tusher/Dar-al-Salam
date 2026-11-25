@@ -1,0 +1,198 @@
+{
+  "format": "glTF 2.0 binary",
+  "units": "meters",
+  "ticksPerSecond": 12,
+  "loopTicks": 240,
+  "materials": "Generated pixel-art samples on actual curved meshes.",
+  "models": [
+    {
+      "id": "elephant-loaded",
+      "file": "elephant-loaded.glb",
+      "bytes": 8334360,
+      "sha256": "44e4d34e1995e80ec39b5e69ce8bae7f4b18e1ed81e532fd2a728f98c75588cb",
+      "nodes": 46,
+      "animations": [
+        "Walk",
+        "Rest"
+      ],
+      "animationTracks": 124,
+      "duration": 20
+    },
+    {
+      "id": "camel-loaded",
+      "file": "camel-loaded.glb",
+      "bytes": 3011436,
+      "sha256": "be7e11f19c6c8800e72a02951d84cb6befd5ef3bf4b30387ec68b6abd5c6c361",
+      "nodes": 21,
+      "animations": [
+        "Walk",
+        "Rest"
+      ],
+      "animationTracks": 57,
+      "duration": 20
+    },
+    {
+      "id": "gold-bowl",
+      "file": "gold-bowl.glb",
+      "bytes": 1117456,
+      "sha256": "d792858b0642f66e379cdab09525aaed21fdf4839f0121ea9be9820f2cbc4d87",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "gold-basket",
+      "file": "gold-basket.glb",
+      "bytes": 1717980,
+      "sha256": "29b9ef578848066316f3ab820242608f27184f194626da492aa5a706ff45496a",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "lidded-basket",
+      "file": "lidded-basket.glb",
+      "bytes": 1192432,
+      "sha256": "26d55d39157164f1900c9bf98c5ba414c61ff726219108df74d3f1b25e474769",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "treasure-chest",
+      "file": "treasure-chest.glb",
+      "bytes": 1652776,
+      "sha256": "37bacf8767058ee6fd0ac27f130c28c3568154c8dc1cc4ba792cc91644955e7a",
+      "nodes": 3,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "coin-hoard",
+      "file": "coin-hoard.glb",
+      "bytes": 1512840,
+      "sha256": "71c8a995d7a413886da5c6c5e999977fa1190ff931df1de3a49b7446aa3730b8",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "gold-ingots",
+      "file": "gold-ingots.glb",
+      "bytes": 473188,
+      "sha256": "566d3d196a5dfa4e48121ca9caa3268b3e24d79c32d2c1354a73fee61b69b5d1",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "gold-urn",
+      "file": "gold-urn.glb",
+      "bytes": 408300,
+      "sha256": "5cb926a57e3c5a4c45e2de46070fa0f01b095956e986946475f6c7d9570e6aa4",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "gold-ewer",
+      "file": "gold-ewer.glb",
+      "bytes": 419536,
+      "sha256": "13eaff8a05e25b8651eda0af440a382dc21d9a9f25a047e3aa37d120ccd9d240",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "gold-pouches",
+      "file": "gold-pouches.glb",
+      "bytes": 316288,
+      "sha256": "fa9b9bd9262a9740dfb818c4fb7e5da204176c1eb0187340705293dfc099f052",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "rolled-carpets",
+      "file": "rolled-carpets.glb",
+      "bytes": 600860,
+      "sha256": "90960ccde25427ef9875e45267cfa37b6ec3aec18e3444cfcf30496f88d49011",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "water-skins",
+      "file": "water-skins.glb",
+      "bytes": 141612,
+      "sha256": "c62453901cdb6e67330305e7225478ef6c73ffcdf46b3626e8bdfe07f15f9a8d",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "rope-coils",
+      "file": "rope-coils.glb",
+      "bytes": 458292,
+      "sha256": "3df1681745b9666fbfaeae6a42de5b45ce3f831bc3c1bae9daeabe98fe5da609",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "jewelry-tray",
+      "file": "jewelry-tray.glb",
+      "bytes": 778992,
+      "sha256": "9e1bec1e0b0eb7855070e0f9a5260da1ebf93dde1e03dea0442d9653750cc230",
+      "nodes": 1,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "howdah",
+      "file": "howdah.glb",
+      "bytes": 2413684,
+      "sha256": "1db909414a0dfcb88fcef26546351dbaef1899c7d150d6b54eedce095232c315",
+      "nodes": 3,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    },
+    {
+      "id": "treasury-collection",
+      "file": "treasury-collection.glb",
+      "bytes": 8927308,
+      "sha256": "e746e25ba0ccb326c4faa31c8dab30e1aa23e151ac1b4d94a4ed1854d08bc888",
+      "nodes": 16,
+      "animations": [],
+      "animationTracks": 0,
+      "duration": 0
+    }
+  ],
+  "people": [
+    "overhead-gold-bearer",
+    "bowl-gold-bearer",
+    "chest-porter-rust",
+    "chest-porter-indigo",
+    "elder-recipient",
+    "paired-chest-carriers",
+    "gold-handover-pair",
+    "banner-attendant",
+    "mansa-musa-mounted",
+    "mali-guard"
+  ],
+  "review": "Illustrative reconstruction; named-character approvals and biographies are unchanged."
+}

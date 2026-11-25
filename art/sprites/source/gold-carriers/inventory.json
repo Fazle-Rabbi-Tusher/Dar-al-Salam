@@ -1,0 +1,62 @@
+{
+  "description": "Six anonymous West African supporting characters matching the owner-selected mounted gold procession. Generated reference art sampled onto volumetric 3D heads.",
+  "file": "six-faces.png",
+  "bytes": 2828603,
+  "sha256": "5258b56a6d765acf497700fa0edccca9ca2ab261db6c7695fa570a2c50fea30d",
+  "crops": [
+    {
+      "id": "overhead-gold-bearer",
+      "rect": [
+        145,
+        119,
+        234,
+        291
+      ]
+    },
+    {
+      "id": "bowl-gold-bearer",
+      "rect": [
+        666,
+        139,
+        218,
+        273
+      ]
+    },
+    {
+      "id": "chest-porter-rust",
+      "rect": [
+        1160,
+        144,
+        225,
+        269
+      ]
+    },
+    {
+      "id": "chest-porter-indigo",
+      "rect": [
+        140,
+        647,
+        235,
+        266
+      ]
+    },
+    {
+      "id": "banner-attendant",
+      "rect": [
+        675,
+        636,
+        223,
+        285
+      ]
+    },
+    {
+      "id": "elder-recipient",
+      "rect": [
+        1160,
+        600,
+        236,
+        310
+      ]
+    }
+  ]
+}

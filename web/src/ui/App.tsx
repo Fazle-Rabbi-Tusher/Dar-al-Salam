@@ -20,6 +20,8 @@ import { Icon } from './Icon';
 import { Lab } from './Lab';
 import { DarkRoomControls } from './DarkRoomControls';
 import { PODCAST } from '../../../packages/shared/podcast';
+import { CARAVAN } from '../../../packages/shared/royal-caravan';
+import { CharacterStudy } from './CharacterStudy';
 export function App() {
   const t = useT(),
     lang = useStore((s) => s.lang),
@@ -232,6 +234,7 @@ function World({ manifest }: { manifest: Manifest | null }) {
     search = useRef<HTMLInputElement>(null),
     urlTimer = useRef<ReturnType<typeof setTimeout>>();
   const [progress, setProgress] = useState(0),
+    [characterStudyOpen, setCharacterStudyOpen] = useState(false),
     [darkRoomOpen, setDarkRoomOpen] = useState(false),
     [error, setError] = useState(''),
     [intro, setIntro] = useState(false),
@@ -634,11 +637,18 @@ function World({ manifest }: { manifest: Manifest | null }) {
           {t('arena')}
         </button>
         {/* Massawa, south-west of the quarter (packages/shared/massawa.ts). */}
+        <button onClick={() => focusArea(...CARAVAN.center, 1.2)}>
+          <Icon name="compass" size={15} />
+          {t('goldCaravan')}
+        </button>
         <button onClick={() => focusArea(-12, 117, 1.2)}>
           <Icon name="compass" size={15} />
           {t('massawa')}
         </button>
       </div>
+      {characterStudyOpen && (
+        <CharacterStudy onClose={() => setCharacterStudyOpen(false)} />
+      )}
       {card && (
         <aside className="story-card" aria-label={card.name?.[lang]}>
           <button
@@ -708,6 +718,14 @@ function World({ manifest }: { manifest: Manifest | null }) {
             </p>
           </div>
           <div className="story-body">
+            {card.id === 'mansa-musa' && (
+              <button
+                className="character-study-trigger"
+                onClick={() => setCharacterStudyOpen(true)}
+              >
+                {t('viewCharacterStudy')}
+              </button>
+            )}
             {card.id === 'ibn-al-haytham' && (
               <section className="story-exhibit">
                 <h3>{t('darkRoomTitle')}</h3>

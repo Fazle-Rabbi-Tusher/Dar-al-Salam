@@ -79,12 +79,47 @@ extracted from an attached document. New explicit owner instructions override th
   Community. This supersedes the earlier kitchen-location preference.
   See `docs/haytham-redesign-and-scene-swap.md` for the reference and native
   integration details. Later portraits are artistic interpretations.
+- **Mansa Musa refinement (24 November 2026):** the owner requested the Malian
+  ruler and his army sharing gold, using the supplied gold/crimson/white
+  illustrations. Deliver actual articulated 3D geometry, not only rotation
+  stills. The native caravan has twelve guards, four camels and three logical
+  handover stops, with natural adult proportions and generated facial and
+  brocade references mapped onto curved meshes. Preserve exact-name checks and
+  draft review status. See `docs/mansa-musa-3d-caravan.md` and the reusable GLBs,
+  local viewer and component in `web/public/models/mali-caravan/`.
 - **No NPCs (21 November 2026):** the owner asked to remove all NPCs. The
   world has no anonymous people: no supporting cast, laboratory staff, talk
   listeners or caravan guide. Every person is a named character card; animals
   and vehicles may stay. This supersedes the sparse-supporting-cast preference
   above. Do not add anonymous people again unless the owner asks.
+  Exception (25 November 2026): the owner chose to keep Mansa Musa's caravan
+  people (guards, gold carriers, recipients) when bringing the caravan in.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
+- **Final Mansa Musa surface direction (25 November 2026):** the owner selected
+  the white/red/gold reference sheet and clarified that the final result must
+  be **very realistic pixel 3D art from various angles**. Preserve the detailed
+  adult face, anatomy, cloth volume and costume, with deliberate fine pixel
+  clusters and crisp sampling. This clarification supersedes smooth photographic
+  surface treatment while retaining the requested physical three-dimensional
+  form. Supply eight consistent front, rear, side and three-quarter study views.
+- **Character-study presentation (25 November 2026):** the owner supplied a
+  scholar study as the presentation pattern for Mansa Musa: one consistent
+  character in full-body front, side and rear views, richly detailed realistic
+  faces and cloth, warm studio illumination, a dark chocolate background, and
+  an understated olive/gold study frame. Preserve Mansa Musa's own identity and
+  white/red/gold costume; the scholar is a style reference. Design-reference
+  artwork and actual rotatable model previews must be identified accurately.
+- **Mansa Musa likeness correction (25 November 2026):** his latest portrait
+  governs this character: deep brown skin, the particular realistic face and
+  black beard, white wrapped turban with one round gold forehead medallion,
+  ivory draped robe, crimson mantle on his anatomical right shoulder, ochre
+  brocade on the left arm, layered necklaces with five prominent pendants and
+  the disk-topped staff in his right hand. Replace the earlier pointed crown
+  and mostly gold robe. The owner explicitly asks for much greater 3D realism
+  for Mansa Musa; use smooth anatomical geometry, detailed generated facial and
+  textile maps and physical gold, while retaining the established supporting
+  cast style and gold-distribution routine. The new reference direction takes
+  precedence over the earlier general pixel-surface defaults for this figure.
   Split oversized packs into ordinary independent ZIPs rather than requiring
   multipart archive software.
 - **Delivery:** workspace-only ZIP links previously failed for this owner.
@@ -92,8 +127,35 @@ extracted from an attached document. New explicit owner instructions override th
   `downloads/world-designs-and-animation` branch with tested GitHub downloads.
   Preserve existing files on that branch. Do not assume permission to publish
   unrelated material or modify/deploy the app branch.
+- **Mounted gold-procession animation (25 November 2026):** the latest scene
+  reference uses a crowned, gold-robed Mansa Musa on a black decorated horse,
+  surrounded by gold bearers, camels, an elephant and a large desert procession.
+  This scene-specific costume does not replace the white-turbaned main-world
+  avatar. The requested animation is supplied as a 20-second layered pixel-art
+  illustration with twelve authored horse/rider poses, dust, gold glints and a
+  local HTML player. Describe the format accurately; these scene exports are
+  not a new rotatable mesh. See `docs/mansa-gold-procession-animation.md`.
 - **Drafts:** keep `DRAFT / AWAITING REVIEW` status and approval metadata intact.
+- **People and gold carriers (25 November 2026):** build the supporting people
+  as distinct actual 3D characters, with generated realistic pixel-art faces,
+  naturally proportioned bodies, textured cloth and visible side/rear volume.
+  The cast has two bowl carriers, two coordinated chest porters, a banner
+  attendant and a recipient. Loads must stay supported; both hands meet before
+  gold changes ownership. Six individual models and three combined rigs are
+  supplied separately from the earlier painted procession, and the six people
+  also appear in the native caravan. See `docs/gold-carriers-3d.md`.
   Artwork generation does not grant advisory approval.
+
+- **Loaded animals and detailed gold cargo (25 November 2026):** the owner asks
+  for the elephant carrying its golden howdah, gold baskets and the smaller
+  visible treasury details from the procession picture. Supply actual 3D
+  loaded elephant/camel rigs with walking and resting actions, coherent load
+  mounts, woven baskets, hinged chests, round coins, ingots, vessels, jewelry,
+  ropes, rugs and travel equipment. Include the existing six people and main
+  white-turbaned Mansa design in one portable scene and one ZIP below
+  30,000,000 bytes. Preserve the older published figure GLBs. In the native
+  caravan the loaded elephant waits clear of the guard route, and the four
+  pack camels use the new loaded geometry. See `docs/gold-cargo-3d.md`.
 
 ## Reference locations
 

@@ -1,0 +1,185 @@
+{
+  "id": "mansa-musa",
+  "kind": "person",
+  "name": {
+    "en": "Mansa Musa",
+    "ar": "مانسا موسى",
+    "bn": "মানসা মুসা"
+  },
+  "aliases": [],
+  "years": "r. c. 1312–1337",
+  "place": "Mali Empire",
+  "district": "maghreb",
+  "depiction": "full",
+  "look": {
+    "base": "adult-man-beard",
+    "garment": "boubou",
+    "headwear": "imamah",
+    "prop": "none",
+    "colours": {
+      "skin": "skin-8",
+      "hair": "hair-black",
+      "garmentPrimary": "white-linen",
+      "garmentSecondary": "madder-red",
+      "headwear": "white-linen",
+      "prop": "brass"
+    }
+  },
+  "loop": 240,
+  "script": [
+    {
+      "from": 0,
+      "to": 24,
+      "action": "idle",
+      "at": [
+        -39.08232998977831,
+        76.88388347648319
+      ],
+      "facing": "SE"
+    },
+    {
+      "from": 24,
+      "to": 64,
+      "action": "ride",
+      "path": [
+        [
+          -39.08232998977831,
+          76.88388347648319
+        ],
+        [
+          -34,
+          76.88388347648319
+        ]
+      ],
+      "easing": "smoothstep"
+    },
+    {
+      "from": 64,
+      "to": 88,
+      "action": "idle",
+      "at": [
+        -34,
+        76.88388347648319
+      ],
+      "facing": "SE"
+    },
+    {
+      "from": 88,
+      "to": 128,
+      "action": "ride",
+      "path": [
+        [
+          -34,
+          76.88388347648319
+        ],
+        [
+          -28.91767001022169,
+          76.88388347648319
+        ]
+      ],
+      "easing": "smoothstep"
+    },
+    {
+      "from": 128,
+      "to": 152,
+      "action": "idle",
+      "at": [
+        -28.91767001022169,
+        76.88388347648319
+      ],
+      "facing": "SE"
+    },
+    {
+      "from": 152,
+      "to": 240,
+      "action": "ride",
+      "path": [
+        [
+          -28.91767001022169,
+          76.88388347648319
+        ],
+        [
+          -28.41572312307205,
+          76.84727441875808
+        ],
+        [
+          -27.266256466324855,
+          76.38306913081905
+        ],
+        [
+          -26.508037159330605,
+          74.86692841721563
+        ],
+        [
+          -27.660614950159946,
+          72.38967863857816
+        ],
+        [
+          -31.457686295608518,
+          70.3416243451472
+        ],
+        [
+          -36.542313704391475,
+          70.3416243451472
+        ],
+        [
+          -40.339385049840054,
+          72.38967863857816
+        ],
+        [
+          -41.491962840669395,
+          74.86692841721563
+        ],
+        [
+          -40.733743533675145,
+          76.38306913081905
+        ],
+        [
+          -39.58427687692795,
+          76.84727441875808
+        ],
+        [
+          -39.08232998977831,
+          76.88388347648319
+        ],
+        [
+          -39.08232998977831,
+          76.88388347648319
+        ]
+      ]
+    }
+  ],
+  "nativeModel": "mali-ruler",
+  "bio": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "story": {
+    "en": "PLACEHOLDER — to be researched",
+    "ar": "PLACEHOLDER — to be researched",
+    "bn": "PLACEHOLDER — to be researched"
+  },
+  "sources": [
+    "PLACEHOLDER source 1 — research pending",
+    "PLACEHOLDER source 2 — research pending"
+  ],
+  "summary": {
+    "en": "Ruler of the Mali Empire, remembered for his 1324 pilgrimage and the gold he spent and gave away on the journey. This caravan and its three donation stops are an illustrative reconstruction, not a record of exact people, uniforms or events."
+  },
+  "links": [
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mansa_Musa"
+    },
+    {
+      "label": "Britannica",
+      "url": "https://www.britannica.com/biography/Musa-I-of-Mali"
+    },
+    {
+      "label": "World History Encyclopedia",
+      "url": "https://www.worldhistory.org/Mansa_Musa/"
+    }
+  ],
+  "panelApproved": false
+}

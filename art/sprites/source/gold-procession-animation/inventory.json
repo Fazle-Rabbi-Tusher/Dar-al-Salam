@@ -1,0 +1,16 @@
+{
+  "description": "Generated background and twelve authored walking poses based on the owner-selected crowned Mansa Musa gold-procession illustration. Prepared as a layered pixel-art animation, not a new GLB model.",
+  "alphaImport": "Remove the translucent background matte below alpha 224 and bright neutral matte pixels in the lower leg gaps; subject RGB and source PNG are retained.",
+  "files": [
+    {
+      "file": "horse-and-rider-12.png",
+      "bytes": 3660701,
+      "sha256": "ccf47c59879d3cb90d1bcc35cc0701dde086820f8966128f1b5b0901b0f9f4f3"
+    },
+    {
+      "file": "background.png",
+      "bytes": 3480907,
+      "sha256": "cf8d956fd7c9491fad29817993726a6ba53ba8994be6934f6b6c3d530e40862f"
+    }
+  ]
+}

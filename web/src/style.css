@@ -1693,6 +1693,19 @@ html[dir='rtl'] .portrait-decoration {
   border-radius: 10px; background: #faf9f1f2; color: #28483f;
   box-shadow: 0 8px 32px #1f3f3320; backdrop-filter: blur(12px);
 }
+.character-study-trigger {width:100%;padding:12px 15px;margin-bottom:22px;border:1px solid #c8c6b3;color:#405345;text-align:start;font-family:Georgia,serif;font-size:17px;}
+.character-study {width:min(1120px,calc(100vw - 40px));max-height:87dvh;padding:0;border:1px solid #4b4e3b;background:#1c2118;color:#c7bd91;box-shadow:0 32px 100px #0009;}
+.character-study::backdrop {background:#080c08df;backdrop-filter:blur(6px);}
+.character-study-inner {padding:38px;}
+.character-study header {display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.character-study-eyebrow {font-size:9px;letter-spacing:.28em;text-transform:uppercase;}
+.character-study header button {font-size:23px;font-weight:200;width:32px;height:32px;color:#999e82;}
+.character-study h2 {font:normal clamp(24px,3vw,34px)/1.3 Georgia,serif;margin:0 0 20px;letter-spacing:-.035em;}
+.character-study figure {margin:0;border:1px solid #3c4034;background:#201b17;}
+.character-study figure img {display:block;width:100%;height:auto;}
+.character-study figcaption {font-size:10px;letter-spacing:.06em;padding:14px 18px;color:#a8ad95;border-top:1px solid #3c4034;}
+.character-study-model {display:inline-flex;align-items:center;gap:35px;margin-top:24px;padding:10px 0;border-bottom:1px solid #6e7357;color:#d2c99c;font-size:12px;}
+@media(max-width:700px){.character-study{width:calc(100vw - 24px);max-height:92dvh;}.character-study-inner{padding:20px;}.character-study header{margin-bottom:20px;}.character-study figure{overflow-x:auto;}.character-study figure img{min-width:720px;}.character-study figcaption{min-width:720px;}}
 .dark-room-controls header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .dark-room-controls header span {font-size: 10px; color: #77836e;}
 .dark-room-controls h2 {margin: 4px 0 14px; font: 21px Georgia, serif;}

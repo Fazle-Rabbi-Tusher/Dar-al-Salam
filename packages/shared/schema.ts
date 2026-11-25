@@ -114,6 +114,8 @@ export const characterSchema = z.object({
   pairWith: z.string().optional(),
   /** Id of another figure whose animation strips this one plays. */
   strip: z.string().optional(),
+  /** Articulated world geometry, with a separate draft card portrait. */
+  nativeModel: z.literal('mali-ruler').optional(),
   /** Id of a figure this one leads on a rope (a guide leading a camel). */
   leads: z.string().optional(),
   bio: z.record(z.string()).optional(),

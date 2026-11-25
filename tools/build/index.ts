@@ -44,6 +44,7 @@ import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripTempo } from '../../packages/shared/motion';
 import { sportsKind } from '../../packages/shared/sports';
 import { podcastKind } from '../../packages/shared/podcast';
+import { caravanKind, inCaravanPlot } from '../../packages/shared/royal-caravan';
 import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
@@ -760,7 +761,7 @@ async function build() {
       // The approved Al-Bayt al-Muzlim mesh is a native world component.
       // Keep source PNGs as references, without packing flat duplicates.
       if (o.type.startsWith('sup-dr-')) continue;
-      if (sportsKind(o.type) || podcastKind(o.type)) {
+      if (sportsKind(o.type) || podcastKind(o.type) || caravanKind(o.type)) {
         // Native-only arenas have geometry, not a hidden billboard duplicate.
         const frame = register(new Pixels(1, 1), [0, 0]);
         const [x, y] = worldFromTile(o.x, o.y, o.z);
@@ -980,6 +981,7 @@ async function build() {
   }
   const wildCounts: Record<string, number> = {};
   for (const [i, w] of wildPlantings().entries()) {
+    if (inCaravanPlot(w.tile)) continue;
     // Massawa's town is laid out by hand (packages/shared/massawa.ts), and
     // nothing wild lands on a hand-placed piece round it.
     if (massawaTown(w.tile) < MASSAWA.town.radius + 1) continue;

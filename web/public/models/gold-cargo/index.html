@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>The gold caravan · animals & treasure · Dar al-Salam</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #20231a;
+        color: #e4d8b5;
+        font:
+          13px system-ui,
+          sans-serif;
+      }
+      header {
+        height: 83px;
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #6d674444;
+      }
+      .eyebrow {
+        color: #b4a374;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-size: 9px;
+      }
+      h1 {
+        font:
+          normal clamp(20px, 3vw, 29px) Georgia,
+          serif;
+        margin: 7px 0 0;
+      }
+      .badge {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        color: #a9ad91;
+      }
+      main {
+        height: calc(100dvh - 83px);
+        position: relative;
+      }
+      #view {
+        position: absolute;
+        inset: 0;
+      }
+      canvas {
+        display: block;
+        image-rendering: pixelated;
+        touch-action: none;
+      }
+      aside {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 235px;
+        background: #25291ef2;
+        border: 1px solid #6e6e4244;
+        padding: 18px;
+      }
+      label {
+        display: block;
+        font-size: 10px;
+        color: #afb397;
+        margin-bottom: 9px;
+      }
+      select,
+      button,
+      a {
+        color: inherit;
+        font: inherit;
+      }
+      select,
+      button {
+        background: #343b29;
+        border: 1px solid #656c4d;
+        padding: 9px 10px;
+        border-radius: 2px;
+      }
+      select {
+        width: 100%;
+      }
+      button {
+        cursor: pointer;
+      }
+      .angles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin: 16px 0;
+      }
+      .angles button {
+        padding: 7px;
+        font-size: 11px;
+      }
+      p {
+        font-size: 11px;
+        line-height: 1.65;
+        color: #b2b59e;
+      }
+      a {
+        font-size: 11px;
+        text-underline-offset: 4px;
+      }
+      .timeline {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(640px, calc(100% - 40px));
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #25291eeb;
+        border: 1px solid #6e6e4244;
+      }
+      .timeline input {
+        flex: 1;
+        min-width: 0;
+        accent-color: #d5b870;
+      }
+      output {
+        font-variant-numeric: tabular-nums;
+        min-width: 70px;
+        font-size: 11px;
+      }
+      #status {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 12px;
+        background: #25291e;
+        color: #c6b77e;
+      }
+      #status[hidden] {
+        display: none;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      a:focus-visible {
+        outline: 2px solid #f3d184;
+        outline-offset: 3px;
+      }
+      @media (max-width: 600px) {
+        #view {
+          top: 200px;
+          bottom: 65px;
+        }
+        header {
+          padding: 12px 16px;
+          height: 76px;
+        }
+        main {
+          height: calc(100dvh - 76px);
+        }
+        .badge {
+          display: none;
+        }
+        aside {
+          top: 12px;
+          left: 12px;
+          width: calc(100% - 24px);
+          padding: 11px;
+        }
+        aside p {
+          display: none;
+        }
+        .angles {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 4px;
+          margin: 9px 0;
+        }
+        .angles button {
+          padding: 5px;
+        }
+        .timeline {
+          bottom: 12px;
+          padding: 8px;
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="eyebrow">The caravan collection</span>
+        <h1>The gold caravan · animals & treasure</h1>
+      </div>
+      <span class="badge">3D ANIMALS · CARGO · TREASURE</span>
+    </header>
+    <main>
+      <div
+        id="view"
+        role="img"
+        aria-label="Rotatable loaded elephant, camels and detailed gold cargo"
+      ></div>
+      <aside>
+        <label for="model">Explore the caravan</label>
+        <select id="model">
+          <option value="procession-scene">The complete giving scene</option>
+          <option value="elephant-loaded">Loaded elephant & howdah</option>
+          <option value="camel-loaded">Loaded pack camel</option>
+          <option value="treasury-collection">Treasury & small details</option>
+          <option value="howdah">Golden howdah</option>
+          <option value="gold-basket">Gold-filled woven basket</option>
+          <option value="lidded-basket">Lidded travel basket</option>
+          <option value="treasure-chest">Engraved treasure chest</option>
+          <option value="gold-bowl">Engraved bowl & coins</option>
+          <option value="coin-hoard">Loose coin hoard</option>
+          <option value="gold-ingots">Gold ingot stacks</option>
+          <option value="gold-urn">Lidded gold urn</option>
+          <option value="gold-ewer">Gold water ewer</option>
+          <option value="jewelry-tray">Necklaces, rings & bracelets</option>
+          <option value="gold-pouches">Tied gold pouches</option>
+          <option value="rolled-carpets">Travel carpets</option>
+          <option value="water-skins">Leather water skins</option>
+          <option value="rope-coils">Coiled ropes</option>
+          <option value="people/mansa-musa-mounted">
+            Mansa Musa on horseback
+          </option>
+          <option value="people/overhead-gold-bearer">
+            Overhead bowl carrier
+          </option>
+          <option value="people/bowl-gold-bearer">Gold bowl bearer</option>
+          <option value="people/chest-porter-rust">Chest porter · rust</option>
+          <option value="people/chest-porter-indigo">
+            Chest porter · indigo
+          </option>
+          <option value="people/elder-recipient">Elder recipient</option>
+          <option value="people/mali-guard">Malian guard</option>
+          <option value="people/paired-chest-carriers">Chest porters</option>
+          <option value="people/gold-handover-pair">Gold-sharing pair</option>
+          <option value="people/banner-attendant">
+            Banner attendant
+          </option></select
+        ><label for="action" style="margin-top: 12px">Animal action</label
+        ><select id="action">
+          <option>Walk</option>
+          <option selected>Rest</option>
+        </select>
+        <div class="angles">
+          <button data-angle="front">Front</button
+          ><button data-angle="rear">Back</button>
+          <button data-angle="left">Left</button
+          ><button data-angle="right">Right</button>
+          <button data-angle="isometric">Three-quarter</button
+          ><button data-angle="bird">Bird's-eye</button>
+          <button data-angle="portrait">Detail close-up</button
+          ><button id="overview">Giving scene</button>
+        </div>
+        <p>
+          Drag to rotate. Scroll or pinch to zoom. Inspect the cloth, hands and
+          loads from every angle.
+        </p>
+        <p id="description">
+          Both hands support an engraved bowl of gold balanced on a padded head
+          cushion.
+        </p>
+        <a id="download" href="elephant-loaded.glb" download
+          >Download selected 3D asset</a
+        >
+      </aside>
+      <div id="status" role="status">Preparing the characters…</div>
+      <div class="timeline">
+        <button id="play" aria-label="Play animation">Play</button
+        ><input
+          id="time"
+          type="range"
+          min="0"
+          max="20"
+          step="0.01"
+          value="0"
+          aria-label="Animation time"
+        /><output id="clock">0.0 / 20s</output>
+      </div>
+    </main>
+    <script type="module" src="./viewer.js"></script>
+  </body>
+</html>

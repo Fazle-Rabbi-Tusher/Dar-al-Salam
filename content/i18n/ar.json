@@ -139,5 +139,13 @@
   "basketball": "كرة السلة",
   "arena": "الملاكمة والفنون القتالية",
   "podcast": "بودكاست",
-  "football": "كرة القدم"
+  "football": "كرة القدم",
+  "goldCaravan": "مانسا موسى",
+  "characterStudy": "دراسة الشخصية",
+  "closeCharacterStudy": "إغلاق دراسة الشخصية",
+  "mansaStudyTitle": "حاكم واحد. من كل زاوية.",
+  "mansaStudyAlt": "مانسا موسى من الأمام والجانب والخلف بعمامة بيضاء ورداء عاجي وعباءة حمراء وقلائد ذهبية.",
+  "characterStudyReference": "مرجع التصميم · الأمام والجانب والخلف",
+  "exploreCharacterModel": "استكشف النموذج ثلاثي الأبعاد المتحرك",
+  "viewCharacterStudy": "عرض دراسة الشخصية"
 }

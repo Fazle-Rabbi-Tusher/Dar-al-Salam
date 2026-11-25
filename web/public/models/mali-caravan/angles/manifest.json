@@ -1,0 +1,63 @@
+{
+  "source": "character-study.png",
+  "format": "lossless WebP",
+  "pixelHashMode": "RGBA with invisible RGB zeroed at alpha=0",
+  "views": [
+    {
+      "angle": "front",
+      "file": "mansa-musa-front.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "3fb68960bc7b5b29ac926ae15dac4d38fe73ba0e6fe258096c188b6e539c0ef9"
+    },
+    {
+      "angle": "front-left",
+      "file": "mansa-musa-front-left.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "f29cfc3d4d5bc98fdb24fdd9ab6dc9537773603138fec1c1052a2b13728250e9"
+    },
+    {
+      "angle": "left",
+      "file": "mansa-musa-left.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "f6286b57e832a52c0d3a02cacce59ad5cabab0b8041b7100a7bcb31b1d516add"
+    },
+    {
+      "angle": "rear-left",
+      "file": "mansa-musa-rear-left.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "97fcb1e205a438f48f529c6b87692d00585d0a63192a44acce37b0d216497c7b"
+    },
+    {
+      "angle": "rear",
+      "file": "mansa-musa-rear.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "91cd4399dcde1a3f8d86c6c0b683e2359ff55eb7887fe065f1e892694771bdc9"
+    },
+    {
+      "angle": "rear-right",
+      "file": "mansa-musa-rear-right.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "372fbf154c6299f0d79faf348a7c4f1886a314625588dc5afe5f826e1929f36c"
+    },
+    {
+      "angle": "right",
+      "file": "mansa-musa-right.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "2162ba667ab0256cf2e9f28a8d40c6a77207c7fab75a39af78420e4bf6c65614"
+    },
+    {
+      "angle": "front-right",
+      "file": "mansa-musa-front-right.webp",
+      "width": 384,
+      "height": 512,
+      "decodedPixelsSha256": "2252ea03bba01bd6d62ef65c45e5deeef202247c9b597ca0c70e5c94a2b92567"
+    }
+  ]
+}

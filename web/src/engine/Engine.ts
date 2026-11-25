@@ -41,11 +41,13 @@ import {
 } from '../../../packages/shared/sports';
 import { motionFor } from '../../../packages/shared/motion';
 import { podcastPose } from '../../../packages/shared/podcast';
+import { rulerTile } from '../../../packages/shared/royal-caravan';
 import { maskHit } from '../../../packages/shared/compositor';
 import {
   FACING_DIRECTION,
   PLANET,
   RADIUS_PX,
+  TILE_SIDE,
   WILD,
   WILD_GLSL,
   MASSAWA,
@@ -809,7 +811,12 @@ export class Engine {
   }
   /** The scene a character (or a scene prop's lead) belongs to. */
   private sceneOf(id: string | null) {
-    return (id && this.live.get(id)?.character.scene) || null;
+    return (
+      (id &&
+        (this.live.get(id)?.character.scene ??
+          this.manifest?.characters.find((c) => c.id === id)?.scene)) ||
+      null
+    );
   }
   /** Fly to show a whole scene: every member and prop, heads included. */
   private frameScene(id: string) {
@@ -825,7 +832,7 @@ export class Engine {
         points.push(worldFromTile(...characterState(c, this.frame).tile));
     for (const s of this.manifest.sortables)
       if (s.scene === id) points.push(worldFromTile(...s.tile));
-    if (id === 'podcast') {
+    if (id === 'podcast' || id === 'gold-caravan') {
       const [[x0, y0], [x1, y1]] = scene.area;
       for (const [x, y] of [
         [x0, y0],
@@ -1029,9 +1036,14 @@ export class Engine {
           p.x < this.host.clientWidth + reach &&
           p.y < this.host.clientHeight + reach;
         if (b.activity) b.activity.mesh.visible = b.mesh.visible;
+        for (const mesh of b.rig?.meshes ?? []) mesh.visible = b.mesh.visible;
         if (b.glass) b.glass.visible = b.mesh.visible;
         if (!b.mesh.visible) continue;
         const layer = p.depth < 0 ? this.behind : this.front;
+        for (const mesh of b.rig?.meshes ?? []) {
+          if (mesh.parent !== layer) layer.addChild(mesh);
+          mesh.zIndex = p.depth + 1e-7;
+        }
         if (b.mesh.parent !== layer) layer.addChild(b.mesh);
         if (b.glass) {
           if (b.glass.parent !== layer) layer.addChild(b.glass);
@@ -1086,6 +1098,7 @@ export class Engine {
     let visible = 0;
     const probes: VisibilityProbe[] = [];
     for (const c of this.manifest.characters) {
+      if (c.nativeModel) continue;
       const sports = isSportsPlayer(c.id);
       if (sportsOnly && !sports) continue;
       const renderTime = sports
@@ -1370,7 +1383,8 @@ export class Engine {
       this.infrastructure.animate(b, activityTime);
     if (
       changed ||
-      (this.motion && this.buildings.some((b) => b.activity && b.mesh.visible))
+      (this.motion &&
+        this.buildings.some((b) => (b.activity || b.rig) && b.mesh.visible))
     )
       this.app.render();
     this.emitElapsed += dt;
@@ -1465,6 +1479,29 @@ export class Engine {
           continue;
         return item.id;
       }
+    }
+    const caravan = this.buildings.find((b) => b.kind === 'gold-caravan');
+    if (caravan?.mesh.visible) {
+      const [tx, ty] = rulerTile(this.frame),
+        corners = [-28, 28].flatMap((x) =>
+          [-30, 30].flatMap((z) =>
+            [0, 108].map((h) =>
+              project(
+                this.proj,
+                tileToPlanet(tx + x / TILE_SIDE, ty + z / TILE_SIDE),
+                h,
+              ),
+            ),
+          ),
+        );
+      if (
+        corners.some((q) => q.depth > 0) &&
+        p.x >= Math.min(...corners.map((q) => q.x)) &&
+        p.x <= Math.max(...corners.map((q) => q.x)) &&
+        p.y >= Math.min(...corners.map((q) => q.y)) &&
+        p.y <= Math.max(...corners.map((q) => q.y))
+      )
+        return 'mansa-musa';
     }
     return this.darkRoom.hit(p) ? 'ibn-al-haytham' : null;
   }
@@ -1732,6 +1769,7 @@ export class Engine {
     for (const sprite of this.spriteDepth.values()) sprite.destroy();
     this.spriteDepth.clear();
     for (const b of this.buildings) {
+      b.rig?.destroy();
       for (const mesh of [
         b.mesh,
         ...(b.glass ? [b.glass] : []),

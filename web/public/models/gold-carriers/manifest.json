@@ -1,0 +1,91 @@
+{
+  "format": "glTF 2.0 binary",
+  "units": "meters",
+  "ticksPerSecond": 12,
+  "loopTicks": 240,
+  "people": 6,
+  "models": [
+    {
+      "id": "overhead-gold-bearer",
+      "file": "overhead-gold-bearer.glb",
+      "bytes": 2530224,
+      "sha256": "ba4249c007b886b78b92b10a2f1c05981ff84937458290947ebd61c96f0bdadb",
+      "nodes": 24,
+      "animationTracks": 20,
+      "duration": 20
+    },
+    {
+      "id": "bowl-gold-bearer",
+      "file": "bowl-gold-bearer.glb",
+      "bytes": 2798344,
+      "sha256": "2d87574ddd5a13951795d4219c30a25781311d966558b34d81c9c027a856acd6",
+      "nodes": 24,
+      "animationTracks": 26,
+      "duration": 20
+    },
+    {
+      "id": "chest-porter-rust",
+      "file": "chest-porter-rust.glb",
+      "bytes": 2571028,
+      "sha256": "3680a685c45c31b20e96f0bc4ea17412904dff6dbba64c60e1097c2ae61a163c",
+      "nodes": 22,
+      "animationTracks": 20,
+      "duration": 20
+    },
+    {
+      "id": "chest-porter-indigo",
+      "file": "chest-porter-indigo.glb",
+      "bytes": 2571040,
+      "sha256": "a701977a20214198469956ce588784d9400bd67412980d1c16786fddd903ad43",
+      "nodes": 22,
+      "animationTracks": 20,
+      "duration": 20
+    },
+    {
+      "id": "banner-attendant",
+      "file": "banner-attendant.glb",
+      "bytes": 2595912,
+      "sha256": "3680df4b67d335b5569c30ebdfaad0c3371324a3e38cde22e1a43375a4c178ad",
+      "nodes": 24,
+      "animationTracks": 21,
+      "duration": 20
+    },
+    {
+      "id": "elder-recipient",
+      "file": "elder-recipient.glb",
+      "bytes": 2152504,
+      "sha256": "a0b73fa7554039429c562146fbcccbe61921dc7d8c223d9aeeb774a1101b189d",
+      "nodes": 24,
+      "animationTracks": 7,
+      "duration": 20
+    },
+    {
+      "id": "paired-chest-carriers",
+      "file": "paired-chest-carriers.glb",
+      "bytes": 5174040,
+      "sha256": "8439aaf7e4de0a924f80a62c3e6305e223700dac28778f9408688f79bb734cb0",
+      "nodes": 47,
+      "animationTracks": 40,
+      "duration": 20
+    },
+    {
+      "id": "gold-handover-pair",
+      "file": "gold-handover-pair.glb",
+      "bytes": 4771528,
+      "sha256": "40971e37f2161fbb426ed62479c7e3b0be47ebddf39fb9fdd70f08560ef1731a",
+      "nodes": 46,
+      "animationTracks": 13,
+      "duration": 20
+    },
+    {
+      "id": "gold-carriers-ensemble",
+      "file": "gold-carriers-ensemble.glb",
+      "bytes": 14694268,
+      "sha256": "6f88f892ef12b4e2c5ef4ad51a99ad3aca0f250558d0161619c3b778545b08a2",
+      "nodes": 138,
+      "animationTracks": 104,
+      "duration": 20
+    }
+  ],
+  "review": "Anonymous illustrative supporting characters. Existing named-character approval remains a draft."
+}

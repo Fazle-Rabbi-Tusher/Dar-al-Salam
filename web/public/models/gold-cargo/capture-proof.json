@@ -1,0 +1,8 @@
+{
+  "frames": 480,
+  "fps": 24,
+  "seconds": 20,
+  "directions": 29,
+  "source": "Actual articulated GLBs recorded in the local Three.js renderer",
+  "errors": []
+}
