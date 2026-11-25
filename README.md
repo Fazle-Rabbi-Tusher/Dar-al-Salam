@@ -138,3 +138,28 @@ layered illustration, whose painted background remains its own artwork.
 
 The ZIP is 20,400,383 bytes, below 30,000,000, with
 verified entries and checksums. All previous downloads remain unchanged.
+
+## The loaded elephant, camels and gold treasury
+
+[One complete ZIP — 29.97 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-cargo-complete-3d.zip) · [Actual 3D animation preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-cargo-3d.mp4) · [GIF preview](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-cargo-3d.gif) · [Assembled scene](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-cargo-scene.png)
+
+Seventeen new actual 3D assets: a loaded elephant and ornate gold howdah,
+an adult loaded dromedary, woven baskets, gold bowls, an engraved open chest,
+round coins, ingots, urn, ewer, pouches, bound carpets, water skins, rope,
+jewelry and an assembled treasury. Visible details include curved tusks,
+toenails, moving ears and trunk, red/gold drapes, balanced panniers, harnesses,
+buckles, bells, carved canopy panels, cushions, fringes and roof ornaments.
+
+Ten existing people/rig files include the six carriers, paired chest bearers,
+the coin-sharing pair, mounted Mansa Musa and a guard. The portable component
+assembles a giving stop and upgrades the carried loads. The original main
+Mansa design is preserved. Both animals have full 20-second Walk and Rest
+clips; the people retain their original animated exports. The models use
+meters and the deterministic 12 Hz / 240-tick clock.
+
+The same elephant, four loaded camels and treasury also appear in the native
+world. The ZIP includes a local no-CDN viewer, reusable Three.js component,
+29 transparent rendered directions, a 20-second actual model tour, original
+material and people artwork, source scripts and integrity records. It is
+29,969,708 bytes, strictly below 30,000,000.
+All earlier download files are preserved.
