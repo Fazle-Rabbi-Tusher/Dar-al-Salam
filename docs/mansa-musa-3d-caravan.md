@@ -1,5 +1,22 @@
 # Mansa Musa and the gold caravan
 
+> **In the world now (owner's request, 2026-11): pixel-art sprites in the desert.**
+> The owner asked for Mansa Musa's caravan to match the world's other art and
+> to stand on the desert. `tools/prepare-caravan-sprites.ts` renders the same
+> articulated rig, tick by tick and one actor at a time, in the world's 2:1
+> isometric view at three sprite pixels per world pixel, without anti-aliasing
+> (`tools/caravan/render.html`).
+>
+> - **Strips:** each design keeps a small set of its most different poses, with a reduced palette.
+>   Guards of one colour share theirs, and so do the pack camels. The build outlines them like every strip.
+> - **Timing:** every figure plays its strip one pose per tick (`tempo: 1`, a 240-step `sequence`).
+>   It steps to its sampled place on the route each tick, so gaits, turns and gold handovers keep the rig's timing.
+> - **Placement:** the caravan walks the open desert west of Massawa (`CARAVAN` in `royal-caravan.ts`).
+>   Its stalls, treasury and travel equipment are planted there with the desert pieces.
+>   The fortress, the dead tree and the Bedouin camp (with its three camels) made way for it.
+> - **What changed in the world:** the native rig is no longer placed in the world, and there is no sand plot.
+>   The GLB exports, the viewer and the components below are unchanged.
+
 The world now contains an articulated 3D Mansa Musa leading a mounted procession
 through three gold distribution stops. The **Mansa Musa** shortcut frames its
 sandy market route outside the Peace Quarter. Clicking the ruler opens his

@@ -29673,18 +29673,6 @@
           ],
           "walkable": false,
           "z": 0
-        },
-        {
-          "id": 657,
-          "type": "mali-gold-caravan",
-          "x": -52,
-          "y": 60,
-          "footprint": [
-            36,
-            32
-          ],
-          "walkable": true,
-          "z": 0
         }
       ]
     }

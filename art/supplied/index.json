@@ -1435,5 +1435,77 @@
     "density": 4,
     "floor": true,
     "source": "Owner's Al-Bayt al-Muzlim collection (2026-11), cutaway GLB rendered by tools/prepare-dark-room.ts"
+  },
+  "sup-caravan-foreground-treasury": {
+    "file": "supplied/caravan-foreground-treasury.png",
+    "anchor": [
+      143,
+      110
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-travel-equipment": {
+    "file": "supplied/caravan-travel-equipment.png",
+    "anchor": [
+      91,
+      114
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-stall-1": {
+    "file": "supplied/caravan-stall-1.png",
+    "anchor": [
+      66,
+      146
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-awning-1": {
+    "file": "supplied/caravan-awning-1.png",
+    "anchor": [
+      99,
+      324
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-stall-2": {
+    "file": "supplied/caravan-stall-2.png",
+    "anchor": [
+      310,
+      236
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-awning-2": {
+    "file": "supplied/caravan-awning-2.png",
+    "anchor": [
+      99,
+      324
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-stall-3": {
+    "file": "supplied/caravan-stall-3.png",
+    "anchor": [
+      310,
+      236
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
+  },
+  "sup-caravan-awning-3": {
+    "file": "supplied/caravan-awning-3.png",
+    "anchor": [
+      99,
+      324
+    ],
+    "density": 3,
+    "source": "Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts"
   }
 }

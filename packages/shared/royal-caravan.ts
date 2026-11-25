@@ -25,10 +25,15 @@ export type RigNode = {
   faces?: RigFace[];
   children: RigNode[];
 };
+/**
+ * The caravan's ground: the open desert west of Massawa (owner's request,
+ * 2026-11: "place them on the desert"), between the coast and the town.
+ * `tile`/`footprint` bound every actor and stall; nothing wild grows there.
+ */
 export const CARAVAN = {
-  tile: [-52, 60] as Point,
-  footprint: [36, 32] as Point,
-  center: [-34, 76] as Point,
+  tile: [-53, 89] as Point,
+  footprint: [31, 27] as Point,
+  center: [-36, 100] as Point,
   stops: [-115, 0, 115],
   guards: 12,
   camels: 4,

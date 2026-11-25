@@ -1119,7 +1119,8 @@ export class Engine {
       const point = tileToPlanet(...state.tile);
       const probe = project(this.proj, point, state.z);
       let direction: Point = FACING_DIRECTION[state.facing];
-      if (step.path) {
+      // A held facing (a figure baked with its own heading) is kept as is.
+      if (step.path && !step.facing) {
         const t = (this.frame % c.loop) - step.from,
           next = characterState(c, (this.frame % c.loop) + (t < 0 ? 0 : 1));
         const d: Point = [

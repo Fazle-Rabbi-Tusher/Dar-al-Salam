@@ -1,10 +1,6 @@
 import { readJson, writeJson } from './build/io';
 import { CARAVAN, rulerTile } from '../packages/shared/royal-caravan';
-import {
-  characterSchema,
-  roomSchema,
-  type Step,
-} from '../packages/shared/schema';
+import { characterSchema, type Step } from '../packages/shared/schema';
 
 const script: Step[] = [
   { from: 0, to: 24, action: 'idle', at: rulerTile(0), facing: 'SE' },
@@ -43,11 +39,10 @@ try {
 }
 const card = characterSchema.parse(
   previous
-    ? { ...previous, nativeModel: 'mali-ruler', loop: 240, script }
+    ? previous
     : {
         id: 'mansa-musa',
         kind: 'person',
-        nativeModel: 'mali-ruler',
         name: { en: 'Mansa Musa', ar: 'مانسا موسى', bn: 'মানসা মুসা' },
         aliases: [],
         years: 'r. c. 1312–1337',
@@ -108,25 +103,9 @@ if (
     ...(card.links ?? []),
   ];
 await writeJson(file, card);
-const room = roomSchema.parse(await readJson('rooms/mosque-garden.tmj')),
-  layer = room.layers.find((l) => l.type === 'objectgroup');
-if (layer?.type !== 'objectgroup') throw Error('Missing world objects');
-const existing = layer.objects.find((o) => o.type === 'mali-gold-caravan'),
-  object = {
-    type: 'mali-gold-caravan',
-    x: CARAVAN.tile[0],
-    y: CARAVAN.tile[1],
-    footprint: CARAVAN.footprint,
-    walkable: true,
-    z: 0,
-  };
-if (existing) Object.assign(existing, object);
-else
-  layer.objects.push({
-    ...object,
-    id: Math.max(...layer.objects.map((o) => o.id)) + 1,
-  });
-await writeJson('rooms/mosque-garden.tmj', room);
+// The caravan is no longer a native world object: its figures are pixel-art
+// sprites walking the open desert (tools/prepare-caravan-sprites.ts writes
+// Mansa Musa's script and the caravan's ambient figures).
 await writeJson('content/scenes/gold-caravan.json', {
   id: 'gold-caravan',
   title: {
@@ -157,5 +136,5 @@ for (const [lang, title] of [
   await writeJson(f, value);
 }
 console.log(
-  'Added the native caravan in the open desert, with a draft ruler card and direct navigation.',
+  'Mansa Musa: draft ruler card, caravan scene and direct navigation (run tools/prepare-caravan-sprites.ts for his sprites and script).',
 );

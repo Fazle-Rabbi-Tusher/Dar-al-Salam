@@ -44,7 +44,10 @@ import { worldFromTile, depth } from '../../packages/shared/iso';
 import { stripTempo } from '../../packages/shared/motion';
 import { sportsKind } from '../../packages/shared/sports';
 import { podcastKind } from '../../packages/shared/podcast';
-import { caravanKind, inCaravanPlot } from '../../packages/shared/royal-caravan';
+import {
+  caravanKind,
+  inCaravanPlot,
+} from '../../packages/shared/royal-caravan';
 import { generateSky } from './sky';
 import { stripDepth, stripGround } from '../../packages/shared/slicing';
 import {
@@ -260,6 +263,8 @@ async function build() {
        * the strip holds each pose once, and this lists one per step.
        */
       sequence?: number[];
+      /** World ticks per step, when the strip sets its own (Mansa Musa's caravan: 1). */
+      tempo?: number;
     } = await readJson(`${base}.json`).catch(() => ({
       frame: [224, 336],
       foot: [112, 320],
@@ -278,6 +283,7 @@ async function build() {
       frames: meta.sequence ? meta.sequence.map((i) => out[i]) : out,
       flip: facing === 'SW' || facing === 'NW',
       density: meta.density,
+      tempo: meta.tempo,
     };
   }
   /*
@@ -476,18 +482,26 @@ async function build() {
   >();
   const baked: BakedCharacter[] = [];
   let bakedCount = 0;
+  const animFiles = await fs.readdir('art/sprites/anim');
   for (const c of characters) {
     const lifted =
       c.kind === 'bird' ||
       c.script.some((s) =>
         Array.isArray(s.z) ? s.z.some((z) => z !== 0) : Boolean(s.z),
       );
-    const sprite = await characterSprite(c.strip ?? c.id),
-      d8 = await dir8Views(
-        c.look.base,
-        c.look.colours.garmentPrimary,
-        c.script.map((s) => s.action),
+    // A figure with its own supplied strips plays them, not the shared
+    // eight-view art of its kind (Mansa Musa's loaded camels and elephant).
+    const ownStrips = animFiles.some((f) =>
+        f.startsWith(`${c.strip ?? c.id}__`),
       ),
+      sprite = await characterSprite(c.strip ?? c.id),
+      d8 = ownStrips
+        ? null
+        : await dir8Views(
+            c.look.base,
+            c.look.colours.garmentPrimary,
+            c.script.map((s) => s.action),
+          ),
       d8meta = d8 ? await dir8MetaFor(c.look.base) : null;
     // Sprite characters (and anyone lifted off the floor) get a separate
     // floor shadow; their drawn frames are baked without one.
@@ -544,7 +558,7 @@ async function build() {
           );
           // Every supplied pose plays, at the action's tempo (an eight-pose
           // reading strip is not cut down to the four-pose default).
-          const tempo = stripTempo(s.action);
+          const tempo = strip?.tempo ?? stripTempo(s.action);
           stripCache.set(
             stripKey,
             strip && {

@@ -1,4 +1,7 @@
 import type { Point } from './iso';
+// Mansa Musa's caravan's still pieces in the desert (handover stalls,
+// treasury, travel equipment), written by tools/prepare-caravan-sprites.ts.
+import CARAVAN_PIECES from '../../art/supplied/caravan.json' with { type: 'json' };
 
 /*
  * Massawa in about 615 CE, following the owner's reference sheets: a dense
@@ -7,7 +10,8 @@ import type { Point } from './iso';
  * edge. It stands where the owner marked it: in the woods just south-west of
  * the quarter, between the quarter and the ring road (MASSAWA in
  * planet.ts). No people are shown: the first Hijra is the story of the
- * Sahaba, who are never depicted (AGENTS.md).
+ * Sahaba, who are never depicted (AGENTS.md). Mansa Musa's caravan (1324)
+ * passes on the open desert west of the town, a separate story.
  */
 
 /** Ground point of the mosque (front centre of its base), mid-town. */
@@ -50,12 +54,11 @@ export const MASSAWA_OBJECTS: [string, number, number][] = [
   ['msw-house-terrace', 1.0, 136.0],
   /* ── A garden plot at the front of the town ── */
   ['msw-garden', 1.0, 140.0],
-  /* ── The Bedouin camp on the west sand: tents, a cart, crates and jars ── */
-  ['sup-tent2-0', -31, 112],
-  ['sup-tent2-3', -32.5, 107],
-  ['msw-cart', -30.5, 103.5],
-  ['sup-crates', -29, 110.5],
-  ['sup-jars', -30, 114.5],
+  /*
+   * The Bedouin camp, the dead tree and the fortress on the west sand made
+   * way for Mansa Musa's caravan (owner's request, 2026-11): its stalls,
+   * treasury and travel equipment are planted there instead (CARAVAN_PIECES).
+   */
 
   /*
    * ── Desert landscape (the owner's multi-angle desert set) ──
@@ -68,14 +71,12 @@ export const MASSAWA_OBJECTS: [string, number, number][] = [
   ['sup-dunes-2', -4, 91],
   ['sup-mesa-1', -25, 93.5],
   ['sup-rocks2', -9.5, 94.5],
-  ['sup-deadtree2', -29, 98.5],
   // The oasis: a pool ringed by date palms (MASSAWA.oasis).
   ['sup-oasis-1', -24, 103],
-  // A fortress on the far north-west sand.
-  ['sup-fort-0', -36, 97],
   // South: rocks and shrubs between the houses and the road.
   ['sup-rocks2', -16.5, 134.5],
   ['sup-shrub-c', -7, 140.5],
   ['sup-tuft-b', -13.5, 137.5],
   ['sup-mesa-3', -2, 141],
+  ...(CARAVAN_PIECES as [string, number, number][]),
 ];

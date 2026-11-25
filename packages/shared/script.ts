@@ -43,7 +43,7 @@ export function sampleStep(s: Step, t: number) {
       const zs = s.z;
       return {
         tile: [a[0] + (b[0] - a[0]) * q, a[1] + (b[1] - a[1]) * q] as Point,
-        facing: facingFromSegment(a, b),
+        facing: s.facing ?? facingFromSegment(a, b),
         z: Array.isArray(zs)
           ? (zs[i - 1] ?? 0) + ((zs[i] ?? 0) - (zs[i - 1] ?? 0)) * q
           : (zs ?? 0),
@@ -89,8 +89,12 @@ export function scriptErrors(c: Character, room?: Room) {
     }
     if (s.path) {
       const len = pathLength(s.path);
+      // A path holding a facing is a baked figure (Mansa Musa's caravan):
+      // its strip carries the real gait for every tick, so its feet keep
+      // pace at any speed and the walk-cycle limit does not apply.
       if (
         ['walk', 'carry', 'cat_walk', 'animal_walk'].includes(s.action) &&
+        !s.facing &&
         len / (s.to - s.from) > 0.25
       )
         errors.push(`step ${i}: speed exceeds 1 tile / 4 frames`);

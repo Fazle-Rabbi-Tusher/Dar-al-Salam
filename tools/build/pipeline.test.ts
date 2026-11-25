@@ -755,8 +755,11 @@ describe('scene bible: cricket ground', () => {
 describe('named characters only, with supplied animation strips', () => {
   it('has no anonymous people (the owner asked to remove all NPCs, 2026-11)', () => {
     // Animals and vehicles may stay; every person is a named character card.
+    // The one exception (owner's choice, 2026-11-25): Mansa Musa's caravan
+    // keeps its guards, gold carriers and recipients.
     for (const c of content.characters)
-      if (c.kind === 'person') expect(c.name, c.id).toBeTruthy();
+      if (c.kind === 'person' && !c.id.startsWith('caravan-'))
+        expect(c.name, c.id).toBeTruthy();
     const ids = new Set(content.characters.map((c) => c.id));
     for (const c of content.characters) {
       if (c.pairWith) expect(ids.has(c.pairWith), c.id).toBe(true);

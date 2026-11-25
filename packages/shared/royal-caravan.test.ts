@@ -34,7 +34,8 @@ describe('articulated Mansa Musa and his procession', () => {
       expect(forbiddenName(name, rules)).toBe(true);
     expect(c.panelApproved).toBe(false);
     expect(c.bio?.en).toBe('PLACEHOLDER — to be researched');
-    expect(c.nativeModel).toBe('mali-ruler');
+    // A pixel-art sprite in the desert now, not the native rig (2026-11).
+    expect(c.nativeModel).toBeUndefined();
     expect(
       scriptErrors(c, roomSchema.parse(json('rooms/mosque-garden.tmj'))),
     ).toEqual([]);

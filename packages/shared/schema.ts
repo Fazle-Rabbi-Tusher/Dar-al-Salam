@@ -83,8 +83,10 @@ export const stepSchema = z
   .refine(
     (s) =>
       Boolean(s.at && s.facing && !s.path) ||
-      Boolean(s.path && !s.at && !s.facing),
-    'Use at + facing OR a path',
+      // A path may hold one facing: a figure baked with its own heading
+      // (Mansa Musa's caravan), which the engine must not turn or mirror.
+      Boolean(s.path && !s.at),
+    'Use at + facing OR a path (optionally with a held facing)',
   );
 export type Step = z.infer<typeof stepSchema>;
 const linksSchema = z

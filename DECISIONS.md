@@ -303,3 +303,15 @@
     - **Kept:** named characters, animals (cats, birds, camels, goats, gazelles), vehicles and balls.
     - **Tests:** a unit test and a browser test check that every person in the world has a name.
     - **Exception (owner's choice, 2026-11-25):** Mansa Musa's caravan from main keeps its people: the guards, gold carriers and recipients. They are part of its 3D procession rather than character cards.
+78. Mansa Musa's caravan in the world's pixel-art style, on the desert (owner's request, 2026-11-25: "make the mansa musa's things like other existent art style and place them on the desert; if needed remove some part in desert"):
+    - **Art:** the caravan's own rig is baked into sprite strips by `tools/prepare-caravan-sprites.ts`.
+      - Each actor is rendered every tick in the world's isometric view, at three sprite pixels per world pixel, with crisp pixels and a reduced palette.
+      - Each design keeps up to 14–30 poses (the most different ones), and every tick shows the nearest.
+      - Guards of a colour share poses, and so do the camels.
+      - The build outlines the strips like every other strip.
+    - **Motion:** each figure plays one pose per tick and steps to its sampled route position each tick, always facing SE so its baked heading is never mirrored. The ride, march, turns and handovers keep their timing on the 240-tick loop.
+    - **Place:** the open desert west of Massawa, centre (−36, 100), tiles x −53…−22, y 89…116. The flat sand plot and the native rig are no longer in the world.
+    - **Cleared for it:** the fortress, the dead tree and the Bedouin camp (tents, cart, crates, jars and its three camels). Wild desert plants skip the caravan's ground.
+    - **Still pieces:** the three handover stalls (table and awning each), the treasury and the travel equipment are planted as supplied sprites with the desert pieces.
+    - **Cards:** Mansa Musa's card stays a draft; the caravan's people keep the owner's no-NPC exception (item 77).
+    - **Engine and schema:** a path step may now hold a `facing` (for a figure baked with its own heading), and the engine then neither turns nor mirrors it. Such steps are exempt from the walk-cycle speed limit, because their strip carries the real gait every tick; the caravan's return loop is as quick as the native one was. A strip may set its own `tempo`. A figure with its own strips plays them instead of its kind's eight-view art.

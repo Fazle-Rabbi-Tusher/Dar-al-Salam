@@ -1,21 +1,12 @@
 import { test, expect } from '@playwright/test';
 import type { Manifest } from '../packages/shared/schema';
 import type { LiveInfrastructure } from '../web/src/engine/Infrastructure';
-import { project, tileToPlanet, type Frame } from '../packages/shared/planet';
-import { rulerTile } from '../packages/shared/royal-caravan';
 type Native = {
   manifest: Manifest;
   buildings: LiveInfrastructure[];
-  frame: number;
-  elapsed: number;
-  lastFrame: number;
-  dirty: boolean;
-  motion: boolean;
   flight: unknown;
-  proj: Frame;
-  app: { render(): void };
-  infrastructure: { animate(b: LiveInfrastructure, t: number): void };
-  update(): void;
+  live: Map<string, { frame: string; sprite: { visible: boolean } }>;
+  debugPoints(id: string): { opaque: { x: number; y: number } } | null;
 };
 type Object3 = {
   name: string;
@@ -34,7 +25,7 @@ type Viewer = {
   angle(name: string): void;
 };
 
-test('the native caravan animates joint matrices, keeps its meshes, pauses and opens the ruler card', async ({
+test('the caravan walks the desert as pixel-art sprites, pauses and opens the ruler card', async ({
   page,
 }) => {
   test.setTimeout(120000);
@@ -50,71 +41,49 @@ test('the native caravan animates joint matrices, keeps its meshes, pauses and o
   await page.waitForFunction(
     () => !(window as unknown as { __darEngine: Native }).__darEngine.flight,
   );
-  const proof = await page.evaluate(() => {
-    const e = (window as unknown as { __darEngine: Native }).__darEngine,
-      b = e.buildings.find((b) => b.kind === 'gold-caravan')!,
-      rig = b.rig!,
-      geometry = rig.meshes[0].geometry;
-    const sample = (t: number) => {
-      e.motion = false;
-      e.elapsed = t / 12;
-      e.frame = Math.floor(t);
-      e.lastFrame = e.frame;
-      e.dirty = false;
-      e.update();
-      e.infrastructure.animate(b, t);
-      e.app.render();
-      return [...rig.batches[0].matrices];
-    };
-    const a = sample(12),
-      fractional = sample(12.5),
-      moved = sample(76);
-    return {
-      count: rig.jointCount,
-      meshes: rig.meshes.length,
-      vertices: rig.meshes.reduce(
-        (n, m) => n + m.geometry.getAttribute('aLocal').buffer.data.length / 3,
-        0,
-      ),
-      depth: rig.meshes.every((m) => m.state.depthTest && m.state.depthMask),
-      sameGeometry: geometry === rig.meshes[0].geometry,
-      fractional: JSON.stringify(a) !== JSON.stringify(fractional),
-      moved: JSON.stringify(a) !== JSON.stringify(moved),
-      mode: e.manifest.characters.find((c) => c.id === 'mansa-musa')
-        ?.nativeModel,
-    };
-  });
-  expect(proof.count).toBeGreaterThan(400);
-  expect(proof.meshes).toBeGreaterThan(5);
-  expect(proof.vertices).toBeGreaterThan(100000);
-  expect(
-    proof.depth && proof.sameGeometry && proof.fractional && proof.moved,
-  ).toBe(true);
-  expect(proof.mode).toBe('mali-ruler');
-  await page.getByLabel('Resume animation', { exact: true }).click();
   const sample = () =>
     page.evaluate(() => {
       const e = (window as unknown as { __darEngine: Native }).__darEngine;
-      const r = e.buildings.find((b) => b.kind === 'gold-caravan')!.rig!;
-      return { time: r.time, pose: [...r.batches[0].matrices] };
+      const figures = ['mansa-musa', 'caravan-guard-1', 'caravan-pack-camel-1'];
+      return {
+        native: e.buildings.some((b) => b.kind === 'gold-caravan'),
+        mode: e.manifest.characters.find((c) => c.id === 'mansa-musa')
+          ?.nativeModel,
+        cast: e.manifest.characters.filter(
+          (c) => c.id === 'mansa-musa' || c.id.startsWith('caravan-'),
+        ).length,
+        visible: figures.map((id) => !!e.live.get(id)?.sprite.visible),
+        poses: figures.map((id) => e.live.get(id)?.frame),
+      };
     });
   const first = await sample();
-  await expect.poll(async () => (await sample()).time).not.toBe(first.time);
+  // No native rig: every figure is a baked sprite like the rest of the world.
+  expect(first.native).toBe(false);
+  expect(first.mode).toBeUndefined();
+  expect(first.cast).toBeGreaterThan(25);
+  expect(first.visible).toEqual([true, true, true]);
+  await page.getByLabel('Resume animation', { exact: true }).click();
+  await expect
+    .poll(async () => JSON.stringify((await sample()).poses), {
+      timeout: 20000,
+    })
+    .not.toBe(JSON.stringify(first.poses));
   await page.getByLabel('Pause animation', { exact: true }).click();
+  await page.waitForTimeout(200);
   const paused = await sample();
-  await page.waitForTimeout(350);
-  expect(await sample()).toEqual(paused);
-  const camera = await page.evaluate(() => {
-    const e = (window as unknown as { __darEngine: Native }).__darEngine;
-    return { frame: e.frame, projection: e.proj };
-  });
-  const point = project(
-    camera.projection,
-    tileToPlanet(...rulerTile(camera.frame)),
-    84,
+  await page.waitForTimeout(400);
+  expect((await sample()).poses).toEqual(paused.poses);
+  const point = await page.evaluate(() =>
+    (window as unknown as { __darEngine: Native }).__darEngine.debugPoints(
+      'mansa-musa',
+    ),
   );
+  expect(point?.opaque).toBeTruthy();
   const canvas = await page.locator('.world-host canvas').boundingBox();
-  await page.mouse.click(canvas!.x + point.x, canvas!.y + point.y);
+  await page.mouse.click(
+    canvas!.x + point!.opaque.x,
+    canvas!.y + point!.opaque.y,
+  );
   await expect(page.locator('.story-card')).toContainText('Mansa Musa');
   await expect(page.locator('.story-card')).toContainText(
     /DRAFT|Awaiting|review/i,
@@ -131,13 +100,11 @@ test('the native caravan animates joint matrices, keeps its meshes, pauses and o
         .evaluate((img) => (img as HTMLImageElement).naturalWidth),
     )
     .toBeGreaterThan(1000);
-  await page.screenshot({ path: 'test-results/mansa-character-study.png' });
   await page.keyboard.press('Escape');
   await expect(study).toHaveCount(0);
   await expect(page.locator('.story-card')).toContainText('Mansa Musa');
   expect(errors).toEqual([]);
 });
-
 test('all four GLBs load as animated 3D objects and can be inspected from behind', async ({
   page,
 }) => {

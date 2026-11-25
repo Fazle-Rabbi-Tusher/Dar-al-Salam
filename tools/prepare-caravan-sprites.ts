@@ -1,0 +1,772 @@
+import fs from 'node:fs';
+import http from 'node:http';
+import os from 'node:os';
+import path from 'node:path';
+import { chromium } from '@playwright/test';
+import sharp from 'sharp';
+import {
+  CARAVAN,
+  caravanActors,
+  caravanModel,
+  rigMatrices,
+} from '../packages/shared/royal-caravan';
+import { TILE_SIDE } from '../packages/shared/planet';
+import type { Face3 } from '../packages/shared/infrastructure';
+
+/*
+ * Mansa Musa's caravan in the world's pixel-art style (owner's request,
+ * 2026-11: "make Mansa Musa's things like the other existing art style and
+ * place them on the desert").
+ *
+ * The caravan's own articulated rig (packages/shared/royal-caravan.ts:
+ * the mounted ruler, twelve guards, four loaded camels, the handover
+ * stewards and recipients, the gold carriers and the waiting elephant) is
+ * rendered tick by tick, each actor alone, in the world's 2:1 isometric view
+ * at the sprite density (tools/caravan/render.html). Every actor keeps its
+ * exact gait, heading and gestures over the 240-tick loop. Repeated poses are
+ * merged, each actor's colours are reduced to a small palette, and the build
+ * adds the pixel outline every strip gets. The actor walks the same route as
+ * before, now in the open desert west of Massawa (CARAVAN.center), stepping
+ * to its sampled place each tick.
+ *
+ * Still pieces (the three handover stalls, the treasury and the travel
+ * equipment) become supplied sprites planted with Massawa's desert pieces.
+ *
+ *   node --import tsx tools/prepare-caravan-sprites.ts
+ *
+ * Writes art/sprites/anim/caravan-*, mansa-musa__ride_*, art/supplied/caravan-*,
+ * content/ambient/caravan.json, Mansa Musa's script and supplied index entries.
+ */
+const D = 3; // sprite px per world px; one model unit is one world px
+const TICKS = 240;
+const vendor = path.resolve('web/public/models/mali-caravan/vendor');
+const R2 = Math.SQRT1_2,
+  COS30 = Math.cos(Math.PI / 6);
+/** Screen offset (sprite px, y down) of a model point in the isometric view. */
+const screen = (p: number[]) => [
+  (p[0] - p[2]) * R2 * D,
+  ((p[0] + p[2]) * R2 * 0.5 - p[1] * COS30) * D,
+];
+const tileOf = (x: number, z: number): [number, number] => [
+  +(CARAVAN.center[0] + x / TILE_SIDE).toFixed(3),
+  +(CARAVAN.center[1] + z / TILE_SIDE).toFixed(3),
+];
+
+/* ── The rig's joints and actors ── */
+const GROUPS = new Set(['gold-carriers-and-people', 'elephant-and-gold-cargo']);
+/** Small loose things passed between hands: drawn with whoever is nearest. */
+const LOOSE =
+  /^(gift-coin|gold-pouch|carrier-transferred-gold-coin|shared-chest-rig)/;
+const actorOf = (jointPath: string) => {
+  const p = jointPath.split('/');
+  const name = GROUPS.has(p[2]) ? p[3] : p[2];
+  // The ruler rides: horse and rider are one figure.
+  return name === 'royal-horse' ? 'mansa-musa' : name;
+};
+const rootPath = (actor: string, sample: Map<string, unknown>) => {
+  if (actor === 'mansa-musa') return '/mali-gold-caravan/royal-horse';
+  if (sample.has(`/mali-gold-caravan/${actor}`))
+    return `/mali-gold-caravan/${actor}`;
+  for (const g of GROUPS)
+    if (sample.has(`/mali-gold-caravan/${g}/${actor}`))
+      return `/mali-gold-caravan/${g}/${actor}`;
+  throw Error(`No root for ${actor}`);
+};
+const first = rigMatrices(caravanActors(0));
+const joints = [...first].filter(([, v]) => v.node.faces?.length);
+const actorNames = [...new Set(joints.map(([k]) => actorOf(k)))];
+const loose = actorNames.filter((a) => LOOSE.test(a));
+const actors = actorNames.filter((a) => !LOOSE.test(a));
+console.log(`${joints.length} joints, ${actors.length} actors`);
+
+/* ── Geometry upload: one triangle list per joint, in its own frame ── */
+const tmp =
+  process.argv[2] ?? fs.mkdtempSync(path.join(os.tmpdir(), 'caravan-'));
+fs.mkdirSync(`${tmp}/data`, { recursive: true });
+const hex = (c: string) =>
+  [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16) / 255);
+const finishOf = (f: Face3 & { finish?: string }) => [
+  f.finish === 'gold'
+    ? 0.24
+    : f.finish === 'face' || f.finish === 'skin'
+      ? 0.56
+      : 0.88,
+  f.finish === 'gold' ? 0.92 : f.finish === 'brocade' ? 0.16 : 0,
+  f.finish ? 1 : 0,
+];
+/** Triangle lists for faces (fans), with flat or supplied normals. */
+function triangles(
+  faces: (Face3 & { finish?: string; normals?: number[][] })[],
+) {
+  const pos: number[] = [],
+    nor: number[] = [],
+    col: number[] = [],
+    fin: number[] = [];
+  for (const f of faces) {
+    const [a, b, c] = f.points,
+      u = b.map((v, i) => v - a[i]),
+      w = c.map((v, i) => v - a[i]),
+      n = [
+        u[1] * w[2] - u[2] * w[1],
+        u[2] * w[0] - u[0] * w[2],
+        u[0] * w[1] - u[1] * w[0],
+      ],
+      l = Math.hypot(...n) || 1,
+      flat = n.map((v) => v / l),
+      colour = hex(f.color),
+      finish = finishOf(f);
+    for (let i = 1; i < f.points.length - 1; i++)
+      for (const k of [0, i, i + 1]) {
+        pos.push(...f.points[k]);
+        nor.push(...(f.normals?.[k] ?? flat));
+        col.push(...colour);
+        fin.push(...finish);
+      }
+  }
+  return { pos, nor, col, fin };
+}
+{
+  const chunks: Float32Array[] = [];
+  let offset = 0;
+  const meta = joints.map(([, v]) => {
+    const t = triangles(v.node.faces as never);
+    const entry = {
+      count: t.pos.length / 3,
+      position: 0,
+      normal: 0,
+      color: 0,
+      finish: 0,
+    };
+    for (const key of ['position', 'normal', 'color', 'finish'] as const) {
+      const data = new Float32Array(
+        key === 'position'
+          ? t.pos
+          : key === 'normal'
+            ? t.nor
+            : key === 'color'
+              ? t.col
+              : t.fin,
+      );
+      entry[key] = offset;
+      offset += data.length;
+      chunks.push(data);
+    }
+    return entry;
+  });
+  const out = fs.createWriteStream(`${tmp}/data/joints.bin`);
+  for (const c of chunks)
+    out.write(Buffer.from(c.buffer, c.byteOffset, c.byteLength));
+  await new Promise((r) => out.end(r));
+  fs.writeFileSync(
+    `${tmp}/data/joints.json`,
+    JSON.stringify({ density: D, joints: meta }),
+  );
+}
+/** Each joint's corners in its own frame, for screen bounds. */
+const corners = joints.map(([, v]) => {
+  const lo = [Infinity, Infinity, Infinity],
+    hi = [-Infinity, -Infinity, -Infinity];
+  for (const f of v.node.faces!)
+    for (const p of f.points)
+      for (let i = 0; i < 3; i++) {
+        lo[i] = Math.min(lo[i], p[i]);
+        hi[i] = Math.max(hi[i], p[i]);
+      }
+  const out: number[][] = [];
+  for (const x of [lo[0], hi[0]])
+    for (const y of [lo[1], hi[1]])
+      for (const z of [lo[2], hi[2]]) out.push([x, y, z]);
+  return out;
+});
+const transform = (m: Float32Array, p: number[]) => [
+  m[0] * p[0] + m[4] * p[1] + m[8] * p[2] + m[12],
+  m[1] * p[0] + m[5] * p[1] + m[9] * p[2] + m[13],
+  m[2] * p[0] + m[6] * p[1] + m[10] * p[2] + m[14],
+];
+
+/* ── Every tick: joint matrices, roots, who holds the loose things, bounds ── */
+type Tick = {
+  matrices: string;
+  roots: Record<string, number[]>;
+  members: Record<string, number[]>;
+};
+const ticks: Tick[] = [];
+const bounds = new Map(actors.map((a) => [a, [0, 0, 0, 0]]));
+for (let t = 0; t < TICKS; t++) {
+  const m = rigMatrices(caravanActors(t)),
+    all = new Float32Array(joints.length * 16);
+  joints.forEach(([k], i) => all.set(m.get(k)!.matrix, i * 16));
+  const roots: Record<string, number[]> = {};
+  for (const a of actors)
+    roots[a] = [...m.get(rootPath(a, m))!.matrix.slice(12, 15)];
+  const members: Record<string, number[]> = Object.fromEntries(
+    actors.map((a) => [a, []]),
+  );
+  joints.forEach(([k], i) => {
+    let a = actorOf(k);
+    if (LOOSE.test(a)) {
+      // With whoever is nearest (a coin in a hand, a chest between porters).
+      const p = transform(all.subarray(i * 16, i * 16 + 16), [0, 0, 0]);
+      a = actors
+        .filter((b) => !/treasury|equipment|elephant|camel/.test(b))
+        .reduce((best, b) =>
+          Math.hypot(roots[b][0] - p[0], roots[b][2] - p[2]) <
+          Math.hypot(roots[best][0] - p[0], roots[best][2] - p[2])
+            ? b
+            : best,
+        );
+    }
+    members[a].push(i);
+  });
+  for (const a of actors) {
+    const r = screen(roots[a]),
+      b = bounds.get(a)!;
+    for (const i of members[a])
+      for (const c of corners[i]) {
+        const s = screen(transform(all.subarray(i * 16, i * 16 + 16), c));
+        b[0] = Math.min(b[0], s[0] - r[0]);
+        b[1] = Math.min(b[1], s[1] - r[1]);
+        b[2] = Math.max(b[2], s[0] - r[0]);
+        b[3] = Math.max(b[3], s[1] - r[1]);
+      }
+  }
+  ticks.push({
+    matrices: Buffer.from(all.buffer).toString('base64'),
+    roots,
+    members,
+  });
+}
+void loose;
+/**
+ * Figures drawn alike share their poses: guards of one colour (every third
+ * guard), and the four pack camels. Everyone else is their own design.
+ */
+const designOf = (a: string) => {
+  const guard = /^guard-(\d+)$/.exec(a);
+  if (guard) return `guard-${(+guard[1] - 1) % 3}`;
+  return a.startsWith('pack-camel') ? 'pack-camel' : a;
+};
+/** How many poses each design may keep (the atlas budget). */
+const BUDGET = (design: string) =>
+  design === 'mansa-musa'
+    ? 30
+    : design.startsWith('guard') || design === 'pack-camel'
+      ? 20
+      : design.includes('elephant')
+        ? 10
+        : 14;
+const designBounds = new Map<string, number[]>();
+for (const a of actors) {
+  const b = bounds.get(a)!,
+    d = designBounds.get(designOf(a)) ?? [0, 0, 0, 0];
+  designBounds.set(designOf(a), [
+    Math.min(d[0], b[0]),
+    Math.min(d[1], b[1]),
+    Math.max(d[2], b[2]),
+    Math.max(d[3], b[3]),
+  ]);
+}
+/** Frame size and foot point per actor (its design's): the foot centred. */
+const frames = new Map(
+  actors.map((a) => {
+    const [x0, y0, x1, y1] = designBounds.get(designOf(a))!,
+      half = Math.ceil(Math.max(-x0, x1)) + 3,
+      top = Math.ceil(-y0) + 3,
+      bottom = Math.ceil(y1) + 3;
+    return [a, { W: half * 2, H: top + bottom, fx: half, fy: top }];
+  }),
+);
+
+/* ── Render ── */
+const roots: Record<string, string> = {
+  three: vendor,
+  render: path.resolve('tools/caravan'),
+  data: `${tmp}/data`,
+};
+const server = http.createServer((req, res) => {
+  const [, root, ...rest] = decodeURI(req.url!.split('?')[0]).split('/');
+  const base = roots[root],
+    file = base && path.resolve(base, ...rest);
+  if (!file || !file.startsWith(base) || !fs.existsSync(file)) {
+    res.writeHead(404).end();
+    return;
+  }
+  res.writeHead(200, {
+    'content-type': file.endsWith('.html')
+      ? 'text/html'
+      : file.endsWith('.js')
+        ? 'text/javascript'
+        : 'application/octet-stream',
+  });
+  fs.createReadStream(file).pipe(res);
+});
+await new Promise<void>((r) => server.listen(0, '127.0.0.1', r));
+const port = (server.address() as { port: number }).port;
+const browser = await chromium.launch({
+  ...(process.env.CHROMIUM_PATH
+    ? { executablePath: process.env.CHROMIUM_PATH }
+    : {}),
+  args: [
+    '--enable-unsafe-swiftshader',
+    '--use-gl=angle',
+    '--use-angle=swiftshader',
+  ],
+});
+const page = await browser.newPage();
+page.on('pageerror', (e) => console.error('page:', e.message));
+await page.goto(`http://127.0.0.1:${port}/render/render.html`);
+await page.waitForFunction('window.READY === true', null, { timeout: 600000 });
+type Raw = { data: Buffer; W: number; H: number };
+const shots = new Map<string, Raw[]>(actors.map((a) => [a, []]));
+const decode = async (url: string, W: number, H: number): Promise<Raw> => {
+  const { data } = await sharp(Buffer.from(url.split(',')[1], 'base64'))
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  // Solid pixels only: no soft edges against the world.
+  for (let i = 3; i < data.length; i += 4) data[i] = data[i] > 96 ? 255 : 0;
+  return { data, W, H };
+};
+// Renders are cached in the work folder: a rerun only redoes the merging.
+const cache = (a: string, t: number) => `${tmp}/shots/${a}/${t}.png`;
+for (const a of actors) fs.mkdirSync(`${tmp}/shots/${a}`, { recursive: true });
+const cacheKey = JSON.stringify([...frames]);
+const cached =
+  fs.existsSync(`${tmp}/shots/key.json`) &&
+  fs.readFileSync(`${tmp}/shots/key.json`, 'utf8') === cacheKey &&
+  actors.every((a) => fs.existsSync(cache(a, TICKS - 1)));
+for (const [t, tick] of ticks.entries()) {
+  if (!cached)
+    await page.evaluate(
+      (b64) => (window as unknown as { pose(s: string): void }).pose(b64),
+      tick.matrices,
+    );
+  for (const a of actors) {
+    const f = frames.get(a)!;
+    if (cached) {
+      const { data } = await sharp(cache(a, t))
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      shots.get(a)!.push({ data, W: f.W, H: f.H });
+      continue;
+    }
+    const url = (await page.evaluate(
+      (arg) => (window as unknown as { shoot(a: unknown): string }).shoot(arg),
+      { joints: tick.members[a], root: tick.roots[a], ...f },
+    )) as string;
+    const raw = await decode(url, f.W, f.H);
+    await sharp(raw.data, { raw: { width: f.W, height: f.H, channels: 4 } })
+      .png()
+      .toFile(cache(a, t));
+    shots.get(a)!.push(raw);
+  }
+  if (t % 40 === 0) console.log(`tick ${t}${cached ? ' (cached)' : ''}`);
+}
+fs.writeFileSync(`${tmp}/shots/key.json`, cacheKey);
+
+/* ── The still stalls: three handover tables and their awnings ── */
+const market = caravanModel('mali-gold-caravan')!.faces.filter((f) => {
+  const c = [0, 1, 2].map(
+    (i) => f.points.reduce((s, p) => s + p[i], 0) / f.points.length,
+  );
+  // The stalls, not the plot's flat ground marks.
+  return c[1] > 0.5 && c[2] > 110 && c[2] < 200 && Math.abs(c[0]) < 230;
+});
+const stallParts: { id: string; faces: Face3[]; at: number[] }[] = [];
+for (const [i, x] of CARAVAN.stops.entries()) {
+  const mine = market.filter((f) => Math.abs(f.points[0][0] - x - 16) < 70);
+  const cz = (f: Face3) =>
+    f.points.reduce((s, p) => s + p[2], 0) / f.points.length;
+  stallParts.push(
+    {
+      id: `caravan-stall-${i + 1}`,
+      faces: mine.filter((f) => cz(f) < 158),
+      at: [x + 47, 0, 156],
+    },
+    {
+      id: `caravan-awning-${i + 1}`,
+      faces: mine.filter((f) => cz(f) >= 158),
+      at: [x, 0, 185],
+    },
+  );
+}
+await page.evaluate(() => 0);
+await browser.close();
+server.close();
+
+/* ── Merge repeated poses; reduce colours ── */
+function difference(a: Raw, b: Raw) {
+  let n = 0,
+    solid = 0;
+  for (let i = 0; i < a.data.length; i += 4) {
+    const sa = a.data[i + 3] > 0,
+      sb = b.data[i + 3] > 0;
+    if (sa || sb) solid++;
+    if (sa !== sb) n++;
+    else if (
+      sa &&
+      Math.abs(a.data[i] - b.data[i]) +
+        Math.abs(a.data[i + 1] - b.data[i + 1]) +
+        Math.abs(a.data[i + 2] - b.data[i + 2]) >
+        60
+    )
+      n++;
+  }
+  return solid ? n / solid : 0;
+}
+/** A small palette per actor (k-means over its frames), nearest-colour mapped. */
+function palettise(images: Raw[], k = 40) {
+  const samples: number[][] = [];
+  for (const img of images)
+    for (let i = 0; i < img.data.length; i += 4 * 7)
+      if (img.data[i + 3])
+        samples.push([img.data[i], img.data[i + 1], img.data[i + 2]]);
+  if (!samples.length) return;
+  let centres = Array.from({ length: Math.min(k, samples.length) }, (_, j) =>
+    samples[
+      Math.floor((j * samples.length) / Math.min(k, samples.length))
+    ].slice(),
+  );
+  const nearest = (p: number[]) => {
+    let best = 0,
+      d = Infinity;
+    centres.forEach((c, j) => {
+      const e = (c[0] - p[0]) ** 2 + (c[1] - p[1]) ** 2 + (c[2] - p[2]) ** 2;
+      if (e < d) {
+        d = e;
+        best = j;
+      }
+    });
+    return best;
+  };
+  for (let it = 0; it < 8; it++) {
+    const sum = centres.map(() => [0, 0, 0, 0]);
+    for (const p of samples) {
+      const s = sum[nearest(p)];
+      s[0] += p[0];
+      s[1] += p[1];
+      s[2] += p[2];
+      s[3]++;
+    }
+    centres = centres.map((c, j) =>
+      sum[j][3] ? sum[j].slice(0, 3).map((v) => v / sum[j][3]) : c,
+    );
+  }
+  centres = centres.map((c) => c.map(Math.round));
+  for (const img of images)
+    for (let i = 0; i < img.data.length; i += 4)
+      if (img.data[i + 3]) {
+        const c =
+          centres[nearest([img.data[i], img.data[i + 1], img.data[i + 2]])];
+        img.data[i] = c[0];
+        img.data[i + 1] = c[1];
+        img.data[i + 2] = c[2];
+      }
+}
+const THRESHOLD = 0.02;
+const ACTION = (a: string) =>
+  a === 'mansa-musa'
+    ? 'ride'
+    : /camel|elephant/.test(a)
+      ? 'animal_walk'
+      : 'walk';
+const idOf = (a: string) => (a === 'mansa-musa' ? a : `caravan-${a}`);
+const still = actors.filter((a) =>
+  /foreground-treasury|travel-equipment/.test(a),
+);
+const moving = actors.filter((a) => !still.includes(a));
+for (const old of fs.readdirSync('art/sprites/anim'))
+  if (old.startsWith('caravan-') || old.startsWith('mansa-musa__'))
+    fs.rmSync(`art/sprites/anim/${old}`);
+let uniqueTotal = 0;
+const ambient: unknown[] = [];
+/*
+ * Each design keeps at most BUDGET poses: the most different frames over the
+ * whole loop (farthest-point picks), and every tick shows the nearest one.
+ * Frames closer than THRESHOLD to a kept pose are not worth another.
+ */
+const chosen = new Map<string, { reps: Raw[]; seq: Map<string, number[]> }>();
+for (const design of new Set(moving.map(designOf))) {
+  const members = moving.filter((a) => designOf(a) === design),
+    pool = members.flatMap((a) => shots.get(a)!.map((img) => ({ a, img }))),
+    reps: Raw[] = [pool[0].img],
+    near = pool.map((p) => difference(p.img, reps[0])),
+    owner = pool.map(() => 0);
+  while (reps.length < BUDGET(design)) {
+    let far = 0;
+    near.forEach((d, i) => {
+      if (d > near[far]) far = i;
+    });
+    if (near[far] < THRESHOLD) break;
+    reps.push(pool[far].img);
+    pool.forEach((p, i) => {
+      const d = difference(p.img, pool[far].img);
+      if (d < near[i]) {
+        near[i] = d;
+        owner[i] = reps.length - 1;
+      }
+    });
+  }
+  palettise(reps);
+  const seq = new Map(members.map((a) => [a, [] as number[]]));
+  pool.forEach((p, i) => seq.get(p.a)!.push(owner[i]));
+  chosen.set(design, { reps, seq });
+  uniqueTotal += reps.length;
+  console.log(
+    `${design}: ${reps.length} poses for ${members.length} figure(s)`,
+  );
+}
+for (const a of moving) {
+  const { reps, seq } = chosen.get(designOf(a))!,
+    sequence = seq.get(a)!;
+  const { W, H, fx, fy } = frames.get(a)!;
+  const strip = await sharp({
+    create: {
+      width: W * reps.length,
+      height: H,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    },
+  })
+    .composite(
+      reps.map((r, i) => ({
+        input: r.data,
+        raw: { width: W, height: H, channels: 4 as const },
+        left: i * W,
+        top: 0,
+      })),
+    )
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+  const base = `art/sprites/anim/${idOf(a)}__${ACTION(a)}`;
+  const meta =
+    JSON.stringify({
+      frame: [W, H],
+      foot: [fx, fy],
+      density: D,
+      tempo: 1,
+      sequence,
+    }) + '\n';
+  for (const view of ['SE', 'NE']) {
+    fs.writeFileSync(`${base}_${view}.png`, strip);
+    fs.writeFileSync(`${base}_${view}.json`, meta);
+  }
+  // Its place every tick: standing still it waits, walking it steps along
+  // a short path to its next place. It always holds the SE facing, so the
+  // engine never turns or mirrors the heading baked into its poses.
+  type Step = {
+    from: number;
+    to: number;
+    action: string;
+    at?: [number, number];
+    path?: [number, number][];
+    facing: 'SE';
+  };
+  const script: Step[] = [],
+    place = (t: number) => {
+      const r = ticks[t % TICKS].roots[a];
+      return tileOf(r[0], r[2]);
+    };
+  for (let t = 0; t < TICKS; t++) {
+    const p = place(t),
+      q = place(t + 1),
+      last = script.at(-1);
+    if (p[0] === q[0] && p[1] === q[1]) {
+      if (last?.at && last.at[0] === p[0] && last.at[1] === p[1])
+        last.to = t + 1;
+      else
+        script.push({
+          from: t,
+          to: t + 1,
+          action: ACTION(a),
+          at: p,
+          facing: 'SE',
+        });
+    } else
+      script.push({
+        from: t,
+        to: t + 1,
+        action: ACTION(a),
+        path: [p, q],
+        facing: 'SE',
+      });
+  }
+  if (a === 'mansa-musa') {
+    const file = 'content/characters/mansa-musa.json',
+      card = JSON.parse(fs.readFileSync(file, 'utf8'));
+    delete card.nativeModel;
+    card.loop = TICKS;
+    card.script = script;
+    fs.writeFileSync(file, JSON.stringify(card, null, 2) + '\n');
+  } else {
+    const animal = /camel|elephant/.test(a);
+    ambient.push({
+      id: idOf(a),
+      kind: animal ? 'animal' : 'person',
+      aliases: [],
+      district: 'maghreb',
+      depiction: 'full',
+      look: animal
+        ? {
+            base: 'camel',
+            garment: 'none',
+            headwear: 'none',
+            prop: 'none',
+            colours: {
+              skin: 'skin-5',
+              hair: 'hair-brown',
+              garmentPrimary: 'khaki',
+              garmentSecondary: 'wool-cream',
+              headwear: 'white-linen',
+              prop: 'madder-red',
+            },
+          }
+        : {
+            base: 'adult-man-beard',
+            garment: 'boubou',
+            headwear: 'imamah',
+            prop: 'none',
+            colours: {
+              skin: 'skin-8',
+              hair: 'hair-black',
+              garmentPrimary: 'white-linen',
+              garmentSecondary: 'madder-red',
+              headwear: 'white-linen',
+              prop: 'brass',
+            },
+          },
+      loop: TICKS,
+      script,
+      role: ROLE(a),
+    });
+  }
+}
+function ROLE(a: string) {
+  if (a.startsWith('guard'))
+    return 'A guard of Mansa Musa’s caravan, lance and shield in hand';
+  if (a.startsWith('pack-camel'))
+    return 'A pack camel of the caravan, loaded with gold';
+  if (a.includes('elephant'))
+    return 'The caravan’s elephant, waiting under its loaded howdah';
+  if (a.startsWith('gold-steward'))
+    return 'A steward of the caravan handing out gold';
+  if (a.includes('recipient'))
+    return 'A townsperson receiving a share of the gold';
+  return 'A bearer of the caravan’s gold';
+}
+fs.writeFileSync(
+  'content/ambient/caravan.json',
+  JSON.stringify(ambient, null, 2) + '\n',
+);
+
+/* ── Still pieces: supplied sprites (stalls, treasury, equipment) ── */
+const index = JSON.parse(fs.readFileSync('art/supplied/index.json', 'utf8'));
+for (const k of Object.keys(index))
+  if (k.startsWith('sup-caravan-')) delete index[k];
+for (const f of fs.readdirSync('art/supplied'))
+  if (f.startsWith('caravan-')) fs.rmSync(`art/supplied/${f}`);
+const planted: [string, number, number][] = [];
+async function plant(id: string, img: Raw, foot: number[], at: number[]) {
+  palettise([img]);
+  await sharp(img.data, { raw: { width: img.W, height: img.H, channels: 4 } })
+    .png({ compressionLevel: 9 })
+    .toFile(`art/supplied/${id}.png`);
+  index[`sup-${id}`] = {
+    file: `supplied/${id}.png`,
+    anchor: foot,
+    density: D,
+    source:
+      'Mansa Musa’s caravan rig (packages/shared/royal-caravan.ts), rendered by tools/prepare-caravan-sprites.ts',
+  };
+  planted.push([`sup-${id}`, ...tileOf(at[0], at[2])]);
+}
+for (const a of still) {
+  const { fx, fy } = frames.get(a)!;
+  await plant(`caravan-${a}`, shots.get(a)![0], [fx, fy], ticks[0].roots[a]);
+}
+// The stalls: rendered with the same page, from their own faces.
+{
+  const b2 = await chromium.launch({
+    ...(process.env.CHROMIUM_PATH
+      ? { executablePath: process.env.CHROMIUM_PATH }
+      : {}),
+    args: [
+      '--enable-unsafe-swiftshader',
+      '--use-gl=angle',
+      '--use-angle=swiftshader',
+    ],
+  });
+  for (const part of stallParts) {
+    const t = triangles(part.faces as never);
+    const data = [t.pos, t.nor, t.col, t.fin].map((a) => new Float32Array(a));
+    let off = 0;
+    const entry = {
+      count: t.pos.length / 3,
+      position: 0,
+      normal: 0,
+      color: 0,
+      finish: 0,
+    };
+    (['position', 'normal', 'color', 'finish'] as const).forEach((k, i) => {
+      entry[k] = off;
+      off += data[i].length;
+    });
+    fs.mkdirSync(`${tmp}/stall/data`, { recursive: true });
+    const out = Buffer.concat(data.map((d) => Buffer.from(d.buffer)));
+    fs.writeFileSync(`${tmp}/stall/data/joints.bin`, out);
+    fs.writeFileSync(
+      `${tmp}/stall/data/joints.json`,
+      JSON.stringify({ density: D, joints: [entry] }),
+    );
+    roots.data = `${tmp}/stall/data`;
+    let lo = [Infinity, Infinity],
+      hi = [-Infinity, -Infinity];
+    const r = screen(part.at);
+    for (const f of part.faces)
+      for (const p of f.points) {
+        const s = screen(p);
+        lo = [Math.min(lo[0], s[0] - r[0]), Math.min(lo[1], s[1] - r[1])];
+        hi = [Math.max(hi[0], s[0] - r[0]), Math.max(hi[1], s[1] - r[1])];
+      }
+    const fx = Math.ceil(-lo[0]) + 3,
+      fy = Math.ceil(-lo[1]) + 3,
+      W = fx + Math.ceil(hi[0]) + 3,
+      H = fy + Math.ceil(hi[1]) + 3;
+    const srv = http.createServer(server.listeners('request')[0] as never);
+    await new Promise<void>((res) => srv.listen(0, '127.0.0.1', res));
+    const p2 = await b2.newPage();
+    await p2.goto(
+      `http://127.0.0.1:${(srv.address() as { port: number }).port}/render/render.html`,
+    );
+    await p2.waitForFunction('window.READY === true', null, {
+      timeout: 120000,
+    });
+    const identity = Buffer.from(
+      new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]).buffer,
+    ).toString('base64');
+    await p2.evaluate(
+      (b64) => (window as unknown as { pose(s: string): void }).pose(b64),
+      identity,
+    );
+    const url = (await p2.evaluate(
+      (arg) => (window as unknown as { shoot(a: unknown): string }).shoot(arg),
+      { joints: [0], root: part.at, W, H, fx, fy },
+    )) as string;
+    await p2.close();
+    srv.close();
+    await plant(part.id, await decode(url, W, H), [fx, fy], part.at);
+  }
+  await b2.close();
+}
+fs.writeFileSync(
+  'art/supplied/index.json',
+  JSON.stringify(index, null, 2) + '\n',
+);
+fs.writeFileSync(
+  'art/supplied/caravan.json',
+  JSON.stringify(planted, null, 2) + '\n',
+);
+console.log(
+  `Caravan: ${moving.length} figures, ${uniqueTotal} poses; ${planted.length} still pieces; centre ${CARAVAN.center}.`,
+);
