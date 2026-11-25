@@ -5,6 +5,8 @@ import { TILE_SIDE } from './planet';
 import faces from './generated/mali-faces.json' with { type: 'json' };
 import cloth from './generated/mali-cloth.json' with { type: 'json' };
 import { realisticMansa } from './mansa-reference';
+import { goldCarrierActors } from './gold-carriers';
+import { carrierHuman } from './carrier-human';
 
 export type Quaternion = [number, number, number, number];
 export type RoyalFinish =
@@ -498,9 +500,12 @@ export type HumanPose = {
   flag?: boolean;
   color?: string;
   staffHand?: 'right' | 'left';
+  headwear?: 'turban' | 'bare' | 'cap';
+  headColor?: string;
 };
-function human(p: HumanPose): RigNode {
+export function human(p: HumanPose): RigNode {
   if (p.royal) return realisticMansa(p, { plantedStep, elbowFor });
+  if (p.face >= 6) return carrierHuman(p, { plantedStep, elbowFor });
   const royal = !!p.royal,
     color = p.color ?? (royal ? '#d5b26c' : p.woman ? '#45685d' : C.cream),
     skin = faces[p.face].skin,
@@ -1308,6 +1313,7 @@ export function caravanActors(frame: number): RigNode {
       ),
     );
   }
+  children.push(goldCarrierActors(frame, human));
   return node('mali-gold-caravan', undefined, undefined, undefined, children);
 }
 

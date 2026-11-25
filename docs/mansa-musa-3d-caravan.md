@@ -22,6 +22,11 @@ the owner's tall, natural character refinement.
 
 - One mounted Mansa Musa, twelve guards, four pack camels, three stewards and
   six recipients: 22 human figures and five animals in the complete component.
+- The native world now adds four bowl/chest carriers, one banner attendant
+  and one receiving elder, bringing its human cast to 28. Their
+  individual models, shared chest and gold-sharing animation are in
+  `web/public/models/gold-carriers/`; see `docs/gold-carriers-3d.md`. Earlier
+  exported caravan GLBs retain their original cast.
 - The ruler and stewards share coins and gold pouches at three market stops.
   Hands meet at a shared contact point; ownership changes at contact. Recipients
   approach during the stop and retreat before the procession moves again.

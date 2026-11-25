@@ -129,6 +129,14 @@ extracted from an attached document. New explicit owner instructions override th
   local HTML player. Describe the format accurately; these scene exports are
   not a new rotatable mesh. See `docs/mansa-gold-procession-animation.md`.
 - **Drafts:** keep `DRAFT / AWAITING REVIEW` status and approval metadata intact.
+- **People and gold carriers (25 November 2026):** build the supporting people
+  as distinct actual 3D characters, with generated realistic pixel-art faces,
+  naturally proportioned bodies, textured cloth and visible side/rear volume.
+  The cast has two bowl carriers, two coordinated chest porters, a banner
+  attendant and a recipient. Loads must stay supported; both hands meet before
+  gold changes ownership. Six individual models and three combined rigs are
+  supplied separately from the earlier painted procession, and the six people
+  also appear in the native caravan. See `docs/gold-carriers-3d.md`.
   Artwork generation does not grant advisory approval.
 
 ## Reference locations
