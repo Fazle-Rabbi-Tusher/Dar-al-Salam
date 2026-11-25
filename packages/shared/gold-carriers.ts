@@ -1,6 +1,7 @@
 import type { Vertex3, Face3 } from './infrastructure';
 import type { HumanPose, RigNode, Quaternion } from './royal-caravan';
 import { MeshBuilder } from './laboratory';
+import { cargoPropFaces } from './gold-cargo';
 
 type V = Vertex3;
 export const CARRIER_IDS = [
@@ -115,47 +116,7 @@ export function carrierRouteAt(frame: number, role: CarrierRole): RoutePose {
   };
 }
 function bowl() {
-  return mesh(
-    'engraved-gold-bowl',
-    (m) => {
-      lathe(
-        m,
-        [
-          [0, 0.1],
-          [0, 4],
-          [1, 6],
-          [3, 10],
-          [6, 13],
-          [7, 13.4],
-          [7.6, 12.7],
-          [6, 12.1],
-          [3, 9.2],
-          [1.4, 4.4],
-          [1.4, 0.1],
-        ],
-        gold,
-        64,
-      );
-      for (let j = 0; j < 32; j++) {
-        const a = (j * TAU) / 32;
-        m.beam(
-          [Math.sin(a) * 9, 2.7, Math.cos(a) * 9],
-          [Math.sin(a) * 12.2, 6.2, Math.cos(a) * 12.2],
-          0.35,
-          '#f2c96a',
-        );
-      }
-      for (let i = 0; i < 64; i++) {
-        const a = i * 2.399963,
-          r = Math.sqrt(i / 64) * 10.5;
-        const x = Math.sin(a) * r,
-          z = Math.cos(a) * r,
-          y = 7.2 + (1 - r / 12) * 3;
-        m.box(x, y, z, 2.1, 0.8, 1.8, i % 3 ? '#e5b443' : '#ffce68');
-      }
-    },
-    true,
-  );
+  return cargoPropFaces('gold-bowl');
 }
 function coin() {
   return mesh(
@@ -176,31 +137,7 @@ function coin() {
   );
 }
 function chest() {
-  return mesh('carrier-gold-chest', (m) => {
-    m.box(0, 6, 0, 43, 12, 24, '#573824');
-    for (const x of [-20.5, -12, 12, 20.5])
-      m.box(x, 6.5, 12.3, 1.1, 13, 0.7, gold);
-    for (const z of [-11.5, 11.5]) {
-      m.box(0, 0.5, z, 44, 1, 1, gold);
-      m.box(0, 12, z, 44, 1.4, 1, gold);
-    }
-    for (const x of [-21.6, 21.6])
-      for (const z of [-10.5, 10.5]) m.box(x, 6, z, 1.3, 12, 1.3, gold);
-    m.box(0, 6.4, 12.7, 4.5, 5, 1.8, gold);
-    for (let i = 0; i < 92; i++) {
-      const x = Math.sin(i * 11.7) * 18,
-        z = Math.cos(i * 7.3) * 9;
-      m.box(
-        x,
-        12.8 + (i % 4) * 0.65,
-        z,
-        3,
-        1.1,
-        2.1,
-        i % 3 ? '#d9a12e' : '#f3c45c',
-      );
-    }
-  });
+  return cargoPropFaces('treasure-chest-body');
 }
 function decorate(person: RigNode, index: number) {
   const body = person.children.find((n) => n.name === 'body')!;

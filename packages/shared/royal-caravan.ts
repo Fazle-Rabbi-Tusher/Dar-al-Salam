@@ -7,6 +7,7 @@ import cloth from './generated/mali-cloth.json' with { type: 'json' };
 import { realisticMansa } from './mansa-reference';
 import { goldCarrierActors } from './gold-carriers';
 import { carrierHuman } from './carrier-human';
+import { cargoCamel, nativeCargoActors } from './gold-cargo';
 
 export type Quaternion = [number, number, number, number];
 export type RoyalFinish =
@@ -996,112 +997,20 @@ function horse(pose: ReturnType<typeof caravanState>): RigNode {
     children,
   );
 }
-function chestMesh() {
-  return geometry('gold-travel-chest', (m) => {
-    m.box(0, 5, 0, 22, 10, 16, '#72462c');
-    for (const s of [-1, 1])
-      for (const x of [-7, 7]) m.box(x, 5, s * 8.1, 1.5, 10.4, 0.7, C.goldDark);
-    m.box(0, 10.6, 0, 23, 1.3, 17, C.goldDark);
-    for (let x = -8; x <= 8; x += 4)
-      for (let z = -5; z <= 5; z += 4)
-        m.box(
-          x,
-          12 + (((x + z) % 3) + 3) * 0.35,
-          z,
-          3.4,
-          2.1,
-          2.7,
-          (x + z) % 2 ? C.goldLight : C.gold,
-        );
-    m.box(0, 7, 8.6, 3, 4, 1, '#b38435');
-  });
-}
 function camel(
   name: string,
   local: Vertex3,
   pose: ReturnType<typeof caravanState>,
   phase: number,
 ): RigNode {
-  const at = add(pose.point, rotate(local, yaw(pose.heading))),
-    stride = (pose.travel / 58) * TAU + phase,
-    color = phase ? '#a97a43' : '#bc8f52',
-    children: RigNode[] = [];
-  children.push(
-    node(
-      'camel-body',
-      geometry('camel-body-' + color, (m) => {
-        ellipsoid(m, [0, 37, 0], [10, 12, 22], color, 7, 14);
-        ellipsoid(m, [0, 49, -1], [8, 11, 13], color);
-        m.beam([0, 42, 15], [0, 62, 26], 8, color);
-        ellipsoid(m, [0, 69, 29], [4.6, 10, 6.1], color);
-        ellipsoid(m, [0, 73, 34], [4.6, 5.2, 8], color);
-        for (const s of [-1, 1]) {
-          ellipsoid(m, [s * 4.6, 77, 31], [1.4, 2.8, 1.2], color, 4, 6);
-          ellipsoid(m, [s * 4.2, 74.4, 35], [0.7, 0.7, 0.5], '#242320', 4, 6);
-          m.beam([s * 5, 76, 34], [s * 4, 68, 39], 0.45, C.leather);
-        }
-        m.box(0, 49, -3, 23, 2, 29, C.red);
-        for (const s of [-1, 1]) m.box(s * 11, 43, -3, 2, 14, 29, '#9f3f32');
-        m.beam([0, 42, -22], [0, 17, -29], 1.5, color);
-      }),
-    ),
-  );
-  for (const s of [-1, 1])
-    children.push(
-      node(
-        `cargo-${s}`,
-        chestMesh(),
-        [s * 14.5, 40, -3],
-        undefined,
-        [],
-        [0.78, 0.78, 0.78],
-      ),
-    );
-  for (const s of [-1, 1])
-    for (const fore of [-1, 1]) {
-      const a = stride + (s === 1 ? Math.PI : 0) + (fore === 1 ? 0.5 : 0),
-        gait = plantedStep(
-          pose.travel,
-          (s === 1 ? 0.5 : 0) + (fore === 1 ? 0.08 : 0),
-          58,
-          4,
-        ),
-        v = Math.sin(a) * pose.walk,
-        top: Vertex3 = [s * 6, 35, fore * 14],
-        knee: Vertex3 = [s * 6.1, 18, fore * 14 + v * 5],
-        foot: Vertex3 = [
-          s * 6.2,
-          gait.lift * pose.walk,
-          fore * 14 + gait.forward * pose.walk,
-        ];
-      children.push(
-        node(
-          `camel-leg-${s}-${fore}-upper`,
-          limbMesh(color, 2.5, 18),
-          top,
-          aim(sub(knee, top)),
-          [],
-          [1, Math.hypot(...sub(knee, top)) / 18, 1],
-        ),
-        node(
-          `camel-leg-${s}-${fore}-lower`,
-          limbMesh(color, 1.5, 18),
-          knee,
-          aim(sub(foot, knee)),
-          [],
-          [1, Math.hypot(...sub(foot, knee)) / 18, 1],
-        ),
-        node(
-          `camel-hoof-${s}-${fore}`,
-          shoe('#705033'),
-          foot,
-          undefined,
-          [],
-          [0.8, 0.65, 0.7],
-        ),
-      );
-    }
-  return node(name, undefined, at, yaw(pose.heading), children);
+  const animal = cargoCamel(pose.t, {
+    at: add(pose.point, rotate(local, yaw(pose.heading))),
+    heading: pose.heading,
+    distance: pose.travel + (phase / TAU) * 58,
+    walk: pose.walk,
+  });
+  animal.name = name;
+  return animal;
 }
 
 export function mansaActor(frame: number, mounted = false): RigNode {
@@ -1313,7 +1222,7 @@ export function caravanActors(frame: number): RigNode {
       ),
     );
   }
-  children.push(goldCarrierActors(frame, human));
+  children.push(goldCarrierActors(frame, human), nativeCargoActors(frame));
   return node('mali-gold-caravan', undefined, undefined, undefined, children);
 }
 
@@ -1458,7 +1367,7 @@ export function caravanModel(type: string): InfrastructureModel | null {
       );
     }
   });
-  return { kind: 'gold-caravan', faces: mesh, height: 120 };
+  return { kind: 'gold-caravan', faces: mesh, height: 250 };
 }
 export function caravanActivityModel(
   type: string,
@@ -1468,6 +1377,6 @@ export function caravanActivityModel(
   return {
     kind: 'gold-caravan-actors',
     faces: flattenRig(caravanActors(frame)),
-    height: 130,
+    height: 250,
   };
 }

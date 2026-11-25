@@ -139,6 +139,17 @@ extracted from an attached document. New explicit owner instructions override th
   also appear in the native caravan. See `docs/gold-carriers-3d.md`.
   Artwork generation does not grant advisory approval.
 
+- **Loaded animals and detailed gold cargo (25 November 2026):** the owner asks
+  for the elephant carrying its golden howdah, gold baskets and the smaller
+  visible treasury details from the procession picture. Supply actual 3D
+  loaded elephant/camel rigs with walking and resting actions, coherent load
+  mounts, woven baskets, hinged chests, round coins, ingots, vessels, jewelry,
+  ropes, rugs and travel equipment. Include the existing six people and main
+  white-turbaned Mansa design in one portable scene and one ZIP below
+  30,000,000 bytes. Preserve the older published figure GLBs. In the native
+  caravan the loaded elephant waits clear of the guard route, and the four
+  pack camels use the new loaded geometry. See `docs/gold-cargo-3d.md`.
+
 ## Reference locations
 
 The four examples under this skill's `assets/` directory are portable original
