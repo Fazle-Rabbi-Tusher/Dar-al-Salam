@@ -155,9 +155,12 @@ test('the world has no anonymous people: every person is a named character', asy
   await ready(page);
   const people = await page.evaluate(() => {
     const e = (window as unknown as { __darEngine: Debug }).__darEngine;
-    return e.manifest.characters
-      .filter((c) => c.kind === 'person')
-      .map((c) => ({ id: c.id, named: !!c.name }));
+    return (
+      e.manifest.characters
+        // The owner's one exception: Mansa Musa's caravan keeps its people.
+        .filter((c) => c.kind === 'person' && !c.id.startsWith('caravan-'))
+        .map((c) => ({ id: c.id, named: !!c.name }))
+    );
   });
   expect(people.length).toBeGreaterThan(10);
   expect(people.filter((p) => !p.named)).toEqual([]);
