@@ -163,3 +163,29 @@ world. The ZIP includes a local no-CDN viewer, reusable Three.js component,
 material and people artwork, source scripts and integrity records. It is
 29,969,708 bytes, strictly below 30,000,000.
 All earlier download files are preserved.
+
+## Realistic caravan — the marked elephant reference
+
+[Complete ZIP — 29.36 MB](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-caravan-realistic-3d.zip) · [HD actual-model animation](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-caravan-realistic-hd.mp4) · [Updated elephant](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/elephant-reference-match.png) · [Complete scene](https://github.com/Fazle-Rabbi-Tusher/Dar-al-Salam/raw/refs/heads/downloads/world-designs-and-animation/gold-caravan-realistic-scene.png)
+
+The revised elephant follows the owner's circled reference: compact relaxed
+ears, dark charcoal hide, medium curved tusks, hanging trunk, broad gold
+forehead cloth, enclosed arched palanquin, domed gold roof and a gold standard.
+The camel, horse, carriers and guards have fuller natural anatomy, smoother
+cloth volume and fine pixel-art materials. Mansa Musa retains his selected
+face, white turban, ivory robe, red mantle, necklaces and staff.
+
+The one ZIP includes seventeen cargo/animal models, ten figure/rig models,
+shared unchanged full-resolution PNG textures and normal maps, a no-CDN local
+viewer, reusable component, all animation clips, a twenty-second MP4, source
+art/code, transparent lossless WebP directions and scene/reference previews.
+Keep the GLB folders and textures together. Standard glTF geometry
+quantization requires no extra decoder in the provided viewer. Meshes are
+not decimated and authored animation timing is not resampled.
+
+The HD MP4 is 960 by 720, 24 fps and twenty seconds, recorded from the actual
+articulated models. The large elephant and scene PNGs are also actual mesh
+renders. The clearly labeled reference study is separate design artwork.
+The redundant GIF preview is published separately to keep the complete ZIP
+strictly below 30,000,000 bytes. Its actual size is
+29,359,755 bytes. All earlier downloads are preserved.
