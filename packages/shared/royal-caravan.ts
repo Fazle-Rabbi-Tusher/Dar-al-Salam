@@ -33,9 +33,9 @@ export type RigNode = {
  * "they should roam around the desert"); nothing wild grows there.
  */
 export const CARAVAN = {
-  // The plot covers every roaming loop (tiles x −50…14, y 66…126).
+  // The plot covers every roaming loop (tiles x −50…14, y 66…138).
   tile: [-50, 66] as Point,
-  footprint: [64, 60] as Point,
+  footprint: [64, 72] as Point,
   center: CARAVAN_CENTRE as Point,
   stops: [-115, 0, 115],
   guards: 12,

@@ -13,8 +13,8 @@
 > It is drawn at 0.8 of the rig's own scale so it matches the town (DECISIONS
 > item 81), and it roams the desert: after the three handovers on the market
 > lane the procession walks a loop beside the oasis, the four gold-bearer
-> groups loop over the northern sand, the middle of Massawa and its eastern
-> edge, and the elephant circles the northern dunes. Bearers,
+> groups loop over the north-west dunes, the south-west sand, the middle of
+> Massawa and its eastern edge, and the elephant circles the far south-west. Bearers,
 > camels and the ruler drop small piles of gold coins as they pass, which fall,
 > bounce and twinkle on the sand before they are gathered (DECISIONS item 80).
 >

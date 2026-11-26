@@ -78,7 +78,7 @@ const gold = '#cc962f';
 /*
  * Each bearer group walks its own wide loop over a different stretch of the
  * desert (owner's request, 2026-11-26: "they should roam around the whole
- * desert city"): the north-west dunes, the northern sand, the middle of
+ * desert city"): the north-west dunes, the south-west sand, the middle of
  * the town and its eastern edge. Loops are ellipses given by centre
  * tile and radii in tiles; each starts at the south of its ellipse.
  */
@@ -92,7 +92,7 @@ const routes: Record<
   { x: number; z: number; rx: number; rz: number }
 > = {
   overhead: loopAt(-40, 76, 5, 4),
-  bearer: loopAt(-22, 74, 5, 4),
+  bearer: loopAt(-32, 123, 4, 3),
   pair: loopAt(-17, 111, 5, 4),
   banner: loopAt(6, 118, 5, 4),
 };

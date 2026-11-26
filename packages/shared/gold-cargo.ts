@@ -1748,15 +1748,15 @@ export function treasuryCollection(): RigNode {
   place('jewelry-tray', [24, 0, -30], 0.9);
   return cargoNode('treasury-collection', undefined, [0, 0, 0], children);
 }
-/** The elephant's circuit is a circle on the northern sand, centred on tile (-31, 83). */
+/** The elephant's circuit is a circle on the far south-west sand, centred on tile (-31, 132). */
 const elephantOrigin = (): V => {
-  const [x, z] = tileToModel(-31, 83);
+  const [x, z] = tileToModel(-31, 132);
   return [x - elephantRadius, 0, z];
 };
 export function nativeCargoActors(frame: number): RigNode {
   const left = treasuryCollection();
   left.name = 'foreground-treasury';
-  const [lx, lz] = tileToModel(-47, 104);
+  const [lx, lz] = tileToModel(-47, 106);
   left.position = [lx, 0, lz];
   left.scale = [0.8, 0.8, 0.65];
   const right = cargoNode(
@@ -1773,7 +1773,7 @@ export function nativeCargoActors(frame: number): RigNode {
     'elephant-and-gold-cargo',
     undefined,
     [0, 0, 0],
-    // The loaded elephant ambles its own circuit on the northern sand,
+    // The loaded elephant ambles its own circuit on the far south-west sand,
     // clear of the procession (owner's request, 2026-11-26: "roam").
     [cargoElephant(frame, { origin: elephantOrigin() }), left, right],
   );

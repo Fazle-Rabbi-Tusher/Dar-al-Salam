@@ -105,7 +105,7 @@ describe("Mansa Musa's caravan as realistic sprites roaming the desert", () => {
       .filter((c) => !c.id.startsWith('caravan-gold-drop-'))
       .flatMap((c) => c.script.flatMap((s) => s.path ?? [s.at!]));
     expect(span(all, 0)).toBeGreaterThan(50);
-    expect(span(all, 1)).toBeGreaterThan(45);
+    expect(span(all, 1)).toBeGreaterThan(55);
     expect(
       Math.min(...all.map((p) => Math.hypot(p[0] + 10, p[1] - 116))),
     ).toBeLessThan(12);
