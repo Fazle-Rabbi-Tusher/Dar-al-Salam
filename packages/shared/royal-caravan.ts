@@ -2,6 +2,7 @@ import type { Point } from './iso';
 import type { Face3, InfrastructureModel, Vertex3 } from './infrastructure';
 import { MeshBuilder } from './laboratory';
 import { TILE_SIDE } from './planet';
+import { CARAVAN_CENTRE, MODEL_SCALE, tileToModel } from './caravan-scale';
 import faces from './generated/mali-faces.json' with { type: 'json' };
 import cloth from './generated/mali-cloth.json' with { type: 'json' };
 import { realisticMansa } from './mansa-reference';
@@ -32,16 +33,18 @@ export type RigNode = {
  * "they should roam around the desert"); nothing wild grows there.
  */
 export const CARAVAN = {
-  tile: [-54, 76] as Point,
-  footprint: [35, 45] as Point,
-  center: [-36, 100] as Point,
+  // The plot covers every roaming loop (tiles x −50…14, y 66…126).
+  tile: [-50, 66] as Point,
+  footprint: [64, 60] as Point,
+  center: CARAVAN_CENTRE as Point,
   stops: [-115, 0, 115],
   guards: 12,
   camels: 4,
 };
+export { MODEL_SCALE, tileToModel };
 export const caravanTile = (x: number, z: number): Point => [
-  CARAVAN.center[0] + x / TILE_SIDE,
-  CARAVAN.center[1] + z / TILE_SIDE,
+  CARAVAN.center[0] + (x * MODEL_SCALE) / TILE_SIDE,
+  CARAVAN.center[1] + (z * MODEL_SCALE) / TILE_SIDE,
 ];
 export const inCaravanPlot = ([x, y]: Point, margin = 2) =>
   x >= CARAVAN.tile[0] - margin &&
@@ -774,56 +777,68 @@ export function human(p: HumanPose): RigNode {
  * (about 2 m/s, with gentle starts and stops); everyone behind follows the
  * same ground.
  */
-export const STOPS = [0, 46, 92];
-export const STAY = 20;
-const LANE = 26,
+export const STOPS = [0, 26, 52];
+export const STAY = 10;
+const LANE = 16,
   ROAM_FROM = STOPS[2] + STAY;
 /**
- * The desert roam: out east from the last stop, a wide turn north, a long
- * gently bowed sweep west across the open sand, then round and back east
- * into the first stop. Arcs and short straights only, so every bend is wide
- * enough for the guards' double file (radius 85 or more).
+ * The ruler's roam, as world tiles: out east from the last stop, north,
+ * west across the sand beside the oasis and back down and east into the
+ * first stop (both ends run east along the lane). Corners are rounded (radius `FILLET` model units) so the
+ * guards' double file never bunches.
  */
-const ROAM = { corner: 85, side: 10, bow: (25 * Math.PI) / 180 };
+const ROAM_TILES: [number, number][] = [
+  [-27, 100.7],
+  [-27, 92],
+  [-47, 92],
+  [-47, 100.7],
+];
+const FILLET = 70;
+function roundedPolyline(points: [number, number][], radius: number) {
+  const out: [number, number][] = [points[0]];
+  for (let i = 1; i < points.length - 1; i++) {
+    const [p, q, r] = [points[i - 1], points[i], points[i + 1]],
+      d1 = [q[0] - p[0], q[1] - p[1]],
+      d2 = [r[0] - q[0], r[1] - q[1]],
+      l1 = Math.hypot(d1[0], d1[1]),
+      l2 = Math.hypot(d2[0], d2[1]),
+      u = [d1[0] / l1, d1[1] / l1],
+      v = [d2[0] / l2, d2[1] / l2],
+      turn = Math.acos(Math.max(-1, Math.min(1, u[0] * v[0] + u[1] * v[1])));
+    if (turn < 1e-3) {
+      out.push(q);
+      continue;
+    }
+    const tangent = Math.min(radius * Math.tan(turn / 2), 0.45 * l1, 0.45 * l2),
+      r2 = tangent / Math.tan(turn / 2),
+      a = [q[0] - u[0] * tangent, q[1] - u[1] * tangent],
+      side = Math.sign(u[0] * v[1] - u[1] * v[0]),
+      centre = [a[0] - u[1] * side * r2, a[1] + u[0] * side * r2],
+      start = Math.atan2(a[1] - centre[1], a[0] - centre[0]),
+      steps = Math.max(6, Math.ceil(turn * 14));
+    for (let k = 0; k <= steps; k++) {
+      const f = start + side * turn * (k / steps);
+      out.push([centre[0] + Math.cos(f) * r2, centre[1] + Math.sin(f) * r2]);
+    }
+  }
+  out.push(points.at(-1)!);
+  return out;
+}
 let roamCache: { points: [number, number][]; lengths: number[] } | undefined;
 function roamPath() {
   if (roamCache) return roamCache;
-  const points: [number, number][] = [[115, 20]];
-  let x = 115,
-    z = 20,
-    phi = 0; // heading in the x–z plane; 0 is east (+x), −π/2 is north (−z)
-  const line = (length: number) => {
-    for (let i = 1; i <= 16; i++)
-      points.push([
-        x + (Math.cos(phi) * length * i) / 16,
-        z + (Math.sin(phi) * length * i) / 16,
-      ]);
-    x += Math.cos(phi) * length;
-    z += Math.sin(phi) * length;
-  };
-  const arc = (radius: number, turn: number) => {
-    // Turning toward −z (anticlockwise on the map) about a centre on the left.
-    const cx = x + Math.sin(phi) * radius,
-      cz = z - Math.cos(phi) * radius,
-      steps = Math.max(8, Math.ceil(Math.abs(turn) * 24));
-    for (let i = 1; i <= steps; i++) {
-      const f = phi + (turn * i) / steps;
-      points.push([cx - Math.sin(f) * radius, cz + Math.cos(f) * radius]);
-    }
-    phi += turn;
-    x = points.at(-1)![0];
-    z = points.at(-1)![1];
-  };
-  const { corner, side, bow } = ROAM;
-  arc(corner, -Math.PI / 2);
-  line(side);
-  arc(corner, -(Math.PI / 2 - bow));
-  // The bowed sweep west, centred on the lane's middle.
-  arc(x / Math.sin(bow), -2 * bow);
-  arc(corner, -(Math.PI / 2 - bow));
-  line(side);
-  arc(corner, -Math.PI / 2);
-  points[points.length - 1] = [-115, 20];
+  const lane = CARAVAN.stops,
+    waypoints: [number, number][] = [
+      [lane[2], 20],
+      ...ROAM_TILES.map(([x, y]) => tileToModel(x, y)),
+      [lane[0], 20],
+    ];
+  const points: [number, number][] = [];
+  for (const [i, p] of roundedPolyline(waypoints, FILLET).entries()) {
+    const last = points.at(-1);
+    if (i === 0 || Math.hypot(p[0] - last![0], p[1] - last![1]) > 0.5)
+      points.push(p);
+  }
   const lengths = [0];
   for (let i = 1; i < points.length; i++)
     lengths.push(

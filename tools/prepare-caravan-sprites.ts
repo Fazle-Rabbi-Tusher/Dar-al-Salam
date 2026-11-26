@@ -11,6 +11,7 @@ import {
   rigMatrices,
 } from '../packages/shared/royal-caravan';
 import { TILE_SIDE } from '../packages/shared/planet';
+import { MODEL_SCALE } from '../packages/shared/caravan-scale';
 import type { Face3 } from '../packages/shared/infrastructure';
 
 /*
@@ -70,15 +71,17 @@ const shadowOf = (p: number[]) => {
   return [p[0] - SUN[0] * k, 0, p[2] - SUN[2] * k];
 };
 /**
- * Animals at the world's scale: the rig's pack camels stood 3.7 m tall
- * beside 1.75 m people (and twice the world's own camels), its elephant
- * over 5 m. Each is drawn smaller about its own feet.
+ * Everyone at the world's scale (MODEL_SCALE: a guard as tall as the named
+ * characters), and the animals smaller still: the rig's pack camels stood
+ * 3.7 m tall beside 1.75 m people (twice the world's own camels), its
+ * elephant over 5 m. Each is drawn smaller about its own feet.
  */
 const SCALE = (a: string) =>
-  a.startsWith('pack-camel') ? 0.76 : a.includes('elephant') ? 0.88 : 1;
+  MODEL_SCALE *
+  (a.startsWith('pack-camel') ? 0.7 : a.includes('elephant') ? 0.88 : 1);
 const tileOf = (x: number, z: number): [number, number] => [
-  +(CARAVAN.center[0] + x / TILE_SIDE).toFixed(3),
-  +(CARAVAN.center[1] + z / TILE_SIDE).toFixed(3),
+  +(CARAVAN.center[0] + (x * MODEL_SCALE) / TILE_SIDE).toFixed(3),
+  +(CARAVAN.center[1] + (z * MODEL_SCALE) / TILE_SIDE).toFixed(3),
 ];
 
 /* ── The rig's joints and actors ── */
@@ -423,7 +426,7 @@ const decode = async (url: string, W: number, H: number): Promise<Raw> => {
 // Renders are cached in the work folder: a rerun only redoes the merging.
 const cache = (a: string, t: number) => `${tmp}/shots/${a}/${t}.png`;
 for (const a of actors) fs.mkdirSync(`${tmp}/shots/${a}`, { recursive: true });
-const cacheKey = JSON.stringify(['realistic-4-roam', SS, [...frames]]);
+const cacheKey = JSON.stringify(['realistic-5-scaled', SS, [...frames]]);
 const cached =
   fs.existsSync(`${tmp}/shots/key.json`) &&
   fs.readFileSync(`${tmp}/shots/key.json`, 'utf8') === cacheKey &&
@@ -561,7 +564,7 @@ for (const [a, d] of Object.entries(DROPPERS)) {
         0,
         p[2] - back[1] * 12 - back[0] * side,
       ],
-      height: d.height * (a.startsWith('pack-camel') ? SCALE(a) : 1),
+      height: d.height * SCALE(a),
       variant: drops.length % 4,
     });
   }
@@ -1151,8 +1154,14 @@ for (const a of still) {
     for (const f of part.faces)
       for (const p of f.points.flatMap((q) => [q, shadowOf(q)])) {
         const s = screen(p);
-        lo = [Math.min(lo[0], s[0] - r[0]), Math.min(lo[1], s[1] - r[1])];
-        hi = [Math.max(hi[0], s[0] - r[0]), Math.max(hi[1], s[1] - r[1])];
+        lo = [
+          Math.min(lo[0], (s[0] - r[0]) * MODEL_SCALE),
+          Math.min(lo[1], (s[1] - r[1]) * MODEL_SCALE),
+        ];
+        hi = [
+          Math.max(hi[0], (s[0] - r[0]) * MODEL_SCALE),
+          Math.max(hi[1], (s[1] - r[1]) * MODEL_SCALE),
+        ];
       }
     const fx = Math.ceil(-lo[0]) + 3,
       fy = Math.ceil(-lo[1]) + 3,
@@ -1176,7 +1185,16 @@ for (const a of still) {
     );
     const url = (await p2.evaluate(
       (arg) => (window as unknown as { shoot(a: unknown): string }).shoot(arg),
-      { joints: [0], root: part.at, W, H, fx, fy, ss: SS },
+      {
+        joints: [0],
+        root: part.at,
+        W,
+        H,
+        fx,
+        fy,
+        ss: SS,
+        scale: MODEL_SCALE,
+      },
     )) as string;
     await p2.close();
     srv.close();

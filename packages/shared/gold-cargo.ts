@@ -1,3 +1,4 @@
+import { tileToModel } from './caravan-scale';
 import maps from './generated/gold-cargo-materials.json' with { type: 'json' };
 import type { Vertex3 } from './infrastructure';
 import type { RigFace, RigNode, Quaternion } from './royal-caravan';
@@ -1747,15 +1748,21 @@ export function treasuryCollection(): RigNode {
   place('jewelry-tray', [24, 0, -30], 0.9);
   return cargoNode('treasury-collection', undefined, [0, 0, 0], children);
 }
+/** The elephant's circuit is a circle on the northern sand, centred on tile (-31, 83). */
+const elephantOrigin = (): V => {
+  const [x, z] = tileToModel(-31, 83);
+  return [x - elephantRadius, 0, z];
+};
 export function nativeCargoActors(frame: number): RigNode {
   const left = treasuryCollection();
   left.name = 'foreground-treasury';
-  left.position = [-95, 0, 400];
+  const [lx, lz] = tileToModel(-47, 104);
+  left.position = [lx, 0, lz];
   left.scale = [0.8, 0.8, 0.65];
   const right = cargoNode(
     'travel-equipment',
     undefined,
-    [330, 0, 262],
+    [...tileToModel(-30, 116)].flatMap((v, i) => (i ? [0, v] : [v])) as V,
     [
       cargoNode('rolled-rugs', cargoPropFaces('rolled-carpets')),
       cargoNode('water-skins', cargoPropFaces('water-skins'), [26, 0, 0]),
@@ -1768,6 +1775,6 @@ export function nativeCargoActors(frame: number): RigNode {
     [0, 0, 0],
     // The loaded elephant ambles its own circuit on the northern sand,
     // clear of the procession (owner's request, 2026-11-26: "roam").
-    [cargoElephant(frame, { origin: [-314, 0, -407] }), left, right],
+    [cargoElephant(frame, { origin: elephantOrigin() }), left, right],
   );
 }

@@ -106,7 +106,8 @@ describe('articulated Mansa Musa and his procession', () => {
         /^(guard-|pack-camel-|mansa-musa$)/.test(n.name),
       )) {
         expect(Math.abs(n.position[0])).toBeLessThan(390);
-        expect(n.position[2]).toBeGreaterThan(-250);
+        // The roam's northern leg runs to about z = −230 (guards ±26 beside it).
+        expect(n.position[2]).toBeGreaterThan(-260);
         expect(n.position[2]).toBeLessThan(100);
         for (const x of [-270, 0, 270])
           expect(

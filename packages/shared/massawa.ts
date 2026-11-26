@@ -66,11 +66,10 @@ export const MASSAWA_OBJECTS: [string, number, number][] = [
    * their sides cut away, the oasis, a fortress on the outskirts. Each
    * multi-view piece shows a different side where it appears twice.
    */
-  // North: dunes and mesas beyond the caravan's roam (the mesa moved
-  // north-east, clear of its loop, 2026-11-26).
+  // North: dunes and mesas (the mesa stands inside the ruler's loop, 2026-11-26).
   ['sup-dunes-0', -15, 91.5],
   ['sup-dunes-2', -4, 91],
-  ['sup-mesa-1', -21, 85],
+  ['sup-mesa-1', -36, 96.5],
   ['sup-rocks2', -9.5, 94.5],
   // The oasis: a pool ringed by date palms (MASSAWA.oasis).
   ['sup-oasis-1', -24, 103],

@@ -76,20 +76,22 @@ describe("Mansa Musa's caravan as realistic sprites roaming the desert", () => {
     ))
       expect(inCaravanPlot([x, y], 0), id).toBe(true);
   });
-  it('roams the open desert, well beyond the market lane', () => {
+  it('roams the desert: groups spread from the northern dunes to Massawa and its eastern edge', () => {
     const tiles = (id: string) =>
       cast.find((c) => c.id === id)!.script.flatMap((s) => s.path ?? [s.at!]);
     const ruler = tiles('mansa-musa'),
-      span = (i: number) =>
-        Math.max(...ruler.map((p) => p[i])) -
-        Math.min(...ruler.map((p) => p[i]));
-    // About 18 tiles across and 8 deep, against the old 10 by 7.
-    expect(span(0)).toBeGreaterThan(16);
-    expect(span(1)).toBeGreaterThan(7.5);
-    // The elephant walks its own circuit now, and the bearers loop wide.
+      span = (ps: number[][], i: number) =>
+        Math.max(...ps.map((p) => p[i])) - Math.min(...ps.map((p) => p[i]));
+    // The ruler's loop beside the oasis, against the market lane's 8 tiles.
+    expect(span(ruler, 0)).toBeGreaterThan(16);
+    expect(span(ruler, 1)).toBeGreaterThan(8);
+    // The elephant and each bearer group loop on their own ground.
     for (const id of [
       'caravan-loaded-elephant',
       'caravan-overhead-gold-bearer',
+      'caravan-bowl-gold-bearer',
+      'caravan-chest-porter-rust',
+      'caravan-banner-attendant',
     ]) {
       const t = tiles(id),
         far = Math.max(
@@ -97,6 +99,36 @@ describe("Mansa Musa's caravan as realistic sprites roaming the desert", () => {
         );
       expect(far, id).toBeGreaterThan(4);
     }
+    // Together they cover the desert: north to south, west to east, and the
+    // heart of the town round the plaza.
+    const all = cast
+      .filter((c) => !c.id.startsWith('caravan-gold-drop-'))
+      .flatMap((c) => c.script.flatMap((s) => s.path ?? [s.at!]));
+    expect(span(all, 0)).toBeGreaterThan(50);
+    expect(span(all, 1)).toBeGreaterThan(45);
+    expect(
+      Math.min(...all.map((p) => Math.hypot(p[0] + 10, p[1] - 116))),
+    ).toBeLessThan(12);
+    // Spread out, not piled up: five loops, each far from the next.
+    const rows = [0, 1, 2, 3, 4].map((k) => {
+      const ids = [
+        'mansa-musa',
+        'caravan-loaded-elephant',
+        'caravan-overhead-gold-bearer',
+        'caravan-chest-porter-rust',
+        'caravan-banner-attendant',
+      ];
+      const t = tiles(ids[k]);
+      return [
+        t.reduce((n, p) => n + p[0], 0) / t.length,
+        t.reduce((n, p) => n + p[1], 0) / t.length,
+      ];
+    });
+    for (let i = 0; i < rows.length; i++)
+      for (let j = i + 1; j < rows.length; j++)
+        expect(
+          Math.hypot(rows[i][0] - rows[j][0], rows[i][1] - rows[j][1]),
+        ).toBeGreaterThan(7);
   });
   it('drops shining gold where it walks: coins fall, glint, then are gathered', () => {
     const drops = cast.filter((c) => c.id.startsWith('caravan-gold-drop-'));

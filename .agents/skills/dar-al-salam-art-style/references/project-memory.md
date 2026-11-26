@@ -107,6 +107,10 @@ extracted from an attached document. New explicit owner instructions override th
   wherever its people pass. Keep the routes wide and realistic in pace on the
   240-tick loop, and keep the coin drops falling, glinting and vanishing on
   the shared clock. See DECISIONS item 80.
+- **Caravan scale and spread (26 November 2026):** the owner found the caravan
+  too big for its surroundings and wants it roaming the whole desert city. Keep
+  its people about as tall as the named characters (rig scale 0.8) and spread
+  its groups over different parts of the desert and town. See DECISIONS item 81.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
 - **Final Mansa Musa surface direction (25 November 2026):** the owner selected
   the white/red/gold reference sheet and clarified that the final result must

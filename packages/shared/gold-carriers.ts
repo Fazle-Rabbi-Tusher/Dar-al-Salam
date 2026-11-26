@@ -2,6 +2,8 @@ import type { Vertex3, Face3 } from './infrastructure';
 import type { HumanPose, RigNode, Quaternion } from './royal-caravan';
 import { MeshBuilder } from './laboratory';
 import { cargoPropFaces } from './gold-cargo';
+import { MODEL_SCALE, tileToModel } from './caravan-scale';
+import { TILE_SIDE } from './planet';
 
 type V = Vertex3;
 export const CARRIER_IDS = [
@@ -73,16 +75,26 @@ function lathe(
       m.face([at(i, j), at(i, j + 1), at(i + 1, j + 1), at(i + 1, j)], color);
 }
 const gold = '#cc962f';
+/*
+ * Each bearer group walks its own wide loop over a different stretch of the
+ * desert (owner's request, 2026-11-26: "they should roam around the whole
+ * desert city"): the north-west dunes, the northern sand, the middle of
+ * the town and its eastern edge. Loops are ellipses given by centre
+ * tile and radii in tiles; each starts at the south of its ellipse.
+ */
+const loopAt = (cx: number, cy: number, rx: number, rz: number) => {
+  const [x, z] = tileToModel(cx, cy + rz),
+    unit = TILE_SIDE / MODEL_SCALE;
+  return { x, z, rx: rx * unit, rz: rz * unit };
+};
 const routes: Record<
   CarrierRole,
   { x: number; z: number; rx: number; rz: number }
 > = {
-  // Wide loops over the southern sand (owner's request, 2026-11-26: "they
-  // should roam around the desert"), between the coast and the town.
-  overhead: { x: -255, z: 330, rx: 60, rz: 60 },
-  bearer: { x: 230, z: 330, rx: 60, rz: 55 },
-  pair: { x: 40, z: 385, rx: 70, rz: 60 },
-  banner: { x: -110, z: 320, rx: 55, rz: 50 },
+  overhead: loopAt(-40, 76, 5, 4),
+  bearer: loopAt(-22, 74, 5, 4),
+  pair: loopAt(-17, 111, 5, 4),
+  banner: loopAt(6, 118, 5, 4),
 };
 const arcLengths = Object.fromEntries(
   Object.entries(routes).map(([key, r]) => {
