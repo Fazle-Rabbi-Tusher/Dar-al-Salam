@@ -22,17 +22,26 @@ import type { Face3 } from '../packages/shared/infrastructure';
  * the mounted ruler, twelve guards, four loaded camels, the handover
  * stewards and recipients, the gold carriers and the waiting elephant) is
  * rendered tick by tick, each actor alone, in the world's 2:1 isometric view
- * at the sprite density (tools/caravan/render.html). Every actor keeps its
- * exact gait, heading and gestures over the 240-tick loop. Repeated poses are
- * merged, each actor's colours are reduced to a small palette, and the build
- * adds the pixel outline every strip gets. The actor walks the same route as
- * before, now in the open desert west of Massawa (CARAVAN.center), stepping
- * to its sampled place each tick.
+ * (tools/caravan/render.html). Every actor keeps its exact gait, heading and
+ * gestures over the 240-tick loop.
+ *
+ * Realistic desert look (owner's request, 2026-11-26: "it should look ultra
+ * realistic and it should blend with the desert"): physically based light
+ * (a warm afternoon sun from the world's upper left, a desert sky and sunlit
+ * sand for fill and gold reflections), materials per finish, smooth normals,
+ * sand dust on hems and hooves, soft self-shadowing and a translucent cast
+ * shadow on the sand. Renders are supersampled 3× and averaged down; the
+ * full colour range is kept. Pack camels and the elephant are drawn at the
+ * world's scale. Repeated poses are merged, and the build adds the outline
+ * every strip gets. The actor walks the same route as before, in the open
+ * desert west of Massawa (CARAVAN.center), stepping to its sampled place
+ * each tick.
  *
  * Still pieces (the three handover stalls, the treasury and the travel
  * equipment) become supplied sprites planted with Massawa's desert pieces.
  *
- *   node --import tsx tools/prepare-caravan-sprites.ts
+ *   node --import tsx tools/prepare-caravan-sprites.ts [workdir]
+ *   CARAVAN_PREVIEW=1 …  renders tick 0 only, to <workdir>/preview.png
  *
  * Writes art/sprites/anim/caravan-*, mansa-musa__ride_*, art/supplied/caravan-*,
  * content/ambient/caravan.json, Mansa Musa's script and supplied index entries.
@@ -47,6 +56,26 @@ const screen = (p: number[]) => [
   (p[0] - p[2]) * R2 * D,
   ((p[0] + p[2]) * R2 * 0.5 - p[1] * COS30) * D,
 ];
+/** Renders are supersampled this much, then averaged down to the sprite. */
+const SS = 3;
+/** The sun (tools/caravan/render.html): upper left, about 58° high. */
+const SUN = (() => {
+  const v = [-R2 * 0.46 + R2 * 0.22, 0.86, R2 * 0.46 + R2 * 0.22],
+    l = Math.hypot(...v);
+  return v.map((c) => c / l);
+})();
+/** Where a point's shadow falls on the sand. */
+const shadowOf = (p: number[]) => {
+  const k = Math.max(0, p[1]) / SUN[1];
+  return [p[0] - SUN[0] * k, 0, p[2] - SUN[2] * k];
+};
+/**
+ * Animals at the world's scale: the rig's pack camels stood 3.7 m tall
+ * beside 1.75 m people (and twice the world's own camels), its elephant
+ * over 5 m. Each is drawn smaller about its own feet.
+ */
+const SCALE = (a: string) =>
+  a.startsWith('pack-camel') ? 0.76 : a.includes('elephant') ? 0.88 : 1;
 const tileOf = (x: number, z: number): [number, number] => [
   +(CARAVAN.center[0] + x / TILE_SIDE).toFixed(3),
   +(CARAVAN.center[1] + z / TILE_SIDE).toFixed(3),
@@ -94,7 +123,11 @@ const finishOf = (f: Face3 & { finish?: string }) => [
   f.finish === 'gold' ? 0.92 : f.finish === 'brocade' ? 0.16 : 0,
   f.finish ? 1 : 0,
 ];
-/** Triangle lists for faces (fans), with flat or supplied normals. */
+/**
+ * Triangle lists for faces (fans), with supplied normals, or else smooth
+ * ones: faces meeting at a corner share their averaged normal unless they
+ * fold sharply (a real edge), so hides and wood read rounded, not faceted.
+ */
 function triangles(
   faces: (Face3 & { finish?: string; normals?: number[][] })[],
 ) {
@@ -102,7 +135,7 @@ function triangles(
     nor: number[] = [],
     col: number[] = [],
     fin: number[] = [];
-  for (const f of faces) {
+  const flatOf = (f: Face3) => {
     const [a, b, c] = f.points,
       u = b.map((v, i) => v - a[i]),
       w = c.map((v, i) => v - a[i]),
@@ -110,15 +143,42 @@ function triangles(
         u[1] * w[2] - u[2] * w[1],
         u[2] * w[0] - u[0] * w[2],
         u[0] * w[1] - u[1] * w[0],
-      ],
-      l = Math.hypot(...n) || 1,
-      flat = n.map((v) => v / l),
+      ];
+    return n; // area-weighted
+  };
+  const key = (p: number[]) => p.map((v) => Math.round(v * 200)).join(',');
+  const shared = new Map<string, number[][]>();
+  for (const f of faces) {
+    if (f.normals) continue;
+    const n = flatOf(f);
+    for (const p of f.points) {
+      const k = key(p);
+      if (!shared.has(k)) shared.set(k, []);
+      shared.get(k)!.push(n);
+    }
+  }
+  const unit = (n: number[]) => {
+    const l = Math.hypot(...n) || 1;
+    return n.map((v) => v / l);
+  };
+  for (const f of faces) {
+    const flat = unit(flatOf(f)),
       colour = hex(f.color),
       finish = finishOf(f);
+    const smooth = (p: number[]) => {
+      const sum = [0, 0, 0];
+      for (const n of shared.get(key(p)) ?? []) {
+        const u = unit(n);
+        // Only neighbours within ~50° of this face round it off.
+        if (u[0] * flat[0] + u[1] * flat[1] + u[2] * flat[2] > 0.64)
+          for (let i = 0; i < 3; i++) sum[i] += n[i];
+      }
+      return Math.hypot(...sum) ? unit(sum) : flat;
+    };
     for (let i = 1; i < f.points.length - 1; i++)
       for (const k of [0, i, i + 1]) {
         pos.push(...f.points[k]);
-        nor.push(...(f.normals?.[k] ?? flat));
+        nor.push(...(f.normals?.[k] ?? smooth(f.points[k])));
         col.push(...colour);
         fin.push(...finish);
       }
@@ -219,15 +279,26 @@ for (let t = 0; t < TICKS; t++) {
     members[a].push(i);
   });
   for (const a of actors) {
-    const r = screen(roots[a]),
+    const root = roots[a],
+      r = screen(root),
+      k = SCALE(a),
       b = bounds.get(a)!;
     for (const i of members[a])
       for (const c of corners[i]) {
-        const s = screen(transform(all.subarray(i * 16, i * 16 + 16), c));
-        b[0] = Math.min(b[0], s[0] - r[0]);
-        b[1] = Math.min(b[1], s[1] - r[1]);
-        b[2] = Math.max(b[2], s[0] - r[0]);
-        b[3] = Math.max(b[3], s[1] - r[1]);
+        const w = transform(all.subarray(i * 16, i * 16 + 16), c),
+          scaled = [
+            root[0] + (w[0] - root[0]) * k,
+            w[1] * k,
+            root[2] + (w[2] - root[2]) * k,
+          ];
+        // The figure and the shadow it casts on the sand.
+        for (const p of [scaled, shadowOf(scaled)]) {
+          const s = screen(p);
+          b[0] = Math.min(b[0], s[0] - r[0]);
+          b[1] = Math.min(b[1], s[1] - r[1]);
+          b[2] = Math.max(b[2], s[0] - r[0]);
+          b[3] = Math.max(b[3], s[1] - r[1]);
+        }
       }
   }
   ticks.push({
@@ -318,19 +389,31 @@ await page.goto(`http://127.0.0.1:${port}/render/render.html`);
 await page.waitForFunction('window.READY === true', null, { timeout: 600000 });
 type Raw = { data: Buffer; W: number; H: number };
 const shots = new Map<string, Raw[]>(actors.map((a) => [a, []]));
+/**
+ * The supersampled render averaged down to the sprite. The figure stays
+ * solid (the build outlines solid pixels); its cast shadow stays a light,
+ * translucent wash that the build leaves unoutlined (alpha at most 90).
+ */
 const decode = async (url: string, W: number, H: number): Promise<Raw> => {
   const { data } = await sharp(Buffer.from(url.split(',')[1], 'base64'))
     .ensureAlpha()
+    .resize(W, H, { kernel: 'mitchell' })
     .raw()
     .toBuffer({ resolveWithObject: true });
-  // Solid pixels only: no soft edges against the world.
-  for (let i = 3; i < data.length; i += 4) data[i] = data[i] > 96 ? 255 : 0;
+  for (let i = 3; i < data.length; i += 4)
+    if (data[i] >= 112) data[i] = 255;
+    else if (data[i] < 6) data[i] = data[i - 1] = data[i - 2] = data[i - 3] = 0;
+    else {
+      // Shadow on sand: a warm umber, deepest under the figure.
+      [data[i - 3], data[i - 2], data[i - 1]] = [59, 36, 18];
+      data[i] = Math.min(data[i], 90);
+    }
   return { data, W, H };
 };
 // Renders are cached in the work folder: a rerun only redoes the merging.
 const cache = (a: string, t: number) => `${tmp}/shots/${a}/${t}.png`;
 for (const a of actors) fs.mkdirSync(`${tmp}/shots/${a}`, { recursive: true });
-const cacheKey = JSON.stringify([...frames]);
+const cacheKey = JSON.stringify(['realistic-2', SS, [...frames]]);
 const cached =
   fs.existsSync(`${tmp}/shots/key.json`) &&
   fs.readFileSync(`${tmp}/shots/key.json`, 'utf8') === cacheKey &&
@@ -353,7 +436,13 @@ for (const [t, tick] of ticks.entries()) {
     }
     const url = (await page.evaluate(
       (arg) => (window as unknown as { shoot(a: unknown): string }).shoot(arg),
-      { joints: tick.members[a], root: tick.roots[a], ...f },
+      {
+        joints: tick.members[a],
+        root: tick.roots[a],
+        ...f,
+        ss: SS,
+        scale: SCALE(a),
+      },
     )) as string;
     const raw = await decode(url, f.W, f.H);
     await sharp(raw.data, { raw: { width: f.W, height: f.H, channels: 4 } })
@@ -362,6 +451,39 @@ for (const [t, tick] of ticks.entries()) {
     shots.get(a)!.push(raw);
   }
   if (t % 40 === 0) console.log(`tick ${t}${cached ? ' (cached)' : ''}`);
+  // CARAVAN_PREVIEW=1: tick 0 only, every figure on sand, then stop.
+  if (process.env.CARAVAN_PREVIEW) {
+    const list = actors.map((a) => ({ a, img: shots.get(a)![0] })),
+      width = list.reduce((s, { img }) => s + img.W, 0),
+      height = Math.max(...list.map(({ img }) => img.H));
+    let x = 0;
+    await sharp({
+      create: {
+        width,
+        height,
+        channels: 4,
+        background: { r: 214, g: 164, b: 104, alpha: 1 },
+      },
+    })
+      .composite(
+        list.map(({ img }) => {
+          const left = x;
+          x += img.W;
+          return {
+            input: img.data,
+            raw: { width: img.W, height: img.H, channels: 4 as const },
+            left,
+            top: height - img.H,
+          };
+        }),
+      )
+      .png()
+      .toFile(`${tmp}/preview.png`);
+    console.log(`Preview: ${tmp}/preview.png`);
+    await browser.close();
+    server.close();
+    process.exit(0);
+  }
 }
 fs.writeFileSync(`${tmp}/shots/key.json`, cacheKey);
 
@@ -415,55 +537,6 @@ function difference(a: Raw, b: Raw) {
   }
   return solid ? n / solid : 0;
 }
-/** A small palette per actor (k-means over its frames), nearest-colour mapped. */
-function palettise(images: Raw[], k = 40) {
-  const samples: number[][] = [];
-  for (const img of images)
-    for (let i = 0; i < img.data.length; i += 4 * 7)
-      if (img.data[i + 3])
-        samples.push([img.data[i], img.data[i + 1], img.data[i + 2]]);
-  if (!samples.length) return;
-  let centres = Array.from({ length: Math.min(k, samples.length) }, (_, j) =>
-    samples[
-      Math.floor((j * samples.length) / Math.min(k, samples.length))
-    ].slice(),
-  );
-  const nearest = (p: number[]) => {
-    let best = 0,
-      d = Infinity;
-    centres.forEach((c, j) => {
-      const e = (c[0] - p[0]) ** 2 + (c[1] - p[1]) ** 2 + (c[2] - p[2]) ** 2;
-      if (e < d) {
-        d = e;
-        best = j;
-      }
-    });
-    return best;
-  };
-  for (let it = 0; it < 8; it++) {
-    const sum = centres.map(() => [0, 0, 0, 0]);
-    for (const p of samples) {
-      const s = sum[nearest(p)];
-      s[0] += p[0];
-      s[1] += p[1];
-      s[2] += p[2];
-      s[3]++;
-    }
-    centres = centres.map((c, j) =>
-      sum[j][3] ? sum[j].slice(0, 3).map((v) => v / sum[j][3]) : c,
-    );
-  }
-  centres = centres.map((c) => c.map(Math.round));
-  for (const img of images)
-    for (let i = 0; i < img.data.length; i += 4)
-      if (img.data[i + 3]) {
-        const c =
-          centres[nearest([img.data[i], img.data[i + 1], img.data[i + 2]])];
-        img.data[i] = c[0];
-        img.data[i + 1] = c[1];
-        img.data[i + 2] = c[2];
-      }
-}
 const THRESHOLD = 0.02;
 const ACTION = (a: string) =>
   a === 'mansa-musa'
@@ -508,7 +581,6 @@ for (const design of new Set(moving.map(designOf))) {
       }
     });
   }
-  palettise(reps);
   const seq = new Map(members.map((a) => [a, [] as number[]]));
   pool.forEach((p, i) => seq.get(p.a)!.push(owner[i]));
   chosen.set(design, { reps, seq });
@@ -668,7 +740,6 @@ for (const f of fs.readdirSync('art/supplied'))
   if (f.startsWith('caravan-')) fs.rmSync(`art/supplied/${f}`);
 const planted: [string, number, number][] = [];
 async function plant(id: string, img: Raw, foot: number[], at: number[]) {
-  palettise([img]);
   await sharp(img.data, { raw: { width: img.W, height: img.H, channels: 4 } })
     .png({ compressionLevel: 9 })
     .toFile(`art/supplied/${id}.png`);
@@ -724,7 +795,7 @@ for (const a of still) {
       hi = [-Infinity, -Infinity];
     const r = screen(part.at);
     for (const f of part.faces)
-      for (const p of f.points) {
+      for (const p of f.points.flatMap((q) => [q, shadowOf(q)])) {
         const s = screen(p);
         lo = [Math.min(lo[0], s[0] - r[0]), Math.min(lo[1], s[1] - r[1])];
         hi = [Math.max(hi[0], s[0] - r[0]), Math.max(hi[1], s[1] - r[1])];
@@ -751,7 +822,7 @@ for (const a of still) {
     );
     const url = (await p2.evaluate(
       (arg) => (window as unknown as { shoot(a: unknown): string }).shoot(arg),
-      { joints: [0], root: part.at, W, H, fx, fy },
+      { joints: [0], root: part.at, W, H, fx, fy, ss: SS },
     )) as string;
     await p2.close();
     srv.close();

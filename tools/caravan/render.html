@@ -3,12 +3,21 @@
   <canvas id="c"></canvas>
   <script type="module">
     /*
-     * Mansa Musa's caravan as pixel-art sprites (tools/prepare-caravan-sprites.ts).
-     * The caravan's own articulated rig (packages/shared/royal-caravan.ts) is
-     * drawn here exactly as the native world drew it: fixed joint meshes,
-     * per-tick joint matrices, the same banded light and finishes. Each actor
-     * is rendered alone in the world's 2:1 isometric view at the sprite
-     * density, without anti-aliasing, so its pixels stay crisp.
+     * Mansa Musa's caravan as realistic sprites for the desert
+     * (tools/prepare-caravan-sprites.ts). The caravan's own articulated rig
+     * (packages/shared/royal-caravan.ts): fixed joint meshes, per-tick joint
+     * matrices. Each actor is rendered alone in the world's 2:1 isometric
+     * view, supersampled, with physically based desert light:
+     *
+     *  - a warm afternoon sun from the upper left (the world's light), with
+     *    soft shadow maps: the figure shades itself and casts its shadow on
+     *    a transparent sand plane, so the sprite carries its own shadow;
+     *  - a desert sky dome for fill and reflections: blue above, bright haze
+     *    at the horizon, sunlit sand below, so gold mirrors sky and sand and
+     *    cloth picks up the warm bounce from the ground;
+     *  - cloth, skin, hair, brocade, velvet and gold as separate materials
+     *    (roughness and metalness), a fine weave grain, and sand dust settled
+     *    on hems, feet and hooves.
      */
     import * as T from '../three/three.module.min.js';
 
@@ -16,41 +25,123 @@
       canvas: c,
       antialias: false,
       alpha: true,
+      premultipliedAlpha: false,
       preserveDrawingBuffer: true,
     });
     renderer.setPixelRatio(1);
     renderer.setClearColor(0, 0);
+    renderer.outputColorSpace = T.SRGBColorSpace;
+    renderer.toneMapping = T.NeutralToneMapping;
+    renderer.toneMappingExposure = 1.02;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = T.PCFShadowMap;
     const scene = new T.Scene();
-    // The native shader (web/src/engine/RiggedCaravan.ts), in view space.
-    const material = new T.ShaderMaterial({
-      vertexShader: `
-        attribute vec3 color; attribute vec3 finish;
-        varying vec4 vColor; varying vec3 vLocal; varying vec3 vNormal; varying vec3 vFinish;
-        void main() {
-          vec4 wp = modelMatrix * vec4(position, 1.0);
-          vLocal = wp.xyz;
-          vec3 n = normalize(normalMatrix * normal);
-          float lambert = max(0., dot(n, normalize(vec3(-.35, .65, .72))));
-          float light = .55 + .45 * floor(lambert * 9.) / 9.;
-          vColor = vec4(color * mix(light, 1., finish.z), 1.);
-          vNormal = n; vFinish = finish;
-          gl_Position = projectionMatrix * viewMatrix * wp;
-        }`,
-      fragmentShader: `
-        varying vec4 vColor; varying vec3 vLocal; varying vec3 vNormal; varying vec3 vFinish;
-        void main() {
-          float grain = fract(sin(dot(floor(vLocal * 1.3), vec3(12.9898, 78.233, 37.719))) * 43758.5453);
-          vec3 color = vColor.rgb * (.97 + .055 * grain);
-          if (vFinish.z > .5) {
-            vec3 n = normalize(vNormal), l = normalize(vec3(-.35, .65, .72)), h = normalize(l + vec3(0., 0., 1.));
-            float diffuse = .54 + .46 * floor(max(0., dot(n, l)) * 24.) / 24.;
-            float spec = pow(max(0., dot(n, h)), mix(12., 90., 1. - vFinish.x));
-            color = vColor.rgb * diffuse + mix(vec3(.1), vec3(.92, .74, .38), vFinish.y) * spec * (.1 + .65 * vFinish.y);
-          }
-          gl_FragColor = vec4(color, 1.);
-        }`,
+
+    /* ── The desert sky dome: fill light and reflections ── */
+    {
+      const dome = new T.Scene();
+      dome.add(
+        new T.Mesh(
+          new T.SphereGeometry(100, 64, 32),
+          new T.ShaderMaterial({
+            side: T.BackSide,
+            vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position);
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }`,
+            fragmentShader: `varying vec3 vDir; uniform vec3 uSun;
+              void main(){
+                float y = vDir.y;
+                vec3 zenith = vec3(.30, .46, .78), haze = vec3(1.05, .93, .78),
+                     sand = vec3(.78, .55, .32), shade = vec3(.46, .31, .18);
+                vec3 sky = mix(haze, zenith, pow(max(y, 0.), .55));
+                // Sunlit sand toward the sun, its own shade away from it.
+                float lit = .5 + .5 * dot(normalize(vec3(vDir.x, 0., vDir.z) + 1e-5), normalize(vec3(uSun.x, 0., uSun.z)));
+                vec3 ground = mix(shade, sand, lit) * mix(1., .8, clamp(-y * 2., 0., 1.));
+                vec3 col = y > 0. ? sky : mix(haze * .9, ground, clamp(-y * 6., 0., 1.));
+                col += vec3(1.4, 1.2, .9) * 6. * pow(max(dot(vDir, uSun), 0.), 400.);
+                gl_FragColor = vec4(col, 1.);
+              }`,
+            uniforms: { uSun: { value: new T.Vector3() } },
+          }),
+        ),
+      );
+      window.__dome = dome;
+    }
+    // Sun: from the viewer's upper left (the world's light), about 58° high.
+    const R = Math.SQRT1_2,
+      sunDir = new T.Vector3(-R * 0.46 + R * 0.22, 0.86, R * 0.46 + R * 0.22)
+        .normalize();
+    window.__dome.children[0].material.uniforms.uSun.value.copy(sunDir);
+    const pmrem = new T.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(window.__dome, 0, 0.1, 200).texture;
+    scene.environmentIntensity = 0.85;
+    const sun = new T.DirectionalLight(new T.Color(1, 0.9, 0.74), 3.1);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.radius = 2.5;
+    sun.shadow.bias = -0.0004;
+    sun.shadow.normalBias = 0.35;
+    scene.add(sun, sun.target);
+
+    /* ── Sand that only shows the shadows falling on it ── */
+    const ground = new T.Mesh(
+      new T.PlaneGeometry(4000, 4000).rotateX(-Math.PI / 2),
+      new T.ShadowMaterial({ color: 0x3b2412, opacity: 0.34 }),
+    );
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    /* ── Materials: the rig's finishes as roughness and metalness ── */
+    const SAND = new T.Color(0xc8935a).convertSRGBToLinear();
+    const material = new T.MeshStandardMaterial({
+      vertexColors: true,
       side: T.DoubleSide,
+      roughness: 1,
+      metalness: 0,
+      shadowSide: T.DoubleSide,
     });
+    material.onBeforeCompile = (s) => {
+      s.uniforms.uSand = { value: SAND };
+      s.vertexShader = s.vertexShader
+        .replace(
+          '#include <common>',
+          `#include <common>
+          attribute vec3 finish; varying vec3 vFinish; varying vec3 vWorld;`,
+        )
+        .replace(
+          '#include <begin_vertex>',
+          `#include <begin_vertex>
+          vFinish = finish; vWorld = (modelMatrix * vec4(position, 1.)).xyz;`,
+        );
+      s.fragmentShader = s.fragmentShader
+        .replace(
+          '#include <common>',
+          `#include <common>
+          uniform vec3 uSand; varying vec3 vFinish; varying vec3 vWorld;
+          float hash(vec3 p) { return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }`,
+        )
+        .replace(
+          '#include <color_fragment>',
+          `#include <color_fragment>
+          bool gold = vFinish.y > .9, brocade = vFinish.y > .1 && !gold,
+               skin = vFinish.z > .5 && abs(vFinish.x - .56) < .01;
+          // Weave and grain: fine, irregular, never a pattern at sprite size.
+          float g = hash(floor(vWorld * 2.6)) * .6 + hash(floor(vWorld * 7.)) * .4;
+          diffuseColor.rgb *= skin ? .97 + .05 * g : gold ? .9 + .2 * g : .9 + .16 * g;
+          // Sand dust settled on hems, feet and hooves.
+          float dust = (1. - smoothstep(.0, 9., vWorld.y)) * (gold ? .18 : skin ? .3 : .42);
+          dust *= .7 + .6 * hash(floor(vWorld * 1.7));
+          diffuseColor.rgb = mix(diffuseColor.rgb, uSand, clamp(dust, 0., .55));`,
+        )
+        .replace(
+          '#include <roughnessmap_fragment>',
+          `float roughnessFactor = gold ? .3 + .14 * g : brocade ? .48 : skin ? .52
+            : vFinish.z > .5 && vFinish.x < .3 ? .4 : .88;`,
+        )
+        .replace(
+          '#include <metalnessmap_fragment>',
+          `float metalnessFactor = gold ? 1. : brocade ? .35 : 0.;`,
+        );
+    };
 
     /* ── Geometry: one mesh per joint, as uploaded by the bake tool ── */
     const meta = await (await fetch('../data/joints.json')).json();
@@ -59,27 +150,23 @@
     );
     const meshes = meta.joints.map((j) => {
       const geo = new T.BufferGeometry(),
-        at = (o, n) => buffer.subarray(o, o + n);
-      geo.setAttribute(
-        'position',
-        new T.BufferAttribute(at(j.position, j.count * 3), 3),
-      );
-      geo.setAttribute(
-        'normal',
-        new T.BufferAttribute(at(j.normal, j.count * 3), 3),
-      );
-      geo.setAttribute(
-        'color',
-        new T.BufferAttribute(at(j.color, j.count * 3), 3),
-      );
-      geo.setAttribute(
-        'finish',
-        new T.BufferAttribute(at(j.finish, j.count * 3), 3),
-      );
+        at = (o, n) => buffer.slice(o, o + n);
+      const colour = at(j.color, j.count * 3);
+      // The rig's colours are sRGB; light works in linear.
+      for (let i = 0; i < colour.length; i++) {
+        const s = colour[i];
+        colour[i] = s < 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+      }
+      geo.setAttribute('position', new T.BufferAttribute(at(j.position, j.count * 3), 3));
+      geo.setAttribute('normal', new T.BufferAttribute(at(j.normal, j.count * 3), 3));
+      geo.setAttribute('color', new T.BufferAttribute(colour, 3));
+      geo.setAttribute('finish', new T.BufferAttribute(at(j.finish, j.count * 3), 3));
+      geo.computeBoundingBox();
       const mesh = new T.Mesh(geo, material);
       mesh.matrixAutoUpdate = false;
       mesh.frustumCulled = false;
       mesh.visible = false;
+      mesh.castShadow = mesh.receiveShadow = true;
       scene.add(mesh);
       return mesh;
     });
@@ -92,24 +179,55 @@
     cam.lookAt(0, 0, 0);
     cam.updateMatrixWorld(true);
     const v = new T.Vector3(),
-      K = meta.density; // sprite px per model unit (1 unit = 1 world px)
+      K = meta.density, // sprite px per model unit (1 unit = 1 world px)
+      poses = [],
+      box = new T.Box3(),
+      tmp = new T.Box3(),
+      scaleAbout = new T.Matrix4();
 
     /** Sets every joint's matrix for one tick (16 floats each, column-major). */
     window.pose = (base64) => {
       const bytes = Uint8Array.from(atob(base64), (ch) => ch.charCodeAt(0));
       const m = new Float32Array(bytes.buffer);
-      meshes.forEach((mesh, i) => {
-        mesh.matrix.fromArray(m, i * 16);
-        mesh.matrixWorld.copy(mesh.matrix);
-      });
+      meshes.forEach((mesh, i) => mesh.matrix.fromArray(m, i * 16));
     };
     /**
-     * Renders the given joints alone into a W×H frame whose foot point
-     * (fx, fy) sits on `root` (model units). Returns a PNG data URL.
+     * Renders the given joints alone into a W×H frame (times the supersample
+     * `ss`) whose foot point (fx, fy) sits on `root` (model units). `scale`
+     * sizes the figure about its root (animals to the world's people).
+     * Returns a PNG data URL.
      */
-    window.shoot = ({ joints, root, W, H, fx, fy }) => {
+    window.shoot = ({ joints, root, W, H, fx, fy, ss = 1, scale = 1 }) => {
       for (const m of meshes) m.visible = false;
-      for (const i of joints) meshes[i].visible = true;
+      scaleAbout
+        .makeTranslation(root[0], 0, root[2])
+        .multiply(new T.Matrix4().makeScale(scale, scale, scale))
+        .multiply(new T.Matrix4().makeTranslation(-root[0], 0, -root[2]));
+      box.makeEmpty();
+      for (const i of joints) {
+        const m = meshes[i];
+        m.visible = true;
+        m.matrixWorld.multiplyMatrices(scaleAbout, m.matrix);
+        box.union(tmp.copy(m.geometry.boundingBox).applyMatrix4(m.matrixWorld));
+      }
+      // The sun's shadow camera hugs this figure.
+      const centre = box.getCenter(new T.Vector3()),
+        size = box.getSize(new T.Vector3()).length() / 2 + 4;
+      sun.target.position.set(centre.x, 0, centre.z);
+      sun.position.copy(sun.target.position).addScaledVector(sunDir, 600);
+      Object.assign(sun.shadow.camera, {
+        left: -size * 1.6,
+        right: size * 1.6,
+        top: size * 1.6,
+        bottom: -size * 1.6,
+        near: 1,
+        far: 1400,
+      });
+      sun.shadow.camera.updateProjectionMatrix();
+      sun.target.updateMatrixWorld();
+      sun.updateMatrixWorld();
+      ground.position.set(centre.x, 0, centre.z);
+      ground.updateMatrixWorld();
       v.set(...root).applyMatrix4(cam.matrixWorldInverse);
       Object.assign(cam, {
         left: v.x - fx / K,
@@ -118,10 +236,11 @@
         bottom: v.y - (H - fy) / K,
       });
       cam.updateProjectionMatrix();
-      renderer.setSize(W, H, false);
+      renderer.setSize(W * ss, H * ss, false);
       renderer.render(scene, cam);
       return c.toDataURL('image/png');
     };
+    window.SUN = sunDir.toArray();
     window.READY = true;
   </script>
 </body>

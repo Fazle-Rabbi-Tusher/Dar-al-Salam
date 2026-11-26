@@ -4,10 +4,14 @@
 > The owner asked for Mansa Musa's caravan to match the world's other art and
 > to stand on the desert. `tools/prepare-caravan-sprites.ts` renders the same
 > articulated rig, tick by tick and one actor at a time, in the world's 2:1
-> isometric view at three sprite pixels per world pixel, without anti-aliasing
-> (`tools/caravan/render.html`).
+> isometric view at three sprite pixels per world pixel (`tools/caravan/render.html`).
+> Since 2026-11-26 it is lit realistically for the desert: a warm sun, a sky and
+> sand fill, gold and cloth materials, sand dust on hems and hooves, and soft
+> shadows that each figure casts on the sand. Renders are supersampled 3×, the
+> full colour range is kept, and the camels and elephant are drawn at the
+> world's scale (DECISIONS item 79).
 >
-> - **Strips:** each design keeps a small set of its most different poses, with a reduced palette.
+> - **Strips:** each design keeps a small set of its most different poses.
 >   Guards of one colour share theirs, and so do the pack camels. The build outlines them like every strip.
 > - **Timing:** every figure plays its strip one pose per tick (`tempo: 1`, a 240-step `sequence`).
 >   It steps to its sampled place on the route each tick, so gaits, turns and gold handovers keep the rig's timing.

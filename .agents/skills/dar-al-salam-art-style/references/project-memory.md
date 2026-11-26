@@ -94,6 +94,13 @@ extracted from an attached document. New explicit owner instructions override th
   above. Do not add anonymous people again unless the owner asks.
   Exception (25 November 2026): the owner chose to keep Mansa Musa's caravan
   people (guards, gold carriers, recipients) when bringing the caravan in.
+- **Caravan realism in the desert (26 November 2026):** the owner asked for
+  Mansa Musa's in-world caravan to look ultra realistic and blend with the
+  desert. Light it like the desert (warm sun from the world's upper left, sky
+  and sand fill, real gold reflections), keep smooth shading and the full
+  colour range, give every figure a soft cast shadow on the sand and sand dust
+  at its feet, and keep animals at the world's scale beside 1.75 m people.
+  See DECISIONS item 79.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
 - **Final Mansa Musa surface direction (25 November 2026):** the owner selected
   the white/red/gold reference sheet and clarified that the final result must
