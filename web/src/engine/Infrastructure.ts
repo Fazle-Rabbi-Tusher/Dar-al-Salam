@@ -26,6 +26,7 @@ import { sportsActivityModel } from '../../../packages/shared/sports';
 import { podcastActivityModel } from '../../../packages/shared/podcast';
 import { caravanKind } from '../../../packages/shared/royal-caravan';
 import { RiggedCaravan } from './RiggedCaravan';
+import { loadCaravanSurface } from './CaravanMaterials';
 import {
   projectSurface,
   surfaceOccludes,
@@ -153,6 +154,7 @@ export function modelGeometry(
 }
 export class InfrastructureRenderer {
   private turf: Texture = Texture.WHITE;
+  private caravanSurface: Texture = Texture.WHITE;
   async loadMaterials(base: string) {
     this.turf = await Assets.load<Texture>(
       base + 'materials/stadium-grass.webp',
@@ -161,6 +163,7 @@ export class InfrastructureRenderer {
     this.turf.source.scaleMode = 'linear';
     this.turf.source.autoGenerateMipmaps = true;
     this.turf.source.updateMipmaps();
+    this.caravanSurface = await loadCaravanSurface(base);
   }
   readonly uniforms = new UniformGroup({
     uPlanetRotation: { value: new Float32Array(9), type: 'mat3x3<f32>' },
@@ -206,7 +209,7 @@ export class InfrastructureRenderer {
       glass,
       activity,
       rig: caravanKind(s.objectType)
-        ? new RiggedCaravan(this.uniforms)
+        ? new RiggedCaravan(this.uniforms, this.caravanSurface)
         : undefined,
       objectId: s.objectId,
       kind: model.kind,

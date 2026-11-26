@@ -5,7 +5,9 @@ import {
   Shader,
   State,
   UniformGroup,
+  Texture,
 } from 'pixi.js';
+import { caravanSurface } from './CaravanMaterials';
 import {
   CARAVAN,
   caravanActors,
@@ -21,26 +23,30 @@ import {
 // the joint transforms; animation never rebuilds 40,000 faces each frame.
 const COUNT = 48;
 const vertex = `
-in vec3 aLocal;in vec3 aNormal;in vec4 aColor;in float aJoint;in vec3 aFinish;
+in vec3 aLocal;in vec3 aNormal;in vec4 aColor;in float aJoint;in vec3 aFinish;in vec4 aSurface;in vec3 aTint;
 uniform mat4 uJoints[${COUNT}];uniform mat3 uLocalBasis;
 uniform mat3 uProjectionMatrix;uniform mat3 uWorldTransformMatrix;uniform mat3 uTransformMatrix;
 uniform mat3 uPlanetRotation;uniform vec2 uCentre;uniform float uRadius;
-out vec4 vColor;out vec3 vLocal;out vec3 vNormal;out vec3 vFinish;
+out vec4 vColor;out vec3 vLocal;out vec3 vNormal;out vec3 vFinish;out vec4 vSurface;out vec3 vTint;
 vec3 sphere(vec2 t){vec2 d=t-vec2(48.,62.);vec2 en=vec2(d.x-d.y,-d.x-d.y)*.70710678118;float r=length(en);float a=r/64.;return vec3(en*(sin(a)/max(r,.000001)),cos(a));}
 void main(){
  mat4 joint=uJoints[int(aJoint)];vec3 local=(joint*vec4(aLocal,1.)).xyz;vLocal=local;
  vec3 world=sphere(vec2(${CARAVAN.center[0]}.,${CARAVAN.center[1]}.)+local.xz/${TILE_SIDE.toFixed(12)})*(1.+local.y/${RADIUS_PX.toFixed(12)});
  vec3 p=uPlanetRotation*world;vec3 normal=normalize(uPlanetRotation*uLocalBasis*mat3(joint)*aNormal);
  float lambert=max(0.,dot(normal,normalize(vec3(-.35,.65,.72))));float light=.55+.45*floor(lambert*9.)/9.;
- vColor=vec4(aColor.rgb*mix(light,1.,aFinish.z),aColor.a);vNormal=normal;vFinish=aFinish;vec2 screen=uCentre+vec2(p.x,-p.y)*uRadius;
+ vColor=vec4(aColor.rgb*mix(light,1.,aFinish.z),aColor.a);vNormal=normal;vFinish=aFinish;vSurface=aSurface;vTint=aTint;vec2 screen=uCentre+vec2(p.x,-p.y)*uRadius;
  mat3 mvp=uProjectionMatrix*uWorldTransformMatrix*uTransformMatrix;gl_Position=vec4((mvp*vec3(screen,1.)).xy,-p.z*.45,1.);
 }`;
-const fragment = `in vec4 vColor;in vec3 vLocal;in vec3 vNormal;in vec3 vFinish;out vec4 finalColor;void main(){
+const fragment = `in vec4 vColor;in vec3 vLocal;in vec3 vNormal;in vec3 vFinish;in vec4 vSurface;in vec3 vTint;uniform sampler2D uSurfaceAtlas;out vec4 finalColor;void main(){
  float grain=fract(sin(dot(floor(vLocal*1.3),vec3(12.9898,78.233,37.719)))*43758.5453);
- vec3 color=vColor.rgb*(.97+.055*grain);
+ vec3 base=vColor.rgb;
+ if(vSurface.z>-.5){vec2 uv=vSurface.w>.5?clamp(vSurface.xy,vec2(0.),vec2(1.)):fract(vSurface.xy);
+ float tileIndex=floor(vSurface.z+.5);vec2 tile=vec2(mod(tileIndex,8.),floor(tileIndex/8.));
+ base=texture(uSurfaceAtlas,(tile*256.+16.+uv*223.)/vec2(2048.,1024.)).rgb*vTint;}
+ vec3 color=base*(.97+.055*grain);
  if(vFinish.z>.5){vec3 n=normalize(vNormal),l=normalize(vec3(-.35,.65,.72)),h=normalize(l+vec3(0.,0.,1.));
  float diffuse=.54+.46*floor(max(0.,dot(n,l))*24.)/24.;float spec=pow(max(0.,dot(n,h)),mix(12.,90.,1.-vFinish.x));
- color=vColor.rgb*diffuse+mix(vec3(.1),vec3(.92,.74,.38),vFinish.y)*spec*(.1+.65*vFinish.y);}
+ color=base*diffuse+mix(vec3(.1),vec3(.92,.74,.38),vFinish.y)*spec*(.1+.65*vFinish.y);}
  finalColor=vec4(color,vColor.a);}`;
 const normalize = (a: number[]) => {
   const l = Math.hypot(...a);
@@ -55,7 +61,7 @@ export class RiggedCaravan {
   }[] = [];
   time = 0;
   readonly jointCount: number;
-  constructor(planetUniforms: UniformGroup) {
+  constructor(planetUniforms: UniformGroup, surface: Texture) {
     const entries = [...rigMatrices(caravanActors(0))].filter(
       ([, v]) => v.node.faces?.length,
     );
@@ -77,6 +83,8 @@ export class RiggedCaravan {
         normals: number[] = [],
         colors: number[] = [],
         finish: number[] = [],
+        surfaces: number[] = [],
+        tints: number[] = [],
         joints: number[] = [],
         indices: number[] = [],
         matrices = new Float32Array(COUNT * 16);
@@ -97,10 +105,17 @@ export class RiggedCaravan {
               (i) => parseInt(f.color.slice(i, i + 2), 16) / 255,
             ),
             base = local.length / 3;
+          const material = caravanSurface(f);
           for (const [vertexIndex, point] of f.points.entries()) {
             local.push(...point);
             normals.push(...(f.normals?.[vertexIndex] ?? n));
             colors.push(...color, 1);
+            surfaces.push(
+              ...(f.uv?.[vertexIndex] || [0, 0]),
+              material.tile,
+              material.clamp,
+            );
+            tints.push(...material.tint);
             finish.push(
               f.finish === 'gold'
                 ? 0.24
@@ -131,6 +146,8 @@ export class RiggedCaravan {
           aColor: { buffer: new Float32Array(colors), format: 'float32x4' },
           aJoint: { buffer: new Float32Array(joints), format: 'float32' },
           aFinish: { buffer: new Float32Array(finish), format: 'float32x3' },
+          aSurface: { buffer: new Float32Array(surfaces), format: 'float32x4' },
+          aTint: { buffer: new Float32Array(tints), format: 'float32x3' },
         },
         indexBuffer: new Uint32Array(indices),
       });
@@ -141,7 +158,11 @@ export class RiggedCaravan {
           name: 'dar-rigged-mali-caravan',
           preferredFragmentPrecision: 'highp',
         }),
-        resources: { planet: planetUniforms, rig: group },
+        resources: {
+          planet: planetUniforms,
+          rig: group,
+          uSurfaceAtlas: surface.source,
+        },
       });
       const mesh = new Mesh({ geometry, shader, state: new State() });
       mesh.state.depthTest = true;

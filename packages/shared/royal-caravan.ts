@@ -7,13 +7,14 @@ import cloth from './generated/mali-cloth.json' with { type: 'json' };
 import { realisticMansa } from './mansa-reference';
 import { goldCarrierActors } from './gold-carriers';
 import { carrierHuman } from './carrier-human';
-import { cargoCamel, nativeCargoActors } from './gold-cargo';
+import { cargoCamel, cargoHorse, nativeCargoActors } from './gold-cargo';
 
 export type Quaternion = [number, number, number, number];
 export type RoyalFinish =
   'face' | 'skin' | 'linen' | 'brocade' | 'velvet' | 'gold' | 'hair';
 export type RigFace = Face3 & {
   uv?: Point[];
+  texture?: string;
   normals?: Vertex3[];
   finish?: RoyalFinish;
 };
@@ -756,6 +757,16 @@ export function human(p: HumanPose): RigNode {
         add(right, [0, -3, 3]),
       ),
     );
+  if (p.guard) {
+    const refined = carrierHuman(
+      { ...p, face: 6 + (p.face === 1 ? 2 : 3), right, left },
+      { plantedStep, elbowFor },
+    );
+    refined.children.push(
+      ...children.filter((n) => n.name === 'lance' || n.name === 'buckler'),
+    );
+    return refined;
+  }
   return node(p.name, undefined, p.at, yaw(p.yaw), children);
 }
 
@@ -901,101 +912,13 @@ function coinMesh() {
 }
 
 function horse(pose: ReturnType<typeof caravanState>): RigNode {
-  const color = '#35302a',
-    phase = (pose.travel / 42) * TAU,
-    children: RigNode[] = [];
-  children.push(
-    node(
-      'horse-body',
-      geometry('black-horse-body', (m) => {
-        ellipsoid(m, [0, 36, 0], [12, 14, 25], color, 8, 16);
-        ellipsoid(m, [0, 42, 21], [8.4, 15, 9], color);
-        ellipsoid(m, [0, 57, 31], [6, 12, 7], color);
-        ellipsoid(m, [0, 65, 36], [5.4, 8, 12], color);
-        ellipsoid(m, [0, 60.4, 43], [5.2, 4.4, 5], '#443a30');
-        for (const s of [-1, 1]) {
-          ellipsoid(m, [s * 3.2, 75.5, 34], [1.8, 5, 1.6], color, 5, 8);
-          ellipsoid(m, [s * 5.05, 67, 38], [0.9, 0.9, 0.7], '#14191b', 4, 6);
-          m.beam([s * 5.8, 68, 38], [s * 5.8, 58, 45], 0.7, C.gold);
-        }
-        for (let j = 0; j < 8; j++)
-          ellipsoid(
-            m,
-            [0, 62 - j * 2.2, 28 - j * 0.5],
-            [1.9, 3.2, 3.2],
-            '#211f20',
-            4,
-            8,
-          );
-        m.box(0, 49, -1, 25, 3, 24, C.red);
-        for (const s of [-1, 1]) {
-          m.box(s * 12.8, 42, -1, 1.4, 17, 23, C.red);
-          for (let i = -8; i <= 8; i += 4)
-            m.box(s * 13.6, 37, i, 0.7, 2, 2, C.goldLight);
-        }
-        m.box(0, 51.2, -3, 19, 3.3, 17, C.leather);
-        m.beam([-6, 49, 25], [-5, 65, 35], 0.7, C.goldDark);
-        m.beam([6, 49, 25], [5, 65, 35], 0.7, C.goldDark);
-      }),
-    ),
-  );
-  for (const s of [-1, 1])
-    for (const fore of [-1, 1]) {
-      const a = phase + (s * fore === 1 ? 0 : Math.PI),
-        gait = plantedStep(pose.travel, s * fore === 1 ? 0 : 0.5, 42, 6),
-        swing = Math.sin(a) * pose.walk,
-        hip: Vertex3 = [s * 7.4, 34, fore * 17],
-        knee: Vertex3 = [s * 7.7, 18, fore * 17 + swing * 6],
-        foot: Vertex3 = [
-          s * 7.8,
-          0.2 + gait.lift * pose.walk,
-          fore * 17 + gait.forward * pose.walk,
-        ];
-      children.push(
-        node(
-          `horse-${s}-${fore}-upper`,
-          limbMesh(color, 3.1, 18),
-          hip,
-          aim(sub(knee, hip)),
-          [],
-          [1, Math.hypot(...sub(knee, hip)) / 18, 1],
-        ),
-        node(
-          `horse-${s}-${fore}-lower`,
-          limbMesh('#463d32', 1.7, 18),
-          knee,
-          aim(sub(foot, knee)),
-          [],
-          [1, Math.hypot(...sub(foot, knee)) / 18, 1],
-        ),
-        node(
-          `horse-${s}-${fore}-hoof`,
-          geometry('horse-hoof', (m) =>
-            m.box(0, 1.2, 0, 4.6, 2.8, 5.8, '#1d2020'),
-          ),
-          foot,
-        ),
-      );
-    }
-  children.push(
-    node(
-      'horse-tail',
-      geometry('horse-tail', (m) => {
-        m.beam([0, 38, -23], [0, 14, -32], 2.7, '#201f20');
-        for (const s of [-1, 1])
-          m.beam([0, 29, -27], [s * 2, 7, -34], 1.2, '#25211f');
-      }),
-      [0, 0, 0],
-      yaw(Math.sin((pose.t * TAU) / 80) * 0.06),
-    ),
-  );
-  return node(
-    'royal-horse',
-    undefined,
-    pose.point,
-    yaw(pose.heading),
-    children,
-  );
+  return cargoHorse({
+    at: pose.point,
+    heading: pose.heading,
+    distance: pose.travel,
+    walk: pose.walk,
+    t: pose.t,
+  });
 }
 function camel(
   name: string,
@@ -1021,7 +944,7 @@ export function mansaActor(frame: number, mounted = false): RigNode {
     contact: Vertex3 = mounted
       ? inverse(active?.contact ?? [0, 59, 0], at, angle)
       : [-25, 52, 8],
-    hip = mounted ? 50 : 36,
+    hip = mounted ? 62 : 36,
     rest: Vertex3 = [-17, hip + 17, 10],
     right = mix(rest, contact, active?.reach ?? 0),
     hipHand: Vertex3 = [13, hip + 9, 8],
@@ -1367,7 +1290,7 @@ export function caravanModel(type: string): InfrastructureModel | null {
       );
     }
   });
-  return { kind: 'gold-caravan', faces: mesh, height: 250 };
+  return { kind: 'gold-caravan', faces: mesh, height: 275 };
 }
 export function caravanActivityModel(
   type: string,
@@ -1377,6 +1300,6 @@ export function caravanActivityModel(
   return {
     kind: 'gold-caravan-actors',
     faces: flattenRig(caravanActors(frame)),
-    height: 250,
+    height: 275,
   };
 }

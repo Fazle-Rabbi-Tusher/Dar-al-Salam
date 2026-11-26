@@ -40,6 +40,14 @@ test('the native caravan animates joint matrices, keeps its meshes, pauses and o
   test.setTimeout(120000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (message) => {
+    if (
+      /Could not initialize shader|Fragment shader is not compiled|program not valid/.test(
+        message.text(),
+      )
+    )
+      errors.push(message.text());
+  });
   await page.goto('/');
   await expect(page.locator('.loading-screen')).toHaveCount(0, {
     timeout: 60000,
@@ -82,6 +90,12 @@ test('the native caravan animates joint matrices, keeps its meshes, pauses and o
       moved: JSON.stringify(a) !== JSON.stringify(moved),
       mode: e.manifest.characters.find((c) => c.id === 'mansa-musa')
         ?.nativeModel,
+      materialAtlas: [
+        (rig.meshes[0].shader.resources.uSurfaceAtlas as { width: number })
+          .width,
+        (rig.meshes[0].shader.resources.uSurfaceAtlas as { height: number })
+          .height,
+      ],
     };
   });
   expect(proof.count).toBeGreaterThan(400);
@@ -91,6 +105,7 @@ test('the native caravan animates joint matrices, keeps its meshes, pauses and o
     proof.depth && proof.sameGeometry && proof.fractional && proof.moved,
   ).toBe(true);
   expect(proof.mode).toBe('mali-ruler');
+  expect(proof.materialAtlas).toEqual([2048, 1024]);
   await page.getByLabel('Resume animation', { exact: true }).click();
   const sample = () =>
     page.evaluate(() => {

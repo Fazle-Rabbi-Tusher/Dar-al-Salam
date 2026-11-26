@@ -39,14 +39,22 @@ const textileCrops = [
 for (const [index, [left, top, width, height]] of crops.entries()) {
   const bytes = await sharp(file)
     .extract({ left, top, width, height })
-    .resize(48, 60, { kernel: 'nearest' })
+    .resize(96, 120, { kernel: 'nearest' })
     .removeAlpha()
     .raw()
     .toBuffer();
   const pixels = Array.from(
-    { length: 48 * 60 },
+    { length: 96 * 120 },
     (_, n) => '#' + bytes.subarray(n * 3, n * 3 + 3).toString('hex'),
   );
+  await fs.mkdir('web/public/models/gold-cargo/textures', { recursive: true });
+  await sharp(file)
+    .extract({ left, top, width, height })
+    .resize(144, 180, { kernel: 'nearest' })
+    .png()
+    .toFile(
+      'web/public/models/gold-cargo/textures/carrier-face-' + index + '.png',
+    );
   const [cx, cy, cw, ch] = textileCrops[index];
   const fabric = await sharp(file)
     .extract({ left: cx, top: cy, width: cw, height: ch })
@@ -56,9 +64,9 @@ for (const [index, [left, top, width, height]] of crops.entries()) {
     .toBuffer();
   faces.push({
     id: ids[index],
-    width: 48,
-    height: 60,
-    skin: pixels[24 * 48 + 12],
+    width: 96,
+    height: 120,
+    skin: pixels[48 * 96 + 24],
     pixels,
     cloth: {
       width: 24,

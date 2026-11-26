@@ -841,7 +841,7 @@ type Helpers = {
   ) => Vertex3;
 };
 export function realisticMansa(p: HumanPose, helpers: Helpers): RigNode {
-  const hip = p.mounted ? 50 : 36,
+  const hip = p.mounted ? 62 : 36,
     phase = (p.distance / 45) * TAU,
     bob = Math.abs(Math.sin(phase)) * p.walk * 0.45;
   const body = N('body', undefined, [0, hip + bob, 0], pitch(p.walk * -0.018), [
@@ -874,10 +874,10 @@ export function realisticMansa(p: HumanPose, helpers: Helpers): RigNode {
     const gait = helpers.plantedStep(p.distance, side === 1 ? 0.5 : 0),
       z = p.mounted ? 3 : gait.forward * p.walk;
     const ankle: Vertex3 = p.mounted
-      ? [side * 13, 20, 3]
+      ? [side * 13, 32, 3]
       : [side * 5.1, gait.lift * p.walk, z];
     const knee: Vertex3 = p.mounted
-      ? [side * 13, 35, 9]
+      ? [side * 13, 47, 9]
       : [side * 5, 19, z * 0.48];
     const pelvis: Vertex3 = [side * 5.5, hip, 0];
     for (const [name, from, to, radius] of [

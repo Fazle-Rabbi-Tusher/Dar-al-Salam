@@ -5,6 +5,7 @@ import sharp from 'sharp';
 
 const out = 'web/public/models/gold-cargo';
 const frames = '.playwright/gold-cargo-frames';
+await fs.rm(frames, { recursive: true, force: true });
 await fs.mkdir(frames, { recursive: true });
 await fs.mkdir(out + '/sprites', { recursive: true });
 const manifest = JSON.parse(await fs.readFile(out + '/manifest.json', 'utf8'));
@@ -40,7 +41,7 @@ try {
       if (o.isLight && o.shadow) {
         o.shadow.map?.dispose();
         o.shadow.map = null;
-        o.shadow.mapSize.set(512, 512);
+        o.shadow.mapSize.set(1024, 1024);
       }
     });
     window.dispatchEvent(new Event('resize'));
@@ -94,12 +95,38 @@ try {
     }
     console.log('Captured real 3D views:', id);
   }
-  await load('procession-scene');
+  await load('elephant-loaded');
   await page.evaluate(() => {
     const v = window.__goldCargo;
     v.scene.background = null;
     v.scene.getObjectByName('studio-floor').visible = true;
-    v.renderer.setClearColor('#24271f', 1);
+    v.renderer.setClearColor('#bcb09a', 1);
+    v.setTime(0);
+    v.angle('isometric');
+  });
+  await page.setViewportSize({ width: 1280, height: 1280 });
+  await page.evaluate(() => {
+    window.dispatchEvent(new Event('resize'));
+    window.__goldCargo.angle('isometric');
+  });
+  const elephant = await page.evaluate(() =>
+    window.__goldCargo.renderer.domElement.toDataURL('image/png'),
+  );
+  await fs.writeFile(
+    out + '/elephant-reference-match.png',
+    Buffer.from(elephant.split(',')[1], 'base64'),
+  );
+  await load('procession-scene');
+  await page.setViewportSize({ width: 1280, height: 960 });
+  await page.evaluate(() => {
+    window.dispatchEvent(new Event('resize'));
+    window.__goldCargo.angle('isometric');
+  });
+  await page.evaluate(() => {
+    const v = window.__goldCargo;
+    v.scene.background = null;
+    v.scene.getObjectByName('studio-floor').visible = true;
+    v.renderer.setClearColor('#bcb09a', 1);
     v.setTime(1);
     v.angle('isometric');
   });
@@ -128,7 +155,7 @@ try {
     await page.evaluate(() => {
       const v = window.__goldCargo;
       v.scene.getObjectByName('studio-floor').visible = true;
-      v.renderer.setClearColor('#24271f', 1);
+      v.renderer.setClearColor('#bcb09a', 1);
       v.angle('isometric');
       window.__captureOffset = v.camera.position.clone().sub(v.controls.target);
     });
@@ -147,6 +174,34 @@ try {
                 .applyAxisAngle({ x: 0, y: 1, z: 0 }, a),
             );
           v.controls.update();
+          // Keep changing walking silhouettes inside the recorded frame.
+          // Check the actual visible mesh bounds, including tusks and flag.
+          for (let pass = 0; pass < 3; pass++) {
+            v.camera.updateMatrixWorld(true);
+            let coverage = 0;
+            v.model.traverseVisible((part) => {
+              if (!part.isMesh) return;
+              if (!part.geometry.boundingBox)
+                part.geometry.computeBoundingBox();
+              const box = part.geometry.boundingBox;
+              for (const x of [box.min.x, box.max.x])
+                for (const y of [box.min.y, box.max.y])
+                  for (const z of [box.min.z, box.max.z]) {
+                    const p = v.controls.target
+                      .clone()
+                      .set(x, y, z)
+                      .applyMatrix4(part.matrixWorld)
+                      .project(v.camera);
+                    coverage = Math.max(coverage, Math.abs(p.x), Math.abs(p.y));
+                  }
+            });
+            if (coverage <= 0.92) break;
+            v.camera.position
+              .sub(v.controls.target)
+              .multiplyScalar(coverage / 0.92)
+              .add(v.controls.target);
+            v.controls.update();
+          }
           v.renderer.render(v.scene, v.camera);
           return v.renderer.domElement.toDataURL('image/jpeg', 0.9);
         },
@@ -179,6 +234,34 @@ try {
 } finally {
   await browser.close();
 }
+execFileSync(
+  'ffmpeg',
+  [
+    '-y',
+    '-v',
+    'error',
+    '-framerate',
+    '24',
+    '-i',
+    frames + '/%04d.jpg',
+    '-frames:v',
+    '480',
+    '-c:v',
+    'libx264',
+    '-crf',
+    '18',
+    '-maxrate',
+    '4M',
+    '-bufsize',
+    '8M',
+    '-pix_fmt',
+    'yuv420p',
+    '-movflags',
+    '+faststart',
+    '/tmp/gold-caravan-realistic-hd.mp4',
+  ],
+  { stdio: 'inherit' },
+);
 execFileSync(
   'ffmpeg',
   [
@@ -231,4 +314,17 @@ for (const file of ['gold-cargo-animation.mp4', 'gold-cargo-animation.gif'])
     ['-v', 'error', '-i', out + '/' + file, '-f', 'null', '-'],
     { stdio: 'inherit' },
   );
+execFileSync(
+  'ffmpeg',
+  [
+    '-v',
+    'error',
+    '-i',
+    '/tmp/gold-caravan-realistic-hd.mp4',
+    '-f',
+    'null',
+    '-',
+  ],
+  { stdio: 'inherit' },
+);
 console.log('Encoded and decoded both complete 20-second previews.');

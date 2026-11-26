@@ -3,38 +3,100 @@ import path from 'node:path';
 import os from 'node:os';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import sharp from 'sharp';
 
 const output = path.resolve(
-  process.argv[2] || '/tmp/gold-cargo-complete-3d.zip',
+  process.argv[2] || '/tmp/gold-caravan-realistic-3d.zip',
 );
 const staging = await fs.mkdtemp(path.join(os.tmpdir(), 'gold-cargo-pack-'));
 try {
   await fs.cp('web/public/models/gold-cargo', staging, { recursive: true });
+  // The MP4 and animated GLBs retain the full tour/actions. The redundant GIF
+  // is published separately so the complete models fit in the one 30 MB ZIP.
+  await fs.unlink(staging + '/gold-cargo-animation.gif');
+  const visible = (data) => {
+    for (let i = 0; i < data.length; i += 4)
+      if (data[i + 3] === 0) data.fill(0, i, i + 3);
+    return data;
+  };
+  const views = [];
+  for (const file of await fs.readdir(staging + '/sprites')) {
+    if (!file.endsWith('.png')) continue;
+    const source = staging + '/sprites/' + file,
+      target = source.replace(/\.png$/, '.webp');
+    await sharp(source).webp({ lossless: true, effort: 6 }).toFile(target);
+    const original = visible(
+        await sharp(source).ensureAlpha().raw().toBuffer(),
+      ),
+      decoded = visible(await sharp(target).ensureAlpha().raw().toBuffer());
+    if (!original.equals(decoded))
+      throw Error('Rendered view pixels changed: ' + file);
+    views.push({
+      file: 'sprites/' + path.basename(target),
+      visibleRgbaSha256: createHash('sha256').update(decoded).digest('hex'),
+    });
+    await fs.unlink(source);
+  }
+  await fs.writeFile(
+    staging + '/VIEW-INTEGRITY.json',
+    JSON.stringify({ format: 'lossless WebP', views }, null, 2) + '\n',
+  );
+  for (const name of ['gold-cargo-scene', 'elephant-reference-match']) {
+    await sharp(staging + '/' + name + '.png')
+      .jpeg({ quality: 94, chromaSubsampling: '4:4:4' })
+      .toFile(staging + '/' + name + '.jpg');
+    await fs.unlink(staging + '/' + name + '.png');
+  }
+  const readme = await fs.readFile(staging + '/README.md', 'utf8');
+  await fs.writeFile(
+    staging + '/README.md',
+    readme
+      .replaceAll('gold-cargo-scene.png', 'gold-cargo-scene.jpg')
+      .replaceAll(
+        'elephant-reference-match.png',
+        'elephant-reference-match.jpg',
+      ) +
+      '\nScene images in this ZIP are JPEG previews. Transparent directions use lossless WebP with verified visible pixel hashes in VIEW-INTEGRITY.json. Original PNG renders remain in the repository.\n',
+  );
+  await fs.mkdir(staging + '/reference', { recursive: true });
+  await sharp('art/sprites/source/gold-cargo/elephant-reference-study.png')
+    .resize({ width: 1200 })
+    .jpeg({ quality: 93, chromaSubsampling: '4:4:4' })
+    .toFile(staging + '/reference/elephant-design-study.jpg');
   const files = [
     'packages/shared/gold-cargo.ts',
     'packages/shared/gold-cargo.test.ts',
     'packages/shared/gold-carriers.ts',
     'packages/shared/carrier-human.ts',
+    'packages/shared/carrier-variants.ts',
     'packages/shared/royal-caravan.ts',
     'packages/shared/mansa-reference.ts',
     'packages/shared/laboratory.ts',
     'packages/shared/iso.ts',
     'packages/shared/planet.ts',
     'packages/shared/generated/gold-cargo-materials.json',
+    'packages/shared/generated/gold-cargo-refined.json',
     'packages/shared/generated/gold-carrier-faces.json',
     'packages/shared/generated/mali-faces.json',
     'packages/shared/generated/mali-cloth.json',
     'packages/shared/generated/mansa-reference.json',
     'tools/prepare-gold-cargo-art.mjs',
     'tools/export-gold-cargo.mjs',
+    'tools/export-refined-gold-cargo.mjs',
+    'tools/optimize-gold-cargo.mjs',
+    'tools/prepare-gold-cargo-refinement.mjs',
     'tools/capture-gold-cargo.mjs',
     'tools/package-gold-cargo.mjs',
     'tools/prepare-gold-carrier-art.mjs',
     'tools/export-gold-carriers.mjs',
     'tests/gold-cargo.spec.ts',
+    'tests/mali-caravan.spec.ts',
     'docs/gold-cargo-3d.md',
-    'art/sprites/source/gold-cargo/materials.png',
-    'art/sprites/source/gold-cargo/inventory.json',
+    'web/src/engine/CaravanMaterials.ts',
+    'web/src/engine/RiggedCaravan.ts',
+    'web/src/engine/Infrastructure.ts',
+    'art/sprites/source/gold-cargo/refined-materials.png',
+    'art/sprites/source/gold-cargo/refinement-inventory.json',
     'art/sprites/source/gold-carriers/six-faces.png',
     'art/sprites/source/gold-carriers/inventory.json',
   ];

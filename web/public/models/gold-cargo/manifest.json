@@ -1,185 +1,203 @@
 {
   "format": "glTF 2.0 binary",
+  "revision": "natural-anatomy-v2",
   "units": "meters",
   "ticksPerSecond": 12,
   "loopTicks": 240,
-  "materials": "Generated pixel-art samples on actual curved meshes.",
+  "materials": "Fine generated pixel-art albedo and tangent-space surface detail on smooth anatomical meshes.",
   "models": [
     {
       "id": "elephant-loaded",
       "file": "elephant-loaded.glb",
-      "bytes": 8334360,
-      "sha256": "44e4d34e1995e80ec39b5e69ce8bae7f4b18e1ed81e532fd2a728f98c75588cb",
-      "nodes": 46,
+      "bytes": 5092128,
+      "sha256": "619bad387c5ce19b55ac340764fa37d7c0d361303bb4544773c6b2b819d1cbfe",
+      "nodes": 92,
       "animations": [
         "Walk",
         "Rest"
       ],
-      "animationTracks": 124,
-      "duration": 20
+      "animationTracks": 126,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "camel-loaded",
       "file": "camel-loaded.glb",
-      "bytes": 3011436,
-      "sha256": "be7e11f19c6c8800e72a02951d84cb6befd5ef3bf4b30387ec68b6abd5c6c361",
-      "nodes": 21,
+      "bytes": 1462424,
+      "sha256": "d0bb8139e7ed0d332860499442cadea6df5dde13c952b0b9c03f7badb61cdbec",
+      "nodes": 40,
       "animations": [
         "Walk",
         "Rest"
       ],
       "animationTracks": 57,
-      "duration": 20
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "gold-bowl",
       "file": "gold-bowl.glb",
-      "bytes": 1117456,
-      "sha256": "d792858b0642f66e379cdab09525aaed21fdf4839f0121ea9be9820f2cbc4d87",
-      "nodes": 1,
+      "bytes": 552060,
+      "sha256": "ef18f2b424e2dadedf4496a8a1fefdfa384070d0dd791c5346a6ee05019e39df",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "gold-basket",
       "file": "gold-basket.glb",
-      "bytes": 1717980,
-      "sha256": "29b9ef578848066316f3ab820242608f27184f194626da492aa5a706ff45496a",
-      "nodes": 1,
+      "bytes": 726512,
+      "sha256": "ee361de664c1c1d4a020cd267f845d21f9bbca0c7b1c6bf8f432b5af81652acd",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "lidded-basket",
       "file": "lidded-basket.glb",
-      "bytes": 1192432,
-      "sha256": "26d55d39157164f1900c9bf98c5ba414c61ff726219108df74d3f1b25e474769",
-      "nodes": 1,
+      "bytes": 465660,
+      "sha256": "352e6bb645b2a9c04033bac37ce39359165b390bdd6d049f5352ce30b6700387",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "treasure-chest",
       "file": "treasure-chest.glb",
-      "bytes": 1652776,
-      "sha256": "37bacf8767058ee6fd0ac27f130c28c3568154c8dc1cc4ba792cc91644955e7a",
-      "nodes": 3,
+      "bytes": 655884,
+      "sha256": "021da556af5a2e3e6ad70958786db11d6a76b4ba34e8835a98d2103db7cbf731",
+      "nodes": 6,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "coin-hoard",
       "file": "coin-hoard.glb",
-      "bytes": 1512840,
-      "sha256": "71c8a995d7a413886da5c6c5e999977fa1190ff931df1de3a49b7446aa3730b8",
-      "nodes": 1,
+      "bytes": 720032,
+      "sha256": "ddfcb702a5ef65797996eb05af9fabf70353efc34957dfef3860cd20f4a5f27d",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "gold-ingots",
       "file": "gold-ingots.glb",
-      "bytes": 473188,
-      "sha256": "566d3d196a5dfa4e48121ca9caa3268b3e24d79c32d2c1354a73fee61b69b5d1",
-      "nodes": 1,
+      "bytes": 163064,
+      "sha256": "4163eab7bc6d8d27f46782e6daf43ae19b51ab7a6e4c7586b9c006ee6930f1b1",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "gold-urn",
       "file": "gold-urn.glb",
-      "bytes": 408300,
-      "sha256": "5cb926a57e3c5a4c45e2de46070fa0f01b095956e986946475f6c7d9570e6aa4",
-      "nodes": 1,
+      "bytes": 154644,
+      "sha256": "b5b3dd0e3dc1893f1f35776e8d1aefaeb00d22ab5177f03dce626996e9505a1d",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "gold-ewer",
       "file": "gold-ewer.glb",
-      "bytes": 419536,
-      "sha256": "13eaff8a05e25b8651eda0af440a382dc21d9a9f25a047e3aa37d120ccd9d240",
-      "nodes": 1,
+      "bytes": 160432,
+      "sha256": "edc461d53fdd2711859fe8767af2bf772639996b85021f0e5686e9bb00074ccc",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "gold-pouches",
       "file": "gold-pouches.glb",
-      "bytes": 316288,
-      "sha256": "fa9b9bd9262a9740dfb818c4fb7e5da204176c1eb0187340705293dfc099f052",
-      "nodes": 1,
+      "bytes": 103360,
+      "sha256": "515279f24c90bd4336ae3b9741c276e2e814f3857c9fbb4860fabae6224c6635",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "rolled-carpets",
       "file": "rolled-carpets.glb",
-      "bytes": 600860,
-      "sha256": "90960ccde25427ef9875e45267cfa37b6ec3aec18e3444cfcf30496f88d49011",
-      "nodes": 1,
+      "bytes": 198272,
+      "sha256": "0929deed43e9faa7b8dadc07f160c5dc7163495a6dcb9789edbba4994dc53179",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "water-skins",
       "file": "water-skins.glb",
-      "bytes": 141612,
-      "sha256": "c62453901cdb6e67330305e7225478ef6c73ffcdf46b3626e8bdfe07f15f9a8d",
-      "nodes": 1,
+      "bytes": 48800,
+      "sha256": "bb99f0a62adf6e305c50705b397109a1aba3993398394dccef0272447887b50e",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "rope-coils",
       "file": "rope-coils.glb",
-      "bytes": 458292,
-      "sha256": "3df1681745b9666fbfaeae6a42de5b45ce3f831bc3c1bae9daeabe98fe5da609",
-      "nodes": 1,
+      "bytes": 179836,
+      "sha256": "d8e53d212e0d6a2dddbb52ce2faf7a9d90466c259b9dc32cf3c2cf14dac075f6",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "jewelry-tray",
       "file": "jewelry-tray.glb",
-      "bytes": 778992,
-      "sha256": "9e1bec1e0b0eb7855070e0f9a5260da1ebf93dde1e03dea0442d9653750cc230",
-      "nodes": 1,
+      "bytes": 247236,
+      "sha256": "9cf9465f9244c13cd58e0621eaf7571d4e5164635b58329adaba02388c578580",
+      "nodes": 3,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "howdah",
       "file": "howdah.glb",
-      "bytes": 2413684,
-      "sha256": "1db909414a0dfcb88fcef26546351dbaef1899c7d150d6b54eedce095232c315",
-      "nodes": 3,
+      "bytes": 1917672,
+      "sha256": "90f7c459795de904ede191319dcddf715e25a65ceddbdfff4f83f253e0272ecf",
+      "nodes": 11,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     },
     {
       "id": "treasury-collection",
       "file": "treasury-collection.glb",
-      "bytes": 8927308,
-      "sha256": "e746e25ba0ccb326c4faa31c8dab30e1aa23e151ac1b4d94a4ed1854d08bc888",
-      "nodes": 16,
+      "bytes": 3563772,
+      "sha256": "dd041074784f01437e893b4669e992f682dc211aeb2578ef83c0ebb132d591a4",
+      "nodes": 30,
       "animations": [],
       "animationTracks": 0,
-      "duration": 0
+      "duration": 0,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
     }
   ],
   "people": [
@@ -194,5 +212,293 @@
     "mansa-musa-mounted",
     "mali-guard"
   ],
-  "review": "Illustrative reconstruction; named-character approvals and biographies are unchanged."
+  "peopleRecords": [
+    {
+      "id": "people/overhead-gold-bearer",
+      "file": "people/overhead-gold-bearer.glb",
+      "bytes": 1034716,
+      "sha256": "ad5641c051f0734d852653c37552eba845db5bf2f311bb3cb4db83a77e792dd3",
+      "nodes": 44,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 20,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/bowl-gold-bearer",
+      "file": "people/bowl-gold-bearer.glb",
+      "bytes": 1196692,
+      "sha256": "1b9c07366053a8f00ab1b676ca4307a154218abf71b2a914b1acd6c1dcdc16a7",
+      "nodes": 44,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 26,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/chest-porter-rust",
+      "file": "people/chest-porter-rust.glb",
+      "bytes": 548584,
+      "sha256": "9aa48d59cbe49645427479327c71895ff176f7f0644149f30d8207c339db284f",
+      "nodes": 40,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 20,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/chest-porter-indigo",
+      "file": "people/chest-porter-indigo.glb",
+      "bytes": 548588,
+      "sha256": "f356975683bb36e61ff054eaffa5902b405c7d07bbb1600e33f39f719711fc30",
+      "nodes": 40,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 20,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/elder-recipient",
+      "file": "people/elder-recipient.glb",
+      "bytes": 431032,
+      "sha256": "661516ac81edcb61ced38dd95d1558752e619e1791722dd41bf98a2017ab550f",
+      "nodes": 44,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 7,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/paired-chest-carriers",
+      "file": "people/paired-chest-carriers.glb",
+      "bytes": 1442628,
+      "sha256": "56c182087f53cc9510fb6679fa30889783851606f3435af7704796c1a59b4fc7",
+      "nodes": 85,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 40,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/gold-handover-pair",
+      "file": "people/gold-handover-pair.glb",
+      "bytes": 1356552,
+      "sha256": "cb76afb8a9881c26a7f007a6f913cd19c76f046d3efb738043bed0d664dfa9bf",
+      "nodes": 84,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 13,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/banner-attendant",
+      "file": "people/banner-attendant.glb",
+      "bytes": 564144,
+      "sha256": "feed46f58111e6bac56335d3c4741cb73721985ab814b3932ebfe2e577b345b0",
+      "nodes": 44,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 21,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/mansa-musa-mounted",
+      "file": "people/mansa-musa-mounted.glb",
+      "bytes": 5308692,
+      "sha256": "35c1a4d67edbf98f3a45e68dbdbb11352b421697ab53303be1ef3ecfe1385bca",
+      "nodes": 139,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 70,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    },
+    {
+      "id": "people/mali-guard",
+      "file": "people/mali-guard.glb",
+      "bytes": 559648,
+      "sha256": "43fe08dfd4f1e284620035460f9eb9c63a252c3f42a56f987c91e1e835bc94b3",
+      "nodes": 41,
+      "animations": [
+        "Carrying and gold distribution"
+      ],
+      "animationTracks": 21,
+      "duration": 20,
+      "geometryEncoding": "KHR_mesh_quantization; no external decoder"
+    }
+  ],
+  "review": "Illustrative reconstruction; named identities, cards and advisory approvals are unchanged. Older published model packs are preserved.",
+  "storage": "Binary geometry and shared PNG material files, all included in the portable bundle.",
+  "optimization": {
+    "tool": "gltfpack 1.3.0",
+    "positionBits": 16,
+    "uvBits": 14,
+    "normalBits": 12,
+    "animationResampling": false,
+    "meshSimplification": false
+  },
+  "textures": [
+    {
+      "file": "textures/brocade-normal.png",
+      "bytes": 119794,
+      "sha256": "66cdf17da9e5f8ab783471a72359e5b200f1515d126607767104de2512b2fe25"
+    },
+    {
+      "file": "textures/brocade.png",
+      "bytes": 155629,
+      "sha256": "2f3268d615549030c8bee00bb020afc895a8cebef32cccdd7629118897cbacdc"
+    },
+    {
+      "file": "textures/camel-normal.png",
+      "bytes": 102132,
+      "sha256": "504fbc48ed9fac79154244901f0f03abf65ff76cfaccb77ee357c903987ce1dd"
+    },
+    {
+      "file": "textures/camel.png",
+      "bytes": 191901,
+      "sha256": "54ce49bc64a7fb2cc6e61623eed81f0dc16fe6e0e0a19a1c0f308f22d0d7c3f7"
+    },
+    {
+      "file": "textures/carrier-face-0.png",
+      "bytes": 68727,
+      "sha256": "fcf26492b28df8c4198e48da405285894e2293b5f5f5fa7eb435db19f4a2f719"
+    },
+    {
+      "file": "textures/carrier-face-1.png",
+      "bytes": 71287,
+      "sha256": "8301d501fc5dbb6ceb2110237def04e4e9e6e1ae1268e7a98b5a4bb277f96c43"
+    },
+    {
+      "file": "textures/carrier-face-2.png",
+      "bytes": 67941,
+      "sha256": "5c6a3263548da63a31e8bdc98f247cbb11dc597d7c5e4da13164b2d5550dc07f"
+    },
+    {
+      "file": "textures/carrier-face-3.png",
+      "bytes": 69863,
+      "sha256": "27b427fcc7456e5eac313660f09b982a2147f216bf3d3aff46a151d22976e5e2"
+    },
+    {
+      "file": "textures/carrier-face-4.png",
+      "bytes": 68302,
+      "sha256": "0d4e11d3dd09cbe60e3418c61bbfe768343135fdf15676feef6db362192a1898"
+    },
+    {
+      "file": "textures/carrier-face-5.png",
+      "bytes": 71818,
+      "sha256": "3c6fd7ef14f40494d26934c303a668ccee874fc7465338f5d433e389b0420ea8"
+    },
+    {
+      "file": "textures/elephant-normal.png",
+      "bytes": 118760,
+      "sha256": "7b8b0c91bda750075b8f53392b6d24586dc751addad89ec7a8783d323b450e62"
+    },
+    {
+      "file": "textures/elephant.png",
+      "bytes": 174816,
+      "sha256": "442fa7c2ea6ee3766ab10edb3df791237840bbecc150497d181c7dc6cc2a7d47"
+    },
+    {
+      "file": "textures/gold-normal.png",
+      "bytes": 157862,
+      "sha256": "53421f7b80e58be180bc96f6c7763b3289b0d3c1762c24a82443a83bc5e437a2"
+    },
+    {
+      "file": "textures/gold.png",
+      "bytes": 190707,
+      "sha256": "6cb37148cc3060ae5c79e399c45bb6d9f23b1310aee8c986886c93a74872ef23"
+    },
+    {
+      "file": "textures/leather-normal.png",
+      "bytes": 87958,
+      "sha256": "ae73e6690e5377d096cff569ffc5910158ac72218b7868dc77de89c826b7f3d3"
+    },
+    {
+      "file": "textures/leather.png",
+      "bytes": 165332,
+      "sha256": "a3b87c45e1adb8c4e9b35a10a4cca8fe46aa23c33b7d778f4d1388b994240200"
+    },
+    {
+      "file": "textures/linen-normal.png",
+      "bytes": 110055,
+      "sha256": "d7b021ced6c02eb98e69253ce546301ece88af326f1cde5aab48ed037ed26496"
+    },
+    {
+      "file": "textures/linen.png",
+      "bytes": 183507,
+      "sha256": "f5465b0e92ad043870ef91cdedd1825b7061036e356bc770499d11504f93fef0"
+    },
+    {
+      "file": "textures/mansa-brocade.png",
+      "bytes": 47105,
+      "sha256": "790680ba079bbe6c08b8b65f7c23aa08259ae35ef3127e413dc5f5189cf70e7b"
+    },
+    {
+      "file": "textures/mansa-face.png",
+      "bytes": 158191,
+      "sha256": "0c3621a53023fca4c65b083d04ede243ae6815895379626831a115c49f57ba1e"
+    },
+    {
+      "file": "textures/mansa-gold.png",
+      "bytes": 44558,
+      "sha256": "63f2f196e719d26ff73c198774680999aa174cff9c87b0021dea57ad197497bf"
+    },
+    {
+      "file": "textures/mansa-linen.png",
+      "bytes": 40266,
+      "sha256": "cc48100e09878c179843c714cb1ded863f605ac3ca9676c44ed1fd1935291f21"
+    },
+    {
+      "file": "textures/mansa-velvet.png",
+      "bytes": 31998,
+      "sha256": "1548479613375b6737713fcebaf265fa677055116611c1a54da5724e512ae341"
+    },
+    {
+      "file": "textures/rope.png",
+      "bytes": 193624,
+      "sha256": "b8312dcfbbf8d2c873947d7b0c7505bf53ad2f88aa84106eed497689ec5faf84"
+    },
+    {
+      "file": "textures/sand-normal.png",
+      "bytes": 96467,
+      "sha256": "222bfb806d2b5d083501c0c95e412a89c92ce52dca0e8c8648c5c272dd5e786a"
+    },
+    {
+      "file": "textures/sand.png",
+      "bytes": 184742,
+      "sha256": "91285c35ea02184b41dff05652541e440bb2fbc9de9067cfef998b7efecfa01c"
+    },
+    {
+      "file": "textures/wicker-normal.png",
+      "bytes": 91703,
+      "sha256": "52a4b56f5716874c2978dddfdfeca0ad11ef85990b76b130c2477324d550973f"
+    },
+    {
+      "file": "textures/wicker.png",
+      "bytes": 195475,
+      "sha256": "dad8d4dbf7dfd1e2e5c3a93c6da52d8c1deebe1ce603dd75b4fa96195be7b1c6"
+    },
+    {
+      "file": "textures/wood.png",
+      "bytes": 176358,
+      "sha256": "1ca668e9fa5fa713a25ae9a77e0f0021a1179febf22b82e1164136831bb329a6"
+    }
+  ]
 }

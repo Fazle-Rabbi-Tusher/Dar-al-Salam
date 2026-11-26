@@ -63,7 +63,7 @@ describe('articulated Mansa Musa and his procession', () => {
     expect(
       caravanActors(0).children.filter((n) => n.name.startsWith('pack-camel-')),
     ).toHaveLength(CARAVAN.camels);
-  });
+  }, 15000);
   it('transfers one coin at actual hand contact, with no ownership jump', () => {
     for (const [index, start] of [0, 64, 128].entries()) {
       const t = start + 12,

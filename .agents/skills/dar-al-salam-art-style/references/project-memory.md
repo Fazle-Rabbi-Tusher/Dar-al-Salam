@@ -150,6 +150,21 @@ extracted from an attached document. New explicit owner instructions override th
   caravan the loaded elephant waits clear of the guard route, and the four
   pack camels use the new loaded geometry. See `docs/gold-cargo-3d.md`.
 
+- **Realism and the marked elephant (26 November 2026):** the owner rejected
+  the first cargo preview as unrealistic and circled the reference elephant.
+  Match its compact relaxed ears, heavy dark-gray body, medium curved tusks,
+  hanging trunk, broad gold forehead caparison and enclosed arched palanquin
+  with its domed gold roof and standard. This supersedes the large fan ears
+  and open canopy. Refine the supporting people, horse, camels and materials
+  using natural anatomy, fine pixel-art UV maps, restrained surface relief and
+  grounded cinematic lighting. Keep the original facial identity and costume
+  for Mansa Musa. Preserve older exports in their original model folders and
+  published packs. The current complete bundle shares unchanged PNG textures
+  between individual GLBs and uses standard glTF geometry quantization without
+  mesh simplification or animation resampling. Include the local viewer and
+  every dependency in the one ZIP below 30,000,000 bytes. Label design-reference
+  artwork separately from actual mesh previews. See `docs/gold-cargo-3d.md`.
+
 ## Reference locations
 
 The four examples under this skill's `assets/` directory are portable original

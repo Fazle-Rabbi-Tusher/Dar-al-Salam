@@ -1,0 +1,25 @@
+{
+  "revision": "natural-anatomy-and-woven-materials-v2",
+  "files": [
+    {
+      "file": "materials.png",
+      "bytes": 4103266,
+      "sha256": "a23dc2469f20cc6dda63d10cc8aaea9d7bda1ad7d313a5cdf4cee6babf22683a"
+    },
+    {
+      "file": "refined-materials.png",
+      "bytes": 4103674,
+      "sha256": "24e982e147aaab207e933091c9aadcb2d9764c4724db6bc124e84d4ebb579a78"
+    }
+  ],
+  "tiles": [
+    "elephant",
+    "camel",
+    "brocade",
+    "linen",
+    "wicker",
+    "gold",
+    "leather",
+    "sand"
+  ]
+}

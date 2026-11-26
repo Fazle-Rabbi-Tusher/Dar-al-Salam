@@ -1,4 +1,5 @@
 import maps from './generated/gold-cargo-materials.json' with { type: 'json' };
+import refinedMaps from './generated/gold-cargo-refined.json' with { type: 'json' };
 import type { Vertex3 } from './infrastructure';
 import type { RigFace, RigNode, Quaternion } from './royal-caravan';
 
@@ -13,6 +14,8 @@ export type CargoMaterial =
   | 'ivory'
   | 'leather'
   | 'camel'
+  | 'horse'
+  | 'gold-cloth'
   | 'eye';
 export type CargoFace = RigFace & { cargoMaterial: CargoMaterial };
 export const CARGO_PROPS = [
@@ -90,10 +93,11 @@ function mesh(id: string, build: (out: CargoFace[]) => void) {
   return cache.get(id)!;
 }
 const bases: Partial<Record<CargoMaterial, string>> = {
-  elephant: '#777970',
+  elephant: '#77736b',
   ivory: '#d9caa8',
   leather: '#614329',
   camel: '#b38a58',
+  horse: '#302b26',
   eye: '#171613',
 };
 function tint(c: string, n: number) {
@@ -112,25 +116,34 @@ function tint(c: string, n: number) {
   );
 }
 function sample(material: CargoMaterial, u: number, v: number): string {
+  const fine = refinedMaps as Record<
+    string,
+    { width: number; height: number; pixels: string[] }
+  >;
   const map =
-    maps[
-      material === 'camel'
-        ? 'rope'
-        : material === 'ivory' || material === 'leather' || material === 'eye'
-          ? 'wood'
+    fine[
+      material === 'horse'
+        ? 'camel'
+        : material === 'gold-cloth'
+          ? 'gold'
           : material
+    ] ||
+    maps[
+      material === 'ivory' || material === 'eye'
+        ? 'wood'
+        : (material as keyof typeof maps)
     ];
   const x = Math.floor((((u % 1) + 1) % 1) * map.width),
     y = Math.floor((((v % 1) + 1) % 1) * map.height),
     color = map.pixels[y * map.width + x];
-  if (!bases[material]) return color;
+  if (!bases[material] || material === 'camel') return color;
   const light =
     [1, 3, 5].reduce((n, i) => n + parseInt(color.slice(i, i + 2), 16), 0) / 3;
   if (material === 'ivory')
     return tint(bases.ivory!, 0.98 + Math.min(1, light / 180) * 0.04);
   return tint(
     bases[material]!,
-    material === 'eye' ? 1 : 0.86 + Math.min(1, light / 180) * 0.28,
+    material === 'eye' ? 1 : 0.94 + Math.min(1, light / 180) * 0.12,
   );
 }
 function face(
@@ -147,9 +160,14 @@ function face(
     finish:
       material === 'gold'
         ? 'gold'
-        : material === 'elephant' || material === 'camel'
-          ? 'skin'
-          : 'linen',
+        : material === 'gold-cloth'
+          ? 'brocade'
+          : material === 'elephant' ||
+              material === 'camel' ||
+              material === 'horse' ||
+              material === 'eye'
+            ? 'skin'
+            : 'linen',
     normals,
   });
 }
@@ -184,7 +202,7 @@ function surface(
     normals.push(nr);
   }
   for (let j = 0; j < nv; j++)
-    for (let i = 0; i < nu; i++)
+    for (let i = 0; i < nu; i++) {
       face(
         out,
         [grid[j][i], grid[j][i + 1], grid[j + 1][i + 1], grid[j + 1][i]],
@@ -197,6 +215,85 @@ function surface(
           normals[j + 1][i],
         ],
       );
+      out[out.length - 1].uv = [
+        uv(i / nu, j / nv),
+        uv((i + 1) / nu, j / nv),
+        uv((i + 1) / nu, (j + 1) / nv),
+        uv(i / nu, (j + 1) / nv),
+      ];
+    }
+}
+
+/** Smooth anatomical sections; one continuous surface rather than intersecting blocks. */
+function spline(profile: number[][], t: number): number[] {
+  const f = clamp(t) * (profile.length - 1),
+    i = Math.min(profile.length - 2, Math.floor(f)),
+    k = f - i;
+  return profile[i].map((_, axis) => {
+    const a = profile[Math.max(0, i - 1)][axis],
+      b = profile[i][axis],
+      c = profile[i + 1][axis],
+      d = profile[Math.min(profile.length - 1, i + 2)][axis];
+    return (
+      0.5 *
+      (2 * b +
+        (-a + c) * k +
+        (2 * a - 5 * b + 4 * c - d) * k * k +
+        (-a + 3 * b - 3 * c + d) * k * k * k)
+    );
+  });
+}
+function torso(
+  out: CargoFace[],
+  profile: number[][],
+  material: CargoMaterial,
+  nu = 72,
+  nv = 56,
+) {
+  surface(
+    out,
+    (u, v) => {
+      const [z, y, width, depth] = spline(profile, v),
+        a = u * TAU;
+      return [
+        -Math.sin(a) * Math.max(0, width),
+        y + Math.cos(a) * Math.max(0, depth),
+        z,
+      ];
+    },
+    nu,
+    nv,
+    material,
+    (u, v) => [u * 2, v * 2],
+  );
+}
+function neckTube(
+  out: CargoFace[],
+  profile: number[][],
+  material: CargoMaterial,
+  nu = 40,
+  nv = 44,
+) {
+  surface(
+    out,
+    (u, v) => {
+      const [y, z, width, depth] = spline(profile, v),
+        before = spline(profile, v - 0.001),
+        after = spline(profile, v + 0.001),
+        tangent = unit([0, after[0] - before[0], after[1] - before[1]]),
+        across: V = [1, 0, 0],
+        around = unit(cross(tangent, across)),
+        a = u * TAU;
+      return add(
+        [0, y, z],
+        add(mul(across, Math.cos(a) * width), mul(around, Math.sin(a) * depth)),
+      );
+    },
+    nu,
+    nv,
+    material,
+    (u, v) => [u * 2, v * 2],
+  );
 }
 function sphere(
   out: CargoFace[],
@@ -238,15 +335,12 @@ function lathe(
   surface(
     out,
     (u, v) => {
-      const f = clamp(v) * (profile.length - 1),
-        i = Math.min(profile.length - 2, Math.floor(f)),
-        k = f - i;
-      const y = profile[i][0] + (profile[i + 1][0] - profile[i][0]) * k,
-        r = profile[i][1] + (profile[i + 1][1] - profile[i][1]) * k;
+      const [y, radius] = spline(profile, v),
+        r = Math.max(0, radius);
       return [Math.sin(u * TAU) * r, y, Math.cos(u * TAU) * r * stretch];
     },
     nu,
-    (profile.length - 1) * 2,
+    (profile.length - 1) * 3,
     material,
     (u, v) => [u * 3, v * 2],
   );
@@ -261,15 +355,9 @@ function sweep(
   surface(
     out,
     (u, v) => {
-      const f = clamp(v) * (points.length - 1),
-        i = Math.min(points.length - 2, Math.floor(f)),
-        k = f - i,
-        c = mix(points[i], points[i + 1], k);
+      const c = spline(points, v) as V;
       const t = unit(
-          sub(
-            points[Math.min(points.length - 1, i + 2)],
-            points[Math.max(0, i - 1)],
-          ),
+          sub(spline(points, v + 0.001) as V, spline(points, v - 0.001) as V),
         ),
         a = unit(cross(t, Math.abs(t[1]) > 0.9 ? [0, 0, 1] : [0, 1, 0])),
         b = unit(cross(t, a)),
@@ -280,7 +368,7 @@ function sweep(
       );
     },
     sectors,
-    (points.length - 1) * 2,
+    Math.max(12, (points.length - 1) * 3),
     material,
     (u, v) => [u * 2, v * 4],
   );
@@ -781,174 +869,259 @@ function blanket(out: CargoFace[]) {
     }
 }
 function howdah(): RigNode {
-  const lower = mesh('ornate-howdah-frame', (out) => {
-    box(out, [0, 1, -15], [56, 3.5, 68], 'wood', 18, 10);
-    box(out, [0, 3.2, -15], [58, 1, 70], 'gold', 24, 12);
-    box(out, [0, 6, -15], [43, 4, 53], 'brocade', 16, 12);
-    sphere(out, [0, 9, -34], [17, 4, 7], 'brocade', 28, 16);
-    sphere(out, [-17, 9, -12], [4, 5, 15], 'brocade', 24, 16);
-    for (const x of [-26, 26])
-      for (const z of [-47, 17]) {
+  const cabin = mesh('enclosed-royal-palanquin', (out) => {
+    box(out, [0, 1, -15], [57, 4, 70], 'wood', 18, 10);
+    box(out, [0, 4, -15], [60, 2, 73], 'gold', 24, 12);
+    box(out, [0, 7, -15], [46, 4, 57], 'brocade', 20, 16);
+    sphere(out, [0, 11, -35], [18, 4, 7], 'brocade', 32, 20);
+    // Four substantial walls. Curved arched openings reveal crimson curtains
+    // and filigree grilles instead of the former open gazebo silhouette.
+    const wall = (side: number, front: boolean) => {
+      const span = front ? 52 : 64,
+        centers = front ? [0] : [-16, 16];
+      const point = (x: number, y: number): V =>
+        front ? [x, y, side === 1 ? 18 : -48] : [side * 27, y, -15 + x];
+      const open = (x: number, y: number) =>
+        centers.some((c) => {
+          const t = Math.abs((x - c) / 10);
+          return t < 1 && y > 23 && y < 43 + 7 * Math.sqrt(1 - t * t);
+        });
+      for (let i = 0; i < 64; i++)
+        for (let j = 0; j < 48; j++) {
+          const x0 = -span / 2 + (i * span) / 64,
+            x1 = x0 + span / 64,
+            y0 = 8 + j,
+            y1 = y0 + 1;
+          if (open((x0 + x1) / 2, (y0 + y1) / 2)) continue;
+          face(
+            out,
+            [point(x0, y0), point(x1, y0), point(x1, y1), point(x0, y1)],
+            'gold',
+            sample('gold', i / 64, j / 48),
+          );
+          out[out.length - 1].uv = [
+            [i / 64, j / 48],
+            [(i + 1) / 64, j / 48],
+            [(i + 1) / 64, (j + 1) / 48],
+            [i / 64, (j + 1) / 48],
+          ];
+        }
+      for (const c of centers) {
+        const arch: V[] = [point(c - 10, 23), point(c - 10, 43)];
+        for (let k = 0; k <= 32; k++) {
+          const a = Math.PI - (k / 32) * Math.PI;
+          arch.push(point(c + 10 * Math.cos(a), 43 + 7 * Math.sin(a)));
+        }
+        arch.push(point(c + 10, 23));
+        sweep(out, arch, 0.65, 'gold', 10);
+        for (const dx of [-7, -3.5, 0, 3.5, 7]) {
+          const top = 43 + 7 * Math.sqrt(1 - (dx / 10) ** 2);
+          sweep(
+            out,
+            [point(c + dx, 24), point(c + dx, top - 0.5)],
+            0.2,
+            'gold',
+            7,
+          );
+        }
+        for (const y of [28, 34, 40, 46]) {
+          const half = y > 43 ? 10 * Math.sqrt(1 - ((y - 43) / 7) ** 2) : 10;
+          sweep(out, [point(c - half, y), point(c + half, y)], 0.2, 'gold', 7);
+        }
+        // The fabric is set behind the real opening, with deep vertical folds.
+        surface(
+          out,
+          (u, v) => {
+            const p = point(c + (u - 0.5) * 20, 23 + v * 27);
+            if (front) p[2] -= side * (1.6 + Math.sin(u * Math.PI * 8) * 0.3);
+            else p[0] -= side * (1.6 + Math.sin(u * Math.PI * 8) * 0.3);
+            return p;
+          },
+          28,
+          28,
+          'brocade',
+          (u, v) => [u, v],
+        );
+      }
+    };
+    for (const side of [-1, 1]) {
+      wall(side, false);
+      wall(side, true);
+    }
+    for (const x of [-27, 27])
+      for (const z of [-48, 18]) {
         sweep(
           out,
           [
-            [x, 3, z],
+            [x, 5, z],
             [x, 57, z],
           ],
-          0.8,
+          1.1,
           'gold',
           12,
         );
-        for (const y of [6, 25, 45, 55])
-          sphere(out, [x, y, z], [1.5, 1.5, 1.5], 'gold', 12, 8);
+        for (const y of [8, 22, 51, 56])
+          sphere(out, [x, y, z], [1.5, 1.4, 1.5], 'gold', 14, 10);
       }
-    for (const side of [-1, 1]) {
-      const x = side * 27;
-      box(out, [x, 15.5, -15], [1.1, 15, 64], 'gold', 10, 12);
-      for (const y of [8, 23])
+    box(out, [0, 56, -15], [59, 3, 73], 'gold', 24, 16);
+    for (const side of [-1, 1])
+      for (let i = 0; i < 18; i++) {
+        const z = -46 + i * 3.7;
         sweep(
           out,
           [
-            [x, y, -47],
-            [x, y, 17],
+            [side * 28, 6, z],
+            [side * 28, 1.5, z],
           ],
-          0.6,
+          0.17,
           'gold',
-          8,
+          6,
         );
-      for (let z = -44; z < 16; z += 5) {
-        sweep(
-          out,
-          [
-            [x, 9, z],
-            [x, 22, z + 5],
-          ],
-          0.2,
-          'gold',
-          5,
-        );
-        sweep(
-          out,
-          [
-            [x, 22, z],
-            [x, 9, z + 5],
-          ],
-          0.2,
-          'gold',
-          5,
-        );
+        sphere(out, [side * 28, 0.8, z], [0.45, 0.7, 0.45], 'gold', 10, 6);
       }
-      for (const center of [-30, -1]) {
-        for (const s of [-1, 1])
-          sweep(
-            out,
-            [
-              [x, 25, center + s * 11],
-              [x, 45, center + s * 11],
-            ],
-            0.7,
-            'gold',
-            8,
-          );
-        const arch = Array.from({ length: 17 }, (_, i): V => {
-          const u = i / 16;
-          return [x, 45 + 8 * (1 - Math.abs(u * 2 - 1)), center - 11 + 22 * u];
-        });
-        sweep(out, arch, 0.7, 'gold', 8);
-        for (let i = 0; i < arch.length - 1; i++) {
-          const a = arch[i],
-            b = arch[i + 1];
-          face(
-            out,
-            [a, b, [x, 57, b[2]], [x, 57, a[2]]],
-            'gold',
-            sample('gold', i / 16, 0.25),
-          );
-        }
-        sphere(out, [x, 54.5, center], [0.9, 1.2, 1.2], 'gold', 12, 8);
-      }
-    }
-    for (const z of [-47, 17]) {
-      box(out, [0, 15, z], [54, 14, 1.1], 'gold', 18, 8);
-      for (const y of [8, 23])
-        sweep(
-          out,
-          [
-            [-27, y, z],
-            [27, y, z],
-          ],
-          0.6,
-          'gold',
-          8,
-        );
-      for (let x = -24; x < 24; x += 5) {
-        sweep(
-          out,
-          [
-            [x, 9, z],
-            [x + 5, 22, z],
-          ],
-          0.2,
-          'gold',
-          5,
-        );
-        sweep(
-          out,
-          [
-            [x, 22, z],
-            [x + 5, 9, z],
-          ],
-          0.2,
-          'gold',
-          5,
-        );
-      }
-    }
   });
-  const roof = mesh('octagonal-howdah-canopy', (out) => {
-    const perimeter = Array.from({ length: 9 }, (_, i): V => [
-      Math.sin((i * TAU) / 8) * 35,
-      57,
-      Math.cos((i * TAU) / 8) * 44 - 15,
-    ]);
-    for (let i = 0; i < 8; i++) {
-      const a = perimeter[i],
-        b = perimeter[i + 1];
+  const roof = mesh('domed-golden-howdah-roof', (out) => {
+    const corners: V[] = [
+      [-32, 58, -54],
+      [32, 58, -54],
+      [32, 58, 24],
+      [-32, 58, 24],
+      [-32, 58, -54],
+    ];
+    for (let i = 0; i < 4; i++) {
+      const a = corners[i],
+        b = corners[i + 1];
       surface(
         out,
-        (u, v) => mix(mix(a, b, u), [0, 74, -15], v),
-        8,
-        7,
+        (u, v) => {
+          const p = mix(a, b, u),
+            k = 1 - v * 0.45;
+          return [
+            p[0] * k,
+            58 + Math.sin((v * Math.PI) / 2) * 10,
+            -15 + (p[2] + 15) * k,
+          ];
+        },
+        32,
+        20,
         'gold',
-        (u, v) => [u, v],
+        (u, v) => [u * 1.5, v],
       );
-      sweep(out, [a, b], 0.7, 'gold', 8);
-      sweep(out, [a, [0, 74, -15]], 0.35, 'gold', 6);
-      for (let j = 0; j < 6; j++) {
-        const p = mix(a, b, j / 6);
-        sweep(out, [p, add(p, [0, -5, 0])], 0.18, 'gold', 5);
-        sphere(out, add(p, [0, -5.5, 0]), [0.5, 0.7, 0.5], 'gold', 8, 5);
-      }
+      sweep(out, [a, b], 0.65, 'gold', 10);
     }
+    const first = out.length;
+    lathe(
+      out,
+      [
+        [67, 13],
+        [69, 14.3],
+        [73, 12.5],
+        [77, 8],
+        [79, 2],
+        [80, 0.4],
+      ],
+      'gold',
+      64,
+      1.2,
+    );
+    for (const f of out.slice(first))
+      f.points = f.points.map((p) => [p[0], p[1], p[2] - 15]);
     sweep(
       out,
       [
-        [0, 74, -15],
-        [0, 82, -15],
+        [0, 79, -15],
+        [0, 88, -15],
       ],
-      0.5,
+      0.55,
       'gold',
       10,
     );
-    sphere(out, [0, 78, -15], [2, 2, 2], 'gold', 16, 10);
+    sphere(out, [0, 84, -15], [1.5, 1.5, 1.5], 'gold', 20, 14);
+    for (const x of [-28, 28])
+      for (const z of [-49, 19]) {
+        sweep(
+          out,
+          [
+            [x, 58, z],
+            [x, 68, z],
+          ],
+          0.5,
+          'gold',
+          10,
+        );
+        sphere(out, [x, 64, z], [1.3, 1.7, 1.3], 'gold', 16, 12);
+      }
   });
+  const standard = cargoNode(
+    'elephant-royal-standard',
+    undefined,
+    [-31, 0, -46],
+    [
+      cargoNode(
+        'standard-pole',
+        mesh('elephant-standard-pole', (out) => {
+          sweep(
+            out,
+            [
+              [0, 3, 0],
+              [0, 112, 0],
+            ],
+            0.65,
+            'gold',
+            12,
+          );
+          sphere(out, [0, 113, 0], [1.1, 1.5, 1.1], 'gold', 20, 12);
+          sweep(
+            out,
+            [
+              [0, 114, 0],
+              [0, 118, 0],
+            ],
+            0.25,
+            'gold',
+            8,
+          );
+        }),
+      ),
+      cargoNode(
+        'standard-cloth',
+        mesh('elephant-standard-cloth', (out) => {
+          surface(
+            out,
+            (u, v) => [
+              -u * 34,
+              108 - v * 52 - u * 3,
+              Math.sin(u * 9 + v * 1.4) * u * 1.4,
+            ],
+            48,
+            56,
+            'gold-cloth',
+            (u, v) => [u, v],
+          );
+          for (const y of [56, 108])
+            sweep(
+              out,
+              [
+                [0, y, 0],
+                [-17, y - 1.5, 1],
+                [-34, y - 3, 0.5],
+              ],
+              0.16,
+              'gold',
+              6,
+            );
+        }),
+      ),
+    ],
+  );
   return cargoNode(
     'golden-howdah',
     undefined,
     [0, 0, 0],
     [
-      cargoNode('carved-seating-platform', lower),
-      cargoNode('canopy-and-fringe', roof),
+      cargoNode('enclosed-arched-cabin', cabin),
+      cargoNode('domed-pavilion-roof', roof),
+      standard,
     ],
   );
 }
@@ -1002,43 +1175,84 @@ export function elephantFoot(
 }
 function elephantEar(side: number): CargoFace[] {
   return mesh('sculpted-elephant-ear-' + side, (out) => {
-    const outline: V[] = [
-      [0, 10, 0],
-      [12, 29, -2],
-      [31, 24, -4],
-      [43, 6, -5],
-      [42, -12, -4],
-      [31, -35, -2],
-      [16, -40, 0],
-      [3, -20, 1],
-    ].map((p) => [p[0] * side, p[1], p[2]] as V);
-    const center: V = [side * 20, -6, -4];
-    for (const back of [false, true])
-      for (let i = 0; i < outline.length; i++) {
-        const a = outline[i],
-          b = outline[(i + 1) % outline.length];
-        surface(
-          out,
-          (u, v) => {
-            const p = mix(center, mix(a, b, u), v);
-            p[2] +=
-              (back ? -1 : 1) * (0.7 + Math.sin(v * Math.PI) * 1.2) +
-              Math.sin(u * 9 + v * 6) * 0.3;
-            return p;
-          },
-          6,
-          7,
-          'elephant',
-          (u, v) => [u + i * 0.2, v],
+    // A continuous, gently cupped ear. One UV chart avoids the old radial
+    // triangle seams and its corrugated, rigid fan silhouette.
+    const outline = [
+      [1, 10],
+      [8, 18],
+      [19, 15],
+      [25, 2],
+      [23, -14],
+      [15, -27],
+      [6, -25],
+      [1, -12],
+      [1, 10],
+    ];
+    const center: V = [side * 11, -5, -2];
+    for (const back of [false, true]) {
+      const start = out.length;
+      surface(
+        out,
+        (u, v) => {
+          const [x, y] = spline(outline, u);
+          const bulge = Math.sin(v * Math.PI) ** 2 * 2.3;
+          const localX = 11 + (x - 11) * v;
+          return [
+            center[0] + (x * side - center[0]) * v,
+            center[1] + (y - center[1]) * v,
+            -2 -
+              bulge -
+              (localX / 30) ** 2 * 4 +
+              (back ? -0.55 : 0.55) +
+              Math.sin(u * TAU * 9) * v ** 3 * 0.35,
+          ];
+        },
+        88,
+        24,
+        'elephant',
+        (u, v) => {
+          const [x, y] = spline(outline, u);
+          return [0.5 + ((x - 11) * v) / 28, 0.5 + ((y + 5) * v) / 48];
+        },
+      );
+      for (const f of out.slice(start)) {
+        f.normals = f.normals!.map((n) =>
+          Math.abs(n[2]) < 0.15
+            ? ([0, 0, back ? -1 : 1] as V)
+            : n[2] * (back ? -1 : 1) < 0
+              ? mul(n, -1)
+              : n,
         );
+        const geometric = cross(
+          sub(f.points[1], f.points[0]),
+          sub(f.points[2], f.points[0]),
+        );
+        if (
+          geometric.reduce((sum, v, i) => sum + v * f.normals![1][i], 0) < 0
+        ) {
+          f.points.reverse();
+          f.normals.reverse();
+          f.uv?.reverse();
+        }
       }
-    sweep(out, [...outline, outline[0]], 0.6, 'elephant', 6);
+    }
+    const rim = Array.from({ length: 97 }, (_, i): V => {
+      const [x, y] = spline(outline, i / 96);
+      return [x * side, y, -2 - (x / 30) ** 2 * 4];
+    });
+    sweep(out, rim, 0.35, 'elephant', 6);
   });
 }
-function elephantLoad(): RigNode {
+function elephantLoad(frame: number): RigNode {
+  const pavilion = howdah();
+  pavilion.children
+    .find((n) => n.name === 'elephant-royal-standard')!
+    .children.find((n) => n.name === 'standard-cloth')!.rotation = yaw(
+    Math.sin((frame / 240) * TAU * 2) * 0.035,
+  );
   const loads: RigNode[] = [
     cargoNode('woven-saddle-cloth', mesh('elephant-draped-blanket', blanket)),
-    cargoNode('howdah-mount', undefined, [0, 35, 0], [howdah()]),
+    cargoNode('howdah-mount', undefined, [0, 35, 0], [pavilion]),
   ];
   for (const side of [-1, 1])
     loads.push(
@@ -1122,30 +1336,44 @@ export function cargoElephant(
     cargoNode(
       'elephant-anatomy',
       mesh('elephant-anatomy', (out) => {
-        sphere(out, [0, 0, 0], [42, 35, 64], 'elephant', 56, 32, 0.004);
+        torso(
+          out,
+          [
+            [-68, -1, 0, 0],
+            [-58, -1, 29, 27],
+            [-38, 0, 42, 34],
+            [-12, -2, 43, 35],
+            [16, -1, 40, 34],
+            [39, 2, 37, 33],
+            [56, 2, 24, 25],
+            [64, 0, 0, 0],
+          ],
+          'elephant',
+        );
+        // Broad scapulae and haunches blend into the upper legs.
         for (const side of [-1, 1]) {
           sphere(
             out,
-            [side * 24, -9, 39],
-            [18, 27, 23],
+            [side * 25, -8, 38],
+            [19, 27, 24],
             'elephant',
+            40,
             28,
-            20,
-            0.005,
+            0.001,
           );
           sphere(
             out,
-            [side * 24, -6, -40],
-            [19, 27, 24],
+            [side * 25, -9, -39],
+            [21, 26, 25],
             'elephant',
+            40,
             28,
-            20,
-            0.005,
+            0.001,
           );
         }
       }),
     ),
-    elephantLoad(),
+    elephantLoad(t),
   );
   const head = cargoNode(
     'elephant-head',
@@ -1158,28 +1386,71 @@ export function cargoElephant(
     cargoNode(
       'head-and-cheeks',
       mesh('elephant-head-volume', (out) => {
-        sphere(out, [0, 0, 0], [25, 30, 28], 'elephant', 48, 28, 0.005);
-        sphere(out, [0, 9, 12], [19, 21, 18], 'elephant', 36, 24, 0.004);
+        surface(
+          out,
+          (u, v) => {
+            const [y, rx, rz, cz] = spline(
+              [
+                [-30, 5, 6, 17],
+                [-23, 15, 15, 9],
+                [-9, 23, 22, 1],
+                [10, 25, 24, -1],
+                [25, 21, 20, -4],
+                [36, 12, 11, -5],
+                [40, 0, 0, -5],
+              ],
+              v,
+            );
+            const a = u * TAU;
+            return [
+              Math.sin(a) * Math.max(0, rx),
+              y,
+              cz + Math.cos(a) * Math.max(0, rz),
+            ];
+          },
+          72,
+          64,
+          'elephant',
+          (u, v) => [u * 2, 1 - v],
+        );
         for (const side of [-1, 1]) {
-          sphere(out, [side * 22, 11, 9], [2.7, 2.6, 3.2], 'elephant', 16, 12);
           sphere(
             out,
-            [side * 23.7, 11.4, 10],
-            [0.85, 1.05, 1.1],
+            [side * 22.8, 9, 9.4],
+            [1.9, 1.6, 2.1],
+            'elephant',
+            24,
+            16,
+          );
+          sphere(
+            out,
+            [side * 24, 9.2, 10.4],
+            [0.72, 0.68, 0.86],
             'eye',
-            14,
+            20,
+            16,
+          );
+          sweep(
+            out,
+            [
+              [side * 20.2, 11.3, 12],
+              [side * 23, 12, 10],
+              [side * 25, 10.5, 8],
+            ],
+            0.62,
+            'elephant',
             10,
           );
           sweep(
             out,
             [
-              [side * 19, 14, 10],
-              [side * 22, 15, 9],
-              [side * 25, 13, 8],
+              [side * 21.3, 7.5, 11],
+              [side * 23.1, 7.6, 10.5],
+              [side * 24.6, 8.2, 8.5],
             ],
-            0.65,
+            0.32,
             'elephant',
-            7,
+            8,
           );
         }
       }),
@@ -1190,9 +1461,9 @@ export function cargoElephant(
       cargoNode(
         'ear-' + side,
         elephantEar(side),
-        [side * 19, 11, -4],
+        [side * 20, 9, -8],
         [],
-        yaw(side * (0.12 + Math.sin(a * 2 + side * 0.5) * 0.06)),
+        yaw(side * (0.22 + Math.sin(a * 2 + side * 0.5) * 0.035)),
       ),
     );
     head.children.push(
@@ -1203,14 +1474,14 @@ export function cargoElephant(
             out,
             (u, v) => {
               const center: V = [
-                side * (11 + 7 * v),
-                -9 - 38 * v + 19 * v * v,
-                23 + 54 * v,
+                side * (11 + 14 * v * v),
+                -9 - 50 * v + 38 * v * v,
+                23 + 36 * v,
               ];
-              const tangent = unit([side * 7, -38 + 38 * v, 54]),
+              const tangent = unit([side * 28 * v, -50 + 76 * v, 36]),
                 a = unit(cross(tangent, [0, 1, 0])),
                 b = unit(cross(tangent, a));
-              const radius = 3.4 * Math.max(0, 1 - v) ** 0.7 + 0.08;
+              const radius = 3.8 * Math.max(0, 1 - v) ** 0.65 + 0.08;
               return add(
                 center,
                 add(
@@ -1229,57 +1500,90 @@ export function cargoElephant(
   }
   head.children.push(
     cargoNode(
-      'gold-forehead-harness',
-      mesh('elephant-head-harness', (out) => {
-        for (const y of [13, 17])
+      'gold-forehead-caparison',
+      mesh('reference-gold-forehead-cloth', (out) => {
+        const profile = [
+          [25, 8, 18],
+          [13, 14, 27],
+          [-3, 13, 36.5],
+          [-17, 8, 40],
+          [-31, 4.3, 44],
+          [-43, 1.5, 46],
+        ];
+        surface(
+          out,
+          (u, v) => {
+            const [y, width, z] = spline(profile, v);
+            return [(u - 0.5) * width * 2, y, z + Math.sin(u * Math.PI) * 1.5];
+          },
+          40,
+          56,
+          'gold-cloth',
+          (u, v) => [u, v * 1.3],
+        );
+        for (const side of [-1, 1]) {
+          const edge = Array.from({ length: 49 }, (_, i): V => {
+            const [y, w, z] = spline(profile, i / 48);
+            return [side * w, y, z + 0.1];
+          });
+          sweep(out, edge, 0.28, 'gold', 8);
           sweep(
             out,
             [
-              [-24, y, 12],
-              [-16, y + 5, 24],
-              [0, y + 7, 28],
-              [16, y + 5, 24],
-              [24, y, 12],
+              [side * 21, 21, 6],
+              [side * 23, 10, 10],
+              [side * 20, -5, 19],
+              [side * 11, -14, 26],
             ],
-            0.6,
-            'gold',
-            8,
-          );
-        for (const side of [-1, 1])
-          sweep(
-            out,
-            [
-              [side * 22, 15, 11],
-              [side * 17, 0, 25],
-              [side * 11, -11, 25],
-            ],
-            0.8,
+            0.55,
             'leather',
-            8,
+            10,
           );
-        sphere(out, [0, 14, 30], [3.5, 4, 0.8], 'gold', 24, 16);
-        for (let i = -3; i <= 3; i++) {
+          for (let i = 0; i < 8; i++) {
+            const [y, w, z] = spline(profile, i / 9);
+            sphere(
+              out,
+              [side * w, y, z + 0.2],
+              [0.45, 0.55, 0.3],
+              'gold',
+              10,
+              6,
+            );
+          }
+        }
+        for (let i = -2; i <= 2; i++) {
+          sweep(
+            out,
+            [
+              [i * 2, -25, 41],
+              [i * 2, -30 - Math.abs(i) * 0.7, 42.5],
+            ],
+            0.16,
+            'gold',
+            7,
+          );
           sphere(
             out,
-            [i * 3.5, 11 - Math.abs(i) * 0.5, 27.8],
-            [0.8, 0.9, 0.6],
+            [i * 2, -31 - Math.abs(i) * 0.7, 42.7],
+            [0.5, 0.8, 0.4],
             'gold',
             12,
             8,
           );
         }
+        sphere(out, [0, 11, 27], [2.4, 3.2, 0.5], 'gold', 28, 20);
       }),
     ),
   );
   const original: V[] = [
     [0, -5, 25],
-    [0, -21, 30],
-    [0, -39, 35],
-    [0, -58, 42],
-    [0, -77, 52],
-    [0, -91, 66],
-    [0, -89, 80],
-    [0, -77, 86],
+    [0, -23, 30],
+    [0, -43, 34],
+    [0, -64, 37],
+    [0, -85, 41],
+    [1, -105, 48],
+    [2, -112, 57],
+    [3, -106, 63],
   ];
   const radius = [10, 8.7, 7.2, 5.7, 4.3, 3.2, 2.2, 1.5];
   const paths = original.map((point, i): V => [
@@ -1376,11 +1680,11 @@ export function cargoElephant(
         knee: V = [
           side * 26,
           46 + bob * 0.5,
-          fore * 42 + (foot[2] - fore * 42) * 0.48 + fore * 2,
+          fore * 42 + (foot[2] - fore * 42) * 0.48 + (fore === 1 ? 2 : -7),
         ];
       for (const [part, from, to, ra, rb] of [
-        ['upper', hip, knee, 10.5, 8.4],
-        ['lower', knee, foot, 8.4, 7.3],
+        ['upper', hip, knee, fore === 1 ? 17 : 19, 10.2],
+        ['lower', knee, foot, 10.2, 11.8],
       ] as [string, V, V, number, number][]) {
         const delta = sub(to, from),
           len = 50;
@@ -1392,8 +1696,9 @@ export function cargoElephant(
                 out,
                 [
                   [0, ra],
-                  [12, ra * 0.96],
-                  [38, rb * 1.03],
+                  [8, ra * 1.02],
+                  [22, ra * 0.85],
+                  [38, rb * 1.02],
                   [50, rb],
                 ],
                 'elephant',
@@ -1411,13 +1716,25 @@ export function cargoElephant(
         cargoNode(
           `elephant-foot-${side}-${fore}`,
           mesh('elephant-foot', (out) => {
-            sphere(out, [0, 4, 1], [9, 4.1, 10.5], 'elephant', 28, 16, 0.006);
+            lathe(
+              out,
+              [
+                [0, 7.5],
+                [0.6, 11.3],
+                [3, 12.1],
+                [7, 11.7],
+                [12, 10.5],
+              ],
+              'elephant',
+              40,
+              1.15,
+            );
             for (let i = 0; i < 4; i++) {
               const q = (i - 1.5) * 0.42;
               sphere(
                 out,
-                [Math.sin(q) * 7.8, 2.5, Math.cos(q) * 9],
-                [1.9, 1.9, 0.65],
+                [Math.sin(q) * 10.3, 2.7, Math.cos(q) * 12.4],
+                [1.5, 1.5, 0.42],
                 'ivory',
                 12,
                 8,
@@ -1474,42 +1791,68 @@ export function cargoCamel(frame: number, pose?: CargoPose): RigNode {
   };
   const stride = (state.distance / 58) * TAU,
     bob = Math.abs(Math.sin(stride)) * state.walk * 0.55;
-  const spine = cargoNode('camel-spine', undefined, [0, 80 + bob, 0], []);
+  const spine = cargoNode('camel-spine', undefined, [0, 76 + bob, 0], []);
   spine.children.push(
     cargoNode(
       'dromedary-anatomy',
       mesh('cargo-camel-anatomy', (out) => {
-        sphere(out, [0, 0, 0], [18, 21, 34], 'camel', 40, 24, 0.004);
-        sphere(out, [0, 22, -5], [13, 19, 20], 'camel', 32, 22, 0.005);
-        sweep(
+        torso(
           out,
           [
-            [0, 3, 25],
-            [0, 17, 36],
-            [0, 36, 42],
-            [0, 46, 52],
+            [-46, 1, 0, 0],
+            [-36, 0, 17, 21],
+            [-18, -2, 23, 24],
+            [6, -1, 23, 24],
+            [25, 1, 21, 23],
+            [38, 3, 13, 17],
+            [43, 5, 0, 0],
           ],
-          (u) => 12.5 - u * 6.3,
           'camel',
-          20,
+          64,
+          52,
         );
-        sphere(out, [0, 48, 59], [7, 9, 13], 'camel', 28, 18, 0.005);
-        sphere(out, [0, 44, 71], [6, 6, 11], 'camel', 24, 16);
+        sphere(out, [0, 21, -7], [15, 20, 22], 'camel', 48, 32, 0.001);
+        neckTube(
+          out,
+          [
+            [4, 26, 14, 15],
+            [12, 36, 12, 13],
+            [23, 38, 9, 11],
+            [35, 42, 7, 8.5],
+            [43, 53, 6, 7],
+          ],
+          'camel',
+        );
+        // Cheeks, long upper muzzle, split upper lip, nostrils and heavy lids.
+        sphere(out, [0, 45, 60], [7.2, 8.2, 13.8], 'camel', 40, 28, 0.001);
+        sphere(out, [0, 40.7, 72.8], [5.9, 5.8, 10.2], 'camel', 36, 24);
         for (const side of [-1, 1]) {
-          sphere(out, [side * 5.7, 57, 54], [1.6, 4.6, 1.6], 'camel', 16, 12);
-          sphere(out, [side * 6.4, 50, 62], [0.8, 0.8, 0.6], 'eye', 12, 8);
-          sphere(out, [side * 4, 46, 79], [1.1, 0.8, 0.6], 'eye', 12, 8);
+          sphere(out, [side * 2.5, 39.2, 80.5], [3, 2, 3], 'camel', 24, 16);
+          sphere(out, [side * 5.6, 53.2, 53], [2.2, 4.2, 1.7], 'camel', 24, 16);
+          sphere(out, [side * 6.3, 46.8, 62], [0.72, 0.65, 0.5], 'eye', 20, 14);
+          sweep(
+            out,
+            [
+              [side * 5, 48, 63.2],
+              [side * 6.4, 48.2, 61.6],
+              [side * 7.1, 47.3, 60.5],
+            ],
+            0.34,
+            'camel',
+            8,
+          );
+          sphere(out, [side * 3.7, 42.3, 80], [0.8, 0.48, 0.42], 'eye', 16, 10);
         }
         sweep(
           out,
           [
-            [-4, 41, 80],
-            [0, 40.5, 81],
-            [4, 41, 80],
+            [-4.4, 37.8, 80],
+            [0, 37.2, 82.5],
+            [4.4, 37.8, 80],
           ],
-          0.18,
+          0.13,
           'leather',
-          6,
+          8,
         );
       }),
     ),
@@ -1601,11 +1944,11 @@ export function cargoCamel(frame: number, pose?: CargoPose): RigNode {
         sweep(
           out,
           [
-            [-7, 51, 70],
-            [-7, 42, 78],
+            [-5.5, 45, 72],
+            [-5.8, 40.5, 78],
             [0, 39, 82],
-            [7, 42, 78],
-            [7, 51, 70],
+            [5.8, 40.5, 78],
+            [5.5, 45, 72],
           ],
           0.55,
           'leather',
@@ -1614,9 +1957,9 @@ export function cargoCamel(frame: number, pose?: CargoPose): RigNode {
         sweep(
           out,
           [
-            [-7, 51, 63],
-            [0, 55, 69],
-            [7, 51, 63],
+            [-5.5, 47.5, 61],
+            [0, 50.5, 66],
+            [5.5, 47.5, 61],
           ],
           0.4,
           'rope',
@@ -1660,15 +2003,15 @@ export function cargoCamel(frame: number, pose?: CargoPose): RigNode {
       const foot: V = pose
           ? [side * 10.5, lift * state.walk, fore * 24 + forward * state.walk]
           : camelFoot(state.distance, phase, side, fore),
-        hip: V = [side * 11, 73 + bob, fore * 24],
+        hip: V = [side * 11, 71 + bob, fore * 24],
         knee: V = [
           side * 11,
           36,
           fore * 24 + (foot[2] - fore * 24) * 0.45 + fore * 2,
         ];
       for (const [part, from, to, r0, r1] of [
-        ['upper', hip, knee, 4.5, 3],
-        ['lower', knee, foot, 2.8, 2.1],
+        ['upper', hip, knee, fore === 1 ? 6 : 7.8, 3.4],
+        ['lower', knee, foot, 3.4, 2.6],
       ] as [string, V, V, number, number][]) {
         const delta = sub(to, from);
         children.push(
@@ -1698,14 +2041,7 @@ export function cargoCamel(frame: number, pose?: CargoPose): RigNode {
           `camel-hoof-${side}-${fore}`,
           mesh('camel-soft-hoof', (out) => {
             for (const s of [-1, 1])
-              sphere(
-                out,
-                [s * 1.2, 1.5, 2],
-                [1.6, 1.6, 3.8],
-                'leather',
-                16,
-                10,
-              );
+              sphere(out, [s * 1.2, 1.5, 2], [1.9, 1.5, 4.6], 'camel', 16, 10);
           }),
           foot,
         ),
@@ -1717,6 +2053,279 @@ export function cargoCamel(frame: number, pose?: CargoPose): RigNode {
     state.at,
     children,
     yaw(state.heading),
+  );
+}
+
+/** An adult royal horse with a deep barrel, withers, muscular quarters and tapered joints. */
+export function cargoHorse(pose: CargoPose & { t: number }): RigNode {
+  const body = cargoNode(
+    'horse-body',
+    mesh('royal-horse-anatomy-v2', (out) => {
+      torso(
+        out,
+        [
+          [-39, 44, 0, 0],
+          [-31, 44, 12, 14],
+          [-19, 44, 17, 18],
+          [2, 44, 18, 19],
+          [21, 46, 15, 19],
+          [32, 48, 10, 14],
+          [37, 49, 0, 0],
+        ],
+        'horse',
+        64,
+        52,
+      );
+      for (const s of [-1, 1]) {
+        sphere(out, [s * 10.5, 42, -24], [9, 14, 13], 'horse', 36, 26);
+        sphere(out, [s * 9, 43, 23], [8.5, 15, 12], 'horse', 36, 26);
+      }
+      neckTube(
+        out,
+        [
+          [52, 24, 10, 14],
+          [62, 27, 8, 13],
+          [73, 33, 6.3, 9],
+          [79, 38, 5.8, 6],
+        ],
+        'horse',
+      );
+      sphere(out, [0, 77.5, 42], [6.6, 9.2, 10.5], 'horse', 40, 28);
+      neckTube(
+        out,
+        [
+          [78, 43, 5.8, 7],
+          [74.5, 51, 5.3, 5.7],
+          [69.7, 57, 4.8, 4],
+        ],
+        'horse',
+        36,
+        28,
+      );
+      sphere(out, [0, 69.4, 57.5], [5.2, 4.2, 5.7], 'horse', 36, 24);
+      for (const s of [-1, 1]) {
+        sphere(out, [s * 3.6, 88, 37], [1.5, 5.1, 1.8], 'horse', 28, 22);
+        sphere(out, [s * 5.8, 80, 43], [0.82, 0.8, 0.65], 'eye', 20, 14);
+        sphere(out, [s * 4.6, 71.1, 59.3], [0.85, 0.8, 0.45], 'eye', 20, 14);
+        sweep(
+          out,
+          [
+            [s * 5, 81.5, 44.8],
+            [s * 6.2, 81.4, 43],
+            [s * 6.6, 80.5, 41.5],
+          ],
+          0.4,
+          'horse',
+          8,
+        );
+      }
+      sweep(
+        out,
+        [
+          [-4.5, 67.3, 59],
+          [0, 66.7, 61],
+          [4.5, 67.3, 59],
+        ],
+        0.13,
+        'eye',
+        8,
+      );
+      for (let i = 0; i < 18; i++) {
+        const u = i / 17;
+        sweep(
+          out,
+          [
+            [0, 81 - u * 23, 32 - u * 6],
+            [-1.2, 82 - u * 23, 28 - u * 6],
+            [-2.1, 79 - u * 23, 25 - u * 6],
+          ],
+          0.65,
+          'horse',
+          7,
+        );
+      }
+    }),
+  );
+  const cloth = cargoNode(
+    'royal-horse-saddlecloth',
+    mesh('royal-horse-saddlecloth-v2', (out) => {
+      surface(
+        out,
+        (u, v) => {
+          const a = (u - 0.5) * Math.PI * 1.25;
+          return [
+            Math.sin(a) * 18,
+            43 + Math.cos(a) * 21 + Math.sin(v * Math.PI) * 0.15,
+            -16 + v * 33,
+          ];
+        },
+        56,
+        40,
+        'brocade',
+        (u, v) => [u, v],
+      );
+      for (const side of [-1, 1])
+        for (let i = 0; i < 10; i++)
+          sweep(
+            out,
+            [
+              [side * 17.2, 35, -14 + i * 3.3],
+              [side * 17.5, 32, -14 + i * 3.3],
+            ],
+            0.16,
+            'gold',
+            6,
+          );
+      box(out, [0, 62.2, -1], [19, 3, 19], 'leather', 16, 12);
+      for (const side of [-1, 1]) {
+        sweep(
+          out,
+          [
+            [side * 6, 80, 43],
+            [side * 5.5, 71, 59],
+            [side * 3, 68, 60],
+          ],
+          0.42,
+          'leather',
+          8,
+        );
+        sweep(
+          out,
+          [
+            [side * 5, 72, 59],
+            [side * 7, 71, 52],
+            [side * 8, 65, 32],
+            [side * 7, 70, 7],
+          ],
+          0.25,
+          'rope',
+          8,
+        );
+        sweep(
+          out,
+          [
+            [side * 12, 59, 22],
+            [side * 15, 45, 29],
+            [side * 7, 37, 35],
+            [0, 35, 36],
+          ],
+          0.55,
+          'leather',
+          8,
+        );
+        sphere(out, [side * 8, 38, 35], [1, 1.1, 0.5], 'gold', 16, 12);
+      }
+    }),
+  );
+  const children: RigNode[] = [body, cloth];
+  for (const side of [-1, 1])
+    for (const fore of [-1, 1]) {
+      const phase = side * fore === 1 ? 0 : 0.5,
+        u = (((pose.distance / 42 + phase) % 1) + 1) % 1,
+        k = ease((u - 0.6) / 0.4),
+        forward = u < 0.6 ? 12.6 - 42 * u : -12.6 + 25.2 * k,
+        lift = u < 0.6 ? 0 : Math.sin(((u - 0.6) / 0.4) * Math.PI) * 7;
+      const foot: V = [
+          side * 9,
+          lift * pose.walk,
+          fore * 23 + forward * pose.walk,
+        ],
+        hip: V = [side * 10, 45, fore * 23],
+        knee: V = [
+          side * 10,
+          24,
+          fore * 23 + (foot[2] - fore * 23) * 0.45 + (fore === 1 ? 1 : -5),
+        ];
+      for (const [part, from, to, ra, rb] of [
+        ['upper', hip, knee, fore === 1 ? 5.8 : 7.3, 2.8],
+        ['lower', knee, foot, 2.8, 2.4],
+      ] as [string, V, V, number, number][]) {
+        const delta = sub(to, from);
+        children.push(
+          cargoNode(
+            `horse-${side}-${fore}-${part}`,
+            mesh(`horse-limb-${ra}-${rb}`, (out) => {
+              lathe(
+                out,
+                [
+                  [0, ra],
+                  [5, ra * 1.02],
+                  [13, ra * 0.7],
+                  [20, rb * 1.06],
+                  [24, rb],
+                ],
+                'horse',
+                32,
+              );
+            }),
+            from,
+            [],
+            aim(delta),
+            [1, Math.hypot(...delta) / 24, 1],
+          ),
+        );
+      }
+      children.push(
+        cargoNode(
+          `horse-${side}-${fore}-hoof`,
+          mesh('natural-horse-hoof', (out) => {
+            lathe(
+              out,
+              [
+                [0, 2.4],
+                [0.4, 3.1],
+                [3, 2.8],
+                [4, 2.2],
+              ],
+              'leather',
+              28,
+              1.32,
+            );
+          }),
+          foot,
+        ),
+      );
+    }
+  children.push(
+    cargoNode(
+      'horse-tail',
+      mesh('flowing-horse-tail-v2', (out) => {
+        sweep(
+          out,
+          [
+            [0, 0, 0],
+            [0, -9, -8],
+            [0, -20, -12],
+            [0, -34, -14],
+          ],
+          (u) => 2.4 - u * 0.9,
+          'horse',
+          16,
+        );
+        for (const s of [-1, 1])
+          sweep(
+            out,
+            [
+              [s, -10, -8],
+              [s * 2, -25, -12],
+              [s * 2, -38, -16],
+            ],
+            (u) => 1.1 - u * 0.8,
+            'horse',
+            8,
+          );
+      }),
+      [0, 48, -34],
+      [],
+      yaw(Math.sin((pose.t / 240) * TAU * 2) * 0.08),
+    ),
+  );
+  return cargoNode(
+    'royal-horse',
+    undefined,
+    pose.at,
+    children,
+    yaw(pose.heading),
   );
 }
 

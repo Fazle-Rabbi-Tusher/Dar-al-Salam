@@ -2,13 +2,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
-import { human, node, rotate, yaw } from '../packages/shared/royal-caravan.ts';
-import {
-  CARRIER_IDS,
-  carrierHandover,
-  carrierRouteAt,
-  goldCarrierActors,
-} from '../packages/shared/gold-carriers.ts';
+import { carrierVariant } from '../packages/shared/carrier-variants.ts';
+import { CARRIER_IDS } from '../packages/shared/gold-carriers.ts';
 
 const out = 'web/public/models/gold-carriers';
 await fs.mkdir(out + '/vendor', { recursive: true });
@@ -117,67 +112,6 @@ function rigIndex(root) {
   };
   visit(root, '');
   return map;
-}
-function normalized(name, nodes, origin, angle) {
-  const inverse = yaw(-angle),
-    position = rotate(
-      origin.map((n) => -n),
-      inverse,
-    );
-  return node(name, undefined, position, inverse, nodes);
-}
-export function carrierVariant(name, frame) {
-  const route =
-    name === 'gold-handover-pair'
-      ? (f, role) => ({ ...carrierRouteAt(0, role), t: f, walk: 0, travel: 0 })
-      : carrierRouteAt;
-  const root = goldCarrierActors(frame, human, route);
-  if (name === 'gold-carriers-ensemble') return root;
-  if (name === 'gold-handover-pair') {
-    const first = carrierRouteAt(0, 'bearer');
-    return normalized(
-      name,
-      root.children.filter((n) =>
-        [
-          'bowl-gold-bearer',
-          'elder-recipient',
-          'carrier-transferred-gold-coin',
-        ].includes(n.name),
-      ),
-      first.point,
-      first.heading,
-    );
-  }
-  if (name === 'paired-chest-carriers') {
-    const load = root.children.find((n) => n.name === 'shared-chest-rig');
-    const pose = carrierRouteAt(frame, 'pair');
-    return normalized(
-      name,
-      root.children.filter((n) =>
-        [
-          'chest-porter-rust',
-          'chest-porter-indigo',
-          'shared-chest-rig',
-        ].includes(n.name),
-      ),
-      load.position,
-      pose.heading,
-    );
-  }
-  const person = root.children.find((n) => n.name === name);
-  if (!person) throw Error('Unknown carrier model: ' + name);
-  const angle = 2 * Math.atan2(person.rotation[1], person.rotation[3]);
-  const children = [person];
-  if (name === 'bowl-gold-bearer' || name === 'elder-recipient') {
-    const gift = root.children.find(
-      (n) => n.name === 'carrier-transferred-gold-coin',
-    );
-    const owner = carrierHandover(frame).owner;
-    if (owner !== (name === 'bowl-gold-bearer' ? 'giver' : 'recipient'))
-      gift.scale = [0.001, 0.001, 0.001];
-    children.push(gift);
-  }
-  return normalized(name + '-walk-and-carry', children, person.position, angle);
 }
 const records = [];
 for (const name of [

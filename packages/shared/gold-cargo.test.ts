@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { resolve, dirname } from 'node:path';
 import {
   CARGO_PROPS,
   cargoElephant,
@@ -42,7 +43,15 @@ describe('the loaded elephant and detailed gold cargo', () => {
       manifest = JSON.parse(readFileSync(folder + 'manifest.json', 'utf8'));
     expect(manifest.models).toHaveLength(17);
     expect(manifest.people).toHaveLength(10);
-    for (const m of manifest.models) {
+    expect(manifest.revision).toBe('natural-anatomy-v2');
+    for (const texture of manifest.textures) {
+      const bytes = readFileSync(folder + texture.file);
+      expect(bytes.length).toBe(texture.bytes);
+      expect(createHash('sha256').update(bytes).digest('hex')).toBe(
+        texture.sha256,
+      );
+    }
+    for (const m of [...manifest.models, ...manifest.peopleRecords]) {
       const bytes = readFileSync(folder + m.file);
       expect(bytes.length).toBe(m.bytes);
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(m.sha256);
@@ -50,10 +59,44 @@ describe('the loaded elephant and detailed gold cargo', () => {
         bytes.subarray(20, 20 + bytes.readUInt32LE(12)).toString(),
       );
       expect(json.asset.version).toBe('2.0');
+      for (const image of json.images) {
+        const file = resolve(folder, dirname(m.file), image.uri);
+        expect(file.startsWith(resolve(folder, 'textures') + '/')).toBe(true);
+        expect(readFileSync(file).subarray(0, 4).toString('hex')).toBe(
+          '89504e47',
+        );
+      }
+      expect(
+        json.materials.some(
+          (m: { pbrMetallicRoughness?: { baseColorTexture?: unknown } }) =>
+            !!m.pbrMetallicRoughness?.baseColorTexture,
+        ),
+      ).toBe(true);
+      for (const material of json.materials)
+        if (/^(eye|ivory):/.test(material.name))
+          expect(material.pbrMetallicRoughness?.baseColorTexture).toBeUndefined();
       expect(json.buffers.every((b: { uri?: string }) => !b.uri)).toBe(true);
       if (m.id.endsWith('-loaded'))
         expect(m.animations).toEqual(['Walk', 'Rest']);
     }
+  });
+  it('matches the marked elephant with compact ears, medium tusks, a gold forehead cloth and an enclosed domed howdah', () => {
+    const rig = rigMatrices(
+      cargoElephant(0, { rest: true, at: [0, 0, 0], heading: 0 }),
+    );
+    const find = (name: string) =>
+      [...rig.values()].find((v) => v.node.name === name)!.node;
+    expect(find('gold-forehead-caparison').faces!.length).toBeGreaterThan(0);
+    expect(find('enclosed-arched-cabin').faces!.length).toBeGreaterThan(0);
+    expect(find('domed-pavilion-roof').faces!.length).toBeGreaterThan(0);
+    expect(find('standard-cloth').faces!.some((f) => f.uv)).toBe(true);
+    const ear = find('ear-1').faces!.flatMap((f) => f.points);
+    expect(Math.max(...ear.map((p) => p[0]))).toBeLessThan(28);
+    expect(
+      Math.max(...ear.map((p) => p[1])) - Math.min(...ear.map((p) => p[1])),
+    ).toBeLessThan(50);
+    const tusk = find('ivory-tusk-1').faces!.flatMap((f) => f.points);
+    expect(Math.max(...tusk.map((p) => p[2]))).toBeLessThan(63);
   });
   it('closes both animal loops with stable cached geometry and finite joint transforms', () => {
     for (const build of [cargoElephant, cargoCamel]) {

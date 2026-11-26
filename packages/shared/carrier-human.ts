@@ -102,6 +102,8 @@ function surface(
   nv: number,
   color: (u: number, v: number) => string,
   finish: 'linen' | 'skin' | 'hair' | 'face' = 'linen',
+  texture?: string,
+  uv?: (u: number, v: number) => [number, number],
 ) {
   const positions: V[][] = [],
     normals: V[][] = [];
@@ -142,6 +144,15 @@ function surface(
         ],
         color: color((i + 0.5) / nu, (j + 0.5) / nv),
         finish,
+        texture,
+        uv: uv
+          ? [
+              uv(i / nu, j / nv),
+              uv((i + 1) / nu, j / nv),
+              uv((i + 1) / nu, (j + 1) / nv),
+              uv(i / nu, (j + 1) / nv),
+            ]
+          : undefined,
       });
 }
 function sphere(
@@ -186,18 +197,31 @@ function fabric(
       const f = clamp(v) * (profile.length - 1),
         i = Math.min(profile.length - 2, Math.floor(f)),
         k = f - i;
-      const [y, rx, rz] = profile[i].map(
-        (n, j) => n + (profile[i + 1][j] - n) * k,
-      );
+      const [y, rx, rz] = profile[i].map((b, axis) => {
+        const a = profile[Math.max(0, i - 1)][axis],
+          c = profile[i + 1][axis],
+          d = profile[Math.min(profile.length - 1, i + 2)][axis];
+        return (
+          0.5 *
+          (2 * b +
+            (-a + c) * k +
+            (2 * a - 5 * b + 4 * c - d) * k * k +
+            (-a + 3 * b - 3 * c + d) * k * k * k)
+        );
+      });
       const a = u * TAU,
         d =
           fold *
-          (Math.sin(a * 15 + v * 0.8) + 0.35 * Math.sin(a * 29 - v * 1.7));
+          (Math.sin(a * 13 + v * 0.8) + 0.35 * Math.sin(a * 23 - v * 1.7)) *
+          (0.6 + 0.4 * Math.sin(v * Math.PI));
       return [Math.sin(a) * (rx + d), y, Math.cos(a) * (rz + d * 0.75)];
     },
     nu,
     nv,
     (u, v) => solid || tex(index, u * 3, v * 3),
+    solid ? 'skin' : 'linen',
+    solid ? undefined : 'carrier-linen-' + index,
+    solid ? undefined : (u, v) => [u * 2, v * 2],
   );
 }
 function head(index: number) {
@@ -249,8 +273,8 @@ function head(index: number) {
           Math.cos(a) * rz - 0.2 + details,
         ];
       },
-      72,
-      60,
+      64,
+      48,
       (u, v) => {
         const a = (u - 0.5) * TAU,
           t = 1 - v,
@@ -269,6 +293,17 @@ function head(index: number) {
         );
       },
       'face',
+      'carrier-face-' + index,
+      (u, v) => {
+        const a = (u - 0.5) * TAU,
+          t = 1 - v,
+          blend = Math.min(1, Math.max(0, -Math.cos(a)) * 3),
+          b = blend * blend * (3 - 2 * blend);
+        return [
+          (0.08 + (0.84 * (Math.sin(a) + 1)) / 2) * (1 - b) + 0.2 * b,
+          t * (1 - b) + 0.5 * b,
+        ];
+      },
     );
     if (index === 0) {
       sphere(out, [0, 6.2, -0.8], [5.3, 2, 4.3], hair, 'hair');
@@ -405,8 +440,8 @@ export function carrierHuman(p: HumanPose, helpers: Helpers): RigNode {
             [28, 3.5, 3.3],
           ],
           0.23,
-          56,
-          36,
+          48,
+          28,
         ),
       ),
     ),
@@ -440,8 +475,8 @@ export function carrierHuman(p: HumanPose, helpers: Helpers): RigNode {
             [38, 8.1, 5.9],
           ],
           0.42,
-          64,
-          40,
+          56,
+          28,
         ),
       ),
       [0, 0, 0],

@@ -12,16 +12,19 @@ renderer.setPixelRatio(1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = T.PCFSoftShadowMap;
 renderer.toneMapping = T.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.12;
+renderer.toneMappingExposure = 1.0;
 host.append(renderer.domElement);
 const scene = new T.Scene();
-scene.background = new T.Color('#24271f');
-scene.add(new T.HemisphereLight('#fff0ce', '#5b606a', 1.65));
-const key = new T.DirectionalLight('#ffe7bf', 2.8);
+scene.background = new T.Color('#bcb09a');
+scene.fog = new T.Fog('#bcb09a', 35, 110);
+scene.add(new T.HemisphereLight('#e9eced', '#74685b', 0.85));
+const key = new T.DirectionalLight('#ffe8c7', 3.4);
 key.position.set(-5, 8, 6);
 key.castShadow = true;
-key.shadow.mapSize.set(1024, 1024);
-key.shadow.bias = -0.0003;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.bias = -0.00012;
+key.shadow.normalBias = 0.015;
+key.shadow.radius = 3;
 Object.assign(key.shadow.camera, {
   left: -10,
   right: 10,
@@ -31,7 +34,7 @@ Object.assign(key.shadow.camera, {
   far: 40,
 });
 scene.add(key);
-const fill = new T.DirectionalLight('#c9d9e5', 1);
+const fill = new T.DirectionalLight('#cfdae6', 0.45);
 fill.position.set(5, 4, -3);
 scene.add(fill);
 const rim = new T.DirectionalLight('#edcf8c', 1.5);
@@ -55,7 +58,7 @@ for (const [x, y, z, w, h] of [
 const pmrem = new T.PMREMGenerator(renderer),
   environment = pmrem.fromScene(studio, 0.05);
 scene.environment = environment.texture;
-scene.environmentIntensity = 0.65;
+scene.environmentIntensity = 0.85;
 pmrem.dispose();
 studio.traverse((o) => {
   if (o.isMesh) {
@@ -63,10 +66,25 @@ studio.traverse((o) => {
     o.material.dispose();
   }
 });
-const floor = new T.Mesh(
-  new T.PlaneGeometry(70, 70),
-  new T.MeshStandardMaterial({ color: '#ac9167', roughness: 1 }),
-);
+const sand = new T.TextureLoader().load('./textures/sand.png', () => {
+  dirty = true;
+});
+sand.colorSpace = T.SRGBColorSpace;
+sand.wrapS = sand.wrapT = T.RepeatWrapping;
+sand.repeat.set(80, 80);
+sand.magFilter = T.LinearFilter;
+const groundMaterial = new T.MeshStandardMaterial({
+  color: '#c3b49a',
+  map: sand,
+  roughness: 1,
+});
+groundMaterial.onBeforeCompile = (shader) => {
+  shader.fragmentShader = shader.fragmentShader.replace(
+    '#include <map_fragment>',
+    '#ifdef USE_MAP\nvec4 grain = texture2D(map, vMapUv);\ndiffuseColor *= vec4(mix(vec3(1.0), grain.rgb, 0.38), grain.a);\n#endif',
+  );
+};
+const floor = new T.Mesh(new T.CircleGeometry(100, 96), groundMaterial);
 floor.name = 'studio-floor';
 floor.rotation.x = -Math.PI / 2;
 floor.position.y = -0.004;
@@ -183,6 +201,34 @@ function angle(name) {
       .normalize()
       .multiplyScalar(radius * (name === 'portrait' ? 0.65 : 1));
     camera.position.copy(center).add(v);
+    if (name !== 'portrait') {
+      camera.lookAt(center);
+      camera.updateMatrixWorld(true);
+      component.object3D.updateMatrixWorld(true);
+      const inverse = camera.quaternion.clone().invert();
+      const tanY = Math.tan(T.MathUtils.degToRad(camera.fov) / 2),
+        tanX = tanY * camera.aspect;
+      let fit = 0;
+      component.object3D.traverseVisible((part) => {
+        if (!part.isMesh) return;
+        if (!part.geometry.boundingBox) part.geometry.computeBoundingBox();
+        const box = part.geometry.boundingBox;
+        for (const x of [box.min.x, box.max.x])
+          for (const y of [box.min.y, box.max.y])
+            for (const z of [box.min.z, box.max.z]) {
+              const p = new T.Vector3(x, y, z)
+                .applyMatrix4(part.matrixWorld)
+                .sub(center)
+                .applyQuaternion(inverse);
+              fit = Math.max(
+                fit,
+                p.z +
+                  Math.max(Math.abs(p.x) / tanX, Math.abs(p.y) / tanY) * 1.1,
+              );
+            }
+      });
+      camera.position.copy(center).add(v.normalize().multiplyScalar(fit));
+    }
   }
   render();
 }
@@ -212,7 +258,7 @@ async function loadModel(name) {
   const box = new T.Box3().setFromObject(component.object3D),
     size = box.getSize(new T.Vector3());
   center = box.getCenter(new T.Vector3());
-  radius = Math.max(size.x, size.y, size.z) * 1.95;
+  radius = Math.max(size.x, size.y, size.z) * 1.82;
   document.getElementById('description').textContent =
     descriptions[name] || name.split('/').at(-1).replaceAll('-', ' ');
   document.getElementById('download').href =
