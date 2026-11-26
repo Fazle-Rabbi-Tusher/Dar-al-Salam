@@ -1096,7 +1096,7 @@ function elephantLoad(): RigNode {
 }
 export function cargoElephant(
   frame: number,
-  options: { rest?: boolean; at?: V; heading?: number } = {},
+  options: { rest?: boolean; at?: V; heading?: number; origin?: V } = {},
 ): RigNode {
   const t = ((frame % 240) + 240) % 240,
     p = t / 240,
@@ -1107,7 +1107,11 @@ export function cargoElephant(
         at: options.at || ([-300, 0, -140] as V),
         heading: options.heading ?? 0.2,
       }
-    : circleAt(distance);
+    : (() => {
+        // Walking its circuit, optionally about another starting point.
+        const c = circleAt(distance);
+        return { ...c, at: add(c.at, options.origin ?? [0, 0, 0]) };
+      })();
   const bob = options.rest
     ? Math.sin(a * 2) * 0.18
     : Math.abs(Math.sin(a * 10)) * 1.05;
@@ -1746,12 +1750,12 @@ export function treasuryCollection(): RigNode {
 export function nativeCargoActors(frame: number): RigNode {
   const left = treasuryCollection();
   left.name = 'foreground-treasury';
-  left.position = [-200, 0, 322];
+  left.position = [-95, 0, 400];
   left.scale = [0.8, 0.8, 0.65];
   const right = cargoNode(
     'travel-equipment',
     undefined,
-    [180, 0, 320],
+    [330, 0, 262],
     [
       cargoNode('rolled-rugs', cargoPropFaces('rolled-carpets')),
       cargoNode('water-skins', cargoPropFaces('water-skins'), [26, 0, 0]),
@@ -1762,6 +1766,8 @@ export function nativeCargoActors(frame: number): RigNode {
     'elephant-and-gold-cargo',
     undefined,
     [0, 0, 0],
-    [cargoElephant(frame, { rest: true }), left, right],
+    // The loaded elephant ambles its own circuit on the northern sand,
+    // clear of the procession (owner's request, 2026-11-26: "roam").
+    [cargoElephant(frame, { origin: [-314, 0, -407] }), left, right],
   );
 }

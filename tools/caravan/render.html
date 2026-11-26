@@ -240,6 +240,8 @@
       renderer.render(scene, cam);
       return c.toDataURL('image/png');
     };
+    /** Sets one joint's matrix directly (the dropped coins, posed by the bake). */
+    window.place = (i, matrix) => meshes[i].matrix.fromArray(matrix);
     window.SUN = sunDir.toArray();
     window.READY = true;
   </script>

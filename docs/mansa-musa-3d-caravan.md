@@ -7,9 +7,14 @@
 > isometric view at three sprite pixels per world pixel (`tools/caravan/render.html`).
 > Since 2026-11-26 it is lit realistically for the desert: a warm sun, a sky and
 > sand fill, gold and cloth materials, sand dust on hems and hooves, and soft
-> shadows that each figure casts on the sand. Renders are supersampled 3×, the
+> shadows that each figure casts on the sand. Renders are supersampled 2×, the
 > full colour range is kept, and the camels and elephant are drawn at the
 > world's scale (DECISIONS item 79).
+> It also roams the desert: after the three handovers on the market lane the
+> procession walks a 35-tile loop over the northern sand, the gold bearers loop
+> over the southern sand and the elephant walks its own circuit. Bearers,
+> camels and the ruler drop small piles of gold coins as they pass, which fall,
+> bounce and twinkle on the sand before they are gathered (DECISIONS item 80).
 >
 > - **Strips:** each design keeps a small set of its most different poses.
 >   Guards of one colour share theirs, and so do the pack camels. The build outlines them like every strip.

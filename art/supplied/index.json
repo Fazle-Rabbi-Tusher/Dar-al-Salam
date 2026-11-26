@@ -1439,7 +1439,7 @@
   "sup-caravan-foreground-treasury": {
     "file": "supplied/caravan-foreground-treasury.png",
     "anchor": [
-      143,
+      166,
       110
     ],
     "density": 3,
@@ -1448,7 +1448,7 @@
   "sup-caravan-travel-equipment": {
     "file": "supplied/caravan-travel-equipment.png",
     "anchor": [
-      91,
+      120,
       114
     ],
     "density": 3,

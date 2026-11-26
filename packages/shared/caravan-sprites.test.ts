@@ -12,7 +12,7 @@ const cast: Character[] = [
     characterSchema.parse(c),
   ),
 ];
-describe("Mansa Musa's caravan as pixel-art sprites in the desert", () => {
+describe("Mansa Musa's caravan as realistic sprites roaming the desert", () => {
   it('walks the open desert west of Massawa, inside its own cleared ground', () => {
     expect(cast.length).toBeGreaterThan(25);
     for (const c of cast) {
@@ -75,5 +75,64 @@ describe("Mansa Musa's caravan as pixel-art sprites in the desert", () => {
       id.startsWith('sup-caravan-'),
     ))
       expect(inCaravanPlot([x, y], 0), id).toBe(true);
+  });
+  it('roams the open desert, well beyond the market lane', () => {
+    const tiles = (id: string) =>
+      cast.find((c) => c.id === id)!.script.flatMap((s) => s.path ?? [s.at!]);
+    const ruler = tiles('mansa-musa'),
+      span = (i: number) =>
+        Math.max(...ruler.map((p) => p[i])) -
+        Math.min(...ruler.map((p) => p[i]));
+    // About 18 tiles across and 8 deep, against the old 10 by 7.
+    expect(span(0)).toBeGreaterThan(16);
+    expect(span(1)).toBeGreaterThan(7.5);
+    // The elephant walks its own circuit now, and the bearers loop wide.
+    for (const id of [
+      'caravan-loaded-elephant',
+      'caravan-overhead-gold-bearer',
+    ]) {
+      const t = tiles(id),
+        far = Math.max(
+          ...t.map((p) => Math.hypot(p[0] - t[0][0], p[1] - t[0][1])),
+        );
+      expect(far, id).toBeGreaterThan(4);
+    }
+  });
+  it('drops shining gold where it walks: coins fall, glint, then are gathered', () => {
+    const drops = cast.filter((c) => c.id.startsWith('caravan-gold-drop-'));
+    expect(drops.length).toBeGreaterThanOrEqual(15);
+    const walkers = cast.filter((c) => !c.id.startsWith('caravan-gold-drop-'));
+    for (const d of drops) {
+      expect(d.kind).toBe('ball');
+      expect(d.script).toHaveLength(1);
+      const at = d.script[0].at!;
+      // Under someone's route: a bearer, a camel or the ruler passed here.
+      const near = Math.min(
+        ...walkers.flatMap((c) =>
+          c.script.flatMap((s) =>
+            (s.path ?? [s.at!]).map((p) =>
+              Math.hypot(p[0] - at[0], p[1] - at[1]),
+            ),
+          ),
+        ),
+      );
+      expect(near, d.id).toBeLessThan(1.5);
+      const meta = json(`art/sprites/anim/${d.id}__ball_still_SE.json`);
+      expect(meta.outline).toBe(false);
+      const seq: number[] = meta.sequence;
+      // Absent for part of the loop, falls (1–4), rests and twinkles (7, 8).
+      expect(seq.filter((f) => f === 0).length).toBeGreaterThan(60);
+      for (const f of [1, 2, 3, 4, 6, 7, 8]) expect(seq).toContain(f);
+      const first = seq.indexOf(1);
+      expect(seq.slice(first, first + 4)).toEqual([1, 2, 3, 4]);
+    }
+    // Several glint on the sand at any moment.
+    for (let t = 0; t < 240; t += 20) {
+      const shown = drops.filter(
+        (d) =>
+          json(`art/sprites/anim/${d.id}__ball_still_SE.json`).sequence[t] > 0,
+      );
+      expect(shown.length, `tick ${t}`).toBeGreaterThanOrEqual(5);
+    }
   });
 });

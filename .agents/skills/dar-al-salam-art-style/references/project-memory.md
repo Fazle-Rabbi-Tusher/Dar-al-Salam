@@ -101,6 +101,12 @@ extracted from an attached document. New explicit owner instructions override th
   colour range, give every figure a soft cast shadow on the sand and sand dust
   at its feet, and keep animals at the world's scale beside 1.75 m people.
   See DECISIONS item 79.
+- **Roaming caravan and dropped gold (26 November 2026):** the owner wants the
+  caravan to look very realistic in 3D pixel art, blend smoothly into the world,
+  roam around the desert, donate shining gold and drop shining, blinking gold
+  wherever its people pass. Keep the routes wide and realistic in pace on the
+  240-tick loop, and keep the coin drops falling, glinting and vanishing on
+  the shared clock. See DECISIONS item 80.
 - **File limit:** every downloadable ZIP is strictly below 30,000,000 bytes.
 - **Final Mansa Musa surface direction (25 November 2026):** the owner selected
   the white/red/gold reference sheet and clarified that the final result must

@@ -25,7 +25,7 @@ type Viewer = {
   angle(name: string): void;
 };
 
-test('the caravan walks the desert as pixel-art sprites, pauses and opens the ruler card', async ({
+test('the caravan roams the desert as realistic sprites, drops gold, pauses and opens the ruler card', async ({
   page,
 }) => {
   test.setTimeout(120000);
@@ -54,6 +54,13 @@ test('the caravan walks the desert as pixel-art sprites, pauses and opens the ru
         ).length,
         visible: figures.map((id) => !!e.live.get(id)?.sprite.visible),
         poses: figures.map((id) => e.live.get(id)?.frame),
+        // Its dropped gold: small piles that fall, glint and are gathered.
+        drops: e.manifest.characters.filter((c) =>
+          c.id.startsWith('caravan-gold-drop-'),
+        ).length,
+        dropPoses: [...e.live.keys()]
+          .filter((id) => id.startsWith('caravan-gold-drop-'))
+          .map((id) => e.live.get(id)!.frame),
       };
     });
   const first = await sample();
@@ -62,6 +69,8 @@ test('the caravan walks the desert as pixel-art sprites, pauses and opens the ru
   expect(first.mode).toBeUndefined();
   expect(first.cast).toBeGreaterThan(25);
   expect(first.visible).toEqual([true, true, true]);
+  expect(first.drops).toBeGreaterThanOrEqual(15);
+  expect(first.dropPoses.length).toBeGreaterThan(0);
   await page.getByLabel('Resume animation', { exact: true }).click();
   await expect
     .poll(async () => JSON.stringify((await sample()).poses), {

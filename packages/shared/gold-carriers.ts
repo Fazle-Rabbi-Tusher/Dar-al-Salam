@@ -77,10 +77,12 @@ const routes: Record<
   CarrierRole,
   { x: number; z: number; rx: number; rz: number }
 > = {
-  overhead: { x: -290, z: 260, rx: 35, rz: 25 },
-  bearer: { x: 260, z: 255, rx: 30, rz: 20 },
-  pair: { x: 30, z: 285, rx: 30, rz: 20 },
-  banner: { x: -145, z: 275, rx: 25, rz: 20 },
+  // Wide loops over the southern sand (owner's request, 2026-11-26: "they
+  // should roam around the desert"), between the coast and the town.
+  overhead: { x: -255, z: 330, rx: 60, rz: 60 },
+  bearer: { x: 230, z: 330, rx: 60, rz: 55 },
+  pair: { x: 40, z: 385, rx: 70, rz: 60 },
+  banner: { x: -110, z: 320, rx: 55, rz: 50 },
 };
 const arcLengths = Object.fromEntries(
   Object.entries(routes).map(([key, r]) => {

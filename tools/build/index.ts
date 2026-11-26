@@ -265,6 +265,8 @@ async function build() {
       sequence?: number[];
       /** World ticks per step, when the strip sets its own (Mansa Musa's caravan: 1). */
       tempo?: number;
+      /** false: no pixel outline (small shining things: the caravan's dropped gold). */
+      outline?: boolean;
     } = await readJson(`${base}.json`).catch(() => ({
       frame: [224, 336],
       foot: [112, 320],
@@ -275,7 +277,10 @@ async function build() {
       out: { image: PixelImage; anchor: [number, number] }[] = [];
     for (let x = 0; x + FW <= strip.width; x += FW)
       out.push({
-        image: outlined(crop(strip, x, 0, FW, strip.height)),
+        image:
+          meta.outline === false
+            ? crop(strip, x, 0, FW, strip.height)
+            : outlined(crop(strip, x, 0, FW, strip.height)),
         anchor: meta.foot,
       });
     // Left-facing views reuse these frames, flipped by the engine.

@@ -6,11 +6,19 @@
     "bn": "মানসা মুসা — সোনার কাফেলা"
   },
   "lead": "mansa-musa",
-  "members": ["mansa-musa"],
+  "members": [
+    "mansa-musa"
+  ],
   "props": [],
   "area": [
-    [-53, 89],
-    [-22, 116]
+    [
+      -54,
+      76
+    ],
+    [
+      -19,
+      121
+    ]
   ],
   "camera": "frame"
 }

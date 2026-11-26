@@ -3,6 +3,8 @@ import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import {
+  STOPS,
+  STAY,
   CARAVAN,
   caravanActors,
   caravanState,
@@ -66,8 +68,8 @@ describe('articulated Mansa Musa and his procession', () => {
     ).toHaveLength(CARAVAN.camels);
   });
   it('transfers one coin at actual hand contact, with no ownership jump', () => {
-    for (const [index, start] of [0, 64, 128].entries()) {
-      const t = start + 12,
+    for (const [index, start] of STOPS.entries()) {
+      const t = start + STAY / 2,
         pose = rigMatrices(caravanActors(t)),
         find = (suffix: string) =>
           [...pose].find(([key]) => key.endsWith(suffix))![1].matrix;
@@ -78,7 +80,7 @@ describe('articulated Mansa Musa and his procession', () => {
         contact = handoverState(t, index).contact;
       giver.forEach((v, i) => expect(v).toBeCloseTo(contact[i], 5));
       receiver.forEach((v, i) => expect(v).toBeCloseTo(contact[i], 5));
-      const switchAt = start + 24 * 0.53,
+      const switchAt = start + STAY * 0.53,
         before = rigMatrices(caravanActors(switchAt - 0.0001)),
         after = rigMatrices(caravanActors(switchAt + 0.0001)),
         key = `/mali-gold-caravan/gift-coin-${index + 1}`;

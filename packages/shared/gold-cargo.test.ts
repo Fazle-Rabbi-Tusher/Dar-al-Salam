@@ -145,7 +145,7 @@ describe('the loaded elephant and detailed gold cargo', () => {
     ])
       expect(used.has(material)).toBe(true);
   });
-  it('fits the original cleared plot, covers the canopy in culling bounds and keeps the waiting elephant grounded', () => {
+  it('fits the cleared plot, covers the canopy in culling bounds and keeps the roaming elephant supported', () => {
     const model = rigMatrices(nativeCargoActors(0));
     let top = 0;
     const min = [Infinity, Infinity],
@@ -173,6 +173,14 @@ describe('the loaded elephant and detailed gold cargo', () => {
       key.split('/').at(-1)!.startsWith('elephant-foot-'),
     );
     expect(feet).toHaveLength(4);
-    feet.forEach(([, v]) => expect(v.matrix[13]).toBe(0));
+    // It walks its own circuit now: at every tick most feet stay planted.
+    for (let t = 0; t < 240; t += 3) {
+      const grounded = [...rigMatrices(nativeCargoActors(t))].filter(
+        ([key, v]) =>
+          key.split('/').at(-1)!.startsWith('elephant-foot-') &&
+          v.matrix[13] === 0,
+      );
+      expect(grounded.length, `tick ${t}`).toBeGreaterThanOrEqual(2);
+    }
   }, 20000);
 });

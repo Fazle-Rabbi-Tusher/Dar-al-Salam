@@ -28,11 +28,12 @@ export type RigNode = {
 /**
  * The caravan's ground: the open desert west of Massawa (owner's request,
  * 2026-11: "place them on the desert"), between the coast and the town.
- * `tile`/`footprint` bound every actor and stall; nothing wild grows there.
+ * `tile`/`footprint` bound every actor, stall and roaming loop (2026-11-26:
+ * "they should roam around the desert"); nothing wild grows there.
  */
 export const CARAVAN = {
-  tile: [-53, 89] as Point,
-  footprint: [31, 27] as Point,
+  tile: [-54, 76] as Point,
+  footprint: [35, 45] as Point,
   center: [-36, 100] as Point,
   stops: [-115, 0, 115],
   guards: 12,
@@ -764,52 +765,136 @@ export function human(p: HumanPose): RigNode {
   return node(p.name, undefined, p.at, yaw(p.yaw), children);
 }
 
-// The twenty-second route has three complete, calm handovers. At the return
-// lane the caravan curves behind the market, then settles at its first stop.
+/*
+ * The twenty-second route. Three calm handovers on the market lane (STOPS),
+ * two short walks between them, then a long roam through the open desert
+ * (owner's request, 2026-11-26: "they should roam around the desert"): out
+ * east, round the dunes to the north and back down the western sand to the
+ * first stop. The roam is a smooth spline walked at an even, brisk pace
+ * (about 2 m/s, with gentle starts and stops); everyone behind follows the
+ * same ground.
+ */
+export const STOPS = [0, 46, 92];
+export const STAY = 20;
+const LANE = 26,
+  ROAM_FROM = STOPS[2] + STAY;
+/**
+ * The desert roam: out east from the last stop, a wide turn north, a long
+ * gently bowed sweep west across the open sand, then round and back east
+ * into the first stop. Arcs and short straights only, so every bend is wide
+ * enough for the guards' double file (radius 85 or more).
+ */
+const ROAM = { corner: 85, side: 10, bow: (25 * Math.PI) / 180 };
+let roamCache: { points: [number, number][]; lengths: number[] } | undefined;
+function roamPath() {
+  if (roamCache) return roamCache;
+  const points: [number, number][] = [[115, 20]];
+  let x = 115,
+    z = 20,
+    phi = 0; // heading in the x–z plane; 0 is east (+x), −π/2 is north (−z)
+  const line = (length: number) => {
+    for (let i = 1; i <= 16; i++)
+      points.push([
+        x + (Math.cos(phi) * length * i) / 16,
+        z + (Math.sin(phi) * length * i) / 16,
+      ]);
+    x += Math.cos(phi) * length;
+    z += Math.sin(phi) * length;
+  };
+  const arc = (radius: number, turn: number) => {
+    // Turning toward −z (anticlockwise on the map) about a centre on the left.
+    const cx = x + Math.sin(phi) * radius,
+      cz = z - Math.cos(phi) * radius,
+      steps = Math.max(8, Math.ceil(Math.abs(turn) * 24));
+    for (let i = 1; i <= steps; i++) {
+      const f = phi + (turn * i) / steps;
+      points.push([cx - Math.sin(f) * radius, cz + Math.cos(f) * radius]);
+    }
+    phi += turn;
+    x = points.at(-1)![0];
+    z = points.at(-1)![1];
+  };
+  const { corner, side, bow } = ROAM;
+  arc(corner, -Math.PI / 2);
+  line(side);
+  arc(corner, -(Math.PI / 2 - bow));
+  // The bowed sweep west, centred on the lane's middle.
+  arc(x / Math.sin(bow), -2 * bow);
+  arc(corner, -(Math.PI / 2 - bow));
+  line(side);
+  arc(corner, -Math.PI / 2);
+  points[points.length - 1] = [-115, 20];
+  const lengths = [0];
+  for (let i = 1; i < points.length; i++)
+    lengths.push(
+      lengths[i - 1] +
+        Math.hypot(
+          points[i][0] - points[i - 1][0],
+          points[i][1] - points[i - 1][1],
+        ),
+    );
+  return (roamCache = { points, lengths });
+}
+/** Distance along the roam, from 0 to 1, walked at an even pace with soft ends. */
+function pace(u: number, ramp = 0.14) {
+  const v = 1 / (1 - ramp);
+  if (u < ramp) return { s: (v * u * u) / (2 * ramp), speed: u / ramp };
+  if (u > 1 - ramp)
+    return { s: 1 - (v * (1 - u) ** 2) / (2 * ramp), speed: (1 - u) / ramp };
+  return { s: v * (u - ramp / 2), speed: 1 };
+}
 export function caravanState(frame: number) {
   const t = ((frame % 240) + 240) % 240;
-  let x = -115,
+  let x = CARAVAN.stops[0],
     z = 20,
     heading = Math.PI / 2,
     travel = 0,
     walk = 0,
     station = 0,
-    progress = t / 24;
-  if (t >= 24 && t < 64) {
-    const u = (t - 24) / 40,
+    progress = t / STAY;
+  if (t >= STOPS[0] + STAY && t < STOPS[1]) {
+    const u = (t - STOPS[0] - STAY) / LANE,
       k = ease(u);
     x = -115 + 115 * k;
     travel = 115 * k;
     walk = Math.sin(Math.PI * u);
     station = -1;
-  } else if (t >= 64 && t < 88) {
+  } else if (t >= STOPS[1] && t < STOPS[1] + STAY) {
     x = 0;
     station = 1;
-    progress = (t - 64) / 24;
+    progress = (t - STOPS[1]) / STAY;
     travel = 115;
-  } else if (t >= 88 && t < 128) {
-    const u = (t - 88) / 40,
+  } else if (t >= STOPS[1] + STAY && t < STOPS[2]) {
+    const u = (t - STOPS[1] - STAY) / LANE,
       k = ease(u);
     x = 115 * k;
     travel = 115 + 115 * k;
     walk = Math.sin(Math.PI * u);
     station = -1;
-  } else if (t >= 128 && t < 152) {
+  } else if (t >= STOPS[2] && t < ROAM_FROM) {
     x = 115;
     station = 2;
-    progress = (t - 128) / 24;
+    progress = (t - STOPS[2]) / STAY;
     travel = 230;
-  } else if (t >= 152) {
-    const u = (t - 152) / 88,
-      a = ease(u) * Math.PI;
-    // A rear arc returns to the first stop; both end tangents point east.
-    x = 115 * Math.cos(a) + 80 * Math.sin(2 * a);
-    z = 20 - 155 * Math.sin(a) ** 2;
-    const dx = -115 * Math.sin(a) + 160 * Math.cos(2 * a),
-      dz = -310 * Math.sin(a) * Math.cos(a);
-    heading = Math.atan2(dx, dz);
-    travel = 230 + a * 95;
-    walk = Math.sin(Math.PI * u);
+  } else if (t >= ROAM_FROM) {
+    const { points, lengths } = roamPath(),
+      total = lengths.at(-1)!,
+      { s, speed } = pace((t - ROAM_FROM) / (240 - ROAM_FROM)),
+      d = s * total;
+    let lo = 0,
+      hi = lengths.length - 1;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (lengths[mid] <= d) lo = mid;
+      else hi = mid;
+    }
+    const part = (d - lengths[lo]) / Math.max(1e-9, lengths[hi] - lengths[lo]),
+      [a, b] = [points[lo], points[hi]];
+    x = a[0] + (b[0] - a[0]) * part;
+    z = a[1] + (b[1] - a[1]) * part;
+    heading = Math.atan2(b[0] - a[0], b[1] - a[1]);
+    travel = 230 + d;
+    walk = speed;
     station = -1;
   }
   return {
@@ -821,9 +906,11 @@ export function caravanState(frame: number) {
     station,
     progress: clamp(progress),
     giving: station >= 0,
-    gifts: Number(t >= 12) + Number(t >= 76) + Number(t >= 140),
+    gifts: STOPS.filter((start) => t >= start + STAY / 2).length,
   };
 }
+/** Length of the desert roam (model units). */
+export const roamLength = () => roamPath().lengths.at(-1)!;
 export function rulerTile(frame: number): Point {
   const p = caravanState(frame).point;
   return caravanTile(p[0], p[2]);
@@ -877,7 +964,7 @@ export function followerState(frame: number, behind: number, lateral = 0) {
 }
 export function handoverState(frame: number, index: number) {
   const s = caravanState(frame),
-    local = (s.t - [0, 64, 128][index]) / 24,
+    local = (s.t - STOPS[index]) / STAY,
     active = local >= 0 && local <= 1,
     p = clamp(local),
     contact: Vertex3 = [CARAVAN.stops[index], 59, 45];
